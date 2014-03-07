@@ -1,15 +1,24 @@
 package imagej.ops;
 
 import imagej.Cancelable;
-import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
 import net.imglib2.algorithm.region.localneighborhood.Shape;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
+/**
+ * Evaluates an {@link UnaryFunction} for each {@link Neighborhood} on the in
+ * {@link RandomAccessibleInterval}.
+ * 
+ * @author Christian Dietz
+ * 
+ */
+@Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
 public class NeighborhoodOp<I, O> implements Op, Cancelable {
 
 	@Parameter
@@ -24,23 +33,17 @@ public class NeighborhoodOp<I, O> implements Op, Cancelable {
 	@Parameter(type = ItemIO.BOTH)
 	private RandomAccessibleInterval<O> out;
 
+	// used in cancellation service
 	private final String cancelationReason = null;
 
 	@Override
 	public void run() {
 
-		// TODO make a faster op where iteration order of in and out are the
-		// same
 		final RandomAccess<O> rnd = out.randomAccess();
-		
-		final IterableInterval<Neighborhood<I>> neighborhood = shape
-				.neighborhoods(in);
-		
-		
-		
-		for (final Neighborhood<I> neighborhood : s) {
-			rnd.setPosition(neighborhood);
 
+		for (final Neighborhood<I> neighborhood : shape.neighborhoods(in)) {
+			rnd.setPosition(neighborhood);
+			func.compute(neighborhood, rnd.get());
 		}
 	}
 
