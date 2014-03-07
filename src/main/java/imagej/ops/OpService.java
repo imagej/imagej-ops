@@ -128,6 +128,8 @@ public class OpService extends AbstractPTService<Op> {
 		return result(op, result);
 	}
 
+	// -- Helper methods --
+
 	private Object result(final ModuleInfo info,
 		final Future<? extends Module> result)
 	{
