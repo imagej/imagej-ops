@@ -54,7 +54,7 @@ import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
 
 /**
- * Default service for managing {@link Op} plugins.
+ * Default service for working with {@link Op} plugins.
  * 
  * @author Curtis Rueden
  */
