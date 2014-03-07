@@ -35,7 +35,7 @@ package imagej.ops;
  * 
  * @author Christian Dietz
  * @author Martin Horn
- * @author NOT CURTIS RUEDEN
+ * @author Curtis Rueden
  */
 public abstract class UnaryFunction<I, O> implements Op, Copyable {
 
