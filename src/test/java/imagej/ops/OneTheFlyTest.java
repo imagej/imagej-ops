@@ -35,7 +35,10 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.ShortArray;
+import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.ShortType;
 
 import org.junit.After;
@@ -124,6 +127,28 @@ public class OneTheFlyTest {
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (short) 1, array[i]);
+		}
+	}
+
+	@Test
+	public void testPlanaer() {
+		final PlanarImg<IntType, ?> a = PlanarImgs.ints(dimensions);
+		final PlanarImg<IntType, ?> b = PlanarImgs.ints(dimensions);
+		final PlanarImg<IntType, ?> result = PlanarImgs.ints(dimensions);
+		int i = 0;
+		for (final IntType t : a) {
+			t.set(i++);
+		}
+		for (final IntType t : b) {
+			t.set(i-- / 2);
+		}
+
+		ops.run("subtract", a, b, result);
+
+		i = 0;
+		for (final IntType t : result) {
+			assertEquals("index " + i, i - (pixelCount - i) / 2, t.get());
+			i++;
 		}
 	}
 }
