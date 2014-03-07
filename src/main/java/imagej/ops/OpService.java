@@ -118,7 +118,7 @@ public class OpService extends AbstractPTService<Op> {
 		if (module == null) {
 			throw new IllegalArgumentException("No matching op: " + name);
 		}
-		return run(module, args);
+		return run(module);
 	}
 
 	public Object run(final Op op, final Object... args) {
@@ -196,6 +196,7 @@ public class OpService extends AbstractPTService<Op> {
 		}
 		else value = ConversionUtils.convert(arg, item.getType());
 		module.setInput(item.getName(), value);
+		module.setResolved(item.getName(), true);
 	}
 
 }
