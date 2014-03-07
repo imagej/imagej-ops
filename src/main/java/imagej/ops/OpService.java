@@ -37,6 +37,7 @@ import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
+import imagej.service.ImageJService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ import org.scijava.util.ConversionUtils;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class OpService extends AbstractPTService<Op> {
+public class OpService extends AbstractPTService<Op> implements ImageJService {
 
 	@Parameter
 	private ModuleService moduleService;
