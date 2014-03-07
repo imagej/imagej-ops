@@ -48,6 +48,9 @@ public class OneTheFlyTest {
 	private Context context;
 	private OpService ops;
 
+	private final int pixelCount = 256 * 256;
+	private final long[] dimensions = new long[] { 256, 256 };
+
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class);
@@ -65,12 +68,12 @@ public class OneTheFlyTest {
 
 	@Test
 	public void testByte() {
-		final byte[] array = new byte[65536];
-		final ArrayImg<ByteType, ByteArray> img = ArrayImgs.bytes(array, new long[] { 256, 256 });
-		final byte[] array2 = new byte[65536];
-		final ArrayImg<ByteType, ByteArray> img2 = ArrayImgs.bytes(array2, new long[] { 256, 256 });
-		final byte[] result = new byte[65536];
-		final ArrayImg<ByteType, ByteArray> resultImg = ArrayImgs.bytes(result, new long[] { 256, 256 });
+		final byte[] array = new byte[pixelCount];
+		final ArrayImg<ByteType, ByteArray> img = ArrayImgs.bytes(array, dimensions);
+		final byte[] array2 = new byte[pixelCount];
+		final ArrayImg<ByteType, ByteArray> img2 = ArrayImgs.bytes(array2, dimensions);
+		final byte[] result = new byte[pixelCount];
+		final ArrayImg<ByteType, ByteArray> resultImg = ArrayImgs.bytes(result, dimensions);
 
 		for (int i = 0; i < array.length; i++) {
 			array[i] = (byte) i;
@@ -87,12 +90,12 @@ public class OneTheFlyTest {
 
 	@Test
 	public void testShort() {
-		final short[] array = new short[65536];
-		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, new long[] { 256, 256 });
-		final short[] array2 = new short[65536];
-		final ArrayImg<ShortType, ShortArray> img2 = ArrayImgs.shorts(array2, new long[] { 256, 256 });
-		final short[] result = new short[65536];
-		final ArrayImg<ShortType, ShortArray> resultImg = ArrayImgs.shorts(result, new long[] { 256, 256 });
+		final short[] array = new short[pixelCount];
+		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, dimensions);
+		final short[] array2 = new short[pixelCount];
+		final ArrayImg<ShortType, ShortArray> img2 = ArrayImgs.shorts(array2, dimensions);
+		final short[] result = new short[pixelCount];
+		final ArrayImg<ShortType, ShortArray> resultImg = ArrayImgs.shorts(result, dimensions);
 
 		for (int i = 0; i < array.length; i++) {
 			array[i] = (short) i;
@@ -111,7 +114,7 @@ public class OneTheFlyTest {
 	@Test
 	public void testDivide() {
 		final short[] array = new short[512];
-		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, new long[] { 256, 256 });
+		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, dimensions);
 
 		for (int i = 0; i < array.length; i++) {
 			array[i] = (short) (i + 1);
