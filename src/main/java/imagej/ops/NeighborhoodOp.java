@@ -1,7 +1,5 @@
 package imagej.ops;
 
-import imagej.Cancelable;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
 import net.imglib2.algorithm.region.localneighborhood.Shape;
@@ -19,42 +17,25 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
-public class NeighborhoodOp<I, O> implements Op, Cancelable {
+public class NeighborhoodOp<I, O> implements Op {
 
 	@Parameter
-	private RandomAccessibleInterval<I> in;
+	private OpService service;
 
 	@Parameter
 	private Shape shape;
 
 	@Parameter
-	private UnaryFunction<Iterable<I>, O> func;
+	private RandomAccessibleInterval<I> in;
 
 	@Parameter(type = ItemIO.BOTH)
 	private RandomAccessibleInterval<O> out;
 
-	// used in cancellation service
-	private final String cancelationReason = null;
+	@Parameter
+	private UnaryFunction<Iterable<I>, O> func;
 
 	@Override
 	public void run() {
-
-		final RandomAccess<O> rnd = out.randomAccess();
-
-		for (final Neighborhood<I> neighborhood : shape.neighborhoods(in)) {
-			rnd.setPosition(neighborhood);
-			func.compute(neighborhood, rnd.get());
-		}
+		service.run("unary_function_runner", shape.neighborhoodsSafe(in), out, func);
 	}
-
-	@Override
-	public String getCancelReason() {
-		return cancelationReason;
-	}
-
-	@Override
-	public boolean isCanceled() {
-		return cancelationReason != null;
-	}
-
 }
