@@ -17,6 +17,11 @@
 	<url>http://developer.imagej.net/</url>
 	<inceptionYear>2014</inceptionYear>
 
+	<properties>
+		<!-- TEMP: only needed until a ConversionUtils fix has been released in 2.10.1 -->
+		<scijava-common.version>2.10.1-SNAPSHOT</scijava-common.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.imagej</groupId>
