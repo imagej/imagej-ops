@@ -126,8 +126,14 @@ public class OpService extends AbstractPTService<Op> {
 	}
 
 	public Object run(final Module module, final Object... args) {
-		final Map<String, Object> inputs = inputs(module.getInfo(), args);
-		final Future<Module> result = moduleService.run(module, false, inputs);
+		final Future<Module> result;
+		if (args == null || args.length == 0) {
+			result = moduleService.run(module, false);
+		}
+		else {
+			final Map<String, Object> inputs = inputs(module.getInfo(), args);
+			result = moduleService.run(module, false, inputs);
+		}
 		return result(module.getInfo(), result);
 	}
 
@@ -151,6 +157,7 @@ public class OpService extends AbstractPTService<Op> {
 		final Map<String, Object> inputs = new HashMap<String, Object>();
 		int i = 0;
 		for (final ModuleItem<?> input : info.inputs()) {
+			if (i >= args.length) break; // no more arguments to assign
 			inputs.put(input.getName(), args[i++]);
 		}
 		return inputs;
