@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package imagej.ops;
 
 import static org.junit.Assert.assertEquals;
@@ -44,6 +45,7 @@ import org.scijava.Context;
  * @author Johannes Schindelin
  */
 public class BasicOpTest {
+
 	private Context context;
 	private OpService ops;
 

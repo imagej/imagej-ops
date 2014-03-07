@@ -1,3 +1,33 @@
+/*
+ * #%L
+ * A framework for reusable algorithms.
+ * %%
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
 package imagej.ops;
 
 import net.imglib2.Interval;
@@ -32,7 +62,7 @@ public class MetadataUtil {
 	 * @param out
 	 * @return returns out
 	 */
-	public static Sourced copySource(Sourced in, Sourced out) {
+	public static Sourced copySource(final Sourced in, final Sourced out) {
 		out.setSource(in.getSource());
 		return out;
 	}
@@ -44,7 +74,7 @@ public class MetadataUtil {
 	 * @param out
 	 * @return returns out
 	 */
-	public static Named copyName(Named in, Named out) {
+	public static Named copyName(final Named in, final Named out) {
 		out.setName(in.getName());
 		return out;
 	}
@@ -56,8 +86,9 @@ public class MetadataUtil {
 	 * @param out
 	 * @return returns out
 	 */
-	public static ImageMetadata copyImageMetadata(ImageMetadata in,
-			ImageMetadata out) {
+	public static ImageMetadata copyImageMetadata(final ImageMetadata in,
+		final ImageMetadata out)
+	{
 		out.setValidBits(in.getValidBits());
 		out.setCompositeChannelCount(in.getCompositeChannelCount());
 
@@ -75,15 +106,16 @@ public class MetadataUtil {
 	}
 
 	/**
-	 * copies the CalibratedSpace attributes from in to out. Both spaces must
-	 * have the same dimensionality.
+	 * copies the CalibratedSpace attributes from in to out. Both spaces must have
+	 * the same dimensionality.
 	 * 
 	 * @param in
 	 * @param out
 	 * @return returns out
 	 */
 	public static <C extends CalibratedAxis> CalibratedSpace<C> copyTypedSpace(
-			CalibratedSpace<C> in, CalibratedSpace<C> out) {
+		final CalibratedSpace<C> in, final CalibratedSpace<C> out)
+	{
 		copyTypedSpace(null, in, out);
 		return out;
 	}
@@ -96,8 +128,9 @@ public class MetadataUtil {
 	 * @param out
 	 * @return returns out
 	 */
-	public static ImgPlusMetadata copyImgPlusMetadata(ImgPlusMetadata in,
-			ImgPlusMetadata out) {
+	public static ImgPlusMetadata copyImgPlusMetadata(final ImgPlusMetadata in,
+		final ImgPlusMetadata out)
+	{
 		copyName(in, out);
 		copySource(in, out);
 		copyImageMetadata(in, out);
@@ -109,17 +142,18 @@ public class MetadataUtil {
 
 	/**
 	 * copies the CalibratedAxis attributes from in to out. Attributes for
-	 * dimensions of size 1 are removed during copying. The dimensionality of
-	 * the out space must be dimensionality(inSpace) - #removed dims
+	 * dimensions of size 1 are removed during copying. The dimensionality of the
+	 * out space must be dimensionality(inSpace) - #removed dims
 	 * 
-	 * @param inInterval
-	 *            provides dimensionality information for the in space
+	 * @param inInterval provides dimensionality information for the in space
 	 * @param in
 	 * @param out
 	 * @return returns out
 	 */
-	public static <C extends CalibratedAxis> CalibratedSpace<C> copyAndCleanTypedSpace(
-			Interval inInterval, CalibratedSpace<C> in, CalibratedSpace<C> out) {
+	public static <C extends CalibratedAxis> CalibratedSpace<C>
+		copyAndCleanTypedSpace(final Interval inInterval,
+			final CalibratedSpace<C> in, final CalibratedSpace<C> out)
+	{
 		copyTypedSpace(inInterval, in, out);
 		return out;
 	}
@@ -130,14 +164,15 @@ public class MetadataUtil {
 	 * copying. The dimensionality of the out space must be
 	 * dimensionality(inSpace) - #removed dims
 	 * 
-	 * @param inInterval
-	 *            provides dimensionality information for the in space
+	 * @param inInterval provides dimensionality information for the in space
 	 * @param in
 	 * @param out
 	 * @return returns out
 	 */
 	public static ImgPlusMetadata copyAndCleanImgPlusMetadata(
-			Interval inInterval, ImgPlusMetadata in, ImgPlusMetadata out) {
+		final Interval inInterval, final ImgPlusMetadata in,
+		final ImgPlusMetadata out)
+	{
 		copyName(in, out);
 		copySource(in, out);
 		copyImageMetadata(in, out);
@@ -164,13 +199,16 @@ public class MetadataUtil {
 
 	@SuppressWarnings("unchecked")
 	private static <C extends CalibratedAxis> void copyTypedSpace(
-			Interval inInterval, CalibratedSpace<C> in, CalibratedSpace<C> out) {
+		final Interval inInterval, final CalibratedSpace<C> in,
+		final CalibratedSpace<C> out)
+	{
 
 		int offset = 0;
 		for (int d = 0; d < in.numDimensions(); d++) {
 			if (inInterval != null && inInterval.dimension(d) == 1) {
 				offset++;
-			} else {
+			}
+			else {
 				out.setAxis((C) in.axis(d).copy(), d - offset);
 			}
 		}

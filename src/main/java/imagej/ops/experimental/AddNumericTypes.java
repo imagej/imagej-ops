@@ -28,32 +28,31 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.experimental;
 
-/**
- * Helper class for multi threading of unary functions
- * 
- * @author Christian Dietz
- * @param <A>
- * @param <B>
- */
-public class UnaryFunctionTask<A, B> implements Runnable {
+import imagej.ops.Op;
+import net.imglib2.type.numeric.NumericType;
 
-	private final UnaryFunction<A, B> m_op;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	private final A m_in;
+@Plugin(type = Op.class, name = "add")
+public class AddNumericTypes<T extends NumericType<T>> implements Op {
 
-	private final B m_out;
+	@Parameter
+	private T input1;
 
-	public UnaryFunctionTask(final UnaryFunction<A, B> op, final A in, final B out)
-	{
-		m_in = in;
-		m_out = out;
-		m_op = op.copy();
-	}
+	@Parameter
+	private T input2;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T output;
 
 	@Override
 	public void run() {
-		m_op.compute(m_in, m_out);
+		output.set(input1);
+		output.add(input2);
 	}
+
 }

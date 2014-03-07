@@ -28,32 +28,38 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.experimental;
 
-/**
- * Helper class for multi threading of unary functions
- * 
- * @author Christian Dietz
- * @param <A>
- * @param <B>
- */
-public class UnaryFunctionTask<A, B> implements Runnable {
+import imagej.ops.Op;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.type.numeric.real.DoubleType;
 
-	private final UnaryFunction<A, B> m_op;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	private final A m_in;
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToPlanarDoubleImage implements Op {
 
-	private final B m_out;
+	@Parameter(type = ItemIO.BOTH)
+	private PlanarImg<DoubleType, DoubleArray> image;
 
-	public UnaryFunctionTask(final UnaryFunction<A, B> op, final A in, final B out)
-	{
-		m_in = in;
-		m_out = out;
-		m_op = op.copy();
-	}
+	@Parameter
+	private double value;
 
 	@Override
 	public void run() {
-		m_op.compute(m_in, m_out);
+		long planeCount = 1;
+		for (int d = 2; d < image.numDimensions(); d++) {
+			planeCount *= image.dimension(d);
+		}
+		for (int p = 0; p < planeCount; p++) {
+			final double[] plane = image.getPlane(p).getCurrentStorageArray();
+			for (int i = 0; i < plane.length; i++) {
+				plane[i] += value;
+			}
+		}
 	}
+
 }

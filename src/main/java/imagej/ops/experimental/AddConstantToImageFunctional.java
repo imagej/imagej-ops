@@ -28,32 +28,61 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.experimental;
 
-/**
- * Helper class for multi threading of unary functions
- * 
- * @author Christian Dietz
- * @param <A>
- * @param <B>
- */
-public class UnaryFunctionTask<A, B> implements Runnable {
+import imagej.ops.Op;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.RealCursor;
+import net.imglib2.RealRandomAccess;
+import net.imglib2.RealRandomAccessibleRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
-	private final UnaryFunction<A, B> m_op;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	private final A m_in;
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToImageFunctional<T extends NumericType<T>> implements
+	Op
+{
 
-	private final B m_out;
+	@Parameter
+	private IterableRealInterval<T> image;
 
-	public UnaryFunctionTask(final UnaryFunction<A, B> op, final A in, final B out)
-	{
-		m_in = in;
-		m_out = out;
-		m_op = op.copy();
-	}
+	@Parameter(type = ItemIO.BOTH)
+	private RealRandomAccessibleRealInterval<T> output;
+
+	@Parameter
+	private T value;
 
 	@Override
 	public void run() {
-		m_op.compute(m_in, m_out);
+		final RealCursor<T> c = image.localizingCursor();
+		final RealRandomAccess<T> ra = output.realRandomAccess();
+		while (c.hasNext()) {
+			final T in = c.next();
+			ra.setPosition(c);
+			final T out = ra.get();
+			out.set(in);
+			out.add(value);
+		}
 	}
+
 }
+
+/*
+Img<T> img = getImg();
+T value;
+Img<T> output = null;
+
+// IN-PLACE
+output = ops.copy(img);
+ops.add(output, value);
+
+// FUNCTIONAL
+output = ops.newImgOfSameSize(img);
+ops.add(input, output, value);
+
+/////////
+
+*/

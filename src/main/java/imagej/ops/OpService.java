@@ -50,4 +50,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	Object add(Object... o);
 
+	Module asModule(Op op);
+
 }
