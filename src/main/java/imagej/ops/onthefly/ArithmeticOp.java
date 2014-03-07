@@ -64,6 +64,30 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		}
 	}
 
+	@Plugin(type = Op.class, name = "subtract", priority = Priority.HIGH_PRIORITY)
+	public static class SubtractOp extends ArithmeticOp {
+		@Override
+		public void run() {
+			run("subtract", "-");
+		}
+	}
+
+	@Plugin(type = Op.class, name = "multiply", priority = Priority.HIGH_PRIORITY)
+	public static class MultiplyOp extends ArithmeticOp {
+		@Override
+		public void run() {
+			run("multiply", "*");
+		}
+	}
+
+	@Plugin(type = Op.class, name = "divide", priority = Priority.HIGH_PRIORITY)
+	public static class DivideOp extends ArithmeticOp {
+		@Override
+		public void run() {
+			run("divide", "/");
+		}
+	}
+
 	@Parameter
 	private Object a;
 
@@ -146,7 +170,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				+ "  " + type + " b2 = (" + type + ") b;"
 				+ "  " + type + " result2 = (" + type + ") result;"
 				+ "  for (int i = 0; i < a2.length; i++) {"
-				+ "    result2[i] = (" + componentType + ") (a2[i] + b2[i]);"
+				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2[i]);"
 				+ "  }"
 				+ "}";
 			clazz.addMethod(CtNewMethod.make(src, clazz));

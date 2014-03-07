@@ -106,4 +106,21 @@ public class OneTheFlyTest {
 			assertEquals("index " + i, (short) (i + (5 + ((3 * i) % 7))), result[i]);
 		}
 	}
+
+
+	@Test
+	public void testDivide() {
+		final short[] array = new short[512];
+		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, new long[] { 256, 256 });
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (short) (i + 1);
+		}
+
+		ops.run("divide", img, img, img);
+
+		for (int i = 0; i < array.length; i++) {
+			assertEquals("index " + i, (short) 1, array[i]);
+		}
+	}
 }
