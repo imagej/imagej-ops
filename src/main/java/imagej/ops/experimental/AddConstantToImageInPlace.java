@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddConstantToImage<T extends NumericType<T>> implements Op {
+public class AddConstantToImageInPlace<T extends NumericType<T>> implements Op {
 
 	@Parameter(type = ItemIO.BOTH)
 	private IterableRealInterval<T> image;
@@ -53,16 +53,5 @@ public class AddConstantToImage<T extends NumericType<T>> implements Op {
 			t.add(value);
 		}
 	}
-
-	/*
-	OpsService ops;
-	ops.op(final String name, final Object... args)
-	
-	final ArrayImg<DoubleType> img = thing();
-	final Object result = ops.op("add", img, 5);
-	Object result = ops.opResultAsList("add", img, 5); // CHANGE NAME
-	
-	result = ops.add(img, 5);
-	*/
 
 }
