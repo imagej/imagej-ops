@@ -5,7 +5,6 @@ import imagej.ops.Op;
 import imagej.ops.UnaryFunction;
 import net.imglib2.type.logic.BitType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -16,32 +15,6 @@ public class PixThreshold<T extends Comparable<T>> extends
 
 	@Parameter
 	private T threshold;
-
-	@Parameter
-	private T in;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private BitType out;
-
-	@Override
-	public T getInput() {
-		return in;
-	}
-
-	@Override
-	public BitType getOutput() {
-		return out;
-	}
-
-	@Override
-	public void setInput(final T input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final BitType output) {
-		out = output;
-	}
 
 	@Override
 	public BitType compute(final T input, final BitType output) {

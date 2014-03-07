@@ -30,6 +30,9 @@
 
 package imagej.ops;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+
 /**
  * TODO
  * 
@@ -39,13 +42,27 @@ package imagej.ops;
  */
 public abstract class UnaryFunction<I, O> implements Op, Copyable {
 
-	public abstract I getInput();
+	@Parameter
+	private I in;
 
-	public abstract O getOutput();
+	@Parameter(type = ItemIO.OUTPUT)
+	private O out;
 
-	public abstract void setInput(I input);
+	public I getInput() {
+		return in;
+	}
 
-	public abstract void setOutput(O output);
+	public O getOutput() {
+		return out;
+	}
+
+	public void setInput(I input) {
+		in = input;
+	}
+
+	public void setOutput(O output) {
+		out = output;
+	}
 
 	public abstract O compute(I input, O output);
 
