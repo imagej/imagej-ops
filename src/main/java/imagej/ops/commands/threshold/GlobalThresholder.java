@@ -2,7 +2,7 @@
 package imagej.ops.commands.threshold;
 
 import imagej.command.Command;
-import imagej.ops.slicer.HyperSlicingService;
+import imagej.ops.slicer.SlicingService;
 import imagej.ops.threshold.ThresholdMethod;
 import net.imglib2.Axis;
 import net.imglib2.meta.ImgPlus;
@@ -36,7 +36,7 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
 	private Axis[] axes;
 
 	@Parameter
-	private HyperSlicingService sliceService;
+	private SlicingService sliceService;
 
 	@Override
 	public void run() {
