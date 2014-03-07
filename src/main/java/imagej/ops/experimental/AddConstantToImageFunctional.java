@@ -69,20 +69,3 @@ public class AddConstantToImageFunctional<T extends NumericType<T>> implements
 	}
 
 }
-
-/*
-Img<T> img = getImg();
-T value;
-Img<T> output = null;
-
-// IN-PLACE
-output = ops.copy(img);
-ops.add(output, value);
-
-// FUNCTIONAL
-output = ops.newImgOfSameSize(img);
-ops.add(input, output, value);
-
-/////////
-
-*/
