@@ -39,13 +39,15 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "hyperslicer")
-public class LabelingSlicer<L extends Comparable<L>> extends
-		AbstractSlicer {
-	
+/**
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = "slicer")
+public class LabelingSlicer<L extends Comparable<L>> extends AbstractSlicer {
+
 	@Parameter
 	private Labeling<L> in;
-	
+
 	@Parameter
 	private Interval interval;
 

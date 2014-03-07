@@ -40,7 +40,10 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "hyperslicer")
+/**
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = "slicer")
 public class ImgSlicer<T extends Type<T>> extends AbstractSlicer {
 
 	@Parameter
