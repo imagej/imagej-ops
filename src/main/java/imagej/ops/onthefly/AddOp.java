@@ -31,9 +31,19 @@ package imagej.ops.onthefly;
 
 import imagej.ops.Contingent;
 import imagej.ops.Op;
+
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
+
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtNewMethod;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -55,14 +65,23 @@ public class AddOp implements Op, Contingent {
 	@Parameter
 	private Object result;
 
+	public interface MyOp {
+		void run(Object a, Object b, Object result);
+	}
+
 	@Override
 	public void run() {
-		final byte[] a = ((ByteArray) ((ArrayImg<?, ?>) this.a).update(null)).getCurrentStorageArray();
-		final byte[] b = ((ByteArray) ((ArrayImg<?, ?>) this.b).update(null)).getCurrentStorageArray();
-		final byte[] result = ((ByteArray) ((ArrayImg<?, ?>) this.result).update(null)).getCurrentStorageArray();
-		for (int i = 0; i < a.length; i++) {
-			result[i] = (byte) (a[i] + b[i]);
+		if (a instanceof ArrayImg) {
+			final Object access = ((ArrayImg<?, ?>) this.a).update(null);
+			if (access instanceof ArrayDataAccess) {
+				final Object a = ((ArrayDataAccess<?>) access).getCurrentStorageArray();
+				final Object b = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.b).update(null)).getCurrentStorageArray();
+				final Object result = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.result).update(null)).getCurrentStorageArray();
+				getMyOp(a.getClass()).run(a, b, result);
+				return;
+			}
 		}
+		throw new RuntimeException("This should not happen!");
 	}
 
 	@Override
@@ -75,7 +94,7 @@ public class AddOp implements Op, Contingent {
 			final ArrayImg<?, ?> resultImg = (ArrayImg<?, ?>) result;
 			if (!dimensionsMatch(aImg, resultImg)) return false;
 			final Object aData = aImg.update(null);
-			if (!(aData instanceof ByteArray)) return false;
+			if (!(aData instanceof ArrayDataAccess)) return false;
 			final Object bData = bImg.update(null);
 			if (aData.getClass() != bData.getClass()) return false;
 			final Object resultData = resultImg.update(null);
@@ -92,5 +111,42 @@ public class AddOp implements Op, Contingent {
 			if (aImg.dimension(i) != bImg.dimension(i)) return false;
 		}
 		return true;
+	}
+
+	private final static Map<Class<?>, MyOp> ops = new HashMap<Class<?>, MyOp>();
+	private final static ClassLoader loader;
+	private final static ClassPool pool;
+
+	static {
+		loader = new URLClassLoader(new URL[0]);
+		pool = new ClassPool(false);
+		pool.appendClassPath(new ClassClassPath(AddOp.class));
+	}
+
+	private MyOp getMyOp(final Class<?> forClass) {
+		MyOp op = ops.get(forClass);
+		if (op != null) return op;
+
+		try {
+			final String type = forClass.getSimpleName();
+			final String componentType = forClass.getComponentType().getSimpleName();
+			final CtClass clazz = pool.makeClass("myOp$" + componentType, pool.get(Object.class.getName()));
+			clazz.addInterface(pool.get(MyOp.class.getName()));
+			final String src =
+					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {"
+				+ "  " + type + " a2 = (" + type + ") a;"
+				+ "  " + type + " b2 = (" + type + ") b;"
+				+ "  " + type + " result2 = (" + type + ") result;"
+				+ "  for (int i = 0; i < a2.length; i++) {"
+				+ "    result2[i] = (" + componentType + ") (a2[i] + b2[i]);"
+				+ "  }"
+				+ "}";
+			clazz.addMethod(CtNewMethod.make(src, clazz));
+			op = (MyOp) clazz.toClass(loader, null).newInstance();
+			ops.put(forClass, op);
+			return op;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
 	}
 }
