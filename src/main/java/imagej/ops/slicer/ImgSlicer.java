@@ -32,29 +32,29 @@ package imagej.ops.slicer;
 
 import imagej.ops.Op;
 import net.imglib2.Interval;
-import net.imglib2.labeling.Labeling;
-import net.imglib2.labeling.LabelingView;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgView;
+import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "hyperslicer")
-public class LabelingSlicer<L extends Comparable<L>> extends
-		AbstractSlicer {
-	
+public class ImgSlicer<T extends Type<T>> extends AbstractSlicer {
+
 	@Parameter
-	private Labeling<L> in;
-	
+	private Img<T> in;
+
 	@Parameter
 	private Interval interval;
 
 	@SuppressWarnings("unused")
 	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
+	private Img<T> out;
 
 	@Override
 	public void run() {
-		out = new LabelingView<L>(hyperSlice(in, interval), in.<L> factory());
+		out = new ImgView<T>(hyperSlice(in, interval), in.factory());
 	}
 }

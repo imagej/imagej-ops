@@ -32,29 +32,13 @@ package imagej.ops.slicer;
 
 import imagej.ops.Op;
 import net.imglib2.Interval;
-import net.imglib2.labeling.Labeling;
-import net.imglib2.labeling.LabelingView;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * @author Christian Dietz
+ */
+public interface Slicer extends Op {
 
-@Plugin(type = Op.class, name = "hyperslicer")
-public class LabelingSlicer<L extends Comparable<L>> extends
-		AbstractSlicer {
-	
-	@Parameter
-	private Labeling<L> in;
-	
-	@Parameter
-	private Interval interval;
-
-	@SuppressWarnings("unused")
-	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
-
-	@Override
-	public void run() {
-		out = new LabelingView<L>(hyperSlice(in, interval), in.<L> factory());
-	}
+	<T> RandomAccessibleInterval<T> hyperSlice(
+			final RandomAccessibleInterval<T> in, final Interval i);
 }

@@ -30,31 +30,44 @@
 
 package imagej.ops.slicer;
 
-import imagej.ops.Op;
 import net.imglib2.Interval;
-import net.imglib2.labeling.Labeling;
-import net.imglib2.labeling.LabelingView;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "hyperslicer")
-public class LabelingSlicer<L extends Comparable<L>> extends
-		AbstractSlicer {
-	
-	@Parameter
-	private Labeling<L> in;
-	
-	@Parameter
-	private Interval interval;
-
-	@SuppressWarnings("unused")
-	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
+/**
+ * @author Christian Dietz
+ */
+public abstract class AbstractSlicer implements Slicer {
 
 	@Override
-	public void run() {
-		out = new LabelingView<L>(hyperSlice(in, interval), in.<L> factory());
+	public <T> RandomAccessibleInterval<T> hyperSlice(
+		final RandomAccessibleInterval<T> in, final Interval i)
+	{
+		boolean oneSizedDims = false;
+
+		for (int d = 0; d < in.numDimensions(); d++) {
+			if (in.dimension(d) == 1) {
+				oneSizedDims = true;
+				break;
+			}
+		}
+
+		if (Intervals.equals(in, i) && !oneSizedDims) return in;
+
+		IntervalView<T> res;
+		if (Intervals.contains(in, i)) res = Views.offsetInterval(in, i);
+		else {
+			throw new RuntimeException(
+				"Interval must fit into src in SubsetViews.subsetView(...)");
+		}
+
+		for (int d = i.numDimensions() - 1; d >= 0; --d)
+			if (i.dimension(d) == 1 && res.numDimensions() > 1) res =
+				Views.hyperSlice(res, d, 0);
+
+		return res;
 	}
+
 }
