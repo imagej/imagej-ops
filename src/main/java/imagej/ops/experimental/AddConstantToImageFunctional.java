@@ -28,39 +28,62 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.experimental;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.service.ImageJService;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.RealCursor;
+import net.imglib2.RealRandomAccess;
+import net.imglib2.RealRandomAccessibleRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
-@Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractService implements
-        ImageJService {
+@Plugin( type = Op.class, name = "add" )
+public class AddConstantToImageFunctional< T extends NumericType< T >> implements Op
+{
 
-    @Parameter
-    protected OpService opService;
+	@Parameter
+	private IterableRealInterval< T > image;
 
-    public RandomAccessibleInterval<?> process(RandomAccessibleInterval<?> src,
-            RandomAccessibleInterval<?> res, int[] axis, Op op) {
-        HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
-                new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
-        return (RandomAccessibleInterval<?>)opService.run(hyperSlice, axis,
-                src, res, op);
-    }
+	@Parameter( type = ItemIO.BOTH )
+	private RealRandomAccessibleRealInterval< T > output;
 
-    public RandomAccessibleInterval<?> hyperSlice(
-            final RandomAccessibleInterval<?> rndAccessibleInterval,
-            final Interval i) {
-        return (RandomAccessibleInterval<?>)opService.run("hyperslicer",
-                rndAccessibleInterval, i);
-    }
+	@Parameter
+	private T value;
+
+	@Override
+	public void run()
+	{
+		final RealCursor< T > c = image.localizingCursor();
+		final RealRandomAccess< T > ra = output.realRandomAccess();
+		while ( c.hasNext() )
+		{
+			final T in = c.next();
+			ra.setPosition( c );
+			final T out = ra.get();
+			out.set( in );
+			out.add( value );
+		}
+	}
 
 }
+
+/*
+Img<T> img = getImg();
+T value;
+Img<T> output = null;
+
+// IN-PLACE
+output = ops.copy(img);
+ops.add(output, value);
+
+// FUNCTIONAL
+output = ops.newImgOfSameSize(img);
+ops.add(input, output, value);
+
+/////////
+
+*/

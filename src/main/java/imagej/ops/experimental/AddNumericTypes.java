@@ -28,39 +28,31 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.experimental;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.service.ImageJService;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
-@Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractService implements
-        ImageJService {
+@Plugin(type = Op.class, name = "add")
+public class AddNumericTypes<T extends NumericType<T>> implements Op {
 
-    @Parameter
-    protected OpService opService;
+	@Parameter
+	private T input1;
 
-    public RandomAccessibleInterval<?> process(RandomAccessibleInterval<?> src,
-            RandomAccessibleInterval<?> res, int[] axis, Op op) {
-        HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
-                new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
-        return (RandomAccessibleInterval<?>)opService.run(hyperSlice, axis,
-                src, res, op);
-    }
+	@Parameter
+	private T input2;
 
-    public RandomAccessibleInterval<?> hyperSlice(
-            final RandomAccessibleInterval<?> rndAccessibleInterval,
-            final Interval i) {
-        return (RandomAccessibleInterval<?>)opService.run("hyperslicer",
-                rndAccessibleInterval, i);
-    }
+	@Parameter(type = ItemIO.OUTPUT)
+	private T output;
+
+	@Override
+	public void run() {
+		output.set(input1);
+		output.add(input2);
+	}
 
 }

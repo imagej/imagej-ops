@@ -28,39 +28,38 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.experimental;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.service.ImageJService;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
-@Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractService implements
-        ImageJService {
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToPlanarDoubleImage implements Op {
 
-    @Parameter
-    protected OpService opService;
+	@Parameter(type = ItemIO.BOTH)
+	private PlanarImg<DoubleType, DoubleArray> image;
 
-    public RandomAccessibleInterval<?> process(RandomAccessibleInterval<?> src,
-            RandomAccessibleInterval<?> res, int[] axis, Op op) {
-        HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
-                new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
-        return (RandomAccessibleInterval<?>)opService.run(hyperSlice, axis,
-                src, res, op);
-    }
+	@Parameter
+	private double value;
 
-    public RandomAccessibleInterval<?> hyperSlice(
-            final RandomAccessibleInterval<?> rndAccessibleInterval,
-            final Interval i) {
-        return (RandomAccessibleInterval<?>)opService.run("hyperslicer",
-                rndAccessibleInterval, i);
-    }
+	@Override
+	public void run() {
+		long planeCount = 1;
+		for (int d = 2; d < image.numDimensions(); d++) {
+			planeCount *= image.dimension(d);
+		}
+		for (int p = 0; p < planeCount; p++) {
+			final double[] plane = image.getPlane(p).getCurrentStorageArray();
+			for (int i = 0; i < plane.length; i++) {
+				plane[i] += value;
+			}
+		}
+	}
 
 }

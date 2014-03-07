@@ -28,39 +28,39 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.experimental;
 
+import imagej.module.Module;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.service.ImageJService;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import imagej.ops.UnaryFunction;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
-@Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractService implements
-        ImageJService {
+@Plugin(type = Op.class, name = "do")
+public class DoOpOnImage<T extends NumericType<T>> implements Op {
 
-    @Parameter
-    protected OpService opService;
+	@Parameter
+	private OpService opService;
 
-    public RandomAccessibleInterval<?> process(RandomAccessibleInterval<?> src,
-            RandomAccessibleInterval<?> res, int[] axis, Op op) {
-        HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
-                new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
-        return (RandomAccessibleInterval<?>)opService.run(hyperSlice, axis,
-                src, res, op);
-    }
+	@Parameter
+	private UnaryFunction<T, T> op;
 
-    public RandomAccessibleInterval<?> hyperSlice(
-            final RandomAccessibleInterval<?> rndAccessibleInterval,
-            final Interval i) {
-        return (RandomAccessibleInterval<?>)opService.run("hyperslicer",
-                rndAccessibleInterval, i);
-    }
+	@Parameter(type = ItemIO.BOTH)
+	private IterableRealInterval<T> image;
+
+	@Override
+	public void run() {
+		final Module module = opService.asModule(op);
+		for (final T t : image) {
+			op.setInput(t);
+			module.run();
+			op.getInput();
+		}
+	}
 
 }
