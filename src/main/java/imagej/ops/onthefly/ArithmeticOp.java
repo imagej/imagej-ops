@@ -54,8 +54,16 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Johannes Schindelin
  */
-@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
-public class AddOp implements Op, Contingent {
+public abstract class ArithmeticOp implements Op, Contingent {
+
+	@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
+	public static class AddOp extends ArithmeticOp {
+		@Override
+		public void run() {
+			run("add", "+");
+		}
+	}
+
 	@Parameter
 	private Object a;
 
@@ -69,15 +77,14 @@ public class AddOp implements Op, Contingent {
 		void run(Object a, Object b, Object result);
 	}
 
-	@Override
-	public void run() {
+	public void run(final String name, final String operator) {
 		if (a instanceof ArrayImg) {
 			final Object access = ((ArrayImg<?, ?>) this.a).update(null);
 			if (access instanceof ArrayDataAccess) {
 				final Object a = ((ArrayDataAccess<?>) access).getCurrentStorageArray();
 				final Object b = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.b).update(null)).getCurrentStorageArray();
 				final Object result = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.result).update(null)).getCurrentStorageArray();
-				getMyOp(a.getClass()).run(a, b, result);
+				getMyOp(a.getClass(), name, operator).run(a, b, result);
 				return;
 			}
 		}
@@ -113,7 +120,7 @@ public class AddOp implements Op, Contingent {
 		return true;
 	}
 
-	private final static Map<Class<?>, MyOp> ops = new HashMap<Class<?>, MyOp>();
+	private final static Map<String, MyOp> ops = new HashMap<String, MyOp>();
 	private final static ClassLoader loader;
 	private final static ClassPool pool;
 
@@ -123,14 +130,15 @@ public class AddOp implements Op, Contingent {
 		pool.appendClassPath(new ClassClassPath(AddOp.class));
 	}
 
-	private MyOp getMyOp(final Class<?> forClass) {
-		MyOp op = ops.get(forClass);
+	private MyOp getMyOp(final Class<?> forClass, final String name, final String operator) {
+		final String componentType = forClass.getComponentType().getSimpleName();
+		final String myOpName = "myOp$" + name + "$" + componentType;
+		MyOp op = ops.get(myOpName);
 		if (op != null) return op;
 
 		try {
 			final String type = forClass.getSimpleName();
-			final String componentType = forClass.getComponentType().getSimpleName();
-			final CtClass clazz = pool.makeClass("myOp$" + componentType, pool.get(Object.class.getName()));
+			final CtClass clazz = pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
 					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {"
@@ -143,7 +151,7 @@ public class AddOp implements Op, Contingent {
 				+ "}";
 			clazz.addMethod(CtNewMethod.make(src, clazz));
 			op = (MyOp) clazz.toClass(loader, null).newInstance();
-			ops.put(forClass, op);
+			ops.put(myOpName, op);
 			return op;
 		} catch (Throwable t) {
 			throw new RuntimeException(t);
