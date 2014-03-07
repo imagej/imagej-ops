@@ -98,7 +98,7 @@ public class OpService extends AbstractPTService<Op> {
 			// create module and assign the inputs
 			final Module module = moduleService.createModule(info);
 			i = 0;
-			for (ModuleItem<?> item : info.inputs()) {
+			for (final ModuleItem<?> item : info.inputs()) {
 				assign(module, args[i++], item);
 			}
 
@@ -145,8 +145,8 @@ public class OpService extends AbstractPTService<Op> {
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
-	private Map<String, Object>
-		inputs(final ModuleInfo info, final Object... args)
+	private Map<String, Object> inputs(final ModuleInfo info,
+		final Object... args)
 	{
 		final Map<String, Object> inputs = new HashMap<String, Object>();
 		int i = 0;
@@ -175,7 +175,7 @@ public class OpService extends AbstractPTService<Op> {
 		return moduleService.createModule(info);
 	}
 
-	private boolean canAssign(Object arg, ModuleItem<?> item) {
+	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
 		// FIXME: Pending new feature in scijava-common
 //		if (item instanceof CommandModuleItem) {
 //			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
@@ -185,7 +185,9 @@ public class OpService extends AbstractPTService<Op> {
 		return ConversionUtils.canConvert(arg, item.getType());
 	}
 
-	private void assign(Module module, Object arg, ModuleItem<?> item) {
+	private void assign(final Module module, final Object arg,
+		final ModuleItem<?> item)
+	{
 		Object value;
 		if (item instanceof CommandModuleItem) {
 			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
