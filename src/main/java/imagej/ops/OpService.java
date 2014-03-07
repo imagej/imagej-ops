@@ -31,14 +31,14 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
-import imagej.command.CommandModule;
+import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +51,6 @@ import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
-import org.scijava.util.ClassUtils;
 import org.scijava.util.ConversionUtils;
 
 /**
@@ -73,59 +72,63 @@ public class OpService extends AbstractPTService<Op> {
 
 	// -- OpService methods --
 
-	public CommandInfo lookup(final String name, final Object... args) {
-		for (final CommandInfo op : commandService.getCommandsOfType(Op.class)) {
-			if (!name.equals(op.getName())) continue;
-			Class<?> opClass;
+	public Module lookup(final String name, final Object... args) {
+		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
+			if (!name.equals(info.getName())) continue;
+
+			// the name matches; now check the fields
+			final Class<?> opClass;
 			try {
-				opClass = op.loadClass();
+				opClass = info.loadClass();
 			}
 			catch (final InstantiableException exc) {
-				log.error("Invalid op: " + op.getClassName());
+				log.error("Invalid op: " + info.getClassName());
 				continue;
 			}
-			final List<Field> params =
-				ClassUtils.getAnnotatedFields(opClass, Parameter.class);
-			// check that argument count matches number of parameters
-			if (args.length != params.size()) continue;
 
 			// check that each parameter is compatible with its argument
-			boolean match = true;
-			for (int i = 0; i < args.length; i++) {
-				final Object arg = args[i];
-				final Field param = params.get(i);
-				// FIXME: Pending new feature in scijava-common
-//				if (!ConversionUtils.canConvert(arg, param.getGenericType())) {
-				if (!ConversionUtils.canConvert(arg, param.getType())) {
-					match = false;
-					break;
-				}
+			int i = 0;
+			for (final ModuleItem<?> item : info.inputs()) {
+				if (i >= args.length) continue; // too few arguments
+				final Object arg = args[i++];
+				if (!canAssign(arg, item)) continue; // incompatible argument
 			}
-			if (match) return op;
+			if (i != args.length) continue; // too many arguments
+
+			// create module and assign the inputs
+			final Module module = moduleService.createModule(info);
+			i = 0;
+			for (ModuleItem<?> item : info.inputs()) {
+				assign(module, args[i++], item);
+			}
+
+			// make sure the op itself is happy with these arguments
+			if (Contingent.class.isAssignableFrom(opClass)) {
+				if (!((Contingent) module).conforms()) continue;
+			}
+
+			// found a match!
+			return module;
 		}
 		return null;
 	}
 
 	public Object run(final String name, final Object... args) {
-		final CommandInfo op = lookup(name, args);
-		if (op == null) {
+		final Module module = lookup(name, args);
+		if (module == null) {
 			throw new IllegalArgumentException("No matching op: " + name);
 		}
-		return run(op, args);
+		return run(module, args);
 	}
 
 	public Object run(final Op op, final Object... args) {
-		final CommandModule module = asModule(op);
-		final Map<String, Object> inputs = inputs(module.getInfo(), args);
-		final Future<CommandModule> result =
-			moduleService.run(module, true, inputs);
-		return result(module.getInfo(), result);
+		return run(asModule(op), args);
 	}
 
-	public Object run(final CommandInfo op, final Object... args) {
-		final Map<String, Object> inputs = inputs(op, args);
-		final Future<CommandModule> result = commandService.run(op, true, inputs);
-		return result(op, result);
+	public Object run(final Module module, final Object... args) {
+		final Map<String, Object> inputs = inputs(module.getInfo(), args);
+		final Future<Module> result = moduleService.run(module, false, inputs);
+		return result(module.getInfo(), result);
 	}
 
 	// -- Helper methods --
@@ -143,11 +146,11 @@ public class OpService extends AbstractPTService<Op> {
 	}
 
 	private Map<String, Object>
-		inputs(final CommandInfo op, final Object... args)
+		inputs(final ModuleInfo info, final Object... args)
 	{
 		final Map<String, Object> inputs = new HashMap<String, Object>();
 		int i = 0;
-		for (final ModuleItem<?> input : op.inputs()) {
+		for (final ModuleItem<?> input : info.inputs()) {
 			inputs.put(input.getName(), args[i++]);
 		}
 		return inputs;
@@ -166,9 +169,31 @@ public class OpService extends AbstractPTService<Op> {
 
 	// -- Helper methods --
 
-	private CommandModule asModule(final Op op) {
-//		return commandService.asModule(op);
-		return null; // FIXME
+	private Module asModule(final Op op) {
+		if (op instanceof Module) return (Module) op;
+		final CommandInfo info = commandService.getCommand(op.getClass());
+		return moduleService.createModule(info);
+	}
+
+	private boolean canAssign(Object arg, ModuleItem<?> item) {
+		// FIXME: Pending new feature in scijava-common
+//		if (item instanceof CommandModuleItem) {
+//			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+//			final Type type = commandItem.getField().getGenericType();
+//			return ConversionUtils.canConvert(arg, type);
+//		}
+		return ConversionUtils.canConvert(arg, item.getType());
+	}
+
+	private void assign(Module module, Object arg, ModuleItem<?> item) {
+		Object value;
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			value = ConversionUtils.convert(arg, type);
+		}
+		else value = ConversionUtils.convert(arg, item.getType());
+		module.setInput(item.getName(), value);
 	}
 
 }
