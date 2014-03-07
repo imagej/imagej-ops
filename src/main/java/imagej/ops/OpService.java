@@ -39,7 +39,6 @@ import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +52,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 import org.scijava.util.ClassUtils;
+import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for managing {@link Op} plugins.
@@ -94,7 +94,9 @@ public class OpService extends AbstractPTService<Op> {
 			for (int i = 0; i < args.length; i++) {
 				final Object arg = args[i];
 				final Field param = params.get(i);
-				if (!canConvert(arg, param.getGenericType())) {
+				// FIXME: Pending new feature in scijava-common
+//				if (!ConversionUtils.canConvert(arg, param.getGenericType())) {
+				if (!ConversionUtils.canConvert(arg, param.getType())) {
 					match = false;
 					break;
 				}
@@ -160,11 +162,6 @@ public class OpService extends AbstractPTService<Op> {
 	}
 
 	// -- Helper methods --
-
-	private boolean canConvert(final Object arg, final Type genericType) {
-//		return ConversionUtils.canConvert(arg, genericType);
-		return true; // FIXME
-	}
 
 	private CommandModule asModule(final Op op) {
 //		return commandService.asModule(op);
