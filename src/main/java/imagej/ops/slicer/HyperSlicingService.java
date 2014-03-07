@@ -1,25 +1,21 @@
 package imagej.ops.slicer;
 
 import imagej.ops.OpService;
+import imagej.service.ImageJService;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractPTService<HyperSlicer> {
+public class HyperSlicingService extends AbstractService implements ImageJService {
 
 	@Parameter
 	protected OpService opService;
-
-	@Override
-	public Class<HyperSlicer> getPluginType() {
-		return HyperSlicer.class;
-	}
 
 	public RandomAccessibleInterval<?> hyperSlice(
 			final RandomAccessibleInterval<?> rndAccessibleInterval,
