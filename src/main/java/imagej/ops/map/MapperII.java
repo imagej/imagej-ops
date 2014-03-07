@@ -12,9 +12,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Basic Unary Function Threader which does not make any assumpation about the
- * iteration orders of the input
- * 
+ * @author Martin Horn
  * @author Christian Dietz
  * 
  * @param <A>

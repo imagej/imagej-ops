@@ -19,9 +19,6 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * Basic Unary Function Threader which does not make any assumpation about the
- * iteration orders of the input
- * 
  * @author Christian Dietz
  * 
  * @param <A>
