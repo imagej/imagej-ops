@@ -72,6 +72,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- OpService methods --
 
 	@Override
+	public Op op(String name, Object... args) {
+		Module module = lookup(name, args);
+		if (module == null) return null;
+		return (Op) module.getDelegateObject();
+	}
+
+	@Override
 	public Module lookup(final String name, final Object... args) {
 		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
 			if (!name.equals(info.getName())) continue;
