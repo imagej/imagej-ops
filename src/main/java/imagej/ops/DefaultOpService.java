@@ -145,6 +145,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return run("add", o);
 	}
 
+	@Override
+	public Module asModule(final Op op) {
+		final CommandInfo info = commandService.getCommand(op.getClass());
+		final Module module = info.createModule(op);
+		getContext().inject(module.getDelegateObject());
+		return module;
+	}
+
 	// -- PTService methods --
 
 	@Override
@@ -155,27 +163,22 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Helper methods --
 
 	private Module createModule(final Op op, final Object... args) {
-		final CommandInfo info = commandService.getCommand(op.getClass());
-		final Module module = info.createModule(op);
-		return prepareModule(module, args);
+		final Module module = asModule(op);
+		return assignInputs(module, args);
 	}
 
 	private Module createModule(final CommandInfo info, final Object... args) {
 		final Module module = moduleService.createModule(info);
-		return prepareModule(module, args);
+		getContext().inject(module.getDelegateObject());
+		return assignInputs(module, args);
 	}
 
-	/** Primes the given module for execution. */
-	private Module prepareModule(final Module module, final Object... args) {
-		// inject the context (populates service parameters)
-		getContext().inject(module.getDelegateObject());
-
-		// assign the inputs
+	/** Assigns arguments into the given module's inputs. */
+	private Module assignInputs(final Module module, final Object... args) {
 		int i = 0;
 		for (final ModuleItem<?> item : module.getInfo().inputs()) {
 			assign(module, args[i++], item);
 		}
-
 		return module;
 	}
 
