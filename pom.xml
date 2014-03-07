@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -33,7 +34,11 @@
 			<artifactId>scijava-common</artifactId>
 			<version>${scijava-common.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-algorithms</artifactId>
+			<version>${imglib2.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -60,7 +65,7 @@
 				<configuration>
 					<licenseName>bsd_2</licenseName>
 					<organizationName>Board of Regents of the University of
-Wisconsin-Madison and University of Konstanz.</organizationName>
+						Wisconsin-Madison and University of Konstanz.</organizationName>
 				</configuration>
 			</plugin>
 		</plugins>
