@@ -34,17 +34,13 @@ import imagej.command.CommandInfo;
 import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
-import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 import imagej.service.ImageJService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Future;
 
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
@@ -97,11 +93,7 @@ public class OpService extends AbstractPTService<Op> implements ImageJService {
 			if (i != args.length) continue; // too many arguments
 
 			// create module and assign the inputs
-			final Module module = moduleService.createModule(info);
-			i = 0;
-			for (final ModuleItem<?> item : info.inputs()) {
-				assign(module, args[i++], item);
-			}
+			final Module module = createModule(info, args);
 
 			// make sure the op itself is happy with these arguments
 			if (Contingent.class.isAssignableFrom(opClass)) {
@@ -124,45 +116,23 @@ public class OpService extends AbstractPTService<Op> implements ImageJService {
 	}
 
 	public Object run(final Op op, final Object... args) {
-		return run(asModule(op), args);
-	}
-
-	public Object run(final Module module, final Object... args) {
-		final Future<Module> result;
-		if (args == null || args.length == 0) {
-			result = moduleService.run(module, false);
-		}
-		else {
-			final Map<String, Object> inputs = inputs(module.getInfo(), args);
-			result = moduleService.run(module, false, inputs);
-		}
-		return result(module.getInfo(), result);
+		return run(createModule(op, args));
 	}
 
 	// -- Helper methods --
 
-	private Object result(final ModuleInfo info,
-		final Future<? extends Module> result)
-	{
-		final Module module = moduleService.waitFor(result);
+	private Object run(final Module module) {
+		module.run();
+		return result(module);
+	}
+
+	private Object result(final Module module) {
 		final List<Object> outputs = new ArrayList<Object>();
-		for (final ModuleItem<?> output : info.outputs()) {
+		for (final ModuleItem<?> output : module.getInfo().outputs()) {
 			final Object value = output.getValue(module);
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	private Map<String, Object> inputs(final ModuleInfo info,
-		final Object... args)
-	{
-		final Map<String, Object> inputs = new HashMap<String, Object>();
-		int i = 0;
-		for (final ModuleItem<?> input : info.inputs()) {
-			if (i >= args.length) break; // no more arguments to assign
-			inputs.put(input.getName(), args[i++]);
-		}
-		return inputs;
 	}
 
 	public Object add(final Object... o) {
@@ -178,10 +148,29 @@ public class OpService extends AbstractPTService<Op> implements ImageJService {
 
 	// -- Helper methods --
 
-	private Module asModule(final Op op) {
-		if (op instanceof Module) return (Module) op;
+	private Module createModule(final Op op, final Object... args) {
 		final CommandInfo info = commandService.getCommand(op.getClass());
-		return moduleService.createModule(info);
+		final Module module = info.createModule(op);
+		return prepareModule(module, args);
+	}
+
+	private Module createModule(final CommandInfo info, final Object... args) {
+		final Module module = moduleService.createModule(info);
+		return prepareModule(module, args);
+	}
+
+	/** Primes the given module for execution. */
+	private Module prepareModule(final Module module, final Object... args) {
+		// inject the context (populates service parameters)
+		getContext().inject(module.getDelegateObject());
+
+		// assign the inputs
+		int i = 0;
+		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+			assign(module, args[i++], item);
+		}
+
+		return module;
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
