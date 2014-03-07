@@ -86,6 +86,10 @@ public class OpService extends AbstractPTService<Op> {
 			}
 			final List<Field> params =
 				ClassUtils.getAnnotatedFields(opClass, Parameter.class);
+			// check that argument count matches number of parameters
+			if (args.length != params.size()) continue;
+
+			// check that each parameter is compatible with its argument
 			boolean match = true;
 			for (int i = 0; i < args.length; i++) {
 				final Object arg = args[i];
