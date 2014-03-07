@@ -62,7 +62,7 @@ public class BasicOpTest {
 	public void testInfinityOp() {
 		final DoubleType value = new DoubleType(123.456);
 		final DoubleType output = new DoubleType();
-		final Object result = ops.op("infinity", value, output);
+		final Object result = ops.run("infinity", value, output);
 		assertEquals(output, result);
 		assertTrue(Double.isInfinite(output.get()));
 	}

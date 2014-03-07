@@ -106,7 +106,7 @@ public class OpService extends AbstractPTService<Op> {
 		return null;
 	}
 
-	public Object op(final String name, final Object... args) {
+	public Object run(final String name, final Object... args) {
 		final CommandInfo op = lookup(name, args);
 		if (op == null) throw new IllegalArgumentException("No matching op: " +
 			name);
@@ -151,7 +151,7 @@ public class OpService extends AbstractPTService<Op> {
 	}
 
 	public Object add(final Object... o) {
-		return op("add", o);
+		return run("add", o);
 	}
 
 	// -- PTService methods --
