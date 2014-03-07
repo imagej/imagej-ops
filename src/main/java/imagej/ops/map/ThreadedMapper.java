@@ -14,11 +14,12 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  * 
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 2)
 public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
 
 	@Parameter

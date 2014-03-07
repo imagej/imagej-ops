@@ -18,7 +18,7 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
 public class MapperII<A, B> implements Op, Contingent {
 
 	@Parameter
