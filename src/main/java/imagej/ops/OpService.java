@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
 import org.scijava.plugin.AbstractPTService;
@@ -87,9 +88,14 @@ public class OpService extends AbstractPTService<Op> {
 			final List<Field> params =
 				ClassUtils.getAnnotatedFields(opClass, Parameter.class);
 			boolean match = true;
-			for (int i = 0; i < args.length; i++) {
-				final Object arg = args[i];
-				final Field param = params.get(i);
+			int i = 0;
+			for (final Field param : params) {
+				// NB: Skip types handled by the application framework itself.
+				// I.e., these parameters get injected by Context#inject(Object).
+				if (Service.class.isAssignableFrom(param.getType())) continue;
+				if (Context.class.isAssignableFrom(param.getType())) continue;
+
+				final Object arg = args[i++];
 				if (!canConvert(arg, param.getGenericType())) {
 					match = false;
 					break;
