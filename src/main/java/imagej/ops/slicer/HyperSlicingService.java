@@ -1,3 +1,4 @@
+
 package imagej.ops.slicer;
 
 import imagej.ops.OpService;
@@ -12,16 +13,18 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
-public class HyperSlicingService extends AbstractService implements ImageJService {
+public class HyperSlicingService extends AbstractService implements
+	ImageJService
+{
 
 	@Parameter
 	protected OpService opService;
 
 	public RandomAccessibleInterval<?> hyperSlice(
-			final RandomAccessibleInterval<?> rndAccessibleInterval,
-			final Interval i) {
+		final RandomAccessibleInterval<?> rndAccessibleInterval, final Interval i)
+	{
 		return (RandomAccessibleInterval<?>) opService.run("hyperslicer",
-				rndAccessibleInterval, i);
+			rndAccessibleInterval, i);
 	}
 
 	Interval[] resolveIntervals(final int[] selected, final Interval in) {
@@ -41,17 +44,15 @@ public class HyperSlicingService extends AbstractService implements ImageJServic
 
 		long[] max = pointCtr.clone();
 
-		final int[] unselected = getUnselectedDimIndices(selected,
-				srcDims.length);
+		final int[] unselected = getUnselectedDimIndices(selected, srcDims.length);
 
 		final long[] indicators = new long[unselected.length];
 		final Interval interval = new FinalInterval(min, pointCtr);
 
 		for (int j = indicators.length - 1; j > -1; j--) {
 			indicators[j] = 1;
-			if (j < indicators.length - 1)
-				indicators[j] = (srcDims[unselected[j + 1]])
-						* indicators[j + 1];
+			if (j < indicators.length - 1) indicators[j] =
+				(srcDims[unselected[j + 1]]) * indicators[j + 1];
 		}
 
 		for (final int u : unselected) {
@@ -62,11 +63,10 @@ public class HyperSlicingService extends AbstractService implements ImageJServic
 			max = pointCtr.clone();
 
 			for (int j = 0; j < indicators.length; j++) {
-				if (n % indicators[j] == 0)
-					pointCtr[unselected[j]]++;
+				if (n % indicators[j] == 0) pointCtr[unselected[j]]++;
 
-				if (srcDims[unselected[j]] == pointCtr[unselected[j]])
-					pointCtr[unselected[j]] = 0;
+				if (srcDims[unselected[j]] == pointCtr[unselected[j]]) pointCtr[unselected[j]] =
+					0;
 			}
 
 			for (final int u : unselected) {
@@ -85,13 +85,14 @@ public class HyperSlicingService extends AbstractService implements ImageJServic
 	 * @return
 	 */
 	private final int getNumIterationSteps(final int[] selectedDims,
-			final Interval interval) {
+		final Interval interval)
+	{
 
 		final long[] dims = new long[interval.numDimensions()];
 		interval.dimensions(dims);
 
-		final int[] unselectedDims = getUnselectedDimIndices(selectedDims,
-				dims.length);
+		final int[] unselectedDims =
+			getUnselectedDimIndices(selectedDims, dims.length);
 		int steps = 1;
 		for (int i = 0; i < unselectedDims.length; i++) {
 			steps *= dims[unselectedDims[i]];
@@ -104,7 +105,8 @@ public class HyperSlicingService extends AbstractService implements ImageJServic
 	 * @return
 	 */
 	private final int[] getUnselectedDimIndices(final int[] selectedDims,
-			final int numDims) {
+		final int numDims)
+	{
 		final boolean[] tmp = new boolean[numDims];
 		int i;
 		for (i = 0; i < selectedDims.length; i++) {

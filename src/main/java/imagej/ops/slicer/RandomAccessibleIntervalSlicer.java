@@ -1,3 +1,4 @@
+
 package imagej.ops.slicer;
 
 import imagej.ops.Op;
@@ -12,7 +13,8 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "hyperslicer", priority = Priority.LOW_PRIORITY)
 public class RandomAccessibleIntervalSlicer<T extends Type<T>> extends
-		AbstractHyperSlicer {
+	AbstractHyperSlicer
+{
 
 	@Parameter
 	Interval interval;

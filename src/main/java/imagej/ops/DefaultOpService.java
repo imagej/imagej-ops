@@ -96,7 +96,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			if (i != args.length) continue; // too many arguments
 
 			// create module and assign the inputs
-			final CommandModule module = (CommandModule)createModule(info, args);
+			final CommandModule module = (CommandModule) createModule(info, args);
 
 			// make sure the op itself is happy with these arguments
 			if (Contingent.class.isAssignableFrom(opClass)) {

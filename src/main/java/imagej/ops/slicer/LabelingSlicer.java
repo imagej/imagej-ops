@@ -1,3 +1,4 @@
+
 package imagej.ops.slicer;
 
 import imagej.ops.Op;
@@ -11,7 +12,8 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "hyperslicer")
 public class LabelingSlicer<L extends Comparable<L>> extends
-		AbstractHyperSlicer {
+	AbstractHyperSlicer
+{
 
 	@Parameter
 	Interval interval;

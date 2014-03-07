@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package imagej.ops.tests;
 
 import imagej.ops.Op;
@@ -44,6 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "infinity")
 public class InfinityOp implements Op {
+
 	@Parameter
 	private LogService log;
 

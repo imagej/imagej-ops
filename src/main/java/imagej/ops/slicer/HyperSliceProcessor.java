@@ -1,3 +1,4 @@
+
 package imagej.ops.slicer;
 
 import imagej.Cancelable;
@@ -15,7 +16,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
 public class HyperSliceProcessor<I extends RandomAccessibleInterval<?>, O extends RandomAccessibleInterval<?>>
-		implements Op, Cancelable {
+	implements Op, Cancelable
+{
 
 	@Parameter
 	private HyperSlicingService hyperSlicingService;
@@ -53,11 +55,11 @@ public class HyperSliceProcessor<I extends RandomAccessibleInterval<?>, O extend
 		final Future<?>[] futures = new Future<?>[ins.length];
 
 		for (int i = 0; i < ins.length; i++) {
-			futures[i] = threadService.run(createUnaryFunctionTask(ins[i],
-					outs[i], op));
+			futures[i] =
+				threadService.run(createUnaryFunctionTask(ins[i], outs[i], op));
 
-			statusService.showStatus("Running " + op.toString()
-					+ " on interval " + ins[i] + outs[i]);
+			statusService.showStatus("Running " + op.toString() + " on interval " +
+				ins[i] + outs[i]);
 		}
 
 		for (final Future<?> f : futures) {
@@ -67,7 +69,8 @@ public class HyperSliceProcessor<I extends RandomAccessibleInterval<?>, O extend
 
 			try {
 				f.get();
-			} catch (final Exception e) {
+			}
+			catch (final Exception e) {
 				cancelReason = e.getCause().getMessage();
 			}
 
@@ -78,16 +81,18 @@ public class HyperSliceProcessor<I extends RandomAccessibleInterval<?>, O extend
 	}
 
 	@SuppressWarnings("unchecked")
-	private UnaryFunctionTask<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> createUnaryFunctionTask(
+	private
+		UnaryFunctionTask<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>
+		createUnaryFunctionTask(
 			final Interval inInterval,
 			final Interval outInterval,
-			final UnaryFunction<? extends RandomAccessibleInterval<?>, ? extends RandomAccessibleInterval<?>> op) {
+			final UnaryFunction<? extends RandomAccessibleInterval<?>, ? extends RandomAccessibleInterval<?>> op)
+	{
 
 		return new UnaryFunctionTask<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>(
-				(UnaryFunction<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>) op
-						.copy(),
-				hyperSlicingService.hyperSlice(in, inInterval),
-				hyperSlicingService.hyperSlice(out, outInterval));
+			(UnaryFunction<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>) op
+				.copy(), hyperSlicingService.hyperSlice(in, inInterval),
+			hyperSlicingService.hyperSlice(out, outInterval));
 	}
 
 	@Override
