@@ -1,6 +1,7 @@
 package imagej.ops.slicer;
 
 import imagej.ops.MetadataUtil;
+import imagej.ops.Op;
 import net.imglib2.Interval;
 import net.imglib2.img.ImgView;
 import net.imglib2.meta.ImgPlus;
@@ -8,7 +9,9 @@ import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
+@Plugin(type = Op.class, name = "hyperslicer")
 public class ImgPlusSlicer<T extends Type<T>> extends AbstractHyperSlicer {
 
 	@Parameter

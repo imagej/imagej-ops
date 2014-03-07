@@ -6,9 +6,6 @@ import net.imglib2.util.Intervals;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = HyperSlicer.class, name = "hyperslicer")
 public abstract class AbstractHyperSlicer implements HyperSlicer {
 
 	@Override
