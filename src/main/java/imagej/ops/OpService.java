@@ -105,7 +105,8 @@ public class OpService extends AbstractPTService<Op> implements ImageJService {
 
 			// make sure the op itself is happy with these arguments
 			if (Contingent.class.isAssignableFrom(opClass)) {
-				if (!((Contingent) module).conforms()) continue;
+				final Contingent c = (Contingent) module;
+				if (!c.conforms()) continue;
 			}
 
 			// found a match!
