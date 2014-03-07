@@ -13,7 +13,7 @@
 	<version>0.1.0-SNAPSHOT</version>
 
 	<name>ImageJ Operations</name>
-	<description>OPS.</description>
+	<description>A framework for reusable algorithms.</description>
 	<url>http://developer.imagej.net/</url>
 	<inceptionYear>2014</inceptionYear>
 
