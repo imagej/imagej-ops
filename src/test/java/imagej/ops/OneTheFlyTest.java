@@ -34,7 +34,9 @@ import static org.junit.Assert.assertTrue;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.basictypeaccess.array.ShortArray;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.ShortType;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,7 +64,7 @@ public class OneTheFlyTest {
 	}
 
 	@Test
-	public void test() {
+	public void testByte() {
 		final byte[] array = new byte[65536];
 		final ArrayImg<ByteType, ByteArray> img = ArrayImgs.bytes(array, new long[] { 256, 256 });
 		final byte[] array2 = new byte[65536];
@@ -80,6 +82,28 @@ public class OneTheFlyTest {
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + (5 + ((3 * i) % 7))), result[i]);
+		}
+	}
+
+	@Test
+	public void testShort() {
+		final short[] array = new short[65536];
+		final ArrayImg<ShortType, ShortArray> img = ArrayImgs.shorts(array, new long[] { 256, 256 });
+		final short[] array2 = new short[65536];
+		final ArrayImg<ShortType, ShortArray> img2 = ArrayImgs.shorts(array2, new long[] { 256, 256 });
+		final short[] result = new short[65536];
+		final ArrayImg<ShortType, ShortArray> resultImg = ArrayImgs.shorts(result, new long[] { 256, 256 });
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (short) i;
+			array2[i] = (short) (5 + ((3 * i) % 7));
+			assertEquals((short) 0, result[i]);
+		}
+
+		ops.add(img, img2, resultImg);
+
+		for (int i = 0; i < array.length; i++) {
+			assertEquals("index " + i, (short) (i + (5 + ((3 * i) % 7))), result[i]);
 		}
 	}
 }
