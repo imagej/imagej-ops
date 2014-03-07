@@ -51,45 +51,41 @@ import org.scijava.plugin.Parameter;
  * histogram.
  */
 public abstract class ThresholdMethod<T extends RealType<T>> implements Op,
-	Copyable
-{
+        Copyable {
 
-	@Parameter
-	private IterableInterval<T> img;
+    @Parameter
+    private IterableInterval<T> img;
 
-	@Parameter(required = false)
-	private Histogram1d<T> hist;
+    @Parameter
+    private OpService opService;
 
-	@Parameter
-	private OpService opService;
+    @Parameter(type = ItemIO.OUTPUT)
+    private T threshold;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+    @Override
+    public void run() {
+        Histogram1d<T> hist = createHistogram();
 
-	@Override
-	public void run() {
-		if (hist == null) {
-			hist = createHistogram();
-		}
+        threshold = img.firstElement().createVariable();
 
-		threshold = img.firstElement().createVariable();
+        getThreshold(hist, threshold);
+    }
 
-		getThreshold(hist, threshold);
-	}
+    private final Histogram1d<T> createHistogram() {
+        final List<Object> res =
+                (List<Object>)opService.run(new MinMax<T>(), img);
+        return new Histogram1d<T>(new Real1dBinMapper<T>(
+                ((T)res.get(0)).getRealDouble(),
+                ((T)res.get(1)).getRealDouble(), 256, false));
+    }
 
-	private final Histogram1d<T> createHistogram() {
-		final List<Object> res = (List<Object>) opService.run(new MinMax<T>(), img);
-		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))
-			.getRealDouble(), ((T) res.get(1)).getRealDouble(), 256, false));
-	}
+    /**
+     * Calculates the threshold index from an unnormalized histogram of data.
+     * Returns -1 if the threshold index cannot be found.
+     */
+    protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
-	@Override
-	public abstract ThresholdMethod<T> copy();
+    @Override
+    public abstract ThresholdMethod<T> copy();
 
 }
