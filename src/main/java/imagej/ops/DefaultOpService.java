@@ -31,6 +31,7 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
+import imagej.command.CommandModule;
 import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
@@ -95,11 +96,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			if (i != args.length) continue; // too many arguments
 
 			// create module and assign the inputs
-			final Module module = createModule(info, args);
+			final CommandModule module = (CommandModule)createModule(info, args);
 
 			// make sure the op itself is happy with these arguments
 			if (Contingent.class.isAssignableFrom(opClass)) {
-				final Contingent c = (Contingent) module;
+				final Contingent c = (Contingent) module.getCommand();
 				if (!c.conforms()) continue;
 			}
 
