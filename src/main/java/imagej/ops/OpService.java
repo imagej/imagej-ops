@@ -105,7 +105,7 @@ public class OpService extends AbstractPTService<Op> {
 					break;
 				}
 			}
-			if (match) return op;
+			if (i == args.length && match) return op;
 		}
 		return null;
 	}
