@@ -38,7 +38,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.scijava.Context;
 
-
+/**
+ * A basic test of {@link OpService#run}.
+ * 
+ * @author Johannes Schindelin
+ */
 public class BasicOpTest {
 	private Context context;
 	private OpService ops;
