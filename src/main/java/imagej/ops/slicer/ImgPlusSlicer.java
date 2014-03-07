@@ -12,13 +12,13 @@ import org.scijava.plugin.Parameter;
 public class ImgPlusSlicer<T extends Type<T>> extends AbstractHyperSlicer {
 
 	@Parameter
-	Interval interval;
+	private Interval interval;
 
 	@Parameter
-	ImgPlus<T> in;
+	private ImgPlus<T> in;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	ImgPlus<T> out;
+	private ImgPlus<T> out;
 
 	@Override
 	public void run() {
