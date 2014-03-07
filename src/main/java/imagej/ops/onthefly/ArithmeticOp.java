@@ -44,6 +44,7 @@ import javassist.CtNewMethod;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
+import net.imglib2.img.planar.PlanarImg;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -112,6 +113,15 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				return;
 			}
 		}
+		if (a instanceof PlanarImg) {
+			final PlanarImg<?, ?> a = (PlanarImg<?, ?>) this.a;
+			if (a.numSlices() == 0) return;
+			final Object plane = ((ArrayDataAccess<?>) a.getPlane(0)).getCurrentStorageArray();
+			final PlanarImg<?, ?> b = (PlanarImg<?, ?>) this.b;
+			final PlanarImg<?, ?> result = (PlanarImg<?, ?>) this.result;
+			getPlanarOp(plane.getClass(), name, operator).run(a, b, result);
+			return;
+		}
 		throw new RuntimeException("This should not happen!");
 	}
 
@@ -129,6 +139,22 @@ public abstract class ArithmeticOp implements Op, Contingent {
 			final Object bData = bImg.update(null);
 			if (aData.getClass() != bData.getClass()) return false;
 			final Object resultData = resultImg.update(null);
+			if (aData.getClass() != resultData.getClass()) return false;
+			return true;
+		}
+		if (a instanceof PlanarImg && b instanceof PlanarImg && result instanceof PlanarImg) {
+			final PlanarImg<?, ?> aImg = (PlanarImg<?, ?>) a;
+			final PlanarImg<?, ?> bImg = (PlanarImg<?, ?>) b;
+			if (!dimensionsMatch(aImg, bImg)) return false;
+			final PlanarImg<?, ?> resultImg = (PlanarImg<?, ?>) result;
+			if (!dimensionsMatch(aImg, resultImg)) return false;
+			int numSlices = aImg.numSlices();
+			if (numSlices == 0 || numSlices != bImg.numSlices() || numSlices != resultImg.numSlices()) return false;
+			final Object aData = aImg.getPlane(0);
+			if (!(aData instanceof ArrayDataAccess)) return false;
+			final Object bData = bImg.getPlane(0);
+			if (aData.getClass() != bData.getClass()) return false;
+			final Object resultData = resultImg.getPlane(0);
 			if (aData.getClass() != resultData.getClass()) return false;
 			return true;
 		}
@@ -171,6 +197,41 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				+ "  " + type + " result2 = (" + type + ") result;\n"
 				+ "  for (int i = 0; i < a2.length; i++) {\n"
 				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2[i]);\n"
+				+ "  }\n"
+				+ "}";
+			clazz.addMethod(CtNewMethod.make(src, clazz));
+			op = (MyOp) clazz.toClass(loader, null).newInstance();
+			ops.put(myOpName, op);
+			return op;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
+	private MyOp getPlanarOp(Class<?> forClass, String name, String operator)
+	{
+		final String componentType = forClass.getComponentType().getSimpleName();
+		final String myOpName = "myOp$planar$" + name + "$" + componentType;
+		MyOp op = ops.get(myOpName);
+		if (op != null) return op;
+
+		try {
+			final String imgType = PlanarImg.class.getName();
+			final String type = forClass.getSimpleName();
+			final CtClass clazz = pool.makeClass(myOpName, pool.get(Object.class.getName()));
+			clazz.addInterface(pool.get(MyOp.class.getName()));
+			final String src =
+					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {\n"
+				+ "  " + imgType + " a2 = (" + imgType + ") a;\n"
+				+ "  " + imgType + " b2 = (" + imgType + ") b;\n"
+				+ "  " + imgType + " result2 = (" + imgType + ") result;\n"
+				+ "  for (int j = 0; j < a2.numSlices(); j++) {\n"
+				+ "    " + type + " a3 = (" + type + ") a2.getPlane(j).getCurrentStorageArray();\n"
+				+ "    " + type + " b3 = (" + type + ") b2.getPlane(j).getCurrentStorageArray();\n"
+				+ "    " + type + " result3 = (" + type + ") result2.getPlane(j).getCurrentStorageArray();\n"
+				+ "    for (int i = 0; i < a3.length; i++) {\n"
+				+ "      result3[i] = (" + componentType + ") (a3[i] " + operator + " b3[i]);\n"
+				+ "    }\n"
 				+ "  }\n"
 				+ "}";
 			clazz.addMethod(CtNewMethod.make(src, clazz));
