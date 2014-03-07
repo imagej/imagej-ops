@@ -36,6 +36,6 @@ public class NeighborhoodOp<I, O> implements Op {
 
 	@Override
 	public void run() {
-		service.run("unary_function_runner", shape.neighborhoodsSafe(in), out, func);
+		service.run("map", shape.neighborhoodsSafe(in), out, func);
 	}
 }
