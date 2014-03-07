@@ -41,31 +41,30 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin( type = Op.class, name = "add" )
-public class AddConstantToImageFunctional< T extends NumericType< T >> implements Op
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToImageFunctional<T extends NumericType<T>> implements
+	Op
 {
 
 	@Parameter
-	private IterableRealInterval< T > image;
+	private IterableRealInterval<T> image;
 
-	@Parameter( type = ItemIO.BOTH )
-	private RealRandomAccessibleRealInterval< T > output;
+	@Parameter(type = ItemIO.BOTH)
+	private RealRandomAccessibleRealInterval<T> output;
 
 	@Parameter
 	private T value;
 
 	@Override
-	public void run()
-	{
-		final RealCursor< T > c = image.localizingCursor();
-		final RealRandomAccess< T > ra = output.realRandomAccess();
-		while ( c.hasNext() )
-		{
+	public void run() {
+		final RealCursor<T> c = image.localizingCursor();
+		final RealRandomAccess<T> ra = output.realRandomAccess();
+		while (c.hasNext()) {
 			final T in = c.next();
-			ra.setPosition( c );
+			ra.setPosition(c);
 			final T out = ra.get();
-			out.set( in );
-			out.add( value );
+			out.set(in);
+			out.add(value);
 		}
 	}
 

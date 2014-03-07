@@ -1,3 +1,4 @@
+
 package imagej.ops.commands.threshold;
 
 import imagej.command.Command;
@@ -13,39 +14,38 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO: should actually live in a different package!!
- * 
- * OR: can this be auto-generated?? (e.g. based on other plugin annotations)
+ * TODO: should actually live in a different package!! OR: can this be
+ * auto-generated?? (e.g. based on other plugin annotations)
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
 public class GlobalThresholder<T extends RealType<T>> implements Command {
 
-    @Parameter
-    private ThresholdMethod<T> method;
+	@Parameter
+	private ThresholdMethod<T> method;
 
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> src;
+	// should not be Dataset, DisplayService, ...
+	@Parameter
+	private ImgPlus<T> src;
 
-    // needs to be created by the pre-processor!
-    @Parameter(type = ItemIO.BOTH)
-    private ImgPlus<BitType> res;
+	// needs to be created by the pre-processor!
+	@Parameter(type = ItemIO.BOTH)
+	private ImgPlus<BitType> res;
 
-    // we need another widget for this!!
-    @Parameter
-    private Axis[] axes;
+	// we need another widget for this!!
+	@Parameter
+	private Axis[] axes;
 
-    @Parameter
-    private HyperSlicingService sliceService;
+	@Parameter
+	private HyperSlicingService sliceService;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        imagej.ops.threshold.GlobalThresholder<T> thresholder =
-                new imagej.ops.threshold.GlobalThresholder<T>();
-        thresholder.setMethod(method);
+		final imagej.ops.threshold.GlobalThresholder<T> thresholder =
+			new imagej.ops.threshold.GlobalThresholder<T>();
+		thresholder.setMethod(method);
 
-        sliceService.process(src, res, new int[]{1, 2}, thresholder);
+		sliceService.process(src, res, new int[] { 1, 2 }, thresholder);
 
-    }
+	}
 }

@@ -1,3 +1,4 @@
+
 package imagej.ops.map;
 
 import imagej.ops.Op;
@@ -20,27 +21,28 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
 public class MapPixRA<S extends RealType<S>, T extends RealType<T>> implements
-        Op {
+	Op
+{
 
-    @Parameter
-    private IterableInterval<S> in;
+	@Parameter
+	private IterableInterval<S> in;
 
-    @Parameter
-    UnaryFunction<S, T> func;
+	@Parameter
+	UnaryFunction<S, T> func;
 
-    @Parameter(type = ItemIO.BOTH)
-    private RandomAccessibleInterval<T> out;
+	@Parameter(type = ItemIO.BOTH)
+	private RandomAccessibleInterval<T> out;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        Cursor<S> inCur = in.cursor();
-        RandomAccess<T> outRA = out.randomAccess();
-        while (inCur.hasNext()) {
-            inCur.next();
-            outRA.setPosition(inCur);
-            func.compute(inCur.get(), outRA.get());
-        }
-    }
+		final Cursor<S> inCur = in.cursor();
+		final RandomAccess<T> outRA = out.randomAccess();
+		while (inCur.hasNext()) {
+			inCur.next();
+			outRA.setPosition(inCur);
+			func.compute(inCur.get(), outRA.get());
+		}
+	}
 
 }

@@ -1,113 +1,115 @@
+
 package imagej.ops.slicer;
 
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 
 public class HyperSliceUtils {
-    private HyperSliceUtils() {
-        // utility class
-    }
 
-    public static Interval[] resolveIntervals(final int[] selected,
-            final Interval in) {
+	private HyperSliceUtils() {
+		// utility class
+	}
 
-        final int totalSteps = getNumIterationSteps(selected, in);
-        final Interval[] res = new Interval[totalSteps];
+	public static Interval[] resolveIntervals(final int[] selected,
+		final Interval in)
+	{
 
-        final int offset = 0;
+		final int totalSteps = getNumIterationSteps(selected, in);
+		final Interval[] res = new Interval[totalSteps];
 
-        final long[] min = new long[in.numDimensions()];
-        final long[] pointCtr = new long[in.numDimensions()];
-        final long[] srcDims = new long[in.numDimensions()];
+		final int offset = 0;
 
-        in.min(min);
-        in.max(pointCtr);
-        in.dimensions(srcDims);
+		final long[] min = new long[in.numDimensions()];
+		final long[] pointCtr = new long[in.numDimensions()];
+		final long[] srcDims = new long[in.numDimensions()];
 
-        long[] max = pointCtr.clone();
+		in.min(min);
+		in.max(pointCtr);
+		in.dimensions(srcDims);
 
-        final int[] unselected =
-                getUnselectedDimIndices(selected, srcDims.length);
+		long[] max = pointCtr.clone();
 
-        final long[] indicators = new long[unselected.length];
-        final Interval interval = new FinalInterval(min, pointCtr);
+		final int[] unselected = getUnselectedDimIndices(selected, srcDims.length);
 
-        for (int j = indicators.length - 1; j > -1; j--) {
-            indicators[j] = 1;
-            if (j < indicators.length - 1)
-                indicators[j] =
-                        (srcDims[unselected[j + 1]]) * indicators[j + 1];
-        }
+		final long[] indicators = new long[unselected.length];
+		final Interval interval = new FinalInterval(min, pointCtr);
 
-        for (final int u : unselected) {
-            pointCtr[u] = -1;
-        }
+		for (int j = indicators.length - 1; j > -1; j--) {
+			indicators[j] = 1;
+			if (j < indicators.length - 1) indicators[j] =
+				(srcDims[unselected[j + 1]]) * indicators[j + 1];
+		}
 
-        for (int n = 0; n < getNumIterationSteps(selected, in); n++) {
-            max = pointCtr.clone();
+		for (final int u : unselected) {
+			pointCtr[u] = -1;
+		}
 
-            for (int j = 0; j < indicators.length; j++) {
-                if (n % indicators[j] == 0)
-                    pointCtr[unselected[j]]++;
+		for (int n = 0; n < getNumIterationSteps(selected, in); n++) {
+			max = pointCtr.clone();
 
-                if (srcDims[unselected[j]] == pointCtr[unselected[j]])
-                    pointCtr[unselected[j]] = 0;
-            }
+			for (int j = 0; j < indicators.length; j++) {
+				if (n % indicators[j] == 0) pointCtr[unselected[j]]++;
 
-            for (final int u : unselected) {
-                max[u] = pointCtr[u] + min[u];
-                min[u] = max[u];
-            }
+				if (srcDims[unselected[j]] == pointCtr[unselected[j]]) pointCtr[unselected[j]] =
+					0;
+			}
 
-            res[offset + n] = new FinalInterval(min, max);
-            interval.min(min);
-        }
-        return res;
-    }
+			for (final int u : unselected) {
+				max[u] = pointCtr[u] + min[u];
+				min[u] = max[u];
+			}
 
-    /**
-     * @param dims
-     * @return
-     */
-    public static final int getNumIterationSteps(final int[] selectedDims,
-            final Interval interval) {
+			res[offset + n] = new FinalInterval(min, max);
+			interval.min(min);
+		}
+		return res;
+	}
 
-        final long[] dims = new long[interval.numDimensions()];
-        interval.dimensions(dims);
+	/**
+	 * @param dims
+	 * @return
+	 */
+	public static final int getNumIterationSteps(final int[] selectedDims,
+		final Interval interval)
+	{
 
-        final int[] unselectedDims =
-                getUnselectedDimIndices(selectedDims, dims.length);
-        int steps = 1;
-        for (int i = 0; i < unselectedDims.length; i++) {
-            steps *= dims[unselectedDims[i]];
-        }
+		final long[] dims = new long[interval.numDimensions()];
+		interval.dimensions(dims);
 
-        return steps;
-    }
+		final int[] unselectedDims =
+			getUnselectedDimIndices(selectedDims, dims.length);
+		int steps = 1;
+		for (int i = 0; i < unselectedDims.length; i++) {
+			steps *= dims[unselectedDims[i]];
+		}
 
-    /**
-     * @return
-     */
-    public static final int[] getUnselectedDimIndices(final int[] selectedDims,
-            final int numDims) {
-        final boolean[] tmp = new boolean[numDims];
-        int i;
-        for (i = 0; i < selectedDims.length; i++) {
-            if (selectedDims[i] >= numDims) {
-                break;
-            }
-            tmp[selectedDims[i]] = true;
-        }
+		return steps;
+	}
 
-        final int[] res = new int[numDims - i];
+	/**
+	 * @return
+	 */
+	public static final int[] getUnselectedDimIndices(final int[] selectedDims,
+		final int numDims)
+	{
+		final boolean[] tmp = new boolean[numDims];
+		int i;
+		for (i = 0; i < selectedDims.length; i++) {
+			if (selectedDims[i] >= numDims) {
+				break;
+			}
+			tmp[selectedDims[i]] = true;
+		}
 
-        int j = 0;
-        for (int k = 0; j < res.length; k++) {
-            if (k >= tmp.length || !tmp[k]) {
-                res[j++] = k;
-            }
-        }
-        return res;
+		final int[] res = new int[numDims - i];
 
-    }
+		int j = 0;
+		for (int k = 0; j < res.length; k++) {
+			if (k >= tmp.length || !tmp[k]) {
+				res[j++] = k;
+			}
+		}
+		return res;
+
+	}
 }

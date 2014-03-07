@@ -38,22 +38,19 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin( type = Op.class, name = "add" )
-public class AddConstantToImage< T extends NumericType< T >> implements Op
-{
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToImage<T extends NumericType<T>> implements Op {
 
-	@Parameter( type = ItemIO.BOTH )
-	private IterableRealInterval< T > image;
+	@Parameter(type = ItemIO.BOTH)
+	private IterableRealInterval<T> image;
 
 	@Parameter
 	private T value;
 
 	@Override
-	public void run()
-	{
-		for ( final T t : image )
-		{
-			t.add( value );
+	public void run() {
+		for (final T t : image) {
+			t.add(value);
 		}
 	}
 

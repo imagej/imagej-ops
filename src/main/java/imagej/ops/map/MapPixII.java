@@ -1,3 +1,4 @@
+
 package imagej.ops.map;
 
 import imagej.ops.Contingent;
@@ -17,33 +18,34 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "map")
 public class MapPixII<S extends RealType<S>, T extends RealType<T>> implements
-        Contingent, Op {
+	Contingent, Op
+{
 
-    @Parameter
-    private IterableInterval<S> inImg;
+	@Parameter
+	private IterableInterval<S> inImg;
 
-    @Parameter
-    UnaryFunction<S, T> function;
+	@Parameter
+	UnaryFunction<S, T> function;
 
-    @Parameter(type = ItemIO.BOTH)
-    private IterableInterval<T> outImg;
+	@Parameter(type = ItemIO.BOTH)
+	private IterableInterval<T> outImg;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        Cursor<S> inCur = inImg.cursor();
-        Cursor<T> outCur = outImg.cursor();
+		final Cursor<S> inCur = inImg.cursor();
+		final Cursor<T> outCur = outImg.cursor();
 
-        while (inCur.hasNext()) {
-            inCur.next();
-            outCur.next();
-            function.compute(inCur.get(), outCur.get());
-        }
-    }
+		while (inCur.hasNext()) {
+			inCur.next();
+			outCur.next();
+			function.compute(inCur.get(), outCur.get());
+		}
+	}
 
-    @Override
-    public boolean conforms() {
-        return inImg.iterationOrder().equals(outImg.iterationOrder());
-    }
+	@Override
+	public boolean conforms() {
+		return inImg.iterationOrder().equals(outImg.iterationOrder());
+	}
 
 }

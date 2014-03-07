@@ -43,24 +43,27 @@ import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
 public class HyperSlicingService extends AbstractService implements
-        ImageJService {
+	ImageJService
+{
 
-    @Parameter
-    protected OpService opService;
+	@Parameter
+	protected OpService opService;
 
-    public RandomAccessibleInterval<?> process(RandomAccessibleInterval<?> src,
-            RandomAccessibleInterval<?> res, int[] axis, Op op) {
-        HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
-                new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
-        return (RandomAccessibleInterval<?>)opService.run(hyperSlice, axis,
-                src, res, op);
-    }
+	public RandomAccessibleInterval<?> process(
+		final RandomAccessibleInterval<?> src,
+		final RandomAccessibleInterval<?> res, final int[] axis, final Op op)
+	{
+		final HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>> hyperSlice =
+			new HyperSliceProcessor<RandomAccessibleInterval<?>, RandomAccessibleInterval<?>>();
+		return (RandomAccessibleInterval<?>) opService.run(hyperSlice, axis, src,
+			res, op);
+	}
 
-    public RandomAccessibleInterval<?> hyperSlice(
-            final RandomAccessibleInterval<?> rndAccessibleInterval,
-            final Interval i) {
-        return (RandomAccessibleInterval<?>)opService.run("hyperslicer",
-                rndAccessibleInterval, i);
-    }
+	public RandomAccessibleInterval<?> hyperSlice(
+		final RandomAccessibleInterval<?> rndAccessibleInterval, final Interval i)
+	{
+		return (RandomAccessibleInterval<?>) opService.run("hyperslicer",
+			rndAccessibleInterval, i);
+	}
 
 }

@@ -1,3 +1,4 @@
+
 package imagej.ops.threshold;
 
 import imagej.ops.Op;
@@ -13,61 +14,63 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "threshold")
 public class GlobalThresholder<T extends RealType<T>> extends
-        UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> implements
-        Op {
+	UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> implements Op
+{
 
-    @Parameter
-    private IterableInterval<T> in;
+	@Parameter
+	private IterableInterval<T> in;
 
-    @Parameter(type = ItemIO.BOTH)
-    private IterableInterval<BitType> out;
+	@Parameter(type = ItemIO.BOTH)
+	private IterableInterval<BitType> out;
 
-    @Parameter
-    private ThresholdMethod<T> method;
+	@Parameter
+	private ThresholdMethod<T> method;
 
-    @Parameter
-    private OpService opService;
+	@Parameter
+	private OpService opService;
 
-    /**
-     * Sets the thresholding method to use
-     */
-    public void setMethod(ThresholdMethod<T> method) {
-        this.method = method;
-    }
+	/**
+	 * Sets the thresholding method to use
+	 */
+	public void setMethod(final ThresholdMethod<T> method) {
+		this.method = method;
+	}
 
-    @Override
-    public IterableInterval<T> getInput() {
-        return in;
-    }
+	@Override
+	public IterableInterval<T> getInput() {
+		return in;
+	}
 
-    public IterableInterval<BitType> getOutput() {
-        return out;
-    }
+	@Override
+	public IterableInterval<BitType> getOutput() {
+		return out;
+	}
 
-    @Override
-    public void setInput(IterableInterval<T> input) {
-        in = input;
-    }
+	@Override
+	public void setInput(final IterableInterval<T> input) {
+		in = input;
+	}
 
-    @Override
-    public void setOutput(IterableInterval<BitType> output) {
-        out = output;
+	@Override
+	public void setOutput(final IterableInterval<BitType> output) {
+		out = output;
 
-    }
+	}
 
-    @Override
-    public IterableInterval<BitType> compute(IterableInterval<T> input,
-            IterableInterval<BitType> output) {
-        T threshold = (T)opService.run(method, input);
-        PixThreshold<T> apply = new PixThreshold<T>();
-        return (IterableInterval<BitType>)opService.run("map", input, apply,
-                output);
-    }
+	@Override
+	public IterableInterval<BitType> compute(final IterableInterval<T> input,
+		final IterableInterval<BitType> output)
+	{
+		final T threshold = (T) opService.run(method, input);
+		final PixThreshold<T> apply = new PixThreshold<T>();
+		return (IterableInterval<BitType>) opService.run("map", input, apply,
+			output);
+	}
 
-    @Override
-    public UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> copy() {
-        GlobalThresholder<T> func = new GlobalThresholder<T>();
-        func.method = method.copy();
-        return func;
-    }
+	@Override
+	public UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> copy() {
+		final GlobalThresholder<T> func = new GlobalThresholder<T>();
+		func.method = method.copy();
+		return func;
+	}
 }
