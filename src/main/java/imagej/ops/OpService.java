@@ -108,8 +108,9 @@ public class OpService extends AbstractPTService<Op> {
 
 	public Object run(final String name, final Object... args) {
 		final CommandInfo op = lookup(name, args);
-		if (op == null) throw new IllegalArgumentException("No matching op: " +
-			name);
+		if (op == null) {
+			throw new IllegalArgumentException("No matching op: " + name);
+		}
 		return run(op, args);
 	}
 
