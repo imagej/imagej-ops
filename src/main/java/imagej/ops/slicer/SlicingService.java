@@ -41,11 +41,10 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 /**
- * @author dietzc
+ * @author Christian Dietz
  */
 @Plugin(type = Service.class)
-public class SlicingService extends AbstractService implements
-		ImageJService {
+public class SlicingService extends AbstractService implements ImageJService {
 
 	@Parameter
 	protected OpService opService;
