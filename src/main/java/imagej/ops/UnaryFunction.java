@@ -1,4 +1,3 @@
-
 package imagej.ops;
 
 /**
@@ -8,7 +7,7 @@ package imagej.ops;
  * @author Martin Horn
  * @author NOT CURTIS RUEDEN
  */
-public abstract class UnaryFunction<I, O> implements Op {
+public abstract class UnaryFunction<I, O> implements Op, Copyable {
 
 	public abstract I getInput();
 
@@ -24,4 +23,8 @@ public abstract class UnaryFunction<I, O> implements Op {
 	public void run() {
 		compute(getInput(), getOutput());
 	}
+
+	@Override
+	public abstract UnaryFunction<I, O> copy();
+
 }
