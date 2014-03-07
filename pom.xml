@@ -30,6 +30,11 @@
 			<version>${imglib2.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-meta</artifactId>
+			<version>${imglib2.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>
 			<version>${scijava-common.version}</version>
