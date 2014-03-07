@@ -42,13 +42,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "hyperslicer")
-public class ImgPlusSlicer<T extends Type<T>> extends AbstractHyperSlicer {
-
-	@Parameter
-	private Interval interval;
+public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
 
 	@Parameter
 	private ImgPlus<T> in;
+
+	@Parameter
+	private Interval interval;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgPlus<T> out;
@@ -60,9 +60,8 @@ public class ImgPlusSlicer<T extends Type<T>> extends AbstractHyperSlicer {
 			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
 		}
 
-		out =
-			new ImgPlus<T>(new ImgView<T>(hyperSlice(unpackedIn.getImg(), interval),
-				in.factory()));
+		out = new ImgPlus<T>(new ImgView<T>(hyperSlice(unpackedIn.getImg(),
+				interval), in.factory()));
 
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
