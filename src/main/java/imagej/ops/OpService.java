@@ -90,6 +90,10 @@ public class OpService extends AbstractPTService<Op> {
 			boolean match = true;
 			int i = 0;
 			for (final Field param : params) {
+				if (i >= args.length) {
+					match = false;
+					break;
+				}
 				// NB: Skip types handled by the application framework itself.
 				// I.e., these parameters get injected by Context#inject(Object).
 				if (Service.class.isAssignableFrom(param.getType())) continue;
