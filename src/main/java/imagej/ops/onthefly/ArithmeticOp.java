@@ -165,13 +165,13 @@ public abstract class ArithmeticOp implements Op, Contingent {
 			final CtClass clazz = pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {"
-				+ "  " + type + " a2 = (" + type + ") a;"
-				+ "  " + type + " b2 = (" + type + ") b;"
-				+ "  " + type + " result2 = (" + type + ") result;"
-				+ "  for (int i = 0; i < a2.length; i++) {"
-				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2[i]);"
-				+ "  }"
+					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {\n"
+				+ "  " + type + " a2 = (" + type + ") a;\n"
+				+ "  " + type + " b2 = (" + type + ") b;\n"
+				+ "  " + type + " result2 = (" + type + ") result;\n"
+				+ "  for (int i = 0; i < a2.length; i++) {\n"
+				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2[i]);\n"
+				+ "  }\n"
 				+ "}";
 			clazz.addMethod(CtNewMethod.make(src, clazz));
 			op = (MyOp) clazz.toClass(loader, null).newInstance();
