@@ -31,28 +31,30 @@
 package imagej.ops.experimental;
 
 import imagej.ops.Op;
+import imagej.ops.UnaryFunction;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddNumericTypes<T extends NumericType<T>> implements Op {
+public class AddConstantToNumericType<T extends NumericType<T>> extends UnaryFunction<T, T> {
 
 	@Parameter
-	private T input1;
-
-	@Parameter
-	private T input2;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T output;
+	private T value;
 
 	@Override
-	public void run() {
-		output.set(input1);
-		output.add(input2);
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
+		return output;
+	}
+
+	@Override
+	public UnaryFunction<T, T> copy() {
+		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
+		copy.value = value;
+		return copy;
 	}
 
 }
