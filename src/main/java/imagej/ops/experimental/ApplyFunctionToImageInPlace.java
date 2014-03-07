@@ -41,8 +41,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "do")
-public class DoOpOnImage<T extends NumericType<T>> implements Op {
+@Plugin(type = Op.class, name = "apply")
+public class ApplyFunctionToImageInPlace<T extends NumericType<T>> implements Op {
 
 	@Parameter
 	private OpService opService;
@@ -59,7 +59,7 @@ public class DoOpOnImage<T extends NumericType<T>> implements Op {
 		for (final T t : image) {
 			op.setInput(t);
 			module.run();
-			op.getInput();
+			t.set(op.getOutput());
 		}
 	}
 
