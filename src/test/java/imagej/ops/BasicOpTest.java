@@ -1,6 +1,6 @@
 /*
  * #%L
- * OPS.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
