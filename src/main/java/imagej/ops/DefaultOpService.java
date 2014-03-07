@@ -95,11 +95,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 			// check that each parameter is compatible with its argument
 			int i = 0;
+			boolean match = true;
 			for (final ModuleItem<?> item : info.inputs()) {
 				if (i >= args.length) continue; // too few arguments
 				final Object arg = args[i++];
-				if (!canAssign(arg, item)) continue; // incompatible argument
+				if (!canAssign(arg, item)) {
+					match = false;
+					break;
+				}
 			}
+			if (!match) continue; // incompatible arguments
 			if (i != args.length) continue; // too many arguments
 
 			// create module and assign the inputs
