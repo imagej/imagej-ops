@@ -30,7 +30,6 @@
 
 package imagej.ops.experimental;
 
-import imagej.module.Module;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.UnaryFunction;
@@ -55,11 +54,8 @@ public class ApplyFunctionToImageInPlace<T extends NumericType<T>> implements Op
 
 	@Override
 	public void run() {
-		final Module module = opService.asModule(op);
 		for (final T t : image) {
-			op.setInput(t);
-			module.run();
-			t.set(op.getOutput());
+			t.set(op.compute(t, t));
 		}
 	}
 
