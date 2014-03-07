@@ -1,3 +1,33 @@
+/*
+ * #%L
+ * A framework for reusable algorithms.
+ * %%
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
 package imagej.ops.slicer;
 
 import imagej.ops.OpService;
@@ -5,21 +35,21 @@ import imagej.ops.OpService;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.FlatIterationOrder;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.IterableRealInterval;
-import net.imglib2.Positionable;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.RealPositionable;
 import net.imglib2.util.Intervals;
 
-public class SliceIterableInterval implements
+/**
+ * @author Christian Dietz
+ */
+public class SliceIterableInterval extends AbstractInterval implements
 		IterableInterval<RandomAccessibleInterval<?>> {
-
-	private final Interval fixed;
 
 	private final Interval hyperSlice;
 
@@ -29,16 +59,34 @@ public class SliceIterableInterval implements
 
 	public SliceIterableInterval(final OpService opService,
 			final RandomAccessibleInterval<?> source, final int[] axesOfInterest) {
+		super(initIntervals(source, axesOfInterest));
 
-		final long[] hyperSliceDimensions = new long[source.numDimensions()];
-		final long[] dimensionsToIterate = new long[source.numDimensions()];
+		final long[] hyperSliceDims = new long[source.numDimensions()];
 
-		Arrays.fill(hyperSliceDimensions, 1l);
+		for (int d = 0; d < source.numDimensions(); d++) {
+			if (dimension(d) == 1) {
+				hyperSliceDims[d] = source.dimension(d);
+			} else {
+				hyperSliceDims[d] = 1;
+			}
+		}
+
+		this.hyperSlice = new FinalInterval(hyperSliceDims);
+		this.opService = opService;
+		this.source = source;
+	}
+
+	// init method
+	private static Interval initIntervals(
+			final RandomAccessibleInterval<?> src, final int[] axesOfInterest) {
+
+		final long[] dimensionsToIterate = new long[src.numDimensions()];
+
 		Arrays.fill(dimensionsToIterate, 1l);
 
 		// determine axis to iterate
-		int k = 0, l = 0;
-		for (int i = 0; i < source.numDimensions(); i++) {
+		int k = 0;
+		for (int i = 0; i < src.numDimensions(); i++) {
 			boolean selected = false;
 			for (int j = 0; j < axesOfInterest.length; j++) {
 
@@ -47,24 +95,28 @@ public class SliceIterableInterval implements
 				}
 
 				if (!selected) {
-					dimensionsToIterate[k] = source.dimension(i);
+					dimensionsToIterate[k] = src.dimension(i);
 					k++;
-				} else {
-					hyperSliceDimensions[l] = source.dimension(i);
-					l++;
 				}
 			}
 		}
 
-		this.source = source;
-		this.fixed = new FinalInterval(dimensionsToIterate);
-		this.hyperSlice = new FinalInterval(hyperSliceDimensions);
-		this.opService = opService;
+		return new FinalInterval(dimensionsToIterate);
+	}
+
+	@Override
+	public Cursor<RandomAccessibleInterval<?>> cursor() {
+		return new SliceCursor(source, opService, this, hyperSlice);
+	}
+
+	@Override
+	public Cursor<RandomAccessibleInterval<?>> localizingCursor() {
+		return cursor();
 	}
 
 	@Override
 	public long size() {
-		return Intervals.numElements(fixed);
+		return Intervals.numElements(this);
 	}
 
 	@Override
@@ -74,7 +126,7 @@ public class SliceIterableInterval implements
 
 	@Override
 	public Object iterationOrder() {
-		return new FlatIterationOrder(fixed);
+		return new FlatIterationOrder(this);
 	}
 
 	@Override
@@ -83,92 +135,7 @@ public class SliceIterableInterval implements
 	}
 
 	@Override
-	public double realMin(final int d) {
-		return fixed.min(d);
-	}
-
-	@Override
-	public void realMin(final double[] min) {
-		fixed.realMin(min);
-	}
-
-	@Override
-	public void realMin(final RealPositionable min) {
-		fixed.realMin(min);
-	}
-
-	@Override
-	public double realMax(final int d) {
-		return fixed.realMax(d);
-	}
-
-	@Override
-	public void realMax(final double[] max) {
-		fixed.realMin(max);
-	}
-
-	@Override
-	public void realMax(final RealPositionable max) {
-		fixed.realMin(max);
-	}
-
-	@Override
-	public int numDimensions() {
-		return fixed.numDimensions();
-	}
-
-	@Override
 	public Iterator<RandomAccessibleInterval<?>> iterator() {
-		return cursor();
-	}
-
-	@Override
-	public long min(final int d) {
-		return fixed.min(d);
-	}
-
-	@Override
-	public void min(final long[] min) {
-		fixed.min(min);
-	}
-
-	@Override
-	public void min(final Positionable min) {
-		fixed.min(min);
-	}
-
-	@Override
-	public long max(final int d) {
-		return fixed.max(d);
-	}
-
-	@Override
-	public void max(final long[] max) {
-		fixed.max(max);
-	}
-
-	@Override
-	public void max(final Positionable max) {
-		fixed.max(max);
-	}
-
-	@Override
-	public void dimensions(final long[] dimensions) {
-		fixed.dimensions(dimensions);
-	}
-
-	@Override
-	public long dimension(final int d) {
-		return fixed.dimension(d);
-	}
-
-	@Override
-	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new SliceCursor(source, opService, fixed, hyperSlice);
-	}
-
-	@Override
-	public Cursor<RandomAccessibleInterval<?>> localizingCursor() {
 		return cursor();
 	}
 
