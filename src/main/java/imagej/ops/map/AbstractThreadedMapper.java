@@ -32,7 +32,7 @@ package imagej.ops.map;
 
 import imagej.Cancelable;
 import imagej.ops.Op;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
 /**
- * Abstract Threader for MultiThreading of mappings of {@link UnaryFunction}s
+ * Abstract Threader for MultiThreading of mappings of {@link Function}s
  * 
  * @author Christian Dietz
  */

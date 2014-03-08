@@ -32,7 +32,7 @@ package imagej.ops.threshold;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "threshold")
 public class GlobalThresholder<T extends RealType<T>> extends
-	UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> implements Op
+	Function<IterableInterval<T>, IterableInterval<BitType>> implements Op
 {
 
 	@Parameter
@@ -71,7 +71,7 @@ public class GlobalThresholder<T extends RealType<T>> extends
 	}
 
 	@Override
-	public UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> copy() {
+	public Function<IterableInterval<T>, IterableInterval<BitType>> copy() {
 		final GlobalThresholder<T> func = new GlobalThresholder<T>();
 		func.method = method.copy();
 		return func;

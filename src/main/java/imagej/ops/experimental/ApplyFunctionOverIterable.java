@@ -32,7 +32,7 @@ package imagej.ops.experimental;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -45,7 +45,7 @@ public class ApplyFunctionOverIterable<T> implements Op {
 	private OpService opService;
 
 	@Parameter
-	private UnaryFunction<T, T> op;
+	private Function<T, T> op;
 
 	@Parameter(type = ItemIO.BOTH)
 	private Iterable<T> image;

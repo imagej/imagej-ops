@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public abstract class UnaryFunction<I, O> implements Op, Copyable {
+public abstract class Function<I, O> implements Op, Copyable {
 
 	@Parameter
 	private I in;
@@ -72,6 +72,6 @@ public abstract class UnaryFunction<I, O> implements Op, Copyable {
 	}
 
 	@Override
-	public abstract UnaryFunction<I, O> copy();
+	public abstract Function<I, O> copy();
 
 }

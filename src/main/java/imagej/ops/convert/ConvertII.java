@@ -32,7 +32,7 @@ package imagej.ops.convert;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "convert")
 public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
-	UnaryFunction<IterableInterval<I>, IterableInterval<O>>
+	Function<IterableInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter

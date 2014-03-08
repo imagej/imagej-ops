@@ -31,7 +31,7 @@
 package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -55,7 +55,7 @@ public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
 	private IterableInterval<A> in;
 
 	@Parameter
-	private UnaryFunction<A, B> func;
+	private Function<A, B> func;
 
 	@Parameter(type = ItemIO.BOTH)
 	private RandomAccessibleInterval<B> out;
@@ -66,7 +66,7 @@ public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
 		cursor.jumpFwd(firstElement - 1);
 
 		final RandomAccess<B> rndAccess = out.randomAccess();
-		final UnaryFunction<A, B> copy = func.copy();
+		final Function<A, B> copy = func.copy();
 
 		int ctr = 0;
 		while (cursor.hasNext() && ctr < lastElement + 1) {
