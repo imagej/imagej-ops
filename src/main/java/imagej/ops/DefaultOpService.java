@@ -193,12 +193,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
-		// FIXME: Pending new feature in scijava-common
-//		if (item instanceof CommandModuleItem) {
-//			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-//			final Type type = commandItem.getField().getGenericType();
-//			return ConversionUtils.canConvert(arg, type);
-//		}
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			return ConversionUtils.canConvert(arg, type);
+		}
 		return ConversionUtils.canConvert(arg, item.getType());
 	}
 
