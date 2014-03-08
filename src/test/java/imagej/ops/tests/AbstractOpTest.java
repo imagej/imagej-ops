@@ -30,41 +30,35 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertEquals;
-import imagej.module.Module;
-import imagej.ops.convolve.ConvolveFourier;
-import imagej.ops.convolve.ConvolveNaive;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
+import static org.junit.Assert.assertTrue;
+import imagej.ops.OpService;
 
-import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.scijava.Context;
 
-public class ConvolveTest extends AbstractOpTest {
+public abstract class AbstractOpTest {
 
-    @Test
-    public void testConvolveMethodSelection() {
+	protected Context context;
+	protected OpService ops;
 
-        Img<ByteType> in =
-                new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
-                        new ByteType());
-        Img<ByteType> out = in.copy();
+	@Before
+	public void setUp() {
+		context = new Context(OpService.class);
+		ops = context.getService(OpService.class);
+		assertTrue(ops != null);
+	}
 
-        // testing for a small kernel
-        Img<ByteType> kernel =
-                new ArrayImgFactory<ByteType>().create(new int[]{3, 3},
-                        new ByteType());
-        Module module = ops.lookup("convolve", in, kernel, out);
-        assertEquals(module.getInfo().getDelegateClassName(),
-                ConvolveNaive.class.getName());
+	@After
+	public synchronized void cleanUp() {
+		if (context != null) {
+			context.dispose();
+			context = null;
+		}
+	}
 
-        // testing for a 'bigger' kernel
-        kernel =
-                new ArrayImgFactory<ByteType>().create(new int[]{10, 10},
-                        new ByteType());
-        module = ops.lookup("convolve", in, kernel, out);
-        assertEquals(module.getInfo().getDelegateClassName(),
-                ConvolveFourier.class.getName());
+	public AbstractOpTest() {
+		super();
+	}
 
-    }
 }

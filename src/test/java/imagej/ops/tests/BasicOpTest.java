@@ -36,35 +36,14 @@ import imagej.ops.OpService;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.scijava.Context;
 
 /**
  * A basic test of {@link OpService#run}.
  * 
  * @author Johannes Schindelin
  */
-public class BasicOpTest {
-
-	private Context context;
-	private OpService ops;
-
-	@Before
-	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
-	}
-
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
-	}
+public class BasicOpTest extends AbstractOpTest {
 
 	@Test
 	public void testInfinityOp() {

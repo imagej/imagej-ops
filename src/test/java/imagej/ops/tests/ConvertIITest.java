@@ -30,8 +30,6 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertTrue;
-import imagej.ops.OpService;
 import imagej.ops.convert.ConvertII;
 import imagej.ops.convert.ConvertPixCopy;
 import net.imglib2.exception.IncompatibleTypeException;
@@ -40,35 +38,14 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.ShortType;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.scijava.Context;
 
 /**
  * A test of {@link ConvertII}.
  * 
  * @author Martin Horn
  */
-public class ConvertIITest {
-
-	private Context context;
-	private OpService ops;
-
-	@Before
-	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
-	}
-
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
-	}
+public class ConvertIITest extends AbstractOpTest {
 
 	@Test
 	public void test() throws IncompatibleTypeException {

@@ -30,8 +30,7 @@
 package imagej.ops.tests.onthefly;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import imagej.ops.OpService;
+import imagej.ops.tests.AbstractOpTest;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
@@ -42,33 +41,12 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.ShortType;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.scijava.Context;
 
 
-public class OneTheFlyTest {
-	private Context context;
-	private OpService ops;
-
+public class OneTheFlyTest extends AbstractOpTest {
 	private final int pixelCount = 256 * 256;
 	private final long[] dimensions = new long[] { 256, 256 };
-
-	@Before
-	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
-	}
-
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
-	}
 
 	@Test
 	public void testByte() {
