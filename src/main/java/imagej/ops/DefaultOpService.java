@@ -111,7 +111,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			int i = 0;
 			boolean match = true;
 			for (final ModuleItem<?> item : info.inputs()) {
-				if (i >= args.length) continue; // too few arguments
+				if (i >= args.length) {
+					match = false;
+					continue;
+				} // too few arguments
 				final Object arg = args[i++];
 				if (!canAssign(arg, item)) {
 					match = false;
