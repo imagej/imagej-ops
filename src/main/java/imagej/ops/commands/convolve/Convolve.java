@@ -86,6 +86,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 	@Parameter
 	private SlicingService slicing;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void run() {
 		// TODO: get the dimension indices from the image dependent on the selected
@@ -102,7 +103,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 		if (asFloat) {
 			try {
 				out =
-					(ImgPlus<O>) in.factory().imgFactory(new FloatType()).create(in,
+					(ImgPlus) in.factory().imgFactory(new FloatType()).create(in,
 						new FloatType());
 			}
 			catch (IncompatibleTypeException e) {
