@@ -33,6 +33,11 @@ package imagej.ops.tests;
 import static org.junit.Assert.assertTrue;
 import imagej.ops.Op;
 import imagej.ops.OpService;
+import net.imglib2.FinalInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.Intervals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -73,4 +78,41 @@ public abstract class AbstractOpTest {
 		}
 	}
 
+	private int seed;
+
+	private int pseudoRandom() {
+		return seed = 3170425 * seed + 132102;
+	}
+
+	public Img<ByteType> generateByteTestImg(final boolean fill,
+		final long... dims)
+	{
+		final byte[] array =
+			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (fill) {
+			seed = 17;
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (byte) pseudoRandom();
+			}
+		}
+
+		return ArrayImgs.bytes(array, dims);
+	}
+
+	public long bestOf(final Runnable runnable, final int n) {
+		long best = Long.MAX_VALUE;
+
+		for (int i = 0; i < n; i++) {
+			long time = System.nanoTime();
+			runnable.run();
+			time = System.nanoTime() - time;
+
+			if (time < best) {
+				best = time;
+			}
+		}
+
+		return best;
+	}
 }
