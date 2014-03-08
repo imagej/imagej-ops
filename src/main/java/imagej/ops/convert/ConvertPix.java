@@ -35,18 +35,9 @@ import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
 	extends Function<I, O> implements Contingent
 {
-
-	@Parameter
-	private I in;
-
-	@Parameter(type = ItemIO.BOTH)
-	private O out;
 
 	/**
 	 * Allows the convert pix operation to determine some parameters from the
