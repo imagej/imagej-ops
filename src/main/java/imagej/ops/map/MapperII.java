@@ -31,12 +31,11 @@
 package imagej.ops.map;
 
 import imagej.ops.Contingent;
-import imagej.ops.Op;
 import imagej.ops.Function;
+import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -48,31 +47,31 @@ import org.scijava.plugin.Plugin;
  * @param <B>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
-public class MapperII<A, B> implements Op, Contingent {
-
-	@Parameter
-	private IterableInterval<A> in;
+public class MapperII<A, B> extends
+	Function<IterableInterval<A>, IterableInterval<B>> implements Contingent
+{
 
 	@Parameter
 	private Function<A, B> func;
 
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<B> out;
+	@Override
+	public boolean conforms() {
+		return getInput().iterationOrder().equals(getOutput().iterationOrder());
+	}
 
 	@Override
-	public void run() {
-		final Cursor<A> inCursor = in.cursor();
-		final Cursor<B> outCursor = out.cursor();
+	public IterableInterval<B> compute(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		final Cursor<A> inCursor = input.cursor();
+		final Cursor<B> outCursor = output.cursor();
 
 		while (inCursor.hasNext()) {
 			inCursor.fwd();
 			outCursor.fwd();
 			func.compute(inCursor.get(), outCursor.get());
 		}
-	}
 
-	@Override
-	public boolean conforms() {
-		return in.iterationOrder().equals(out.iterationOrder());
+		return output;
 	}
 }
