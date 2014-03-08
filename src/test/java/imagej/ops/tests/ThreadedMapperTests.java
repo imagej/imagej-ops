@@ -3,7 +3,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
 import imagej.ops.map.ThreadedMapper;
@@ -39,7 +39,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 
-		final Module naiveMapper = ops.asModule(new MapperII<ByteType, ByteType>());
+		final Module naiveMapper = ops.module(new MapperII<ByteType, ByteType>());
 		naiveMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		naiveMapper.setInput("in", in);
 		naiveMapper.setInput("out", outNaive);
@@ -47,7 +47,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		naiveMapper.run();
 
 		final Module threadedMapper =
-			ops.asModule(new MapperII<ByteType, ByteType>());
+			ops.module(new MapperII<ByteType, ByteType>());
 		threadedMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		threadedMapper.setInput("in", in);
 		threadedMapper.setInput("out", outThreaded);
@@ -55,7 +55,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		threadedMapper.run();
 
 		final Module threadedMapperII =
-			ops.asModule(new MapperII<ByteType, ByteType>());
+			ops.module(new MapperII<ByteType, ByteType>());
 		threadedMapperII.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		threadedMapperII.setInput("in", in);
 		threadedMapperII.setInput("out", outThreadedII);
@@ -78,7 +78,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 	}
 
 	private class DummyPixelOp<T extends RealType<T>, V extends RealType<V>>
-		extends UnaryFunction<T, V>
+		extends Function<T, V>
 	{
 
 		double constant = -5;
@@ -90,7 +90,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		}
 
 		@Override
-		public UnaryFunction<T, V> copy() {
+		public Function<T, V> copy() {
 			return new DummyPixelOp<T, V>();
 		}
 	}

@@ -2,7 +2,7 @@
 package imagej.ops.tests.benchmark;
 
 import imagej.module.Module;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
 import imagej.ops.map.ThreadedMapper;
@@ -37,7 +37,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 
 	@Test
 	public void pixelWiseTestMapper() {
-		final Module asModule = ops.asModule(new Mapper<ByteType, ByteType>());
+		final Module asModule = ops.module(new Mapper<ByteType, ByteType>());
 
 		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		asModule.setInput("in", in);
@@ -49,7 +49,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 
 	@Test
 	public void pixelWiseTestMapperII() {
-		final Module asModule = ops.asModule(new MapperII<ByteType, ByteType>());
+		final Module asModule = ops.module(new MapperII<ByteType, ByteType>());
 
 		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		asModule.setInput("in", in);
@@ -62,7 +62,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 	@Test
 	public void pixelWiseTestThreadedMapper() {
 		final Module asModule =
-			ops.asModule(new ThreadedMapper<ByteType, ByteType>());
+			ops.module(new ThreadedMapper<ByteType, ByteType>());
 
 		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		asModule.setInput("in", in);
@@ -75,7 +75,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
 		final Module asModule =
-			ops.asModule(new ThreadedMapperII<ByteType, ByteType>());
+			ops.module(new ThreadedMapperII<ByteType, ByteType>());
 
 		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		asModule.setInput("in", in);
@@ -90,7 +90,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 	}
 
 	public class DummyPixelOp<T extends RealType<T>, V extends RealType<V>>
-		extends UnaryFunction<T, V>
+		extends Function<T, V>
 	{
 
 		double constant = -5;
@@ -102,7 +102,7 @@ public class BenchmarkMappers extends AbstractOpTest {
 		}
 
 		@Override
-		public UnaryFunction<T, V> copy() {
+		public Function<T, V> copy() {
 			return new DummyPixelOp<T, V>();
 		}
 	}
