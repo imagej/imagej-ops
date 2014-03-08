@@ -99,15 +99,8 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 				kernelC.fwd();
 
 				for (int i = 0; i < kernelRadius.length; i++) {
-					if (kernelRadius[i] > 0) { // dimension
-																			// can
-																			// have
-																			// zero
-																			// extension
-																			// e.g.
-																			// vertical
-																			// 1d
-																			// kernel
+					// dimension can have zero extension e.g. vertical 1d kernel
+					if (kernelRadius[i] > 0) {
 						inRA.setPosition(pos[i] + kernelC.getLongPosition(i) -
 							kernelRadius[i], i);
 					}
