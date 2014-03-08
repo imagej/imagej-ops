@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -27,58 +27,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.arithmetic;
 
-package imagej.ops;
+import imagej.ops.Op;
+import net.imglib2.type.numeric.NumericType;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.scijava.Context;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A basic test of {@link OpService#run}.
+ * Adds two numeric values.
  * 
  * @author Johannes Schindelin
  */
-public class BasicOpTest {
+@Plugin(type = Op.class, name = "add")
+public class AddOp<T extends NumericType<T>> implements Op {
+	@Parameter
+	private T a;
 
-	private Context context;
-	private OpService ops;
+	@Parameter
+	private T b;
 
-	@Before
-	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
-	}
+	@Parameter(type = ItemIO.BOTH)
+	private T result;
 
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
-	}
-
-	@Test
-	public void testInfinityOp() {
-		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
-		final Object result = ops.run("infinity", value, output);
-		assertEquals(output, result);
-		assertTrue(Double.isInfinite(output.get()));
-	}
-
-	@Test
-	public void testPixelwise() {
-		final ByteType a = new ByteType((byte) 17);
-		final ByteType b = new ByteType((byte) 34);
-		ops.add(a, b, a);
-		assertEquals((byte) 51, a.get());
+	@Override
+	public void run() {
+		result.set(a);
+		result.add(b);
 	}
 }
