@@ -48,14 +48,8 @@ public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public ConvertPixCopy<I, O> copy() {
-		return new ConvertPixCopy<I, O>();
-	}
-
-	@Override
 	public void checkInOutTypes(final I inType, final O outType) {
 		// nothing to do here
-
 	}
 
 	@Override

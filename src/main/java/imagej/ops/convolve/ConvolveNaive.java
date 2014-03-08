@@ -115,13 +115,6 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 	}
 
 	@Override
-	public ConvolveNaive<I, K, O> copy() {
-		ConvolveNaive<I, K, O> conv = new ConvolveNaive<I, K, O>();
-		conv.kernel = kernel;
-		return conv;
-	}
-
-	@Override
 	public boolean conforms() {
 		// conforms only if the kernel is sufficiently small
 		return Intervals.numElements(kernel) <= 9;

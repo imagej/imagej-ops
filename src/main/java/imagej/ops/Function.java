@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public abstract class Function<I, O> implements Op, Copyable {
+public abstract class Function<I, O> implements Op {
 
 	@Parameter
 	private I in;
@@ -75,8 +75,5 @@ public abstract class Function<I, O> implements Op, Copyable {
 	public void run() {
 		compute(getInput(), getOutput());
 	}
-
-	@Override
-	public abstract Function<I, O> copy();
 
 }

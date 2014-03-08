@@ -55,10 +55,4 @@ public class PixThreshold<T extends Comparable<T>> extends
 		return output;
 	}
 
-	@Override
-	public Function<T, BitType> copy() {
-		final PixThreshold<T> func = new PixThreshold<T>();
-		func.threshold = threshold;
-		return func;
-	}
 }

@@ -113,9 +113,5 @@ public class SlicingIterableIntervalTests extends AbstractOpTest {
 			return output;
 		}
 
-		@Override
-		public Function<Iterable<ByteType>, Iterable<ByteType>> copy() {
-			return new DummyOp();
-		}
 	}
 }

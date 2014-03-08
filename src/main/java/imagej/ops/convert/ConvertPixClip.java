@@ -61,11 +61,6 @@ public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public ConvertPixClip<I, O> copy() {
-		return new ConvertPixClip<I, O>();
-	}
-
-	@Override
 	public void checkInOutTypes(final I inType, final O outType) {
 		outMax = outType.getMaxValue();
 		outMin = outType.getMinValue();

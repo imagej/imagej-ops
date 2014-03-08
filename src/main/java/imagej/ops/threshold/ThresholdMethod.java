@@ -30,7 +30,6 @@
 
 package imagej.ops.threshold;
 
-import imagej.ops.Copyable;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.misc.MinMax;
@@ -49,9 +48,7 @@ import org.scijava.plugin.Parameter;
  * An algorithm for thresholding an image into two classes of pixels from its
  * histogram.
  */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op,
-	Copyable
-{
+public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
 
 	@Parameter
 	private IterableInterval<T> img;
@@ -83,8 +80,5 @@ public abstract class ThresholdMethod<T extends RealType<T>> implements Op,
 	 * Returns -1 if the threshold index cannot be found.
 	 */
 	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
-	@Override
-	public abstract ThresholdMethod<T> copy();
 
 }

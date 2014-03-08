@@ -70,10 +70,4 @@ public class GlobalThresholder<T extends RealType<T>> extends
 			output);
 	}
 
-	@Override
-	public Function<IterableInterval<T>, IterableInterval<BitType>> copy() {
-		final GlobalThresholder<T> func = new GlobalThresholder<T>();
-		func.method = method.copy();
-		return func;
-	}
 }

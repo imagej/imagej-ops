@@ -153,9 +153,5 @@ public class MappersBenchmark extends AbstractOpTest {
 			return output;
 		}
 
-		@Override
-		public Function<T, V> copy() {
-			return new DummyPixelOp<T, V>();
-		}
 	}
 }
