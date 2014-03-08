@@ -45,10 +45,16 @@ import net.imglib2.view.Views;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing slicers as well as slicer selection.
+ * 
+ * @author Christian Dietz
+ */
 public class SlicerTests extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
+	@Override
 	@Before
 	public void setUp() {
 		assertTrue(ops != null);
