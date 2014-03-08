@@ -63,6 +63,8 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 	@Parameter
 	private ImgPlus<K> kernel;
 
+	// TODO: maybe not necessary here and the kernels dimension labels determine
+	// in what dimensions the convolution takes place
 	@Parameter
 	private Axis[] axes;
 
@@ -87,7 +89,8 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 	@Override
 	public void run() {
 		// TODO: get the dimension indices from the image dependent on the selected
-		// axes
+		// axes -> OR: just map the kernel dimension labels to the image dimension
+		// labels
 		int[] axisIndices = new int[] { 0, 1 };
 
 		// number of indicies must be conform with the dimensionality of axes
