@@ -33,6 +33,7 @@ package imagej.ops.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import imagej.ops.OpService;
+import imagej.ops.arithmetic.AddOp;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -45,6 +46,9 @@ import org.junit.Test;
  */
 public class BasicOpTest extends AbstractOpTest {
 
+	/**
+	 * Verifies that the name "infinity" finds the {@link InfinityOp}.
+	 */
 	@Test
 	public void testInfinityOp() {
 		final DoubleType value = new DoubleType(123.456);
@@ -54,6 +58,9 @@ public class BasicOpTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(output.get()));
 	}
 
+	/**
+	 * Verifies that {@link OpService#add(Object...)} finds the {@link AddOp}.
+	 */
 	@Test
 	public void testPixelwise() {
 		final ByteType a = new ByteType((byte) 17);

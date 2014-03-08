@@ -47,6 +47,7 @@ import org.junit.Test;
  */
 public class ConvertIITest extends AbstractOpTest {
 
+	/** The test. */
 	@Test
 	public void test() throws IncompatibleTypeException {
 

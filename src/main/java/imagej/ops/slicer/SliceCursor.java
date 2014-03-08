@@ -51,15 +51,14 @@ public class SliceCursor extends IntervalIterator implements
 	private final long[] hyperSliceMax;
 
 	public SliceCursor(final RandomAccessibleInterval<?> src,
-		final OpService service, final Interval fixed, final Interval hyperSlice)
+		final OpService service, final Interval fixedAxes, final Interval hyperSlice)
 	{
-		super(fixed);
+		super(fixedAxes);
 
 		this.opService = service;
 		this.src = src;
-		this.tmpPosition = new long[fixed.numDimensions()];
+		this.tmpPosition = new long[fixedAxes.numDimensions()];
 		this.hyperSliceMax = new long[hyperSlice.numDimensions()];
-
 		hyperSlice.max(hyperSliceMax);
 	}
 
@@ -78,8 +77,14 @@ public class SliceCursor extends IntervalIterator implements
 	@Override
 	public RandomAccessibleInterval<?> get() {
 		localize(tmpPosition);
+
+		final long[] max = tmpPosition.clone();
+		for (int d = 0; d < max.length; d++) {
+			max[d] += hyperSliceMax[d];
+		}
+
 		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
-			new FinalInterval(tmpPosition, hyperSliceMax));
+			new FinalInterval(tmpPosition, max));
 	}
 
 	@Override

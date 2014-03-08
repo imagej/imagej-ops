@@ -36,8 +36,10 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
+/** Tests involving Gaussian convolution. */
 public class GaussTest extends AbstractOpTest {
 
+		/** Tests the Gaussian. */
     @Test
     public void test() {
 

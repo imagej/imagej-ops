@@ -32,7 +32,6 @@ package imagej.ops.slicer;
 
 import imagej.ops.OpService;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 import net.imglib2.AbstractInterval;
@@ -48,7 +47,7 @@ import net.imglib2.util.Intervals;
 /**
  * @author Christian Dietz
  */
-public class SliceIterableInterval extends AbstractInterval implements
+public class SlicingIterableInterval extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
 {
 
@@ -58,7 +57,7 @@ public class SliceIterableInterval extends AbstractInterval implements
 
 	private final RandomAccessibleInterval<?> source;
 
-	public SliceIterableInterval(final OpService opService,
+	public SlicingIterableInterval(final OpService opService,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
 	{
 		super(initIntervals(source, axesOfInterest));
@@ -70,7 +69,7 @@ public class SliceIterableInterval extends AbstractInterval implements
 				hyperSliceDims[d] = source.dimension(d);
 			}
 			else {
-				hyperSliceDims[d] = 0;
+				hyperSliceDims[d] = 1;
 			}
 		}
 
@@ -85,22 +84,15 @@ public class SliceIterableInterval extends AbstractInterval implements
 	{
 
 		final long[] dimensionsToIterate = new long[src.numDimensions()];
-
-		Arrays.fill(dimensionsToIterate, 1l);
+		src.dimensions(dimensionsToIterate);
 
 		// determine axis to iterate
-		int k = 0;
 		for (int i = 0; i < src.numDimensions(); i++) {
-			boolean selected = false;
 			for (int j = 0; j < axesOfInterest.length; j++) {
 
 				if (axesOfInterest[j] == i) {
-					selected = true;
-				}
-
-				if (!selected) {
-					dimensionsToIterate[k] = src.dimension(i);
-					k++;
+					dimensionsToIterate[j] = 1;
+					break;
 				}
 			}
 		}
