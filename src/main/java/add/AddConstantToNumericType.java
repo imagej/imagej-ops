@@ -28,44 +28,33 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package add;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.RealCursor;
-import net.imglib2.RealRandomAccess;
-import net.imglib2.RealRandomAccessibleRealInterval;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToImageFunctional<T extends NumericType<T>> implements
-	Op
-{
-
-	@Parameter
-	private IterableRealInterval<T> image;
-
-	@Parameter(type = ItemIO.BOTH)
-	private RealRandomAccessibleRealInterval<T> output;
+@Plugin(type = Op.class, name = "addconstant")
+public class AddConstantToNumericType<T extends NumericType<T>> extends Function<T, T> {
 
 	@Parameter
 	private T value;
 
 	@Override
-	public void run() {
-		final RealCursor<T> c = image.localizingCursor();
-		final RealRandomAccess<T> ra = output.realRandomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
+		return output;
+	}
+
+	@Override
+	public Function<T, T> copy() {
+		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
+		copy.value = value;
+		return copy;
 	}
 
 }

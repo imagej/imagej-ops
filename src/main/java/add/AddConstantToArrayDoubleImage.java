@@ -28,38 +28,31 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package add;
 
 import imagej.ops.Op;
+import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.img.planar.PlanarImg;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToPlanarDoubleImage implements Op {
+@Plugin(type = Op.class, name = "addconstant")
+public class AddConstantToArrayDoubleImage implements Op {
 
 	@Parameter(type = ItemIO.BOTH)
-	private PlanarImg<DoubleType, DoubleArray> image;
+	private ArrayImg<DoubleType, DoubleArray> image;
 
 	@Parameter
 	private double value;
 
 	@Override
 	public void run() {
-		long planeCount = 1;
-		for (int d = 2; d < image.numDimensions(); d++) {
-			planeCount *= image.dimension(d);
-		}
-		for (int p = 0; p < planeCount; p++) {
-			final double[] plane = image.getPlane(p).getCurrentStorageArray();
-			for (int i = 0; i < plane.length; i++) {
-				plane[i] += value;
-			}
+		final double[] data = image.update(null).getCurrentStorageArray();
+		for (int i = 0; i < data.length; i++) {
+			data[i] += value;
 		}
 	}
-
 }
