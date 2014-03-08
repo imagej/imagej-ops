@@ -32,6 +32,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
 import imagej.ops.OpService;
+import imagej.ops.convert.ConvertII;
 import imagej.ops.convert.ConvertPixCopy;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
@@ -45,9 +46,9 @@ import org.junit.Test;
 import org.scijava.Context;
 
 /**
- * A basic test of {@link OpService#run}.
+ * A test of {@link ConvertII}.
  * 
- * @author Johannes Schindelin
+ * @author Martin Horn
  */
 public class ConvertIITest {
 
