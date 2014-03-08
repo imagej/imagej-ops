@@ -40,8 +40,12 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
+/**
+ * Tests involving convolvers.
+ */
 public class ConvolveTest extends AbstractOpTest {
 
+		/** Tests that the correct convolver is selected. */
     @Test
     public void testConvolveMethodSelection() {
 
