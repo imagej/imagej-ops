@@ -54,8 +54,8 @@ public class SlicingService extends AbstractService implements ImageJService {
 			final RandomAccessibleInterval<?> res, final int[] axis,
 			final Function func)
 	{
-		opService.run("map", new SlicingIterableInterval(opService, src, axis),
-			func, new SlicingIterableInterval(opService, res, axis));
+		opService.run("map", new SlicingIterableInterval(opService, res, axis),
+			new SlicingIterableInterval(opService, src, axis), func);
 
 		return res;
 
