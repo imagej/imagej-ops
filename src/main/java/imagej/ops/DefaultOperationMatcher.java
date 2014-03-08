@@ -40,9 +40,9 @@ public class DefaultOperationMatcher extends AbstractOperationMatcher {
 	public Module match(final CommandInfo info, final String name,
 		final Class<? extends Op> type, final Object... args)
 	{
-		if (!name.equals(info.getName())) return null;
+		if (name != null && !name.equals(info.getName())) return null;
 
-		// the name matches; now check the fields
+		// the name matches; now check the class
 		final Class<?> opClass;
 		try {
 			opClass = info.loadClass();
@@ -51,6 +51,7 @@ public class DefaultOperationMatcher extends AbstractOperationMatcher {
 			log.error("Invalid op: " + info.getClassName());
 			return null;
 		}
+		if (type != null && !type.isAssignableFrom(opClass)) return null;
 
 		// check that each parameter is compatible with its argument
 		int i = 0;

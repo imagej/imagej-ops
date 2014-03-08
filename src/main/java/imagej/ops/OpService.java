@@ -61,6 +61,24 @@ public interface OpService extends SingletonService<OperationMatcher>,
 	Object run(String name, Object... args);
 
 	/**
+	 * Executes the operation of the given type with the specified arguments. The
+	 * best {@link Op} implementation to use will be selected automatically from
+	 * the operation type and arguments.
+	 * 
+	 * @param type The {@link Class} of the operation to execute. If multiple
+	 *          {@link Op}s share this type (e.g., the type is an interface which
+	 *          multiple {@link Op}s implement), then the best {@link Op}
+	 *          implementation to use will be selected automatically from the
+	 *          type and arguments.
+	 * @param args The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs, this
+	 *         will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of the
+	 *         outputs will be given.
+	 */
+	Object run(Class<? extends Op> type, Object... args);
+
+	/**
 	 * Executes the given {@link Op} with the specified arguments.
 	 * 
 	 * @param op The {@link Op} to execute.
@@ -85,6 +103,19 @@ public interface OpService extends SingletonService<OperationMatcher>,
 	Op op(String name, Object... args);
 
 	/**
+	 * Gets the best {@link Op} to use for the given operation type and arguments,
+	 * populating its inputs.
+	 * 
+	 * @param type The {@link Class} of the operation. If multiple {@link Op}s
+	 *          share this type (e.g., the type is an interface which multiple
+	 *          {@link Op}s implement), then the best {@link Op} implementation to
+	 *          use will be selected automatically from the type and arguments.
+	 * @param args The operation's arguments.
+	 * @return An {@link Op} with populated inputs, ready to run.
+	 */
+	Op op(Class<? extends Op> type, Object... args);
+
+	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
 	 * 
@@ -94,6 +125,20 @@ public interface OpService extends SingletonService<OperationMatcher>,
 	 *         inputs, ready to run.
 	 */
 	Module module(String name, Object... args);
+
+	/**
+	 * Gets the best {@link Op} to use for the given operation type and arguments,
+	 * wrapping it as a {@link Module} with populated inputs.
+	 * 
+	 * @param type The {@link Class} of the operation. If multiple {@link Op}s
+	 *          share this type (e.g., the type is an interface which multiple
+	 *          {@link Op}s implement), then the best {@link Op} implementation to
+	 *          use will be selected automatically from the type and arguments.
+	 * @param args The operation's arguments
+	 * @return A {@link Module} wrapping the best {@link Op}, with populated
+	 *         inputs, ready to run.
+	 */
+	Module module(Class<? extends Op> type, Object... args);
 
 	/**
 	 * Wraps the given {@link Op} as a {@link Module}, populating its inputs.

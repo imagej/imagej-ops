@@ -79,6 +79,15 @@ public class DefaultOpService extends
 	}
 
 	@Override
+	public Object run(Class<? extends Op> type, Object... args) {
+		final Module module = module(type, args);
+		if (module == null) {
+			throw new IllegalArgumentException("No matching op: " + type.getName());
+		}
+		return run(module);
+	}
+
+	@Override
 	public Object run(final Op op, final Object... args) {
 		return run(module(op, args));
 	}
@@ -91,8 +100,20 @@ public class DefaultOpService extends
 	}
 
 	@Override
+	public Op op(Class<? extends Op> type, Object... args) {
+		final Module module = module(type, args);
+		if (module == null) return null;
+		return (Op) module.getDelegateObject();
+	}
+
+	@Override
 	public Module module(final String name, final Object... args) {
 		return module(name, null, args);
+	}
+
+	@Override
+	public Module module(Class<? extends Op> type, Object... args) {
+		return module(null, type, args);
 	}
 
 	@Override
