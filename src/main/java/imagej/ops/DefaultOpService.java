@@ -93,6 +93,8 @@ public class DefaultOpService extends
 	@Override
 	public Module module(final String name, final Object... args) {
 		final ArrayList<Module> matches = new ArrayList<Module>();
+		// TODO: Consider inverting the loop nesting order here,
+		// since we probably want to match higher priority Ops first.
 		for (final OperationMatcher matcher : getInstances()) {
 			double priority = Double.NaN;
 			for (final CommandInfo info : commandService.getCommandsOfType(Op.class))
