@@ -28,33 +28,29 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package imagej.ops.map;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
 import imagej.ops.Function;
+import imagej.ops.Op;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "apply")
-public class ApplyFunctionOverIterable<T> implements Op {
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
+public class InplaceMapper<T> implements Op {
 
 	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private Function<T, T> op;
+	private Function<T, T> func;
 
 	@Parameter(type = ItemIO.BOTH)
-	private Iterable<T> image;
-	
+	private Iterable<T> in;
+
 	@Override
 	public void run() {
-		for (final T t : image) {
-			op.compute(t, t);
+		for (final T t : in) {
+			func.compute(t, t);
 		}
 	}
-
 }
