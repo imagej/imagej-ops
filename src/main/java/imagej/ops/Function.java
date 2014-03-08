@@ -50,7 +50,7 @@ public abstract class Function<I, O> implements Op, Copyable {
 	@Parameter
 	private I in;
 
-	@Parameter(type = ItemIO.OUTPUT)
+	@Parameter(type = ItemIO.BOTH)
 	private O out;
 
 	public I getInput() {
