@@ -63,7 +63,7 @@ public class Mapper<A, B> implements Op {
 	@Override
 	public void run() {
 
-		final Cursor<A> cursor = in.cursor();
+		final Cursor<A> cursor = in.localizingCursor();
 		final RandomAccess<B> rndAccess = out.randomAccess();
 
 		while (cursor.hasNext()) {
