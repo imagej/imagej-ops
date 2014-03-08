@@ -139,4 +139,21 @@ public class OneTheFlyTest extends AbstractOpTest {
 			i++;
 		}
 	}
+
+	/** Tests the "add" op on a byte typed image and a constant. */
+	@Test
+	public void testByteImgPlusConstant() {
+		final byte[] array = new byte[pixelCount];
+		final ArrayImg<ByteType, ByteArray> img = ArrayImgs.bytes(array, dimensions);
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (byte) i;
+		}
+
+		ops.add(img, new ByteType((byte) 17), img);
+
+		for (int i = 0; i < array.length; i++) {
+			assertEquals("index " + i, (byte) (i + 17), array[i]);
+		}
+	}
 }
