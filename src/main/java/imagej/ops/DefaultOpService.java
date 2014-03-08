@@ -86,7 +86,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Op op(String name, Object... args) {
+	public Op op(final String name, final Object... args) {
 		final Module module = module(name, args);
 		if (module == null) return null;
 		return (Op) module.getDelegateObject();
@@ -132,7 +132,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 			if (log.isDebug()) {
 				log.debug("OpService.module(" + name + "): op=" +
-						module.getDelegateObject().getClass().getName());
+					module.getDelegateObject().getClass().getName());
 			}
 
 			// found a match!
@@ -193,12 +193,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
-		// FIXME: Pending new feature in scijava-common
-//		if (item instanceof CommandModuleItem) {
-//			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-//			final Type type = commandItem.getField().getGenericType();
-//			return ConversionUtils.canConvert(arg, type);
-//		}
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			return ConversionUtils.canConvert(arg, type);
+		}
 		return ConversionUtils.canConvert(arg, item.getType());
 	}
 
