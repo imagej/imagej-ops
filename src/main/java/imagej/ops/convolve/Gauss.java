@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package imagej.ops.convolve;
 
 import imagej.ops.Op;
@@ -51,35 +52,36 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "gauss")
 public class Gauss<T extends RealType<T>> implements Op {
 
-    @Parameter
-    private RandomAccessibleInterval<T> in;
+	@Parameter
+	private RandomAccessibleInterval<T> in;
 
-    @Parameter
-    private RandomAccessibleInterval<T> out;
+	@Parameter
+	private RandomAccessibleInterval<T> out;
 
-    @Parameter
-    private double sigma;
+	@Parameter
+	private double sigma;
 
-    // TODO: make that selectable by the user/programmer
-    private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds =
-            new OutOfBoundsMirrorFactory(Boundary.SINGLE);
+	// TODO: make that selectable by the user/programmer
+	private final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds =
+		new OutOfBoundsMirrorFactory(Boundary.SINGLE);
 
-    @Override
-    public void run() {
-        final RandomAccessible<FloatType> eIn =
-                (RandomAccessible<FloatType>)Views.extend(in, outOfBounds);
+	@Override
+	public void run() {
+		final RandomAccessible<FloatType> eIn =
+			(RandomAccessible<FloatType>) Views.extend(in, outOfBounds);
 
-        double[] sigmas = new double[in.numDimensions()];
-        Arrays.fill(sigmas, sigma);
+		final double[] sigmas = new double[in.numDimensions()];
+		Arrays.fill(sigmas, sigma);
 
-        try {
-            SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas),
-                    eIn, out, Runtime.getRuntime().availableProcessors());
+		try {
+			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), eIn,
+				out, Runtime.getRuntime().availableProcessors());
 
-        } catch (final IncompatibleTypeException e) {
-            // TODO: better error handling
-            throw new RuntimeException(e);
-        }
+		}
+		catch (final IncompatibleTypeException e) {
+			// TODO: better error handling
+			throw new RuntimeException(e);
+		}
 
-    }
+	}
 }
