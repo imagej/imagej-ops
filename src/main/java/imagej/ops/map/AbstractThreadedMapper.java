@@ -67,7 +67,7 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 
 		for (int i = 0; i < numChunks - 1; i++) {
 			futures.add(threadService.run(new ChunkedUnaryFunctionTask(i * chunkSize,
-				(i * chunkSize + chunkSize) - 1)));
+				chunkSize)));
 		}
 
 		// last chunk gets the rest
@@ -79,6 +79,7 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 				future.get();
 			}
 			catch (final Exception e) {
+				e.printStackTrace();
 				cancelationMessage = e.getMessage();
 				break;
 			}
@@ -99,18 +100,16 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 
 		private final int firstElement;
 
-		private final int numElements;
+		private final int steps;
 
-		public ChunkedUnaryFunctionTask(final int firstElement,
-			final int numElements)
-		{
+		public ChunkedUnaryFunctionTask(final int firstElement, final int steps) {
 			this.firstElement = firstElement;
-			this.numElements = numElements;
+			this.steps = steps;
 		}
 
 		@Override
 		public void run() {
-			runThread(firstElement, numElements);
+			runThread(firstElement, steps);
 		}
 	}
 }

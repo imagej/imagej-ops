@@ -61,15 +61,16 @@ public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
 	private RandomAccessibleInterval<B> out;
 
 	@Override
-	protected void runThread(final int firstElement, final int lastElement) {
-		final Cursor<A> cursor = in.cursor();
-		cursor.jumpFwd(firstElement - 1);
+	protected void runThread(final int firstElement, final int steps) {
+
+		final Cursor<A> cursor = in.localizingCursor();
+		cursor.jumpFwd(firstElement);
 
 		final RandomAccess<B> rndAccess = out.randomAccess();
 		final UnaryFunction<A, B> copy = func.copy();
 
 		int ctr = 0;
-		while (cursor.hasNext() && ctr < lastElement + 1) {
+		while (ctr < steps) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
 			copy.compute(cursor.get(), rndAccess.get());
