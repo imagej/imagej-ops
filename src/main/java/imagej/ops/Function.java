@@ -47,10 +47,10 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class Function<I, O> implements Op, Copyable {
 
-	@Parameter
+	@Parameter(required=false)
 	private I in;
 
-	@Parameter(type = ItemIO.OUTPUT)
+	@Parameter(type = ItemIO.BOTH, required=false)
 	private O out;
 
 	public I getInput() {
