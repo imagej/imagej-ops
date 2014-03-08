@@ -41,11 +41,11 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
 public class InplaceMapper<T> implements Op {
 
-	@Parameter
-	private Function<T, T> func;
-
 	@Parameter(type = ItemIO.BOTH)
 	private Iterable<T> in;
+
+	@Parameter
+	private Function<T, T> func;
 
 	@Override
 	public void run() {
