@@ -73,6 +73,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module lookup(final String name, final Object... args) {
+		OUTER:
 		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
 			if (!name.equals(info.getName())) continue;
 
@@ -91,7 +92,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			for (final ModuleItem<?> item : info.inputs()) {
 				if (i >= args.length) continue; // too few arguments
 				final Object arg = args[i++];
-				if (!canAssign(arg, item)) continue; // incompatible argument
+				if (!canAssign(arg, item)) continue OUTER; // incompatible argument
 			}
 			if (i != args.length) continue; // too many arguments
 
