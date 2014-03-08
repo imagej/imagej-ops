@@ -32,7 +32,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
-import imagej.ops.Function;
+import imagej.ops.Op;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
 import imagej.ops.map.ThreadedInplaceMapperII;
@@ -40,7 +40,6 @@ import imagej.ops.map.ThreadedMapper;
 import imagej.ops.map.ThreadedMapperII;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -56,10 +55,12 @@ import org.junit.Test;
 public class ThreadedMapperTests extends AbstractOpTest {
 
 	private Img<ByteType> in;
+	private Op op;
 
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10, 10);
+		op = ops.op("addconstant", (byte) 10);
 	}
 
 	@Test
@@ -68,29 +69,27 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
 
 		final Module naiveMapper =
-			ops.module(new MapperII<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), outNaive);
+			ops.module(new MapperII<ByteType, ByteType>(), in, op, outNaive);
 
 		naiveMapper.run();
 
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Module threadedMapper =
-			ops.module(new ThreadedMapper<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), outThreaded);
+			ops.module(new ThreadedMapper<ByteType, ByteType>(), in, op, outThreaded);
 
 		threadedMapper.run();
 
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 		final Module threadedMapperII =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), outThreadedII);
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in, op,
+				outThreadedII);
 
 		threadedMapperII.run();
 
 		final Img<ByteType> outThreadedInplaceII = in.copy();
 		final Module threadedMapperInplaceII =
 			ops.module(new ThreadedInplaceMapperII<ByteType>(), outThreadedInplaceII,
-				new DummyPixelOp<ByteType, ByteType>());
+				op);
 
 		threadedMapperInplaceII.run();
 
@@ -109,24 +108,6 @@ public class ThreadedMapperTests extends AbstractOpTest {
 			assertTrue(cursor1.get().get() == cursor2.get().get());
 			assertTrue(cursor1.get().get() == cursor3.get().get());
 			assertTrue(cursor1.get().get() == cursor4.get().get());
-		}
-	}
-
-	private class DummyPixelOp<T extends RealType<T>, V extends RealType<V>>
-		extends Function<T, V>
-	{
-
-		double constant = -5;
-
-		@Override
-		public V compute(final T input, final V output) {
-			output.setReal(input.getRealDouble() + constant);
-			return output;
-		}
-
-		@Override
-		public Function<T, V> copy() {
-			return new DummyPixelOp<T, V>();
 		}
 	}
 }
