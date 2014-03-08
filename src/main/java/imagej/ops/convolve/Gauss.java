@@ -68,7 +68,7 @@ public class Gauss<T extends RealType<T>> implements Op {
 	@Override
 	public void run() {
 		final RandomAccessible<FloatType> eIn =
-			(RandomAccessible<FloatType>) Views.extend(in, outOfBounds);
+			(RandomAccessible) Views.extend(in, outOfBounds);
 
 		final double[] sigmas = new double[in.numDimensions()];
 		Arrays.fill(sigmas, sigma);
