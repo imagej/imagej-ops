@@ -31,12 +31,13 @@
 package imagej.ops.map;
 
 import imagej.Cancelable;
-import imagej.ops.Op;
 import imagej.ops.Function;
+import imagej.ops.Op;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
@@ -48,12 +49,14 @@ import org.scijava.thread.ThreadService;
 public abstract class AbstractThreadedMapper implements Op, Cancelable {
 
 	@Parameter
+	private LogService log;
+
+	@Parameter
 	private ThreadService threadService;
 
 	private String cancelationMessage;
 
-	protected abstract void runThread(final int firstElement,
-		final int steps);
+	protected abstract void runThread(final int firstElement, final int steps);
 
 	protected void runThreading(final long numElements) {
 
@@ -79,7 +82,7 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 				future.get();
 			}
 			catch (final Exception e) {
-				e.printStackTrace();
+				log.error(e);
 				cancelationMessage = e.getMessage();
 				break;
 			}
@@ -108,7 +111,7 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 		}
 
 		@Override
-		public void run() {
+		public final void run() {
 			runThread(firstElement, steps);
 		}
 	}
