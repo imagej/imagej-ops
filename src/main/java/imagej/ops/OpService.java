@@ -42,16 +42,18 @@ import org.scijava.plugin.PTService;
  */
 public interface OpService extends PTService<Op>, ImageJService {
 
-	Op op(String name, Object... args);
-
-	Module lookup(String name, Object... args);
-
 	Object run(String name, Object... args);
 
 	Object run(Op op, Object... args);
 
-	Object add(Object... o);
+	Op op(String name, Object... args);
 
-	Module asModule(Op op);
+	Module module(String name, Object... args);
+
+	Module module(Op op, Object... args);
+
+	// -- Operation shortcuts --
+
+	Object add(Object... args);
 
 }
