@@ -53,15 +53,15 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 	private String cancelationMessage;
 
 	protected abstract void runThread(final int firstElement,
-		final int lastElement);
+		final int numElements);
 
 	protected void runThreading(final long numElements) {
 
 		// TODO: is there a better way to determine the optimal chunk size?
-		final int numChunks =
+		final int chunkSize =
 			(int) (numElements / Runtime.getRuntime().availableProcessors());
 
-		final int chunkSize = (int) (numElements / numChunks);
+		final int numChunks = (int) (numElements / chunkSize);
 
 		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
 
@@ -99,18 +99,18 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 
 		private final int firstElement;
 
-		private final int lastElement;
+		private final int numElements;
 
 		public ChunkedUnaryFunctionTask(final int firstElement,
-			final int lastElement)
+			final int numElements)
 		{
 			this.firstElement = firstElement;
-			this.lastElement = lastElement;
+			this.numElements = numElements;
 		}
 
 		@Override
 		public void run() {
-			runThread(firstElement, lastElement);
+			runThread(firstElement, numElements);
 		}
 	}
 }
