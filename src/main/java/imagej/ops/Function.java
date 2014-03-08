@@ -61,11 +61,11 @@ public abstract class Function<I, O> implements Op, Copyable {
 		return out;
 	}
 
-	public void setInput(I input) {
+	public void setInput(final I input) {
 		in = input;
 	}
 
-	public void setOutput(O output) {
+	public void setOutput(final O output) {
 		out = output;
 	}
 
