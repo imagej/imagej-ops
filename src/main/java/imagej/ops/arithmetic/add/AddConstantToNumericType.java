@@ -28,42 +28,29 @@
  * #L%
  */
 
-package add;
+package imagej.ops.arithmetic.add;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	Function<IterableInterval<T>, RandomAccessibleInterval<T>>
+@Plugin(type = Op.class, name = "add", priority = Priority.LOW_PRIORITY)
+public class AddConstantToNumericType<T extends NumericType<T>> extends
+	Function<T, T>
 {
 
 	@Parameter
 	private T value;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
 		return output;
 	}
+
 }

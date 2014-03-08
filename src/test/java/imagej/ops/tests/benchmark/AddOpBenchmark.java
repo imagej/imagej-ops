@@ -31,11 +31,11 @@
 package imagej.ops.tests.benchmark;
 
 import imagej.module.Module;
+import imagej.ops.arithmetic.add.AddConstantToArrayByteImage;
+import imagej.ops.arithmetic.add.AddConstantToImageFunctional;
+import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
-import add.AddConstantToArrayByteImage;
-import add.AddConstantToImageFunctional;
-import add.AddConstantToImageInPlace;
 
 /**
  * @author Christian Dietz

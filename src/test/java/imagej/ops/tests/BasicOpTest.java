@@ -34,12 +34,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import imagej.ops.Op;
 import imagej.ops.OpService;
+import imagej.ops.arithmetic.add.AddOp;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 
-import add.AddOp;
 
 /**
  * A basic test of {@link OpService#run}.
