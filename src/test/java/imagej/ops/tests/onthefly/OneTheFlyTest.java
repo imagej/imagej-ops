@@ -27,10 +27,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops;
+package imagej.ops.tests.onthefly;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import imagej.ops.OpService;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
