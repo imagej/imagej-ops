@@ -31,8 +31,8 @@
 package imagej.ops.map;
 
 import imagej.ops.Contingent;
-import imagej.ops.Op;
 import imagej.ops.Function;
+import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -47,19 +47,20 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
+
+//TODO: Make it a function
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
 public class ThreadedMapperII<A, B> extends AbstractThreadedMapper implements
 	Contingent
 {
+	@Parameter(type = ItemIO.BOTH)
+	private IterableInterval<B> out;
 
 	@Parameter
 	private IterableInterval<A> in;
 
 	@Parameter
 	private Function<A, B> func;
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<B> out;
 
 	@Override
 	public void run() {

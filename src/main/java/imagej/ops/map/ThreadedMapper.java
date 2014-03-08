@@ -30,8 +30,8 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Op;
 import imagej.ops.Function;
+import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -48,17 +48,19 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
+
+//TODO: Make it a function
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 2)
 public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
+
+	@Parameter(type = ItemIO.BOTH)
+	private RandomAccessibleInterval<B> out;
 
 	@Parameter
 	private IterableInterval<A> in;
 
 	@Parameter
 	private Function<A, B> func;
-
-	@Parameter(type = ItemIO.BOTH)
-	private RandomAccessibleInterval<B> out;
 
 	@Override
 	protected void runThread(final int firstElement, final int steps) {
