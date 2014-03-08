@@ -153,6 +153,17 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Module assignInputs(final Module module, final Object... args) {
+		int i = 0;
+		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+			assign(module, args[i++], item);
+		}
+		return module;
+	}
+
+	// -- Operation shortcuts --
+
+	@Override
 	public Object add(final Object... o) {
 		return run("add", o);
 	}
@@ -184,15 +195,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final Module module = moduleService.createModule(info);
 		getContext().inject(module.getDelegateObject());
 		return assignInputs(module, args);
-	}
-
-	/** Assigns arguments into the given module's inputs. */
-	private Module assignInputs(final Module module, final Object... args) {
-		int i = 0;
-		for (final ModuleItem<?> item : module.getInfo().inputs()) {
-			assign(module, args[i++], item);
-		}
-		return module;
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {

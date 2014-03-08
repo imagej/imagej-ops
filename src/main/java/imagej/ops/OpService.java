@@ -98,6 +98,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 */
 	Module module(Op op, Object... args);
 
+	/** Assigns arguments into the given module's inputs. */
+	Module assignInputs(Module module, Object... args);
+
 	// -- Operation shortcuts --
 
 	/** Executes the "add" operation on the given arguments. */
