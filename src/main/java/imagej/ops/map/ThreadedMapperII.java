@@ -72,15 +72,17 @@ public class ThreadedMapperII<A, B> extends AbstractThreadedMapper implements
 	}
 
 	@Override
-	protected void runThread(final int firstElement, final int lastElement) {
+	protected void runThread(final int firstElement, final int numElements) {
 		final Cursor<A> inCursor = in.cursor();
-		inCursor.jumpFwd(firstElement - 1);
-
 		final Cursor<B> outCursor = out.cursor();
+
+		inCursor.jumpFwd(firstElement);
+		outCursor.jumpFwd(firstElement);
+
 		final UnaryFunction<A, B> copy = func.copy();
 
 		int ctr = 0;
-		while (inCursor.hasNext() && ctr < lastElement + 1) {
+		while (inCursor.hasNext() && ctr < numElements + 1) {
 			inCursor.fwd();
 			outCursor.fwd();
 			copy.compute(inCursor.get(), outCursor.get());
