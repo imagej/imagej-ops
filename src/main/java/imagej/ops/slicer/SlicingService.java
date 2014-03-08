@@ -30,7 +30,7 @@
 
 package imagej.ops.slicer;
 
-import imagej.ops.Op;
+import imagej.ops.Function;
 import imagej.ops.OpService;
 import imagej.service.ImageJService;
 import net.imglib2.RandomAccessibleInterval;
@@ -49,12 +49,13 @@ public class SlicingService extends AbstractService implements ImageJService {
 	@Parameter
 	protected OpService opService;
 
-	public RandomAccessibleInterval<?> process(
-		final RandomAccessibleInterval<?> src,
-		final RandomAccessibleInterval<?> res, final int[] axis, final Op op)
+	public RandomAccessibleInterval<?>
+		process(final RandomAccessibleInterval<?> src,
+			final RandomAccessibleInterval<?> res, final int[] axis,
+			final Function func)
 	{
-		opService.run("map", new SlicingIterableInterval(opService, src, axis), op,
-			new SlicingIterableInterval(opService, res, axis));
+		opService.run("map", new SlicingIterableInterval(opService, src, axis),
+			func, new SlicingIterableInterval(opService, res, axis));
 
 		return res;
 
