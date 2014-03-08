@@ -128,6 +128,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		if (module == null) {
 			throw new IllegalArgumentException("No matching op: " + name);
 		}
+		if (log.isDebug()) {
+			log.debug("OpService.run(" + name + "): op=" +
+				module.getDelegateObject().getClass().getName());
+		}
 		return run(module);
 	}
 
