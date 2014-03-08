@@ -42,18 +42,65 @@ import org.scijava.plugin.PTService;
  */
 public interface OpService extends PTService<Op>, ImageJService {
 
+	/**
+	 * Executes the given operation with the specified arguments. The best
+	 * {@link Op} implementation to use will be determined automatically from the
+	 * operation name and arguments.
+	 * 
+	 * @param name The operation to execute.
+	 * @param args The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs, this
+	 *         will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of the
+	 *         outputs will be given.
+	 */
 	Object run(String name, Object... args);
 
+	/**
+	 * Executes the given {@link Op} with the specified arguments.
+	 * 
+	 * @param op The {@link Op} to execute.
+	 * @param args The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs, this
+	 *         will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of the
+	 *         outputs will be given.
+	 */
 	Object run(Op op, Object... args);
 
+	/**
+	 * Gets the best {@link Op} to use for the given operation and arguments.
+	 * 
+	 * @param name The name of the operation.
+	 * @param args The operation's arguments.
+	 * @return An {@link Op} with populated inputs, ready to run.
+	 */
 	Op op(String name, Object... args);
 
+	/**
+	 * Gets the best {@link Op} to use for the given operation and arguments,
+	 * wrapping it as a {@link Module} with populated inputs.
+	 * 
+	 * @param name The name of the operation.
+	 * @param args The operation's arguments
+	 * @return A {@link Module} wrapping the best {@link Op}, with populated
+	 *         inputs, ready to run.
+	 */
 	Module module(String name, Object... args);
 
+	/**
+	 * Wraps the given {@link Op} as a {@link Module}, populating its inputs.
+	 * 
+	 * @param op The {@link Op} to wrap and populate.
+	 * @param args The operation's arguments.
+	 * @return A {@link Module} wrapping the {@link Op}, with populated inputs,
+	 *         ready to run.
+	 */
 	Module module(Op op, Object... args);
 
 	// -- Operation shortcuts --
 
+	/** Executes the "add" operation on the given arguments. */
 	Object add(Object... args);
 
 }
