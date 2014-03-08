@@ -88,14 +88,6 @@ public class ConvolveFourier<I extends RealType<I>, K extends RealType<K>, O ext
 	}
 
 	@Override
-	public ConvolveFourier<I, K, O> copy() {
-		ConvolveFourier<I, K, O> conv = new ConvolveFourier<I, K, O>();
-		conv.kernel = kernel;
-		return conv;
-
-	}
-
-	@Override
 	public boolean conforms() {
 		// TODO: only conforms if the kernel is sufficiently large (else the
 		// naive approach should be used) -> what is a good heuristic??

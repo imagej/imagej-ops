@@ -61,9 +61,4 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 		return (IterableInterval<O>) ops.run("map", input, pixConvert, output);
 	}
 
-	@Override
-	public ConvertII<I, O> copy() {
-		return new ConvertII<I, O>();
-	}
-
 }

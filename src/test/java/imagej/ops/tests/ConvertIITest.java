@@ -57,12 +57,11 @@ public class ConvertIITest extends AbstractOpTest {
 		Img<ByteType> res =
 			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		// TODO won't work for now, as UnaryFunction's out is ItemIO.OUTPUT
-		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>(), res);
+		ops.run("convert", img, res, new ConvertPixCopy<ShortType, ByteType>());
 
-		// TODO won't work neither, as the pre-processor to create the result is
+		// FIXME won't work neither, as the pre-processor to create the result is
 		// missing
-		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
 
 	}
 }

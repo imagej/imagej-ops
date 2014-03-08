@@ -79,13 +79,11 @@ public class ThreadedMapperII<A, B> extends AbstractThreadedMapper implements
 		inCursor.jumpFwd(firstElement);
 		outCursor.jumpFwd(firstElement);
 
-		final Function<A, B> copy = func.copy();
-
 		int ctr = 0;
 		while (ctr < steps) {
 			inCursor.fwd();
 			outCursor.fwd();
-			copy.compute(inCursor.get(), outCursor.get());
+			func.compute(inCursor.get(), outCursor.get());
 			ctr++;
 		}
 	}

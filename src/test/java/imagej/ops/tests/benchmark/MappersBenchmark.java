@@ -128,5 +128,4 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 		benchmarkAndPrint(ThreadedInplaceMapperII.class.getSimpleName(), module,
 			numRuns);
 	}
-
 }

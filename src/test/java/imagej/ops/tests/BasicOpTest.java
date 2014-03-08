@@ -32,6 +32,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.arithmetic.AddOp;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -65,7 +66,8 @@ public class BasicOpTest extends AbstractOpTest {
 	public void testPixelwise() {
 		final ByteType a = new ByteType((byte) 17);
 		final ByteType b = new ByteType((byte) 34);
-		ops.add(a, b, a);
+		Op op = ops.op("add", a, b, a);
+		System.out.println("op = " + op);
 		assertEquals((byte) 51, a.get());
 	}
 }

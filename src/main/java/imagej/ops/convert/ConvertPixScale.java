@@ -54,11 +54,6 @@ public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public ConvertPixScale<I, O> copy() {
-		return new ConvertPixScale<I, O>();
-	}
-
-	@Override
 	public void checkInOutTypes(final I inType, final O outType) {
 		inMin = inType.getMinValue();
 		outMin = outType.getMinValue();

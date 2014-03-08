@@ -49,7 +49,7 @@ public class FunctionTask<A, B> implements Runnable {
 	{
 		m_in = in;
 		m_out = out;
-		m_op = op.copy();
+		m_op = op;
 	}
 
 	@Override

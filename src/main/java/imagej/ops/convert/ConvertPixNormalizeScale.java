@@ -50,11 +50,6 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 	private OpService ops;
 
 	@Override
-	public ConvertPixNormalizeScale<I, O> copy() {
-		return new ConvertPixNormalizeScale<I, O>();
-	}
-
-	@Override
 	public void checkInOutTypes(final I inType, final O outType) {
 		outMin = outType.getMinValue();
 	}

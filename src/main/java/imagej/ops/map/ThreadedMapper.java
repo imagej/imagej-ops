@@ -67,13 +67,12 @@ public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
 		cursor.jumpFwd(firstElement);
 
 		final RandomAccess<B> rndAccess = out.randomAccess();
-		final Function<A, B> copy = func.copy();
 
 		int ctr = 0;
 		while (ctr < steps) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			copy.compute(cursor.get(), rndAccess.get());
+			func.compute(cursor.get(), rndAccess.get());
 			ctr++;
 		}
 	}

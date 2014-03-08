@@ -50,11 +50,4 @@ public class AddConstantToNumericType<T extends NumericType<T>> extends Function
 		return output;
 	}
 
-	@Override
-	public Function<T, T> copy() {
-		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
-		copy.value = value;
-		return copy;
-	}
-
 }

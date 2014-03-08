@@ -59,13 +59,11 @@ public class ThreadedInplaceMapperII<T> extends AbstractThreadedMapper {
 		final Cursor<T> inCursor = in.cursor();
 		inCursor.jumpFwd(firstElement);
 
-		final Function<T, T> copy = func.copy();
-
 		int ctr = 0;
 		while (ctr < steps) {
 			inCursor.fwd();
 			final T t = inCursor.get();
-			copy.compute(t, t);
+			func.compute(t, t);
 			ctr++;
 		}
 	}
