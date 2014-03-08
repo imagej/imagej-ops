@@ -58,6 +58,7 @@ public class GlobalThresholder<T extends RealType<T>> extends
 		this.method = method;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<BitType> compute(final IterableInterval<T> input,
 		final IterableInterval<BitType> output)

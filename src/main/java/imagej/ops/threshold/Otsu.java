@@ -122,6 +122,7 @@ public class Otsu<T extends RealType<T>> extends ThresholdMethod<T> {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Otsu copy() {
 		return new Otsu();

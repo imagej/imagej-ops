@@ -50,6 +50,7 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 	@Parameter
 	private OpService ops;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<O> compute(IterableInterval<I> input,
 		IterableInterval<O> output)

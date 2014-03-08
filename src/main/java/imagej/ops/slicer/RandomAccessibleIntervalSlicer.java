@@ -51,7 +51,6 @@ public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
 	@Parameter
 	private Interval interval;
 
-	@SuppressWarnings("unused")
 	@Parameter(type = ItemIO.OUTPUT)
 	private RandomAccessibleInterval<?> out;
 

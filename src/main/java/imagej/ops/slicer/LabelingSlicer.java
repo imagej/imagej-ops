@@ -52,7 +52,6 @@ public class LabelingSlicer<L extends Comparable<L>> extends AbstractSlicer {
 	@Parameter
 	private Interval interval;
 
-	@SuppressWarnings("unused")
 	@Parameter(type = ItemIO.OUTPUT)
 	private Labeling<L> out;
 

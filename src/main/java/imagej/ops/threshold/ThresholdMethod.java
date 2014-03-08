@@ -71,6 +71,7 @@ public abstract class ThresholdMethod<T extends RealType<T>> implements Op,
 		getThreshold(hist, threshold);
 	}
 
+	@SuppressWarnings("unchecked")
 	private final Histogram1d<T> createHistogram() {
 		final List<Object> res = (List<Object>) opService.run(new MinMax<T>(), img);
 		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))

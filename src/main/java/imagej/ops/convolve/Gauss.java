@@ -49,6 +49,7 @@ import net.imglib2.view.Views;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Op.class, name = "gauss")
 public class Gauss<T extends RealType<T>> implements Op {
 

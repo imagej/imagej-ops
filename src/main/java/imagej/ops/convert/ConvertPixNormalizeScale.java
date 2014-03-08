@@ -59,6 +59,7 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 		outMin = outType.getMinValue();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void checkInputSource(IterableInterval<I> in) {
 		List<I> minmax = (List<I>) ops.run("minmax", in);
