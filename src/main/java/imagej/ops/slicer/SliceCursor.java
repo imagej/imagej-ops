@@ -56,29 +56,40 @@ public class SliceCursor extends IntervalIterator implements
 
 		this.opService = service;
 		this.src = src;
-
-		this.hyperSliceMax = new long[hyperSlice.numDimensions()];
-		hyperSlice.max(hyperSliceMax);
-
 		this.tmpPosition = new long[fixed.numDimensions()];
+		this.hyperSliceMax = new long[hyperSlice.numDimensions()];
+
+		hyperSlice.max(hyperSliceMax);
+	}
+
+	private SliceCursor(final SliceCursor cursor) {
+		super(cursor);
+
+		this.opService = cursor.opService;
+		this.src = cursor.src;
+		this.hyperSliceMax = cursor.hyperSliceMax;
+		this.tmpPosition = cursor.tmpPosition;
+
+		// set to the current position
+		jumpFwd(cursor.index);
 	}
 
 	@Override
 	public RandomAccessibleInterval<?> get() {
-		return null;
+		localize(tmpPosition);
+		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
+				new FinalInterval(tmpPosition, hyperSliceMax));
 	}
 
 	@Override
 	public Sampler<RandomAccessibleInterval<?>> copy() {
-		return null;
+		return copyCursor();
 	}
 
 	@Override
 	public RandomAccessibleInterval<?> next() {
 		fwd();
-		localize(tmpPosition);
-		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
-				new FinalInterval(tmpPosition, hyperSliceMax));
+		return get();
 	}
 
 	@Override
@@ -88,6 +99,6 @@ public class SliceCursor extends IntervalIterator implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<?>> copyCursor() {
-		return null;
+		return new SliceCursor(this);
 	}
 }
