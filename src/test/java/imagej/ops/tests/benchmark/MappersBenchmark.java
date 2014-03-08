@@ -58,6 +58,24 @@ public class MappersBenchmark extends AbstractOpTest {
 	private int numRuns;
 	private Img<ByteType> out;
 
+	// run the benchmarks
+	public static void main(final String[] args) {
+		final MappersBenchmark mappersBenchmark = new MappersBenchmark();
+
+		mappersBenchmark.setUp();
+		mappersBenchmark.initImg();
+
+		// run the benchmarks
+		mappersBenchmark.pixelWiseTestMapper();
+		mappersBenchmark.pixelWiseTestMapperII();
+		mappersBenchmark.pixelWiseTestMapperInplace();
+		mappersBenchmark.pixelWiseTestThreadedMapper();
+		mappersBenchmark.pixelWiseTestThreadedMapperII();
+		mappersBenchmark.pixelWiseTestThreadedMapperInplace();
+
+		mappersBenchmark.cleanUp();
+	}
+
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10000, 10000);
@@ -112,7 +130,7 @@ public class MappersBenchmark extends AbstractOpTest {
 
 	public void pixelWiseTestThreadedMapperInplace() {
 		final Module asModule =
-			ops.module(new ThreadedInplaceMapperII<ByteType>(), in,
+			ops.module(new ThreadedInplaceMapperII<ByteType>(), in.copy(),
 				new DummyPixelOp<ByteType, ByteType>());
 
 		System.out.println("[Threaded Inplace Mapper] Runtime " +
