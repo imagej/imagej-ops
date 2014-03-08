@@ -49,10 +49,10 @@ public class ConvolveTest extends AbstractOpTest {
     @Test
     public void testConvolveMethodSelection() {
 
-        Img<ByteType> in =
+        final Img<ByteType> in =
                 new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
                         new ByteType());
-        Img<ByteType> out = in.copy();
+        final Img<ByteType> out = in.copy();
 
         // testing for a small kernel
         Img<ByteType> kernel =
