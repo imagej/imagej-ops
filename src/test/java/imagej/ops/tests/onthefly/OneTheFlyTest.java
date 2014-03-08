@@ -119,7 +119,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 
 	/** Tests the "subtract" op on int typed {@link PlanarImg}s. */
 	@Test
-	public void testPlanaer() {
+	public void testPlanar() {
 		final PlanarImg<IntType, ?> a = PlanarImgs.ints(dimensions);
 		final PlanarImg<IntType, ?> b = PlanarImgs.ints(dimensions);
 		final PlanarImg<IntType, ?> result = PlanarImgs.ints(dimensions);
@@ -137,6 +137,23 @@ public class OneTheFlyTest extends AbstractOpTest {
 		for (final IntType t : result) {
 			assertEquals("index " + i, i - (pixelCount - i) / 2, t.get());
 			i++;
+		}
+	}
+
+	/** Tests the "add" op on a byte typed image and a constant. */
+	@Test
+	public void testByteImgPlusConstant() {
+		final byte[] array = new byte[pixelCount];
+		final ArrayImg<ByteType, ByteArray> img = ArrayImgs.bytes(array, dimensions);
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = (byte) i;
+		}
+
+		ops.add(img, new ByteType((byte) 17), img);
+
+		for (int i = 0; i < array.length; i++) {
+			assertEquals("index " + i, (byte) (i + 17), array[i]);
 		}
 	}
 }
