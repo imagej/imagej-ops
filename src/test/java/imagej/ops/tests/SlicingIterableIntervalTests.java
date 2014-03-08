@@ -44,12 +44,11 @@ import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.scijava.Context;
 
-public class SlicingIterableIntervalTests {
+public class SlicingIterableIntervalTests extends AbstractOpTest {
 
 	private Context context;
 
@@ -61,6 +60,7 @@ public class SlicingIterableIntervalTests {
 
 	private ArrayImg<ByteType, ByteArray> out;
 
+	@Override
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class, SlicingService.class);
@@ -76,14 +76,6 @@ public class SlicingIterableIntervalTests {
 		for (final Cursor<ByteType> cur = in.cursor(); cur.hasNext();) {
 			cur.fwd();
 			cur.get().set((byte) cur.getIntPosition(2));
-		}
-	}
-
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
 		}
 	}
 
