@@ -39,17 +39,17 @@ import org.junit.Test;
 /** Tests involving Gaussian convolution. */
 public class GaussTest extends AbstractOpTest {
 
-		/** Tests the Gaussian. */
-    @Test
-    public void test() {
+	/** Tests the Gaussian. */
+	@Test
+	public void test() {
 
-        Img<ByteType> in =
-                new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
-                        new ByteType());
-        Img<ByteType> out = in.copy();
-        double sigma = 5;
+		final Img<ByteType> in =
+			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
+				new ByteType());
+		final Img<ByteType> out = in.copy();
+		final double sigma = 5;
 
 		ops.run("gauss", out, in, sigma);
 
-    }
+	}
 }
