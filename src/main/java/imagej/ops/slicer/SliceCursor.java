@@ -77,7 +77,7 @@ public class SliceCursor extends IntervalIterator implements
 	public RandomAccessibleInterval<?> next() {
 		fwd();
 		localize(tmpPosition);
-		return (RandomAccessibleInterval<?>) opService.run("hyperslicer", src,
+		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
 				new FinalInterval(tmpPosition, hyperSliceMax));
 	}
 
