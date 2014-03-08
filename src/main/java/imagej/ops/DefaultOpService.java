@@ -86,7 +86,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Op op(String name, Object... args) {
+	public Op op(final String name, final Object... args) {
 		final Module module = module(name, args);
 		if (module == null) return null;
 		return (Op) module.getDelegateObject();
@@ -132,7 +132,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 			if (log.isDebug()) {
 				log.debug("OpService.module(" + name + "): op=" +
-						module.getDelegateObject().getClass().getName());
+					module.getDelegateObject().getClass().getName());
 			}
 
 			// found a match!
