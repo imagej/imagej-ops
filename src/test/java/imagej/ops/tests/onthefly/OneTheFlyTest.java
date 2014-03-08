@@ -119,7 +119,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 
 	/** Tests the "subtract" op on int typed {@link PlanarImg}s. */
 	@Test
-	public void testPlanaer() {
+	public void testPlanar() {
 		final PlanarImg<IntType, ?> a = PlanarImgs.ints(dimensions);
 		final PlanarImg<IntType, ?> b = PlanarImgs.ints(dimensions);
 		final PlanarImg<IntType, ?> result = PlanarImgs.ints(dimensions);
