@@ -34,11 +34,14 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 import net.imglib2.type.numeric.NumericType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToNumericType<T extends NumericType<T>> extends Function<T, T> {
+@Plugin(type = Op.class, name = "add", priority = Priority.LOW_PRIORITY)
+public class AddConstantToNumericType<T extends NumericType<T>> extends
+	Function<T, T>
+{
 
 	@Parameter
 	private T value;
