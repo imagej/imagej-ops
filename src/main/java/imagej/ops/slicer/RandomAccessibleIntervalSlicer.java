@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "hyperslicer", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY)
 public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
 
 	@Parameter

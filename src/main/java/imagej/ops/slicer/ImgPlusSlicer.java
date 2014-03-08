@@ -38,13 +38,14 @@ import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "slicer")
+@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY + 1)
 public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
 
 	@Parameter
@@ -69,5 +70,4 @@ public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
 
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
-
 }
