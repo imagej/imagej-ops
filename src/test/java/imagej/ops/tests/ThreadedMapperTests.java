@@ -35,9 +35,9 @@ import imagej.module.Module;
 import imagej.ops.Function;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
+import imagej.ops.map.ThreadedInplaceMapperII;
 import imagej.ops.map.ThreadedMapper;
 import imagej.ops.map.ThreadedMapperII;
-import imagej.ops.map.ThreadedInplaceMapperII;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -65,39 +65,33 @@ public class ThreadedMapperTests extends AbstractOpTest {
 	@Test
 	public void testMultiThreadedMapper() {
 
-		final Module naiveMapper = ops.module(new MapperII<ByteType, ByteType>());
 		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
-		naiveMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		naiveMapper.setInput("in", in);
-		naiveMapper.setInput("out", outNaive);
+
+		final Module naiveMapper =
+			ops.module(new MapperII<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), outNaive);
 
 		naiveMapper.run();
 
-		final Module threadedMapper =
-			ops.module(new ThreadedMapper<ByteType, ByteType>());
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
-		threadedMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		threadedMapper.setInput("in", in);
-		threadedMapper.setInput("out", outThreaded);
+		final Module threadedMapper =
+			ops.module(new ThreadedMapper<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), outThreaded);
 
 		threadedMapper.run();
 
-		final Module threadedMapperII =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>());
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
-		threadedMapperII.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		threadedMapperII.setInput("in", in);
-		threadedMapperII.setInput("out", outThreadedII);
+		final Module threadedMapperII =
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), outThreadedII);
 
 		threadedMapperII.run();
 
-		final Module threadedMapperInplaceII =
-			ops.module(new ThreadedInplaceMapperII<ByteType>());
 		final Img<ByteType> outThreadedInplaceII =
 			generateByteTestImg(false, 10, 10);
-
-		threadedMapperII.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		threadedMapperII.setInput("in", in);
+		final Module threadedMapperInplaceII =
+			ops.module(new ThreadedInplaceMapperII<ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>());
 
 		threadedMapperInplaceII.run();
 

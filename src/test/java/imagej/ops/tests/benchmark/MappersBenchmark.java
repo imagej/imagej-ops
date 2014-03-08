@@ -66,22 +66,18 @@ public class MappersBenchmark extends AbstractOpTest {
 	}
 
 	public void pixelWiseTestMapper() {
-		final Module asModule = ops.module(new Mapper<ByteType, ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
-		asModule.setInput("out", out);
+		final Module asModule =
+			ops.module(new Mapper<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), out);
 
 		System.out.println("[Mapper] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
 	}
 
 	public void pixelWiseTestMapperII() {
-		final Module asModule = ops.module(new MapperII<ByteType, ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
-		asModule.setInput("out", out);
+		final Module asModule =
+			ops.module(new MapperII<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), out);
 
 		System.out.println("[MapperII] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
@@ -89,11 +85,8 @@ public class MappersBenchmark extends AbstractOpTest {
 
 	public void pixelWiseTestThreadedMapper() {
 		final Module asModule =
-			ops.module(new ThreadedMapper<ByteType, ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
-		asModule.setInput("out", out);
+			ops.module(new ThreadedMapper<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), out);
 
 		System.out.println("[ThreadedMapper] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
@@ -101,31 +94,26 @@ public class MappersBenchmark extends AbstractOpTest {
 
 	public void pixelWiseTestThreadedMapperII() {
 		final Module asModule =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
-		asModule.setInput("out", out);
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>(), out);
 
 		System.out.println("[ThreadedMapperII] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
 	}
 
 	public void pixelWiseTestMapperInplace() {
-		final Module asModule = ops.module(new InplaceMapper<ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
+		final Module asModule =
+			ops.module(new InplaceMapper<ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>());
 
 		System.out.println("[Inplace Mapper] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
 	}
 
 	public void pixelWiseTestThreadedMapperInplace() {
-		final Module asModule = ops.module(new ThreadedInplaceMapperII<ByteType>());
-
-		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
-		asModule.setInput("in", in);
+		final Module asModule =
+			ops.module(new ThreadedInplaceMapperII<ByteType>(), in,
+				new DummyPixelOp<ByteType, ByteType>());
 
 		System.out.println("[Threaded Inplace Mapper] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
