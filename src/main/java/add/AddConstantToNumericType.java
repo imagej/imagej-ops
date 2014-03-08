@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.NumericType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "addconstant")
+@Plugin(type = Op.class, name = "add")
 public class AddConstantToNumericType<T extends NumericType<T>> extends Function<T, T> {
 
 	@Parameter

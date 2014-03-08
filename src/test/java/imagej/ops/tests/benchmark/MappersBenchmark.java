@@ -79,7 +79,7 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 	public void initImg() {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
-		addConstant = ops.op("addconstant", (byte) 5);
+		addConstant = ops.op("add", (byte) 5);
 		numRuns = 10;
 	}
 

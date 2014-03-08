@@ -54,16 +54,15 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void usingAddConstantWithMapper() {
 		final Module module =
-			ops.module("map", in, ops.op("addconstant", null, null, new ByteType(
-				(byte) 10)), out);
+			ops.module("map", in, ops.op("add", null, null, new ByteType((byte) 10)),
+				out);
 
 		benchmarkAndPrint("Best Mapping AddConstant", module, numRuns);
 	}
 
 	public void usingAddConstantWithInplaceMapping() {
 		final Module module =
-			ops.module("map", in, ops.op("addconstant", null, null, new ByteType(
-				(byte) 10)));
+			ops.module("map", in, ops.op("add", null, null, new ByteType((byte) 10)));
 
 		benchmarkAndPrint("Best Inplace Mapping AddConstant", module, numRuns);
 	}
