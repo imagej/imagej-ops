@@ -92,10 +92,32 @@ public class DefaultOpService extends
 
 	@Override
 	public Module module(final String name, final Object... args) {
+		final ArrayList<Module> matches = new ArrayList<Module>();
 		for (final OperationMatcher matcher : getInstances()) {
-			for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
+			double priority = Double.NaN;
+			for (final CommandInfo info : commandService.getCommandsOfType(Op.class))
+			{
+				final double p = info.getPriority();
+				if (p != priority && !matches.isEmpty()) {
+					// NB: Lower priority was reached; stop looking for any more matches.
+					break;
+				}
+				priority = p;
 				final Module module = matcher.match(info, name, null/*FIXME*/, args);
-				if (module != null) return module;
+				if (module != null) matches.add(module);
+			}
+			if (matches.size() == 1) {
+				// NB: A single match at a particular priority is good!
+				return matches.get(0);
+			}
+			else if (!matches.isEmpty()) {
+				// NB: Multiple matches at the same priority is bad...
+				final StringBuilder sb = new StringBuilder();
+				sb.append("Multiple ops of priority " + priority + " match:");
+				for (final Module module : matches) {
+					sb.append(" " + module.getClass().getName());
+				}
+				throw new IllegalArgumentException(sb.toString());
 			}
 		}
 		return null;
