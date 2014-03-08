@@ -30,35 +30,35 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import imagej.ops.OpService;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.real.DoubleType;
 
-import org.junit.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.scijava.Context;
 
-/**
- * A basic test of {@link OpService#run}.
- * 
- * @author Johannes Schindelin
- */
-public class BasicOpTest extends AbstractOpTest {
+public abstract class AbstractOpTest {
 
-	@Test
-	public void testInfinityOp() {
-		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
-		final Object result = ops.run("infinity", value, output);
-		assertEquals(output, result);
-		assertTrue(Double.isInfinite(output.get()));
+	protected Context context;
+	protected OpService ops;
+
+	@Before
+	public void setUp() {
+		context = new Context(OpService.class);
+		ops = context.getService(OpService.class);
+		assertTrue(ops != null);
 	}
 
-	@Test
-	public void testPixelwise() {
-		final ByteType a = new ByteType((byte) 17);
-		final ByteType b = new ByteType((byte) 34);
-		ops.add(a, b, a);
-		assertEquals((byte) 51, a.get());
+	@After
+	public synchronized void cleanUp() {
+		if (context != null) {
+			context.dispose();
+			context = null;
+		}
 	}
+
+	public AbstractOpTest() {
+		super();
+	}
+
 }
