@@ -27,12 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.arithmetic;
+
+package add;
 
 import imagej.ops.Op;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -41,16 +43,17 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Johannes Schindelin
  */
-@Plugin(type = Op.class, name = "add")
+@Plugin(type = Op.class, name = "add", priority = Priority.LOW_PRIORITY + 1)
 public class AddOp<T extends NumericType<T>> implements Op {
+
+	@Parameter(type = ItemIO.BOTH)
+	private T result;
+
 	@Parameter
 	private T a;
 
 	@Parameter
 	private T b;
-
-	@Parameter(type = ItemIO.BOTH)
-	private T result;
 
 	@Override
 	public void run() {
