@@ -31,38 +31,30 @@
 package imagej.ops.experimental;
 
 import imagej.ops.Op;
-import net.imglib2.IterableRealInterval;
+import imagej.ops.UnaryFunction;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddConstantToImage<T extends NumericType<T>> implements Op {
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableRealInterval<T> image;
+public class AddConstantToNumericType<T extends NumericType<T>> extends UnaryFunction<T, T> {
 
 	@Parameter
 	private T value;
 
 	@Override
-	public void run() {
-		for (final T t : image) {
-			t.add(value);
-		}
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
+		return output;
 	}
 
-	/*
-	OpsService ops;
-	ops.op(final String name, final Object... args)
-	
-	final ArrayImg<DoubleType> img = thing();
-	final Object result = ops.op("add", img, 5);
-	Object result = ops.opResultAsList("add", img, 5); // CHANGE NAME
-	
-	result = ops.add(img, 5);
-	*/
+	@Override
+	public UnaryFunction<T, T> copy() {
+		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
+		copy.value = value;
+		return copy;
+	}
 
 }

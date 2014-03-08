@@ -31,6 +31,7 @@
 package imagej.ops.experimental;
 
 import imagej.ops.Op;
+import net.imglib2.IterableRealInterval;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
@@ -38,21 +39,19 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddNumericTypes<T extends NumericType<T>> implements Op {
+public class AddConstantToImageInPlace<T extends NumericType<T>> implements Op {
+
+	@Parameter(type = ItemIO.BOTH)
+	private IterableRealInterval<T> image;
 
 	@Parameter
-	private T input1;
-
-	@Parameter
-	private T input2;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T output;
+	private T value;
 
 	@Override
 	public void run() {
-		output.set(input1);
-		output.add(input2);
+		for (final T t : image) {
+			t.add(value);
+		}
 	}
 
 }

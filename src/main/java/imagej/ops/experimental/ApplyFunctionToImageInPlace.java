@@ -30,7 +30,6 @@
 
 package imagej.ops.experimental;
 
-import imagej.module.Module;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.UnaryFunction;
@@ -41,8 +40,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "do")
-public class DoOpOnImage<T extends NumericType<T>> implements Op {
+@Plugin(type = Op.class, name = "apply")
+public class ApplyFunctionToImageInPlace<T extends NumericType<T>> implements Op {
 
 	@Parameter
 	private OpService opService;
@@ -55,11 +54,8 @@ public class DoOpOnImage<T extends NumericType<T>> implements Op {
 
 	@Override
 	public void run() {
-		final Module module = opService.asModule(op);
 		for (final T t : image) {
-			op.setInput(t);
-			module.run();
-			op.getInput();
+			t.set(op.compute(t, t));
 		}
 	}
 
