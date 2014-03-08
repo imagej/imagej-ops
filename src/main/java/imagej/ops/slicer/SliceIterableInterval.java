@@ -70,7 +70,7 @@ public class SliceIterableInterval extends AbstractInterval implements
 				hyperSliceDims[d] = source.dimension(d);
 			}
 			else {
-				hyperSliceDims[d] = 1;
+				hyperSliceDims[d] = 0;
 			}
 		}
 
