@@ -143,7 +143,6 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 		</developer>
 	</developers>
 
-
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/imagej/imagej-ops/issues</url>
