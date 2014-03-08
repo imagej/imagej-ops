@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * 
  */
-@Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name="neighborhood", priority = Priority.LOW_PRIORITY)
 public class NeighborhoodOp<I, O> implements Op {
 
 	@Parameter
