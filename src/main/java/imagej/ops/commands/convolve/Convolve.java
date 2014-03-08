@@ -92,7 +92,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 		// TODO: get the dimension indices from the image dependent on the selected
 		// axes -> OR: just map the kernel dimension labels to the image dimension
 		// labels
-		int[] axisIndices = new int[] { 0, 1 };
+		final int[] axisIndices = new int[] { 0, 1 };
 
 		// number of indicies must be conform with the dimensionality of axes
 		if (axes.length != axisIndices.length) {
@@ -106,7 +106,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 					(ImgPlus) in.factory().imgFactory(new FloatType()).create(in,
 						new FloatType());
 			}
-			catch (IncompatibleTypeException e) {
+			catch (final IncompatibleTypeException e) {
 				throw new RuntimeException(e);
 			}
 		}
