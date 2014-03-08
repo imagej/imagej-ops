@@ -32,8 +32,10 @@ package imagej.ops.tests.benchmark;
 
 import imagej.module.Module;
 import imagej.ops.Function;
+import imagej.ops.map.InplaceMapper;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
+import imagej.ops.map.ThreadedInplaceMapperII;
 import imagej.ops.map.ThreadedMapper;
 import imagej.ops.map.ThreadedMapperII;
 import imagej.ops.tests.AbstractOpTest;
@@ -106,6 +108,26 @@ public class MappersBenchmark extends AbstractOpTest {
 		asModule.setInput("out", out);
 
 		System.out.println("[ThreadedMapperII] Runtime " +
+			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+	}
+
+	public void pixelWiseTestMapperInplace() {
+		final Module asModule = ops.module(new InplaceMapper<ByteType>());
+
+		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
+		asModule.setInput("in", in);
+
+		System.out.println("[Inplace Mapper] Runtime " +
+			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+	}
+
+	public void pixelWiseTestThreadedMapperInplace() {
+		final Module asModule = ops.module(new ThreadedInplaceMapperII<ByteType>());
+
+		asModule.setInput("func", new DummyPixelOp<ByteType, ByteType>());
+		asModule.setInput("in", in);
+
+		System.out.println("[Threaded Inplace Mapper] Runtime " +
 			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
 	}
 

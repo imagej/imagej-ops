@@ -37,6 +37,7 @@ import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
 import imagej.ops.map.ThreadedMapper;
 import imagej.ops.map.ThreadedMapperII;
+import imagej.ops.map.ThreadedInplaceMapperII;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -64,11 +65,8 @@ public class ThreadedMapperTests extends AbstractOpTest {
 	@Test
 	public void testMultiThreadedMapper() {
 
-		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
-		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
-		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
-
 		final Module naiveMapper = ops.module(new MapperII<ByteType, ByteType>());
+		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
 		naiveMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		naiveMapper.setInput("in", in);
 		naiveMapper.setInput("out", outNaive);
@@ -76,7 +74,8 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		naiveMapper.run();
 
 		final Module threadedMapper =
-			ops.module(new MapperII<ByteType, ByteType>());
+			ops.module(new ThreadedMapper<ByteType, ByteType>());
+		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		threadedMapper.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		threadedMapper.setInput("in", in);
 		threadedMapper.setInput("out", outThreaded);
@@ -84,25 +83,39 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		threadedMapper.run();
 
 		final Module threadedMapperII =
-			ops.module(new MapperII<ByteType, ByteType>());
+			ops.module(new ThreadedMapperII<ByteType, ByteType>());
+		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 		threadedMapperII.setInput("func", new DummyPixelOp<ByteType, ByteType>());
 		threadedMapperII.setInput("in", in);
 		threadedMapperII.setInput("out", outThreadedII);
 
 		threadedMapperII.run();
 
+		final Module threadedMapperInplaceII =
+			ops.module(new ThreadedInplaceMapperII<ByteType>());
+		final Img<ByteType> outThreadedInplaceII =
+			generateByteTestImg(false, 10, 10);
+
+		threadedMapperII.setInput("func", new DummyPixelOp<ByteType, ByteType>());
+		threadedMapperII.setInput("in", in);
+
+		threadedMapperInplaceII.run();
+
 		final Cursor<ByteType> cursor1 = outNaive.cursor();
 		final Cursor<ByteType> cursor2 = outThreaded.cursor();
 		final Cursor<ByteType> cursor3 = outThreadedII.cursor();
+		final Cursor<ByteType> cursor4 = outThreadedInplaceII.cursor();
 
-		// test for consistency as we know that outNaive works.
+		// test for consistency as we know that naiveMapper works.
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
 			cursor3.fwd();
+			cursor4.fwd();
 
 			assertTrue(cursor1.get().get() == cursor2.get().get());
 			assertTrue(cursor1.get().get() == cursor3.get().get());
+			assertTrue(cursor1.get().get() == cursor4.get().get());
 		}
 	}
 
