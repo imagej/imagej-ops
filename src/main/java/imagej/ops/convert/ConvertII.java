@@ -28,41 +28,41 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package imagej.ops.convert;
 
 import imagej.ops.Op;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.OpService;
+import imagej.ops.UnaryFunction;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToImage<T extends NumericType<T>> implements Op {
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableRealInterval<T> image;
+@Plugin(type = Op.class, name = "convert")
+public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
+	UnaryFunction<IterableInterval<I>, IterableInterval<O>>
+{
 
 	@Parameter
-	private T value;
+	private ConvertPix<I, O> pixConvert;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
-	public void run() {
-		for (final T t : image) {
-			t.add(value);
-		}
+	public IterableInterval<O> compute(IterableInterval<I> input,
+		IterableInterval<O> output)
+	{
+		pixConvert.checkInOutTypes(input.firstElement().createVariable(), output
+			.firstElement().createVariable());
+		pixConvert.checkInputSource(input);
+		return (IterableInterval<O>) ops.run("map", input, pixConvert, output);
 	}
 
-	/*
-	OpsService ops;
-	ops.op(final String name, final Object... args)
-	
-	final ArrayImg<DoubleType> img = thing();
-	final Object result = ops.op("add", img, 5);
-	Object result = ops.opResultAsList("add", img, 5); // CHANGE NAME
-	
-	result = ops.add(img, 5);
-	*/
+	@Override
+	public ConvertII<I, O> copy() {
+		return new ConvertII<I, O>();
+	}
 
 }

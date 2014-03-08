@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -27,48 +27,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
-package imagej.ops.misc;
+package imagej.ops.arithmetic;
 
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Adds two numeric values.
+ * 
+ * @author Johannes Schindelin
  */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = "add")
+public class AddOp<T extends NumericType<T>> implements Op {
+	@Parameter
+	private T a;
 
 	@Parameter
-	private Iterable<T> img;
+	private T b;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	@Parameter(type = ItemIO.BOTH)
+	private T result;
 
 	@Override
 	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+		result.set(a);
+		result.add(b);
 	}
-
 }

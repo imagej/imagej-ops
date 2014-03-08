@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -68,7 +68,7 @@ public class Gauss<T extends RealType<T>> implements Op {
 	@Override
 	public void run() {
 		final RandomAccessible<FloatType> eIn =
-			(RandomAccessible<FloatType>) Views.extend(in, outOfBounds);
+			(RandomAccessible) Views.extend(in, outOfBounds);
 
 		final double[] sigmas = new double[in.numDimensions()];
 		Arrays.fill(sigmas, sigma);

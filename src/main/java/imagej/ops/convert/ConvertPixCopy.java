@@ -28,39 +28,44 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package imagej.ops.convert;
 
-import imagej.module.Module;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.UnaryFunction;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "do")
-public class DoOpOnImage<T extends NumericType<T>> implements Op {
-
-	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private UnaryFunction<T, T> op;
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableRealInterval<T> image;
+@Plugin(type = Op.class, name = "convert")
+public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPix<I, O>
+{
 
 	@Override
-	public void run() {
-		final Module module = opService.asModule(op);
-		for (final T t : image) {
-			op.setInput(t);
-			module.run();
-			op.getInput();
-		}
+	public O compute(final I input, final O output) {
+		output.setReal(input.getRealDouble());
+		return output;
+	}
+
+	@Override
+	public ConvertPixCopy<I, O> copy() {
+		return new ConvertPixCopy<I, O>();
+	}
+
+	@Override
+	public void checkInOutTypes(final I inType, final O outType) {
+		// nothing to do here
+
+	}
+
+	@Override
+	public void checkInputSource(IterableInterval<I> in) {
+		// nothing to do here
+	}
+
+	@Override
+	public boolean conforms() {
+		return true;
 	}
 
 }

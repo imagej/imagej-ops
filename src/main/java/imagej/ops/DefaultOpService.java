@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -72,8 +72,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- OpService methods --
 
 	@Override
+	public Op op(String name, Object... args) {
+		Module module = lookup(name, args);
+		if (module == null) return null;
+		return (Op) module.getDelegateObject();
+	}
+
+	@Override
 	public Module lookup(final String name, final Object... args) {
-		OUTER:
 		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
 			if (!name.equals(info.getName())) continue;
 
@@ -89,11 +95,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 			// check that each parameter is compatible with its argument
 			int i = 0;
+			boolean match = true;
 			for (final ModuleItem<?> item : info.inputs()) {
 				if (i >= args.length) continue; // too few arguments
 				final Object arg = args[i++];
-				if (!canAssign(arg, item)) continue OUTER; // incompatible argument
+				if (!canAssign(arg, item)) {
+					match = false;
+					break;
+				}
 			}
+			if (!match) continue; // incompatible arguments
 			if (i != args.length) continue; // too many arguments
 
 			// create module and assign the inputs

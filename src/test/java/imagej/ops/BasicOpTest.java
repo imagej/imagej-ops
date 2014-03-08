@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -32,6 +32,7 @@ package imagej.ops;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.After;
@@ -71,5 +72,13 @@ public class BasicOpTest {
 		final Object result = ops.run("infinity", value, output);
 		assertEquals(output, result);
 		assertTrue(Double.isInfinite(output.get()));
+	}
+
+	@Test
+	public void testPixelwise() {
+		final ByteType a = new ByteType((byte) 17);
+		final ByteType b = new ByteType((byte) 34);
+		ops.add(a, b, a);
+		assertEquals((byte) 51, a.get());
 	}
 }

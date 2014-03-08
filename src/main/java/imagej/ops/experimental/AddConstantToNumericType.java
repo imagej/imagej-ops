@@ -28,47 +28,33 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.experimental;
 
 import imagej.ops.Op;
+import imagej.ops.UnaryFunction;
+import net.imglib2.type.numeric.NumericType;
 
-import java.util.Iterator;
-
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculates the minimum and maximum value of an image.
- */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = "add")
+public class AddConstantToNumericType<T extends NumericType<T>> extends UnaryFunction<T, T> {
 
 	@Parameter
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private T value;
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
+		return output;
+	}
 
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+	@Override
+	public UnaryFunction<T, T> copy() {
+		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
+		copy.value = value;
+		return copy;
 	}
 
 }

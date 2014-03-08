@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -69,20 +69,3 @@ public class AddConstantToImageFunctional<T extends NumericType<T>> implements
 	}
 
 }
-
-/*
-Img<T> img = getImg();
-T value;
-Img<T> output = null;
-
-// IN-PLACE
-output = ops.copy(img);
-ops.add(output, value);
-
-// FUNCTIONAL
-output = ops.newImgOfSameSize(img);
-ops.add(input, output, value);
-
-/////////
-
-*/

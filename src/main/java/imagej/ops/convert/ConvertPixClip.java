@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,47 +28,58 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.convert;
 
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculates the minimum and maximum value of an image.
- */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = "convert")
+public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPix<I, O>
+{
 
-	@Parameter
-	private Iterable<T> img;
+	private double outMax;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private double outMin;
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+	public O compute(final I input, final O output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
 		}
+		else if (v < outMin) {
+			output.setReal(outMin);
+		}
+		else {
+			output.setReal(v);
+		}
+		return output;
+	}
+
+	@Override
+	public ConvertPixClip<I, O> copy() {
+		return new ConvertPixClip<I, O>();
+	}
+
+	@Override
+	public void checkInOutTypes(final I inType, final O outType) {
+		outMax = outType.getMaxValue();
+		outMin = outType.getMinValue();
+
+	}
+
+	@Override
+	public void checkInputSource(IterableInterval<I> in) {
+		// nothing to do here
+	}
+
+	@Override
+	public boolean conforms() {
+		return true;
 	}
 
 }

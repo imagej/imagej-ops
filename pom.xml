@@ -14,9 +14,14 @@
 	<version>0.1.0-SNAPSHOT</version>
 
 	<name>ImageJ Operations</name>
-	<description>A framework for reusable algorithms.</description>
+	<description>ImageJ OPS: a framework for reusable algorithms.</description>
 	<url>http://developer.imagej.net/</url>
 	<inceptionYear>2014</inceptionYear>
+
+	<properties>
+		<!-- TEMP: only needed until a ConversionUtils fix has been released in 2.10.1 -->
+		<scijava-common.version>2.10.1-SNAPSHOT</scijava-common.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -45,10 +50,11 @@
 			<version>${scijava-common.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-algorithms</artifactId>
-			<version>${imglib2.version}</version>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.16.1-GA</version>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -147,7 +153,6 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
-
 
 	<issueManagement>
 		<system>GitHub Issues</system>

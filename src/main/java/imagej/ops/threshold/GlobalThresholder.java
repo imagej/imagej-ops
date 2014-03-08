@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -37,7 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,12 +44,6 @@ import org.scijava.plugin.Plugin;
 public class GlobalThresholder<T extends RealType<T>> extends
 	UnaryFunction<IterableInterval<T>, IterableInterval<BitType>> implements Op
 {
-
-	@Parameter
-	private IterableInterval<T> in;
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<BitType> out;
 
 	@Parameter
 	private ThresholdMethod<T> method;
@@ -63,27 +56,6 @@ public class GlobalThresholder<T extends RealType<T>> extends
 	 */
 	public void setMethod(final ThresholdMethod<T> method) {
 		this.method = method;
-	}
-
-	@Override
-	public IterableInterval<T> getInput() {
-		return in;
-	}
-
-	@Override
-	public IterableInterval<BitType> getOutput() {
-		return out;
-	}
-
-	@Override
-	public void setInput(final IterableInterval<T> input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final IterableInterval<BitType> output) {
-		out = output;
-
 	}
 
 	@Override

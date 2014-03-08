@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -41,6 +41,8 @@ import org.scijava.plugin.PTService;
  * @author Curtis Rueden
  */
 public interface OpService extends PTService<Op>, ImageJService {
+
+	Op op(String name, Object... args);
 
 	Module lookup(String name, Object... args);
 

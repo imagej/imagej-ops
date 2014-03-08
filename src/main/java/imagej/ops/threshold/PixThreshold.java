@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -34,7 +34,6 @@ import imagej.ops.Op;
 import imagej.ops.UnaryFunction;
 import net.imglib2.type.logic.BitType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,32 +44,6 @@ public class PixThreshold<T extends Comparable<T>> extends
 
 	@Parameter
 	private T threshold;
-
-	@Parameter
-	private T in;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private BitType out;
-
-	@Override
-	public T getInput() {
-		return in;
-	}
-
-	@Override
-	public BitType getOutput() {
-		return out;
-	}
-
-	@Override
-	public void setInput(final T input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final BitType output) {
-		out = output;
-	}
 
 	public void setThreshold(final T threshold) {
 		this.threshold = threshold;

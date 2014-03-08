@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,47 +28,63 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.convert;
 
 import imagej.ops.Op;
+import imagej.ops.OpService;
 
-import java.util.Iterator;
+import java.util.List;
 
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculates the minimum and maximum value of an image.
- */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = "convert")
+public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPixScale<I, O>
+{
 
 	@Parameter
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+	public ConvertPixNormalizeScale<I, O> copy() {
+		return new ConvertPixNormalizeScale<I, O>();
 	}
 
+	@Override
+	public void checkInOutTypes(final I inType, final O outType) {
+		outMin = outType.getMinValue();
+	}
+
+	@Override
+	public void checkInputSource(IterableInterval<I> in) {
+		List<I> minmax = (List<I>) ops.run("minmax", in);
+		I inType = in.firstElement().createVariable();
+		factor =
+			normalizationFactor(minmax.get(0).getRealDouble(), minmax.get(1)
+				.getRealDouble(), inType.getMinValue(), inType.getMaxValue());
+
+		inMin = minmax.get(0).getRealDouble();
+
+	}
+
+	@Override
+	public boolean conforms() {
+		// only conforms if an input source has been provided and the scale factor
+		// was calculated
+		return factor != 0;
+	}
+
+	/*
+	 * Determines the factor to map the interval [oldMin, oldMax] to
+	 * [newMin,newMax].
+	 */
+	private double normalizationFactor(double oldMin, double oldMax,
+		double newMin, double newMax)
+	{
+		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+	}
 }

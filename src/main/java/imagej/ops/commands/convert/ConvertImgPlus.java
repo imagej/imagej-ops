@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,47 +28,38 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.commands.convert;
 
-import imagej.ops.Op;
-
-import java.util.Iterator;
-
+import imagej.command.Command;
+import imagej.ops.OpService;
+import imagej.ops.convert.ConvertPix;
+import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculates the minimum and maximum value of an image.
- */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Command.class, menuPath = "Image > Convert")
+public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
+	implements Command
+{
 
 	@Parameter
-	private Iterable<T> img;
+	private ImgPlus<I> in;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
+	@Parameter
+	private ConvertPix<I, O> conversionMethod;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	@Parameter(type = ItemIO.BOTH)
+	private ImgPlus<O> out;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+		ops.run("convert", in, conversionMethod, out);
 	}
 
 }

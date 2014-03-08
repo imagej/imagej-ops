@@ -28,47 +28,62 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.tests;
 
-import imagej.ops.Op;
+import static org.junit.Assert.assertTrue;
+import imagej.ops.OpService;
+import imagej.ops.convert.ConvertPixCopy;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.ShortType;
 
-import java.util.Iterator;
-
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.scijava.Context;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * A basic test of {@link OpService#run}.
+ * 
+ * @author Johannes Schindelin
  */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+public class ConvertIITest {
 
-	@Parameter
-	private Iterable<T> img;
+	private Context context;
+	private OpService ops;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
+	@Before
+	public void setUp() {
+		context = new Context(OpService.class);
+		ops = context.getService(OpService.class);
+		assertTrue(ops != null);
+	}
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
-
-	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+	@After
+	public synchronized void cleanUp() {
+		if (context != null) {
+			context.dispose();
+			context = null;
 		}
 	}
 
+	@Test
+	public void test() throws IncompatibleTypeException {
+
+		Img<ShortType> img =
+			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
+				new ShortType());
+		Img<ByteType> res =
+			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
+
+		// TODO won't work for now, as UnaryFunction's out is ItemIO.OUTPUT
+		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>(), res);
+
+		// TODO won't work neither, as the pre-processor to create the result is
+		// missing
+		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+
+	}
 }

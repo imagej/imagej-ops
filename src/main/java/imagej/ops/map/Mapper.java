@@ -1,6 +1,6 @@
 /*
  * #%L
- * A framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -63,7 +63,7 @@ public class Mapper<A, B> implements Op {
 	@Override
 	public void run() {
 
-		final Cursor<A> cursor = in.cursor();
+		final Cursor<A> cursor = in.localizingCursor();
 		final RandomAccess<B> rndAccess = out.randomAccess();
 
 		while (cursor.hasNext()) {
