@@ -30,6 +30,11 @@
 			<version>${imagej.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij-ui-swing</artifactId>
+			<version>${imagej.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2</artifactId>
 			<version>${imglib2.version}</version>
@@ -59,6 +64,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij-app</artifactId>
+			<version>${imagej.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
