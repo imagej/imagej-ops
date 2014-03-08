@@ -33,15 +33,13 @@ package imagej.ops.experimental;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.UnaryFunction;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "apply")
-public class ApplyFunctionToImageInPlace<T extends NumericType<T>> implements Op {
+public class ApplyFunctionOverIterable<T> implements Op {
 
 	@Parameter
 	private OpService opService;
@@ -50,12 +48,12 @@ public class ApplyFunctionToImageInPlace<T extends NumericType<T>> implements Op
 	private UnaryFunction<T, T> op;
 
 	@Parameter(type = ItemIO.BOTH)
-	private IterableRealInterval<T> image;
-
+	private Iterable<T> image;
+	
 	@Override
 	public void run() {
 		for (final T t : image) {
-			t.set(op.compute(t, t));
+			op.compute(t, t);
 		}
 	}
 
