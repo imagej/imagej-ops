@@ -53,7 +53,7 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 	private String cancelationMessage;
 
 	protected abstract void runThread(final int firstElement,
-		final int numElements);
+		final int steps);
 
 	protected void runThreading(final long numElements) {
 
