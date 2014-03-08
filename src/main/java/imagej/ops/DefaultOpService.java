@@ -116,6 +116,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 				if (!c.conforms()) continue;
 			}
 
+			if (log.isDebug()) {
+				log.debug("OpService.module(" + name + "): op=" +
+						module.getDelegateObject().getClass().getName());
+			}
+
 			// found a match!
 			return module;
 		}
@@ -127,10 +132,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final Module module = lookup(name, args);
 		if (module == null) {
 			throw new IllegalArgumentException("No matching op: " + name);
-		}
-		if (log.isDebug()) {
-			log.debug("OpService.run(" + name + "): op=" +
-				module.getDelegateObject().getClass().getName());
 		}
 		return run(module);
 	}
