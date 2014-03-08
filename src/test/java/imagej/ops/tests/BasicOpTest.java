@@ -28,10 +28,11 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import imagej.ops.OpService;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
