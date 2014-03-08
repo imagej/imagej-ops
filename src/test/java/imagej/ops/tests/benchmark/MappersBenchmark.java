@@ -31,16 +31,14 @@
 package imagej.ops.tests.benchmark;
 
 import imagej.module.Module;
-import imagej.ops.Function;
+import imagej.ops.Op;
 import imagej.ops.map.InplaceMapper;
 import imagej.ops.map.Mapper;
 import imagej.ops.map.MapperII;
 import imagej.ops.map.ThreadedInplaceMapperII;
 import imagej.ops.map.ThreadedMapper;
 import imagej.ops.map.ThreadedMapperII;
-import imagej.ops.tests.AbstractOpTest;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -52,11 +50,12 @@ import org.junit.Before;
  * 
  * @author Christian Dietz
  */
-public class MappersBenchmark extends AbstractOpTest {
+public class MappersBenchmark extends AbstractOpBenchmark {
 
 	private Img<ByteType> in;
 	private int numRuns;
 	private Img<ByteType> out;
+	private Op addConstant;
 
 	// run the benchmarks
 	public static void main(final String[] args) {
@@ -78,84 +77,56 @@ public class MappersBenchmark extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 10000, 10000);
-		out = generateByteTestImg(false, 10000, 10000);
+		in = generateByteTestImg(true, 1000, 1000);
+		out = generateByteTestImg(false, 1000, 1000);
+		addConstant = ops.op("addconstant", (byte) 5);
 		numRuns = 10;
 	}
 
 	public void pixelWiseTestMapper() {
-		final Module asModule =
-			ops.module(new Mapper<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), out);
+		final Module module =
+			ops.module(new Mapper<ByteType, ByteType>(), in, addConstant, out);
 
-		System.out.println("[Mapper] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(Mapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestMapperII() {
-		final Module asModule =
-			ops.module(new MapperII<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), out);
+		final Module module =
+			ops.module(new MapperII<ByteType, ByteType>(), in, addConstant, out);
 
-		System.out.println("[MapperII] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(MapperII.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapper() {
-		final Module asModule =
-			ops.module(new ThreadedMapper<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), out);
+		final Module module =
+			ops
+				.module(new ThreadedMapper<ByteType, ByteType>(), in, addConstant, out);
 
-		System.out.println("[ThreadedMapper] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(ThreadedMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {
-		final Module asModule =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>(), out);
+		final Module module =
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in, addConstant,
+				out);
 
-		System.out.println("[ThreadedMapperII] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(ThreadedMapperII.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestMapperInplace() {
-		final Module asModule =
-			ops.module(new InplaceMapper<ByteType>(), in,
-				new DummyPixelOp<ByteType, ByteType>());
+		final Module module =
+			ops.module(new InplaceMapper<ByteType>(), in, addConstant);
 
-		System.out.println("[Inplace Mapper] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(InplaceMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperInplace() {
-		final Module asModule =
+		final Module module =
 			ops.module(new ThreadedInplaceMapperII<ByteType>(), in.copy(),
-				new DummyPixelOp<ByteType, ByteType>());
+				addConstant);
 
-		System.out.println("[Threaded Inplace Mapper] Runtime " +
-			asMilliSeconds(bestOf(asModule, numRuns)) + "!");
+		benchmarkAndPrint(ThreadedInplaceMapperII.class.getSimpleName(), module,
+			numRuns);
 	}
 
-	private double asMilliSeconds(final long nanoTime) {
-		return nanoTime / 1000.0d / 1000.d;
-	}
-
-	public class DummyPixelOp<T extends RealType<T>, V extends RealType<V>>
-		extends Function<T, V>
-	{
-
-		double constant = -5;
-
-		@Override
-		public V compute(final T input, final V output) {
-			output.setReal(input.getRealDouble() + constant);
-			return output;
-		}
-
-		@Override
-		public Function<T, V> copy() {
-			return new DummyPixelOp<T, V>();
-		}
-	}
 }

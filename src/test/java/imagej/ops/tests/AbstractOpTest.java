@@ -99,20 +99,4 @@ public abstract class AbstractOpTest {
 
 		return ArrayImgs.bytes(array, dims);
 	}
-
-	public long bestOf(final Runnable runnable, final int n) {
-		long best = Long.MAX_VALUE;
-
-		for (int i = 0; i < n; i++) {
-			long time = System.nanoTime();
-			runnable.run();
-			time = System.nanoTime() - time;
-
-			if (time < best) {
-				best = time;
-			}
-		}
-
-		return best;
-	}
 }
