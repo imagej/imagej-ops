@@ -48,6 +48,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.scijava.Context;
 
+/**
+ * Testing functionality of SlicingIterableIntervals
+ * 
+ * @author Christian Dietz
+ */
 public class SlicingIterableIntervalTests extends AbstractOpTest {
 
 	private Context context;
