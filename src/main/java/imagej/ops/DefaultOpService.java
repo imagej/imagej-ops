@@ -31,7 +31,6 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
-import imagej.command.CommandModule;
 import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
@@ -42,9 +41,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
-import org.scijava.plugin.AbstractPTService;
+import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
@@ -56,8 +54,8 @@ import org.scijava.util.ConversionUtils;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpService extends AbstractPTService<Op> implements
-	OpService
+public class DefaultOpService extends
+	AbstractSingletonService<OperationMatcher> implements OpService
 {
 
 	@Parameter
@@ -94,52 +92,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
-			if (!name.equals(info.getName())) continue;
-
-			// the name matches; now check the fields
-			final Class<?> opClass;
-			try {
-				opClass = info.loadClass();
+		for (final OperationMatcher matcher : getInstances()) {
+			for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
+				final Module module = matcher.match(info, name, null/*FIXME*/, args);
+				if (module != null) return module;
 			}
-			catch (final InstantiableException exc) {
-				log.error("Invalid op: " + info.getClassName());
-				continue;
-			}
-
-			// check that each parameter is compatible with its argument
-			int i = 0;
-			boolean match = true;
-			for (final ModuleItem<?> item : info.inputs()) {
-				if (i >= args.length) {
-					match = false;
-					continue;
-				} // too few arguments
-				final Object arg = args[i++];
-				if (!canAssign(arg, item)) {
-					match = false;
-					break;
-				}
-			}
-			if (!match) continue; // incompatible arguments
-			if (i != args.length) continue; // too many arguments
-
-			// create module and assign the inputs
-			final CommandModule module = (CommandModule) createModule(info, args);
-
-			// make sure the op itself is happy with these arguments
-			if (Contingent.class.isAssignableFrom(opClass)) {
-				final Contingent c = (Contingent) module.getCommand();
-				if (!c.conforms()) continue;
-			}
-
-			if (log.isDebug()) {
-				log.debug("OpService.module(" + name + "): op=" +
-					module.getDelegateObject().getClass().getName());
-			}
-
-			// found a match!
-			return module;
 		}
 		return null;
 	}
@@ -153,15 +110,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Module assignInputs(final Module module, final Object... args) {
+		int i = 0;
+		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+			assign(module, args[i++], item);
+		}
+		return module;
+	}
+
+	// -- Operation shortcuts --
+
+	@Override
 	public Object add(final Object... o) {
 		return run("add", o);
 	}
 
-	// -- PTService methods --
+	// -- SingletonService methods --
 
 	@Override
-	public Class<Op> getPluginType() {
-		return Op.class;
+	public Class<OperationMatcher> getPluginType() {
+		return OperationMatcher.class;
 	}
 
 	// -- Helper methods --
@@ -178,32 +146,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	private Module createModule(final CommandInfo info, final Object... args) {
-		final Module module = moduleService.createModule(info);
-		getContext().inject(module.getDelegateObject());
-		return assignInputs(module, args);
-	}
-
-	/** Assigns arguments into the given module's inputs. */
-	private Module assignInputs(final Module module, final Object... args) {
-		int i = 0;
-		for (final ModuleItem<?> item : module.getInfo().inputs()) {
-			assign(module, args[i++], item);
-		}
-		return module;
-	}
-
-	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
-		if (arg == null) return !item.isRequired();
-		
-		if (item instanceof CommandModuleItem) {
-			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-			final Type type = commandItem.getField().getGenericType();
-			return ConversionUtils.canConvert(arg, type);
-		}
-		return ConversionUtils.canConvert(arg, item.getType());
 	}
 
 	private void assign(final Module module, final Object arg,

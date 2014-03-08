@@ -33,14 +33,16 @@ package imagej.ops;
 import imagej.module.Module;
 import imagej.service.ImageJService;
 
-import org.scijava.plugin.PTService;
+import org.scijava.plugin.SingletonService;
 
 /**
  * Interface for service that manages and executes {@link Op}s.
  * 
  * @author Curtis Rueden
  */
-public interface OpService extends PTService<Op>, ImageJService {
+public interface OpService extends SingletonService<OperationMatcher>,
+	ImageJService
+{
 
 	/**
 	 * Executes the given operation with the specified arguments. The best
@@ -97,6 +99,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         ready to run.
 	 */
 	Module module(Op op, Object... args);
+
+	/** Assigns arguments into the given module's inputs. */
+	Module assignInputs(Module module, Object... args);
 
 	// -- Operation shortcuts --
 
