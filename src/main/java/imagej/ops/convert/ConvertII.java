@@ -58,7 +58,7 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 		pixConvert.checkInOutTypes(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
 		pixConvert.checkInputSource(input);
-		return (IterableInterval<O>) ops.run("map", input, pixConvert, output);
+		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
 	}
 
 }

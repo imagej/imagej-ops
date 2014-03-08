@@ -116,7 +116,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 					.create(in, in.firstElement().createVariable());
 		}
 
-		Op op = ops.op("convolve", in, kernel, out);
+		final Op op = ops.op("convolve", out, in, kernel);
 		if (in.numDimensions() > kernel.numDimensions()) {
 			if (op instanceof Function) {
 				// if the selected convolve op is a function and the kernel dimensions
@@ -131,7 +131,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 		}
 		else if (in.numDimensions() == kernel.numDimensions()) {
 			// no 'slicing' necessary
-			ops.run(op, in, kernel, out);
+			ops.run(op, out, in, kernel);
 		}
 
 	}

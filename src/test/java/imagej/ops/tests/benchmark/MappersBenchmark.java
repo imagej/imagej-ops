@@ -85,14 +85,14 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapper() {
 		final Module module =
-			ops.module(new Mapper<ByteType, ByteType>(), in, addConstant, out);
+			ops.module(new Mapper<ByteType, ByteType>(), out, in, addConstant);
 
 		benchmarkAndPrint(Mapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestMapperII() {
 		final Module module =
-			ops.module(new MapperII<ByteType, ByteType>(), in, addConstant, out);
+			ops.module(new MapperII<ByteType, ByteType>(), out, in, addConstant);
 
 		benchmarkAndPrint(MapperII.class.getSimpleName(), module, numRuns);
 	}
@@ -100,15 +100,15 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 	public void pixelWiseTestThreadedMapper() {
 		final Module module =
 			ops
-				.module(new ThreadedMapper<ByteType, ByteType>(), in, addConstant, out);
+				.module(new ThreadedMapper<ByteType, ByteType>(), out, in, addConstant);
 
 		benchmarkAndPrint(ThreadedMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {
 		final Module module =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in, addConstant,
-				out);
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), out, in,
+				addConstant, out);
 
 		benchmarkAndPrint(ThreadedMapperII.class.getSimpleName(), module, numRuns);
 	}

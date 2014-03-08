@@ -60,7 +60,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10, 10);
-		op = ops.op("addconstant", (byte) 10);
+		op = ops.op("add", (byte) 10);
 	}
 
 	@Test
@@ -69,20 +69,20 @@ public class ThreadedMapperTests extends AbstractOpTest {
 		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
 
 		final Module naiveMapper =
-			ops.module(new MapperII<ByteType, ByteType>(), in, op, outNaive);
+			ops.module(new MapperII<ByteType, ByteType>(), outNaive, in, op);
 
 		naiveMapper.run();
 
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Module threadedMapper =
-			ops.module(new ThreadedMapper<ByteType, ByteType>(), in, op, outThreaded);
+			ops.module(new ThreadedMapper<ByteType, ByteType>(), outThreaded, in, op);
 
 		threadedMapper.run();
 
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 		final Module threadedMapperII =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>(), in, op,
-				outThreadedII);
+			ops.module(new ThreadedMapperII<ByteType, ByteType>(), outThreadedII, in,
+				op);
 
 		threadedMapperII.run();
 

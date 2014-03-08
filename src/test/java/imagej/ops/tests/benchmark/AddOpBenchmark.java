@@ -76,7 +76,7 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void usingAddConstantFunctional() {
 		final Module module =
-			ops.module(new AddConstantToImageFunctional<ByteType>(), in, out,
+			ops.module(new AddConstantToImageFunctional<ByteType>(), out, in,
 				new ByteType((byte) 10));
 		benchmarkAndPrint("Functional AddConstant", module, numRuns);
 	}

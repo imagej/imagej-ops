@@ -51,13 +51,13 @@ public class ConvertIITest extends AbstractOpTest {
 	@Test
 	public void test() throws IncompatibleTypeException {
 
-		Img<ShortType> img =
+		final Img<ShortType> img =
 			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
 				new ShortType());
-		Img<ByteType> res =
+		final Img<ByteType> res =
 			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.run("convert", img, res, new ConvertPixCopy<ShortType, ByteType>());
+		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
 
 		// FIXME won't work neither, as the pre-processor to create the result is
 		// missing

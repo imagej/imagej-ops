@@ -69,7 +69,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 			assertEquals((byte) 0, result[i]);
 		}
 
-		ops.add(img, img2, resultImg);
+		ops.add(resultImg, img, img2);
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + (5 + ((3 * i) % 7))), result[i]);
@@ -92,7 +92,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 			assertEquals((short) 0, result[i]);
 		}
 
-		ops.add(img, img2, resultImg);
+		ops.add(resultImg, img, img2);
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (short) (i + (5 + ((3 * i) % 7))), result[i]);
@@ -131,7 +131,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 			t.set(i-- / 2);
 		}
 
-		ops.run("subtract", a, b, result);
+		ops.run("subtract", result, a, b);
 
 		i = 0;
 		for (final IntType t : result) {
@@ -150,7 +150,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 			array[i] = (byte) i;
 		}
 
-		ops.add(img, new ByteType((byte) 17), img);
+		ops.add(img, img, new ByteType((byte) 17));
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + 17), array[i]);

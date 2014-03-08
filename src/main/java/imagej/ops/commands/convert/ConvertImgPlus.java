@@ -59,7 +59,7 @@ public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void run() {
-		ops.run("convert", in, conversionMethod, out);
+		ops.run("convert", out, in, conversionMethod);
 	}
 
 }

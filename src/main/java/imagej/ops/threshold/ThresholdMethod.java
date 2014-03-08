@@ -50,14 +50,14 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private T threshold;
+
 	@Parameter
 	private IterableInterval<T> img;
 
 	@Parameter
 	private OpService opService;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
 
 	@Override
 	public void run() {
