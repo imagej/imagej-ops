@@ -31,14 +31,14 @@
 package imagej.ops.experimental;
 
 import imagej.ops.Op;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddConstantToNumericType<T extends NumericType<T>> extends UnaryFunction<T, T> {
+public class AddConstantToNumericType<T extends NumericType<T>> extends Function<T, T> {
 
 	@Parameter
 	private T value;
@@ -51,7 +51,7 @@ public class AddConstantToNumericType<T extends NumericType<T>> extends UnaryFun
 	}
 
 	@Override
-	public UnaryFunction<T, T> copy() {
+	public Function<T, T> copy() {
 		final AddConstantToNumericType<T> copy = new AddConstantToNumericType<T>();
 		copy.value = value;
 		return copy;

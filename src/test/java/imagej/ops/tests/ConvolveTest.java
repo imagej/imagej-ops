@@ -30,8 +30,8 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertEquals;
-import imagej.module.Module;
+import static org.junit.Assert.assertSame;
+import imagej.ops.Op;
 import imagej.ops.convolve.ConvolveFourier;
 import imagej.ops.convolve.ConvolveNaive;
 import net.imglib2.img.Img;
@@ -40,8 +40,12 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
+/**
+ * Tests involving convolvers.
+ */
 public class ConvolveTest extends AbstractOpTest {
 
+		/** Tests that the correct convolver is selected. */
     @Test
     public void testConvolveMethodSelection() {
 
@@ -54,17 +58,15 @@ public class ConvolveTest extends AbstractOpTest {
         Img<ByteType> kernel =
                 new ArrayImgFactory<ByteType>().create(new int[]{3, 3},
                         new ByteType());
-        Module module = ops.lookup("convolve", in, kernel, out);
-        assertEquals(module.getInfo().getDelegateClassName(),
-                ConvolveNaive.class.getName());
+        Op op = ops.op("convolve", in, kernel, out);
+        assertSame(ConvolveNaive.class, op.getClass());
 
         // testing for a 'bigger' kernel
         kernel =
                 new ArrayImgFactory<ByteType>().create(new int[]{10, 10},
                         new ByteType());
-        module = ops.lookup("convolve", in, kernel, out);
-        assertEquals(module.getInfo().getDelegateClassName(),
-                ConvolveFourier.class.getName());
+        op = ops.op("convolve", in, kernel, out);
+        assertSame(ConvolveFourier.class, op.getClass());
 
     }
 }

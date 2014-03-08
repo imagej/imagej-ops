@@ -31,7 +31,7 @@
 package imagej.ops.convert;
 
 import imagej.ops.Contingent;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -39,7 +39,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
-	extends UnaryFunction<I, O> implements Contingent
+	extends Function<I, O> implements Contingent
 {
 
 	@Parameter

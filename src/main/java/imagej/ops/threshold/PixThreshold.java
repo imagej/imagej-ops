@@ -31,7 +31,7 @@
 package imagej.ops.threshold;
 
 import imagej.ops.Op;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.type.logic.BitType;
 
 import org.scijava.plugin.Parameter;
@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "pixThreshold")
 public class PixThreshold<T extends Comparable<T>> extends
-	UnaryFunction<T, BitType>
+	Function<T, BitType>
 {
 
 	@Parameter
@@ -56,7 +56,7 @@ public class PixThreshold<T extends Comparable<T>> extends
 	}
 
 	@Override
-	public UnaryFunction<T, BitType> copy() {
+	public Function<T, BitType> copy() {
 		final PixThreshold<T> func = new PixThreshold<T>();
 		func.threshold = threshold;
 		return func;

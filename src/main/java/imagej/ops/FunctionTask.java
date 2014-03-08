@@ -37,15 +37,15 @@ package imagej.ops;
  * @param <A>
  * @param <B>
  */
-public class UnaryFunctionTask<A, B> implements Runnable {
+public class FunctionTask<A, B> implements Runnable {
 
-	private final UnaryFunction<A, B> m_op;
+	private final Function<A, B> m_op;
 
 	private final A m_in;
 
 	private final B m_out;
 
-	public UnaryFunctionTask(final UnaryFunction<A, B> op, final A in, final B out)
+	public FunctionTask(final Function<A, B> op, final A in, final B out)
 	{
 		m_in = in;
 		m_out = out;

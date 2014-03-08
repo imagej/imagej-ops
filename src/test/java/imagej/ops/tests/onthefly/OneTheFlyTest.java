@@ -30,6 +30,7 @@
 package imagej.ops.tests.onthefly;
 
 import static org.junit.Assert.assertEquals;
+import imagej.ops.Op;
 import imagej.ops.tests.AbstractOpTest;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
@@ -43,11 +44,16 @@ import net.imglib2.type.numeric.integer.ShortType;
 
 import org.junit.Test;
 
-
+/**
+ * Tests the {@link Op} generator.
+ * 
+ * @author Johannes Schindelin
+ */
 public class OneTheFlyTest extends AbstractOpTest {
 	private final int pixelCount = 256 * 256;
 	private final long[] dimensions = new long[] { 256, 256 };
 
+	/** Tests the "add" op on byte typed images. */
 	@Test
 	public void testByte() {
 		final byte[] array = new byte[pixelCount];
@@ -70,6 +76,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 		}
 	}
 
+	/** Tests the "add" op on short typed images. */
 	@Test
 	public void testShort() {
 		final short[] array = new short[pixelCount];
@@ -93,6 +100,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 	}
 
 
+	/** Tests the "divide" op on byte typed images. */
 	@Test
 	public void testDivide() {
 		final short[] array = new short[512];
@@ -109,6 +117,7 @@ public class OneTheFlyTest extends AbstractOpTest {
 		}
 	}
 
+	/** Tests the "subtract" op on int typed {@link PlanarImg}s. */
 	@Test
 	public void testPlanaer() {
 		final PlanarImg<IntType, ?> a = PlanarImgs.ints(dimensions);

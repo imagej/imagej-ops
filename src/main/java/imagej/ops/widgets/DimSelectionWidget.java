@@ -28,33 +28,16 @@
  * #L%
  */
 
-package imagej.ops.experimental;
+package imagej.ops.widgets;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Function;
+import imagej.widget.InputWidget;
+import net.imglib2.meta.TypedAxis;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "apply")
-public class ApplyFunctionOverIterable<T> implements Op {
-
-	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private Function<T, T> op;
-
-	@Parameter(type = ItemIO.BOTH)
-	private Iterable<T> image;
-	
-	@Override
-	public void run() {
-		for (final T t : image) {
-			op.compute(t, t);
-		}
-	}
-
+/**
+ * Widget interface for dimension selectors.
+ * 
+ * @author Curtis Rueden
+ */
+public interface DimSelectionWidget<U> extends InputWidget<TypedAxis[], U> {
+	// NB: No changes to interface.
 }

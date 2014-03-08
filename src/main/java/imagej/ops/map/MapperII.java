@@ -32,7 +32,7 @@ package imagej.ops.map;
 
 import imagej.ops.Contingent;
 import imagej.ops.Op;
-import imagej.ops.UnaryFunction;
+import imagej.ops.Function;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -54,7 +54,7 @@ public class MapperII<A, B> implements Op, Contingent {
 	private IterableInterval<A> in;
 
 	@Parameter
-	private UnaryFunction<A, B> func;
+	private Function<A, B> func;
 
 	@Parameter(type = ItemIO.BOTH)
 	private IterableInterval<B> out;

@@ -72,14 +72,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- OpService methods --
 
 	@Override
+	public Object run(final String name, final Object... args) {
+		final Module module = module(name, args);
+		if (module == null) {
+			throw new IllegalArgumentException("No matching op: " + name);
+		}
+		return run(module);
+	}
+
+	@Override
+	public Object run(final Op op, final Object... args) {
+		return run(module(op, args));
+	}
+
+	@Override
 	public Op op(String name, Object... args) {
-		Module module = lookup(name, args);
+		final Module module = module(name, args);
 		if (module == null) return null;
 		return (Op) module.getDelegateObject();
 	}
 
 	@Override
-	public Module lookup(final String name, final Object... args) {
+	public Module module(final String name, final Object... args) {
 		for (final CommandInfo info : commandService.getCommandsOfType(Op.class)) {
 			if (!name.equals(info.getName())) continue;
 
@@ -116,6 +130,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 				if (!c.conforms()) continue;
 			}
 
+			if (log.isDebug()) {
+				log.debug("OpService.module(" + name + "): op=" +
+						module.getDelegateObject().getClass().getName());
+			}
+
 			// found a match!
 			return module;
 		}
@@ -123,17 +142,23 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object run(final String name, final Object... args) {
-		final Module module = lookup(name, args);
-		if (module == null) {
-			throw new IllegalArgumentException("No matching op: " + name);
-		}
-		return run(module);
+	public Module module(final Op op, final Object... args) {
+		final CommandInfo info = commandService.getCommand(op.getClass());
+		final Module module = info.createModule(op);
+		getContext().inject(module.getDelegateObject());
+		return assignInputs(module, args);
 	}
 
 	@Override
-	public Object run(final Op op, final Object... args) {
-		return run(createModule(op, args));
+	public Object add(final Object... o) {
+		return run("add", o);
+	}
+
+	// -- PTService methods --
+
+	@Override
+	public Class<Op> getPluginType() {
+		return Op.class;
 	}
 
 	// -- Helper methods --
@@ -150,33 +175,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	@Override
-	public Object add(final Object... o) {
-		return run("add", o);
-	}
-
-	@Override
-	public Module asModule(final Op op) {
-		final CommandInfo info = commandService.getCommand(op.getClass());
-		final Module module = info.createModule(op);
-		getContext().inject(module.getDelegateObject());
-		return module;
-	}
-
-	// -- PTService methods --
-
-	@Override
-	public Class<Op> getPluginType() {
-		return Op.class;
-	}
-
-	// -- Helper methods --
-
-	private Module createModule(final Op op, final Object... args) {
-		final Module module = asModule(op);
-		return assignInputs(module, args);
 	}
 
 	private Module createModule(final CommandInfo info, final Object... args) {

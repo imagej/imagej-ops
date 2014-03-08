@@ -31,6 +31,7 @@
 package imagej.ops.convolve;
 
 import imagej.ops.Contingent;
+import imagej.ops.Function;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -40,7 +41,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,37 +49,35 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "convolve")
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
-	implements Op, Contingent
+	extends Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements Contingent
 {
-
-	@Parameter
-	private RandomAccessibleInterval<I> in;
 
 	@Parameter
 	private RandomAccessibleInterval<K> kernel;
 
-	@Parameter(type = ItemIO.BOTH)
-	private RandomAccessibleInterval<O> out;
-
 	@Override
-	public void run() {
+	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
+	{
 		// TODO: try a decomposition of the kernel into n 1-dim kernels
 
-		final long[] min = new long[in.numDimensions()];
-		final long[] max = new long[in.numDimensions()];
+		final long[] min = new long[input.numDimensions()];
+		final long[] max = new long[input.numDimensions()];
 
 		for (int d = 0; d < kernel.numDimensions(); d++) {
 			min[d] = -kernel.dimension(d);
-			max[d] = kernel.dimension(d) + out.dimension(d);
+			max[d] = kernel.dimension(d) + output.dimension(d);
 		}
 
-		final RandomAccess<I> inRA = in.randomAccess(new FinalInterval(min, max));
+		final RandomAccess<I> inRA =
+			input.randomAccess(new FinalInterval(min, max));
 
 		final Cursor<K> kernelC = Views.iterable(kernel).localizingCursor();
 
-		final Cursor<O> outC = Views.iterable(out).localizingCursor();
+		final Cursor<O> outC = Views.iterable(output).localizingCursor();
 
-		final long[] pos = new long[in.numDimensions()];
+		final long[] pos = new long[input.numDimensions()];
 		final long[] kernelRadius = new long[kernel.numDimensions()];
 		for (int i = 0; i < kernelRadius.length; i++) {
 			kernelRadius[i] = kernel.dimension(i) / 2;
@@ -120,6 +118,14 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 
 			outC.get().setReal(val);
 		}
+		return output;
+	}
+
+	@Override
+	public ConvolveNaive<I, K, O> copy() {
+		ConvolveNaive<I, K, O> conv = new ConvolveNaive<I, K, O>();
+		conv.kernel = kernel;
+		return conv;
 	}
 
 	@Override

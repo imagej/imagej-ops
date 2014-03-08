@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates an {@link UnaryFunction} for each {@link Neighborhood} on the in
+ * Evaluates an {@link Function} for each {@link Neighborhood} on the in
  * {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz
@@ -61,7 +61,7 @@ public class NeighborhoodOp<I, O> implements Op {
 	private RandomAccessibleInterval<O> out;
 
 	@Parameter
-	private UnaryFunction<Iterable<I>, O> func;
+	private Function<Iterable<I>, O> func;
 
 	@Override
 	public void run() {

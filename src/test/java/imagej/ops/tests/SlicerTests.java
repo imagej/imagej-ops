@@ -31,6 +31,7 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
+import imagej.ops.slicer.Slicer;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -46,7 +47,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing slicers as well as slicer selection.
+ * Tests the {@link Slicer}.
  * 
  * @author Christian Dietz
  */
@@ -62,6 +63,10 @@ public class SlicerTests extends AbstractOpTest {
 		in = ArrayImgs.bytes(20, 20, 20);
 	}
 
+	/**
+	 * Verifies that the types of the objects returned by the {@link Slicer} are
+	 * correct.
+	 */
 	@Test
 	public void testSlicerTypes() {
 
@@ -88,6 +93,7 @@ public class SlicerTests extends AbstractOpTest {
 		assertTrue(run instanceof RandomAccessibleInterval && !(run instanceof Img));
 	}
 
+	/** Tests the result of the slicing. */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testSlicerResults() {
