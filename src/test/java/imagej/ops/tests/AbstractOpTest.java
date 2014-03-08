@@ -31,17 +31,30 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
+import imagej.ops.Op;
 import imagej.ops.OpService;
 
 import org.junit.After;
 import org.junit.Before;
 import org.scijava.Context;
 
+/**
+ * Base class for {@link Op} unit testing.
+ * <p>
+ * <i>All</i> {@link Op} unit tests need to have an {@link OpService} instance.
+ * Following the DRY principle, we should implement it only once. Here.
+ * </p>
+ * 
+ * @author Johannes Schindelin
+ */
 public abstract class AbstractOpTest {
 
 	protected Context context;
 	protected OpService ops;
 
+	/**
+	 * Sets up an {@link OpService}.
+	 */
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class);
@@ -49,16 +62,15 @@ public abstract class AbstractOpTest {
 		assertTrue(ops != null);
 	}
 
+	/**
+	 * Disposes of the {@link OpService} that was initialized in {@link #setUp()}.
+	 */
 	@After
 	public synchronized void cleanUp() {
 		if (context != null) {
 			context.dispose();
 			context = null;
 		}
-	}
-
-	public AbstractOpTest() {
-		super();
 	}
 
 }
