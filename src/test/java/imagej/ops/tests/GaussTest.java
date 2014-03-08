@@ -30,37 +30,13 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertTrue;
-import imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.scijava.Context;
 
-public class GaussTest {
-
-    private Context context;
-
-    private OpService ops;
-
-    @Before
-    public void setUp() {
-        context = new Context(OpService.class);
-        ops = context.getService(OpService.class);
-        assertTrue(ops != null);
-    }
-
-    @After
-    public synchronized void cleanUp() {
-        if (context != null) {
-            context.dispose();
-            context = null;
-        }
-    }
+public class GaussTest extends AbstractOpTest {
 
     @Test
     public void test() {

@@ -2,7 +2,6 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
-import imagej.ops.OpService;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -14,34 +13,18 @@ import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.view.Views;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.scijava.Context;
 
-public class SlicerTests {
-
-	private Context context;
-
-	private OpService ops;
+public class SlicerTests extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
 	@Before
 	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
 		assertTrue(ops != null);
 
 		in = ArrayImgs.bytes(20, 20, 20);
-	}
-
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
 	}
 
 	@Test
