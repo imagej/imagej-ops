@@ -50,11 +50,12 @@ public class SlicingService extends AbstractService implements ImageJService {
 	protected OpService opService;
 
 	public RandomAccessibleInterval<?> process(
-			final RandomAccessibleInterval<?> src,
-			final RandomAccessibleInterval<?> res, final int[] axis, final Op op) {
+		final RandomAccessibleInterval<?> src,
+		final RandomAccessibleInterval<?> res, final int[] axis, final Op op)
+	{
 
 		return (RandomAccessibleInterval<?>) opService.run("map",
-				new SliceIterableInterval(opService, src, axis),
-				new SliceIterableInterval(opService, res, axis), op);
+			new SliceIterableInterval(opService, src, axis),
+			new SliceIterableInterval(opService, res, axis), op);
 	}
 }

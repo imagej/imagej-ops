@@ -44,13 +44,13 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Christian Dietz
  * @author Martin Horn
- * 
  * @param <A>
  * @param <B>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
 public class ThreadedMapperII<A, B> extends AbstractThreadedMapper implements
-		Contingent {
+	Contingent
+{
 
 	@Parameter
 	private IterableInterval<A> in;

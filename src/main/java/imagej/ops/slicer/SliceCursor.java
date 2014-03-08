@@ -42,7 +42,8 @@ import net.imglib2.iterator.IntervalIterator;
  * @author Christian Dietz
  */
 public class SliceCursor extends IntervalIterator implements
-		Cursor<RandomAccessibleInterval<?>> {
+	Cursor<RandomAccessibleInterval<?>>
+{
 
 	private final long[] tmpPosition;
 	private final OpService opService;
@@ -50,8 +51,8 @@ public class SliceCursor extends IntervalIterator implements
 	private final long[] hyperSliceMax;
 
 	public SliceCursor(final RandomAccessibleInterval<?> src,
-			final OpService service, final Interval fixed,
-			final Interval hyperSlice) {
+		final OpService service, final Interval fixed, final Interval hyperSlice)
+	{
 		super(fixed);
 
 		this.opService = service;
@@ -78,7 +79,7 @@ public class SliceCursor extends IntervalIterator implements
 	public RandomAccessibleInterval<?> get() {
 		localize(tmpPosition);
 		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
-				new FinalInterval(tmpPosition, hyperSliceMax));
+			new FinalInterval(tmpPosition, hyperSliceMax));
 	}
 
 	@Override

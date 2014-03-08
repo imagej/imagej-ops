@@ -43,7 +43,8 @@ public abstract class AbstractSlicer implements Slicer {
 
 	@Override
 	public <T> RandomAccessibleInterval<T> hyperSlice(
-			final RandomAccessibleInterval<T> in, final Interval i) {
+		final RandomAccessibleInterval<T> in, final Interval i)
+	{
 		boolean oneSizedDims = false;
 
 		for (int d = 0; d < in.numDimensions(); d++) {
@@ -53,20 +54,18 @@ public abstract class AbstractSlicer implements Slicer {
 			}
 		}
 
-		if (Intervals.equals(in, i) && !oneSizedDims)
-			return in;
+		if (Intervals.equals(in, i) && !oneSizedDims) return in;
 
 		IntervalView<T> res;
-		if (Intervals.contains(in, i))
-			res = Views.offsetInterval(in, i);
+		if (Intervals.contains(in, i)) res = Views.offsetInterval(in, i);
 		else {
 			throw new RuntimeException(
-					"Interval must fit into src in SubsetViews.subsetView(...)");
+				"Interval must fit into src in SubsetViews.subsetView(...)");
 		}
 
 		for (int d = i.numDimensions() - 1; d >= 0; --d)
-			if (i.dimension(d) == 1 && res.numDimensions() > 1)
-				res = Views.hyperSlice(res, d, 0);
+			if (i.dimension(d) == 1 && res.numDimensions() > 1) res =
+				Views.hyperSlice(res, d, 0);
 
 		return res;
 	}

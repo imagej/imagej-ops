@@ -44,7 +44,6 @@ import org.scijava.thread.ThreadService;
  * Abstract Threader for MultiThreading of mappings of {@link UnaryFunction}s
  * 
  * @author Christian Dietz
- * 
  */
 public abstract class AbstractThreadedMapper implements Op, Cancelable {
 
@@ -54,32 +53,32 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 	private String cancelationMessage;
 
 	protected abstract void runThread(final int firstElement,
-			final int lastElement);
+		final int lastElement);
 
 	protected void runThreading(final long numElements) {
 
 		// TODO: is there a better way to determine the optimal chunk size?
-		final int numChunks = (int) (numElements / Runtime.getRuntime()
-				.availableProcessors());
+		final int numChunks =
+			(int) (numElements / Runtime.getRuntime().availableProcessors());
 
 		final int chunkSize = (int) (numElements / numChunks);
 
 		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
 
 		for (int i = 0; i < numChunks - 1; i++) {
-			futures.add(threadService.run(new ChunkedUnaryFunctionTask(i
-					* chunkSize, (i * chunkSize + chunkSize) - 1)));
+			futures.add(threadService.run(new ChunkedUnaryFunctionTask(i * chunkSize,
+				(i * chunkSize + chunkSize) - 1)));
 		}
 
 		// last chunk gets the rest
-		futures.add(threadService.run(new ChunkedUnaryFunctionTask(
-				(numChunks - 1) * chunkSize,
-				(int) (chunkSize + (numElements % chunkSize)))));
+		futures.add(threadService.run(new ChunkedUnaryFunctionTask((numChunks - 1) *
+			chunkSize, (int) (chunkSize + (numElements % chunkSize)))));
 
 		for (final Future<?> future : futures) {
 			try {
 				future.get();
-			} catch (final Exception e) {
+			}
+			catch (final Exception e) {
 				cancelationMessage = e.getMessage();
 				break;
 			}
@@ -103,7 +102,8 @@ public abstract class AbstractThreadedMapper implements Op, Cancelable {
 		private final int lastElement;
 
 		public ChunkedUnaryFunctionTask(final int firstElement,
-				final int lastElement) {
+			final int lastElement)
+		{
 			this.firstElement = firstElement;
 			this.lastElement = lastElement;
 		}

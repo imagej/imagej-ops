@@ -49,7 +49,8 @@ import net.imglib2.util.Intervals;
  * @author Christian Dietz
  */
 public class SliceIterableInterval extends AbstractInterval implements
-		IterableInterval<RandomAccessibleInterval<?>> {
+	IterableInterval<RandomAccessibleInterval<?>>
+{
 
 	private final Interval hyperSlice;
 
@@ -58,7 +59,8 @@ public class SliceIterableInterval extends AbstractInterval implements
 	private final RandomAccessibleInterval<?> source;
 
 	public SliceIterableInterval(final OpService opService,
-			final RandomAccessibleInterval<?> source, final int[] axesOfInterest) {
+		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
+	{
 		super(initIntervals(source, axesOfInterest));
 
 		final long[] hyperSliceDims = new long[source.numDimensions()];
@@ -66,7 +68,8 @@ public class SliceIterableInterval extends AbstractInterval implements
 		for (int d = 0; d < source.numDimensions(); d++) {
 			if (dimension(d) == 1) {
 				hyperSliceDims[d] = source.dimension(d);
-			} else {
+			}
+			else {
 				hyperSliceDims[d] = 1;
 			}
 		}
@@ -77,8 +80,9 @@ public class SliceIterableInterval extends AbstractInterval implements
 	}
 
 	// init method
-	private static Interval initIntervals(
-			final RandomAccessibleInterval<?> src, final int[] axesOfInterest) {
+	private static Interval initIntervals(final RandomAccessibleInterval<?> src,
+		final int[] axesOfInterest)
+	{
 
 		final long[] dimensionsToIterate = new long[src.numDimensions()];
 
