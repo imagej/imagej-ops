@@ -87,10 +87,9 @@ public class ThreadedMapperTests extends AbstractOpTest {
 
 		threadedMapperII.run();
 
-		final Img<ByteType> outThreadedInplaceII =
-			generateByteTestImg(false, 10, 10);
+		final Img<ByteType> outThreadedInplaceII = in.copy();
 		final Module threadedMapperInplaceII =
-			ops.module(new ThreadedInplaceMapperII<ByteType>(), in,
+			ops.module(new ThreadedInplaceMapperII<ByteType>(), outThreadedInplaceII,
 				new DummyPixelOp<ByteType, ByteType>());
 
 		threadedMapperInplaceII.run();
