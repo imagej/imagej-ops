@@ -78,8 +78,12 @@ public class ConvertIITest {
 		Img<ByteType> res =
 			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.run("convert", img, new ConvertPixCopy(), res);
+		// TODO won't work for now, as UnaryFunction's out is ItemIO.OUTPUT
+		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>(), res);
 
-		System.out.println("test");
+		// TODO won't work neither, as the pre-processor to create the result is
+		// missing
+		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+
 	}
 }

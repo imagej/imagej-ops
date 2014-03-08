@@ -36,7 +36,6 @@ import imagej.ops.UnaryFunction;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -46,13 +45,7 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 {
 
 	@Parameter
-	private IterableInterval<I> in;
-
-	@Parameter
 	private ConvertPix<I, O> pixConvert;
-
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<O> out;
 
 	@Parameter
 	private OpService ops;
@@ -63,8 +56,8 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 	{
 		pixConvert.checkInOutTypes(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
-		pixConvert.checkInputSource(in);
-		return (IterableInterval<O>) ops.run("map", in, pixConvert, out);
+		pixConvert.checkInputSource(input);
+		return (IterableInterval<O>) ops.run("map", input, pixConvert, output);
 	}
 
 	@Override
