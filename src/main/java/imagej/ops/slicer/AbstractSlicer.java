@@ -59,8 +59,7 @@ public abstract class AbstractSlicer implements Slicer {
 		IntervalView<T> res;
 		if (Intervals.contains(in, i)) res = Views.offsetInterval(in, i);
 		else {
-			throw new RuntimeException(
-				"Interval must fit into src in SubsetViews.subsetView(...)");
+			throw new RuntimeException("Intervals don't match!");
 		}
 
 		for (int d = i.numDimensions() - 1; d >= 0; --d)
