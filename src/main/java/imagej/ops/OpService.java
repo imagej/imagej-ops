@@ -46,10 +46,12 @@ public interface OpService extends SingletonService<OperationMatcher>,
 
 	/**
 	 * Executes the given operation with the specified arguments. The best
-	 * {@link Op} implementation to use will be determined automatically from the
+	 * {@link Op} implementation to use will be selected automatically from the
 	 * operation name and arguments.
 	 * 
-	 * @param name The operation to execute.
+	 * @param name The operation to execute. If multiple {@link Op}s share this
+	 *          name, then the best {@link Op} implementation to use will be
+	 *          selected automatically from the name and arguments.
 	 * @param args The operation's arguments.
 	 * @return The result of the execution. If the {@link Op} has no outputs, this
 	 *         will return {@code null}. If exactly one output, it will be
@@ -71,9 +73,12 @@ public interface OpService extends SingletonService<OperationMatcher>,
 	Object run(Op op, Object... args);
 
 	/**
-	 * Gets the best {@link Op} to use for the given operation and arguments.
+	 * Gets the best {@link Op} to use for the given operation and arguments,
+	 * populating its inputs.
 	 * 
-	 * @param name The name of the operation.
+	 * @param name The name of the operation. If multiple {@link Op}s share this
+	 *          name, then the best {@link Op} implementation to use will be
+	 *          selected automatically from the name and arguments.
 	 * @param args The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
