@@ -46,6 +46,7 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -143,9 +144,15 @@ public abstract class ArithmeticOp implements Op, Contingent {
 			final Object access = ((ArrayImg<?, ?>) this.a).update(null);
 			if (access instanceof ArrayDataAccess) {
 				final Object a = ((ArrayDataAccess<?>) access).getCurrentStorageArray();
-				final Object b = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.b).update(null)).getCurrentStorageArray();
 				final Object result = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.result).update(null)).getCurrentStorageArray();
-				getMyOp(a.getClass(), name, operator).run(a, b, result);
+				if (b instanceof RealType) {
+					final double b = ((RealType<?>) this.b).getRealDouble();
+					getMyConstantOp(a.getClass(), name, operator).run(a, b, result);
+				}
+				else {
+					final Object b = ((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.b).update(null)).getCurrentStorageArray();
+					getMyOp(a.getClass(), name, operator).run(a, b, result);
+				}
 				return;
 			}
 		}
@@ -174,6 +181,17 @@ public abstract class ArithmeticOp implements Op, Contingent {
 			if (!(aData instanceof ArrayDataAccess)) return false;
 			final Object bData = bImg.update(null);
 			if (aData.getClass() != bData.getClass()) return false;
+			final Object resultData = resultImg.update(null);
+			if (aData.getClass() != resultData.getClass()) return false;
+			return true;
+		}
+		if (a instanceof ArrayImg && b instanceof RealType && result instanceof ArrayImg) {
+			final ArrayImg<?, ?> aImg = (ArrayImg<?, ?>) a;
+			final ArrayImg<?, ?> resultImg = (ArrayImg<?, ?>) result;
+			if (!dimensionsMatch(aImg, resultImg)) return false;
+			final Object aData = aImg.update(null);
+			if (!(aData instanceof ArrayDataAccess)) return false;
+			// TODO: verify that a matches b: final RealType<?> bType = (RealType<?>) b;
 			final Object resultData = resultImg.update(null);
 			if (aData.getClass() != resultData.getClass()) return false;
 			return true;
@@ -233,6 +251,42 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				+ "  " + type + " result2 = (" + type + ") result;\n"
 				+ "  for (int i = 0; i < a2.length; i++) {\n"
 				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2[i]);\n"
+				+ "  }\n"
+				+ "}";
+			clazz.addMethod(CtNewMethod.make(src, clazz));
+			op = (MyOp) clazz.toClass(loader, null).newInstance();
+			ops.put(myOpName, op);
+			return op;
+		} catch (Throwable t) {
+			throw new RuntimeException(t);
+		}
+	}
+
+	private MyOp getMyConstantOp(final Class<?> forClass, final String name, final String operator) {
+		final String componentType = forClass.getComponentType().getSimpleName();
+		final String myOpName = "myConstantOp$" + name + "$" + componentType;
+		MyOp op = ops.get(myOpName);
+		if (op != null) return op;
+
+		final String boxedType;
+		if (componentType.equals("int")) {
+			boxedType = "Integer";
+		}
+		else {
+			boxedType = componentType.substring(0, 1).toUpperCase() + componentType.substring(1);
+		}
+
+		try {
+			final String type = forClass.getSimpleName();
+			final CtClass clazz = pool.makeClass(myOpName, pool.get(Object.class.getName()));
+			clazz.addInterface(pool.get(MyOp.class.getName()));
+			final String src =
+					"public void run(java.lang.Object a, java.lang.Object b, java.lang.Object result) {\n"
+				+ "  " + type + " a2 = (" + type + ") a;\n"
+				+ "  " + componentType + " b2 = (" + componentType + ") ((Double) b).doubleValue();\n"
+				+ "  " + type + " result2 = (" + type + ") result;\n"
+				+ "  for (int i = 0; i < a2.length; i++) {\n"
+				+ "    result2[i] = (" + componentType + ") (a2[i] " + operator + " b2);\n"
 				+ "  }\n"
 				+ "}";
 			clazz.addMethod(CtNewMethod.make(src, clazz));
