@@ -31,7 +31,9 @@
 package imagej.ops.commands.threshold;
 
 import imagej.command.Command;
-import imagej.ops.slicer.SlicingService;
+import imagej.ops.OpService;
+import imagej.ops.slicer.DefaultSliceMapper;
+import imagej.ops.slicer.SliceMapper;
 import imagej.ops.threshold.ThresholdMethod;
 import net.imglib2.Axis;
 import net.imglib2.meta.ImgPlus;
@@ -52,6 +54,9 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
 	@Parameter
 	private ThresholdMethod<T> method;
 
+	@Parameter
+	private OpService opService;
+
 	// should not be Dataset, DisplayService, ...
 	@Parameter
 	private ImgPlus<T> src;
@@ -64,17 +69,15 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
 	@Parameter
 	private Axis[] axes;
 
-	@Parameter
-	private SlicingService sliceService;
-
 	@Override
 	public void run() {
 
-		final imagej.ops.threshold.GlobalThresholder<T> thresholder =
-			new imagej.ops.threshold.GlobalThresholder<T>();
+		final imagej.ops.threshold.GlobalThresholder<T> thresholder = new imagej.ops.threshold.GlobalThresholder<T>();
 		thresholder.setMethod(method);
 
-		sliceService.process(src, res, new int[] { 1, 2 }, thresholder);
+		// TODO actually map axes to int array
+		opService.run(SliceMapper.class, res, src, thresholder, new int[] { 1,
+				2 });
 
 	}
 }

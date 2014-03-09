@@ -57,16 +57,13 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
-	private SlicingService slicerService;
-
 	private ArrayImg<ByteType, ByteArray> out;
 
 	@Override
 	@Before
 	public void setUp() {
-		context = new Context(OpService.class, SlicingService.class);
+		context = new Context(OpService.class);
 		ops = context.service(OpService.class);
-		slicerService = context.service(SlicingService.class);
 
 		in = ArrayImgs.bytes(20, 20, 21);
 		out = ArrayImgs.bytes(20, 20, 21);
@@ -85,7 +82,7 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };
 
-		slicerService.process(in, out, xyAxis, new DummyOp());
+		ops.run(SliceMapper.class, out, in, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
@@ -93,12 +90,12 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 		}
 	}
 
-	class DummyOp extends AbstractFunction<Iterable<ByteType>, Iterable<ByteType>> {
+	class DummyOp extends
+			AbstractFunction<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
 		public Iterable<ByteType> compute(final Iterable<ByteType> input,
-			final Iterable<ByteType> output)
-		{
+				final Iterable<ByteType> output) {
 			final Iterator<ByteType> itA = input.iterator();
 			final Iterator<ByteType> itB = output.iterator();
 

@@ -30,34 +30,44 @@
 
 package imagej.ops.slicer;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.service.ImageJService;
 import net.imglib2.RandomAccessibleInterval;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
-import org.scijava.service.Service;
 
 /**
  * @author Christian Dietz
  */
-@Plugin(type = Service.class)
-public class SlicingService extends AbstractService implements ImageJService {
+@Plugin(type = Op.class, name = "slicemapper", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultSliceMapper<I, O>
+		extends
+		AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+		implements SliceMapper<I, O> {
 
 	@Parameter
-	protected OpService opService;
+	private OpService opService;
 
-	public RandomAccessibleInterval<?> process(
-		final RandomAccessibleInterval<?> src,
-		final RandomAccessibleInterval<?> res, final int[] axis,
-		final Function<?, ?> func)
-	{
-		opService.run("map", new SlicingIterableInterval(opService, res, axis),
-			new SlicingIterableInterval(opService, src, axis), func);
+	@Parameter
+	private Function<I, O> func;
 
-		return res;
+	@Parameter
+	private int[] axis;
 
+	@Override
+	public RandomAccessibleInterval<O> compute(
+			RandomAccessibleInterval<I> input,
+			RandomAccessibleInterval<O> output) {
+
+		opService.run("map", new SlicingIterableInterval(opService, output,
+				axis), new SlicingIterableInterval(opService, input, axis),
+				func);
+
+		return output;
 	}
+
 }
