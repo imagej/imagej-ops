@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests.benchmark;
+package imagej.ops.benchmark;
 
 import imagej.module.Module;
 import imagej.ops.tests.AbstractOpTest;
