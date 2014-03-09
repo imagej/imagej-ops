@@ -168,35 +168,64 @@ public class DefaultOpService extends
 	private Module findModule(final String name, final Class<? extends Op> type,
 		final Object... args)
 	{
-		final String label = "'" + (type == null ? name : type.getName()) + "' op";
+		final String label = type == null ? name : type.getName();
 
+		// find candidates with matching name & type
 		final ArrayList<CommandInfo> candidates = findCandidates(name, type);
 		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate " + label + "s");
+			throw new IllegalArgumentException("No candidate '" + label + "' ops");
 		}
 
+		// narrow down candidates to the exact matches
 		final ArrayList<Module> matches = findMatches(candidates, args);
 
 		if (matches.size() == 1) {
-			// NB: A single match at a particular priority is good!
+			// a single match: return it
 			if (log.isDebug()) {
-				log.debug("Selected " + label + ": " +
+				log.debug("Selected '" + label + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
 			return matches.get(0);
 		}
 
-		// NB: No matches; provide some details about the candidates.
+		final StringBuilder sb = new StringBuilder();
+
 		if (matches.isEmpty()) {
-			throw new IllegalArgumentException("No matching " + label);
+			// no matches
+			sb.append("No matching '" + label + "' op\n");
+		}
+		else {
+			// multiple matches
+			final double priority = matches.get(0).getInfo().getPriority();
+			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
+			for (final Module module : matches) {
+				sb.append("\t" + module.getClass().getName() + "\n");
+			}
 		}
 
-		// NB: Multiple matches at the same priority is bad...
-		final StringBuilder sb = new StringBuilder();
-		final double priority = matches.get(0).getInfo().getPriority();
-		sb.append("Multiple " + label + "s of priority " + priority + " match:");
-		for (final Module module : matches) {
-			sb.append(" " + module.getClass().getName());
+		// fail, with information about the template and candidates
+		sb.append("Template:\n");
+		sb.append("\t" + label + "(");
+		boolean first = true;
+		for (final Object arg : args) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(arg.getClass().getName() + " ");
+			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
+			else sb.append(arg);
+		}
+		sb.append(")\n");
+		sb.append("Candidates:\n");
+		for (final CommandInfo info : candidates) {
+			sb.append("\t[" + info.getPriority() + "] ");
+			sb.append(info.getDelegateClassName() + "(");
+			first = true;
+			for (final ModuleItem<?> input : info.inputs()) {
+				if (first) first = false;
+				else sb.append(", ");
+				sb.append(input.getType().getName() + " " + input.getName());
+			}
+			sb.append(")\n");
 		}
 		throw new IllegalArgumentException(sb.toString());
 	}
