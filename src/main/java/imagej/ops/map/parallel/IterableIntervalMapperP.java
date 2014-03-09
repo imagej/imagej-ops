@@ -34,6 +34,7 @@ import imagej.ops.Contingent;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.map.AbstractFunctionalMapper;
+import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
@@ -44,10 +45,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Parallelized {@link FunctionalMapper}, which is specialized for the case,
+ * that the two incoming {@link IterableInterval}s have the same IterationOrder.
+ * 
  * @author Christian Dietz
- * @author Martin Horn
- * @param <A>
- * @param <B>
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
 
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)

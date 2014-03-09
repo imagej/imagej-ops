@@ -36,7 +36,7 @@ import imagej.ops.map.DefaultFunctionalMapper;
 import imagej.ops.map.DefaultInplaceMapper;
 import imagej.ops.map.IterableIntervalMapper;
 import imagej.ops.map.parallel.DefaultInplaceMapperP;
-import imagej.ops.map.parallel.DefaultMapperP;
+import imagej.ops.map.parallel.DefaultFunctionalMapperP;
 import imagej.ops.map.parallel.IterableIntervalMapperP;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -46,7 +46,7 @@ import org.junit.Before;
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
  * {@link DefaultFunctionalMapper}, {@link IterableIntervalMapper},
- * {@link DefaultMapperP}, {@link IterableIntervalMapperP}
+ * {@link DefaultFunctionalMapperP}, {@link IterableIntervalMapperP}
  * 
  * @author Christian Dietz
  */
@@ -104,9 +104,9 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 	public void pixelWiseTestThreadedMapper() {
 		final Module module =
 			ops
-				.module(new DefaultMapperP<ByteType, ByteType>(), out, in, addConstant);
+				.module(new DefaultFunctionalMapperP<ByteType, ByteType>(), out, in, addConstant);
 
-		benchmarkAndPrint(DefaultMapperP.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {

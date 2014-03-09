@@ -33,6 +33,7 @@ package imagej.ops.map.parallel;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.map.AbstractInplaceMapper;
+import imagej.ops.map.InplaceMapper;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
@@ -43,8 +44,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Parallelized {@link InplaceMapper}
+ * 
  * @author Christian Dietz
- * @param <A>
+ * @param <A> mapped on <A>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
 public class DefaultInplaceMapperP<A> extends
@@ -54,6 +57,9 @@ public class DefaultInplaceMapperP<A> extends
 	@Parameter
 	private OpService opService;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run() {
 		opService.run(ChunkExecutor.class, new ChunkExecutable() {

@@ -40,10 +40,16 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  * @author Christian Dietz
- * @param <A>
+ * @param <A> to be mapped on itself
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
-public class DefaultInplaceMapper<A> extends AbstractInplaceMapper<A, Iterable<A>> {
+public class DefaultInplaceMapper<A> extends
+	AbstractInplaceMapper<A, Iterable<A>>
+{
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void run() {
 		for (final A t : in) {

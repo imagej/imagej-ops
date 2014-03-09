@@ -33,6 +33,7 @@ package imagej.ops.map.parallel;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.map.AbstractFunctionalMapper;
+import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
@@ -45,15 +46,18 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Parallelized {@link FunctionalMapper}
+ * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 2)
-public class DefaultMapperP<A, B>
+public class DefaultFunctionalMapperP<A, B>
 	extends
 	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 {
+
 	@Parameter
 	private OpService opService;
 

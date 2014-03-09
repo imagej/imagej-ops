@@ -40,10 +40,12 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default {@link FunctionalMapper} for the general case.
+ * Default implementation of a {@link FunctionalMapper}.
  * 
  * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
 public class DefaultFunctionalMapper<A, B>

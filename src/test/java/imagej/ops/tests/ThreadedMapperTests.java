@@ -36,7 +36,7 @@ import imagej.ops.Op;
 import imagej.ops.map.DefaultFunctionalMapper;
 import imagej.ops.map.IterableIntervalMapper;
 import imagej.ops.map.parallel.DefaultInplaceMapperP;
-import imagej.ops.map.parallel.DefaultMapperP;
+import imagej.ops.map.parallel.DefaultFunctionalMapperP;
 import imagej.ops.map.parallel.IterableIntervalMapperP;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link DefaultMapperP} and
+ * Testing multi threaded implementation ({@link DefaultFunctionalMapperP} and
  * {@link IterableIntervalMapperP}) of the mappers. Assumption: Naive Implementation of
  * {@link DefaultFunctionalMapper} works fine.
  * 
@@ -75,7 +75,7 @@ public class ThreadedMapperTests extends AbstractOpTest {
 
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Module threadedMapper =
-			ops.module(new DefaultMapperP<ByteType, ByteType>(), outThreaded, in, op);
+			ops.module(new DefaultFunctionalMapperP<ByteType, ByteType>(), outThreaded, in, op);
 
 		threadedMapper.run();
 

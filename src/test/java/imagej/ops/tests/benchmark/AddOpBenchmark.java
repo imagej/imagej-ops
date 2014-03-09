@@ -37,7 +37,7 @@ import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
 import imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
 import imagej.ops.map.parallel.DefaultInplaceMapperP;
-import imagej.ops.map.parallel.DefaultMapperP;
+import imagej.ops.map.parallel.DefaultFunctionalMapperP;
 import imagej.ops.onthefly.ArithmeticOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -52,17 +52,17 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 	private int numRuns;
 
 	public void initImg() {
-		in = generateByteTestImg(true, 5000, 5000);
-		out = generateByteTestImg(false, 5000, 5000);
+		in = generateByteTestImg(true, 10000, 10000);
+		out = generateByteTestImg(false, 10000, 10000);
 		numRuns = 20;
 	}
 
 	public void usingAddConstantWithMapper() {
 		final Module module =
-			ops.module(DefaultMapperP.class, out, in, ops.op(
+			ops.module(DefaultFunctionalMapperP.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(DefaultMapperP.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName(), module, numRuns);
 	}
 
 	// TODO: Curtis can you have a look here why this is not working?
@@ -120,13 +120,13 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 		mappersBenchmark.setUp();
 		mappersBenchmark.initImg();
 
-		mappersBenchmark.usingOptimizedAddConstant();
-		mappersBenchmark.usingAddConstantWithMapper();
-		mappersBenchmark.usingAddConstantWithInplaceMapping();
-		mappersBenchmark.usingAddConstantInPlace();
-		mappersBenchmark.usingAddConstantFunctional();
+//		mappersBenchmark.usingOptimizedAddConstant();
+//		mappersBenchmark.usingAddConstantWithMapper();
+//		mappersBenchmark.usingAddConstantWithInplaceMapping();
+//		mappersBenchmark.usingAddConstantInPlace();
+//		mappersBenchmark.usingAddConstantFunctional();
 		mappersBenchmark.usingOptimizedPAddConstant();
-		mappersBenchmark.usingAddConstantJAssist();
+//		mappersBenchmark.usingAddConstantJAssist();
 
 		mappersBenchmark.cleanUp();
 	}
