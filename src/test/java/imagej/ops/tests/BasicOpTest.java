@@ -32,10 +32,15 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
 import imagej.ops.OpService;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
+import org.scijava.log.LogService;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * A basic test of {@link OpService#run}.
@@ -54,6 +59,27 @@ public class BasicOpTest extends AbstractOpTest {
 		final Object result = ops.run("infinity", output, value);
 		assertEquals(output, result);
 		assertTrue(Double.isInfinite(output.get()));
+	}
+
+	/**
+	 * A test {@link Op}.
+	 * 
+	 * @author Johannes Schindelin
+	 */
+	@Plugin(type = Op.class, name = "infinity")
+	public static class InfinityOp extends
+		AbstractFunction<DoubleType, DoubleType>
+	{
+
+		@Parameter
+		private LogService log;
+
+		@Override
+		public DoubleType compute(final DoubleType input, final DoubleType output) {
+			log.info("Ignoring input value " + input.get());
+			output.set(Double.POSITIVE_INFINITY);
+			return output;
+		}
 	}
 
 }
