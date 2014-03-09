@@ -1,11 +1,11 @@
 
-package imagej.ops.tests;
+package imagej.ops.project;
 
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.projectors.DefaultProjector;
-import imagej.ops.projectors.parallel.DefaultProjectorP;
+import imagej.ops.project.DefaultProjector;
+import imagej.ops.project.parallel.DefaultProjectorP;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;

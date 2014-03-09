@@ -1,5 +1,5 @@
 
-package imagej.ops.projectors;
+package imagej.ops.project;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Contingent;

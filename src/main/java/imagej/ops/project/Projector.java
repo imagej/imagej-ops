@@ -1,5 +1,5 @@
 
-package imagej.ops.projectors;
+package imagej.ops.project;
 
 public interface Projector {
 

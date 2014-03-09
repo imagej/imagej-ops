@@ -1,5 +1,5 @@
 
-package imagej.ops.projectors.parallel;
+package imagej.ops.project.parallel;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Contingent;
