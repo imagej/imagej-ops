@@ -51,7 +51,7 @@ public class SlicingIterableInterval extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
 {
 
-	private final Interval hyperSlice;
+	private final Interval slice;
 
 	private final OpService opService;
 
@@ -62,18 +62,18 @@ public class SlicingIterableInterval extends AbstractInterval implements
 	{
 		super(initIntervals(source, axesOfInterest));
 
-		final long[] hyperSliceDims = new long[source.numDimensions()];
+		final long[] sliceDims = new long[source.numDimensions()];
 
 		for (int d = 0; d < source.numDimensions(); d++) {
 			if (dimension(d) == 1) {
-				hyperSliceDims[d] = source.dimension(d);
+				sliceDims[d] = source.dimension(d);
 			}
 			else {
-				hyperSliceDims[d] = 1;
+				sliceDims[d] = 1;
 			}
 		}
 
-		this.hyperSlice = new FinalInterval(hyperSliceDims);
+		this.slice = new FinalInterval(sliceDims);
 		this.opService = opService;
 		this.source = source;
 	}
@@ -102,7 +102,7 @@ public class SlicingIterableInterval extends AbstractInterval implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new SliceCursor(source, opService, this, hyperSlice);
+		return new SliceCursor(source, opService, this, slice);
 	}
 
 	@Override
