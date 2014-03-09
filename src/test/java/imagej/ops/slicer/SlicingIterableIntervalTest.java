@@ -30,6 +30,7 @@
 
 package imagej.ops.slicer;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractOpTest;
@@ -94,7 +95,7 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
-			assertTrue(cur.get().getRealDouble() == cur.getIntPosition(2));
+			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
 	}
 
