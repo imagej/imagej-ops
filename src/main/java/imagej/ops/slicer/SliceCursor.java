@@ -42,24 +42,23 @@ import net.imglib2.iterator.IntervalIterator;
  * @author Christian Dietz
  */
 public class SliceCursor extends IntervalIterator implements
-	Cursor<RandomAccessibleInterval<?>>
-{
+		Cursor<RandomAccessibleInterval<?>> {
 
 	private final long[] tmpPosition;
 	private final OpService opService;
 	private final RandomAccessibleInterval<?> src;
-	private final long[] hyperSliceMax;
+	private final long[] sliceMax;
 
 	public SliceCursor(final RandomAccessibleInterval<?> src,
-		final OpService service, final Interval fixedAxes, final Interval hyperSlice)
-	{
+			final OpService service, final Interval fixedAxes,
+			final Interval slice) {
 		super(fixedAxes);
 
 		this.opService = service;
 		this.src = src;
 		this.tmpPosition = new long[fixedAxes.numDimensions()];
-		this.hyperSliceMax = new long[hyperSlice.numDimensions()];
-		hyperSlice.max(hyperSliceMax);
+		this.sliceMax = new long[slice.numDimensions()];
+		slice.max(sliceMax);
 	}
 
 	private SliceCursor(final SliceCursor cursor) {
@@ -67,7 +66,7 @@ public class SliceCursor extends IntervalIterator implements
 
 		this.opService = cursor.opService;
 		this.src = cursor.src;
-		this.hyperSliceMax = cursor.hyperSliceMax;
+		this.sliceMax = cursor.sliceMax;
 		this.tmpPosition = cursor.tmpPosition;
 
 		// set to the current position
@@ -80,11 +79,11 @@ public class SliceCursor extends IntervalIterator implements
 
 		final long[] max = tmpPosition.clone();
 		for (int d = 0; d < max.length; d++) {
-			max[d] += hyperSliceMax[d];
+			max[d] += sliceMax[d];
 		}
 
-		return (RandomAccessibleInterval<?>) opService.run("slicer", src,
-			new FinalInterval(tmpPosition, max));
+		return (RandomAccessibleInterval<?>) opService.run(Slicer.class, src,
+				new FinalInterval(tmpPosition, max));
 	}
 
 	@Override
