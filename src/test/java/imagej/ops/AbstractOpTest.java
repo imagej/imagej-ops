@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;

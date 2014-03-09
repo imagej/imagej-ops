@@ -31,7 +31,7 @@
 package imagej.ops.benchmark;
 
 import imagej.module.Module;
-import imagej.ops.tests.AbstractOpTest;
+import imagej.ops.AbstractOpTest;
 
 /**
  * @author Christian Dietz

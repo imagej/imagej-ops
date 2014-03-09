@@ -30,8 +30,8 @@
 package imagej.ops.tests.onthefly;
 
 import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.tests.AbstractOpTest;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;

@@ -32,6 +32,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.map.DefaultFunctionalMapper;
 import imagej.ops.map.IterableIntervalMapper;

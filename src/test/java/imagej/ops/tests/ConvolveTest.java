@@ -31,6 +31,7 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertSame;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.convolve.ConvolveFourier;
 import imagej.ops.convolve.ConvolveNaive;

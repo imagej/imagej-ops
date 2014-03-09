@@ -30,6 +30,7 @@
 
 package imagej.ops.tests;
 
+import imagej.ops.AbstractOpTest;
 import imagej.ops.convert.ConvertII;
 import imagej.ops.convert.ConvertPixCopy;
 import net.imglib2.exception.IncompatibleTypeException;

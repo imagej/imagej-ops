@@ -31,6 +31,7 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.slicer.Slicer;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;

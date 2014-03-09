@@ -31,6 +31,7 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.OpService;
 import imagej.ops.AbstractFunction;
 import imagej.ops.slicer.SlicingService;

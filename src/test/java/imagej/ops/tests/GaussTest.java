@@ -30,6 +30,7 @@
 
 package imagej.ops.tests;
 
+import imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
