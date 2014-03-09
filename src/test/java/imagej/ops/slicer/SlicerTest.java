@@ -28,11 +28,10 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.slicer;
 
 import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractOpTest;
-import imagej.ops.slicer.Slicer;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -52,15 +51,14 @@ import org.junit.Test;
  * 
  * @author Christian Dietz
  */
-public class SlicerTests extends AbstractOpTest {
+public class SlicerTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
 	@Override
 	@Before
 	public void setUp() {
-		assertTrue(ops != null);
-
+		super.setUp();
 		in = ArrayImgs.bytes(20, 20, 20);
 	}
 
