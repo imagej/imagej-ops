@@ -28,75 +28,41 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.convert;
 
-import static org.junit.Assert.assertTrue;
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import net.imglib2.FinalInterval;
+import imagej.ops.AbstractOpTest;
+import imagej.ops.convert.ConvertII;
+import imagej.ops.convert.ConvertPixCopy;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.numeric.integer.ShortType;
 
-import org.junit.After;
-import org.junit.Before;
-import org.scijava.Context;
+import org.junit.Test;
 
 /**
- * Base class for {@link Op} unit testing.
- * <p>
- * <i>All</i> {@link Op} unit tests need to have an {@link OpService} instance.
- * Following the DRY principle, we should implement it only once. Here.
- * </p>
+ * A test of {@link ConvertII}.
  * 
- * @author Johannes Schindelin
+ * @author Martin Horn
  */
-public abstract class AbstractOpTest {
+public class ConvertIITest extends AbstractOpTest {
 
-	protected Context context;
-	protected OpService ops;
+	/** The test. */
+	@Test
+	public void test() throws IncompatibleTypeException {
 
-	/**
-	 * Sets up an {@link OpService}.
-	 */
-	@Before
-	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
-	}
+		final Img<ShortType> img =
+			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
+				new ShortType());
+		final Img<ByteType> res =
+			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-	/**
-	 * Disposes of the {@link OpService} that was initialized in {@link #setUp()}.
-	 */
-	@After
-	public synchronized void cleanUp() {
-		if (context != null) {
-			context.dispose();
-			context = null;
-		}
-	}
+		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
 
-	private int seed;
+		// FIXME won't work neither, as the pre-processor to create the result is
+		// missing
+//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
 
-	private int pseudoRandom() {
-		return seed = 3170425 * seed + 132102;
-	}
-
-	public Img<ByteType> generateByteTestImg(final boolean fill,
-		final long... dims)
-	{
-		final byte[] array =
-			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
-
-		if (fill) {
-			seed = 17;
-			for (int i = 0; i < array.length; i++) {
-				array[i] = (byte) pseudoRandom();
-			}
-		}
-
-		return ArrayImgs.bytes(array, dims);
 	}
 }

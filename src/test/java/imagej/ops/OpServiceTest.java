@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;

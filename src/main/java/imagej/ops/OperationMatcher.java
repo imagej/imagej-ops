@@ -56,7 +56,6 @@ public interface OperationMatcher extends ImageJPlugin, Contextual,
 	SingletonPlugin
 {
 
-	Module match(CommandInfo info, String name, Class<? extends Op> type,
-		Object... args);
+	Module match(CommandInfo info, Object... args);
 
 }

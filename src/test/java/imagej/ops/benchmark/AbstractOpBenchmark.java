@@ -28,28 +28,40 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.benchmark;
 
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
+import imagej.module.Module;
+import imagej.ops.AbstractOpTest;
 
-import org.junit.Test;
+/**
+ * @author Christian Dietz
+ */
+public class AbstractOpBenchmark extends AbstractOpTest {
 
-/** Tests involving Gaussian convolution. */
-public class GaussTest extends AbstractOpTest {
+	public long bestOf(final Runnable runnable, final int n) {
+		long best = Long.MAX_VALUE;
 
-	/** Tests the Gaussian. */
-	@Test
-	public void test() {
+		for (int i = 0; i < n; i++) {
+			long time = System.nanoTime();
+			runnable.run();
+			time = System.nanoTime() - time;
 
-		final Img<ByteType> in =
-			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
-				new ByteType());
-		final Img<ByteType> out = in.copy();
-		final double sigma = 5;
+			if (time < best) {
+				best = time;
+			}
+		}
 
-		ops.run("gauss", out, in, sigma);
+		return best;
+	}
 
+	public double asMilliSeconds(final long nanoTime) {
+		return nanoTime / 1000.0d / 1000.d;
+	}
+
+	public void benchmarkAndPrint(final String name, final Module module,
+		final int numRuns)
+	{
+		System.out.println("[" + name + "]: " +
+			asMilliSeconds(bestOf(module, numRuns)) + "ms !");
 	}
 }
