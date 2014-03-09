@@ -32,12 +32,12 @@ package imagej.ops.tests.benchmark;
 
 import imagej.module.Module;
 import imagej.ops.Op;
-import imagej.ops.map.InplaceMapper;
-import imagej.ops.map.Mapper;
-import imagej.ops.map.MapperII;
-import imagej.ops.map.ThreadedInplaceMapperII;
-import imagej.ops.map.ThreadedMapper;
-import imagej.ops.map.ThreadedMapperII;
+import imagej.ops.map.DefaultInplaceMapper;
+import imagej.ops.map.DefaultFunctionalMapper;
+import imagej.ops.map.IterableIntervalMapper;
+import imagej.ops.map.parallel.DefaultInplaceMapperP;
+import imagej.ops.map.parallel.DefaultMapperP;
+import imagej.ops.map.parallel.IterableIntervalMapperP;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -45,8 +45,8 @@ import org.junit.Before;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link Mapper}, {@link MapperII}, {@link ThreadedMapper},
- * {@link ThreadedMapperII}
+ * {@link DefaultFunctionalMapper}, {@link IterableIntervalMapper}, {@link DefaultMapperP},
+ * {@link IterableIntervalMapperP}
  * 
  * @author Christian Dietz
  */
@@ -85,47 +85,47 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapper() {
 		final Module module =
-			ops.module(new Mapper<ByteType, ByteType>(), out, in, addConstant);
+			ops.module(new DefaultFunctionalMapper<ByteType, ByteType>(), out, in, addConstant);
 
-		benchmarkAndPrint(Mapper.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultFunctionalMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestMapperII() {
 		final Module module =
-			ops.module(new MapperII<ByteType, ByteType>(), out, in, addConstant);
+			ops.module(new IterableIntervalMapper<ByteType, ByteType>(), out, in, addConstant);
 
-		benchmarkAndPrint(MapperII.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(IterableIntervalMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapper() {
 		final Module module =
 			ops
-				.module(new ThreadedMapper<ByteType, ByteType>(), out, in, addConstant);
+				.module(new DefaultMapperP<ByteType, ByteType>(), out, in, addConstant);
 
-		benchmarkAndPrint(ThreadedMapper.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultMapperP.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {
 		final Module module =
-			ops.module(new ThreadedMapperII<ByteType, ByteType>(), out, in,
+			ops.module(new IterableIntervalMapperP<ByteType, ByteType>(), out, in,
 				addConstant, out);
 
-		benchmarkAndPrint(ThreadedMapperII.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(IterableIntervalMapperP.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestMapperInplace() {
 		final Module module =
-			ops.module(new InplaceMapper<ByteType>(), in, addConstant);
+			ops.module(new DefaultInplaceMapper<ByteType>(), in, addConstant);
 
-		benchmarkAndPrint(InplaceMapper.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultInplaceMapper.class.getSimpleName(), module, numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperInplace() {
 		final Module module =
-			ops.module(new ThreadedInplaceMapperII<ByteType>(), in.copy(),
+			ops.module(new DefaultInplaceMapperP<ByteType>(), in.copy(),
 				addConstant);
 
-		benchmarkAndPrint(ThreadedInplaceMapperII.class.getSimpleName(), module,
+		benchmarkAndPrint(DefaultInplaceMapperP.class.getSimpleName(), module,
 			numRuns);
 	}
 }
