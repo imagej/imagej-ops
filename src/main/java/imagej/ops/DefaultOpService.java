@@ -41,6 +41,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
 import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
@@ -102,12 +103,12 @@ public class DefaultOpService extends
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return module(name, null, args);
+		return findModule(name, null, args);
 	}
 
 	@Override
 	public Module module(final Class<? extends Op> type, final Object... args) {
-		return module(null, type, args);
+		return findModule(null, type, args);
 	}
 
 	@Override
@@ -157,40 +158,105 @@ public class DefaultOpService extends
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
-	private Module module(final String name, final Class<? extends Op> type,
+	/**
+	 * Finds and initializes the best module matching the given op name and/or
+	 * type + arguments.
+	 * 
+	 * @throws IllegalArgumentException if there is no match, or if there is more
+	 *           than one match at the same priority.
+	 */
+	private Module findModule(final String name, final Class<? extends Op> type,
+		final Object... args)
+	{
+		final String label = "'" + (type == null ? name : type.getName()) + "' op";
+
+		final ArrayList<CommandInfo> candidates = findCandidates(name, type);
+		if (candidates.isEmpty()) {
+			throw new IllegalArgumentException("No candidate " + label + "s");
+		}
+
+		final ArrayList<Module> matches = findMatches(candidates, args);
+
+		if (matches.size() == 1) {
+			// NB: A single match at a particular priority is good!
+			if (log.isDebug()) {
+				log.debug("Selected " + label + ": " +
+					matches.get(0).getDelegateObject().getClass().getName());
+			}
+			return matches.get(0);
+		}
+
+		// NB: No matches; provide some details about the candidates.
+		if (matches.isEmpty()) {
+			throw new IllegalArgumentException("No matching " + label);
+		}
+
+		// NB: Multiple matches at the same priority is bad...
+		final StringBuilder sb = new StringBuilder();
+		final double priority = matches.get(0).getInfo().getPriority();
+		sb.append("Multiple " + label + "s of priority " + priority + " match:");
+		for (final Module module : matches) {
+			sb.append(" " + module.getClass().getName());
+		}
+		throw new IllegalArgumentException(sb.toString());
+	}
+
+	/**
+	 * Builds a list of candidate ops which match the given name and class.
+	 * <p>
+	 * We do this so that if we cannot match the arguments later, we can at least
+	 * report the list of matching candidates, for easier debugging.
+	 * </p>
+	 */
+	private ArrayList<CommandInfo> findCandidates(final String name,
+		final Class<? extends Op> type)
+	{
+		final List<CommandInfo> ops = commandService.getCommandsOfType(Op.class);
+		final ArrayList<CommandInfo> candidates = new ArrayList<CommandInfo>();
+
+		for (final CommandInfo info : ops) {
+			if (name != null && !name.equals(info.getName())) continue;
+
+			// the name matches; now check the class
+			final Class<?> opClass;
+			try {
+				opClass = info.loadClass();
+			}
+			catch (final InstantiableException exc) {
+				log.error("Invalid op: " + info.getClassName());
+				return null;
+			}
+			if (type != null && !type.isAssignableFrom(opClass)) continue;
+
+			candidates.add(info);
+		}
+		return candidates;
+	}
+
+	/** Filters a list of ops to those matching the given arguments. */
+	private ArrayList<Module> findMatches(final ArrayList<CommandInfo> ops,
 		final Object... args)
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
+
 		// TODO: Consider inverting the loop nesting order here,
 		// since we probably want to match higher priority Ops first.
 		for (final OperationMatcher matcher : getInstances()) {
 			double priority = Double.NaN;
-			for (final CommandInfo info : commandService.getCommandsOfType(Op.class))
-			{
+			for (final CommandInfo info : ops) {
 				final double p = info.getPriority();
 				if (p != priority && !matches.isEmpty()) {
 					// NB: Lower priority was reached; stop looking for any more matches.
 					break;
 				}
 				priority = p;
-				final Module module = matcher.match(info, name, type, args);
+				final Module module = matcher.match(info, args);
 				if (module != null) matches.add(module);
 			}
-			if (matches.size() == 1) {
-				// NB: A single match at a particular priority is good!
-				return matches.get(0);
-			}
-			else if (!matches.isEmpty()) {
-				// NB: Multiple matches at the same priority is bad...
-				final StringBuilder sb = new StringBuilder();
-				sb.append("Multiple ops of priority " + priority + " match:");
-				for (final Module module : matches) {
-					sb.append(" " + module.getClass().getName());
-				}
-				throw new IllegalArgumentException(sb.toString());
-			}
+			if (!matches.isEmpty()) break;
 		}
-		throw new IllegalArgumentException("No matching op: " + (type == null ? name : type.getName()));
+
+		return matches;
 	}
 
 	private void assign(final Module module, final Object arg,
