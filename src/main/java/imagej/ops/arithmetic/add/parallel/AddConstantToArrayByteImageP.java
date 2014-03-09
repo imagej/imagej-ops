@@ -79,7 +79,7 @@ public class AddConstantToArrayByteImageP implements Op {
 					}
 				}
 				else {
-					for (int i = min; i < numSteps; i++) {
+					for (int i = min; i < min + numSteps; i++) {
 						data[i] += value;
 					}
 				}
