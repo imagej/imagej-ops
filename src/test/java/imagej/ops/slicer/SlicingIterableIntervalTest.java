@@ -31,7 +31,6 @@
 package imagej.ops.slicer;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.OpService;
@@ -56,10 +55,6 @@ import org.scijava.Context;
  */
 public class SlicingIterableIntervalTest extends AbstractOpTest {
 
-	private Context context;
-
-	private OpService ops;
-
 	private Img<ByteType> in;
 
 	private SlicingService slicerService;
@@ -70,9 +65,8 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class, SlicingService.class);
-		ops = context.getService(OpService.class);
-		slicerService = context.getService(SlicingService.class);
-		assertTrue(ops != null);
+		ops = context.service(OpService.class);
+		slicerService = context.service(SlicingService.class);
 
 		in = ArrayImgs.bytes(20, 20, 21);
 		out = ArrayImgs.bytes(20, 20, 21);
