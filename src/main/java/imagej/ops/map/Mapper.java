@@ -43,10 +43,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * TODO
+ * 
  * @author Martin Horn
  * @author Christian Dietz
- * @param <A>
- * @param <B>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
 public class Mapper<A, B> extends
