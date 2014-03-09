@@ -56,25 +56,23 @@ public class DefaultInplaceMapperP<A> extends
 
 	@Override
 	public void run() {
-		final Op chunkExecutor =
-			opService.op(ChunkExecutor.class, new ChunkExecutable() {
+		opService.run(ChunkExecutor.class, new ChunkExecutable() {
 
-				@Override
-				public void execute(final int min, final int stepSize,
-					final int numSteps)
-				{
-					final Cursor<A> inCursor = in.cursor();
-					inCursor.jumpFwd(min);
+			@Override
+			public void
+				execute(final int min, final int stepSize, final int numSteps)
+			{
+				final Cursor<A> inCursor = in.cursor();
+				inCursor.jumpFwd(min);
 
-					int ctr = 0;
-					while (ctr < numSteps) {
-						inCursor.jumpFwd(stepSize);
-						final A t = inCursor.get();
-						func.compute(t, t);
-						ctr++;
-					}
+				int ctr = 0;
+				while (ctr < numSteps) {
+					inCursor.jumpFwd(stepSize);
+					final A t = inCursor.get();
+					func.compute(t, t);
+					ctr++;
 				}
-			}, in.size());
-		chunkExecutor.run();
+			}
+		}, in.size());
 	}
 }

@@ -87,7 +87,7 @@ public class IterableIntervalMapperP<A, B> extends
 					ctr++;
 				}
 			}
-		});
+		}, input.size());
 
 		return output;
 	}
