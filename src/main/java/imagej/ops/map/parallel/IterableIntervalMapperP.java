@@ -28,43 +28,67 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
-import imagej.ops.Function;
+import imagej.ops.Contingent;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.map.AbstractFunctionalMapper;
+import imagej.ops.threading.ChunkExecutable;
+import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
-public class ThreadedInplaceMapperII<T> extends AbstractThreadedMapper {
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @param <A>
+ * @param <B>
+ */
 
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<T> in;
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
+public class IterableIntervalMapperP<A, B> extends
+	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
+	implements Contingent
+{
 
 	@Parameter
-	private Function<T, T> func;
+	private OpService opService;
 
 	@Override
-	public void run() {
-		runThreading(in.size());
+	public boolean conforms() {
+		return getInput().iterationOrder().equals(getOutput().iterationOrder());
 	}
 
 	@Override
-	protected void runThread(final int firstElement, final int steps) {
-		final Cursor<T> inCursor = in.cursor();
-		inCursor.jumpFwd(firstElement);
+	public IterableInterval<B> compute(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		opService.run(ChunkExecutor.class, new ChunkExecutable() {
 
-		int ctr = 0;
-		while (ctr < steps) {
-			inCursor.fwd();
-			final T t = inCursor.get();
-			func.compute(t, t);
-			ctr++;
-		}
+			@Override
+			public void
+				execute(final int min, final int stepSize, final int numSteps)
+			{
+				final Cursor<A> inCursor = input.cursor();
+				final Cursor<B> outCursor = output.cursor();
+
+				inCursor.jumpFwd(min);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					inCursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
+					func.compute(inCursor.get(), outCursor.get());
+					ctr++;
+				}
+			}
+		});
+
+		return output;
 	}
 }

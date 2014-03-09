@@ -28,64 +28,53 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
-import imagej.ops.Contingent;
-import imagej.ops.Function;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.map.AbstractInplaceMapper;
+import imagej.ops.threading.ChunkExecutable;
+import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
- * @author Martin Horn
  * @param <A>
- * @param <B>
  */
-
-//TODO: Make it a function
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
-public class ThreadedMapperII<A, B> extends AbstractThreadedMapper implements
-	Contingent
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
+public class DefaultInplaceMapperP<A> extends
+	AbstractInplaceMapper<A, IterableInterval<A>>
 {
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<B> out;
 
 	@Parameter
-	private IterableInterval<A> in;
-
-	@Parameter
-	private Function<A, B> func;
+	private OpService opService;
 
 	@Override
 	public void run() {
-		runThreading(in.size());
-	}
+		final Op chunkExecutor =
+			opService.op(ChunkExecutor.class, new ChunkExecutable() {
 
-	@Override
-	public boolean conforms() {
-		return in.iterationOrder().equals(out.iterationOrder());
-	}
+				@Override
+				public void execute(final int min, final int stepSize,
+					final int numSteps)
+				{
+					final Cursor<A> inCursor = in.cursor();
+					inCursor.jumpFwd(min);
 
-	@Override
-	protected void runThread(final int firstElement, final int steps) {
-		final Cursor<A> inCursor = in.cursor();
-		final Cursor<B> outCursor = out.cursor();
-
-		inCursor.jumpFwd(firstElement);
-		outCursor.jumpFwd(firstElement);
-
-		int ctr = 0;
-		while (ctr < steps) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-			ctr++;
-		}
+					int ctr = 0;
+					while (ctr < numSteps) {
+						inCursor.jumpFwd(stepSize);
+						final A t = inCursor.get();
+						func.compute(t, t);
+						ctr++;
+					}
+				}
+			}, in.size());
+		chunkExecutor.run();
 	}
 }

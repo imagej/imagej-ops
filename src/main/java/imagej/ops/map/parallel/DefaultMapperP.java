@@ -28,59 +28,60 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
-import imagej.ops.Function;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.map.AbstractFunctionalMapper;
+import imagej.ops.threading.ChunkExecutable;
+import imagej.ops.threading.ChunkExecutor;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
- * @author Martin Horn
  * @param <A>
  * @param <B>
  */
-
-//TODO: Make it a function
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 2)
-public class ThreadedMapper<A, B> extends AbstractThreadedMapper {
-
-	@Parameter(type = ItemIO.BOTH)
-	private RandomAccessibleInterval<B> out;
-
+public class DefaultMapperP<A, B>
+	extends
+	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+{
 	@Parameter
-	private IterableInterval<A> in;
-
-	@Parameter
-	private Function<A, B> func;
+	private OpService opService;
 
 	@Override
-	protected void runThread(final int firstElement, final int steps) {
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
+		opService.run(ChunkExecutor.class, new ChunkExecutable() {
 
-		final Cursor<A> cursor = in.localizingCursor();
-		cursor.jumpFwd(firstElement);
+			@Override
+			public void
+				execute(final int min, final int stepSize, final int numSteps)
+			{
+				final Cursor<A> cursor = input.localizingCursor();
+				cursor.jumpFwd(min);
 
-		final RandomAccess<B> rndAccess = out.randomAccess();
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
-		int ctr = 0;
-		while (ctr < steps) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			func.compute(cursor.get(), rndAccess.get());
-			ctr++;
-		}
-	}
+				int ctr = 0;
+				while (ctr < numSteps) {
+					cursor.jumpFwd(stepSize);
+					rndAccess.setPosition(cursor);
+					func.compute(cursor.get(), rndAccess.get());
+					ctr++;
+				}
+			}
+		}, input.size());
 
-	@Override
-	public void run() {
-		runThreading(in.size());
+		return output;
 	}
 }
