@@ -28,13 +28,12 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.slicer;
 
 import static org.junit.Assert.assertTrue;
+import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.OpService;
-import imagej.ops.AbstractFunction;
-import imagej.ops.slicer.SlicingService;
 
 import java.util.Iterator;
 
@@ -54,7 +53,7 @@ import org.scijava.Context;
  * 
  * @author Christian Dietz
  */
-public class SlicingIterableIntervalTests extends AbstractOpTest {
+public class SlicingIterableIntervalTest extends AbstractOpTest {
 
 	private Context context;
 
