@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.tests.onthefly;
+package imagej.ops.onthefly;
 
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
@@ -49,7 +49,7 @@ import org.junit.Test;
  * 
  * @author Johannes Schindelin
  */
-public class OneTheFlyTest extends AbstractOpTest {
+public class OnTheFlyTest extends AbstractOpTest {
 	private final int pixelCount = 256 * 256;
 	private final long[] dimensions = new long[] { 256, 256 };
 
