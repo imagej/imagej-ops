@@ -72,18 +72,12 @@ public class DefaultOpService extends
 	@Override
 	public Object run(final String name, final Object... args) {
 		final Module module = module(name, args);
-		if (module == null) {
-			throw new IllegalArgumentException("No matching op: " + name);
-		}
 		return run(module);
 	}
 
 	@Override
-	public Object run(Class<? extends Op> type, Object... args) {
+	public Object run(final Class<? extends Op> type, final Object... args) {
 		final Module module = module(type, args);
-		if (module == null) {
-			throw new IllegalArgumentException("No matching op: " + type.getName());
-		}
 		return run(module);
 	}
 
@@ -100,7 +94,7 @@ public class DefaultOpService extends
 	}
 
 	@Override
-	public Op op(Class<? extends Op> type, Object... args) {
+	public Op op(final Class<? extends Op> type, final Object... args) {
 		final Module module = module(type, args);
 		if (module == null) return null;
 		return (Op) module.getDelegateObject();
@@ -112,7 +106,7 @@ public class DefaultOpService extends
 	}
 
 	@Override
-	public Module module(Class<? extends Op> type, Object... args) {
+	public Module module(final Class<? extends Op> type, final Object... args) {
 		return module(null, type, args);
 	}
 
@@ -196,7 +190,7 @@ public class DefaultOpService extends
 				throw new IllegalArgumentException(sb.toString());
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("No matching op: " + (type == null ? name : type.getName()));
 	}
 
 	private void assign(final Module module, final Object arg,
