@@ -102,9 +102,25 @@ public class DefaultOpMatcher extends AbstractOpMatcher {
 		if (item instanceof CommandModuleItem) {
 			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
 			final Type type = commandItem.getField().getGenericType();
-			return ConversionUtils.canConvert(arg, type);
+			return canConvert(arg, type);
 		}
-		return ConversionUtils.canConvert(arg, item.getType());
+		return canConvert(arg, item.getType());
+	}
+
+	private boolean canConvert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
+	}
+
+	private boolean canConvert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
 	}
 
 }
