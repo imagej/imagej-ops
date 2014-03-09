@@ -30,6 +30,7 @@
 
 package imagej.ops.map;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Contingent;
 import imagej.ops.Function;
 import imagej.ops.Op;
@@ -48,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
 public class MapperII<A, B> extends
-	Function<IterableInterval<A>, IterableInterval<B>> implements Contingent
+	AbstractFunction<IterableInterval<A>, IterableInterval<B>> implements Contingent
 {
 
 	@Parameter

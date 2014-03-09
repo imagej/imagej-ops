@@ -30,6 +30,7 @@
 
 package imagej.ops.map;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
@@ -49,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
 public class Mapper<A, B> extends
-	Function<IterableInterval<A>, RandomAccessibleInterval<B>>
+	AbstractFunction<IterableInterval<A>, RandomAccessibleInterval<B>>
 {
 	@Parameter
 	private Function<A, B> func;

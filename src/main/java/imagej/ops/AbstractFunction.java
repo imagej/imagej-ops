@@ -28,31 +28,49 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.log.LogService;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * A test {@link Op}.
+ * Abstract superclass for {@link Function} ops.
  * 
- * @author Johannes Schindelin
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "infinity")
-public class InfinityOp extends AbstractFunction<DoubleType, DoubleType> {
+public abstract class AbstractFunction<I, O> implements Function<I, O> {
 
-	@Parameter
-	private LogService log;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter(required = false)
+	private I in;
 
 	@Override
-	public DoubleType compute(final DoubleType input, final DoubleType output) {
-		log.info("Ignoring input value " + input.get());
-		output.set(Double.POSITIVE_INFINITY);
-		return output;
+	public I getInput() {
+		return in;
 	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
+
+	@Override
+	public void run() {
+		compute(getInput(), getOutput());
+	}
+
 }

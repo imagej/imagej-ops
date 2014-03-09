@@ -30,7 +30,7 @@
 
 package imagej.ops.convolve;
 
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 
 import java.util.Arrays;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Op.class, name = "gauss")
 public class Gauss<T extends RealType<T>> extends
-	Function<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 {
 
 	@Parameter

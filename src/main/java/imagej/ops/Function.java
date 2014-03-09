@@ -30,9 +30,6 @@
 
 package imagej.ops;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
  * A function (in this context) is an {@link Op} that has a typed input
  * parameter and a typed output parameter, which are accessible via its public
@@ -45,35 +42,16 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public abstract class Function<I, O> implements Op {
+public interface Function<I, O> extends Op {
 
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
+	I getInput();
 
-	@Parameter(required = false)
-	private I in;
+	O getOutput();
 
-	public I getInput() {
-		return in;
-	}
+	void setInput(I input);
 
-	public O getOutput() {
-		return out;
-	}
+	void setOutput(O output);
 
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	public void setOutput(final O output) {
-		out = output;
-	}
-
-	public abstract O compute(I input, O output);
-
-	@Override
-	public void run() {
-		compute(getInput(), getOutput());
-	}
+	O compute(I input, O output);
 
 }

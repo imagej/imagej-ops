@@ -31,7 +31,7 @@
 package imagej.ops.convolve;
 
 import imagej.ops.Contingent;
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "convolve")
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
-	extends Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	extends AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements Contingent
 {
 

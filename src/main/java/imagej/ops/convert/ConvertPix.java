@@ -31,12 +31,12 @@
 package imagej.ops.convert;
 
 import imagej.ops.Contingent;
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
-	extends Function<I, O> implements Contingent
+	extends AbstractFunction<I, O> implements Contingent
 {
 
 	/**

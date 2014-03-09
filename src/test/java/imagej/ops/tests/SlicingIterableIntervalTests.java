@@ -32,7 +32,7 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertTrue;
 import imagej.ops.OpService;
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import imagej.ops.slicer.SlicingService;
 
 import java.util.Iterator;
@@ -98,7 +98,7 @@ public class SlicingIterableIntervalTests extends AbstractOpTest {
 		}
 	}
 
-	class DummyOp extends Function<Iterable<ByteType>, Iterable<ByteType>> {
+	class DummyOp extends AbstractFunction<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
 		public Iterable<ByteType> compute(final Iterable<ByteType> input,

@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "neighborhood",
 	priority = Priority.LOW_PRIORITY)
 public class NeighborhoodOp<I, O> extends
-	Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter
