@@ -36,8 +36,9 @@ import imagej.ops.arithmetic.add.AddConstantToImageFunctional;
 import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
 import imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
-import imagej.ops.map.parallel.DefaultInplaceMapperP;
 import imagej.ops.map.parallel.DefaultFunctionalMapperP;
+import imagej.ops.map.parallel.DefaultInplaceMapperP;
+import imagej.ops.map.parallel.IterableIntervalMapperP;
 import imagej.ops.onthefly.ArithmeticOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -52,65 +53,74 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 	private int numRuns;
 
 	public void initImg() {
-		in = generateByteTestImg(true, 10000, 10000);
-		out = generateByteTestImg(false, 10000, 10000);
-		numRuns = 20;
+		in = generateByteTestImg(true, 5000, 5000);
+		out = generateByteTestImg(false, 5000, 5000);
+		numRuns = 30;
 	}
 
-	public void usingAddConstantWithMapper() {
+	public void fTestIterableIntervalMapperP() {
+		final Module module =
+			ops.module(IterableIntervalMapperP.class, out, in, ops.op(
+				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
+
+		benchmarkAndPrint(IterableIntervalMapperP.class.getSimpleName() +
+			" [Functional / Parallel]", module, numRuns);
+	}
+
+	public void fTestDefaultMapperP() {
 		final Module module =
 			ops.module(DefaultFunctionalMapperP.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName() +
+			" [Functional / Parallel]", module, numRuns);
 	}
 
-	// TODO: Curtis can you have a look here why this is not working?
-	public void usingAddConstantWithInplaceMapping() {
+	public void fTtestAddConstantToImage() {
+		final Module module =
+			ops.module(new AddConstantToImageFunctional<ByteType>(), out, in,
+				new ByteType((byte) 10));
+		benchmarkAndPrint(AddConstantToImageFunctional.class.getSimpleName() +
+			" [Functional / Not Parallel]", module, numRuns);
+	}
+
+	public void inTestDefaultInplaceMapperP() {
 		final Module module =
 			ops.module(DefaultInplaceMapperP.class, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(DefaultInplaceMapperP.class.getSimpleName(), module,
-			numRuns);
+		benchmarkAndPrint(DefaultInplaceMapperP.class.getSimpleName() +
+			" [InPlace / Parallel]", module, numRuns);
 	}
 
-	public void usingAddConstantJAssist() {
+	public void inTestJavaAssist() {
 		final Module module =
 			ops.module(new ArithmeticOp.AddOp(), in, in, new ByteType((byte) 10));
 
-		benchmarkAndPrint("Javassist: " + ArithmeticOp.AddOp.class.getSimpleName(),
-			module, numRuns);
+		benchmarkAndPrint("Javassist: " + ArithmeticOp.AddOp.class.getSimpleName() +
+			" [InPlace / Not Parallel]", module, numRuns);
 	}
 
-	public void usingAddConstantInPlace() {
+	public void inTestAddConstantToImageInPlace() {
 		final Module module =
 			ops.module(new AddConstantToImageInPlace<ByteType>(), in, new ByteType(
 				(byte) 10));
-		benchmarkAndPrint(AddConstantToImageInPlace.class.getSimpleName(), module,
-			numRuns);
+		benchmarkAndPrint(AddConstantToImageInPlace.class.getSimpleName() +
+			" [InPlace]", module, numRuns);
 	}
 
-	public void usingAddConstantFunctional() {
-		final Module module =
-			ops.module(new AddConstantToImageFunctional<ByteType>(), out, in,
-				new ByteType((byte) 10));
-		benchmarkAndPrint(AddConstantToImageFunctional.class.getSimpleName(),
-			module, numRuns);
-	}
-
-	public void usingOptimizedAddConstant() {
+	public void inTestAddConstantToArrayByteImage() {
 		final Module module =
 			ops.module(new AddConstantToArrayByteImage(), in, (byte) 10);
-		benchmarkAndPrint(AddConstantToArrayByteImage.class.getSimpleName(),
-			module, numRuns);
+		benchmarkAndPrint(AddConstantToArrayByteImage.class.getSimpleName() +
+			" [InPlace / Not Parallel]", module, numRuns);
 	}
 
-	public void usingOptimizedPAddConstant() {
+	public void inTestAddConstantToArrayByteImageP() {
 		final Module module =
 			ops.module(new AddConstantToArrayByteImageP(), in, (byte) 10);
-		benchmarkAndPrint(AddConstantToArrayByteImageP.class.getSimpleName(),
-			module, numRuns);
+		benchmarkAndPrint(AddConstantToArrayByteImageP.class.getSimpleName() +
+			" [InPlace / Parallel]", module, numRuns);
 	}
 
 	// run the benchmarks
@@ -120,13 +130,17 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 		mappersBenchmark.setUp();
 		mappersBenchmark.initImg();
 
-//		mappersBenchmark.usingOptimizedAddConstant();
-//		mappersBenchmark.usingAddConstantWithMapper();
-//		mappersBenchmark.usingAddConstantWithInplaceMapping();
-//		mappersBenchmark.usingAddConstantInPlace();
-//		mappersBenchmark.usingAddConstantFunctional();
-		mappersBenchmark.usingOptimizedPAddConstant();
-//		mappersBenchmark.usingAddConstantJAssist();
+		// Functional mappers
+		mappersBenchmark.fTtestAddConstantToImage();
+		mappersBenchmark.fTestIterableIntervalMapperP();
+		mappersBenchmark.fTestDefaultMapperP();
+
+		// In Place mappers
+		mappersBenchmark.inTestAddConstantToArrayByteImage();
+		mappersBenchmark.inTestAddConstantToArrayByteImageP();
+		mappersBenchmark.inTestDefaultInplaceMapperP();
+		mappersBenchmark.inTestAddConstantToImageInPlace();
+		mappersBenchmark.inTestJavaAssist();
 
 		mappersBenchmark.cleanUp();
 	}
