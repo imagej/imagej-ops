@@ -119,6 +119,7 @@ public class DefaultOperationMatcher extends AbstractOperationMatcher {
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
+		if (arg == null) return !item.isRequired();
 		if (item instanceof CommandModuleItem) {
 			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
 			final Type type = commandItem.getField().getGenericType();
