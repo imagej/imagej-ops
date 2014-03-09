@@ -65,7 +65,7 @@ public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
 		}
 
 		out =
-			new ImgPlus<T>(new ImgView<T>(hyperSlice(unpackedIn.getImg(), interval),
+			new ImgPlus<T>(new ImgView<T>(slice(unpackedIn.getImg(), interval),
 				in.factory()));
 
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);

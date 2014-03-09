@@ -42,7 +42,7 @@ import net.imglib2.view.Views;
 public abstract class AbstractSlicer implements Slicer {
 
 	@Override
-	public <T> RandomAccessibleInterval<T> hyperSlice(
+	public <T> RandomAccessibleInterval<T> slice(
 		final RandomAccessibleInterval<T> in, final Interval i)
 	{
 		boolean oneSizedDims = false;

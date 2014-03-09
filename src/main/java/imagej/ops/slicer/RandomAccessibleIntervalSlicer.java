@@ -56,6 +56,6 @@ public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
 
 	@Override
 	public void run() {
-		out = hyperSlice(in, interval);
+		out = slice(in, interval);
 	}
 }

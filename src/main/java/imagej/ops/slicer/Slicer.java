@@ -39,6 +39,6 @@ import net.imglib2.RandomAccessibleInterval;
  */
 public interface Slicer extends Op {
 
-	<T> RandomAccessibleInterval<T> hyperSlice(
+	<T> RandomAccessibleInterval<T> slice(
 		final RandomAccessibleInterval<T> in, final Interval i);
 }

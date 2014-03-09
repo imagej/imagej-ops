@@ -57,6 +57,6 @@ public class LabelingSlicer<L extends Comparable<L>> extends AbstractSlicer {
 
 	@Override
 	public void run() {
-		out = new LabelingView<L>(hyperSlice(in, interval), in.<L> factory());
+		out = new LabelingView<L>(slice(in, interval), in.<L> factory());
 	}
 }
