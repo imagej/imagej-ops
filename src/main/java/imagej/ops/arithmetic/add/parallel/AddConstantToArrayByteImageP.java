@@ -66,9 +66,6 @@ public class AddConstantToArrayByteImageP implements Op {
 		final byte[] data = image.update(null).getCurrentStorageArray();
 		opService.run(ChunkExecutor.class, new ChunkExecutable() {
 
-			// TODO Benchmark stepSize=1 with two counting variables vs. stepSize=1
-			// with one counting variable
-			// TODO Benchmark anonymous classes in ChunkExecutor and right here..
 			@Override
 			public void
 				execute(final int min, final int stepSize, final int numSteps)
@@ -79,7 +76,7 @@ public class AddConstantToArrayByteImageP implements Op {
 					}
 				}
 				else {
-					for (int i = min; i < numSteps; i++) {
+					for (int i = min; i < min + numSteps; i++) {
 						data[i] += value;
 					}
 				}
