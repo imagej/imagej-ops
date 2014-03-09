@@ -28,28 +28,41 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.convert;
 
+import imagej.ops.AbstractOpTest;
+import imagej.ops.convert.ConvertII;
+import imagej.ops.convert.ConvertPixCopy;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.ShortType;
 
 import org.junit.Test;
 
-/** Tests involving Gaussian convolution. */
-public class GaussTest extends AbstractOpTest {
+/**
+ * A test of {@link ConvertII}.
+ * 
+ * @author Martin Horn
+ */
+public class ConvertIITest extends AbstractOpTest {
 
-	/** Tests the Gaussian. */
+	/** The test. */
 	@Test
-	public void test() {
+	public void test() throws IncompatibleTypeException {
 
-		final Img<ByteType> in =
-			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
-				new ByteType());
-		final Img<ByteType> out = in.copy();
-		final double sigma = 5;
+		final Img<ShortType> img =
+			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
+				new ShortType());
+		final Img<ByteType> res =
+			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.run("gauss", out, in, sigma);
+		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
+
+		// FIXME won't work neither, as the pre-processor to create the result is
+		// missing
+//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
 
 	}
 }

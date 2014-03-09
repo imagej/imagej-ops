@@ -28,12 +28,12 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.slicer;
 
-import static org.junit.Assert.assertTrue;
-import imagej.ops.OpService;
+import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
-import imagej.ops.slicer.SlicingService;
+import imagej.ops.AbstractOpTest;
+import imagej.ops.OpService;
 
 import java.util.Iterator;
 
@@ -53,11 +53,7 @@ import org.scijava.Context;
  * 
  * @author Christian Dietz
  */
-public class SlicingIterableIntervalTests extends AbstractOpTest {
-
-	private Context context;
-
-	private OpService ops;
+public class SlicingIterableIntervalTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
@@ -69,9 +65,8 @@ public class SlicingIterableIntervalTests extends AbstractOpTest {
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class, SlicingService.class);
-		ops = context.getService(OpService.class);
-		slicerService = context.getService(SlicingService.class);
-		assertTrue(ops != null);
+		ops = context.service(OpService.class);
+		slicerService = context.service(SlicingService.class);
 
 		in = ArrayImgs.bytes(20, 20, 21);
 		out = ArrayImgs.bytes(20, 20, 21);
@@ -94,7 +89,7 @@ public class SlicingIterableIntervalTests extends AbstractOpTest {
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
-			assertTrue(cur.get().getRealDouble() == cur.getIntPosition(2));
+			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
 	}
 

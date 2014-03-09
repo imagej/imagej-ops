@@ -28,10 +28,11 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.arithmetic.add;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
