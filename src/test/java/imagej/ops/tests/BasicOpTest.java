@@ -32,14 +32,10 @@ package imagej.ops.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.arithmetic.add.AddOp;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
-
 
 /**
  * A basic test of {@link OpService#run}.
@@ -60,17 +56,4 @@ public class BasicOpTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(output.get()));
 	}
 
-	/**
-	 * Verifies that {@link OpService#add(Object...)} finds the {@link AddOp}.
-	 */
-	@Test
-	public void testPixelwise() {
-		final ByteType a = new ByteType((byte) 17);
-		final ByteType b = new ByteType((byte) 34);
-		final Op op = ops.op("add", a, a, b);
-		System.out.println("op: " + op);
-		
-		op.run();
-		assertEquals((byte) 51, a.get());
-	}
 }
