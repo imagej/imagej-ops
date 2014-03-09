@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.map.parallel;
 
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
@@ -53,7 +53,7 @@ import org.junit.Test;
  * 
  * @author Christian Dietz
  */
-public class ThreadedMapperTests extends AbstractOpTest {
+public class ThreadedMapperTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Op op;
