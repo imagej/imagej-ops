@@ -81,6 +81,7 @@ public class IterableIntervalMapperP<A, B> extends
 				final Cursor<B> outCursor = output.cursor();
 
 				inCursor.jumpFwd(min);
+				outCursor.jumpFwd(min);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
