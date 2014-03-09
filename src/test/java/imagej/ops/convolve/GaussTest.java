@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.convolve;
 
 import imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
