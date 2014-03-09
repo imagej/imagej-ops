@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops.convert;
 
 import imagej.ops.AbstractOpTest;
 import imagej.ops.convert.ConvertII;
