@@ -49,15 +49,17 @@ import org.scijava.plugin.Plugin;
  * that the two incoming {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <A>
+ *            mapped on <B>
+ * @param <B>
+ *            mapped from <A>
  */
 
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
-public class IterableIntervalMapperP<A, B> extends
-	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent
-{
+public class IterableIntervalMapperP<A, B>
+		extends
+		AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
+		implements Contingent {
 
 	@Parameter
 	private OpService opService;
@@ -69,14 +71,12 @@ public class IterableIntervalMapperP<A, B> extends
 
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
+			final IterableInterval<B> output) {
 		opService.run(ChunkExecutor.class, new ChunkExecutable() {
 
 			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
-			{
+			public void execute(final int min, final int stepSize,
+					final int numSteps) {
 				final Cursor<A> inCursor = input.cursor();
 				final Cursor<B> outCursor = output.cursor();
 
