@@ -36,6 +36,7 @@ public class ProjectorTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
+		// TODO: consider moving to imagej.ops.misc to match SumRealType op?
 		op = ops.op("sum", null, null);
 	}
 
