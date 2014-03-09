@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.tests;
+package imagej.ops;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -37,6 +37,7 @@ import imagej.module.Module;
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
+import imagej.ops.tests.AbstractOpTest;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
