@@ -61,7 +61,9 @@ public class ThreadedMapperTest extends AbstractOpTest {
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10, 10);
-		op = ops.op("add", (byte) 10);
+		
+		//TODO: Remove null parameters after optional input works
+		op = ops.op("add", null, null, new ByteType((byte) 10));
 	}
 
 	@Test
