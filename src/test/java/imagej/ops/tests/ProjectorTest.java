@@ -2,6 +2,7 @@
 package imagej.ops.tests;
 
 import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.projectors.DefaultProjector;
 import imagej.ops.projectors.parallel.DefaultProjectorP;
