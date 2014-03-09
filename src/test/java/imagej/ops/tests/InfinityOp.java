@@ -30,10 +30,10 @@
 
 package imagej.ops.tests;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -44,20 +44,15 @@ import org.scijava.plugin.Plugin;
  * @author Johannes Schindelin
  */
 @Plugin(type = Op.class, name = "infinity")
-public class InfinityOp implements Op {
+public class InfinityOp extends Function<DoubleType, DoubleType> {
 
 	@Parameter
 	private LogService log;
 
-	@Parameter
-	private DoubleType input;
-
-	@Parameter(type = ItemIO.BOTH)
-	private DoubleType output;
-
 	@Override
-	public void run() {
+	public DoubleType compute(final DoubleType input, final DoubleType output) {
 		log.info("Ignoring input value " + input.get());
 		output.set(Double.POSITIVE_INFINITY);
+		return output;
 	}
 }

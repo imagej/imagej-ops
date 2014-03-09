@@ -47,11 +47,11 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class Function<I, O> implements Op {
 
-	@Parameter(required=false)
-	private I in;
-
-	@Parameter(type = ItemIO.BOTH, required=false)
+	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
+
+	@Parameter(required = false)
+	private I in;
 
 	public I getInput() {
 		return in;

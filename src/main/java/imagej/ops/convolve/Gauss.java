@@ -30,6 +30,7 @@
 
 package imagej.ops.convolve;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 
 import java.util.Arrays;
@@ -51,13 +52,9 @@ import org.scijava.plugin.Plugin;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Op.class, name = "gauss")
-public class Gauss<T extends RealType<T>> implements Op {
-
-	@Parameter
-	private RandomAccessibleInterval<T> in;
-
-	@Parameter
-	private RandomAccessibleInterval<T> out;
+public class Gauss<T extends RealType<T>> extends
+	Function<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+{
 
 	@Parameter
 	private double sigma;
@@ -67,16 +64,19 @@ public class Gauss<T extends RealType<T>> implements Op {
 		new OutOfBoundsMirrorFactory(Boundary.SINGLE);
 
 	@Override
-	public void run() {
+	public RandomAccessibleInterval<T> compute(
+		final RandomAccessibleInterval<T> input,
+		final RandomAccessibleInterval<T> output)
+	{
 		final RandomAccessible<FloatType> eIn =
-			(RandomAccessible) Views.extend(in, outOfBounds);
+			(RandomAccessible) Views.extend(input, outOfBounds);
 
-		final double[] sigmas = new double[in.numDimensions()];
+		final double[] sigmas = new double[input.numDimensions()];
 		Arrays.fill(sigmas, sigma);
 
 		try {
 			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), eIn,
-				out, Runtime.getRuntime().availableProcessors());
+				output, Runtime.getRuntime().availableProcessors());
 
 		}
 		catch (final IncompatibleTypeException e) {
@@ -84,5 +84,7 @@ public class Gauss<T extends RealType<T>> implements Op {
 			throw new RuntimeException(e);
 		}
 
+		return output;
 	}
+
 }

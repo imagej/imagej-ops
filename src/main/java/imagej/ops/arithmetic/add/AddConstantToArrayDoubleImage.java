@@ -28,26 +28,31 @@
  * #L%
  */
 
-package add;
+package imagej.ops.arithmetic.add;
 
-import imagej.ops.Function;
 import imagej.ops.Op;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddConstantToNumericType<T extends NumericType<T>> extends Function<T, T> {
+public class AddConstantToArrayDoubleImage implements Op {
+
+	@Parameter(type = ItemIO.BOTH)
+	private ArrayImg<DoubleType, DoubleArray> image;
 
 	@Parameter
-	private T value;
+	private double value;
 
 	@Override
-	public T compute(final T input, final T output) {
-		output.set(input);
-		output.add(value);
-		return output;
+	public void run() {
+		final double[] data = image.update(null).getCurrentStorageArray();
+		for (int i = 0; i < data.length; i++) {
+			data[i] += value;
+		}
 	}
-
 }

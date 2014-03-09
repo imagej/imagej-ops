@@ -30,14 +30,13 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Op;
 import imagej.ops.Function;
+import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -49,27 +48,25 @@ import org.scijava.plugin.Plugin;
  * @param <B>
  */
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
-public class Mapper<A, B> implements Op {
-
-	@Parameter
-	private IterableInterval<A> in;
-
+public class Mapper<A, B> extends
+	Function<IterableInterval<A>, RandomAccessibleInterval<B>>
+{
 	@Parameter
 	private Function<A, B> func;
 
-	@Parameter(type = ItemIO.BOTH)
-	private RandomAccessibleInterval<B> out;
-
 	@Override
-	public void run() {
-
-		final Cursor<A> cursor = in.localizingCursor();
-		final RandomAccess<B> rndAccess = out.randomAccess();
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
+		final Cursor<A> cursor = input.localizingCursor();
+		final RandomAccess<B> rndAccess = output.randomAccess();
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
 			func.compute(cursor.get(), rndAccess.get());
 		}
+
+		return output;
 	}
 }

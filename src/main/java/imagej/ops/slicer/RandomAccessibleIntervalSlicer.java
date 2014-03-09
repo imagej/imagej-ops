@@ -45,14 +45,14 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY)
 public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private RandomAccessibleInterval<?> out;
+
 	@Parameter
 	private RandomAccessibleInterval<?> in;
 
 	@Parameter
 	private Interval interval;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<?> out;
 
 	@Override
 	public void run() {

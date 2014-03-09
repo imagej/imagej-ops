@@ -28,30 +28,36 @@
  * #L%
  */
 
-package add;
+package imagej.ops.arithmetic.add;
 
 import imagej.ops.Op;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToImageInPlace<T extends NumericType<T>> implements Op {
+/**
+ * Adds two numeric values.
+ * 
+ * @author Johannes Schindelin
+ */
+@Plugin(type = Op.class, name = "add", priority = Priority.LOW_PRIORITY + 1)
+public class AddOp<T extends NumericType<T>> implements Op {
 
 	@Parameter(type = ItemIO.BOTH)
-	private IterableRealInterval<T> image;
+	private T result;
 
 	@Parameter
-	private T value;
+	private T a;
+
+	@Parameter
+	private T b;
 
 	@Override
 	public void run() {
-		for (final T t : image) {
-			t.add(value);
-		}
+		result.set(a);
+		result.add(b);
 	}
-
 }

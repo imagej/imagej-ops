@@ -30,9 +30,9 @@
 
 package imagej.ops.convert;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -52,13 +52,13 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IterableInterval<O> compute(IterableInterval<I> input,
-		IterableInterval<O> output)
+	public IterableInterval<O> compute(final IterableInterval<I> input,
+		final IterableInterval<O> output)
 	{
 		pixConvert.checkInOutTypes(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
 		pixConvert.checkInputSource(input);
-		return (IterableInterval<O>) ops.run("map", input, pixConvert, output);
+		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
 	}
 
 }

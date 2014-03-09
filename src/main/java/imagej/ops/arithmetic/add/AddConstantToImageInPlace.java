@@ -28,37 +28,29 @@
  * #L%
  */
 
-package add;
+package imagej.ops.arithmetic.add;
 
 import imagej.ops.Op;
-import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.img.planar.PlanarImg;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public class AddConstantToPlanarDoubleImage implements Op {
+public class AddConstantToImageInPlace<T extends NumericType<T>> implements Op {
 
 	@Parameter(type = ItemIO.BOTH)
-	private PlanarImg<DoubleType, DoubleArray> image;
+	private IterableRealInterval<T> image;
 
 	@Parameter
-	private double value;
+	private T value;
 
 	@Override
 	public void run() {
-		long planeCount = 1;
-		for (int d = 2; d < image.numDimensions(); d++) {
-			planeCount *= image.dimension(d);
-		}
-		for (int p = 0; p < planeCount; p++) {
-			final double[] plane = image.getPlane(p).getCurrentStorageArray();
-			for (int i = 0; i < plane.length; i++) {
-				plane[i] += value;
-			}
+		for (final T t : image) {
+			t.add(value);
 		}
 	}
 

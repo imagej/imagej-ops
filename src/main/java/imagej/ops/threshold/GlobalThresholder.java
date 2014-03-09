@@ -30,9 +30,9 @@
 
 package imagej.ops.threshold;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.Function;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -66,8 +66,8 @@ public class GlobalThresholder<T extends RealType<T>> extends
 		final T threshold = (T) opService.run(method, input);
 		final PixThreshold<T> apply = new PixThreshold<T>();
 		apply.setThreshold(threshold);
-		return (IterableInterval<BitType>) opService.run("map", input, apply,
-			output);
+		return (IterableInterval<BitType>) opService.run("map", output, input,
+			apply);
 	}
 
 }
