@@ -30,7 +30,6 @@
 
 package imagej.ops.tests;
 
-import static org.junit.Assert.assertTrue;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import net.imglib2.FinalInterval;
@@ -63,8 +62,7 @@ public abstract class AbstractOpTest {
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class);
-		ops = context.getService(OpService.class);
-		assertTrue(ops != null);
+		ops = context.service(OpService.class);
 	}
 
 	/**
