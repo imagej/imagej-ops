@@ -30,47 +30,38 @@
 
 package imagej.ops.map;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Contingent;
-import imagej.ops.Function;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO
+ * Default {@link FunctionalMapper} for the general case.
  * 
  * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
-public class MapperII<A, B> extends
-	AbstractFunction<IterableInterval<A>, IterableInterval<B>> implements Contingent
+@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
+public class DefaultFunctionalMapper<A, B>
+	extends
+	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 {
 
-	@Parameter
-	private Function<A, B> func;
-
 	@Override
-	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
 	{
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		final Cursor<A> cursor = input.localizingCursor();
+		final RandomAccess<B> rndAccess = output.randomAccess();
 
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(cursor.get(), rndAccess.get());
 		}
 
 		return output;
