@@ -198,6 +198,41 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
+	public Module optimize(final Module module) {
+		final ArrayList<Module> optimal = new ArrayList<Module>();
+		final ArrayList<Optimizer> optimizers = new ArrayList<Optimizer>();
+
+		double priority = Double.NaN;
+		for (final Optimizer optimizer : getInstances()) {
+			final double p = optimizer.getPriority();
+			if (p != priority && !optimal.isEmpty()) {
+				// NB: Lower priority was reached; stop looking for any more matches.
+				break;
+			}
+			priority = p;
+			final Module m = optimizer.optimize(module);
+			if (m != null) {
+				optimal.add(m);
+				optimizers.add(optimizer);
+			}
+		}
+
+		if (optimal.size() == 1) return optimal.get(0);
+		if (optimal.isEmpty()) return module;
+
+		// multiple matches
+		final double p = optimal.get(0).getInfo().getPriority();
+		final StringBuilder sb = new StringBuilder();
+		final String label = module.getDelegateObject().getClass().getName();
+		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
+		for (int i=0; i<optimizers.size(); i++) {
+			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
+			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
+		}
+		return module;
+	}
+
+	@Override
 	public String getOpString(final String name, final Object... args) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(name + "(");

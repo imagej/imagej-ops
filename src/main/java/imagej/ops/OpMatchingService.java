@@ -91,6 +91,12 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 */
 	Module match(ModuleInfo info, Object... args);
 
+	/**
+	 * Optimizes the performance of the given {@link Module} using all available
+	 * {@link Optimizer}s.
+	 */
+	Module optimize(Module module);
+
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
 
