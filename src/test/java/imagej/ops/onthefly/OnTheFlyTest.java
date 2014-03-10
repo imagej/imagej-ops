@@ -30,6 +30,7 @@
 package imagej.ops.onthefly;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.onthefly.ArithmeticOp.AddOp;
@@ -158,5 +159,15 @@ public class OnTheFlyTest extends AbstractOpTest {
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + 17), array[i]);
 		}
+	}
+
+	/** Verifies that the OpMatcher gets a chance to do things. */
+	@Test
+	public void testOpMatcher() {
+		final Object result = generateByteTestImg(false, 256, 256);
+		final Object a = generateByteTestImg(false, 256, 256);
+		final Object b = generateByteTestImg(false, 256, 256);
+		final Op op = ops.op("add", result, a, b);
+		assertTrue("Not a subclass of " + ArithmeticOp.class + ": " + op.getClass(), op instanceof ArithmeticOp);
 	}
 }
