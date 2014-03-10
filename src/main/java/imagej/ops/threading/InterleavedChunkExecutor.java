@@ -40,15 +40,16 @@ import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Implementation of a {@link ChunkExecutor} that interleaves the chunks. In a element
- * enumeration from 1..n with <b>k</b> {@link ChunkExecutable}s the first one will process
- * the elements 1, k+1, 2k+1, ... the second chunk executable 2, k+2, 2k+2 and so on.
+ * Implementation of a {@link ChunkExecutor} that interleaves the chunks. In a
+ * element enumeration from 1..n with <b>k</b> {@link ChunkExecutable}s the
+ * first one will process the elements 1, k+1, 2k+1, ... the second chunk
+ * executable 2, k+2, 2k+2 and so on.
  * 
  * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = "chunker", priority = Priority.VERY_LOW_PRIORITY)
+@Plugin(type = Op.class, name = "chunker",
+	priority = Priority.VERY_LOW_PRIORITY)
 public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 
 	@Parameter
@@ -59,7 +60,7 @@ public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 	@Override
 	public void run() {
 
-		final int numThreads = Runtime.getRuntime().availableProcessors();		
+		final int numThreads = Runtime.getRuntime().availableProcessors();
 		final int numStepsFloor = (int) (numberOfElements / numThreads);
 		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
@@ -73,8 +74,9 @@ public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 				@Override
 				public void run() {
 					if (j < remainder) {
-						chunkable.execute(j, numThreads, (numStepsFloor+1));
-					} else {
+						chunkable.execute(j, numThreads, (numStepsFloor + 1));
+					}
+					else {
 						chunkable.execute(j, numThreads, numStepsFloor);
 					}
 				}
@@ -83,6 +85,9 @@ public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 
 		for (final Future<?> future : futures) {
 			try {
+				if (isCanceled()) {
+					break;
+				}
 				future.get();
 			}
 			catch (final Exception e) {
