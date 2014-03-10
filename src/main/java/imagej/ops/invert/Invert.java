@@ -32,6 +32,8 @@ package imagej.ops.invert;
 
 /**
  * Marker interface for invert-operations.
+ * 
+ * @author Martin Horn
  */
 public interface Invert {
 

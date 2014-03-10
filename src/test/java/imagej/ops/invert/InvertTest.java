@@ -38,6 +38,9 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Test;
 
+/**
+ * @author Martin Horn
+ */
 public class InvertTest extends AbstractOpTest {
 
 	@Test

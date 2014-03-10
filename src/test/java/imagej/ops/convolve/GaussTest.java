@@ -37,7 +37,11 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
-/** Tests involving Gaussian convolution. */
+/**
+ * Tests involving Gaussian convolution.
+ * 
+ * @author Martin Horn
+ */
 public class GaussTest extends AbstractOpTest {
 
 	/** Tests the Gaussian. */

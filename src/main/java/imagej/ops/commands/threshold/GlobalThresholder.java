@@ -32,7 +32,6 @@ package imagej.ops.commands.threshold;
 
 import imagej.command.Command;
 import imagej.ops.OpService;
-import imagej.ops.slicer.DefaultSliceMapper;
 import imagej.ops.slicer.SliceMapper;
 import imagej.ops.threshold.ThresholdMethod;
 import net.imglib2.Axis;
@@ -46,7 +45,9 @@ import org.scijava.plugin.Plugin;
 
 /**
  * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)
+ * auto-generated?? (e.g. based on other plugin annotations)#
+ * 
+ * @author Martin Horn
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
 public class GlobalThresholder<T extends RealType<T>> implements Command {
@@ -72,12 +73,12 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
 	@Override
 	public void run() {
 
-		final imagej.ops.threshold.GlobalThresholder<T> thresholder = new imagej.ops.threshold.GlobalThresholder<T>();
+		final imagej.ops.threshold.GlobalThresholder<T> thresholder =
+			new imagej.ops.threshold.GlobalThresholder<T>();
 		thresholder.setMethod(method);
 
 		// TODO actually map axes to int array
-		opService.run(SliceMapper.class, res, src, thresholder, new int[] { 1,
-				2 });
+		opService.run(SliceMapper.class, res, src, thresholder, new int[] { 1, 2 });
 
 	}
 }

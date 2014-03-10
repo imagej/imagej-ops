@@ -40,6 +40,9 @@ import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
 
+/**
+ * @author Martin Horn
+ */
 public class NormalizeTest extends AbstractOpTest {
 
 	@Test

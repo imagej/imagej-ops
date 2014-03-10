@@ -39,6 +39,10 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Martin Horn
+ */
 @Plugin(type = Op.class, name = "convert")
 public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractFunction<IterableInterval<I>, IterableInterval<O>>

@@ -48,6 +48,10 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Martin Horn
+ */
 @Plugin(type = Command.class, menuPath = "Image > Convolve")
 public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 		implements Command {
