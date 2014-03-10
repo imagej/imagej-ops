@@ -3,7 +3,6 @@ package imagej.ops.loop;
 
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
 
 import org.scijava.plugin.Parameter;
 
@@ -22,7 +21,7 @@ public abstract class AbstractInplaceLoop<I> extends AbstractInplaceFunction<I>
 	 * Number of iterations
 	 */
 	@Parameter
-	protected InplaceFunction<I> function;
+	protected Function<I, I> function;
 
 	/**
 	 * Number of iterations
@@ -33,14 +32,14 @@ public abstract class AbstractInplaceLoop<I> extends AbstractInplaceFunction<I>
 	/**
 	 * @return the {@link Function} to be applied
 	 */
-	public InplaceFunction<I> getFunction() {
+	public Function<I, I> getFunction() {
 		return function;
 	}
 
 	/**
 	 * @param function to be applied
 	 */
-	public void setFunction(final InplaceFunction<I> function) {
+	public void setFunction(final Function<I, I> function) {
 		this.function = function;
 	}
 }
