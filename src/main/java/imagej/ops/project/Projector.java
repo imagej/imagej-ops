@@ -30,6 +30,11 @@
 
 package imagej.ops.project;
 
+/**
+ * Marker interface
+ * 
+ * @author Christian Dietz
+ */
 public interface Projector {
-
+	// NB: Marker interface
 }
