@@ -159,15 +159,19 @@ public abstract class ArithmeticOp implements Op, Contingent {
 	public static Op findOp(final String name, final String operator,
 		final Object result, final Object a, final Object b)
 	{
-		final MyOp op = findMyOp(name, operator, result, a, b);
-		if (op == null) return null;
-		return new ArithmeticOp() {
+		final MyOp myOp = findMyOp(name, operator, result, a, b);
+		if (myOp == null) return null;
+		final ArithmeticOp op = new ArithmeticOp() {
 
 			@Override
 			public void run() {
-				op.run(result, a, b);
+				myOp.run(result, a, b);
 			}
 		};
+		op.result = result;
+		op.a = a;
+		op.b = b;
+		return op;
 	}
 
 	private static MyOp findMyOp(final String name, final String operator, final Object result, final Object a, final Object b) {
