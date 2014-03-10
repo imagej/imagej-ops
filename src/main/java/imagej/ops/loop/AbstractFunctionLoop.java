@@ -35,17 +35,11 @@ public abstract class AbstractFunctionLoop<F extends Function<I, I>, I> extends
 	@Parameter
 	protected int n;
 
-	/**
-	 * @return the {@link Function} to be applied
-	 */
 	@Override
 	public Function<I, I> getFunction() {
 		return function;
 	}
 
-	/**
-	 * @param function to be applied
-	 */
 	@Override
 	public void setFunction(final Function<I, I> function) {
 		this.function = function;
