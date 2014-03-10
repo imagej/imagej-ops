@@ -1,11 +1,11 @@
 ImageJ OPS
-----------
+==========
 
 ImageJ OPS is an extensible Java framework for algorithms, particularly image
 processing algorithms.
 
 Getting started
-===============
+---------------
 
 Each op has a list of typed input and output parameters on which it operates.
 You can think of an op as a (potentially multi-variable) function:
@@ -42,7 +42,7 @@ For more details, see these tutorials:
 * [Create a new OP](https://github.com/imagej/imagej-tutorials/create-a-new-op)
 
 How to contribute
-=================
+-----------------
 
 We welcome [pull requests](https://help.github.com/articles/using-pull-requests)!
 * Use an
