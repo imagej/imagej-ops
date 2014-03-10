@@ -162,7 +162,13 @@ public class DefaultOpMatcherService extends
 				}
 				priority = p;
 				final Module module = matcher.match(info, args);
-				if (module != null) matches.add(module);
+				if (module != null) {
+					matches.add(module);
+					if (module.getInfo() != info) {
+						// generated code always wins
+						break;
+					}
+				}
 			}
 			if (!matches.isEmpty()) break;
 		}
