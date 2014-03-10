@@ -33,16 +33,14 @@ package imagej.ops;
 import imagej.module.Module;
 import imagej.service.ImageJService;
 
-import org.scijava.plugin.SingletonService;
+import org.scijava.plugin.PTService;
 
 /**
- * Interface for service that manages and executes {@link Op}s.
+ * Interface for services that manage and execute {@link Op}s.
  * 
  * @author Curtis Rueden
  */
-public interface OpService extends SingletonService<OperationMatcher>,
-	ImageJService
-{
+public interface OpService extends PTService<Op>, ImageJService {
 
 	/**
 	 * Executes the given operation with the specified arguments. The best
