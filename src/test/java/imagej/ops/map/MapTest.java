@@ -116,11 +116,11 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testInplaceII() {
 
+		final Cursor<ByteType> cursor1 = in.copy().cursor();
+		final Cursor<ByteType> cursor2 = in.cursor();
+
 		final Op functional = ops.op(InplaceMap.class, in, new AddOneInplace());
 		functional.run();
-
-		final Cursor<ByteType> cursor1 = in.cursor();
-		final Cursor<ByteType> cursor2 = out.cursor();
 
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
