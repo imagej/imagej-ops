@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
 /**
  * @author Martin Horn, University of Konstanz
  */
-public class HistogramCreate<T extends RealType<T>> implements Op, Histogram {
+public class HistogramCreate<T extends RealType<T>> implements Histogram {
 
 	@Parameter
 	private IterableInterval<T> in;
