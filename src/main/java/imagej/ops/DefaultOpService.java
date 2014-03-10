@@ -289,7 +289,21 @@ public class DefaultOpService extends
 	}
 
 	private boolean nameMatches(final CommandInfo info, final String name) {
-		return name == null || name.equals(info.getName());
+		if (name == null || name.equals(info.getName())) return true;
+
+		// check for an alias
+		final String alias = info.get("alias");
+		if (name.equals(alias)) return true;
+
+		// check for a list of aliases
+		final String aliases = info.get("aliases");
+		if (aliases != null) {
+			for (final String a : aliases.split(",")) {
+				if (name.equals(a.trim())) return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void assign(final Module module, final Object arg,
