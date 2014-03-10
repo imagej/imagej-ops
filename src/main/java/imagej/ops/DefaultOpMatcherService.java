@@ -104,7 +104,7 @@ public class DefaultOpMatcherService extends
 			final double priority = matches.get(0).getInfo().getPriority();
 			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
 			for (final Module module : matches) {
-				sb.append("\t" + module.getClass().getName() + "\n");
+				sb.append("\t" + getOpString(module.getInfo()) + "\n");
 			}
 		}
 
