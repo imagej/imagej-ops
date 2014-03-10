@@ -35,6 +35,7 @@ import imagej.ops.OpService;
 import imagej.ops.Parallel;
 import imagej.ops.map.AbstractFunctionalMapper;
 import imagej.ops.map.FunctionalMapper;
+import imagej.ops.map.Mapper;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
@@ -53,7 +54,8 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 2)
+@Plugin(type = Op.class, name = Mapper.NAME,
+	priority = Priority.LOW_PRIORITY + 2)
 public class DefaultFunctionalMapperP<A, B>
 	extends
 	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>

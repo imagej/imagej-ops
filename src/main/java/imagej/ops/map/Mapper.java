@@ -41,13 +41,15 @@ import imagej.ops.Op;
  */
 public interface Mapper<A, B> extends Op {
 
+	public static final String NAME = "map";
+
 	/**
 	 * @return the {@link Function} used for mapping
 	 */
 	Function<A, B> getFunction();
 
 	/**
-	 * @param func the {@link Function} used for mapping
+	 * @param function the {@link Function} used for mapping
 	 */
-	void setFunction(Function<A, B> func);
+	void setFunction(Function<A, B> function);
 }

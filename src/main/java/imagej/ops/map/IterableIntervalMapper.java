@@ -46,7 +46,8 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Mapper.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
 public class IterableIntervalMapper<A, B> extends
 	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
 	implements Contingent

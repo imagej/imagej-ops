@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @param <A> to be mapped on itself
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Mapper.NAME, priority = Priority.LOW_PRIORITY)
 public class DefaultInplaceMapper<A> extends
 	AbstractInplaceMapper<A, Iterable<A>>
 {

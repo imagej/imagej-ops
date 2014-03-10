@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Mapper.NAME, priority = Priority.LOW_PRIORITY)
 public class DefaultFunctionalMapper<A, B>
 	extends
 	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
