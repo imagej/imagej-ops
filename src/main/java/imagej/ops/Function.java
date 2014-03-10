@@ -32,10 +32,15 @@ package imagej.ops;
 
 /**
  * A function (in this context) is an {@link Op} that has a typed input
- * parameter and a typed output parameter, which are accessible via its public
- * API ({@link #getInput()}, {@link #getOutput()}, etc.). It provides a
- * {@link #compute} method to compute the function for different input and
- * output parameters.
+ * parameter and a typed output parameter.
+ * <p>
+ * The input and output are accessible via its public API ({@link #getInput()},
+ * {@link #getOutput()}, etc.).
+ * </p>
+ * <p>
+ * The function provides a {@link #compute} method to compute the function for
+ * different input and output parameters.
+ * </p>
  * 
  * @author Christian Dietz
  * @author Martin Horn
