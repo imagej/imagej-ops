@@ -65,6 +65,11 @@ public class DefaultOpMatcherService extends
 	// -- OpMatcherService methods --
 
 	@Override
+	public List<CommandInfo> getOps() {
+		return commandService.getCommandsOfType(Op.class);
+	}
+
+	@Override
 	public Module findModule(final String name, final Class<? extends Op> type,
 		final Object... args)
 	{
@@ -118,7 +123,7 @@ public class DefaultOpMatcherService extends
 	public List<ModuleInfo> findCandidates(final String name,
 		final Class<? extends Op> type)
 	{
-		final List<CommandInfo> ops = commandService.getCommandsOfType(Op.class);
+		final List<CommandInfo> ops = getOps();
 		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
 
 		for (final CommandInfo info : ops) {
