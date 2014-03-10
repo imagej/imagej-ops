@@ -18,6 +18,7 @@ public class RunInterleavedChunkExecutor<A extends RealType<A>> extends Abstract
 	@Parameter
 	private OpService opService;
 	
+	@Override
 	public IterableInterval<A> compute(final IterableInterval<A> input,
 			final IterableInterval<A> output) {
 		

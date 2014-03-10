@@ -15,6 +15,7 @@ public class RunInterleavedChunkExecutorArray<A> extends AbstractFunction<A[], A
 	@Parameter
 	private OpService opService;
 	
+	@Override
 	public A[] compute(final A[] input,
 			final A[] output) {
 		

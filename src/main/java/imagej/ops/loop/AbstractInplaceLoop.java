@@ -32,6 +32,7 @@ public abstract class AbstractInplaceLoop<I> extends AbstractInplaceFunction<I>
 	/**
 	 * @return the {@link Function} to be applied
 	 */
+	@Override
 	public Function<I, I> getFunction() {
 		return function;
 	}
@@ -39,6 +40,7 @@ public abstract class AbstractInplaceLoop<I> extends AbstractInplaceFunction<I>
 	/**
 	 * @param function to be applied
 	 */
+	@Override
 	public void setFunction(final Function<I, I> function) {
 		this.function = function;
 	}
