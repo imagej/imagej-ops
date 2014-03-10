@@ -48,10 +48,6 @@ public class PixThreshold<T extends Comparable<T>> extends
 	@Parameter
 	private T threshold;
 
-	public void setThreshold(final T threshold) {
-		this.threshold = threshold;
-	}
-
 	@Override
 	public BitType compute(final T input, final BitType output) {
 		output.set(input.compareTo(threshold) > 0);

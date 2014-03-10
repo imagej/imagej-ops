@@ -53,18 +53,21 @@ public class GlobalThresholder<T extends RealType<T>> extends
 	private ThresholdMethod<T> method;
 
 	@Parameter
-	private OpService opService;
+	private OpService ops;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<BitType> compute(final IterableInterval<T> input,
 		final IterableInterval<BitType> output)
 	{
-		final T threshold = (T) opService.run(method, input);
-		final PixThreshold<T> apply = new PixThreshold<T>();
-		apply.setThreshold(threshold);
-		return (IterableInterval<BitType>) opService.run("map", output, input,
-			apply);
+		final T threshold = (T) ops.run(method, input);
+
+		Op thresholdOp =
+			ops
+				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
+
+		ops.run("map", output, input, threshold);
+		return output;
 	}
 
 }
