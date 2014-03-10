@@ -52,14 +52,14 @@ public abstract class AbstractViewMapper<A, B, I, O> implements Mapper<A, B> {
 	@Parameter
 	private I input;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private O output;
-
 	@Parameter
 	private Function<A, B> function;
 
 	@Parameter
 	private B type;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private O output;
 
 	/**
 	 * {@inheritDoc}
