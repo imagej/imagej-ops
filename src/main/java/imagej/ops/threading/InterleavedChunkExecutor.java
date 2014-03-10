@@ -28,58 +28,78 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add.parallel;
+package imagej.ops.threading;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.threading.ChunkExecutable;
-import imagej.ops.threading.ChunkExecutor;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+
 import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+
 /**
- * Multi-Threaded version ofoptimized add constant for {@link ArrayImg}s of type
- * {@link ByteType}
+ * Implementation of a {@link ChunkExecutor} that interleaves the chunks. In a element
+ * enumeration from 1..n with <b>k</b> {@link ChunkExecutable}s the first one will process
+ * the elements 1, k+1, 2k+1, ... the second chunk executable 2, k+2, 2k+2 and so on.
  * 
- * @author Christian Dietz
+ * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
-public class AddConstantToArrayByteImageP implements Op {
+@Plugin(type = Op.class, name = "chunker", priority = Priority.VERY_LOW_PRIORITY)
+public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 
 	@Parameter
-	private OpService opService;
+	public LogService logService;
 
-	@Parameter(type = ItemIO.BOTH)
-	private ArrayImg<ByteType, ByteArray> image;
-
-	@Parameter
-	private byte value;
+	private String cancellationMsg;
 
 	@Override
 	public void run() {
-		final byte[] data = image.update(null).getCurrentStorageArray();
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
-			
-			@Override
-			public void execute(final int startIndex, final int stepSize, final int numSteps)
-			{
-				if (stepSize != 1) {
-					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
-						data[i] += value;
+
+		final int numThreads = Runtime.getRuntime().availableProcessors();		
+		final int numStepsFloor = (int) (numberOfElements / numThreads);
+		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
+
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
+
+		for (int i = 0; i < numThreads; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					if (j < remainder) {
+						chunkable.execute(j, numThreads, (numStepsFloor+1));
+					} else {
+						chunkable.execute(j, numThreads, numStepsFloor);
 					}
 				}
-				else {
-					for (int i = startIndex; i < startIndex + numSteps; i++) {
-						data[i] += value;
-					}
-				}
+			}));
+		}
+
+		for (final Future<?> future : futures) {
+			try {
+				future.get();
 			}
-		}, data.length);
+			catch (final Exception e) {
+				logService.error(e);
+				cancellationMsg = e.getMessage();
+				break;
+			}
+		}
+	}
+
+	@Override
+	public boolean isCanceled() {
+		return cancellationMsg != null;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancellationMsg;
 	}
 }

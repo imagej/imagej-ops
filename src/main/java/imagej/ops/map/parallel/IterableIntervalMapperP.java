@@ -38,6 +38,7 @@ import imagej.ops.map.AbstractFunctionalMapper;
 import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -73,22 +74,21 @@ public class IterableIntervalMapperP<A, B> extends
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 			final IterableInterval<B> output) {
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void execute(final int min, final int stepSize,
-					final int numSteps) {
+			public void execute(final int startIndex, final int stepSize,	final int numSteps) {
 				final Cursor<A> inCursor = input.cursor();
 				final Cursor<B> outCursor = output.cursor();
 
-				inCursor.jumpFwd(min);
-				outCursor.jumpFwd(min);
+				setToStart(inCursor, startIndex);
+				setToStart(outCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
+					func.compute(inCursor.get(), outCursor.get());
 					inCursor.jumpFwd(stepSize);
 					outCursor.jumpFwd(stepSize);
-					func.compute(inCursor.get(), outCursor.get());
 					ctr++;
 				}
 			}

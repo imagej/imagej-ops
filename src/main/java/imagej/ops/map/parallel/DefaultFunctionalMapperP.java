@@ -37,6 +37,7 @@ import imagej.ops.map.AbstractFunctionalMapper;
 import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -67,22 +68,22 @@ public class DefaultFunctionalMapperP<A, B>
 	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				final Cursor<A> cursor = input.localizingCursor();
-				cursor.jumpFwd(min);
+				
+				setToStart(cursor, startIndex);
 
 				final RandomAccess<B> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					cursor.jumpFwd(stepSize);
 					rndAccess.setPosition(cursor);
 					func.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
