@@ -33,16 +33,14 @@ package imagej.ops;
 import imagej.module.Module;
 import imagej.service.ImageJService;
 
-import org.scijava.plugin.SingletonService;
+import org.scijava.plugin.PTService;
 
 /**
- * Interface for service that manages and executes {@link Op}s.
+ * Interface for services that manage and execute {@link Op}s.
  * 
  * @author Curtis Rueden
  */
-public interface OpService extends SingletonService<OperationMatcher>,
-	ImageJService
-{
+public interface OpService extends PTService<Op>, ImageJService {
 
 	/**
 	 * Executes the given operation with the specified arguments. The best
@@ -157,5 +155,62 @@ public interface OpService extends SingletonService<OperationMatcher>,
 
 	/** Executes the "add" operation on the given arguments. */
 	Object add(Object... args);
+
+	/** Executes the "chunker" operation on the given arguments. */
+	Object chunker(Object... args);
+
+	/** Executes the "convert" operation on the given arguments. */
+	Object convert(Object... args);
+
+	/** Executes the "convolve" operation on the given arguments. */
+	Object convolve(Object... args);
+
+	/** Executes the "divide" operation on the given arguments. */
+	Object divide(Object... args);
+
+	/** Executes the "gauss" operation on the given arguments. */
+	Object gauss(Object... args);
+
+	/** Executes the "infinity" operation on the given arguments. */
+	Object infinity(Object... args);
+
+	/** Executes the "map" operation on the given arguments. */
+	Object map(Object... args);
+
+	/** Executes the "max" operation on the given arguments. */
+	Object max(Object... args);
+
+	/** Executes the "minmax" operation on the given arguments. */
+	Object minmax(Object... args);
+
+	/** Executes the "multiply" operation on the given arguments. */
+	Object multiply(Object... args);
+
+	/** Executes the "neighborhood" operation on the given arguments. */
+	Object neighborhood(Object... args);
+
+	/** Executes the "otsu" operation on the given arguments. */
+	Object otsu(Object... args);
+
+	/** Executes the "pixThreshold" operation on the given arguments. */
+	Object pixThreshold(Object... args);
+
+	/** Executes the "project" operation on the given arguments. */
+	Object project(Object... args);
+
+	/** Executes the "slicemapper" operation on the given arguments. */
+	Object slicemapper(Object... args);
+
+	/** Executes the "slicer" operation on the given arguments. */
+	Object slicer(Object... args);
+
+	/** Executes the "subtract" operation on the given arguments. */
+	Object subtract(Object... args);
+
+	/** Executes the "sum" operation on the given arguments. */
+	Object sum(Object... args);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	Object threshold(Object... args);
 
 }

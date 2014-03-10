@@ -28,52 +28,34 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.normalize;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.normalize.NormalizeRealType;
+import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractOpTest;
 
 import java.util.List;
 
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "convert")
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
-{
+public class NormalizeTest extends AbstractOpTest {
 
-	@Parameter
-	private OpService ops;
+	@Test
+	public void testNormalize() {
 
-	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-	}
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
+		// TODO: weird order of parameters
+		ops.run("normalize", out, in);
 
-		inMin = minmax.get(0).getRealDouble();
+		List<ByteType> minmax1 = (List<ByteType>) ops.run("minmax", in);
+		List<ByteType> minmax2 = (List<ByteType>) ops.run("minmax", out);
+
+		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
+		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
 
 	}
-
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
-	}
-
 }

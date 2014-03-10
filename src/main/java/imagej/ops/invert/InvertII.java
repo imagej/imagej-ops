@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,52 +28,76 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.invert;
 
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.normalize.NormalizeRealType;
-
-import java.util.List;
-
+import imagej.ops.map.Mapper;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "convert")
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
+@Plugin(type = Op.class, name = "invert")
+public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements Invert
 {
 
 	@Parameter
 	private OpService ops;
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		outMin = outType.getMinValue();
+	public IterableInterval<O> compute(IterableInterval<I> input,
+		IterableInterval<O> output)
+	{
+		I inType = input.firstElement().createVariable();
+		Function<I, O> invert;
+		if (inType.getMinValue() < 0) {
+			invert = new SignedRealInvert<I, O>();
+		}
+		else {
+			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
+		}
+		ops.run(Mapper.class, output, input, invert);
+		return output;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
+	private class SignedRealInvert<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractFunction<I, O>
+	{
 
-		inMin = minmax.get(0).getRealDouble();
+		@Override
+		public O compute(final I x, final O output) {
+			final double value = x.getRealDouble() * -1.0 - 1;
+			output.setReal(value);
+			return output;
+		}
 
 	}
 
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
+	private class UnsignedRealInvert<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractFunction<I, O>
+	{
+
+		private final double max;
+
+		/**
+		 * @param max - maximum value of the range to invert about
+		 */
+		public UnsignedRealInvert(final double max) {
+			this.max = max;
+		}
+
+		@Override
+		public O compute(final I x, final O output) {
+			final double value = max - x.getRealDouble();
+			output.setReal(value);
+			return output;
+		}
+
 	}
 
 }

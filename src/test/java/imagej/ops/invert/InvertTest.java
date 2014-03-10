@@ -28,52 +28,48 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.invert;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.normalize.NormalizeRealType;
+import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
-import java.util.List;
+import org.junit.Test;
 
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+public class InvertTest extends AbstractOpTest {
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+	@Test
+	public void testInvertSigned() {
 
-@Plugin(type = Op.class, name = "convert")
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
-{
+		// signed type test
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-	@Parameter
-	private OpService ops;
+		ops.run("invert", out, in);
 
-	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-	}
+		ByteType firstIn = in.firstElement();
+		ByteType firstOut = out.firstElement();
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
-
-		inMin = minmax.get(0).getRealDouble();
+		assertEquals(firstIn.get() * -1 - 1, firstOut.get());
 
 	}
 
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
-	}
+	@Test
+	public void testInvertUnsigned() {
 
+		// unsigned type test
+		Img<UnsignedByteType> in = generateUnsignedByteTestImg(true, 5, 5);
+		Img<UnsignedByteType> out = in.factory().create(in, new UnsignedByteType());
+
+		ops.run("invert", out, in);
+
+		UnsignedByteType firstIn = in.firstElement();
+		UnsignedByteType firstOut = out.firstElement();
+
+		assertEquals((int) firstIn.getMaxValue() - firstIn.getInteger(), firstOut
+			.getInteger());
+
+	}
 }

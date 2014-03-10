@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,52 +28,58 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.normalize;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.normalize.NormalizeRealType;
-
-import java.util.List;
-
-import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "convert")
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIASES) })
+public class NormalizeRealType<T extends RealType<T>> extends
+	AbstractFunction<T, T> implements Normalize
 {
 
 	@Parameter
-	private OpService ops;
+	private double oldMin;
+
+	@Parameter
+	private double oldMax;
+
+	@Parameter
+	private double newMin;
+
+	@Parameter
+	private double newMax;
+
+	@Parameter
+	private double factor;
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		outMin = outType.getMinValue();
+	public T compute(T input, T output) {
+		output.setReal(Math.min(newMax, Math.max(newMin,
+			(input.getRealDouble() - oldMin) * factor + newMin)));
+		return output;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
-
-		inMin = minmax.get(0).getRealDouble();
-
-	}
-
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
+	/**
+	 * Determines the factor to map the interval [oldMin, oldMax] to
+	 * [newMin,newMax].
+	 * 
+	 * @param oldMin
+	 * @param oldMax
+	 * @param newMin
+	 * @param newMax
+	 * @return the normalization factor
+	 */
+	public static double normalizationFactor(double oldMin, double oldMax,
+		double newMin, double newMax)
+	{
+		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
 	}
 
 }

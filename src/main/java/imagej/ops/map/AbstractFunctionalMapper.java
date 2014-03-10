@@ -48,23 +48,15 @@ public abstract class AbstractFunctionalMapper<A, B, C, D> extends
 	AbstractFunction<C, D> implements FunctionalMapper<A, B, C, D>
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
+	/** {@link Function} to be used for mapping. */
 	@Parameter
 	protected Function<A, B> func;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Function<A, B> getFunction() {
 		return func;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setFunction(final Function<A, B> func) {
 		this.func = func;

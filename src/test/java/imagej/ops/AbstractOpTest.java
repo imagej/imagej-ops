@@ -30,12 +30,11 @@
 
 package imagej.ops;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.util.Intervals;
 
 import org.junit.After;
@@ -96,5 +95,21 @@ public abstract class AbstractOpTest {
 		}
 
 		return ArrayImgs.bytes(array, dims);
+	}
+
+	public Img<UnsignedByteType> generateUnsignedByteTestImg(final boolean fill,
+		final long... dims)
+	{
+		final byte[] array =
+			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (fill) {
+			seed = 17;
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (byte) pseudoRandom();
+			}
+		}
+
+		return ArrayImgs.unsignedBytes(array, dims);
 	}
 }

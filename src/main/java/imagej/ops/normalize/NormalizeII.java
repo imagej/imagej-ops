@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * A framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,52 +28,53 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.normalize;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.normalize.NormalizeRealType;
 
 import java.util.List;
 
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "convert")
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIASES) })
+public class NormalizeII<T extends RealType<T>> extends
+	AbstractFunction<IterableInterval<T>, IterableInterval<T>> implements
+	Normalize
 {
 
 	@Parameter
 	private OpService ops;
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-	}
+	public IterableInterval<T> compute(IterableInterval<T> input,
+		IterableInterval<T> output)
+	{
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
+		T outType = output.firstElement().createVariable();
+		List<T> minmax = (List<T>) ops.run("minmax", input);
+		double factor =
 			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
+				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
 					.getMaxValue());
 
-		inMin = minmax.get(0).getRealDouble();
+		// lookup the pixel-wise normalize function
+		Op normalize =
+			ops.op("normalize", null, null, minmax.get(0).getRealDouble(), minmax
+				.get(1).getRealDouble(), outType.getMinValue(), outType.getMaxValue(),
+				factor);
 
-	}
+		// run normalize for each pixel
+		ops.run("map", output, input, normalize);
 
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
+		return output;
 	}
 
 }
