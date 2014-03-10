@@ -34,13 +34,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import imagej.ops.OpService;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.log.LogService;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -162,8 +160,37 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(output.get()));
 	}
 
+	/** Tests {@link OpService#run(String, Object...)}. */
+	@Test
+	public void testAliases() {
+		final DoubleType value = new DoubleType(123.456);
+		final DoubleType output = new DoubleType();
+
+		assertFalse(Double.isInfinite(output.get()));
+		final Object result = ops.run("infin", output, value);
+		assertSame(output, result);
+		assertTrue(Double.isInfinite(output.get()));
+
+		output.set(0.0);
+		assertFalse(Double.isInfinite(output.get()));
+		final Object result2 = ops.run("inf", output, value);
+		assertSame(output, result2);
+		assertTrue(Double.isInfinite(output.get()));
+
+		output.set(0.0);
+		boolean noSuchAlias = false;
+		try {
+			ops.run("infini", output, value);
+		}
+		catch (final IllegalArgumentException exc) {
+			noSuchAlias = true;
+		}
+		assertTrue(noSuchAlias);
+	}
+
 	/** A test {@link Op}. */
-	@Plugin(type = Op.class, name = "infinity")
+	@Plugin(type = Op.class, name = "infinity",
+		attrs = { @Attr(name = "aliases", value = "inf, infin") })
 	public static class InfinityOp extends
 		AbstractFunction<DoubleType, DoubleType>
 	{
