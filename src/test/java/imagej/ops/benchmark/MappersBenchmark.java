@@ -35,8 +35,8 @@ import imagej.ops.Op;
 import imagej.ops.map.DefaultFunctionalMapper;
 import imagej.ops.map.DefaultInplaceMapper;
 import imagej.ops.map.IterableIntervalMapper;
-import imagej.ops.map.parallel.DefaultInplaceMapperP;
 import imagej.ops.map.parallel.DefaultFunctionalMapperP;
+import imagej.ops.map.parallel.DefaultInplaceMapperP;
 import imagej.ops.map.parallel.IterableIntervalMapperP;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -79,7 +79,8 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 	public void initImg() {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
-		addConstant = ops.op("add", (byte) 5);
+
+		addConstant = ops.op("add", null, null, new ByteType((byte) 5));
 		numRuns = 10;
 	}
 
@@ -103,10 +104,11 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestThreadedMapper() {
 		final Module module =
-			ops
-				.module(new DefaultFunctionalMapperP<ByteType, ByteType>(), out, in, addConstant);
+			ops.module(new DefaultFunctionalMapperP<ByteType, ByteType>(), out, in,
+				addConstant);
 
-		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName(), module, numRuns);
+		benchmarkAndPrint(DefaultFunctionalMapperP.class.getSimpleName(), module,
+			numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {
