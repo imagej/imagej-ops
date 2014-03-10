@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Median.NAME, priority = Priority.LOW_PRIORITY)
 public class MedianRealType<T extends RealType<T>> extends
 	AbstractFunction<Iterable<T>, T> implements Sum<T, T>
 {
