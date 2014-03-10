@@ -115,8 +115,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final Op op, final Object... args) {
-		final CommandInfo info = commandService.getCommand(op.getClass());
-		final Module module = info.createModule(op);
+		final Module module = info(op).createModule(op);
 		getContext().inject(module.getDelegateObject());
 		return assignInputs(module, args);
 	}
@@ -128,6 +127,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			assign(module, args[i++], item);
 		}
 		return module;
+	}
+
+	@Override
+	public CommandInfo info(Op op) {
+		return commandService.getCommand(op.getClass());
 	}
 
 	// -- Operation shortcuts --

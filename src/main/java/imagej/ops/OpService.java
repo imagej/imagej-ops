@@ -30,6 +30,7 @@
 
 package imagej.ops;
 
+import imagej.command.CommandInfo;
 import imagej.module.Module;
 import imagej.service.ImageJService;
 
@@ -150,6 +151,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
+
+	CommandInfo info(Op op);
 
 	// -- Operation shortcuts --
 
