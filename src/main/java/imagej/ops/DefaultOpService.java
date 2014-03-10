@@ -130,7 +130,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public CommandInfo info(Op op) {
+	public CommandInfo info(final Op op) {
 		return commandService.getCommand(op.getClass());
 	}
 
