@@ -32,6 +32,9 @@ package imagej.ops.onthefly;
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
+import imagej.ops.onthefly.ArithmeticOp.AddOp;
+import imagej.ops.onthefly.ArithmeticOp.DivideOp;
+import imagej.ops.onthefly.ArithmeticOp.SubtractOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
@@ -69,7 +72,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 			assertEquals((byte) 0, result[i]);
 		}
 
-		ops.add(resultImg, img, img2);
+		ops.run(AddOp.class, resultImg, img, img2);
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + (5 + ((3 * i) % 7))), result[i]);
@@ -92,7 +95,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 			assertEquals((short) 0, result[i]);
 		}
 
-		ops.add(resultImg, img, img2);
+		ops.run(AddOp.class, resultImg, img, img2);
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (short) (i + (5 + ((3 * i) % 7))), result[i]);
@@ -110,7 +113,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 			array[i] = (short) (i + 1);
 		}
 
-		ops.run("divide", img, img, img);
+		ops.run(DivideOp.class, img, img, img);
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (short) 1, array[i]);
@@ -131,7 +134,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 			t.set(i-- / 2);
 		}
 
-		ops.run("subtract", result, a, b);
+		ops.run(SubtractOp.class, result, a, b);
 
 		i = 0;
 		for (final IntType t : result) {
@@ -150,7 +153,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 			array[i] = (byte) i;
 		}
 
-		ops.add(img, img, new ByteType((byte) 17));
+		ops.run(AddOp.class, img, img, new ByteType((byte) 17));
 
 		for (int i = 0; i < array.length; i++) {
 			assertEquals("index " + i, (byte) (i + 17), array[i]);
