@@ -52,9 +52,4 @@ public class VarianceRealType<T extends RealType<T>> extends
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		return moment2.compute(input, output);
 	}
-
-//	@Override
-//	public String name() {
-//		return "Variance";
-//	}
 }
