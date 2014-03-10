@@ -76,8 +76,7 @@ public class DefaultOpMatcherService extends
 		final String label = type == null ? name : type.getName();
 
 		// find candidates with matching name & type
-		final List<ModuleInfo> candidates =
-			findCandidates(name, type);
+		final List<ModuleInfo> candidates = findCandidates(name, type);
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + label + "' ops");
 		}
