@@ -30,9 +30,9 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
 import imagej.command.CommandModuleItem;
 import imagej.module.Module;
+import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
@@ -49,8 +49,8 @@ import org.scijava.util.ConversionUtils;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = OperationMatcher.class)
-public class DefaultOperationMatcher extends AbstractOperationMatcher {
+@Plugin(type = OpMatcher.class)
+public class DefaultOpMatcher extends AbstractOpMatcher {
 
 	@Parameter
 	private Context context;
@@ -65,7 +65,7 @@ public class DefaultOperationMatcher extends AbstractOperationMatcher {
 	private LogService log;
 
 	@Override
-	public Module match(final CommandInfo info, final Object... args) {
+	public Module match(final ModuleInfo info, final Object... args) {
 		// check that each parameter is compatible with its argument
 		int i = 0;
 		for (final ModuleItem<?> item : info.inputs()) {
@@ -91,7 +91,7 @@ public class DefaultOperationMatcher extends AbstractOperationMatcher {
 
 	// -- Helper methods --
 
-	private Module createModule(final CommandInfo info, final Object... args) {
+	private Module createModule(final ModuleInfo info, final Object... args) {
 		final Module module = moduleService.createModule(info);
 		context.inject(module.getDelegateObject());
 		return opService.assignInputs(module, args);

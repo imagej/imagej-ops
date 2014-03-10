@@ -40,9 +40,13 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "threshold")
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Threshold.NAME)
 public class GlobalThresholder<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements Op
+	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
+	Threshold
 {
 
 	@Parameter
@@ -50,13 +54,6 @@ public class GlobalThresholder<T extends RealType<T>> extends
 
 	@Parameter
 	private OpService opService;
-
-	/**
-	 * Sets the thresholding method to use
-	 */
-	public void setMethod(final ThresholdMethod<T> method) {
-		this.method = method;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

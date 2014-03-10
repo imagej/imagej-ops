@@ -28,17 +28,25 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.statistics;
 
-import org.scijava.AbstractContextual;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
 
-/**
- * Abstract base class for {@link OperationMatcher} implementations.
- * 
- * @author Curtis Rueden
- */
-public abstract class AbstractOperationMatcher extends AbstractContextual
-	implements OperationMatcher
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
+public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
+	AbstractFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
 {
-	// NB: No implementation needed.
+
+	@Override
+	public V compute(final Iterable<T> input, final V output) {
+		for (final T t : input) {
+			output.setReal(output.getRealDouble() + t.getRealDouble());
+		}
+		return output;
+	}
 }

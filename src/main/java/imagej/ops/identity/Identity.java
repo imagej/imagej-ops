@@ -28,17 +28,19 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.identity;
 
-import imagej.ops.Function;
+import imagej.ops.InplaceFunction;
 
 /**
- * Simple marker interface
+ * Marker interface for identity operations. Implementing classes should be
+ * annotated with:
+ * <pre>@Plugin(type = Op.class, name = Identity.NAME</pre>
  * 
- * @author Christian Dietz
- * @param <T>
- * @param <V>
+ * @author Curtis Rueden
  */
-public interface Max<T, V> extends Function<Iterable<T>, V> {
-	// NB: Marker for Maximum Operations
+public interface Identity<A> extends InplaceFunction<A> {
+
+	public static final String NAME = "identity";
+
 }

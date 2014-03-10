@@ -31,8 +31,8 @@
 package imagej.ops.commands.threshold;
 
 import imagej.command.Command;
+import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.slicer.DefaultSliceMapper;
 import imagej.ops.slicer.SliceMapper;
 import imagej.ops.threshold.ThresholdMethod;
 import net.imglib2.Axis;
@@ -46,38 +46,38 @@ import org.scijava.plugin.Plugin;
 
 /**
  * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)
+ * auto-generated?? (e.g. based on other plugin annotations)#
+ * 
+ * @author Martin Horn
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
 public class GlobalThresholder<T extends RealType<T>> implements Command {
 
-	@Parameter
-	private ThresholdMethod<T> method;
+    @Parameter
+    private ThresholdMethod<T> method;
 
-	@Parameter
-	private OpService opService;
+    @Parameter
+    private OpService ops;
 
-	// should not be Dataset, DisplayService, ...
-	@Parameter
-	private ImgPlus<T> src;
+    // should not be Dataset, DisplayService, ...
+    @Parameter
+    private ImgPlus<T> in;
 
-	// needs to be created by the pre-processor!
-	@Parameter(type = ItemIO.BOTH)
-	private ImgPlus<BitType> res;
+    // needs to be created by the pre-processor!
+    @Parameter(type = ItemIO.BOTH)
+    private ImgPlus<BitType> out;
 
-	// we need another widget for this!!
-	@Parameter
-	private Axis[] axes;
+    // we need another widget for this!!
+    @Parameter
+    private Axis[] axes;
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
 
-		final imagej.ops.threshold.GlobalThresholder<T> thresholder = new imagej.ops.threshold.GlobalThresholder<T>();
-		thresholder.setMethod(method);
+        Op threshold = ops.op("threshold", out, in, method);
 
-		// TODO actually map axes to int array
-		opService.run(SliceMapper.class, res, src, thresholder, new int[] { 1,
-				2 });
+        // TODO actually map axes to int array
+        ops.run(SliceMapper.class, out, in, threshold, new int[]{0, 1});
 
-	}
+    }
 }

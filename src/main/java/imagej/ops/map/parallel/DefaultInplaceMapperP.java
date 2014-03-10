@@ -59,9 +59,6 @@ public class DefaultInplaceMapperP<A> extends
 	@Parameter
 	private OpService opService;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void run() {
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {

@@ -28,47 +28,79 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.invert;
 
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
+import imagej.ops.OpService;
+import imagej.ops.map.Mapper;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = "invert")
+public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements Invert
+{
 
 	@Parameter
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+	public IterableInterval<O> compute(IterableInterval<I> input,
+		IterableInterval<O> output)
+	{
+		I inType = input.firstElement().createVariable();
+		Function<I, O> invert;
+		if (inType.getMinValue() < 0) {
+			invert = new SignedRealInvert<I, O>();
 		}
+		else {
+			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
+		}
+		ops.run(Mapper.class, output, input, invert);
+		return output;
+	}
+
+	private class SignedRealInvert<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractFunction<I, O>
+	{
+
+		@Override
+		public O compute(final I x, final O output) {
+			final double value = x.getRealDouble() * -1.0 - 1;
+			output.setReal(value);
+			return output;
+		}
+
+	}
+
+	private class UnsignedRealInvert<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractFunction<I, O>
+	{
+
+		private final double max;
+
+		/**
+		 * @param max - maximum value of the range to invert about
+		 */
+		public UnsignedRealInvert(final double max) {
+			this.max = max;
+		}
+
+		@Override
+		public O compute(final I x, final O output) {
+			final double value = max - x.getRealDouble();
+			output.setReal(value);
+			return output;
+		}
+
 	}
 
 }

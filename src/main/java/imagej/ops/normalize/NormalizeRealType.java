@@ -28,17 +28,58 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.normalize;
 
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
 
-/**
- * Simple marker interface
- * 
- * @author Christian Dietz
- * @param <T>
- * @param <V>
- */
-public interface Sum<T, V> extends Function<Iterable<T>, V> {
-	// NB: Marker for Maximum Operations
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIASES) })
+public class NormalizeRealType<T extends RealType<T>> extends
+	AbstractFunction<T, T> implements Normalize
+{
+
+	@Parameter
+	private double oldMin;
+
+	@Parameter
+	private double oldMax;
+
+	@Parameter
+	private double newMin;
+
+	@Parameter
+	private double newMax;
+
+	@Parameter
+	private double factor;
+
+	@Override
+	public T compute(T input, T output) {
+		output.setReal(Math.min(newMax, Math.max(newMin,
+			(input.getRealDouble() - oldMin) * factor + newMin)));
+		return output;
+	}
+
+	/**
+	 * Determines the factor to map the interval [oldMin, oldMax] to
+	 * [newMin,newMax].
+	 * 
+	 * @param oldMin
+	 * @param oldMax
+	 * @param newMin
+	 * @param newMax
+	 * @return the normalization factor
+	 */
+	public static double normalizationFactor(double oldMin, double oldMax,
+		double newMin, double newMax)
+	{
+		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+	}
+
 }

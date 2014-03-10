@@ -52,17 +52,11 @@ public class IterableIntervalMapper<A, B> extends
 	implements Contingent
 {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean conforms() {
 		return getInput().iterationOrder().equals(getOutput().iterationOrder());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)

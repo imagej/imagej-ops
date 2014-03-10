@@ -32,7 +32,7 @@ package imagej.ops.threshold;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.misc.MinMax;
+import imagej.ops.misc.MinMaxRealType;
 
 import java.util.List;
 
@@ -70,7 +70,7 @@ public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
 
 	@SuppressWarnings("unchecked")
 	private final Histogram1d<T> createHistogram() {
-		final List<Object> res = (List<Object>) opService.run(new MinMax<T>(), img);
+		final List<Object> res = (List<Object>) opService.run(new MinMaxRealType<T>(), img);
 		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))
 			.getRealDouble(), ((T) res.get(1)).getRealDouble(), 256, false));
 	}

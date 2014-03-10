@@ -39,24 +39,25 @@ import imagej.module.ModuleService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
-import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
-import org.scijava.plugin.AbstractSingletonService;
+import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
 
 /**
- * Default service that manages and executes {@link Op}s.
+ * Default service for managing and executing {@link Op}s.
  * 
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpService extends
-	AbstractSingletonService<OperationMatcher> implements OpService
+public class DefaultOpService extends AbstractPTService<Op> implements
+	OpService
 {
 
 	@Parameter
@@ -64,6 +65,9 @@ public class DefaultOpService extends
 
 	@Parameter
 	private CommandService commandService;
+	
+	@Parameter
+	private OpMatcherService opMatcherService;
 
 	@Parameter
 	private LogService log;
@@ -103,18 +107,17 @@ public class DefaultOpService extends
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return findModule(name, null, args);
+		return opMatcherService.findModule(name, null, args);
 	}
 
 	@Override
 	public Module module(final Class<? extends Op> type, final Object... args) {
-		return findModule(null, type, args);
+		return opMatcherService.findModule(null, type, args);
 	}
 
 	@Override
 	public Module module(final Op op, final Object... args) {
-		final CommandInfo info = commandService.getCommand(op.getClass());
-		final Module module = info.createModule(op);
+		final Module module = info(op).createModule(op);
 		getContext().inject(module.getDelegateObject());
 		return assignInputs(module, args);
 	}
@@ -128,18 +131,127 @@ public class DefaultOpService extends
 		return module;
 	}
 
+	@Override
+	public CommandInfo info(final Op op) {
+		return commandService.getCommand(op.getClass());
+	}
+
+	@Override
+	public Collection<String> getOperations() {
+		final HashSet<String> operations = new HashSet<String>();
+		for (final CommandInfo info : opMatcherService.getOps()) {
+			operations.add(info.getName());
+		}
+		return operations;
+	}
+
 	// -- Operation shortcuts --
 
 	@Override
-	public Object add(final Object... o) {
-		return run("add", o);
+	public Object add(final Object... args) {
+		return run("add", args);
+	}
+
+	@Override
+	public Object chunker(Object... args) {
+		return run("chunker", args);
+	}
+
+	@Override
+	public Object convert(Object... args) {
+		return run("convert", args);
+	}
+
+	@Override
+	public Object convolve(Object... args) {
+		return run("convolve", args);
+	}
+
+	@Override
+	public Object divide(Object... args) {
+		return run("divide", args);
+	}
+
+	@Override
+	public Object gauss(Object... args) {
+		return run("gauss", args);
+	}
+
+	@Override
+	public Object infinity(Object... args) {
+		return run("infinity", args);
+	}
+
+	@Override
+	public Object map(Object... args) {
+		return run("map", args);
+	}
+
+	@Override
+	public Object max(Object... args) {
+		return run("max", args);
+	}
+
+	@Override
+	public Object minmax(Object... args) {
+		return run("minmax", args);
+	}
+
+	@Override
+	public Object multiply(Object... args) {
+		return run("multiply", args);
+	}
+
+	@Override
+	public Object neighborhood(Object... args) {
+		return run("neighborhood", args);
+	}
+
+	@Override
+	public Object otsu(Object... args) {
+		return run("otsu", args);
+	}
+
+	@Override
+	public Object pixThreshold(Object... args) {
+		return run("pixThreshold", args);
+	}
+
+	@Override
+	public Object project(Object... args) {
+		return run("project", args);
+	}
+
+	@Override
+	public Object slicemapper(Object... args) {
+		return run("slicemapper", args);
+	}
+
+	@Override
+	public Object slicer(Object... args) {
+		return run("slicer", args);
+	}
+
+	@Override
+	public Object subtract(Object... args) {
+		return run("subtract", args);
+	}
+
+	@Override
+	public Object sum(Object... args) {
+		return run("sum", args);
+	}
+
+	@Override
+	public Object threshold(Object... args) {
+		return run("threshold", args);
 	}
 
 	// -- SingletonService methods --
 
 	@Override
-	public Class<OperationMatcher> getPluginType() {
-		return OperationMatcher.class;
+	public Class<Op> getPluginType() {
+		return Op.class;
 	}
 
 	// -- Helper methods --
@@ -158,136 +270,7 @@ public class DefaultOpService extends
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
-	/**
-	 * Finds and initializes the best module matching the given op name and/or
-	 * type + arguments.
-	 * 
-	 * @throws IllegalArgumentException if there is no match, or if there is more
-	 *           than one match at the same priority.
-	 */
-	private Module findModule(final String name, final Class<? extends Op> type,
-		final Object... args)
-	{
-		final String label = type == null ? name : type.getName();
-
-		// find candidates with matching name & type
-		final ArrayList<CommandInfo> candidates = findCandidates(name, type);
-		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + label + "' ops");
-		}
-
-		// narrow down candidates to the exact matches
-		final ArrayList<Module> matches = findMatches(candidates, args);
-
-		if (matches.size() == 1) {
-			// a single match: return it
-			if (log.isDebug()) {
-				log.debug("Selected '" + label + "' op: " +
-					matches.get(0).getDelegateObject().getClass().getName());
-			}
-			return matches.get(0);
-		}
-
-		final StringBuilder sb = new StringBuilder();
-
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + label + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
-			for (final Module module : matches) {
-				sb.append("\t" + module.getClass().getName() + "\n");
-			}
-		}
-
-		// fail, with information about the template and candidates
-		sb.append("Template:\n");
-		sb.append("\t" + label + "(");
-		boolean first = true;
-		for (final Object arg : args) {
-			if (first) first = false;
-			else sb.append(", ");
-			sb.append(arg.getClass().getName() + " ");
-			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
-			else sb.append(arg);
-		}
-		sb.append(")\n");
-		sb.append("Candidates:\n");
-		for (final CommandInfo info : candidates) {
-			sb.append("\t[" + info.getPriority() + "] ");
-			sb.append(info.getDelegateClassName() + "(");
-			first = true;
-			for (final ModuleItem<?> input : info.inputs()) {
-				if (first) first = false;
-				else sb.append(", ");
-				sb.append(input.getType().getName() + " " + input.getName());
-			}
-			sb.append(")\n");
-		}
-		throw new IllegalArgumentException(sb.toString());
-	}
-
-	/**
-	 * Builds a list of candidate ops which match the given name and class.
-	 * <p>
-	 * We do this so that if we cannot match the arguments later, we can at least
-	 * report the list of matching candidates, for easier debugging.
-	 * </p>
-	 */
-	private ArrayList<CommandInfo> findCandidates(final String name,
-		final Class<? extends Op> type)
-	{
-		final List<CommandInfo> ops = commandService.getCommandsOfType(Op.class);
-		final ArrayList<CommandInfo> candidates = new ArrayList<CommandInfo>();
-
-		for (final CommandInfo info : ops) {
-			if (name != null && !name.equals(info.getName())) continue;
-
-			// the name matches; now check the class
-			final Class<?> opClass;
-			try {
-				opClass = info.loadClass();
-			}
-			catch (final InstantiableException exc) {
-				log.error("Invalid op: " + info.getClassName());
-				return null;
-			}
-			if (type != null && !type.isAssignableFrom(opClass)) continue;
-
-			candidates.add(info);
-		}
-		return candidates;
-	}
-
-	/** Filters a list of ops to those matching the given arguments. */
-	private ArrayList<Module> findMatches(final ArrayList<CommandInfo> ops,
-		final Object... args)
-	{
-		final ArrayList<Module> matches = new ArrayList<Module>();
-
-		// TODO: Consider inverting the loop nesting order here,
-		// since we probably want to match higher priority Ops first.
-		for (final OperationMatcher matcher : getInstances()) {
-			double priority = Double.NaN;
-			for (final CommandInfo info : ops) {
-				final double p = info.getPriority();
-				if (p != priority && !matches.isEmpty()) {
-					// NB: Lower priority was reached; stop looking for any more matches.
-					break;
-				}
-				priority = p;
-				final Module module = matcher.match(info, args);
-				if (module != null) matches.add(module);
-			}
-			if (!matches.isEmpty()) break;
-		}
-
-		return matches;
-	}
-
+	/** Helper method of {@link #assignInputs}. */
 	private void assign(final Module module, final Object arg,
 		final ModuleItem<?> item)
 	{
