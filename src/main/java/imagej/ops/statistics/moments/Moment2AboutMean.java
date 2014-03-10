@@ -53,7 +53,7 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 	private Iterable<T> iterable;
 
 	@Parameter
-	private Mean<T, DoubleType> mean;
+	private Mean<Iterable<T>, DoubleType> mean;
 
 	@Parameter
 	private Size<Iterable<T>> size;
@@ -61,14 +61,14 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 
-		final double mean = this.mean.compute(input, new DoubleType()).get();
+		final double meanVal = this.mean.compute(input, new DoubleType()).get();
 		final double area = this.size.compute(input, new LongType()).get();
 
 		double res = 0.0;
 
 		final Iterator<T> it = iterable.iterator();
 		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - mean;
+			final double val = it.next().getRealDouble() - meanVal;
 			res += val * val;
 		}
 

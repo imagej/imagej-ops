@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
 public class MedianRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements Sum<T, T>
+	AbstractFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
 {
 
 	@Override

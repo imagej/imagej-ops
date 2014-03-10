@@ -39,7 +39,7 @@ import imagej.ops.Function;
  * @param <T>
  * @param <V>
  */
-public interface Quantile<T, V> extends Function<Iterable<T>, V> {
+public interface Quantile<T, V> extends Function<T, V> {
 
 	public static final String NAME = "quantile";
 

@@ -28,12 +28,14 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.statistics;
+
+import imagej.ops.Function;
 
 /**
  * Marker interface for mean operations.
  */
-public interface Mean {
+public interface Mean<I, O> extends Function<I, O> {
 
 	public static final String NAME = "mean";
 	public static final String ALIASES = "avg";

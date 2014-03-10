@@ -53,7 +53,7 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 	private Iterable<T> ii;
 
 	@Parameter
-	private Mean<T, DoubleType> mean;
+	private Mean<Iterable<T>, DoubleType> mean;
 
 	@Parameter
 	private Size<Iterable<T>> size;

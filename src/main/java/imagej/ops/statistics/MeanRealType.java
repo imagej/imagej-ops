@@ -32,7 +32,6 @@ package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.misc.Mean;
 import imagej.ops.misc.Size;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -52,7 +51,7 @@ public class MeanRealType<T extends RealType<T>, V extends RealType<V>> extends
 {
 
 	@Parameter
-	private Sum<T, V> sum;
+	private Sum<Iterable<T>, V> sum;
 
 	@Parameter
 	private Size<Iterable<T>> size;

@@ -28,42 +28,52 @@
  * #L%
  */
 
-package imagej.ops.fold;
+package imagej.ops.tests;
 
-import imagej.ops.Op;
-import imagej.ops.statistics.Mean;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertTrue;
+import imagej.ops.OpService;
+import imagej.ops.threshold.Otsu;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Plugin;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.scijava.Context;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Mean.NAME, attrs = { @Attr(name = "aliases",
-	value = Mean.ALIASES) })
-public class MeanRealTypeIterable<I extends RealType<I>, O extends RealType<O>>
-	extends FoldIterable<I, O>
-{
+public class GlobalThresholdTest {
 
-	private double sum;
-	private double count;
+    private Context context;
 
-	@Override
-	protected void preCompute(Iterable<I> iterableIn, O out) {
-		sum = 0;
-		count = 0;
-	};
+    private OpService ops;
 
-	@Override
-	protected final void compute(I in) {
-		sum += in.getRealDouble();
-		count++;
-	};
+    @Before
+    public void setUp() {
+        context = new Context(OpService.class);
+        ops = context.getService(OpService.class);
+        assertTrue(ops != null);
+    }
 
-	@Override
-	protected void postCompute(O out) {
-		out.setReal(sum / count);
-	};
+    @After
+    public synchronized void cleanUp() {
+        if (context != null) {
+            context.dispose();
+            context = null;
+        }
+    }
 
+    @Test
+    public void testOtsu() {
+
+        Img<ByteType> in =
+                new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
+                        new ByteType());
+        Img<BitType> out =
+                new ArrayImgFactory<BitType>().create(in, new BitType());
+
+        ops.run("threshold", in, out, new Otsu());
+
+    }
 }
