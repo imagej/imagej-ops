@@ -30,8 +30,8 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
 import imagej.module.Module;
+import imagej.module.ModuleInfo;
 import imagej.service.ImageJService;
 
 import java.util.List;
@@ -65,9 +65,9 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 	 * 
 	 * @param name The op's name, or null to match all names.
 	 * @param type Required type of the op, or null to match all types.
-	 * @return The list of candidates as {@link CommandInfo} metadata.
+	 * @return The list of candidates as {@link ModuleInfo} metadata.
 	 */
-	List<CommandInfo> findCandidates(String name, Class<? extends Op> type);
+	List<ModuleInfo> findCandidates(String name, Class<? extends Op> type);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
@@ -76,7 +76,7 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 	 * @param args The op's input arguments.
 	 * @return The list of matching ops as {@link Module} instances.
 	 */
-	List<Module> findMatches(List<? extends CommandInfo> ops, Object... args);
+	List<Module> findMatches(List<? extends ModuleInfo> ops, Object... args);
 
 	/**
 	 * Gets a string describing the given op template.
@@ -90,9 +90,9 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 	/**
 	 * Gets a string describing the given op.
 	 * 
-	 * @param info The {@link CommandInfo} metadata which describes the op.
+	 * @param info The {@link ModuleInfo} metadata which describes the op.
 	 * @return A string describing the op.
 	 */
-	String getOpString(CommandInfo info);
+	String getOpString(ModuleInfo info);
 
 }

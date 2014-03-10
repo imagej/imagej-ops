@@ -33,6 +33,7 @@ package imagej.ops;
 import imagej.command.CommandInfo;
 import imagej.command.CommandService;
 import imagej.module.Module;
+import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
@@ -74,7 +75,7 @@ public class DefaultOpMatcherService extends
 		final String label = type == null ? name : type.getName();
 
 		// find candidates with matching name & type
-		final List<CommandInfo> candidates =
+		final List<ModuleInfo> candidates =
 			findCandidates(name, type);
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + label + "' ops");
@@ -111,18 +112,18 @@ public class DefaultOpMatcherService extends
 		sb.append("Template:\n");
 		sb.append("\t" + getOpString(label, args) + "\n");
 		sb.append("Candidates:\n");
-		for (final CommandInfo info : candidates) {
+		for (final ModuleInfo info : candidates) {
 			sb.append("\t" + getOpString(info) + "\n");
 		}
 		throw new IllegalArgumentException(sb.toString());
 	}
 
 	@Override
-	public List<CommandInfo> findCandidates(final String name,
+	public List<ModuleInfo> findCandidates(final String name,
 		final Class<? extends Op> type)
 	{
 		final List<CommandInfo> ops = commandService.getCommandsOfType(Op.class);
-		final ArrayList<CommandInfo> candidates = new ArrayList<CommandInfo>();
+		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
 
 		for (final CommandInfo info : ops) {
 			if (!nameMatches(info, name)) continue;
@@ -144,7 +145,7 @@ public class DefaultOpMatcherService extends
 	}
 
 	@Override
-	public List<Module> findMatches(final List<? extends CommandInfo> ops,
+	public List<Module> findMatches(final List<? extends ModuleInfo> ops,
 		final Object... args)
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
@@ -153,7 +154,7 @@ public class DefaultOpMatcherService extends
 		// since we probably want to match higher priority Ops first.
 		for (final OperationMatcher matcher : getInstances()) {
 			double priority = Double.NaN;
-			for (final CommandInfo info : ops) {
+			for (final ModuleInfo info : ops) {
 				final double p = info.getPriority();
 				if (p != priority && !matches.isEmpty()) {
 					// NB: Lower priority was reached; stop looking for any more matches.
@@ -186,7 +187,7 @@ public class DefaultOpMatcherService extends
 	}
 
 	@Override
-	public String getOpString(final CommandInfo info) {
+	public String getOpString(final ModuleInfo info) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("[" + info.getPriority() + "] ");
 		sb.append(info.getDelegateClassName() + "(");
@@ -209,7 +210,7 @@ public class DefaultOpMatcherService extends
 
 	// -- Helper methods --
 
-	private boolean nameMatches(final CommandInfo info, final String name) {
+	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
 
 		// check for an alias

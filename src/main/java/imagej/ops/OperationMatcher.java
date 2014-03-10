@@ -31,8 +31,8 @@
 package imagej.ops;
 
 import imagej.ImageJPlugin;
-import imagej.command.CommandInfo;
 import imagej.module.Module;
+import imagej.module.ModuleInfo;
 
 import org.scijava.Contextual;
 import org.scijava.plugin.Plugin;
@@ -56,6 +56,6 @@ public interface OperationMatcher extends ImageJPlugin, Contextual,
 	SingletonPlugin
 {
 
-	Module match(CommandInfo info, Object... args);
+	Module match(ModuleInfo info, Object... args);
 
 }
