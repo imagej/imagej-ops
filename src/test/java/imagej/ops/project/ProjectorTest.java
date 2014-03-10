@@ -34,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.project.parallel.DefaultProjectorP;
+import imagej.ops.statistics.Sum;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -64,7 +65,7 @@ public class ProjectorTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
-		op = ops.op("sum", null, null);
+		op = ops.op("sum", null, Sum.class);
 	}
 
 	@Test

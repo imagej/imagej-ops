@@ -10,6 +10,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.view.Views;
 
@@ -27,7 +28,7 @@ public class MapViewTest extends AbstractOpTest {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
 		op =
-			ops.op(AddConstantToNumericType.class, null, null,
+			ops.op(AddConstantToNumericType.class, null, NumericType.class,
 				new ByteType((byte) 10));
 	}
 

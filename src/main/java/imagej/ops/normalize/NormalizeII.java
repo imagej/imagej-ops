@@ -67,9 +67,9 @@ public class NormalizeII<T extends RealType<T>> extends
 
 		// lookup the pixel-wise normalize function
 		Op normalize =
-			ops.op("normalize", null, null, minmax.get(0).getRealDouble(), minmax
-				.get(1).getRealDouble(), outType.getMinValue(), outType.getMaxValue(),
-				factor);
+			ops.op("normalize", null, Normalize.class, minmax.get(0).getRealDouble(),
+				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
+					.getMaxValue(), factor);
 
 		// run normalize for each pixel
 		ops.run("map", output, input, normalize);
