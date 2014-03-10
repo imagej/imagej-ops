@@ -42,7 +42,8 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = StdDeviation.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
+	AbstractFunction<Iterable<T>, DoubleType> implements
+	StdDeviation<T, DoubleType>
 {
 
 	@Parameter
