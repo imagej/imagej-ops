@@ -36,16 +36,18 @@ import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
+import imagej.module.ModuleService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
-import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
 
@@ -55,9 +57,15 @@ import org.scijava.util.ConversionUtils;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpMatcherService extends
-	AbstractSingletonService<OpMatcher> implements OpMatcherService
+public class DefaultOpMatcherService extends AbstractService implements
+	OpMatcherService
 {
+
+	@Parameter
+	private Context context;
+
+	@Parameter
+	private ModuleService moduleService;
 
 	@Parameter
 	private CommandService commandService;
@@ -140,24 +148,44 @@ public class DefaultOpMatcherService extends
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
 
-		// TODO: Consider inverting the loop nesting order here,
-		// since we probably want to match higher priority Ops first.
-		for (final OpMatcher matcher : getInstances()) {
-			double priority = Double.NaN;
-			for (final ModuleInfo info : ops) {
-				final double p = info.getPriority();
-				if (p != priority && !matches.isEmpty()) {
-					// NB: Lower priority was reached; stop looking for any more matches.
-					break;
-				}
-				priority = p;
-				final Module module = matcher.match(info, args);
-				if (module != null) matches.add(module);
+		double priority = Double.NaN;
+		for (final ModuleInfo info : ops) {
+			final double p = info.getPriority();
+			if (p != priority && !matches.isEmpty()) {
+				// NB: Lower priority was reached; stop looking for any more matches.
+				break;
 			}
-			if (!matches.isEmpty()) break;
+			priority = p;
+			final Module module = match(info, args);
+			if (module != null) matches.add(module);
 		}
 
 		return matches;
+	}
+
+	@Override
+	public Module match(final ModuleInfo info, final Object... args) {
+		// check that each parameter is compatible with its argument
+		int i = 0;
+		for (final ModuleItem<?> item : info.inputs()) {
+			if (i >= args.length) return null; // too few arguments
+			final Object arg = args[i++];
+			if (!canAssign(arg, item)) return null;
+		}
+		if (i != args.length) return null; // too many arguments
+
+		// create module and assign the inputs
+		final Module module = createModule(info, args);
+
+		// make sure the op itself is happy with these arguments
+		final Object op = module.getDelegateObject();
+		if (op instanceof Contingent) {
+			final Contingent c = (Contingent) op;
+			if (!c.conforms()) return null;
+		}
+
+		// found a match!
+		return module;
 	}
 
 	@Override
@@ -227,13 +255,6 @@ public class DefaultOpMatcherService extends
 		return true;
 	}
 
-	// -- SingletonService methods --
-
-	@Override
-	public Class<OpMatcher> getPluginType() {
-		return OpMatcher.class;
-	}
-
 	// -- Helper methods --
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
@@ -252,6 +273,39 @@ public class DefaultOpMatcherService extends
 		}
 
 		return false;
+	}
+
+	/** Helper method of {@link #match}. */
+	private Module createModule(final ModuleInfo info, final Object... args) {
+		final Module module = moduleService.createModule(info);
+		context.inject(module.getDelegateObject());
+		return assignInputs(module, args);
+	}
+
+	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
+		if (arg == null) return !item.isRequired();
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			return canConvert(arg, type);
+		}
+		return canConvert(arg, item.getType());
+	}
+
+	private boolean canConvert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
+	}
+
+	private boolean canConvert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
 	}
 
 	/** Helper method of {@link #assignInputs}. */

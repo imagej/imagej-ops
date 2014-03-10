@@ -37,16 +37,12 @@ import imagej.service.ImageJService;
 
 import java.util.List;
 
-import org.scijava.plugin.SingletonService;
-
 /**
  * Interface for services that find {@link Op}s which match a template.
  * 
  * @author Curtis Rueden
  */
-public interface OpMatcherService extends SingletonService<OpMatcher>,
-	ImageJService
-{
+public interface OpMatcherService extends ImageJService {
 
 	/** Gets the list of all available {@link Op} implementations. */
 	public List<CommandInfo> getOps();
@@ -81,6 +77,15 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	 * @return The list of matching ops as {@link Module} instances.
 	 */
 	List<Module> findMatches(List<? extends ModuleInfo> ops, Object... args);
+
+	/**
+	 * Attempts to match the given arguments to the {@link Op} described by the
+	 * specified {@link ModuleInfo}.
+	 * 
+	 * @return A populated {@link Module} instance for the matching {@link Op}, or
+	 *         null if the arguments do not match the {@link Op}.
+	 */
+	Module match(ModuleInfo info, Object... args);
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
