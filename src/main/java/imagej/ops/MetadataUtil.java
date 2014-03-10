@@ -159,7 +159,7 @@ public class MetadataUtil {
 	}
 
 	/**
-	 * copies all ImgPlus metadata {@link Metadata} from in to out.
+	 * copies all {@link ImgPlusMetadata} from in to out.
 	 * CalibratedSpace attributes for dimensions of size 1 are removed during
 	 * copying. The dimensionality of the out space must be
 	 * dimensionality(inSpace) - #removed dims
