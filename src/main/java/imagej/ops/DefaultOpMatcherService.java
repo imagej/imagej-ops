@@ -35,7 +35,6 @@ import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
-import imagej.module.ModuleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +55,6 @@ import org.scijava.service.Service;
 public class DefaultOpMatcherService extends
 	AbstractSingletonService<OpMatcher> implements OpMatcherService
 {
-
-	@Parameter
-	private ModuleService moduleService;
 
 	@Parameter
 	private CommandService commandService;
