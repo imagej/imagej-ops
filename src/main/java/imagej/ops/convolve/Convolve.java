@@ -30,6 +30,8 @@
 
 package imagej.ops.convolve;
 
+import imagej.ops.Op;
+
 /**
  * Marker interface for convolve operations. Implementing classes should be
  * annotated with:
@@ -40,7 +42,7 @@ package imagej.ops.convolve;
  * 
  * @author Martin Horn
  */
-public interface Convolve {
+public interface Convolve extends Op {
 
 	public static final String NAME = "convolve";
 }

@@ -28,18 +28,21 @@
  * #L%
  */
 
-package imagej.ops.normalize;
+package imagej.ops.histogram;
 
 import imagej.ops.Op;
 
 /**
- * Marker interface for all normalize operations. Implementing classes should be
- * annotated with
- * <code>@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })</code>.
+ * Marker interface for operations that calculate a histogram. Implementing
+ * classes should be annotated with:
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Histogram.NAME)
+ * </pre>
+ * 
+ * @author Martin Horn
  */
-public interface Normalize extends Op {
+public interface Histogram extends Op {
 
-	public static final String NAME = "normalize";
-	public static final String ALIASES = "norm";
+	public static final String NAME = "histogram";
 }

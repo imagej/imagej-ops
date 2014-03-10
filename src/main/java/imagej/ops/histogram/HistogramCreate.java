@@ -28,18 +28,45 @@
  * #L%
  */
 
-package imagej.ops.normalize;
+package imagej.ops.histogram;
 
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.misc.MinMaxRealType;
+
+import java.util.List;
+
+import net.imglib2.IterableInterval;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * Marker interface for all normalize operations. Implementing classes should be
- * annotated with
- * <code>@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })</code>.
+ * @author Martin Horn, University of Konstanz
  */
-public interface Normalize extends Op {
+public class HistogramCreate<T extends RealType<T>> implements Op, Histogram {
 
-	public static final String NAME = "normalize";
-	public static final String ALIASES = "norm";
+	@Parameter
+	private IterableInterval<T> in;
+
+	@Parameter(required = false)
+	private int numBins = 256;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
+
+	@Parameter
+	private OpService ops;
+
+	@Override
+	public void run() {
+		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+		out =
+			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
+				.get(1).getRealDouble(), 256, false));
+
+	}
 }

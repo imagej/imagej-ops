@@ -28,18 +28,46 @@
  * #L%
  */
 
-package imagej.ops.normalize;
+package imagej.ops.threshold;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Marker interface for all normalize operations. Implementing classes should be
- * annotated with
- * <code>@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })</code>.
+ * @author Martin Horn
  */
-public interface Normalize extends Op {
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class ThresholdGlobal<T extends RealType<T>> extends
+	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
+	Threshold
+{
 
-	public static final String NAME = "normalize";
-	public static final String ALIASES = "norm";
+	@Parameter
+	private ThresholdMethod<T> method;
+
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public IterableInterval<BitType> compute(final IterableInterval<T> input,
+		final IterableInterval<BitType> output)
+	{
+		final T threshold = (T) ops.run(method, input);
+
+		Op thresholdOp =
+			ops
+				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
+
+		ops.run("map", output, input, threshold);
+		return output;
+	}
+
 }

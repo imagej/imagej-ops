@@ -30,11 +30,8 @@
 
 package imagej.ops.threshold;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
@@ -43,28 +40,15 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class GlobalThresholder<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
-	Threshold
-{
+@Plugin(type = Op.class, name = "manualthreshold")
+public class Manual<T extends RealType<T>> extends ThresholdMethod<T> {
 
 	@Parameter
-	private ThresholdMethod<T> method;
+	private double threshold;
 
-	@Parameter
-	private OpService opService;
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public IterableInterval<BitType> compute(final IterableInterval<T> input,
-		final IterableInterval<BitType> output)
-	{
-		final T threshold = (T) opService.run(method, input);
-		final PixThreshold<T> apply = new PixThreshold<T>();
-		apply.setThreshold(threshold);
-		return (IterableInterval<BitType>) opService.run("map", output, input,
-			apply);
+	protected void getThreshold(Histogram1d<T> histogram, T threshold) {
+		threshold.setReal(this.threshold);
 	}
 
 }
