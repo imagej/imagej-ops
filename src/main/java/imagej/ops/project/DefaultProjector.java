@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "project", priority = Priority.LOW_PRIORITY)
 public class DefaultProjector<T, V> extends
 	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
-	Contingent
+	Contingent, Projector
 {
 
 	@Parameter

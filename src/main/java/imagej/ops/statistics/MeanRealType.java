@@ -35,6 +35,7 @@ import imagej.ops.Op;
 import imagej.ops.misc.Size;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -42,24 +43,28 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
- * @param <T>
- * @param <V>
+ * @param <I>
+ * @param <O>
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
-public class MeanRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractFunction<Iterable<T>, V>
+public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
 {
 
 	@Parameter
-	private Sum<Iterable<T>, V> sum;
+	private Sum<Iterable<I>, DoubleType> sumFunc;
 
 	@Parameter
-	private Size<Iterable<T>> size;
+	private Size<Iterable<I>> sizeFunc;
 
 	@Override
-	public V compute(final Iterable<T> input, final V output) {
-		output.setReal(sum.compute(input, output).getRealDouble() /
-			size.compute(input, new LongType()).get());
+	public O compute(final Iterable<I> input, final O output) {
+
+		final LongType size = sizeFunc.compute(input, new LongType());
+		final DoubleType sum = sumFunc.compute(input, new DoubleType());
+
+		output.setReal(size.get() / sum.get());
+
 		return output;
 	}
 }

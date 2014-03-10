@@ -36,6 +36,7 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.project.Projector;
 import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 
@@ -53,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "project", priority = Priority.LOW_PRIORITY + 1)
 public class DefaultProjectorP<T, V> extends
 	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
-	Contingent, Parallel
+	Contingent, Parallel, Projector
 {
 
 	@Parameter
