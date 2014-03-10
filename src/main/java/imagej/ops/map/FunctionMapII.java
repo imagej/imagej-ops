@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Map.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
-public class MapII<A, B> extends
+public class FunctionMapII<A, B> extends
 	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
 	implements Contingent
 {
