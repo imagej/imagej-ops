@@ -30,9 +30,10 @@
 
 package imagej.ops.map;
 
+import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.Function;
+import imagej.ops.InplaceFunction;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -42,30 +43,23 @@ import org.scijava.plugin.Parameter;
  * @param <A> type of values to be mapped
  * @param <I> {@link Iterable} of <A>s
  */
-public abstract class AbstractInplaceMapper<A, I extends Iterable<A>>
-	implements InplaceMapper<A>
+public abstract class AbstractInplaceMapper<A, I extends Iterable<A>> extends
+	AbstractInplaceFunction<I> implements InplaceMapper<A>
 {
 
 	/**
-	 * {@link Iterable} over <A> which will be used as input and output for the
-	 * mapping.
-	 */
-	@Parameter(type = ItemIO.BOTH)
-	protected I in;
-
-	/**
-	 * {@link Function} to be used for mapping
+	 * /** {@link Function} to be used for mapping
 	 */
 	@Parameter
-	protected Function<A, A> func;
+	protected InplaceFunction<A> func;
 
 	@Override
-	public Function<A, A> getFunction() {
+	public InplaceFunction<A> getFunction() {
 		return func;
 	}
 
 	@Override
-	public void setFunction(final Function<A, A> func) {
+	public void setFunction(final InplaceFunction<A> func) {
 		this.func = func;
 	}
 

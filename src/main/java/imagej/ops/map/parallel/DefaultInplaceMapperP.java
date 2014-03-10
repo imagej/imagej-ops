@@ -35,7 +35,6 @@ import imagej.ops.OpService;
 import imagej.ops.Parallel;
 import imagej.ops.map.AbstractInplaceMapper;
 import imagej.ops.map.InplaceMapper;
-import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
@@ -60,14 +59,15 @@ public class DefaultInplaceMapperP<A> extends
 	private OpService opService;
 
 	@Override
-	public void run() {
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void	execute(final int startIndex, final int stepSize, final int numSteps)
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
 			{
-				final Cursor<A> inCursor = in.cursor();
-				
+				final Cursor<A> inCursor = getInput().cursor();
+
 				setToStart(inCursor, startIndex);
 
 				int ctr = 0;
@@ -78,6 +78,8 @@ public class DefaultInplaceMapperP<A> extends
 					ctr++;
 				}
 			}
-		}, in.size());
+		}, arg.size());
+
+		return arg;
 	}
 }

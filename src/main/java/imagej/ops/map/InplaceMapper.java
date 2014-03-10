@@ -30,11 +30,13 @@
 
 package imagej.ops.map;
 
+import imagej.ops.InplaceFunction;
+
 /**
  * Marker interface to mark {@link InplaceMapper}s
  * 
  * @author Christian Dietz
  */
-public interface InplaceMapper<A> extends Mapper<A, A> {
+public interface InplaceMapper<A> extends Mapper<InplaceFunction<A>, A, A> {
 	// NB: Marker interface
 }

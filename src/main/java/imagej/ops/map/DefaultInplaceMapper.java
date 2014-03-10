@@ -48,9 +48,11 @@ public class DefaultInplaceMapper<A> extends
 {
 
 	@Override
-	public void run() {
-		for (final A t : in) {
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
 			func.compute(t, t);
 		}
+
+		return arg;
 	}
 }
