@@ -141,95 +141,70 @@ public abstract class ArithmeticOp implements Op, Contingent {
 	}
 
 	protected void run(final String name, final String operator) {
+		final MyOp op = findMyOp(name, operator, result, a, b);
+		if (op == null) throw new UnsupportedOperationException("name/operator: " + name + ", " + operator);
+		op.run(result, a, b);
+	}
+
+	private static MyOp findMyOp(final String name, final String operator, final Object result, final Object a, final Object b) {
+		if (result == b && a != b) return null;
 		if (a instanceof ArrayImg) {
-			final Object access = ((ArrayImg<?, ?>) this.a).update(null);
+			final Object access = ((ArrayImg<?, ?>) a).update(null);
 			if (access instanceof ArrayDataAccess) {
-				final Object a = ((ArrayDataAccess<?>) access).getCurrentStorageArray();
-				final Object result =
-					((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.result).update(null))
-						.getCurrentStorageArray();
+				final Object a2 = ((ArrayDataAccess<?>) access).getCurrentStorageArray();
+				if (a2 == null || !a2.getClass().isArray() || !a2.getClass().getComponentType().isPrimitive()) return null;
+
+				if (result == null || !(result instanceof ArrayImg)) return null;
+				if (!dimensionsMatch((ArrayImg<?, ?>) a, (ArrayImg<?, ?>) result)) return null;
+				final Object resultAccess = ((ArrayImg<?, ?>) result).update(null);
+				if (!(resultAccess instanceof ArrayDataAccess)) return null;
+				final Object result2 = ((ArrayDataAccess<?>) resultAccess).getCurrentStorageArray();
+				if (result2 == null || result2.getClass() != a2.getClass()) return null;
+
 				if (b instanceof RealType) {
-					final double b = ((RealType<?>) this.b).getRealDouble();
-					getMyConstantOp(a.getClass(), name, operator).run(result, a, b);
+					return getMyConstantOp(a2.getClass(), name, operator);
 				}
-				else {
-					final Object b =
-						((ArrayDataAccess<?>) ((ArrayImg<?, ?>) this.b).update(null))
-							.getCurrentStorageArray();
-					getMyOp(a.getClass(), name, operator).run(result, a, b);
+				if (b instanceof ArrayImg) {
+					if (!dimensionsMatch((ArrayImg<?, ?>) a, (ArrayImg<?, ?>) b)) return null;
+					final Object bAccess = ((ArrayImg<?, ?>) b).update(null);
+					if (!(bAccess instanceof ArrayDataAccess)) return null;
+					final Object b2 = ((ArrayDataAccess<?>) bAccess).getCurrentStorageArray();
+					if (b2 == null || b2.getClass() != a2.getClass()) return null;
+					return getMyOp(a2.getClass(), name, operator);
 				}
-				return;
 			}
 		}
 		if (a instanceof PlanarImg) {
-			final PlanarImg<?, ?> a = (PlanarImg<?, ?>) this.a;
-			if (a.numSlices() == 0) return;
+			final PlanarImg<?, ?> a2 = (PlanarImg<?, ?>) a;
+			if (a2.numSlices() == 0) return null;
 			final Object plane =
-				((ArrayDataAccess<?>) a.getPlane(0)).getCurrentStorageArray();
-			final PlanarImg<?, ?> b = (PlanarImg<?, ?>) this.b;
-			final PlanarImg<?, ?> result = (PlanarImg<?, ?>) this.result;
-			getPlanarOp(plane.getClass(), name, operator).run(result, a, b);
-			return;
+				((ArrayDataAccess<?>) a2.getPlane(0)).getCurrentStorageArray();
+			if (plane == null || !plane.getClass().isArray() || !plane.getClass().getComponentType().isPrimitive()) return null;
+			if (!(b instanceof PlanarImg) || !(result instanceof PlanarImg)) return null;
+			final PlanarImg<?, ?> b2 = (PlanarImg<?, ?>) b;
+			if (!dimensionsMatch(a2, b2)) return null;
+			final PlanarImg<?, ?> result2 = (PlanarImg<?, ?>) result;
+			if (!dimensionsMatch(a2, result2)) return null;
+			final int numSlices = a2.numSlices();
+			if (numSlices == 0 || numSlices != b2.numSlices() ||
+				numSlices != result2.numSlices()) return null;
+			final Object aData = a2.getPlane(0);
+			if (!(aData instanceof ArrayDataAccess)) return null;
+			final Object bData = b2.getPlane(0);
+			if (aData.getClass() != bData.getClass()) return null;
+			final Object resultData = result2.getPlane(0);
+			if (aData.getClass() != resultData.getClass()) return null;
+			return getPlanarOp(plane.getClass(), name, operator);
 		}
-		throw new RuntimeException("This should not happen!");
+		return null;
 	}
 
 	@Override
 	public boolean conforms() {
-		if (result == b && a != b) return false;
-		if (a instanceof ArrayImg && b instanceof ArrayImg &&
-			result instanceof ArrayImg)
-		{
-			final ArrayImg<?, ?> aImg = (ArrayImg<?, ?>) a;
-			final ArrayImg<?, ?> bImg = (ArrayImg<?, ?>) b;
-			if (!dimensionsMatch(aImg, bImg)) return false;
-			final ArrayImg<?, ?> resultImg = (ArrayImg<?, ?>) result;
-			if (!dimensionsMatch(aImg, resultImg)) return false;
-			final Object aData = aImg.update(null);
-			if (!(aData instanceof ArrayDataAccess)) return false;
-			final Object bData = bImg.update(null);
-			if (aData.getClass() != bData.getClass()) return false;
-			final Object resultData = resultImg.update(null);
-			if (aData.getClass() != resultData.getClass()) return false;
-			return true;
-		}
-		if (a instanceof ArrayImg && b instanceof RealType &&
-			result instanceof ArrayImg)
-		{
-			final ArrayImg<?, ?> aImg = (ArrayImg<?, ?>) a;
-			final ArrayImg<?, ?> resultImg = (ArrayImg<?, ?>) result;
-			if (!dimensionsMatch(aImg, resultImg)) return false;
-			final Object aData = aImg.update(null);
-			if (!(aData instanceof ArrayDataAccess)) return false;
-			// TODO: verify that a matches b: final RealType<?> bType = (RealType<?>)
-			// b;
-			final Object resultData = resultImg.update(null);
-			if (aData.getClass() != resultData.getClass()) return false;
-			return true;
-		}
-		if (a instanceof PlanarImg && b instanceof PlanarImg &&
-			result instanceof PlanarImg)
-		{
-			final PlanarImg<?, ?> aImg = (PlanarImg<?, ?>) a;
-			final PlanarImg<?, ?> bImg = (PlanarImg<?, ?>) b;
-			if (!dimensionsMatch(aImg, bImg)) return false;
-			final PlanarImg<?, ?> resultImg = (PlanarImg<?, ?>) result;
-			if (!dimensionsMatch(aImg, resultImg)) return false;
-			final int numSlices = aImg.numSlices();
-			if (numSlices == 0 || numSlices != bImg.numSlices() ||
-				numSlices != resultImg.numSlices()) return false;
-			final Object aData = aImg.getPlane(0);
-			if (!(aData instanceof ArrayDataAccess)) return false;
-			final Object bData = bImg.getPlane(0);
-			if (aData.getClass() != bData.getClass()) return false;
-			final Object resultData = resultImg.getPlane(0);
-			if (aData.getClass() != resultData.getClass()) return false;
-			return true;
-		}
-		return false;
+		return findMyOp("add", "+", result, a, b) != null;
 	}
 
-	private boolean dimensionsMatch(final Img<?> aImg, final Img<?> bImg) {
+	private static boolean dimensionsMatch(final Img<?> aImg, final Img<?> bImg) {
 		final int numDimensions = aImg.numDimensions();
 		if (numDimensions != bImg.numDimensions()) return false;
 		for (int i = 0; i < numDimensions; i++) {
@@ -248,7 +223,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		pool.appendClassPath(new ClassClassPath(AddOp.class));
 	}
 
-	private MyOp getMyOp(final Class<?> forClass, final String name,
+	private static MyOp getMyOp(final Class<?> forClass, final String name,
 		final String operator)
 	{
 		final String componentType = forClass.getComponentType().getSimpleName();
@@ -262,7 +237,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-				replace(makeRun(type, type, type,
+				replace(makeRun(castArrayImg(type, "a", "b", "result"),
 					"for (int i = 0; i < a2.length; i++) {",
 					"  result2[i] = (CTYPE) (a2[i] OP b2[i]);", // actual op
 					"}"), "OP", operator, "CTYPE", componentType, "TYPE", type);
@@ -276,7 +251,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		}
 	}
 
-	private MyOp getMyConstantOp(final Class<?> forClass, final String name,
+	private static MyOp getMyConstantOp(final Class<?> forClass, final String name,
 		final String operator)
 	{
 		final String componentType = forClass.getComponentType().getSimpleName();
@@ -290,7 +265,8 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-				replace(makeRun(type, componentType, type,
+				replace(makeRun(castArrayImg(type, "a", "result"), // a & result are ArrayImgs
+					castRealType(componentType, "b"), // b is a constant
 					"for (int i = 0; i < a2.length; i++) {",
 					"  result2[i] = (CTYPE) (a2[i] OP b2);", // actual op
 					"}"), "OP", operator, "CTYPE", componentType, "TYPE", type);
@@ -304,7 +280,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		}
 	}
 
-	private MyOp getPlanarOp(final Class<?> forClass, final String name,
+	private static MyOp getPlanarOp(final Class<?> forClass, final String name,
 		final String operator)
 	{
 		final String componentType = forClass.getComponentType().getSimpleName();
@@ -321,9 +297,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 			final String src =
 				replace(
 					makeRun(
-						imgType,
-						imgType,
-						imgType,
+						castPlanarImg("a", "b", "result"),
 						"for (int j = 0; j < a2.numSlices(); j++) {",
 						"  TYPE a3 = (TYPE) a2.getPlane(j).getCurrentStorageArray();",
 						"  TYPE b3 = (TYPE) b2.getPlane(j).getCurrentStorageArray();",
@@ -343,32 +317,55 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		}
 	}
 
-	private static String makeRun(final String aType, final String bType,
-		final String resultType, final String... body)
+	private static String
+		castArrayImg(final String toType, final String... names)
+	{
+		final StringBuilder builder = new StringBuilder();
+		for (final String name : names) {
+			final String toImg = "((" + ArrayImg.class.getName() + ") " + name + ")";
+			final String toArrayDataAccess =
+				"((" + ArrayDataAccess.class.getName() + ") " + toImg +
+					".update(null))";
+			builder.append(toType + " " + name + "2 = (" + toType + ") " +
+				toArrayDataAccess + ".getCurrentStorageArray();\n");
+		}
+		return builder.toString();
+	}
+
+	private static String
+		castRealType(final String toType, final String... names)
+	{
+		final StringBuilder builder = new StringBuilder();
+		for (final String name : names) {
+			final String toRealType = "(" + RealType.class.getName() + ") " + name;
+			final String toDouble = "(" + toRealType + ").getRealDouble()";
+			builder.append(toType + " " + name + "2 = (" + toType + ") " + toDouble +
+				";\n");
+		}
+		return builder.toString();
+	}
+
+	private static String
+	castPlanarImg(final String... names)
+{
+	final StringBuilder builder = new StringBuilder();
+	final String toType = PlanarImg.class.getName();
+	for (final String name : names) {
+		builder.append(toType + " " + name + "2 = (" + toType + ") " + name + ";\n");
+	}
+	return builder.toString();
+}
+
+	private static String makeRun(final String... body)
 	{
 		final StringBuilder builder = new StringBuilder();
 		builder
 			.append("public void run(java.lang.Object result, java.lang.Object a, java.lang.Object b) {\n");
-		builder.append("  " + aType + " a2 = " + objectCast(aType, "a") + ";\n");
-		builder.append("  " + bType + " b2 = " + objectCast(bType, "b") + ";\n");
-		builder.append("  " + resultType + " result2 = (" + resultType +
-			") result;\n");
 		for (final String line : body) {
 			builder.append("  ").append(line).append("\n");
 		}
 		builder.append("}\n");
 		return builder.toString();
-	}
-
-	private static String objectCast(final String type, final String name) {
-		if (Byte.TYPE.getName().equals(type) || Short.TYPE.getName().equals(type) ||
-			Integer.TYPE.getName().equals(type) || Long.TYPE.getName().equals(type) ||
-			Float.TYPE.getName().equals(type) || Double.TYPE.getName().equals(type))
-		{
-			// TODO: support Long properly
-			return "(" + type + ") ((Double) " + name + ").doubleValue()";
-		}
-		return "(" + type + ") " + name;
 	}
 
 	private static String replace(final String template, final String... pairs) {
