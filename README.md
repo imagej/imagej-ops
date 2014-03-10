@@ -35,6 +35,8 @@ result = ij.ops().run("add", data, 13); // add number to image
 moredata = ij.data().open("/path/to/moredata.tif");
 result = ij.ops().run("add", data, moredata); // add two images
 result = ij.ops().add(data, moredata); // built-ins can be called directly
+addOp = ij.ops().op("add", 5);
+result = ij.map(data, addOp); // execute add op on every image pixel
 ```
 
 For more details, see these tutorials:
