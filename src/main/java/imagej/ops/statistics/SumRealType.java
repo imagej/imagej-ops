@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "sum", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
 public class SumRealType<T extends RealType<T>> extends
 	AbstractFunction<Iterable<T>, T> implements Sum<T, T>
 {

@@ -28,57 +28,40 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.statistics;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.misc.MinMaxRealType;
 
-import java.util.List;
+import java.util.Iterator;
 
-import net.imglib2.IterableInterval;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-/**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
- */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private IterableInterval<T> img;
-
-	@Parameter
-	private OpService opService;
+@Plugin(type = Op.class, name = Variance.NAME, priority = Priority.LOW_PRIORITY)
+public class VarianceRealTypeDirect<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
+{
 
 	@Override
-	public void run() {
-		final Histogram1d<T> hist = createHistogram();
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 
-		threshold = img.firstElement().createVariable();
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
 
-		getThreshold(hist, threshold);
+		final Iterator<T> it = input.iterator();
+		while (it.hasNext()) {
+			final double px = it.next().getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
+		return output;
 	}
-
-	@SuppressWarnings("unchecked")
-	private final Histogram1d<T> createHistogram() {
-		final List<Object> res = (List<Object>) opService.run(new MinMaxRealType<T>(), img);
-		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))
-			.getRealDouble(), ((T) res.get(1)).getRealDouble(), 256, false));
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

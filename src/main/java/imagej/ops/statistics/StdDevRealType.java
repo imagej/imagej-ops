@@ -28,47 +28,35 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.statistics;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculates the minimum and maximum value of an image.
- */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMax<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = StdDeviation.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class StdDevRealType<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
+{
 
 	@Parameter
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private Variance<T, DoubleType> variance;
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		output.set(Math.sqrt(variance.compute(input, output).get()));
+		return output;
 	}
+
+//	@Override
+//	public String name() {
+//		return "Standard Deviation";
+//	}
 
 }

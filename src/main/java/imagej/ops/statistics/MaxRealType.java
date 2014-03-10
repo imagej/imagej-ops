@@ -28,17 +28,36 @@
  * #L%
  */
 
-package imagej.ops.misc;
+package imagej.ops.statistics;
 
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
 
-/**
- * Simple marker interface
- * 
- * @author Christian Dietz
- * @param <T>
- * @param <V>
- */
-public interface Max<T, V> extends Function<Iterable<T>, V> {
-	// NB: Marker for Maximum Operations
+import java.util.Iterator;
+
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
+public class MaxRealType<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, T> implements Max<T, T>
+{
+
+	@Override
+	public T compute(final Iterable<T> input, final T output) {
+
+		final Iterator<T> it = input.iterator();
+		T max = it.next();
+
+		while (it.hasNext()) {
+			final T next = it.next();
+			if (max.compareTo(next) < 0) {
+				max = next;
+			}
+		}
+		output.set(max);
+		return output;
+	}
 }

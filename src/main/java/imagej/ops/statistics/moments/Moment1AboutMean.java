@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * SciJava OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2013 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,57 +28,54 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.statistics.moments;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.misc.MinMaxRealType;
+import imagej.ops.misc.Size;
+import imagej.ops.statistics.Mean;
 
-import java.util.List;
+import java.util.Iterator;
 
-import net.imglib2.IterableInterval;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
- */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+@Plugin(type = Op.class, name = "moment1aboutmean")
+public class Moment1AboutMean<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType>
+{
 
 	@Parameter
-	private IterableInterval<T> img;
+	private Iterable<T> ii;
 
 	@Parameter
-	private OpService opService;
+	private Mean<T, DoubleType> mean;
+
+	@Parameter
+	private Size<Iterable<T>> size;
+
+//	@Override
+//	public String name() {
+//		return "Moment 1 About Mean";
+//	}
 
 	@Override
-	public void run() {
-		final Histogram1d<T> hist = createHistogram();
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		final double mean = this.mean.compute(input, new DoubleType()).get();
+		final double area = this.size.compute(input, new LongType()).get();
+		double res = 0.0;
 
-		threshold = img.firstElement().createVariable();
+		final Iterator<T> it = ii.iterator();
+		while (it.hasNext()) {
+			final double val = it.next().getRealDouble() - mean;
+			res += val;
+		}
 
-		getThreshold(hist, threshold);
+		output.set(res / area);
+		return output;
 	}
-
-	@SuppressWarnings("unchecked")
-	private final Histogram1d<T> createHistogram() {
-		final List<Object> res = (List<Object>) opService.run(new MinMaxRealType<T>(), img);
-		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))
-			.getRealDouble(), ((T) res.get(1)).getRealDouble(), 256, false));
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

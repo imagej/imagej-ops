@@ -28,9 +28,7 @@
  * #L%
  */
 
-package imagej.ops.misc;
-
-import imagej.ops.Function;
+package imagej.ops.statistics;
 
 /**
  * Simple marker interface
@@ -39,6 +37,8 @@ import imagej.ops.Function;
  * @param <T>
  * @param <V>
  */
-public interface Sum<T, V> extends Function<Iterable<T>, V> {
-	// NB: Marker for Maximum Operations
+public interface Median<T, V> extends Quantile<T, V> {
+
+	public static final String NAME = "median";
+
 }
