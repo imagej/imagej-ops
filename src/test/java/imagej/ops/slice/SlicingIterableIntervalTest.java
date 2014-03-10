@@ -28,12 +28,13 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.slice;
 
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.OpService;
+import imagej.ops.slicer.SliceMapper;
 
 import java.util.Iterator;
 

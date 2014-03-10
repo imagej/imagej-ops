@@ -32,21 +32,23 @@ package imagej.ops.threading;
 
 /**
  * A {@link ChunkExecutable}, which can be executed by the {@link ChunkExecutor}
+ * A {@link ChunkExecutable} processes a subset of a bigger problem and can be executed
+ * in parallel with other {@link ChunkExecutable}. The elements of the subproblem are identified
+ * by enumerating the original problem.
  * 
  * @author Christian Dietz
  */
 public interface ChunkExecutable {
-
+	
 	/**
-	 * This method will be called by multiple threads. Example: FirstElement is i,
-	 * that the thread starts with processing element i. After having processed
-	 * element i, it adds stepSize to the index and now processes element i +
-	 * stepSize. This is repeated numSteps times.
+	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
+	 * and repeat numSteps.
 	 * 
-	 * @param firstElement The first element to be processed
+	 * @param startIndex zero based index that identifies the first element of this
+	 * subproblem (w.r.t. the global problem enumeration)
 	 * @param stepSize the step-size between two consecutive elements
 	 * @param numSteps how many steps shall be taken
 	 */
-	void execute(int firstElement, int stepSize, int numSteps);
+	void execute(int startIndex, int stepSize, int numSteps);
 
 }

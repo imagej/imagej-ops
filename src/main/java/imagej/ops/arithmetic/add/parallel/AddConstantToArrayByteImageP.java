@@ -65,18 +65,17 @@ public class AddConstantToArrayByteImageP implements Op {
 	public void run() {
 		final byte[] data = image.update(null).getCurrentStorageArray();
 		opService.run(ChunkExecutor.class, new ChunkExecutable() {
-
+			
 			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
+			public void execute(final int startIndex, final int stepSize, final int numSteps)
 			{
 				if (stepSize != 1) {
-					for (int i = min, j = 0; j < numSteps; i = i + stepSize, j++) {
+					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
 						data[i] += value;
 					}
 				}
 				else {
-					for (int i = min; i < min + numSteps; i++) {
+					for (int i = startIndex; i < startIndex + numSteps; i++) {
 						data[i] += value;
 					}
 				}

@@ -29,8 +29,8 @@
  */
 package imagej.ops.slicer;
 
-import net.imglib2.RandomAccessibleInterval;
 import imagej.ops.Function;
+import net.imglib2.RandomAccessibleInterval;
 
 /**
  * Interface for mappers which perform a slice-wise mapping

@@ -30,6 +30,7 @@
 
 package imagej.ops.map;
 
+
 /**
  * Marker interface to mark {@link InplaceMapper}s
  * 

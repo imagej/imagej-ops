@@ -37,10 +37,9 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "convert")
+@Plugin(type = Op.class, name = Convert.NAME)
 public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPix<I, O>
 {

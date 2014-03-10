@@ -28,37 +28,44 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.histogram;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
 import imagej.ops.OpService;
+import imagej.ops.misc.MinMaxRealType;
+
+import java.util.List;
+
 import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "threshold")
-public class GlobalThresholder<T extends RealType<T>> extends
-        AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> {
+/**
+ * @author Martin Horn, University of Konstanz
+ */
+public class HistogramCreate<T extends RealType<T>> implements Histogram {
 
-    @Parameter
-    private ThresholdMethod<T> method;
+	@Parameter
+	private IterableInterval<T> in;
 
-    @Parameter
-    private OpService opService;
+	@Parameter(required = false)
+	private int numBins = 256;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public IterableInterval<BitType> compute(final IterableInterval<T> input,
-            final IterableInterval<BitType> output) {
-        final T threshold = (T)opService.run(method, input);
-        final PixThreshold<T> apply = new PixThreshold<T>();
-        apply.setThreshold(threshold);
-        return (IterableInterval<BitType>)opService.run("map", output, input,
-                apply);
-    }
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
 
+	@Parameter
+	private OpService ops;
+
+	@Override
+	public void run() {
+		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+		out =
+			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
+				.get(1).getRealDouble(), 256, false));
+
+	}
 }

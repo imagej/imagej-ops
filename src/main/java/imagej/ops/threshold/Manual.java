@@ -28,17 +28,27 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.threshold;
 
-import org.scijava.AbstractContextual;
+import imagej.ops.Op;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract base class for {@link OpMatcher} implementations.
- * 
- * @author Curtis Rueden
+ * @author Martin Horn
  */
-public abstract class AbstractOpMatcher extends AbstractContextual
-	implements OpMatcher
-{
-	// NB: No implementation needed.
+@Plugin(type = Op.class, name = "manualthreshold")
+public class Manual<T extends RealType<T>> extends ThresholdMethod<T> {
+
+	@Parameter
+	private double threshold;
+
+	@Override
+	protected void getThreshold(Histogram1d<T> histogram, T threshold) {
+		threshold.setReal(this.threshold);
+	}
+
 }

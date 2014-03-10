@@ -36,8 +36,9 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.threading.ChunkExecutable;
+import imagej.ops.project.Projector;
 import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 
 import java.util.Iterator;
 
@@ -53,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "project", priority = Priority.LOW_PRIORITY + 1)
 public class DefaultProjectorP<T, V> extends
 	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
-	Contingent, Parallel
+	Contingent, Parallel, Projector
 {
 
 	@Parameter
@@ -70,19 +71,18 @@ public class DefaultProjectorP<T, V> extends
 	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
+			public void execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				final RandomAccess<T> access = input.randomAccess();
 				final Cursor<V> cursor = output.localizingCursor();
-				cursor.jumpFwd(min);
+				
+				setToStart(cursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					cursor.jumpFwd(stepSize);
 					for (int d = 0; d < input.numDimensions(); d++) {
 						if (d != dim) {
 							access
@@ -92,6 +92,8 @@ public class DefaultProjectorP<T, V> extends
 
 					method.compute(new DimensionIterable(input.dimension(dim), access),
 						cursor.get());
+					
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
@@ -105,7 +107,7 @@ public class DefaultProjectorP<T, V> extends
 		// TODO this first check is too simple, but for now ok
 		return getInput().numDimensions() == getOutput().numDimensions() + 1 &&
 			getInput().numDimensions() > dim;
-	};
+	}
 
 	final class DimensionIterable implements Iterable<T> {
 

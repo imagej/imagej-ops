@@ -32,13 +32,9 @@ package imagej.ops.threshold;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.misc.MinMaxRealType;
-
-import java.util.List;
-
+import imagej.ops.histogram.Histogram;
 import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
@@ -57,22 +53,16 @@ public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
 	private IterableInterval<T> img;
 
 	@Parameter
-	private OpService opService;
+	private OpService ops;
 
 	@Override
 	public void run() {
-		final Histogram1d<T> hist = createHistogram();
+		final Histogram1d<T> hist =
+			(Histogram1d<T>) ops.run(Histogram.class, img, null);
 
 		threshold = img.firstElement().createVariable();
 
 		getThreshold(hist, threshold);
-	}
-
-	@SuppressWarnings("unchecked")
-	private final Histogram1d<T> createHistogram() {
-		final List<Object> res = (List<Object>) opService.run(new MinMaxRealType<T>(), img);
-		return new Histogram1d<T>(new Real1dBinMapper<T>(((T) res.get(0))
-			.getRealDouble(), ((T) res.get(1)).getRealDouble(), 256, false));
 	}
 
 	/**

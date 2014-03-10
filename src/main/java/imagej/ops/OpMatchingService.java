@@ -30,6 +30,7 @@
 
 package imagej.ops;
 
+import imagej.command.CommandInfo;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.service.ImageJService;
@@ -43,9 +44,12 @@ import org.scijava.plugin.SingletonService;
  * 
  * @author Curtis Rueden
  */
-public interface OpMatcherService extends SingletonService<OpMatcher>,
+public interface OpMatchingService extends SingletonService<Optimizer>,
 	ImageJService
 {
+
+	/** Gets the list of all available {@link Op} implementations. */
+	public List<CommandInfo> getOps();
 
 	/**
 	 * Finds and initializes the best module matching the given op name and/or
@@ -79,6 +83,24 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	List<Module> findMatches(List<? extends ModuleInfo> ops, Object... args);
 
 	/**
+	 * Attempts to match the given arguments to the {@link Op} described by the
+	 * specified {@link ModuleInfo}.
+	 * 
+	 * @return A populated {@link Module} instance for the matching {@link Op}, or
+	 *         null if the arguments do not match the {@link Op}.
+	 */
+	Module match(ModuleInfo info, Object... args);
+
+	/**
+	 * Optimizes the performance of the given {@link Module} using all available
+	 * {@link Optimizer}s.
+	 */
+	Module optimize(Module module);
+
+	/** Assigns arguments into the given module's inputs. */
+	Module assignInputs(Module module, Object... args);
+
+	/**
 	 * Gets a string describing the given op template.
 	 * 
 	 * @param name The op's name.
@@ -94,5 +116,11 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	 * @return A string describing the op.
 	 */
 	String getOpString(ModuleInfo info);
+
+	boolean isCandidate(CommandInfo info, String name);
+
+	boolean isCandidate(CommandInfo info, Class<? extends Op> type);
+
+	boolean isCandidate(CommandInfo info, String name, Class<? extends Op> type);
 
 }

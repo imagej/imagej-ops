@@ -48,10 +48,6 @@ import org.scijava.plugin.Plugin;
 public class Moment2AboutMean<T extends RealType<T>> extends
 	AbstractFunction<Iterable<T>, DoubleType>
 {
-
-	@Parameter
-	private Iterable<T> iterable;
-
 	@Parameter
 	private Mean<Iterable<T>, DoubleType> mean;
 
@@ -66,7 +62,7 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 
 		double res = 0.0;
 
-		final Iterator<T> it = iterable.iterator();
+		final Iterator<T> it = input.iterator();
 		while (it.hasNext()) {
 			final double val = it.next().getRealDouble() - meanVal;
 			res += val * val;
@@ -75,11 +71,4 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 		output.setReal(res / area);
 		return output;
 	}
-
-//	@Override
-//	public String name()
-//	{
-//		return "Moment 2 About Mean";
-//	}
-
 }

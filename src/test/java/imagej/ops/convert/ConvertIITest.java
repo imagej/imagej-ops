@@ -31,8 +31,6 @@
 package imagej.ops.convert;
 
 import imagej.ops.AbstractOpTest;
-import imagej.ops.convert.ConvertII;
-import imagej.ops.convert.ConvertPixCopy;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;

@@ -30,16 +30,21 @@
 
 package imagej.ops;
 
+import org.scijava.ItemIO;
+
 /**
  * A function (in this context) is an {@link Op} that has a typed input
- * parameter and a typed output parameter.
- * <p>
- * The input and output are accessible via its public API ({@link #getInput()},
- * {@link #getOutput()}, etc.).
- * </p>
+ * parameter, and a typed output parameter.
  * <p>
  * The function provides a {@link #compute} method to compute the function for
  * different input and output parameters.
+ * </p>
+ * <p>
+ * Note that the typed output is actually considered both an input <em>and</em>
+ * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
+ * This fact is critical so that a preallocated data structure may be passed in
+ * and filled by the function. It is <em>required</em> that if an output value
+ * is given in this way, it will be populated with the function's result.
  * </p>
  * 
  * @author Christian Dietz

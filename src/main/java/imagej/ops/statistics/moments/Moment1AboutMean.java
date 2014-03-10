@@ -50,18 +50,10 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 {
 
 	@Parameter
-	private Iterable<T> ii;
-
-	@Parameter
 	private Mean<Iterable<T>, DoubleType> mean;
 
 	@Parameter
 	private Size<Iterable<T>> size;
-
-//	@Override
-//	public String name() {
-//		return "Moment 1 About Mean";
-//	}
 
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
@@ -69,7 +61,7 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 		final double area = this.size.compute(input, new LongType()).get();
 		double res = 0.0;
 
-		final Iterator<T> it = ii.iterator();
+		final Iterator<T> it = input.iterator();
 		while (it.hasNext()) {
 			final double val = it.next().getRealDouble() - mean;
 			res += val;

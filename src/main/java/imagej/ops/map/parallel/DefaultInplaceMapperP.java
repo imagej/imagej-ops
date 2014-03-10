@@ -35,8 +35,8 @@ import imagej.ops.OpService;
 import imagej.ops.Parallel;
 import imagej.ops.map.AbstractInplaceMapper;
 import imagej.ops.map.InplaceMapper;
-import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -59,24 +59,27 @@ public class DefaultInplaceMapperP<A> extends
 	private OpService opService;
 
 	@Override
-	public void run() {
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
 			{
-				final Cursor<A> inCursor = in.cursor();
-				inCursor.jumpFwd(min);
+				final Cursor<A> inCursor = getInput().cursor();
+
+				setToStart(inCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					inCursor.jumpFwd(stepSize);
 					final A t = inCursor.get();
 					func.compute(t, t);
+					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, in.size());
+		}, arg.size());
+
+		return arg;
 	}
 }

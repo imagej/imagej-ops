@@ -85,8 +85,7 @@ public class DefaultChunkExecutor extends AbstractChunkExecutor {
 
 			@Override
 			public void run() {
-				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
-					(int) (numSteps + (numberOfElements % numSteps)));
+				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE, (int) (numSteps + (numberOfElements % numSteps)));
 			}
 		}));
 

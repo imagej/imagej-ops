@@ -27,70 +27,79 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.onthefly;
 
-import imagej.command.CommandInfo;
-import imagej.module.Module;
-import imagej.module.ModuleInfo;
-import imagej.module.ModuleService;
-import imagej.ops.AbstractOpMatcher;
+package imagej.ops.threading;
+
 import imagej.ops.Op;
-import imagej.ops.OpMatcher;
-import imagej.ops.OpService;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
 
-import org.scijava.Context;
 import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+
 /**
- * An {@link OpMatcher} using Javassist to generate efficient ops for common argument types.
+ * Implementation of a {@link ChunkExecutor} that interleaves the chunks. In a element
+ * enumeration from 1..n with <b>k</b> {@link ChunkExecutable}s the first one will process
+ * the elements 1, k+1, 2k+1, ... the second chunk executable 2, k+2, 2k+2 and so on.
  * 
- * @author Johannes Schindelin
+ * @author Michael Zinsmaier
  */
-@Plugin(type = OpMatcher.class, priority = Priority.NORMAL_PRIORITY + 1)
-public class JavassistOpMatcher extends AbstractOpMatcher {
+@Plugin(type = Op.class, name = "chunker", priority = Priority.VERY_LOW_PRIORITY)
+public class InterleavedChunkExecutor extends AbstractChunkExecutor {
 
 	@Parameter
-	private Context context;
+	public LogService logService;
 
-	@Parameter
-	private ModuleService moduleService;
+	private String cancellationMsg;
 
-	@Parameter
-	private OpService opService;
+	@Override
+	public void run() {
 
-	private final Map<String, String> arithmeticOps;
+		final int numThreads = Runtime.getRuntime().availableProcessors();		
+		final int numStepsFloor = (int) (numberOfElements / numThreads);
+		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
-	{
-		arithmeticOps = new HashMap<String, String>();
-		arithmeticOps.put("add", "+");
-		arithmeticOps.put("subtract", "-");
-		arithmeticOps.put("multiply", "*");
-		arithmeticOps.put("divide", "/");
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
+
+		for (int i = 0; i < numThreads; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					if (j < remainder) {
+						chunkable.execute(j, numThreads, (numStepsFloor+1));
+					} else {
+						chunkable.execute(j, numThreads, numStepsFloor);
+					}
+				}
+			}));
+		}
+
+		for (final Future<?> future : futures) {
+			try {
+				future.get();
+			}
+			catch (final Exception e) {
+				logService.error(e);
+				cancellationMsg = e.getMessage();
+				break;
+			}
+		}
 	}
 
 	@Override
-	public Module match(ModuleInfo info, Object... args) {
-		final String name = info.getName();
-		final String arithmeticOp = arithmeticOps.get(name);
-		if (arithmeticOp != null && args.length == 3) {
-			final Op op = ArithmeticOp.findOp(name, arithmeticOp, args[0], args[1], args[2]);
-			if (op != null) {
-				return createAndPopulateModule(op, args);
-			}
-		}
-		return null;
+	public boolean isCanceled() {
+		return cancellationMsg != null;
 	}
 
-	private Module createAndPopulateModule(Op op, Object[] args) {
-		final CommandInfo info = new CommandInfo(op.getClass());
-		info.setPriority(Priority.FIRST_PRIORITY);
-		final Module module = info.createModule(op);
-		opService.assignInputs(module, args);
-		return module;
+	@Override
+	public String getCancelReason() {
+		return cancellationMsg;
 	}
 }

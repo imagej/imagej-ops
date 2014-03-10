@@ -37,6 +37,7 @@ import imagej.module.Module;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
+import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
@@ -188,6 +189,21 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(noSuchAlias);
 	}
 
+	/** Tests op lookups by class. */
+	@Test
+	public void testMatchingByClass() {
+		Op op = ops.op("arrr!", (Object) null);
+		assertSame(FirstMate.class, op.getClass());
+		op = ops.op("arrr!", (EyePatch) null);
+		assertSame(FirstMate.class, op.getClass());
+		op = ops.op("arrr!", (Booty) null);
+		assertSame(FirstMate.class, op.getClass());
+		op = ops.op("arrr!", EyePatch.class);
+		assertSame(FirstMate.class, op.getClass());
+		op = ops.op("arrr!", Booty.class);
+		assertSame(Captain.class, op.getClass());
+	}
+
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
@@ -203,6 +219,38 @@ public class OpServiceTest extends AbstractOpTest {
 			log.info("Ignoring input value " + input.get());
 			output.set(Double.POSITIVE_INFINITY);
 			return output;
+		}
+	}
+
+	public static interface EyePatch {
+		// NB: Marker interface.
+	}
+
+	@Plugin(type = Op.class, name = "arrr!", priority = Priority.HIGH_PRIORITY)
+	public static class FirstMate implements Op {
+
+		@Parameter(required = false)
+		private EyePatch inventory;
+
+		@Override
+		public void run() {
+			// NB: No implementation needed.
+		}
+	}
+
+	public static interface Booty {
+		// NB: Marker interface.
+	}
+
+	@Plugin(type = Op.class, name = "arrr!")
+	public static class Captain implements Op {
+
+		@Parameter
+		private Booty inventory;
+
+		@Override
+		public void run() {
+			// NB: No implementation needed.
 		}
 	}
 

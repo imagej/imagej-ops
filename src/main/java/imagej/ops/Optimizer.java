@@ -32,30 +32,38 @@ package imagej.ops;
 
 import imagej.ImageJPlugin;
 import imagej.module.Module;
-import imagej.module.ModuleInfo;
 
-import org.scijava.Contextual;
 import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginService;
+import org.scijava.plugin.RichPlugin;
 import org.scijava.plugin.SingletonPlugin;
 
 /**
- * {@code OperationMatcher} is a plugin that provides a heuristic for
- * identifying the best {@link Op} for a particular situation.
+ * An optimizer is a routine for improving the performance of an {@link Op}
+ * under certain circumstances. An optimized {@link Op} is guaranteed to produce
+ * the same outputs as the original {@link Op}.
  * <p>
- * Operation matchers discoverable at runtime must implement this interface and
- * be annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
- * {@link OpMatcher}.class. While it possible to create an operation
- * merely by implementing this interface, it is encouraged to instead extend
- * {@link AbstractOpMatcher}, for convenience.
+ * Optimizers discoverable at runtime must implement this interface and be
+ * annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
+ * {@link Optimizer}.class. While it possible to create an optimizer merely by
+ * implementing this interface, it is encouraged to instead extend
+ * {@link AbstractOptimizer} for convenience.
  * </p>
  * 
  * @author Curtis Rueden
  * @see Plugin
+ * @see PluginService
  */
-public interface OpMatcher extends ImageJPlugin, Contextual,
-	SingletonPlugin
-{
+public interface Optimizer extends RichPlugin, SingletonPlugin, ImageJPlugin {
 
-	Module match(ModuleInfo info, Object... args);
+	/**
+	 * Attempt to optimize the given {@link Module} for performance.
+	 * 
+	 * @param module The module to optimize.
+	 * @return An optimized {@link Module} whose behavior is identical to the
+	 *         original {@link Module}'s, or null if it cannot be handled by this
+	 *         optimizer.
+	 */
+	Module optimize(Module module);
 
 }
