@@ -28,8 +28,13 @@
  * #L%
  */
 
-package imagej.ops;
+package imagej.ops.neighborhood;
 
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.map.Map;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
 import net.imglib2.algorithm.region.localneighborhood.Shape;
@@ -43,27 +48,44 @@ import org.scijava.plugin.Plugin;
  * {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "neighborhood",
-	priority = Priority.LOW_PRIORITY)
-public class NeighborhoodOp<I, O> extends
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapNeighborhood<I, O> extends
 	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements Map<Iterable<I>, O, Function<Iterable<I>, O>>
 {
-
-	@Parameter
-	private OpService service;
 
 	@Parameter
 	private Shape shape;
 
 	@Parameter
+	private OpService service;
+
+	@Parameter
 	private Function<Iterable<I>, O> func;
 
 	@Override
-	public RandomAccessibleInterval<O> compute(final RandomAccessibleInterval<I> input,
+	public RandomAccessibleInterval<O> compute(
+		final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		service.run("map", output, shape.neighborhoodsSafe(input), func);
+
+		
+		
+		// TODO: threaded map neighborhood
+		// TODO: optimization with integral images, if there is a rectangular
+		// neighborhood
 		return output;
+	}
+
+	@Override
+	public Function<Iterable<I>, O> getFunction() {
+		return func;
+	}
+
+	@Override
+	public void setFunction(Function<Iterable<I>, O> function) {
+		func = function;
 	}
 }
