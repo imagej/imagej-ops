@@ -45,7 +45,7 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
 
-	@Parameter(required = false)
+	@Parameter
 	private I in;
 
 	@Override

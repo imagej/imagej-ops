@@ -156,7 +156,9 @@ public class DefaultOpMatchingService extends
 				break;
 			}
 			priority = p;
+
 			final Module module = match(info, args);
+
 			if (module != null) matches.add(module);
 		}
 
