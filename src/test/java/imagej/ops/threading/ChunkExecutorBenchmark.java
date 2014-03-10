@@ -15,7 +15,7 @@ public class ChunkExecutorBenchmark extends AbstractOpBenchmark {
 
 	public void run100MbTest() {		
 		Img<ByteType> in = generateByteTestImg(true, 10240, 10240);
-		Img<ByteType> out = generateByteTestImg(false, 10240, 10240);;
+		Img<ByteType> out = generateByteTestImg(false, 10240, 10240);
 		
 		final Module module = ops.module(RunDefaultChunkExecutor.class, out, in);
 
@@ -24,7 +24,7 @@ public class ChunkExecutorBenchmark extends AbstractOpBenchmark {
 	
 	public void run100MbInterleaved() {
 		Img<ByteType> in = generateByteTestImg(true, 10240, 10240);
-		Img<ByteType> out = generateByteTestImg(false, 10240, 10240);;
+		Img<ByteType> out = generateByteTestImg(false, 10240, 10240);
 		
 		final Module module = ops.module(RunInterleavedChunkExecutor.class, out, in);
 
@@ -33,7 +33,7 @@ public class ChunkExecutorBenchmark extends AbstractOpBenchmark {
 
 	public void run1MbTest() {		
 		Img<ByteType> in = generateByteTestImg(true, 1024, 1024);
-		Img<ByteType> out = generateByteTestImg(false, 1024, 1024);;
+		Img<ByteType> out = generateByteTestImg(false, 1024, 1024);
 		
 		final Module module = ops.module(RunDefaultChunkExecutor.class, out, in);
 
@@ -42,7 +42,7 @@ public class ChunkExecutorBenchmark extends AbstractOpBenchmark {
 	
 	public void run1MbInterleaved() {
 		Img<ByteType> in = generateByteTestImg(true, 1024, 1024);
-		Img<ByteType> out = generateByteTestImg(false, 1024, 1024);;
+		Img<ByteType> out = generateByteTestImg(false, 1024, 1024);
 		
 		final Module module = ops.module(RunInterleavedChunkExecutor.class, out, in);
 

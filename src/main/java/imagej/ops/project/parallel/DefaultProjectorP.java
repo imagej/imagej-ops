@@ -107,7 +107,7 @@ public class DefaultProjectorP<T, V> extends
 		// TODO this first check is too simple, but for now ok
 		return getInput().numDimensions() == getOutput().numDimensions() + 1 &&
 			getInput().numDimensions() > dim;
-	};
+	}
 
 	final class DimensionIterable implements Iterable<T> {
 
