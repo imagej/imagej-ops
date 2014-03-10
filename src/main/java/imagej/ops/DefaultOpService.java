@@ -131,8 +131,103 @@ public class DefaultOpService extends
 	// -- Operation shortcuts --
 
 	@Override
-	public Object add(final Object... o) {
-		return run("add", o);
+	public Object add(final Object... args) {
+		return run("add", args);
+	}
+
+	@Override
+	public Object chunker(Object... args) {
+		return run("chunker", args);
+	}
+
+	@Override
+	public Object convert(Object... args) {
+		return run("convert", args);
+	}
+
+	@Override
+	public Object convolve(Object... args) {
+		return run("convolve", args);
+	}
+
+	@Override
+	public Object divide(Object... args) {
+		return run("divide", args);
+	}
+
+	@Override
+	public Object gauss(Object... args) {
+		return run("gauss", args);
+	}
+
+	@Override
+	public Object infinity(Object... args) {
+		return run("infinity", args);
+	}
+
+	@Override
+	public Object map(Object... args) {
+		return run("map", args);
+	}
+
+	@Override
+	public Object max(Object... args) {
+		return run("max", args);
+	}
+
+	@Override
+	public Object minmax(Object... args) {
+		return run("minmax", args);
+	}
+
+	@Override
+	public Object multiply(Object... args) {
+		return run("multiply", args);
+	}
+
+	@Override
+	public Object neighborhood(Object... args) {
+		return run("neighborhood", args);
+	}
+
+	@Override
+	public Object otsu(Object... args) {
+		return run("otsu", args);
+	}
+
+	@Override
+	public Object pixThreshold(Object... args) {
+		return run("pixThreshold", args);
+	}
+
+	@Override
+	public Object project(Object... args) {
+		return run("project", args);
+	}
+
+	@Override
+	public Object slicemapper(Object... args) {
+		return run("slicemapper", args);
+	}
+
+	@Override
+	public Object slicer(Object... args) {
+		return run("slicer", args);
+	}
+
+	@Override
+	public Object subtract(Object... args) {
+		return run("subtract", args);
+	}
+
+	@Override
+	public Object sum(Object... args) {
+		return run("sum", args);
+	}
+
+	@Override
+	public Object threshold(Object... args) {
+		return run("threshold", args);
 	}
 
 	// -- SingletonService methods --
