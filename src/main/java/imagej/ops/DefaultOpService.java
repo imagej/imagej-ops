@@ -64,7 +64,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private CommandService commandService;
 	
 	@Parameter
-	private OpMatcherService opMatcherService;
+	private OpMatchingService matcher;
 
 	@Parameter
 	private LogService log;
@@ -104,19 +104,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return opMatcherService.findModule(name, null, args);
+		return matcher.findModule(name, null, args);
 	}
 
 	@Override
 	public Module module(final Class<? extends Op> type, final Object... args) {
-		return opMatcherService.findModule(null, type, args);
+		return matcher.findModule(null, type, args);
 	}
 
 	@Override
 	public Module module(final Op op, final Object... args) {
 		final Module module = info(op).createModule(op);
 		getContext().inject(module.getDelegateObject());
-		return opMatcherService.assignInputs(module, args);
+		return matcher.assignInputs(module, args);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Collection<String> getOperations() {
 		final HashSet<String> operations = new HashSet<String>();
-		for (final CommandInfo info : opMatcherService.getOps()) {
+		for (final CommandInfo info : matcher.getOps()) {
 			operations.add(info.getName());
 		}
 		return operations;

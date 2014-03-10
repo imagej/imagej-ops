@@ -42,7 +42,7 @@ import java.util.List;
  * 
  * @author Curtis Rueden
  */
-public interface OpMatcherService extends ImageJService {
+public interface OpMatchingService extends ImageJService {
 
 	/** Gets the list of all available {@link Op} implementations. */
 	public List<CommandInfo> getOps();
