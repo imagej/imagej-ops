@@ -30,12 +30,13 @@
 
 package imagej.ops.map.parallel;
 
-import static org.junit.Assert.assertTrue;
-import imagej.module.Module;
+import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractFunction;
+import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
+import imagej.ops.map.FunctionMapII;
 import imagej.ops.map.FunctionMapIIRAI;
-import imagej.ops.map.MapII;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -53,61 +54,100 @@ import org.junit.Test;
 public class ThreadedMapTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
-	private Op op;
+	private Img<ByteType> out;
 
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10, 10);
-		
-		//TODO: Remove null parameters after optional input works
-		op = ops.op("add", null, null, new ByteType((byte) 10));
+		out = generateByteTestImg(false, 10, 10);
 	}
 
 	@Test
-	public void testMultiThreadedMapper() {
+	public void testMapII() {
 
-		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
+		final Op functional =
+			ops.op(FunctionMapII.class, out, in, new AddOneFunctional());
+		functional.run();
 
-		final Module naiveMapper =
-			ops.module(new MapII<ByteType, ByteType>(), outNaive, in, op);
+		final Cursor<ByteType> cursor1 = in.cursor();
+		final Cursor<ByteType> cursor2 = out.cursor();
 
-		naiveMapper.run();
-
-		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
-		final Module threadedMapper =
-			ops.module(new FunctionMapIIRAIP<ByteType, ByteType>(), outThreaded, in, op);
-
-		threadedMapper.run();
-
-		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
-		final Module threadedMapperII =
-			ops.module(new FunctionMapIIP<ByteType, ByteType>(), outThreadedII, in,
-				op);
-
-		threadedMapperII.run();
-
-		final Img<ByteType> outThreadedInplaceII = in.copy();
-		final Module threadedMapperInplaceII =
-			ops.module(new InplaceMapP<ByteType>(), outThreadedInplaceII,
-				op);
-
-		threadedMapperInplaceII.run();
-
-		final Cursor<ByteType> cursor1 = outNaive.cursor();
-		final Cursor<ByteType> cursor2 = outThreaded.cursor();
-		final Cursor<ByteType> cursor3 = outThreadedII.cursor();
-		final Cursor<ByteType> cursor4 = outThreadedInplaceII.cursor();
-
-		// test for consistency as we know that naiveMapper works.
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			cursor3.fwd();
-			cursor4.fwd();
-
-			assertTrue(cursor1.get().get() == cursor2.get().get());
-			assertTrue(cursor1.get().get() == cursor3.get().get());
-			assertTrue(cursor1.get().get() == cursor4.get().get());
+			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
 		}
+	}
+
+	@Test
+	public void testFunctionMapIIRAIP() {
+
+		final Op functional =
+			ops.op(FunctionMapIIRAIP.class, out, in, new AddOneFunctional());
+		functional.run();
+
+		final Cursor<ByteType> cursor1 = in.cursor();
+		final Cursor<ByteType> cursor2 = out.cursor();
+
+		while (cursor1.hasNext()) {
+			cursor1.fwd();
+			cursor2.fwd();
+			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+		}
+
+	}
+
+	@Test
+	public void testFunctionMapIIP() {
+
+		final Op functional =
+			ops.op(FunctionMapIIP.class, out, in, new AddOneFunctional());
+		functional.run();
+
+		final Cursor<ByteType> cursor1 = in.cursor();
+		final Cursor<ByteType> cursor2 = out.cursor();
+
+		while (cursor1.hasNext()) {
+			cursor1.fwd();
+			cursor2.fwd();
+			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+		}
+	}
+
+	@Test
+	public void testInplaceMapP() {
+
+		final Cursor<ByteType> cursor1 = in.copy().cursor();
+		final Cursor<ByteType> cursor2 = in.cursor();
+
+		final Op functional = ops.op(InplaceMapP.class, in, new AddOneInplace());
+		functional.run();
+
+		while (cursor1.hasNext()) {
+			cursor1.fwd();
+			cursor2.fwd();
+			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+		}
+	}
+
+}
+
+// Helper classes
+class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+
+	@Override
+	public ByteType compute(final ByteType arg) {
+		arg.inc();
+		return arg;
+	}
+}
+
+class AddOneFunctional extends AbstractFunction<ByteType, ByteType> {
+
+	@Override
+	public ByteType compute(final ByteType input, final ByteType output) {
+		output.set(input);
+		output.inc();
+		return output;
 	}
 }
