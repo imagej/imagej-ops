@@ -31,17 +31,21 @@
 package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
 import imagej.ops.misc.Size;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
  * @param <T>
  * @param <V>
  */
+@Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<T extends RealType<T>, V extends RealType<V>> extends
 	AbstractFunction<Iterable<T>, V>
 {
