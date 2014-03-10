@@ -35,6 +35,7 @@ import imagej.module.Module;
 
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;
+import org.scijava.plugin.SingletonPlugin;
 
 /**
  * An optimizer is a routine for improving the performance of an {@link Op}
@@ -52,7 +53,7 @@ import org.scijava.plugin.PluginService;
  * @see Plugin
  * @see PluginService
  */
-public interface Optimizer extends ImageJPlugin {
+public interface Optimizer extends SingletonPlugin, ImageJPlugin {
 
 	/**
 	 * Attempt to optimize the given {@link Module} for performance.

@@ -37,12 +37,16 @@ import imagej.service.ImageJService;
 
 import java.util.List;
 
+import org.scijava.plugin.SingletonService;
+
 /**
  * Interface for services that find {@link Op}s which match a template.
  * 
  * @author Curtis Rueden
  */
-public interface OpMatchingService extends ImageJService {
+public interface OpMatchingService extends SingletonService<Optimizer>,
+	ImageJService
+{
 
 	/** Gets the list of all available {@link Op} implementations. */
 	public List<CommandInfo> getOps();

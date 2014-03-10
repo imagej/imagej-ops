@@ -45,9 +45,9 @@ import java.util.List;
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
+import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
 
@@ -57,8 +57,8 @@ import org.scijava.util.ConversionUtils;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpMatchingService extends AbstractService implements
-	OpMatchingService
+public class DefaultOpMatchingService extends
+	AbstractSingletonService<Optimizer> implements OpMatchingService
 {
 
 	@Parameter
@@ -253,6 +253,13 @@ public class DefaultOpMatchingService extends AbstractService implements
 		if (type != null && !type.isAssignableFrom(opClass)) return false;
 
 		return true;
+	}
+
+	// -- PTService methods --
+
+	@Override
+	public Class<Optimizer> getPluginType() {
+		return Optimizer.class;
 	}
 
 	// -- Helper methods --
