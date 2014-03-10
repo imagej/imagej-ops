@@ -222,7 +222,9 @@ public class OpServiceTest extends AbstractOpTest {
 		}
 	}
 
-	public static interface EyePatch {}
+	public static interface EyePatch {
+		// NB: Marker interface.
+	}
 
 	@Plugin(type = Op.class, name = "arrr!", priority = Priority.HIGH_PRIORITY)
 	public static class FirstMate implements Op {
@@ -231,10 +233,14 @@ public class OpServiceTest extends AbstractOpTest {
 		private EyePatch inventory;
 
 		@Override
-		public void run() {}
+		public void run() {
+			// NB: No implementation needed.
+		}
 	}
 
-	public static interface Booty {}
+	public static interface Booty {
+		// NB: Marker interface.
+	}
 
 	@Plugin(type = Op.class, name = "arrr!")
 	public static class Captain implements Op {
@@ -243,7 +249,9 @@ public class OpServiceTest extends AbstractOpTest {
 		private Booty inventory;
 
 		@Override
-		public void run() {}
+		public void run() {
+			// NB: No implementation needed.
+		}
 	}
 
 }
