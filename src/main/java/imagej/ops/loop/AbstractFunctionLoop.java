@@ -10,28 +10,20 @@ import org.scijava.plugin.Parameter;
  * Abstract implementation of a {@link FunctionLoop}.
  * 
  * @author Christian Dietz
- * @param <I>
- * @param <O>
  */
 public abstract class AbstractFunctionLoop<F extends Function<I, I>, I> extends
 	AbstractFunction<I, I> implements FunctionLoop<I>
 {
 
-	/**
-	 * Number of iterations
-	 */
+	/** Function to loop. */
 	@Parameter
 	protected Function<I, I> function;
 
-	/**
-	 * Buffer for intermediate results
-	 */
+	/** Buffer for intermediate results. */
 	@Parameter(required = false)
 	protected I buffer;
 
-	/**
-	 * Number of iterations
-	 */
+	/** Number of iterations. */
 	@Parameter
 	protected int n;
 
