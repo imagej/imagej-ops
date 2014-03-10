@@ -244,7 +244,7 @@ public class DefaultOpService extends
 		final ArrayList<CommandInfo> candidates = new ArrayList<CommandInfo>();
 
 		for (final CommandInfo info : ops) {
-			if (name != null && !name.equals(info.getName())) continue;
+			if (!nameMatches(info, name)) continue;
 
 			// the name matches; now check the class
 			final Class<?> opClass;
@@ -286,6 +286,10 @@ public class DefaultOpService extends
 		}
 
 		return matches;
+	}
+
+	private boolean nameMatches(final CommandInfo info, final String name) {
+		return name == null || name.equals(info.getName());
 	}
 
 	private void assign(final Module module, final Object arg,
