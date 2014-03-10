@@ -59,17 +59,11 @@ public abstract class AbstractInplaceMapper<A, I extends Iterable<A>>
 	@Parameter
 	protected Function<A, A> func;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Function<A, A> getFunction() {
 		return func;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setFunction(final Function<A, A> func) {
 		this.func = func;

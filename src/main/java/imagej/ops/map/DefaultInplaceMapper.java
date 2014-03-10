@@ -47,9 +47,6 @@ public class DefaultInplaceMapper<A> extends
 	AbstractInplaceMapper<A, Iterable<A>>
 {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void run() {
 		for (final A t : in) {
