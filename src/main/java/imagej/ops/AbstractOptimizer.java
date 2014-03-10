@@ -30,32 +30,15 @@
 
 package imagej.ops;
 
-import imagej.ImageJPlugin;
-import imagej.module.Module;
-import imagej.module.ModuleInfo;
-
-import org.scijava.Contextual;
-import org.scijava.plugin.Plugin;
-import org.scijava.plugin.SingletonPlugin;
+import org.scijava.plugin.AbstractRichPlugin;
 
 /**
- * {@code OperationMatcher} is a plugin that provides a heuristic for
- * identifying the best {@link Op} for a particular situation.
- * <p>
- * Operation matchers discoverable at runtime must implement this interface and
- * be annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
- * {@link OpMatcher}.class. While it possible to create an operation
- * merely by implementing this interface, it is encouraged to instead extend
- * {@link AbstractOpMatcher}, for convenience.
- * </p>
+ * Abstract superclass for {@link Optimizer}s.
  * 
  * @author Curtis Rueden
- * @see Plugin
  */
-public interface OpMatcher extends ImageJPlugin, Contextual,
-	SingletonPlugin
+public abstract class AbstractOptimizer extends AbstractRichPlugin implements
+	Optimizer
 {
-
-	Module match(ModuleInfo info, Object... args);
-
+	// NB: No implementation needed.
 }

@@ -31,20 +31,25 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
+import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
+import imagej.module.ModuleService;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.log.LogService;
 import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
+import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for finding {@link Op}s which match a template.
@@ -52,9 +57,15 @@ import org.scijava.service.Service;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpMatcherService extends
-	AbstractSingletonService<OpMatcher> implements OpMatcherService
+public class DefaultOpMatchingService extends
+	AbstractSingletonService<Optimizer> implements OpMatchingService
 {
+
+	@Parameter
+	private Context context;
+
+	@Parameter
+	private ModuleService moduleService;
 
 	@Parameter
 	private CommandService commandService;
@@ -62,7 +73,7 @@ public class DefaultOpMatcherService extends
 	@Parameter
 	private LogService log;
 
-	// -- OpMatcherService methods --
+	// -- OpMatchingService methods --
 
 	@Override
 	public List<CommandInfo> getOps() {
@@ -76,8 +87,7 @@ public class DefaultOpMatcherService extends
 		final String label = type == null ? name : type.getName();
 
 		// find candidates with matching name & type
-		final List<ModuleInfo> candidates =
-			findCandidates(name, type);
+		final List<ModuleInfo> candidates = findCandidates(name, type);
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + label + "' ops");
 		}
@@ -91,7 +101,7 @@ public class DefaultOpMatcherService extends
 				log.debug("Selected '" + label + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
-			return matches.get(0);
+			return optimize(matches.get(0));
 		}
 
 		final StringBuilder sb = new StringBuilder();
@@ -138,24 +148,88 @@ public class DefaultOpMatcherService extends
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
 
-		// TODO: Consider inverting the loop nesting order here,
-		// since we probably want to match higher priority Ops first.
-		for (final OpMatcher matcher : getInstances()) {
-			double priority = Double.NaN;
-			for (final ModuleInfo info : ops) {
-				final double p = info.getPriority();
-				if (p != priority && !matches.isEmpty()) {
-					// NB: Lower priority was reached; stop looking for any more matches.
-					break;
-				}
-				priority = p;
-				final Module module = matcher.match(info, args);
-				if (module != null) matches.add(module);
+		double priority = Double.NaN;
+		for (final ModuleInfo info : ops) {
+			final double p = info.getPriority();
+			if (p != priority && !matches.isEmpty()) {
+				// NB: Lower priority was reached; stop looking for any more matches.
+				break;
 			}
-			if (!matches.isEmpty()) break;
+			priority = p;
+			final Module module = match(info, args);
+			if (module != null) matches.add(module);
 		}
 
 		return matches;
+	}
+
+	@Override
+	public Module match(final ModuleInfo info, final Object... args) {
+		// check that each parameter is compatible with its argument
+		int i = 0;
+		for (final ModuleItem<?> item : info.inputs()) {
+			if (i >= args.length) return null; // too few arguments
+			final Object arg = args[i++];
+			if (!canAssign(arg, item)) return null;
+		}
+		if (i != args.length) return null; // too many arguments
+
+		// create module and assign the inputs
+		final Module module = createModule(info, args);
+
+		// make sure the op itself is happy with these arguments
+		final Object op = module.getDelegateObject();
+		if (op instanceof Contingent) {
+			final Contingent c = (Contingent) op;
+			if (!c.conforms()) return null;
+		}
+
+		// found a match!
+		return module;
+	}
+
+	@Override
+	public Module assignInputs(final Module module, final Object... args) {
+		int i = 0;
+		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+			assign(module, args[i++], item);
+		}
+		return module;
+	}
+
+	@Override
+	public Module optimize(final Module module) {
+		final ArrayList<Module> optimal = new ArrayList<Module>();
+		final ArrayList<Optimizer> optimizers = new ArrayList<Optimizer>();
+
+		double priority = Double.NaN;
+		for (final Optimizer optimizer : getInstances()) {
+			final double p = optimizer.getPriority();
+			if (p != priority && !optimal.isEmpty()) {
+				// NB: Lower priority was reached; stop looking for any more matches.
+				break;
+			}
+			priority = p;
+			final Module m = optimizer.optimize(module);
+			if (m != null) {
+				optimal.add(m);
+				optimizers.add(optimizer);
+			}
+		}
+
+		if (optimal.size() == 1) return optimal.get(0);
+		if (optimal.isEmpty()) return module;
+
+		// multiple matches
+		final double p = optimal.get(0).getInfo().getPriority();
+		final StringBuilder sb = new StringBuilder();
+		final String label = module.getDelegateObject().getClass().getName();
+		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
+		for (int i=0; i<optimizers.size(); i++) {
+			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
+			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
+		}
+		return module;
 	}
 
 	@Override
@@ -216,25 +290,14 @@ public class DefaultOpMatcherService extends
 		return true;
 	}
 
-	// -- SingletonService methods --
+	// -- PTService methods --
 
 	@Override
-	public Class<OpMatcher> getPluginType() {
-		return OpMatcher.class;
+	public Class<Optimizer> getPluginType() {
+		return Optimizer.class;
 	}
 
 	// -- Helper methods --
-
-	private String paramString(final Iterable<ModuleItem<?>> items) {
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (final ModuleItem<?> item : items) {
-			if (first) first = false;
-			else sb.append(", ");
-			sb.append(item.getType().getName() + " " + item.getName());
-		}
-		return sb.toString();
-	}
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
@@ -252,6 +315,81 @@ public class DefaultOpMatcherService extends
 		}
 
 		return false;
+	}
+
+	/** Helper method of {@link #match}. */
+	private Module createModule(final ModuleInfo info, final Object... args) {
+		final Module module = moduleService.createModule(info);
+		context.inject(module.getDelegateObject());
+		return assignInputs(module, args);
+	}
+
+	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
+		if (arg == null) return !item.isRequired();
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			return canConvert(arg, type);
+		}
+		return canConvert(arg, item.getType());
+	}
+
+	private boolean canConvert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
+	}
+
+	private boolean canConvert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching, to help differentiate op signatures.
+			return true;
+		}
+		return ConversionUtils.canConvert(o, type);
+	}
+
+	/** Helper method of {@link #assignInputs}. */
+	private void assign(final Module module, final Object arg,
+		final ModuleItem<?> item)
+	{
+		Object value;
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			value = convert(arg, type);
+		}
+		else value = convert(arg, item.getType());
+		module.setInput(item.getName(), value);
+		module.setResolved(item.getName(), true);
+	}
+
+	private Object convert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return null;
+		}
+		return ConversionUtils.convert(o, type);
+	}
+
+	private Object convert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return true;
+		}
+		return ConversionUtils.convert(o, type);
+	}
+
+	private String paramString(final Iterable<ModuleItem<?>> items) {
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (final ModuleItem<?> item : items) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(item.getType().getName() + " " + item.getName());
+		}
+		return sb.toString();
 	}
 
 }

@@ -31,13 +31,11 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
-import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,7 +46,6 @@ import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
-import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for managing and executing {@link Op}s.
@@ -67,7 +64,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private CommandService commandService;
 	
 	@Parameter
-	private OpMatcherService opMatcherService;
+	private OpMatchingService matcher;
 
 	@Parameter
 	private LogService log;
@@ -107,28 +104,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return opMatcherService.findModule(name, null, args);
+		return matcher.findModule(name, null, args);
 	}
 
 	@Override
 	public Module module(final Class<? extends Op> type, final Object... args) {
-		return opMatcherService.findModule(null, type, args);
+		return matcher.findModule(null, type, args);
 	}
 
 	@Override
 	public Module module(final Op op, final Object... args) {
 		final Module module = info(op).createModule(op);
 		getContext().inject(module.getDelegateObject());
-		return assignInputs(module, args);
-	}
-
-	@Override
-	public Module assignInputs(final Module module, final Object... args) {
-		int i = 0;
-		for (final ModuleItem<?> item : module.getInfo().inputs()) {
-			assign(module, args[i++], item);
-		}
-		return module;
+		return matcher.assignInputs(module, args);
 	}
 
 	@Override
@@ -139,7 +127,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Collection<String> getOperations() {
 		final HashSet<String> operations = new HashSet<String>();
-		for (final CommandInfo info : opMatcherService.getOps()) {
+		for (final CommandInfo info : matcher.getOps()) {
 			operations.add(info.getName());
 		}
 		return operations;
@@ -268,37 +256,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	/** Helper method of {@link #assignInputs}. */
-	private void assign(final Module module, final Object arg,
-		final ModuleItem<?> item)
-	{
-		Object value;
-		if (item instanceof CommandModuleItem) {
-			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-			final Type type = commandItem.getField().getGenericType();
-			value = convert(arg, type);
-		}
-		else value = convert(arg, item.getType());
-		module.setInput(item.getName(), value);
-		module.setResolved(item.getName(), true);
-	}
-
-	private Object convert(final Object o, final Type type) {
-		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
-			// NB: Class argument for matching; fill with null.
-			return null;
-		}
-		return ConversionUtils.convert(o, type);
-	}
-
-	private Object convert(final Object o, final Class<?> type) {
-		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
-			// NB: Class argument for matching; fill with null.
-			return true;
-		}
-		return ConversionUtils.convert(o, type);
 	}
 
 }
