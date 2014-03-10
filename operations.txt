@@ -2,6 +2,14 @@ Suggestions of operations that might be part of the imagej-ops package one day:
 
 (Img stands for II and RA, too; [param] are optional)
 
+Thoughts on the naming of operations and their implementations:
+- operations are identified by the verb describing what they do (or a short version)
+- the implementation should also _start_ with the same verb, what makes it easier to find (e.g. Project instead of DefaultProjector, Threshold instead of GlobalThresholder, ...)
+- verb followed by the data type (or abbreviation) the operation works on (e.g. II, RA, RealType, ...)
+- ...
+
+
+
 //arithmetics
 add(Img,Img) -> Img
 mul
@@ -60,5 +68,8 @@ findSeeds([Img],...) -> Labeling
 watershed(Img, Labeling seeds) -> Labeling
 lab2img(Img) -> Labeling
 img2lab(Labeling) -> Img
+
+
+
 
 
