@@ -44,5 +44,5 @@ import imagej.ops.Function;
 public interface FunctionalMapper<A, B, C, D> extends Mapper<A, B>,
 	Function<C, D>
 {
-	// NB: Marker
+	// NB: Marker interface
 }
