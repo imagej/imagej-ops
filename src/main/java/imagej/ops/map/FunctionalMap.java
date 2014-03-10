@@ -28,69 +28,21 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionalMapper;
-import imagej.ops.map.FunctionalMapper;
-import imagej.ops.map.Mapper;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import imagej.ops.Function;
 
 /**
- * Parallelized {@link FunctionalMapper}
+ * Marker interface, marking a {@link FunctionalMap}.
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
+ * @param <C> providing <A>s
+ * @param <D> providing <B>s
  */
-@Plugin(type = Op.class, name = Mapper.NAME,
-	priority = Priority.LOW_PRIORITY + 2)
-public class DefaultFunctionalMapperP<A, B>
-	extends
-	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
+public interface FunctionalMap<A, B, C, D> extends Map<A, B>,
+	Function<C, D>
 {
-
-	@Parameter
-	private OpService opService;
-
-	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> cursor = input.localizingCursor();
-
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<B> rndAccess = output.randomAccess();
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					func.compute(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-
-		return output;
-	}
+	// NB: Marker interface
 }

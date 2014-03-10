@@ -31,14 +31,14 @@
 package imagej.ops.map.view;
 
 import imagej.ops.Op;
-import imagej.ops.map.Mapper;
+import imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Mapper.NAME)
+@Plugin(type = Op.class, name = Map.NAME)
 public class ViewMapperII<A, B extends Type<B>> extends
 	AbstractViewMapper<A, B, IterableInterval<A>, IterableInterval<B>>
 {

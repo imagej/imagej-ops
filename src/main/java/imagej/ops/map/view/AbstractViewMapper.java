@@ -31,14 +31,14 @@
 package imagej.ops.map.view;
 
 import imagej.ops.Function;
-import imagej.ops.map.Mapper;
+import imagej.ops.map.Map;
 import net.imglib2.converter.Converter;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link Mapper} which virtually converts entries
+ * Abstract implementation of a {@link Map} which virtually converts entries
  * in I and V from A to B.
  * 
  * @author Christian Dietz
@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class AbstractViewMapper<A, B, I, O> implements Mapper<A, B> {
+public abstract class AbstractViewMapper<A, B, I, O> implements Map<A, B> {
 
 	@Parameter
 	private I input;

@@ -34,7 +34,7 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.map.Mapper;
+import imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -64,7 +64,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 		else {
 			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
 		}
-		ops.run(Mapper.class, output, input, invert);
+		ops.run(Map.class, output, input, invert);
 		return output;
 	}
 

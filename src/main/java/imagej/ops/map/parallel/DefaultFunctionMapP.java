@@ -30,49 +30,44 @@
 
 package imagej.ops.map.parallel;
 
-import imagej.ops.Contingent;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionalMapper;
-import imagej.ops.map.FunctionalMapper;
-import imagej.ops.map.Mapper;
+import imagej.ops.map.AbstractFunctionMap;
+import imagej.ops.map.FunctionalMap;
+import imagej.ops.map.Map;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMapper}, which is specialized for the case,
- * that the two incoming {@link IterableInterval}s have the same IterationOrder.
+ * Parallelized {@link FunctionalMap}
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-
-@Plugin(type = Op.class, name = Mapper.NAME,
-	priority = Priority.LOW_PRIORITY + 3)
-public class IterableIntervalMapperP<A, B> extends
-	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent, Parallel
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY + 2)
+public class DefaultFunctionMapP<A, B>
+	extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
 {
 
 	@Parameter
 	private OpService opService;
 
 	@Override
-	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
 	{
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
@@ -80,17 +75,17 @@ public class IterableIntervalMapperP<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> inCursor = input.cursor();
-				final Cursor<B> outCursor = output.cursor();
+				final Cursor<A> cursor = input.localizingCursor();
 
-				setToStart(inCursor, startIndex);
-				setToStart(outCursor, startIndex);
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					func.compute(inCursor.get(), outCursor.get());
-					inCursor.jumpFwd(stepSize);
-					outCursor.jumpFwd(stepSize);
+					rndAccess.setPosition(cursor);
+					func.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}

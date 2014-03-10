@@ -30,36 +30,47 @@
 
 package imagej.ops.map;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.Function;
+import imagej.ops.Contingent;
+import imagej.ops.Op;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of an {@link InplaceMapper}
+ * {@link FunctionalMap} mapping from {@link IterableInterval} to
+ * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
+ * same IterationOrder.
  * 
+ * @author Martin Horn
  * @author Christian Dietz
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
  */
-public abstract class AbstractInplaceMapper<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements InplaceMapper<A>
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
+public class IterableIntervalMap<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
+	implements Contingent
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
-	@Parameter
-	protected Function<A, A> func;
-
 	@Override
-	public Function<A, A> getFunction() {
-		return func;
+	public boolean conforms() {
+		return getInput().iterationOrder().equals(getOutput().iterationOrder());
 	}
 
 	@Override
-	public void setFunction(final Function<A, A> func) {
-		this.func = func;
-	}
+	public IterableInterval<B> compute(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		final Cursor<A> inCursor = input.cursor();
+		final Cursor<B> outCursor = output.cursor();
 
+		while (inCursor.hasNext()) {
+			inCursor.fwd();
+			outCursor.fwd();
+			func.compute(inCursor.get(), outCursor.get());
+		}
+
+		return output;
+	}
 }

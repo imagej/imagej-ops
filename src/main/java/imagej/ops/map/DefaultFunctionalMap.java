@@ -30,26 +30,42 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Function;
 import imagej.ops.Op;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Interface for {@link Mapper}s. A {@link Mapper} provides a {@link Function}
- * which maps values from <A> to <B>.
+ * Default implementation of a {@link FunctionalMap}.
  * 
+ * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-public interface Mapper<A, B> extends Op {
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class DefaultFunctionalMap<A, B>
+	extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+{
 
-	public static final String NAME = "map";
+	@Override
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
+		final Cursor<A> cursor = input.localizingCursor();
+		final RandomAccess<B> rndAccess = output.randomAccess();
 
-	/**
-	 * @return the {@link Function} used for mapping
-	 */
-	Function<A, B> getFunction();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(cursor.get(), rndAccess.get());
+		}
 
-	/**
-	 * @param function the {@link Function} used for mapping
-	 */
-	void setFunction(Function<A, B> function);
+		return output;
+	}
 }

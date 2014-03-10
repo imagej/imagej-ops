@@ -30,42 +30,12 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of a {@link FunctionalMapper}.
+ * Marker interface to mark {@link InplaceMap}s
  * 
- * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Mapper.NAME, priority = Priority.LOW_PRIORITY)
-public class DefaultFunctionalMapper<A, B>
-	extends
-	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-{
-
-	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		final Cursor<A> cursor = input.localizingCursor();
-		final RandomAccess<B> rndAccess = output.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			func.compute(cursor.get(), rndAccess.get());
-		}
-
-		return output;
-	}
+public interface InplaceMap<A> extends Map<A, A> {
+	// NB: Marker interface
 }

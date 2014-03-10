@@ -5,7 +5,7 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.Mapper;
+import imagej.ops.map.Map;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -35,8 +35,8 @@ public class LoopTest extends AbstractOpTest {
 		buffer = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
 		numIterations = 10;
-		functionalOp = ops.op(Mapper.class, out, in, new AddOneFunctional());
-		inplaceOp = ops.op(Mapper.class, in, new AddOneInplace());
+		functionalOp = ops.op(Map.class, out, in, new AddOneFunctional());
+		inplaceOp = ops.op(Map.class, in, new AddOneInplace());
 	}
 
 	@Test

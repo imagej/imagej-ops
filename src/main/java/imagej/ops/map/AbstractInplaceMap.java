@@ -30,12 +30,36 @@
 
 package imagej.ops.map;
 
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.Function;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Marker interface to mark {@link InplaceMapper}s
+ * Abstract implementation of an {@link InplaceMap}
  * 
  * @author Christian Dietz
+ * @param <A> type of values to be mapped
+ * @param <I> {@link Iterable} of <A>s
  */
-public interface InplaceMapper<A> extends Mapper<A, A> {
-	// NB: Marker interface
+public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
+	AbstractInplaceFunction<I> implements InplaceMap<A>
+{
+
+	/**
+	 * {@link Function} to be used for mapping
+	 */
+	@Parameter
+	protected Function<A, A> func;
+
+	@Override
+	public Function<A, A> getFunction() {
+		return func;
+	}
+
+	@Override
+	public void setFunction(final Function<A, A> func) {
+		this.func = func;
+	}
+
 }

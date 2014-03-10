@@ -28,59 +28,30 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractInplaceMapper;
-import imagej.ops.map.InplaceMapper;
-import imagej.ops.map.Mapper;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link InplaceMapper}
+ * Default (slow) implementation of an {@link InplaceMap}.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz
- * @param <A> mapped on <A>
+ * @param <A> to be mapped on itself
  */
-@Plugin(type = Op.class, name = Mapper.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
-public class DefaultInplaceMapperP<A> extends
-	AbstractInplaceMapper<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class DefaultInplaceMap<A> extends
+	AbstractInplaceMap<A, Iterable<A>>
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> inCursor = getInput().cursor();
-
-				setToStart(inCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					func.compute(t, t);
-					inCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
 
 		return arg;
 	}

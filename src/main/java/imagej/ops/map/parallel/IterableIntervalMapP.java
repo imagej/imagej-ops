@@ -28,30 +28,42 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
 import imagej.ops.Contingent;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.map.AbstractFunctionMap;
+import imagej.ops.map.FunctionalMap;
+import imagej.ops.map.Map;
+import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionalMapper} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
+ * Parallelized {@link FunctionalMap}, which is specialized for the case,
+ * that the two incoming {@link IterableInterval}s have the same IterationOrder.
  * 
- * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Mapper.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
-public class IterableIntervalMapper<A, B> extends
-	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent
+
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY + 3)
+public class IterableIntervalMapP<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
+	implements Contingent, Parallel
 {
+
+	@Parameter
+	private OpService opService;
 
 	@Override
 	public boolean conforms() {
@@ -62,14 +74,27 @@ public class IterableIntervalMapper<A, B> extends
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-		}
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Cursor<A> inCursor = input.cursor();
+				final Cursor<B> outCursor = output.cursor();
+
+				setToStart(inCursor, startIndex);
+				setToStart(outCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					func.compute(inCursor.get(), outCursor.get());
+					inCursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
 
 		return output;
 	}

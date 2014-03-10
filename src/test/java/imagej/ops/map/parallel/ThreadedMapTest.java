@@ -34,8 +34,8 @@ import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.DefaultFunctionalMapper;
-import imagej.ops.map.IterableIntervalMapper;
+import imagej.ops.map.DefaultFunctionalMap;
+import imagej.ops.map.IterableIntervalMap;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -44,13 +44,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link DefaultFunctionalMapperP} and
- * {@link IterableIntervalMapperP}) of the mappers. Assumption: Naive Implementation of
- * {@link DefaultFunctionalMapper} works fine.
+ * Testing multi threaded implementation ({@link DefaultFunctionMapP} and
+ * {@link IterableIntervalMapP}) of the mappers. Assumption: Naive Implementation of
+ * {@link DefaultFunctionalMap} works fine.
  * 
  * @author Christian Dietz
  */
-public class ThreadedMapperTest extends AbstractOpTest {
+public class ThreadedMapTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Op op;
@@ -69,26 +69,26 @@ public class ThreadedMapperTest extends AbstractOpTest {
 		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
 
 		final Module naiveMapper =
-			ops.module(new IterableIntervalMapper<ByteType, ByteType>(), outNaive, in, op);
+			ops.module(new IterableIntervalMap<ByteType, ByteType>(), outNaive, in, op);
 
 		naiveMapper.run();
 
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Module threadedMapper =
-			ops.module(new DefaultFunctionalMapperP<ByteType, ByteType>(), outThreaded, in, op);
+			ops.module(new DefaultFunctionMapP<ByteType, ByteType>(), outThreaded, in, op);
 
 		threadedMapper.run();
 
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 		final Module threadedMapperII =
-			ops.module(new IterableIntervalMapperP<ByteType, ByteType>(), outThreadedII, in,
+			ops.module(new IterableIntervalMapP<ByteType, ByteType>(), outThreadedII, in,
 				op);
 
 		threadedMapperII.run();
 
 		final Img<ByteType> outThreadedInplaceII = in.copy();
 		final Module threadedMapperInplaceII =
-			ops.module(new DefaultInplaceMapperP<ByteType>(), outThreadedInplaceII,
+			ops.module(new DefaultInplaceMapP<ByteType>(), outThreadedInplaceII,
 				op);
 
 		threadedMapperInplaceII.run();

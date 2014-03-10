@@ -28,21 +28,60 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
-import imagej.ops.Function;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.map.AbstractInplaceMap;
+import imagej.ops.map.InplaceMap;
+import imagej.ops.map.Map;
+import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Marker interface, marking a {@link FunctionalMapper}.
+ * Parallelized {@link InplaceMap}
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
- * @param <C> providing <A>s
- * @param <D> providing <B>s
+ * @param <A> mapped on <A>
  */
-public interface FunctionalMapper<A, B, C, D> extends Mapper<A, B>,
-	Function<C, D>
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
+public class DefaultInplaceMapP<A> extends
+	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {
-	// NB: Marker interface
+
+	@Parameter
+	private OpService opService;
+
+	@Override
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Cursor<A> inCursor = getInput().cursor();
+
+				setToStart(inCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					final A t = inCursor.get();
+					func.compute(t, t);
+					inCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, arg.size());
+
+		return arg;
+	}
 }

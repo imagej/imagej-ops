@@ -36,7 +36,7 @@ import imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link FunctionalMapper}
+ * Abstract implementation of a {@link FunctionalMap}
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>
@@ -44,8 +44,8 @@ import org.scijava.plugin.Parameter;
  * @param <C> provides <A>s
  * @param <D> provides <B>s
  */
-public abstract class AbstractFunctionalMapper<A, B, C, D> extends
-	AbstractFunction<C, D> implements FunctionalMapper<A, B, C, D>
+public abstract class AbstractFunctionMap<A, B, C, D> extends
+	AbstractFunction<C, D> implements FunctionalMap<A, B, C, D>
 {
 
 	/** {@link Function} to be used for mapping. */
