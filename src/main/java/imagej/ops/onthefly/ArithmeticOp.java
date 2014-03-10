@@ -299,16 +299,6 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		MyOp op = ops.get(myOpName);
 		if (op != null) return op;
 
-		final String boxedType;
-		if (componentType.equals("int")) {
-			boxedType = "Integer";
-		}
-		else {
-			boxedType =
-				componentType.substring(0, 1).toUpperCase() +
-					componentType.substring(1);
-		}
-
 		try {
 			final String type = forClass.getSimpleName();
 			final CtClass clazz =
