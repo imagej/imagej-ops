@@ -101,7 +101,7 @@ public class DefaultOpMatchingService extends
 				log.debug("Selected '" + label + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
-			return matches.get(0);
+			return optimize(matches.get(0));
 		}
 
 		final StringBuilder sb = new StringBuilder();
