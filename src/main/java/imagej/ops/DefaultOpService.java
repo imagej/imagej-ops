@@ -278,11 +278,27 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		if (item instanceof CommandModuleItem) {
 			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
 			final Type type = commandItem.getField().getGenericType();
-			value = ConversionUtils.convert(arg, type);
+			value = convert(arg, type);
 		}
-		else value = ConversionUtils.convert(arg, item.getType());
+		else value = convert(arg, item.getType());
 		module.setInput(item.getName(), value);
 		module.setResolved(item.getName(), true);
+	}
+
+	private Object convert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return null;
+		}
+		return ConversionUtils.convert(o, type);
+	}
+
+	private Object convert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return true;
+		}
+		return ConversionUtils.convert(o, type);
 	}
 
 }
