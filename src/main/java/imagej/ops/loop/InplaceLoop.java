@@ -9,6 +9,6 @@ import imagej.ops.InplaceFunction;
  * 
  * @author Christian Dietz
  */
-public interface InplaceLoop<I> extends InplaceFunction<I>, Loop {
+public interface InplaceLoop<I> extends InplaceFunction<I>, Loop<I> {
 	// NB: Marker interface
 }

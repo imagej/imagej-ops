@@ -9,6 +9,6 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface FunctionLoop<I> extends Function<I, I>, Loop {
+public interface FunctionLoop<I> extends Function<I, I>, Loop<I> {
 	// NB: Marker interface
 }
