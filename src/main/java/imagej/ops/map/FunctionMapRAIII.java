@@ -30,37 +30,43 @@
 
 package imagej.ops.map;
 
-import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of an {@link InplaceMap}
+ * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link IterableInterval}
  * 
+ * @author Martin Horn
  * @author Christian Dietz
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class FunctionMapRAIII<A, B> extends
+	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
-	@Parameter
-	protected InplaceFunction<A> func;
-
 	@Override
-	public InplaceFunction<A> getFunction() {
-		return func;
-	}
+	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		final Cursor<B> cursor = output.localizingCursor();
+		final RandomAccess<A> rndAccess = input.randomAccess();
 
-	@Override
-	public void setFunction(final InplaceFunction<A> func) {
-		this.func = func;
-	}
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(rndAccess.get(), cursor.get());
+		}
 
+		return output;
+	}
 }

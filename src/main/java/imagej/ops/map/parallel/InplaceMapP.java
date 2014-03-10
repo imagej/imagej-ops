@@ -28,39 +28,58 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.parallel;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.map.AbstractInplaceMap;
+import imagej.ops.map.Map;
+import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of an {@link InplaceMap}
+ * Parallelized {@link InplaceMap}
  * 
  * @author Christian Dietz
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
+ * @param <A> mapped on <A>
  */
-public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+public class InplaceMapP<A> extends
+	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
 	@Parameter
-	protected InplaceFunction<A> func;
+	private OpService opService;
 
 	@Override
-	public InplaceFunction<A> getFunction() {
-		return func;
-	}
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
-	@Override
-	public void setFunction(final InplaceFunction<A> func) {
-		this.func = func;
-	}
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Cursor<A> inCursor = getInput().cursor();
 
+				setToStart(inCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					final A t = inCursor.get();
+					func.compute(t, t);
+					inCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, arg.size());
+
+		return arg;
+	}
 }

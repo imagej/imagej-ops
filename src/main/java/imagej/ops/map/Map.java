@@ -34,22 +34,22 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 
 /**
- * Interface for {@link Map}s. A {@link Map} provides a {@link Function}
- * which maps values from <A> to <B>.
+ * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
+ * maps values from <A> to <B>.
  * 
  * @author Christian Dietz
  */
-public interface Map<A, B> extends Op {
+public interface Map<A, B, F extends Function<A, B>> extends Op {
 
 	public static final String NAME = "map";
 
 	/**
 	 * @return the {@link Function} used for mapping
 	 */
-	Function<A, B> getFunction();
+	F getFunction();
 
 	/**
 	 * @param function the {@link Function} used for mapping
 	 */
-	void setFunction(Function<A, B> function);
+	void setFunction(F function);
 }

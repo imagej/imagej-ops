@@ -34,8 +34,8 @@ import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.DefaultFunctionalMap;
-import imagej.ops.map.IterableIntervalMap;
+import imagej.ops.map.FunctionMapIIRAI;
+import imagej.ops.map.MapII;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -44,9 +44,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link DefaultFunctionMapP} and
- * {@link IterableIntervalMapP}) of the mappers. Assumption: Naive Implementation of
- * {@link DefaultFunctionalMap} works fine.
+ * Testing multi threaded implementation ({@link FunctionMapIIRAIP} and
+ * {@link FunctionMapIIP}) of the mappers. Assumption: Naive Implementation of
+ * {@link FunctionMapIIRAI} works fine.
  * 
  * @author Christian Dietz
  */
@@ -69,26 +69,26 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Img<ByteType> outNaive = generateByteTestImg(false, 10, 10);
 
 		final Module naiveMapper =
-			ops.module(new IterableIntervalMap<ByteType, ByteType>(), outNaive, in, op);
+			ops.module(new MapII<ByteType, ByteType>(), outNaive, in, op);
 
 		naiveMapper.run();
 
 		final Img<ByteType> outThreaded = generateByteTestImg(false, 10, 10);
 		final Module threadedMapper =
-			ops.module(new DefaultFunctionMapP<ByteType, ByteType>(), outThreaded, in, op);
+			ops.module(new FunctionMapIIRAIP<ByteType, ByteType>(), outThreaded, in, op);
 
 		threadedMapper.run();
 
 		final Img<ByteType> outThreadedII = generateByteTestImg(false, 10, 10);
 		final Module threadedMapperII =
-			ops.module(new IterableIntervalMapP<ByteType, ByteType>(), outThreadedII, in,
+			ops.module(new FunctionMapIIP<ByteType, ByteType>(), outThreadedII, in,
 				op);
 
 		threadedMapperII.run();
 
 		final Img<ByteType> outThreadedInplaceII = in.copy();
 		final Module threadedMapperInplaceII =
-			ops.module(new DefaultInplaceMapP<ByteType>(), outThreadedInplaceII,
+			ops.module(new InplaceMapP<ByteType>(), outThreadedInplaceII,
 				op);
 
 		threadedMapperInplaceII.run();

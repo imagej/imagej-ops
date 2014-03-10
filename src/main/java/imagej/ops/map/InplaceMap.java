@@ -30,12 +30,29 @@
 
 package imagej.ops.map;
 
+import imagej.ops.Op;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Marker interface to mark {@link InplaceMap}s
+ * Default (slow) implementation of an {@link InplaceMap}.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz
+ * @param <A> to be mapped on itself
  */
-public interface InplaceMap<A> extends Map<A, A> {
-	// NB: Marker interface
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class InplaceMap<A> extends
+	AbstractInplaceMap<A, Iterable<A>>
+{
+
+	@Override
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
+
+		return arg;
+	}
 }

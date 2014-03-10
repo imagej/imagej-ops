@@ -36,9 +36,9 @@ import imagej.ops.arithmetic.add.AddConstantToImageFunctional;
 import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
 import imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
-import imagej.ops.map.parallel.DefaultFunctionMapP;
-import imagej.ops.map.parallel.DefaultInplaceMapP;
-import imagej.ops.map.parallel.IterableIntervalMapP;
+import imagej.ops.map.parallel.FunctionMapIIRAIP;
+import imagej.ops.map.parallel.InplaceMapP;
+import imagej.ops.map.parallel.FunctionMapIIP;
 import imagej.ops.onthefly.ArithmeticOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -60,19 +60,19 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void fTestIterableIntervalMapperP() {
 		final Module module =
-			ops.module(IterableIntervalMapP.class, out, in, ops.op(
+			ops.module(FunctionMapIIP.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(IterableIntervalMapP.class.getSimpleName() +
+		benchmarkAndPrint(FunctionMapIIP.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
 	}
 
 	public void fTestDefaultMapperP() {
 		final Module module =
-			ops.module(DefaultFunctionMapP.class, out, in, ops.op(
+			ops.module(FunctionMapIIRAIP.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(DefaultFunctionMapP.class.getSimpleName() +
+		benchmarkAndPrint(FunctionMapIIRAIP.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
 	}
 
@@ -86,10 +86,10 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void inTestDefaultInplaceMapperP() {
 		final Module module =
-			ops.module(DefaultInplaceMapP.class, in, ops.op(
+			ops.module(InplaceMapP.class, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(DefaultInplaceMapP.class.getSimpleName() +
+		benchmarkAndPrint(InplaceMapP.class.getSimpleName() +
 			" [InPlace / Parallel]", module, numRuns);
 	}
 

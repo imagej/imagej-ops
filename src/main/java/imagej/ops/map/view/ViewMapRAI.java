@@ -28,49 +28,25 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.view;
 
-import imagej.ops.Contingent;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import imagej.ops.map.Map;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-/**
- * {@link FunctionalMap} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
- * 
- * @author Martin Horn
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = Map.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
-public class IterableIntervalMap<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent
+@Plugin(type = Op.class, name = Map.NAME)
+public class ViewMapRAI<A, B extends Type<B>>
+	extends
+	AbstractViewMap<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
-
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-		}
-
-		return output;
+	public void run() {
+		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
+			getConverter(), getType()));
 	}
 }

@@ -28,31 +28,29 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.join;
 
+import imagej.ops.Function;
+import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default (slow) implementation of an {@link InplaceMap}.
+ * Joins a {@link Function} with an {@link InplaceFunction}
  * 
- * @author Curtis Rueden
  * @author Christian Dietz
- * @param <A> to be mapped on itself
+ * @param <A>
+ * @param <B>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
-public class DefaultInplaceMap<A> extends
-	AbstractInplaceMap<A, Iterable<A>>
+@Plugin(type = Op.class, name = "join")
+public class FunctionInplaceJoin<A, B> extends
+	AbstractFunctionJoin<A, B, B, Function<A, B>, InplaceFunction<B>>
 {
 
 	@Override
-	public Iterable<A> compute(final Iterable<A> arg) {
-		for (final A t : arg) {
-			func.compute(t, t);
-		}
-
-		return arg;
+	public B compute(final A input, final B output) {
+		first.compute(input, output);
+		return second.compute(output);
 	}
 }

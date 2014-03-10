@@ -28,44 +28,33 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.join;
 
+import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of a {@link FunctionalMap}.
+ * Joins two {@link InplaceFunction}s
  * 
- * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
-public class DefaultFunctionalMap<A, B>
-	extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+@Plugin(type = Op.class, name = "join")
+public class InplaceJoin<A> extends
+	AbstractFunctionJoin<A, A, A, InplaceFunction<A>, InplaceFunction<A>>
+	implements InplaceFunction<A>
 {
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		final Cursor<A> cursor = input.localizingCursor();
-		final RandomAccess<B> rndAccess = output.randomAccess();
+	public A compute(final A arg) {
+		return compute(arg, arg);
+	}
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			func.compute(cursor.get(), rndAccess.get());
-		}
-
-		return output;
+	@Override
+	public A compute(final A input, final A output) {
+		first.compute(input, output);
+		return second.compute(input, output);
 	}
 }

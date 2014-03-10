@@ -28,37 +28,107 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.map.view;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.map.Map;
+import net.imglib2.converter.Converter;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link FunctionalMap}
+ * Abstract implementation of a {@link Map} which virtually converts entries in
+ * I and V from A to B.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
- * @param <C> provides <A>s
- * @param <D> provides <B>s
+ * @param <A> type to be converted to <B>
+ * @param <B> result of conversion
+ * @param <I> holding <A>s
+ * @param <O> type of resulting output
  */
-public abstract class AbstractFunctionMap<A, B, C, D> extends
-	AbstractFunction<C, D> implements Map<A, B, Function<A, B>>
+public abstract class AbstractViewMap<A, B, I, O> implements
+	Map<A, B, Function<A, B>>
 {
 
-	/** {@link Function} to be used for mapping. */
 	@Parameter
-	protected Function<A, B> func;
+	private I input;
 
+	@Parameter
+	private Function<A, B> function;
+
+	@Parameter
+	private B type;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private O output;
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Function<A, B> getFunction() {
-		return func;
+		return function;
 	}
 
-	@Override
-	public void setFunction(final Function<A, B> func) {
-		this.func = func;
+	/**
+	 * Returns a converer based on the given {@link Function}
+	 * 
+	 * @return
+	 */
+	public Converter<A, B> getConverter() {
+		return new ConverterFunction<A, B>(function);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFunction(final Function<A, B> function) {
+		this.function = function;
+	}
+
+	/**
+	 * @return input which will be converted to a converted output
+	 */
+	public I getInput() {
+		return input;
+	}
+
+	/**
+	 * @param input which will be converted to a converted output
+	 */
+	public void setInput(final I input) {
+		this.input = input;
+	}
+
+	/**
+	 * Set the resulting output
+	 * 
+	 * @param output
+	 */
+	protected void setOutput(final O output) {
+		this.output = output;
+	}
+
+	/**
+	 * @return the resulting converted output
+	 */
+	public O getoutput() {
+		return output;
+	}
+
+	/**
+	 * @return type of resulting converted output
+	 */
+	public B getType() {
+		return type;
+	}
+
+	/**
+	 * @param type of resulting converted output
+	 */
+	public void setType(final B type) {
+		this.type = type;
+	};
 }
