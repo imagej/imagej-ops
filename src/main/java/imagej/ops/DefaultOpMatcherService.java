@@ -126,20 +126,7 @@ public class DefaultOpMatcherService extends
 		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
 
 		for (final CommandInfo info : ops) {
-			if (!nameMatches(info, name)) continue;
-
-			// the name matches; now check the class
-			final Class<?> opClass;
-			try {
-				opClass = info.loadClass();
-			}
-			catch (final InstantiableException exc) {
-				log.error("Invalid op: " + info.getClassName());
-				return null;
-			}
-			if (type != null && !type.isAssignableFrom(opClass)) continue;
-
-			candidates.add(info);
+			if (isCandidate(info, name, type)) candidates.add(info);
 		}
 		return candidates;
 	}
@@ -199,6 +186,38 @@ public class DefaultOpMatcherService extends
 		}
 		sb.append(")");
 		return sb.toString();
+	}
+
+	@Override
+	public boolean isCandidate(final CommandInfo info, final String name) {
+		return isCandidate(info, name, null);
+	}
+
+	@Override
+	public boolean isCandidate(final CommandInfo info,
+		final Class<? extends Op> type)
+	{
+		return isCandidate(info, null, type);
+	}
+
+	@Override
+	public boolean isCandidate(final CommandInfo info, final String name,
+		final Class<? extends Op> type)
+	{
+		if (!nameMatches(info, name)) return false;
+
+		// the name matches; now check the class
+		final Class<?> opClass;
+		try {
+			opClass = info.loadClass();
+		}
+		catch (final InstantiableException exc) {
+			log.error("Invalid op: " + info.getClassName());
+			return false;
+		}
+		if (type != null && !type.isAssignableFrom(opClass)) return false;
+
+		return true;
 	}
 
 	// -- SingletonService methods --

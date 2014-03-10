@@ -30,6 +30,7 @@
 
 package imagej.ops;
 
+import imagej.command.CommandInfo;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.service.ImageJService;
@@ -94,5 +95,11 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	 * @return A string describing the op.
 	 */
 	String getOpString(ModuleInfo info);
+
+	boolean isCandidate(CommandInfo info, String name);
+
+	boolean isCandidate(CommandInfo info, Class<? extends Op> type);
+
+	boolean isCandidate(CommandInfo info, String name, Class<? extends Op> type);
 
 }
