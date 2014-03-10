@@ -28,47 +28,45 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.histogram;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.histogram.Histogram;
+import imagej.ops.misc.MinMaxRealType;
+
+import java.util.List;
+
 import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * @author Martin Horn, University of Konstanz
  */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+public class HistogramCreate<T extends RealType<T>> implements Op, Histogram {
 
 	@Parameter
-	private IterableInterval<T> img;
+	private IterableInterval<T> in;
+
+	@Parameter(required = false)
+	private int numBins = 256;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
 
 	@Parameter
 	private OpService ops;
 
 	@Override
 	public void run() {
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(Histogram.class, img, null);
+		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+		out =
+			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
+				.get(1).getRealDouble(), 256, false));
 
-		threshold = img.firstElement().createVariable();
-
-		getThreshold(hist, threshold);
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }
