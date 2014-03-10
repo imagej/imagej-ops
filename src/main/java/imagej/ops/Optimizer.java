@@ -35,6 +35,7 @@ import imagej.module.Module;
 
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;
+import org.scijava.plugin.RichPlugin;
 import org.scijava.plugin.SingletonPlugin;
 
 /**
@@ -53,7 +54,7 @@ import org.scijava.plugin.SingletonPlugin;
  * @see Plugin
  * @see PluginService
  */
-public interface Optimizer extends SingletonPlugin, ImageJPlugin {
+public interface Optimizer extends RichPlugin, SingletonPlugin, ImageJPlugin {
 
 	/**
 	 * Attempt to optimize the given {@link Module} for performance.

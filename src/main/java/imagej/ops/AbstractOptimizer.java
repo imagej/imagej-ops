@@ -30,11 +30,15 @@
 
 package imagej.ops;
 
+import org.scijava.plugin.AbstractRichPlugin;
+
 /**
  * Abstract superclass for {@link Optimizer}s.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractOptimizer implements Optimizer {
+public abstract class AbstractOptimizer extends AbstractRichPlugin implements
+	Optimizer
+{
 	// NB: No implementation needed.
 }
