@@ -47,14 +47,52 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 	ImageJService
 {
 
-	/** Builds a list of candidate ops which match the given name and class. */
+	/**
+	 * Finds and initializes the best module matching the given op name and/or
+	 * type + arguments.
+	 * 
+	 * @param name The op's name, or null to match all names.
+	 * @param type Required type of the op, or null to match all types.
+	 * @param args The op's input arguments.
+	 * @throws IllegalArgumentException if there is no match, or if there is more
+	 *           than one match at the same priority.
+	 */
+	public Module findModule(String name, Class<? extends Op> type,
+		Object... args);
+
+	/**
+	 * Builds a list of candidate ops which match the given name and class.
+	 * 
+	 * @param name The op's name, or null to match all names.
+	 * @param type Required type of the op, or null to match all types.
+	 * @return The list of candidates as {@link CommandInfo} metadata.
+	 */
 	List<CommandInfo> findCandidates(String name, Class<? extends Op> type);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
 	 * 
+	 * @param ops The list of ops to scan for matches.
+	 * @param args The op's input arguments.
 	 * @return The list of matching ops as {@link Module} instances.
 	 */
 	List<Module> findMatches(List<? extends CommandInfo> ops, Object... args);
+
+	/**
+	 * Gets a string describing the given op template.
+	 * 
+	 * @param name The op's name.
+	 * @param args The op's input arguments.
+	 * @return A string describing the op template.
+	 */
+	String getOpString(String name, Object... args);
+
+	/**
+	 * Gets a string describing the given op.
+	 * 
+	 * @param info The {@link CommandInfo} metadata which describes the op.
+	 * @return A string describing the op.
+	 */
+	String getOpString(CommandInfo info);
 
 }

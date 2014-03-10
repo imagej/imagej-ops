@@ -33,6 +33,7 @@ package imagej.ops;
 import imagej.command.CommandInfo;
 import imagej.command.CommandService;
 import imagej.module.Module;
+import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
 import java.util.ArrayList;
@@ -65,6 +66,56 @@ public class DefaultOpMatcherService extends
 	private LogService log;
 
 	// -- OpMatcherService methods --
+
+	@Override
+	public Module findModule(final String name, final Class<? extends Op> type,
+		final Object... args)
+	{
+		final String label = type == null ? name : type.getName();
+
+		// find candidates with matching name & type
+		final List<CommandInfo> candidates =
+			findCandidates(name, type);
+		if (candidates.isEmpty()) {
+			throw new IllegalArgumentException("No candidate '" + label + "' ops");
+		}
+
+		// narrow down candidates to the exact matches
+		final List<Module> matches = findMatches(candidates, args);
+
+		if (matches.size() == 1) {
+			// a single match: return it
+			if (log.isDebug()) {
+				log.debug("Selected '" + label + "' op: " +
+					matches.get(0).getDelegateObject().getClass().getName());
+			}
+			return matches.get(0);
+		}
+
+		final StringBuilder sb = new StringBuilder();
+
+		if (matches.isEmpty()) {
+			// no matches
+			sb.append("No matching '" + label + "' op\n");
+		}
+		else {
+			// multiple matches
+			final double priority = matches.get(0).getInfo().getPriority();
+			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
+			for (final Module module : matches) {
+				sb.append("\t" + module.getClass().getName() + "\n");
+			}
+		}
+
+		// fail, with information about the template and candidates
+		sb.append("Template:\n");
+		sb.append("\t" + getOpString(label, args) + "\n");
+		sb.append("Candidates:\n");
+		for (final CommandInfo info : candidates) {
+			sb.append("\t" + getOpString(info) + "\n");
+		}
+		throw new IllegalArgumentException(sb.toString());
+	}
 
 	@Override
 	public List<CommandInfo> findCandidates(final String name,
@@ -116,6 +167,37 @@ public class DefaultOpMatcherService extends
 		}
 
 		return matches;
+	}
+
+	@Override
+	public String getOpString(final String name, final Object... args) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(name + "(");
+		boolean first = true;
+		for (final Object arg : args) {
+			if (first) first = false;
+			else sb.append(", ");
+			if (arg != null) sb.append(arg.getClass().getName() + " ");
+			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
+			else sb.append(arg);
+		}
+		sb.append(")");
+		return sb.toString();
+	}
+
+	@Override
+	public String getOpString(final CommandInfo info) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("[" + info.getPriority() + "] ");
+		sb.append(info.getDelegateClassName() + "(");
+		boolean first = true;
+		for (final ModuleItem<?> input : info.inputs()) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(input.getType().getName() + " " + input.getName());
+		}
+		sb.append(")");
+		return sb.toString();
 	}
 
 	// -- SingletonService methods --
