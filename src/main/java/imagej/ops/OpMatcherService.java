@@ -48,6 +48,19 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 {
 
 	/**
+	 * Finds and initializes the best module matching the given op name and/or
+	 * type + arguments.
+	 * 
+	 * @param name The op's name, or null to match all names.
+	 * @param type Required type of the op, or null to match all types.
+	 * @param args The op's input arguments.
+	 * @throws IllegalArgumentException if there is no match, or if there is more
+	 *           than one match at the same priority.
+	 */
+	public Module findModule(String name, Class<? extends Op> type,
+		Object... args);
+
+	/**
 	 * Builds a list of candidate ops which match the given name and class.
 	 * 
 	 * @param name The op's name, or null to match all names.

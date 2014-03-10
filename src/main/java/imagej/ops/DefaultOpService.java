@@ -105,12 +105,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return findModule(name, null, args);
+		return opMatcherService.findModule(name, null, args);
 	}
 
 	@Override
 	public Module module(final Class<? extends Op> type, final Object... args) {
-		return findModule(null, type, args);
+		return opMatcherService.findModule(null, type, args);
 	}
 
 	@Override
@@ -253,62 +253,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	/**
-	 * Finds and initializes the best module matching the given op name and/or
-	 * type + arguments.
-	 * 
-	 * @throws IllegalArgumentException if there is no match, or if there is more
-	 *           than one match at the same priority.
-	 */
-	private Module findModule(final String name, final Class<? extends Op> type,
-		final Object... args)
-	{
-		final String label = type == null ? name : type.getName();
-
-		// find candidates with matching name & type
-		final List<CommandInfo> candidates =
-			opMatcherService.findCandidates(name, type);
-		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + label + "' ops");
-		}
-
-		// narrow down candidates to the exact matches
-		final List<Module> matches = opMatcherService.findMatches(candidates, args);
-
-		if (matches.size() == 1) {
-			// a single match: return it
-			if (log.isDebug()) {
-				log.debug("Selected '" + label + "' op: " +
-					matches.get(0).getDelegateObject().getClass().getName());
-			}
-			return matches.get(0);
-		}
-
-		final StringBuilder sb = new StringBuilder();
-
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + label + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
-			for (final Module module : matches) {
-				sb.append("\t" + module.getClass().getName() + "\n");
-			}
-		}
-
-		// fail, with information about the template and candidates
-		sb.append("Template:\n");
-		sb.append("\t" + opMatcherService.getOpString(label, args) + "\n");
-		sb.append("Candidates:\n");
-		for (final CommandInfo info : candidates) {
-			sb.append("\t" + opMatcherService.getOpString(info) + "\n");
-		}
-		throw new IllegalArgumentException(sb.toString());
 	}
 
 	/** Helper method of {@link #assignInputs}. */
