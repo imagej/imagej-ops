@@ -34,10 +34,12 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "normalize")
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIAS) })
 public class NormalizeRealType<T extends RealType<T>> extends
 	AbstractFunction<T, T>
 {

@@ -39,10 +39,12 @@ import java.util.List;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "normalize")
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIAS) })
 public class NormalizeII<T extends RealType<T>> extends
 	AbstractFunction<IterableInterval<T>, IterableInterval<T>>
 {
