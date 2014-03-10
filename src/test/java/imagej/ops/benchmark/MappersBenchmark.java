@@ -34,7 +34,7 @@ import imagej.module.Module;
 import imagej.ops.Op;
 import imagej.ops.map.FunctionMapIIRAI;
 import imagej.ops.map.InplaceMap;
-import imagej.ops.map.MapII;
+import imagej.ops.map.FunctionMapII;
 import imagej.ops.map.parallel.FunctionMapIIRAIP;
 import imagej.ops.map.parallel.InplaceMapP;
 import imagej.ops.map.parallel.FunctionMapIIP;
@@ -45,7 +45,7 @@ import org.junit.Before;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link FunctionMapIIRAI}, {@link MapII},
+ * {@link FunctionMapIIRAI}, {@link FunctionMapII},
  * {@link FunctionMapIIRAIP}, {@link FunctionMapIIP}
  * 
  * @author Christian Dietz
@@ -95,10 +95,10 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapperII() {
 		final Module module =
-			ops.module(new MapII<ByteType, ByteType>(), out, in,
+			ops.module(new FunctionMapII<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(MapII.class.getSimpleName(), module,
+		benchmarkAndPrint(FunctionMapII.class.getSimpleName(), module,
 			numRuns);
 	}
 
