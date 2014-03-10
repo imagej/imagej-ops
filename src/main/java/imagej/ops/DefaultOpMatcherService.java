@@ -33,6 +33,7 @@ package imagej.ops;
 import imagej.command.CommandInfo;
 import imagej.command.CommandService;
 import imagej.module.Module;
+import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
 import java.util.ArrayList;
@@ -116,6 +117,37 @@ public class DefaultOpMatcherService extends
 		}
 
 		return matches;
+	}
+
+	@Override
+	public String getOpString(final String name, final Object... args) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(name + "(");
+		boolean first = true;
+		for (final Object arg : args) {
+			if (first) first = false;
+			else sb.append(", ");
+			if (arg != null) sb.append(arg.getClass().getName() + " ");
+			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
+			else sb.append(arg);
+		}
+		sb.append(")");
+		return sb.toString();
+	}
+
+	@Override
+	public String getOpString(final CommandInfo info) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("[" + info.getPriority() + "] ");
+		sb.append(info.getDelegateClassName() + "(");
+		boolean first = true;
+		for (final ModuleItem<?> input : info.inputs()) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(input.getType().getName() + " " + input.getName());
+		}
+		sb.append(")");
+		return sb.toString();
 	}
 
 	// -- SingletonService methods --

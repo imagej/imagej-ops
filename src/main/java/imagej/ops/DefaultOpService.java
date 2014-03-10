@@ -303,27 +303,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 		// fail, with information about the template and candidates
 		sb.append("Template:\n");
-		sb.append("\t" + label + "(");
-		boolean first = true;
-		for (final Object arg : args) {
-			if (first) first = false;
-			else sb.append(", ");
-			sb.append(arg.getClass().getName() + " ");
-			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
-			else sb.append(arg);
-		}
-		sb.append(")\n");
+		sb.append("\t" + opMatcherService.getOpString(label, args) + "\n");
 		sb.append("Candidates:\n");
 		for (final CommandInfo info : candidates) {
-			sb.append("\t[" + info.getPriority() + "] ");
-			sb.append(info.getDelegateClassName() + "(");
-			first = true;
-			for (final ModuleItem<?> input : info.inputs()) {
-				if (first) first = false;
-				else sb.append(", ");
-				sb.append(input.getType().getName() + " " + input.getName());
-			}
-			sb.append(")\n");
+			sb.append("\t" + opMatcherService.getOpString(info) + "\n");
 		}
 		throw new IllegalArgumentException(sb.toString());
 	}
