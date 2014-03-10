@@ -169,5 +169,6 @@ public class OnTheFlyTest extends AbstractOpTest {
 		final Object b = generateByteTestImg(false, 256, 256);
 		final Op op = ops.op("add", result, a, b);
 		assertTrue("Not a subclass of " + ArithmeticOp.class + ": " + op.getClass(), op instanceof ArithmeticOp);
+		assertTrue("Not optimized: " + op.getClass(), op.getClass() != AddOp.class);
 	}
 }
