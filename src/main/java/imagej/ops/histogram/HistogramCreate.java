@@ -30,7 +30,6 @@
 
 package imagej.ops.histogram;
 
-import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.misc.MinMaxRealType;
 

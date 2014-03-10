@@ -1,24 +1,7 @@
 package imagej.ops.threading;
 
-import static org.junit.Assert.assertEquals;
 import imagej.module.Module;
-import imagej.ops.AbstractOpTest;
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.arithmetic.add.AddConstantToArrayByteImage;
-import imagej.ops.arithmetic.add.AddConstantToImageFunctional;
-import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
-import imagej.ops.arithmetic.add.AddConstantToNumericType;
-import imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
 import imagej.ops.benchmark.AbstractOpBenchmark;
-import imagej.ops.benchmark.AddOpBenchmark;
-import imagej.ops.map.parallel.DefaultFunctionalMapperP;
-import imagej.ops.map.parallel.DefaultInplaceMapperP;
-import imagej.ops.map.parallel.IterableIntervalMapperP;
-import imagej.ops.onthefly.ArithmeticOp;
-import imagej.ops.project.DefaultProjector;
-import imagej.ops.project.parallel.DefaultProjectorP;
-
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 

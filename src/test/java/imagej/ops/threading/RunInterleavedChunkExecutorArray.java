@@ -1,14 +1,9 @@
 package imagej.ops.threading;
 
 import imagej.ops.AbstractFunction;
-import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;

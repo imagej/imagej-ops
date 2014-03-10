@@ -37,7 +37,6 @@ import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
 import imagej.ops.project.Projector;
-import imagej.ops.threading.ChunkExecutable;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 

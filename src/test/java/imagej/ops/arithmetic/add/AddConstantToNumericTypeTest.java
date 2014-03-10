@@ -35,7 +35,6 @@ import static org.junit.Assert.assertSame;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.arithmetic.add.AddConstantToNumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Test;
