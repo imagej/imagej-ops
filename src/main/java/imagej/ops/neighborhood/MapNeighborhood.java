@@ -60,7 +60,7 @@ public class MapNeighborhood<I, O> extends
 	private Shape shape;
 
 	@Parameter
-	private OpService service;
+	private OpService ops;
 
 	@Parameter
 	private Function<Iterable<I>, O> func;
@@ -70,9 +70,7 @@ public class MapNeighborhood<I, O> extends
 		final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-
-		
-		
+		ops.run("map", output, shape.neighborhoodsSafe(input), func);
 		// TODO: threaded map neighborhood
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood
