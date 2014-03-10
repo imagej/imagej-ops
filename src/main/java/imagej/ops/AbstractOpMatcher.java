@@ -33,12 +33,12 @@ package imagej.ops;
 import org.scijava.AbstractContextual;
 
 /**
- * Abstract base class for {@link OperationMatcher} implementations.
+ * Abstract base class for {@link OpMatcher} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractOperationMatcher extends AbstractContextual
-	implements OperationMatcher
+public abstract class AbstractOpMatcher extends AbstractContextual
+	implements OpMatcher
 {
 	// NB: No implementation needed.
 }

@@ -54,7 +54,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultOpMatcherService extends
-	AbstractSingletonService<OperationMatcher> implements OpMatcherService
+	AbstractSingletonService<OpMatcher> implements OpMatcherService
 {
 
 	@Parameter
@@ -152,7 +152,7 @@ public class DefaultOpMatcherService extends
 
 		// TODO: Consider inverting the loop nesting order here,
 		// since we probably want to match higher priority Ops first.
-		for (final OperationMatcher matcher : getInstances()) {
+		for (final OpMatcher matcher : getInstances()) {
 			double priority = Double.NaN;
 			for (final ModuleInfo info : ops) {
 				final double p = info.getPriority();
@@ -204,8 +204,8 @@ public class DefaultOpMatcherService extends
 	// -- SingletonService methods --
 
 	@Override
-	public Class<OperationMatcher> getPluginType() {
-		return OperationMatcher.class;
+	public Class<OpMatcher> getPluginType() {
+		return OpMatcher.class;
 	}
 
 	// -- Helper methods --

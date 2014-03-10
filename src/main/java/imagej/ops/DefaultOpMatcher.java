@@ -49,8 +49,8 @@ import org.scijava.util.ConversionUtils;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = OperationMatcher.class)
-public class DefaultOperationMatcher extends AbstractOperationMatcher {
+@Plugin(type = OpMatcher.class)
+public class DefaultOpMatcher extends AbstractOpMatcher {
 
 	@Parameter
 	private Context context;

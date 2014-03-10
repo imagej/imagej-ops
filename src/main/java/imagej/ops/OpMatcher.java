@@ -44,15 +44,15 @@ import org.scijava.plugin.SingletonPlugin;
  * <p>
  * Operation matchers discoverable at runtime must implement this interface and
  * be annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
- * {@link OperationMatcher}.class. While it possible to create an operation
+ * {@link OpMatcher}.class. While it possible to create an operation
  * merely by implementing this interface, it is encouraged to instead extend
- * {@link AbstractOperationMatcher}, for convenience.
+ * {@link AbstractOpMatcher}, for convenience.
  * </p>
  * 
  * @author Curtis Rueden
  * @see Plugin
  */
-public interface OperationMatcher extends ImageJPlugin, Contextual,
+public interface OpMatcher extends ImageJPlugin, Contextual,
 	SingletonPlugin
 {
 

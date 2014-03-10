@@ -43,7 +43,7 @@ import org.scijava.plugin.SingletonService;
  * 
  * @author Curtis Rueden
  */
-public interface OpMatcherService extends SingletonService<OperationMatcher>,
+public interface OpMatcherService extends SingletonService<OpMatcher>,
 	ImageJService
 {
 
