@@ -30,13 +30,15 @@
 
 package imagej.ops.normalize;
 
+import imagej.ops.Op;
+
 /**
  * Marker interface for all normalize operations. Implementing classes should be
  * annotated with
  * <code>@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
 	name = "aliases", value = Normalize.ALIASES) })</code>.
  */
-public interface Normalize {
+public interface Normalize extends Op {
 
 	public static final String NAME = "normalize";
 	public static final String ALIASES = "norm";
