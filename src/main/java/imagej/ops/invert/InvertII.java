@@ -68,12 +68,12 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 		return output;
 	}
 
-	private class SignedRealInvert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractFunction<I, O>
+	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractFunction<II, OO>
 	{
 
 		@Override
-		public O compute(final I x, final O output) {
+		public OO compute(final II x, final OO output) {
 			final double value = x.getRealDouble() * -1.0 - 1;
 			output.setReal(value);
 			return output;
@@ -81,8 +81,8 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 
 	}
 
-	private class UnsignedRealInvert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractFunction<I, O>
+	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractFunction<II, OO>
 	{
 
 		private final double max;
@@ -95,7 +95,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 		}
 
 		@Override
-		public O compute(final I x, final O output) {
+		public OO compute(final II x, final OO output) {
 			final double value = max - x.getRealDouble();
 			output.setReal(value);
 			return output;
