@@ -18,7 +18,7 @@ public class DefaultInplaceLoop<I> extends AbstractInplaceLoop<I> {
 	@Override
 	public I compute(final I arg) {
 		for (int i = 0; i < n; i++) {
-			function.compute(arg);
+			function.compute(arg, arg);
 		}
 		return arg;
 	}
