@@ -48,6 +48,9 @@ import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
+// FIXME: Remove this GPL-licensed class.
+// Will need to move dependent classes to ij-ops-gpl project or similar.
+
 /**
  * Computes the convolution of an image with an arbitrary kernel. Computation is
  * based on the Convolution Theorem
