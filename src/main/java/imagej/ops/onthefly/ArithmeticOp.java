@@ -262,25 +262,10 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-				"public void run(java.lang.Object result, java.lang.Object a, java.lang.Object b) {\n"
-					+ "  " +
-					type +
-					" a2 = (" +
-					type +
-					") a;\n" +
-					"  " +
-					type +
-					" b2 = (" +
-					type +
-					") b;\n" +
-					"  " +
-					type +
-					" result2 = (" +
-					type +
-					") result;\n" +
-					"  for (int i = 0; i < a2.length; i++) {\n" +
-					"    result2[i] = (" +
-					componentType + ") (a2[i] " + operator + " b2[i]);\n" + "  }\n" + "}";
+				replace(makeRun(type, type, type,
+					"for (int i = 0; i < a2.length; i++) {",
+					"  result2[i] = (CTYPE) (a2[i] OP b2[i]);", // actual op
+					"}"), "OP", operator, "CTYPE", componentType, "TYPE", type);
 			clazz.addMethod(CtNewMethod.make(src, clazz));
 			op = (MyOp) clazz.toClass(loader, null).newInstance();
 			ops.put(myOpName, op);
@@ -305,25 +290,10 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-				"public void run(java.lang.Object result, java.lang.Object a, java.lang.Object b) {\n"
-					+ "  " +
-					type +
-					" a2 = (" +
-					type +
-					") a;\n" +
-					"  " +
-					componentType +
-					" b2 = (" +
-					componentType +
-					") ((Double) b).doubleValue();\n" +
-					"  " +
-					type +
-					" result2 = (" +
-					type +
-					") result;\n" +
-					"  for (int i = 0; i < a2.length; i++) {\n" +
-					"    result2[i] = (" +
-					componentType + ") (a2[i] " + operator + " b2);\n" + "  }\n" + "}";
+				replace(makeRun(type, componentType, type,
+					"for (int i = 0; i < a2.length; i++) {",
+					"  result2[i] = (CTYPE) (a2[i] OP b2);", // actual op
+					"}"), "OP", operator, "CTYPE", componentType, "TYPE", type);
 			clazz.addMethod(CtNewMethod.make(src, clazz));
 			op = (MyOp) clazz.toClass(loader, null).newInstance();
 			ops.put(myOpName, op);
@@ -349,44 +319,20 @@ public abstract class ArithmeticOp implements Op, Contingent {
 				pool.makeClass(myOpName, pool.get(Object.class.getName()));
 			clazz.addInterface(pool.get(MyOp.class.getName()));
 			final String src =
-				"public void run(java.lang.Object result, java.lang.Object a, java.lang.Object b) {\n"
-					+ "  " +
-					imgType +
-					" a2 = (" +
-					imgType +
-					") a;\n" +
-					"  " +
-					imgType +
-					" b2 = (" +
-					imgType +
-					") b;\n" +
-					"  " +
-					imgType +
-					" result2 = (" +
-					imgType +
-					") result;\n" +
-					"  for (int j = 0; j < a2.numSlices(); j++) {\n" +
-					"    " +
-					type +
-					" a3 = (" +
-					type +
-					") a2.getPlane(j).getCurrentStorageArray();\n" +
-					"    " +
-					type +
-					" b3 = (" +
-					type +
-					") b2.getPlane(j).getCurrentStorageArray();\n" +
-					"    " +
-					type +
-					" result3 = (" +
-					type +
-					") result2.getPlane(j).getCurrentStorageArray();\n" +
-					"    for (int i = 0; i < a3.length; i++) {\n" +
-					"      result3[i] = (" +
-					componentType +
-					") (a3[i] " +
-					operator +
-					" b3[i]);\n" + "    }\n" + "  }\n" + "}";
+				replace(
+					makeRun(
+						imgType,
+						imgType,
+						imgType,
+						"for (int j = 0; j < a2.numSlices(); j++) {",
+						"  TYPE a3 = (TYPE) a2.getPlane(j).getCurrentStorageArray();",
+						"  TYPE b3 = (TYPE) b2.getPlane(j).getCurrentStorageArray();",
+						"  TYPE result3 = (TYPE) result2.getPlane(j).getCurrentStorageArray();",
+						"  for (int i = 0; i < a3.length; i++) {",
+						"    result3[i] = (CTYPE) (a3[i] OP b3[i]);", // actual op
+						"  }", // inner loop
+						"}"), "OP", operator, "ITYPE", imgType, "CTYPE", componentType,
+					"TYPE", type);
 			clazz.addMethod(CtNewMethod.make(src, clazz));
 			op = (MyOp) clazz.toClass(loader, null).newInstance();
 			ops.put(myOpName, op);
@@ -395,5 +341,44 @@ public abstract class ArithmeticOp implements Op, Contingent {
 		catch (final Throwable t) {
 			throw new RuntimeException(t);
 		}
+	}
+
+	private static String makeRun(final String aType, final String bType,
+		final String resultType, final String... body)
+	{
+		final StringBuilder builder = new StringBuilder();
+		builder
+			.append("public void run(java.lang.Object result, java.lang.Object a, java.lang.Object b) {\n");
+		builder.append("  " + aType + " a2 = " + objectCast(aType, "a") + ";\n");
+		builder.append("  " + bType + " b2 = " + objectCast(bType, "b") + ";\n");
+		builder.append("  " + resultType + " result2 = (" + resultType +
+			") result;\n");
+		for (final String line : body) {
+			builder.append("  ").append(line).append("\n");
+		}
+		builder.append("}\n");
+		return builder.toString();
+	}
+
+	private static String objectCast(final String type, final String name) {
+		if (Byte.TYPE.getName().equals(type) || Short.TYPE.getName().equals(type) ||
+			Integer.TYPE.getName().equals(type) || Long.TYPE.getName().equals(type) ||
+			Float.TYPE.getName().equals(type) || Double.TYPE.getName().equals(type))
+		{
+			// TODO: support Long properly
+			return "(" + type + ") ((Double) " + name + ").doubleValue()";
+		}
+		return "(" + type + ") " + name;
+	}
+
+	private static String replace(final String template, final String... pairs) {
+		if ((pairs.length % 2) != 0) {
+			throw new RuntimeException("Invalid number of arguments: " + pairs.length);
+		}
+		String result = template;
+		for (int i = 0; i < pairs.length; i += 2) {
+			result = result.replace(pairs[i], pairs[i + 1]);
+		}
+		return result;
 	}
 }
