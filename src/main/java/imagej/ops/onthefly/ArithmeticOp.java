@@ -156,8 +156,8 @@ public abstract class ArithmeticOp implements Op, Contingent {
 	 * @param b the second operand
 	 * @return the generated {@link Op}, or null
 	 */
-	public static Op findOp(String name, String operator, Object result,
-		Object a, Object b)
+	public static Op findOp(final String name, final String operator,
+		final Object result, final Object a, final Object b)
 	{
 		final MyOp op = findMyOp(name, operator, result, a, b);
 		if (op == null) return null;
