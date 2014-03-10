@@ -32,6 +32,20 @@ package imagej.ops;
 
 import imagej.command.Command;
 
+import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginService;
+
+/**
+ * Ops are what all the cool kids are doing these days. They're the bee's knees!
+ * <p>
+ * Ops discoverable at runtime must implement this interface and be annotated
+ * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class.
+ * </p>
+ * 
+ * @author Curtis Rueden
+ * @see Plugin
+ * @see PluginService
+ */
 public interface Op extends Command {
 	// NB: Marker interface.
 }
