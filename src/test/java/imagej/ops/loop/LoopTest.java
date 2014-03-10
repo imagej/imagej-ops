@@ -13,6 +13,11 @@ import net.imglib2.type.numeric.integer.ByteType;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing functional and inplace loops
+ * 
+ * @author Christian Dietz
+ */
 public class LoopTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
