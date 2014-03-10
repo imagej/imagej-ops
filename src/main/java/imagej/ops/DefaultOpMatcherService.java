@@ -236,17 +236,6 @@ public class DefaultOpMatcherService extends
 
 	// -- Helper methods --
 
-	private String paramString(final Iterable<ModuleItem<?>> items) {
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (final ModuleItem<?> item : items) {
-			if (first) first = false;
-			else sb.append(", ");
-			sb.append(item.getType().getName() + " " + item.getName());
-		}
-		return sb.toString();
-	}
-
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
 
@@ -294,6 +283,17 @@ public class DefaultOpMatcherService extends
 			return true;
 		}
 		return ConversionUtils.convert(o, type);
+	}
+
+	private String paramString(final Iterable<ModuleItem<?>> items) {
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (final ModuleItem<?> item : items) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(item.getType().getName() + " " + item.getName());
+		}
+		return sb.toString();
 	}
 
 }
