@@ -30,8 +30,8 @@
 
 package imagej.ops.convolve;
 
-import imagej.ops.Contingent;
 import imagej.ops.AbstractFunction;
+import imagej.ops.Contingent;
 import imagej.ops.Op;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -46,10 +46,11 @@ import org.scijava.plugin.Plugin;
  * Convolves an image by transforming the kernel and the image into fourier
  * space, multiplying them and transforming the result back.
  */
-@Plugin(type = Op.class, name = "convolve")
+@Plugin(type = Op.class, name = Convolve.NAME)
 public class ConvolveFourier<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
-	extends AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements Contingent
+	extends
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements Contingent, Convolve
 {
 
 	@Parameter
