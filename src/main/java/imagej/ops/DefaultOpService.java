@@ -311,7 +311,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		throw new IllegalArgumentException(sb.toString());
 	}
 
-
+	/** Helper method of {@link #assignInputs}. */
 	private void assign(final Module module, final Object arg,
 		final ModuleItem<?> item)
 	{
