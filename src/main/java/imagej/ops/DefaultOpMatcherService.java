@@ -178,14 +178,9 @@ public class DefaultOpMatcherService extends
 	public String getOpString(final ModuleInfo info) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("[" + info.getPriority() + "] ");
-		sb.append(info.getDelegateClassName() + "(");
-		boolean first = true;
-		for (final ModuleItem<?> input : info.inputs()) {
-			if (first) first = false;
-			else sb.append(", ");
-			sb.append(input.getType().getName() + " " + input.getName());
-		}
-		sb.append(")");
+		sb.append("(" + paramString(info.outputs()) + ")");
+		sb.append(" = " + info.getDelegateClassName());
+		sb.append("(" + paramString(info.inputs()) + ")");
 		return sb.toString();
 	}
 
@@ -229,6 +224,17 @@ public class DefaultOpMatcherService extends
 	}
 
 	// -- Helper methods --
+
+	private String paramString(final Iterable<ModuleItem<?>> items) {
+		final StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		for (final ModuleItem<?> item : items) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(item.getType().getName() + " " + item.getName());
+		}
+		return sb.toString();
+	}
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;

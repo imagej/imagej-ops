@@ -43,10 +43,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "convert")
+@Plugin(type = Op.class, name = Convert.NAME)
 public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPixScale<I, O>
 {
