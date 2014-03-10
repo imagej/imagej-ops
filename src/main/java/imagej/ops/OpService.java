@@ -152,6 +152,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
 
+	/** Gets the metadata for a given {@link Op}. */
 	CommandInfo info(Op op);
 
 	// -- Operation shortcuts --
