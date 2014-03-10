@@ -47,12 +47,20 @@ public interface OpMatcherService extends SingletonService<OperationMatcher>,
 	ImageJService
 {
 
-	/** Builds a list of candidate ops which match the given name and class. */
+	/**
+	 * Builds a list of candidate ops which match the given name and class.
+	 * 
+	 * @param name The op's name, or null to match all names.
+	 * @param type Required type of the op, or null to match all types.
+	 * @return The list of candidates as {@link CommandInfo} metadata.
+	 */
 	List<CommandInfo> findCandidates(String name, Class<? extends Op> type);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
 	 * 
+	 * @param ops The list of ops to scan for matches.
+	 * @param args The op's input arguments.
 	 * @return The list of matching ops as {@link Module} instances.
 	 */
 	List<Module> findMatches(List<? extends CommandInfo> ops, Object... args);
