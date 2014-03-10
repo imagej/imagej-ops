@@ -32,6 +32,7 @@ package imagej.ops.map.parallel;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
+import imagej.ops.Parallel;
 import imagej.ops.map.AbstractFunctionalMapper;
 import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
@@ -56,6 +57,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultFunctionalMapperP<A, B>
 	extends
 	AbstractFunctionalMapper<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
 {
 
 	@Parameter

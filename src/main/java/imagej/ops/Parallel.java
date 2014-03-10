@@ -28,58 +28,13 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
-
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractInplaceMapper;
-import imagej.ops.map.InplaceMapper;
-import imagej.ops.threading.ChunkExecutable;
-import imagej.ops.threading.ChunkExecutor;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+package imagej.ops;
 
 /**
- * Parallelized {@link InplaceMapper}
+ * Marker interface for {@link Op}s that use multithreading.
  * 
- * @author Christian Dietz
- * @param <A> mapped on <A>
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 1)
-public class DefaultInplaceMapperP<A> extends
-	AbstractInplaceMapper<A, IterableInterval<A>> implements Parallel
-{
-
-	@Parameter
-	private OpService opService;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void run() {
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
-
-			@Override
-			public void
-				execute(final int min, final int stepSize, final int numSteps)
-			{
-				final Cursor<A> inCursor = in.cursor();
-				inCursor.jumpFwd(min);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					inCursor.jumpFwd(stepSize);
-					final A t = inCursor.get();
-					func.compute(t, t);
-					ctr++;
-				}
-			}
-		}, in.size());
-	}
+public interface Parallel {
+	// NB: Marker interface.
 }

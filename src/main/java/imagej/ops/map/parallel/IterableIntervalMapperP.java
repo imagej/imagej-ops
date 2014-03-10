@@ -33,6 +33,7 @@ package imagej.ops.map.parallel;
 import imagej.ops.Contingent;
 import imagej.ops.Op;
 import imagej.ops.OpService;
+import imagej.ops.Parallel;
 import imagej.ops.map.AbstractFunctionalMapper;
 import imagej.ops.map.FunctionalMapper;
 import imagej.ops.threading.ChunkExecutable;
@@ -56,10 +57,10 @@ import org.scijava.plugin.Plugin;
  */
 
 @Plugin(type = Op.class, name = "map", priority = Priority.LOW_PRIORITY + 3)
-public class IterableIntervalMapperP<A, B>
-		extends
-		AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
-		implements Contingent {
+public class IterableIntervalMapperP<A, B> extends
+	AbstractFunctionalMapper<A, B, IterableInterval<A>, IterableInterval<B>>
+	implements Contingent, Parallel
+{
 
 	@Parameter
 	private OpService opService;
