@@ -33,19 +33,17 @@ package imagej.ops.statistics;
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType> implements
-	Sum<Iterable<T>, DoubleType>
+public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
+	AbstractFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
 {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public V compute(final Iterable<T> input, final V output) {
 		for (final T t : input) {
 			output.setReal(output.getRealDouble() + t.getRealDouble());
 		}
