@@ -30,39 +30,20 @@
 
 package imagej.ops.convert;
 
-import imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Plugin;
+import imagej.ops.Function;
 
 /**
+ * /** Marker interface for convert operations. Implementing classes should be
+ * annotated with:
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Convert.NAME
+ * </pre>
+ * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+public interface Convert<I, O> extends Function<I, O> {
 
-	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(input.getRealDouble());
-		return output;
-	}
-
-	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
-		// nothing to do here
-	}
-
-	@Override
-	public void checkInputSource(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
+	public static final String NAME = "convert";
 
 }

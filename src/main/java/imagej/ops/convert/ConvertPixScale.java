@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "convert")
+@Plugin(type = Op.class, name = Convert.NAME)
 public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPix<I, O>
 {

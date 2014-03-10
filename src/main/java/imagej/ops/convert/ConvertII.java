@@ -40,12 +40,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "convert")
+@Plugin(type = Op.class, name = Convert.NAME)
 public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<IterableInterval<I>, IterableInterval<O>>
+	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements
+	Convert<IterableInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter
