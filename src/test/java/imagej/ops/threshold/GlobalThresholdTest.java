@@ -27,57 +27,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.threshold;
 
-package imagej.ops.commands.threshold;
-
-import imagej.command.Command;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.slicer.SliceMapper;
-import imagej.ops.threshold.ThresholdMethod;
-import net.imglib2.Axis;
-import net.imglib2.meta.ImgPlus;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)#
  * 
  * @author Martin Horn
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Command {
+public class GlobalThresholdTest extends AbstractOpTest {
 
-    @Parameter
-    private ThresholdMethod<T> method;
-
-    @Parameter
-    private OpService ops;
-
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> in;
-
-    // needs to be created by the pre-processor!
-    @Parameter(type = ItemIO.BOTH)
-    private ImgPlus<BitType> out;
-
-    // we need another widget for this!!
-    @Parameter
-    private Axis[] axes;
-
-    @Override
-    public void run() {
-
-        Op threshold = ops.op("threshold", out, in, method);
-
-        // TODO actually map axes to int array
-        ops.run(SliceMapper.class, out, in, threshold, new int[]{0, 1});
+    @Test
+    public void test() throws IncompatibleTypeException {
+        Img<ByteType> in = generateByteTestImg(true, new long[]{10, 10, 10});
+        Img<BitType> out =
+                in.factory().imgFactory(new BitType())
+                        .create(in, new BitType());
+        Op threshold = ops.op("threshold", out, in, new Otsu());
+        ops.run("slicemapper", out, in, threshold, new int[]{0, 1});
 
     }
+
 }
