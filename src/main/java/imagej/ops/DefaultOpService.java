@@ -39,6 +39,8 @@ import imagej.module.ModuleService;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.scijava.log.LogService;
@@ -130,8 +132,17 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public CommandInfo info(Op op) {
+	public CommandInfo info(final Op op) {
 		return commandService.getCommand(op.getClass());
+	}
+
+	@Override
+	public Collection<String> getOperations() {
+		final HashSet<String> operations = new HashSet<String>();
+		for (final CommandInfo info : opMatcherService.getOps()) {
+			operations.add(info.getName());
+		}
+		return operations;
 	}
 
 	// -- Operation shortcuts --

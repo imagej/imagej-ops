@@ -34,6 +34,8 @@ import imagej.command.CommandInfo;
 import imagej.module.Module;
 import imagej.service.ImageJService;
 
+import java.util.Collection;
+
 import org.scijava.plugin.PTService;
 
 /**
@@ -152,7 +154,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
 
+	/** Gets the metadata for a given {@link Op}. */
 	CommandInfo info(Op op);
+
+	/** Gets the names of all available operations. */
+	Collection<String> getOperations();
 
 	// -- Operation shortcuts --
 

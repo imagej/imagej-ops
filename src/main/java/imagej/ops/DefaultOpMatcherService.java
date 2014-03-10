@@ -35,7 +35,6 @@ import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
-import imagej.module.ModuleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,15 +57,17 @@ public class DefaultOpMatcherService extends
 {
 
 	@Parameter
-	private ModuleService moduleService;
-
-	@Parameter
 	private CommandService commandService;
 
 	@Parameter
 	private LogService log;
 
 	// -- OpMatcherService methods --
+
+	@Override
+	public List<CommandInfo> getOps() {
+		return commandService.getCommandsOfType(Op.class);
+	}
 
 	@Override
 	public Module findModule(final String name, final Class<? extends Op> type,
@@ -122,7 +123,7 @@ public class DefaultOpMatcherService extends
 	public List<ModuleInfo> findCandidates(final String name,
 		final Class<? extends Op> type)
 	{
-		final List<CommandInfo> ops = commandService.getCommandsOfType(Op.class);
+		final List<CommandInfo> ops = getOps();
 		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
 
 		for (final CommandInfo info : ops) {

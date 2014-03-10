@@ -48,6 +48,9 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	ImageJService
 {
 
+	/** Gets the list of all available {@link Op} implementations. */
+	public List<CommandInfo> getOps();
+
 	/**
 	 * Finds and initializes the best module matching the given op name and/or
 	 * type + arguments.
