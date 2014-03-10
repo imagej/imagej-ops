@@ -39,15 +39,15 @@ import imagej.ops.Op;
  * 
  * @author Christian Dietz
  */
-public interface Mapper<F extends Function<A, B>, A, B> extends Op {
+public interface Mapper<A, B> extends Op {
 
 	/**
 	 * @return the {@link Function} used for mapping
 	 */
-	F getFunction();
+	Function<A, B> getFunction();
 
 	/**
 	 * @param func the {@link Function} used for mapping
 	 */
-	void setFunction(F func);
+	void setFunction(Function<A, B> func);
 }

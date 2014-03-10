@@ -70,8 +70,8 @@ public class DefaultFunctionalMapperP<A, B>
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
-			public void
-				execute(final int startIndex, final int stepSize, final int numSteps)
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
 			{
 				final Cursor<A> cursor = input.localizingCursor();
 

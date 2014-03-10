@@ -41,8 +41,8 @@ import imagej.ops.Function;
  * @param <C> providing <A>s
  * @param <D> providing <B>s
  */
-public interface FunctionalMapper<A, B, C, D> extends
-	Mapper<Function<A, B>, A, B>, Function<C, D>
+public interface FunctionalMapper<A, B, C, D> extends Mapper<A, B>,
+	Function<C, D>
 {
 	// NB: Marker
 }
