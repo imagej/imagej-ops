@@ -30,31 +30,28 @@
 
 package imagej.ops.join;
 
+import imagej.ops.Function;
 import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link InplaceFunction}s
+ * Joins a {@link InplaceFunction} with a {@link Function}
  * 
  * @author Christian Dietz
  * @param <A>
+ * @param <B>
  */
 @Plugin(type = Op.class, name = "join")
-public class InplaceFunctionJoin<A> extends
-	AbstractFunctionJoin<A, A, A, InplaceFunction<A>, InplaceFunction<A>>
-	implements InplaceFunction<A>
+public class InplaceFunctionJoin<A, B> extends
+	AbstractFunctionJoin<A, A, B, InplaceFunction<A>, Function<A, B>>
 {
 
 	@Override
-	public A compute(final A arg) {
-		return compute(arg, arg);
-	}
-
-	@Override
-	public A compute(final A input, final A output) {
-		first.compute(input, output);
+	public B compute(final A input, final B output) {
+		first.compute(input);
 		return second.compute(input, output);
 	}
+
 }
