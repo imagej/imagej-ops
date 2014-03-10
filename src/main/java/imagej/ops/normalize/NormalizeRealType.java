@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIAS) })
+	name = "aliases", value = Normalize.ALIASES) })
 public class NormalizeRealType<T extends RealType<T>> extends
 	AbstractFunction<T, T> implements Normalize
 {
