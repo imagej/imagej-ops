@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Threshold.NAME)
-public class GlobalThresholder<T extends RealType<T>> extends
+public class ThresholdGlobal<T extends RealType<T>> extends
 	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
 	Threshold
 {
