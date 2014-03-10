@@ -82,6 +82,9 @@ public interface OpMatcherService extends SingletonService<OpMatcher>,
 	 */
 	List<Module> findMatches(List<? extends ModuleInfo> ops, Object... args);
 
+	/** Assigns arguments into the given module's inputs. */
+	Module assignInputs(Module module, Object... args);
+
 	/**
 	 * Gets a string describing the given op template.
 	 * 

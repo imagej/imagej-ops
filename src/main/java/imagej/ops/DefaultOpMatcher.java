@@ -56,7 +56,7 @@ public class DefaultOpMatcher extends AbstractOpMatcher {
 	private Context context;
 
 	@Parameter
-	private OpService opService;
+	private OpMatcherService opMatcherService;
 
 	@Parameter
 	private ModuleService moduleService;
@@ -94,7 +94,7 @@ public class DefaultOpMatcher extends AbstractOpMatcher {
 	private Module createModule(final ModuleInfo info, final Object... args) {
 		final Module module = moduleService.createModule(info);
 		context.inject(module.getDelegateObject());
-		return opService.assignInputs(module, args);
+		return opMatcherService.assignInputs(module, args);
 	}
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {

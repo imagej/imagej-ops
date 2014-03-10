@@ -31,11 +31,13 @@
 package imagej.ops;
 
 import imagej.command.CommandInfo;
+import imagej.command.CommandModuleItem;
 import imagej.command.CommandService;
 import imagej.module.Module;
 import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
+import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for finding {@link Op}s which match a template.
@@ -158,6 +161,15 @@ public class DefaultOpMatcherService extends
 	}
 
 	@Override
+	public Module assignInputs(final Module module, final Object... args) {
+		int i = 0;
+		for (final ModuleItem<?> item : module.getInfo().inputs()) {
+			assign(module, args[i++], item);
+		}
+		return module;
+	}
+
+	@Override
 	public String getOpString(final String name, final Object... args) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(name + "(");
@@ -251,6 +263,37 @@ public class DefaultOpMatcherService extends
 		}
 
 		return false;
+	}
+
+	/** Helper method of {@link #assignInputs}. */
+	private void assign(final Module module, final Object arg,
+		final ModuleItem<?> item)
+	{
+		Object value;
+		if (item instanceof CommandModuleItem) {
+			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+			final Type type = commandItem.getField().getGenericType();
+			value = convert(arg, type);
+		}
+		else value = convert(arg, item.getType());
+		module.setInput(item.getName(), value);
+		module.setResolved(item.getName(), true);
+	}
+
+	private Object convert(final Object o, final Type type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return null;
+		}
+		return ConversionUtils.convert(o, type);
+	}
+
+	private Object convert(final Object o, final Class<?> type) {
+		if (o instanceof Class && ConversionUtils.canConvert((Class<?>) o, type)) {
+			// NB: Class argument for matching; fill with null.
+			return true;
+		}
+		return ConversionUtils.convert(o, type);
 	}
 
 }
