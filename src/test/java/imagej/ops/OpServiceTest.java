@@ -145,7 +145,7 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(output.get()));
 	}
 
-	/** Tests {@link OpService#module(Class, Object...)}. */
+	/** Tests {@link OpService#module(Op, Object...)}. */
 	@Test
 	public void testModuleByOp() {
 		final DoubleType value = new DoubleType(123.456);
