@@ -30,7 +30,7 @@
 
 package imagej.ops.threshold;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
 import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;
@@ -40,7 +40,6 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -58,6 +57,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 			.firstElement(), in.firstElement(), 0d), new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
-		assertEquals(out.firstElement(), true);
+		assertEquals(out.firstElement().get(), true);
 	}
 }
