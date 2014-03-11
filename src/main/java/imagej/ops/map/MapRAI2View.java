@@ -30,43 +30,29 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Function;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionMap} using a {@link Function} on {@link RandomAccessibleInterval} and
- * {@link IterableInterval}
+ * Map values of {@link RandomAccessibleInterval} to a View
  * 
- * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * 
+ * @param <A>
+ * @param <B>
  */
-@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY)
-public class MapR2I<A, B> extends
-	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapRAI2View<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		final Cursor<B> cursor = output.localizingCursor();
-		final RandomAccess<A> rndAccess = input.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			func.compute(rndAccess.get(), cursor.get());
-		}
-
-		return output;
+	public void run() {
+		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
+			getConverter(), getType()));
 	}
 }

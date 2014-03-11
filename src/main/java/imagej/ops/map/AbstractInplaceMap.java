@@ -37,14 +37,14 @@ import imagej.ops.InplaceFunction;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of an {@link Map}
+ * Abstract implementation of an {@link MapI}
  * 
  * @author Christian Dietz
  * @param <A> type of values to be mapped
  * @param <I> {@link Iterable} of <A>s
  */
 public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements FunctionMap<A, A, InplaceFunction<A>>
+	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
 {
 
 	/**

@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Testing multi threaded implementation ({@link ParallelMapI2R} and
  * {@link ParallelMapI2I}) of the mappers. Assumption: Naive Implementation of
- * {@link MapI2R} works fine.
+ * {@link MapII2RAI} works fine.
  * 
  * @author Christian Dietz
  */
@@ -64,7 +64,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(MapI2I.class, out, in, new AddOneFunctional());
+			ops.op(MapII2II.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -81,7 +81,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapRAIII() {
 
 		final Op functional =
-			ops.op(MapR2I.class, out, in, new AddOneFunctional());
+			ops.op(MapRAI2III.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -98,7 +98,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapIIRAI() {
 
 		final Op functional =
-			ops.op(MapI2R.class, out, in, new AddOneFunctional());
+			ops.op(MapII2RAI.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -117,7 +117,7 @@ public class MapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(Map.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapI.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {

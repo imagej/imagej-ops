@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
  * @param <D> provides <B>s
  */
 public abstract class AbstractFunctionMap<A, B, C, D> extends
-	AbstractFunction<C, D> implements FunctionMap<A, B, Function<A, B>>
+	AbstractFunction<C, D> implements Map<A, B, Function<A, B>>
 {
 
 	/** {@link Function} to be used for mapping. */

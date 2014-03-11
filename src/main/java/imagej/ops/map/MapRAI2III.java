@@ -32,24 +32,41 @@ package imagej.ops.map;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Interface for {@link FunctionMap}s. A {@link FunctionMap} provides a {@link Function} which
- * maps values from <A> to <B>.
+ * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link IterableInterval}
  * 
+ * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-public interface FunctionMap<A, B, F extends Function<A, B>> extends Op {
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapRAI2III<A, B> extends
+	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+{
 
-	public static final String NAME = "map";
+	@Override
+	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		final Cursor<B> cursor = output.localizingCursor();
+		final RandomAccess<A> rndAccess = input.randomAccess();
 
-	/**
-	 * @return the {@link Function} used for mapping
-	 */
-	F getFunction();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(rndAccess.get(), cursor.get());
+		}
 
-	/**
-	 * @param function the {@link Function} used for mapping
-	 */
-	void setFunction(F function);
+		return output;
+	}
 }

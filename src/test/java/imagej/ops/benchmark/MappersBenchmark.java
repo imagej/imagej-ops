@@ -32,9 +32,9 @@ package imagej.ops.benchmark;
 
 import imagej.module.Module;
 import imagej.ops.Op;
-import imagej.ops.map.MapI2R;
-import imagej.ops.map.Map;
-import imagej.ops.map.MapI2I;
+import imagej.ops.map.MapII2RAI;
+import imagej.ops.map.MapI;
+import imagej.ops.map.MapII2II;
 import imagej.ops.map.ParallelMap;
 import imagej.ops.map.ParallelMapI2I;
 import imagej.ops.map.ParallelMapI2R;
@@ -45,7 +45,7 @@ import org.junit.Before;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link MapI2R}, {@link MapI2I},
+ * {@link MapII2RAI}, {@link MapII2II},
  * {@link ParallelMapI2R}, {@link ParallelMapI2I}
  * 
  * @author Christian Dietz
@@ -86,19 +86,19 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapper() {
 		final Module module =
-			ops.module(new MapI2R<ByteType, ByteType>(), out, in,
+			ops.module(new MapII2RAI<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(MapI2R.class.getSimpleName(), module,
+		benchmarkAndPrint(MapII2RAI.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestMapperII() {
 		final Module module =
-			ops.module(new MapI2I<ByteType, ByteType>(), out, in,
+			ops.module(new MapII2II<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(MapI2I.class.getSimpleName(), module,
+		benchmarkAndPrint(MapII2II.class.getSimpleName(), module,
 			numRuns);
 	}
 
@@ -122,9 +122,9 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapperInplace() {
 		final Module module =
-			ops.module(new Map<ByteType>(), in, addConstant);
+			ops.module(new MapI<ByteType>(), in, addConstant);
 
-		benchmarkAndPrint(Map.class.getSimpleName(), module,
+		benchmarkAndPrint(MapI.class.getSimpleName(), module,
 			numRuns);
 	}
 

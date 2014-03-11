@@ -28,24 +28,30 @@
  * #L%
  */
 
-package imagej.ops.map.view;
+package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.map.FunctionMap;
-import net.imglib2.RandomAccessible;
-import net.imglib2.converter.read.ConvertedRandomAccessible;
-import net.imglib2.type.Type;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = FunctionMap.NAME)
-public class ViewMapRA<A, B extends Type<B>> extends
-	AbstractViewMap<A, B, RandomAccessible<A>, RandomAccessible<B>>
-{
+/**
+ * Default (slower) implementation of an {@link MapI}.
+ * 
+ * @author Curtis Rueden
+ * @author Christian Dietz
+ * @param <A>
+ */
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class MapI<A> extends AbstractInplaceMap<A, Iterable<A>> {
 
 	@Override
-	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getConverter(),
-			getType()));
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
+
+		return arg;
 	}
 }

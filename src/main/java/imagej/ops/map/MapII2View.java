@@ -31,61 +31,20 @@
 package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Parallelized {@link FunctionalMap}
- * 
- * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
- */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
-public class ParallelMapI2R<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapII2View<A, B extends Type<B>> extends
+	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> cursor = input.localizingCursor();
-
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<B> rndAccess = output.randomAccess();
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					func.compute(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-
-		return output;
+	public void run() {
+		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getConverter(),
+			getType()));
 	}
 }

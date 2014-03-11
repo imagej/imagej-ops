@@ -28,24 +28,31 @@
  * #L%
  */
 
-package imagej.ops.map.view;
+package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.map.FunctionMap;
-import net.imglib2.IterableInterval;
-import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.RandomAccessible;
+import net.imglib2.converter.read.ConvertedRandomAccessible;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = FunctionMap.NAME)
-public class ViewMapII<A, B extends Type<B>> extends
-	AbstractViewMap<A, B, IterableInterval<A>, IterableInterval<B>>
+/**
+ * Maps values of a {@link RandomAccessible} in View.
+ * 
+ * @author Christian Dietz
+ * 
+ * @param <A>
+ * @param <B>
+ */
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapRA2View<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
 {
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getConverter(),
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getConverter(),
 			getType()));
 	}
 }

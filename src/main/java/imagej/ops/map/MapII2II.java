@@ -30,41 +30,53 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Function;
+import imagej.ops.Contingent;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionMap} using a {@link Function} on {@link IterableInterval} and
- * {@link RandomAccessibleInterval}
+ * {@link FunctionalMap} mapping from {@link IterableInterval} to
+ * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
+ * same IterationOrder.
  * 
  * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY)
-public class MapI2R<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+public class MapII2II<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	Contingent
 {
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		final Cursor<A> cursor = input.localizingCursor();
-		final RandomAccess<B> rndAccess = output.randomAccess();
+	public boolean conforms() {
+		return getOutput() == null || isValid(getInput(), getOutput());
+	}
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			func.compute(cursor.get(), rndAccess.get());
+	private boolean isValid(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		return input.iterationOrder().equals(getOutput().iterationOrder());
+	}
+
+	@Override
+	public IterableInterval<B> compute(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		if (!isValid(input, output)) {
+			throw new IllegalArgumentException(
+				"Input and Output don't have the same iteration order!");
+		}
+
+		final Cursor<A> inCursor = input.cursor();
+		final Cursor<B> outCursor = output.cursor();
+
+		while (inCursor.hasNext()) {
+			func.compute(inCursor.next(), outCursor.next());
 		}
 
 		return output;
