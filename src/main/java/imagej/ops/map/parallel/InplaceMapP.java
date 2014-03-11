@@ -34,6 +34,7 @@ import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
 import imagej.ops.map.AbstractInplaceMap;
+import imagej.ops.map.InplaceMap;
 import imagej.ops.map.Map;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
@@ -66,7 +67,7 @@ public class InplaceMapP<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> inCursor = getInput().cursor();
+				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);
 
