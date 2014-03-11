@@ -55,9 +55,7 @@ public abstract class AbstractOpTest {
 	protected Context context;
 	protected OpService ops;
 
-	/**
-	 * Sets up an {@link OpService}.
-	 */
+	/** Sets up a SciJava context with {@link OpService}. */
 	@Before
 	public void setUp() {
 		context = new Context(OpService.class);
