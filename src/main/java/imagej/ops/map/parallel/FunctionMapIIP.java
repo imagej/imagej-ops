@@ -65,7 +65,9 @@ public class FunctionMapIIP<A, B> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
+		// Assumption: if output is zero, it will be provided from someone (such that it fits).
+		return getOutput() == null ||
+			getInput().iterationOrder().equals(getOutput().iterationOrder());
 	}
 
 	@Override
