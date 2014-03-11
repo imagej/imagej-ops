@@ -42,9 +42,6 @@ import org.scijava.plugin.Parameter;
  * as the output;
  * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
- * @param <C>
  */
 public abstract class AbstractInplaceJoin<A> extends AbstractInplaceFunction<A>
 {

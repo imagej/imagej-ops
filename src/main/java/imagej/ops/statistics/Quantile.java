@@ -36,8 +36,6 @@ import imagej.ops.Function;
  * Simple marker interface
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Quantile<T, V> extends Function<T, V> {
 

@@ -43,8 +43,6 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
- * @param <I>
- * @param <O>
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends

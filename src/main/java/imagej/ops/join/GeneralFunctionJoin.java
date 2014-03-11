@@ -40,9 +40,6 @@ import org.scijava.plugin.Plugin;
  * Implementation of a general join of two {@link Function}s.
  * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
- * @param <C>
  */
 @Plugin(type = Op.class, name = "join")
 public class GeneralFunctionJoin<A, B, C> extends

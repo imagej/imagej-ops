@@ -36,8 +36,6 @@ import imagej.ops.Function;
  * Simple marker interface
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Variance<T, V> extends Function<Iterable<T>, V> {
 

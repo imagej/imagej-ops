@@ -10,7 +10,6 @@ import org.scijava.plugin.Plugin;
  * Applies an {@link Function} numIteration times to an image
  * 
  * @author Christian Dietz
- * @param <I>
  */
 @Plugin(type = Op.class, name = Loop.NAME)
 public class DefaultFunctionLoop<I> extends

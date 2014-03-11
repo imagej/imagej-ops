@@ -39,7 +39,6 @@ import org.scijava.plugin.Plugin;
  * Joins two {@link InplaceFunction}s
  * 
  * @author Christian Dietz
- * @param <A>
  */
 @Plugin(type = Op.class, name = "join")
 public class InplaceJoin<A> extends AbstractInplaceJoin<A> implements

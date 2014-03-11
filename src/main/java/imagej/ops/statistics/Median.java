@@ -34,8 +34,6 @@ package imagej.ops.statistics;
  * Simple marker interface
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Median<T, V> extends Quantile<T, V> {
 

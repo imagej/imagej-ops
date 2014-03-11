@@ -40,8 +40,6 @@ import org.scijava.plugin.Plugin;
  * Joins a {@link Function} with an {@link InplaceFunction}
  * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
  */
 @Plugin(type = Op.class, name = "join")
 public class FunctionInplaceJoin<A, B> extends

@@ -41,9 +41,6 @@ import org.scijava.plugin.Parameter;
  * as the output;
  * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
- * @param <C>
  */
 public abstract class AbstractFunctionJoin<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
 	extends AbstractFunction<A, C>
