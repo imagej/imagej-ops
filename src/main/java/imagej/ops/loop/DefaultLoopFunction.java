@@ -3,12 +3,10 @@ package imagej.ops.loop;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.OpService;
 import imagej.ops.join.JoinFunctions;
 
 import java.util.ArrayList;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -20,9 +18,6 @@ import org.scijava.plugin.Plugin;
 public class DefaultLoopFunction<A> extends
 	AbstractLoopFunction<Function<A, A>, A>
 {
-
-	@Parameter
-	private OpService opService;
 
 	@Override
 	public A compute(final A input, final A output) {
