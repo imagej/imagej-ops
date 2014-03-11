@@ -42,6 +42,6 @@ import imagej.ops.Op;
  */
 public interface Scale extends Op {
 
-	public static final String NAME = "scale";
-	public static final String ALIASES = "resize";
+	String NAME = "scale";
+	String ALIASES = "resize";
 }

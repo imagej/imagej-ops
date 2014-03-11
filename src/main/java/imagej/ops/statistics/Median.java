@@ -37,6 +37,6 @@ package imagej.ops.statistics;
  */
 public interface Median<T, V> extends Quantile<T, V> {
 
-	public static final String NAME = "median";
+	String NAME = "median";
 
 }

@@ -39,6 +39,6 @@ import imagej.ops.Function;
  */
 public interface StdDeviation<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "stddev";
+	String NAME = "stddev";
 
 }

@@ -39,6 +39,6 @@ import imagej.ops.Function;
  */
 public interface Sum<I, O> extends Function<I, O> {
 
-	public static final String NAME = "sum";
+	String NAME = "sum";
 
 }

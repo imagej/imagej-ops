@@ -44,6 +44,6 @@ import imagej.ops.Op;
  */
 public interface Threshold extends Op {
 
-	public static final String NAME = "threshold";
+	String NAME = "threshold";
 
 }

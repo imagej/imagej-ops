@@ -40,6 +40,6 @@ import imagej.ops.Op;
  */
 public interface Normalize extends Op {
 
-	public static final String NAME = "normalize";
-	public static final String ALIASES = "norm";
+	String NAME = "normalize";
+	String ALIASES = "norm";
 }

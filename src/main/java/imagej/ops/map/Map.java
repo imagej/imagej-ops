@@ -41,7 +41,7 @@ import imagej.ops.Op;
  */
 public interface Map<A, B, F extends Function<A, B>> extends Op {
 
-	public static final String NAME = "map";
+	String NAME = "map";
 
 	/**
 	 * @return the {@link Function} used for mapping

@@ -39,6 +39,6 @@ import imagej.ops.Function;
  */
 public interface Max<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "max";
+	String NAME = "max";
 
 }

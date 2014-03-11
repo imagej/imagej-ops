@@ -45,6 +45,7 @@ import imagej.ops.Op;
  */
 public interface Lookup extends Op {
 
-	public static final String NAME = "identity";
+	String NAME = "lookup";
+	String ALIASES = "op";
 
 }

@@ -44,5 +44,5 @@ import imagej.ops.Op;
  */
 public interface Convolve extends Op {
 
-	public static final String NAME = "convolve";
+	String NAME = "convolve";
 }

@@ -37,6 +37,6 @@ package imagej.ops.invert;
  */
 public interface Invert {
 
-	public static final String NAME = "invert";
+	String NAME = "invert";
 
 }

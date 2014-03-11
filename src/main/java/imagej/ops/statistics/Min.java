@@ -39,6 +39,6 @@ import imagej.ops.Function;
  */
 public interface Min<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "min";
+	String NAME = "min";
 
 }

@@ -41,6 +41,6 @@ import imagej.ops.InplaceFunction;
  */
 public interface Identity<A> extends InplaceFunction<A> {
 
-	public static final String NAME = "identity";
+	String NAME = "identity";
 
 }

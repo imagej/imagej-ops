@@ -39,6 +39,6 @@ import imagej.ops.Function;
  */
 public interface Variance<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "variance";
+	String NAME = "variance";
 
 }

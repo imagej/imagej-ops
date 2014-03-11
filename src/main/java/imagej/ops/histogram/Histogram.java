@@ -44,5 +44,5 @@ import imagej.ops.Op;
  */
 public interface Histogram extends Op {
 
-	public static final String NAME = "histogram";
+	String NAME = "histogram";
 }

@@ -44,6 +44,6 @@ import imagej.ops.Function;
  */
 public interface Convert<I, O> extends Function<I, O> {
 
-	public static final String NAME = "convert";
+	String NAME = "convert";
 
 }
