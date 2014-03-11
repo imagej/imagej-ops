@@ -32,6 +32,7 @@ package imagej.ops.statistics.moments;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
 import imagej.ops.misc.Size;
 import imagej.ops.statistics.Mean;
 
@@ -49,14 +50,24 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 	AbstractFunction<Iterable<T>, DoubleType>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private Mean<Iterable<T>, DoubleType> mean;
 
-	@Parameter
+	@Parameter(required = false)
 	private Size<Iterable<T>> size;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (mean == null) {
+			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+		}
+		if (size == null) {
+			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
+		}
+
 		final double mean = this.mean.compute(input, new DoubleType()).get();
 		final double area = this.size.compute(input, new LongType()).get();
 		double res = 0.0;
@@ -66,7 +77,6 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 			final double val = it.next().getRealDouble() - mean;
 			res += val;
 		}
-
 		output.set(res / area);
 		return output;
 	}

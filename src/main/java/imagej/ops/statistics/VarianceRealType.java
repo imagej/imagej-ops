@@ -32,6 +32,7 @@ package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
 import imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -45,11 +46,18 @@ public class VarianceRealType<T extends RealType<T>> extends
 	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private Moment2AboutMean<T> moment2;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (moment2 == null) {
+			moment2 =
+				(Moment2AboutMean<T>) ops.op(Moment2AboutMean.class, output, input);
+		}
 		return moment2.compute(input, output);
 	}
 }

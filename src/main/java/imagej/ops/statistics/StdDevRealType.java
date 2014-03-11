@@ -32,6 +32,7 @@ package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -46,15 +47,21 @@ public class StdDevRealType<T extends RealType<T>> extends
 	StdDeviation<T, DoubleType>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private Variance<T, DoubleType> variance;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (variance == null) {
+			variance =
+				(Variance<T, DoubleType>) ops.op(Variance.class, output, input);
+		}
 		output.set(Math.sqrt(variance.compute(input, output).get()));
 		return output;
 	}
-
 //	@Override
 //	public String name() {
 //		return "Standard Deviation";
