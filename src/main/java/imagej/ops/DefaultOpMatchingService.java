@@ -227,7 +227,7 @@ public class DefaultOpMatchingService extends
 		final StringBuilder sb = new StringBuilder();
 		final String label = module.getDelegateObject().getClass().getName();
 		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
-		for (int i=0; i<optimizers.size(); i++) {
+		for (int i = 0; i < optimizers.size(); i++) {
 			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
 			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
 		}
