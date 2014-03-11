@@ -41,9 +41,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = "join")
-public class InplaceJoin<A> extends AbstractInplaceJoin<A> implements
-	InplaceFunction<A>
-{
+public class InplaceJoin<A> extends AbstractInplaceJoin<A> {
 
 	@Override
 	public A compute(final A arg) {
