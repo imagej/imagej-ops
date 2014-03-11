@@ -50,6 +50,7 @@ import org.scijava.plugin.Parameter;
  * </p>
  * 
  * @author Johannes Schindelin
+ * @author Curtis Rueden
  */
 public abstract class AbstractOpTest {
 
