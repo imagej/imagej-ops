@@ -30,6 +30,7 @@
 
 package imagej.ops.threshold;
 
+import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.statistics.Mean;
 import net.imglib2.type.logic.BitType;
@@ -37,10 +38,12 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn
  */
+@Plugin(type = Op.class)
 public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 
 	@Parameter
