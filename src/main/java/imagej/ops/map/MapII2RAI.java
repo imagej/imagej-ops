@@ -41,8 +41,8 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
- * {@link IterableInterval}
+ * {@link Map} using a {@link Function} on {@link IterableInterval} and
+ * {@link RandomAccessibleInterval}
  * 
  * @author Martin Horn
  * @author Christian Dietz
@@ -50,21 +50,21 @@ import org.scijava.plugin.Plugin;
  * @param <B> mapped from <A>
  */
 @Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
-public class FunctionMapRAIII<A, B> extends
-	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+public class MapII2RAI<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
-		final IterableInterval<B> output)
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
 	{
-		final Cursor<B> cursor = output.localizingCursor();
-		final RandomAccess<A> rndAccess = input.randomAccess();
+		final Cursor<A> cursor = input.localizingCursor();
+		final RandomAccess<B> rndAccess = output.randomAccess();
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			func.compute(rndAccess.get(), cursor.get());
+			func.compute(cursor.get(), rndAccess.get());
 		}
 
 		return output;

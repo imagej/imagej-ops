@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.map.view;
+package imagej.ops.map;
 
 import imagej.ops.Function;
 import net.imglib2.converter.Converter;
@@ -40,11 +40,12 @@ import net.imglib2.converter.Converter;
  * @param <A>
  * @param <B>
  */
-public class ConverterFunction<A, B> implements Converter<A, B> {
+//TODO where to move this class?
+public class ConvertWithFunction<A, B> implements Converter<A, B> {
 
 	private final Function<A, B> function;
 
-	public ConverterFunction(final Function<A, B> op) {
+	public ConvertWithFunction(final Function<A, B> op) {
 		this.function = op;
 	}
 

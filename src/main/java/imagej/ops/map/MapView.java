@@ -28,10 +28,9 @@
  * #L%
  */
 
-package imagej.ops.map.view;
+package imagej.ops.map;
 
 import imagej.ops.Function;
-import imagej.ops.map.Map;
 import net.imglib2.converter.Converter;
 
 import org.scijava.ItemIO;
@@ -47,7 +46,7 @@ import org.scijava.plugin.Parameter;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class AbstractViewMap<A, B, I, O> implements
+public abstract class MapView<A, B, I, O> implements
 	Map<A, B, Function<A, B>>
 {
 
@@ -77,7 +76,7 @@ public abstract class AbstractViewMap<A, B, I, O> implements
 	 * @return
 	 */
 	public Converter<A, B> getConverter() {
-		return new ConverterFunction<A, B>(function);
+		return new ConvertWithFunction<A, B>(function);
 	}
 
 	/**

@@ -28,66 +28,56 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionMap;
-import imagej.ops.map.Map;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}
+ * Parallelized {@link MapI}
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
-public class FunctionMapIIRAIP<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+public class ParallelMap<A> extends
+	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {
 
 	@Parameter
 	private OpService opService;
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> cursor = input.localizingCursor();
+				final Cursor<A> inCursor = arg.cursor();
 
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<B> rndAccess = output.randomAccess();
+				setToStart(inCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					func.compute(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
+					final A t = inCursor.get();
+					func.compute(t, t);
+					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, input.size());
+		}, arg.size());
 
-		return output;
+		return arg;
 	}
 }

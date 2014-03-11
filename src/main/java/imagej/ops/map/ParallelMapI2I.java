@@ -32,25 +32,34 @@ package imagej.ops.map;
 
 import imagej.ops.Contingent;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionalMap} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
+ * Parallelized {@link FunctionalMap}, which is specialized for the case, that
+ * the two incoming {@link IterableInterval}s have the same IterationOrder.
  * 
- * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class FunctionMapII<A, B> extends
+
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 3)
+public class ParallelMapI2I<A, B> extends
 	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent
+	Contingent, Parallel
 {
+
+	@Parameter
+	private OpService opService;
 
 	@Override
 	public boolean conforms() {
@@ -60,7 +69,7 @@ public class FunctionMapII<A, B> extends
 	private boolean isValid(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		return input.iterationOrder().equals(getOutput().iterationOrder());
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
@@ -69,17 +78,30 @@ public class FunctionMapII<A, B> extends
 	{
 		if (!isValid(input, output)) {
 			throw new IllegalArgumentException(
-				"Input and Output don't have the same iteration order!");
+				"Input and Output do not have the same iteration order!");
 		}
 
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-		}
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Cursor<A> inCursor = input.cursor();
+				final Cursor<B> outCursor = output.cursor();
+
+				setToStart(inCursor, startIndex);
+				setToStart(outCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					func.compute(inCursor.get(), outCursor.get());
+					inCursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
 
 		return output;
 	}

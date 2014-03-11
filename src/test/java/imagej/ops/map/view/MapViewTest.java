@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
+import imagej.ops.map.MapII2View;
+import imagej.ops.map.MapRA2View;
+import imagej.ops.map.MapRAI2View;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -36,7 +39,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testRandomAccessibleView() {
 		@SuppressWarnings("unchecked")
 		final RandomAccessible<ByteType> res =
-			(RandomAccessible<ByteType>) ops.run(ViewMapRA.class, in, op,
+			(RandomAccessible<ByteType>) ops.run(MapRA2View.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable =
@@ -51,7 +54,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testRandomAccessibleIntervalView() {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ByteType> res =
-			(RandomAccessibleInterval<ByteType>) ops.run(ViewMapRAI.class, in, op,
+			(RandomAccessibleInterval<ByteType>) ops.run(MapRAI2View.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable = Views.iterable(res).cursor();
@@ -65,7 +68,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testIterableIntervalView() {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<ByteType> res =
-			(IterableInterval<ByteType>) ops.run(ViewMapII.class, in, op,
+			(IterableInterval<ByteType>) ops.run(MapII2View.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable = res.cursor();

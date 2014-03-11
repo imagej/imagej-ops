@@ -35,8 +35,6 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.parallel.FunctionMapIIP;
-import imagej.ops.map.parallel.FunctionMapIIRAIP;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -45,9 +43,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link FunctionMapIIRAIP} and
- * {@link FunctionMapIIP}) of the mappers. Assumption: Naive Implementation of
- * {@link FunctionMapIIRAI} works fine.
+ * Testing multi threaded implementation ({@link ParallelMapI2R} and
+ * {@link ParallelMapI2I}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapII2RAI} works fine.
  * 
  * @author Christian Dietz
  */
@@ -66,7 +64,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(FunctionMapII.class, out, in, new AddOneFunctional());
+			ops.op(MapII2II.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -83,7 +81,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapRAIII() {
 
 		final Op functional =
-			ops.op(FunctionMapRAIII.class, out, in, new AddOneFunctional());
+			ops.op(MapRAI2III.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -100,7 +98,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapIIRAI() {
 
 		final Op functional =
-			ops.op(FunctionMapIIRAI.class, out, in, new AddOneFunctional());
+			ops.op(MapII2RAI.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -119,7 +117,7 @@ public class MapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(InplaceMap.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapI.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {

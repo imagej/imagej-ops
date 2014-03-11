@@ -32,27 +32,37 @@ package imagej.ops.map;
 
 import imagej.ops.Op;
 
+import java.util.Iterator;
+
+import net.imglib2.IterableInterval;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default (slow) implementation of an {@link InplaceMap}.
+ * {@link FunctionalMap} mapping from {@link IterableInterval} to
+ * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
+ * same IterationOrder.
  * 
- * @author Curtis Rueden
+ * @author Martin Horn
  * @author Christian Dietz
- * @param <A> to be mapped on itself
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
-public class InplaceMap<A> extends
-	AbstractInplaceMap<A, Iterable<A>>
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY - 1)
+public class MapI2I<A, B> extends
+	AbstractFunctionMap<A, B, Iterable<A>, Iterable<B>>
+
 {
 
 	@Override
-	public Iterable<A> compute(final Iterable<A> arg) {
-		for (final A t : arg) {
-			func.compute(t, t);
+	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
+	{
+		final Iterator<A> inCursor = input.iterator();
+		final Iterator<B> outCursor = output.iterator();
+
+		while (inCursor.hasNext()) {
+			func.compute(inCursor.next(), outCursor.next());
 		}
 
-		return arg;
+		return output;
 	}
 }

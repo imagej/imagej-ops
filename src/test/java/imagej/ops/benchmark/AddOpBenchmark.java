@@ -36,9 +36,9 @@ import imagej.ops.arithmetic.add.AddConstantToImageFunctional;
 import imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import imagej.ops.arithmetic.add.AddConstantToNumericType;
 import imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
-import imagej.ops.map.parallel.FunctionMapIIRAIP;
-import imagej.ops.map.parallel.InplaceMapP;
-import imagej.ops.map.parallel.FunctionMapIIP;
+import imagej.ops.map.ParallelMap;
+import imagej.ops.map.ParallelMapI2I;
+import imagej.ops.map.ParallelMapI2R;
 import imagej.ops.onthefly.ArithmeticOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -60,19 +60,19 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void fTestIterableIntervalMapperP() {
 		final Module module =
-			ops.module(FunctionMapIIP.class, out, in, ops.op(
+			ops.module(ParallelMapI2I.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(FunctionMapIIP.class.getSimpleName() +
+		benchmarkAndPrint(ParallelMapI2I.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
 	}
 
 	public void fTestDefaultMapperP() {
 		final Module module =
-			ops.module(FunctionMapIIRAIP.class, out, in, ops.op(
+			ops.module(ParallelMapI2R.class, out, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(FunctionMapIIRAIP.class.getSimpleName() +
+		benchmarkAndPrint(ParallelMapI2R.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
 	}
 
@@ -86,10 +86,10 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 
 	public void inTestDefaultInplaceMapperP() {
 		final Module module =
-			ops.module(InplaceMapP.class, in, ops.op(
+			ops.module(ParallelMap.class, in, ops.op(
 				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
 
-		benchmarkAndPrint(InplaceMapP.class.getSimpleName() +
+		benchmarkAndPrint(ParallelMap.class.getSimpleName() +
 			" [InPlace / Parallel]", module, numRuns);
 	}
 

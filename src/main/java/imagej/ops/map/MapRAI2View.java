@@ -28,59 +28,31 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractInplaceMap;
-import imagej.ops.map.InplaceMap;
-import imagej.ops.map.Map;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link InplaceMap}
+ * Map values of {@link RandomAccessibleInterval} to a View
  * 
  * @author Christian Dietz
- * @param <A> mapped on <A>
+ * 
+ * @param <A>
+ * @param <B>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class InplaceMapP<A> extends
-	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapRAI2View<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> inCursor = arg.cursor();
-
-				setToStart(inCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					func.compute(t, t);
-					inCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
-
-		return arg;
+	public void run() {
+		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
+			getConverter(), getType()));
 	}
 }

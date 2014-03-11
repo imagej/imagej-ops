@@ -30,37 +30,21 @@
 
 package imagej.ops.map;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
+import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * Abstract implementation of an {@link MapI}
- * 
- * @author Christian Dietz
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
- */
-public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapII2View<A, B extends Type<B>> extends
+	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
-	@Parameter
-	protected InplaceFunction<A> func;
-
 	@Override
-	public InplaceFunction<A> getFunction() {
-		return func;
+	public void run() {
+		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getConverter(),
+			getType()));
 	}
-
-	@Override
-	public void setFunction(final InplaceFunction<A> func) {
-		this.func = func;
-	}
-
 }

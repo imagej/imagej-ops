@@ -28,78 +28,59 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
-import imagej.ops.Contingent;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionMap;
-import imagej.ops.map.Map;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}, which is specialized for the case, that
- * the two incoming {@link IterableInterval}s have the same IterationOrder.
+ * Parallelized {@link FunctionalMap}
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 3)
-public class FunctionMapIIP<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent, Parallel
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
+public class ParallelMapI2R<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
 {
 
 	@Parameter
 	private OpService opService;
 
 	@Override
-	public boolean conforms() {
-		return getOutput() == null || isValid(getInput(), getOutput());
-	}
-
-	private boolean isValid(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
 	{
-		return input.iterationOrder().equals(output.iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		if (!isValid(input, output)) {
-			throw new IllegalArgumentException(
-				"Input and Output do not have the same iteration order!");
-		}
-
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> inCursor = input.cursor();
-				final Cursor<B> outCursor = output.cursor();
+				final Cursor<A> cursor = input.localizingCursor();
 
-				setToStart(inCursor, startIndex);
-				setToStart(outCursor, startIndex);
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					func.compute(inCursor.get(), outCursor.get());
-					inCursor.jumpFwd(stepSize);
-					outCursor.jumpFwd(stepSize);
+					rndAccess.setPosition(cursor);
+					func.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
