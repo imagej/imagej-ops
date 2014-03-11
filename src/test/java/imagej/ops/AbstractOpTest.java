@@ -59,9 +59,12 @@ public abstract class AbstractOpTest {
 	@Parameter
 	protected OpService ops;
 
+	@Parameter
+	protected OpMatchingService matcher;
+
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class);
+		return new Context(OpService.class, OpMatchingService.class);
 	}
 
 	/** Sets up a SciJava context with {@link OpService}. */
