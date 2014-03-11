@@ -7,12 +7,12 @@ import imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link InplaceLoop}.
+ * Abstract implementation of a {@link LoopInplace}.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractInplaceLoop<I> extends AbstractInplaceFunction<I>
-	implements InplaceLoop<I>
+public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
+	implements LoopInplace<I>
 {
 
 	/**

@@ -28,59 +28,29 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.join;
 
-import imagej.ops.Contingent;
+import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionalMap} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
+ * Joins two {@link InplaceFunction}s
  * 
- * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class FunctionMapII<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent
-{
+@Plugin(type = Op.class, name = "join")
+public class JoinInplaceAndInplace<A> extends AbstractJoinInplace<A> {
 
 	@Override
-	public boolean conforms() {
-		return getOutput() == null || isValid(getInput(), getOutput());
-	}
-
-	private boolean isValid(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		return input.iterationOrder().equals(getOutput().iterationOrder());
+	public A compute(final A arg) {
+		return compute(arg, arg);
 	}
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		if (isValid(input, output)) {
-			throw new IllegalArgumentException(
-				"Input and Output don't have the same iteration order!");
-		}
-
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
-
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-		}
-
-		return output;
+	public A compute(final A input, final A output) {
+		first.compute(input, output);
+		return second.compute(input, output);
 	}
 }

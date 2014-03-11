@@ -30,54 +30,48 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
+
+import java.util.List;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
+ * Join {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractInplaceJoin<A> extends AbstractInplaceFunction<A>
-{
+@Plugin(type = Op.class, name = "join")
+public class JoinInplace<A> extends AbstractFunction<A, A> {
+
+	// list of functions to be joined
+	private List<InplaceFunction<A>> functions;
 
 	@Parameter
-	protected InplaceFunction<A> first;
+	private A buffer;
 
-	@Parameter
-	protected InplaceFunction<A> second;
-
-	/**
-	 * @return first {@link Function} to be joined
-	 */
-	public InplaceFunction<A> getFirst() {
-		return first;
+	public A getBuffer() {
+		return buffer;
 	}
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	public void setFirst(final InplaceFunction<A> first) {
-		this.first = first;
+	public void setBuffer(final A buffer) {
+		this.buffer = buffer;
 	}
 
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	public InplaceFunction<A> getSecond() {
-		return second;
+	public void setFunctions(final List<InplaceFunction<A>> functions) {
+		this.functions = functions;
 	}
 
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	public void setSecond(final InplaceFunction<A> second) {
-		this.second = second;
-	}
+	@Override
+	public A compute(final A input, final A output) {
 
+		for (final InplaceFunction<A> inplace : functions) {
+			inplace.compute(input, output);
+		}
+
+		return output;
+	}
 }

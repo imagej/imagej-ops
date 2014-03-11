@@ -28,59 +28,56 @@
  * #L%
  */
 
-package imagej.ops.map;
+package imagej.ops.join;
 
-import imagej.ops.Contingent;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * {@link FunctionalMap} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
+ * Join to {@link Function}s. The resulting function will take the input of the
+ * first {@link Function} as input and the output of the second {@link Function}
+ * as the output;
  * 
- * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class FunctionMapII<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent
+public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C>
 {
 
-	@Override
-	public boolean conforms() {
-		return getOutput() == null || isValid(getInput(), getOutput());
+	@Parameter
+	protected F1 first;
+
+	@Parameter
+	protected F2 second;
+
+	/**
+	 * @return first {@link Function} to be joined
+	 */
+	public F1 getFirst() {
+		return first;
 	}
 
-	private boolean isValid(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		return input.iterationOrder().equals(getOutput().iterationOrder());
+	/**
+	 * @param first {@link Function} to be joined
+	 */
+	public void setFirst(final F1 first) {
+		this.first = first;
 	}
 
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
-	{
-		if (isValid(input, output)) {
-			throw new IllegalArgumentException(
-				"Input and Output don't have the same iteration order!");
-		}
-
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
-
-		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
-		}
-
-		return output;
+	/**
+	 * @return second {@link Function} to be joined
+	 */
+	public F2 getSecond() {
+		return second;
 	}
+
+	/**
+	 * @param second {@link Function} to be joined
+	 */
+	public void setSecond(final F2 second) {
+		this.second = second;
+	}
+
 }

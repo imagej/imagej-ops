@@ -32,52 +32,68 @@ package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.Op;
+
+import java.util.Iterator;
+import java.util.List;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
+ * Join {@link Function}s.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractFunctionJoin<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C>
-{
+@Plugin(type = Op.class, name = "join")
+public class JoinFunctions<A> extends AbstractFunction<A, A> {
+
+	// list of functions to be joined
+	private List<Function<A, A>> functions;
 
 	@Parameter
-	protected F1 first;
+	private A buffer;
 
-	@Parameter
-	protected F2 second;
-
-	/**
-	 * @return first {@link Function} to be joined
-	 */
-	public F1 getFirst() {
-		return first;
+	public A getBuffer() {
+		return buffer;
 	}
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	public void setFirst(final F1 first) {
-		this.first = first;
+	public void setBuffer(final A buffer) {
+		this.buffer = buffer;
 	}
 
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	public F2 getSecond() {
-		return second;
+	public void setFunctions(final List<Function<A, A>> functions) {
+		this.functions = functions;
 	}
 
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
+	@Override
+	public A compute(final A input, final A output) {
 
+		final Iterator<Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
+	}
 }

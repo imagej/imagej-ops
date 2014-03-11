@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = "join")
-public class InplaceFunctionJoin<A, B> extends
-	AbstractFunctionJoin<A, A, B, InplaceFunction<A>, Function<A, B>>
+public class JoinInplaceAndFunction<A, B> extends
+	AbstractJoinFunction<A, A, B, InplaceFunction<A>, Function<A, B>>
 {
 
 	@Override

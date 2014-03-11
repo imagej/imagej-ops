@@ -65,15 +65,24 @@ public class FunctionMapIIP<A, B> extends
 
 	@Override
 	public boolean conforms() {
-		// Assumption: if output is zero, it will be provided from someone (such that it fits).
-		return getOutput() == null ||
-			getInput().iterationOrder().equals(getOutput().iterationOrder());
+		return getOutput() == null || isValid(getInput(), getOutput());
+	}
+
+	private boolean isValid(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		return getInput().iterationOrder().equals(getOutput().iterationOrder());
 	}
 
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
+		if (!isValid(input, output)) {
+			throw new IllegalArgumentException(
+				"Input and Output do not have the same iteration order!");
+		}
+
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override

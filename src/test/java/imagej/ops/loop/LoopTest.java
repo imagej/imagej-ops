@@ -41,7 +41,7 @@ public class LoopTest extends AbstractOpTest {
 
 	@Test
 	public void testInplace() {
-		ops.run(InplaceLoop.class, in, inplaceOp, numIterations);
+		ops.run(LoopInplace.class, in, inplaceOp, numIterations);
 
 		// test
 		final Cursor<ByteType> c = in.cursor();
@@ -53,7 +53,7 @@ public class LoopTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionalEven() {
-		ops.run(FunctionLoop.class, out, in, functionalOp, buffer, numIterations);
+		ops.run(LoopFunction.class, out, in, functionalOp, buffer, numIterations);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -65,7 +65,7 @@ public class LoopTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionalOdd() {
-		ops.run(FunctionLoop.class, out, in, functionalOp, buffer,
+		ops.run(LoopFunction.class, out, in, functionalOp, buffer,
 			numIterations - 1);
 
 		// test
