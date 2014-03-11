@@ -121,7 +121,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * wrapping it as a {@link Module} with populated inputs.
 	 * 
 	 * @param name The name of the operation.
-	 * @param args The operation's arguments
+	 * @param args The operation's arguments.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
@@ -131,11 +131,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * Gets the best {@link Op} to use for the given operation type and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
 	 * 
-	 * @param type The {@link Class} of the operation. If multiple {@link Op}s
+	 * @param type The required type of the operation. If multiple {@link Op}s
 	 *          share this type (e.g., the type is an interface which multiple
 	 *          {@link Op}s implement), then the best {@link Op} implementation to
 	 *          use will be selected automatically from the type and arguments.
-	 * @param args The operation's arguments
+	 * @param args The operation's arguments.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
