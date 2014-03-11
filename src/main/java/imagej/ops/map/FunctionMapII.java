@@ -46,22 +46,32 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Map.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class FunctionMapII<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent
+	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	Contingent
 {
 
 	@Override
 	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
+		return getOutput() == null || isValid(getInput(), getOutput());
+	}
+
+	private boolean isValid(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		return input.iterationOrder().equals(getOutput().iterationOrder());
 	}
 
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
+		if (isValid(input, output)) {
+			throw new IllegalArgumentException(
+				"Input and Output don't have the same iteration order!");
+		}
+
 		final Cursor<A> inCursor = input.cursor();
 		final Cursor<B> outCursor = output.cursor();
 
