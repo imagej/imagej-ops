@@ -42,6 +42,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * TODO
+ * 
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
