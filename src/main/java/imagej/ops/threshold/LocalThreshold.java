@@ -37,6 +37,7 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
 import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
@@ -60,6 +61,9 @@ public class LocalThreshold<T extends RealType<T>>
 	@Parameter
 	private Shape shape;
 
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
+
 	@Override
 	public RandomAccessibleInterval<BitType>
 		compute(RandomAccessibleInterval<T> input,
@@ -67,8 +71,9 @@ public class LocalThreshold<T extends RealType<T>>
 	{
 		// TODO: provide threaded implementation and specialized ones for
 		// rectangular neighborhoods (using integral images)
-
-		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(input);
+		RandomAccessibleInterval<T> extInput =
+			Views.interval(Views.extend(input, outOfBounds), input);
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
 		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
 		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
 		Pair<T> pair = new Pair<T>();
