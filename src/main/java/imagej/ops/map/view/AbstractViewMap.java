@@ -31,14 +31,14 @@
 package imagej.ops.map.view;
 
 import imagej.ops.Function;
-import imagej.ops.map.Map;
+import imagej.ops.map.FunctionMap;
 import net.imglib2.converter.Converter;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link Map} which virtually converts entries in
+ * Abstract implementation of a {@link FunctionMap} which virtually converts entries in
  * I and V from A to B.
  * 
  * @author Christian Dietz
@@ -48,7 +48,7 @@ import org.scijava.plugin.Parameter;
  * @param <O> type of resulting output
  */
 public abstract class AbstractViewMap<A, B, I, O> implements
-	Map<A, B, Function<A, B>>
+	FunctionMap<A, B, Function<A, B>>
 {
 
 	@Parameter

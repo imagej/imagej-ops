@@ -31,14 +31,14 @@
 package imagej.ops.map.view;
 
 import imagej.ops.Op;
-import imagej.ops.map.Map;
+import imagej.ops.map.FunctionMap;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Map.NAME)
+@Plugin(type = Op.class, name = FunctionMap.NAME)
 public class ViewMapRAI<A, B extends Type<B>>
 	extends
 	AbstractViewMap<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>

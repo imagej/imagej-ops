@@ -5,7 +5,7 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.Map;
+import imagej.ops.map.FunctionMap;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -22,7 +22,7 @@ public class JoinTest extends AbstractOpTest {
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
-		inplaceOp = ops.op(Map.class, in, new AddOneInplace());
+		inplaceOp = ops.op(FunctionMap.class, in, new AddOneInplace());
 //		buffer = generateByteTestImg(false, dims);
 //		out = generateByteTestImg(false, dims);
 	}

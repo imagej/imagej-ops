@@ -35,8 +35,11 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import imagej.ops.map.FunctionMapII;
-import imagej.ops.map.FunctionMapIIRAI;
+import imagej.ops.map.MapI2I;
+import imagej.ops.map.MapI2R;
+import imagej.ops.map.ParallelMap;
+import imagej.ops.map.ParallelMapI2I;
+import imagej.ops.map.ParallelMapI2R;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -45,9 +48,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link FunctionMapIIRAIP} and
- * {@link FunctionMapIIP}) of the mappers. Assumption: Naive Implementation of
- * {@link FunctionMapIIRAI} works fine.
+ * Testing multi threaded implementation ({@link ParallelMapI2R} and
+ * {@link ParallelMapI2I}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapI2R} works fine.
  * 
  * @author Christian Dietz
  */
@@ -66,7 +69,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(FunctionMapII.class, out, in, new AddOneFunctional());
+			ops.op(MapI2I.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -83,7 +86,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIRAIP() {
 
 		final Op functional =
-			ops.op(FunctionMapIIRAIP.class, out, in, new AddOneFunctional());
+			ops.op(ParallelMapI2R.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -101,7 +104,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(FunctionMapIIP.class, out, in, new AddOneFunctional());
+			ops.op(ParallelMapI2I.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -120,7 +123,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(InplaceMapP.class, in, new AddOneInplace());
+		final Op functional = ops.op(ParallelMap.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {

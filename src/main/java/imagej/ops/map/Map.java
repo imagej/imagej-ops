@@ -30,26 +30,29 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Function;
 import imagej.ops.Op;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
- * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
- * maps values from <A> to <B>.
+ * Default (slow) implementation of an {@link Map}.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz
+ * @param <A> to be mapped on itself
  */
-public interface Map<A, B, F extends Function<A, B>> extends Op {
+@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY)
+public class Map<A> extends
+	AbstractInplaceMap<A, Iterable<A>>
+{
 
-	public static final String NAME = "map";
+	@Override
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
 
-	/**
-	 * @return the {@link Function} used for mapping
-	 */
-	F getFunction();
-
-	/**
-	 * @param function the {@link Function} used for mapping
-	 */
-	void setFunction(F function);
+		return arg;
+	}
 }

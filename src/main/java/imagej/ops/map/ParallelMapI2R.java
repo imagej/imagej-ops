@@ -28,58 +28,64 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.map.AbstractInplaceMap;
-import imagej.ops.map.Map;
 import imagej.ops.threading.ChunkExecutor;
 import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link InplaceMap}
+ * Parallelized {@link FunctionalMap}
  * 
  * @author Christian Dietz
- * @param <A> mapped on <A>
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class InplaceMapP<A> extends
-	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY + 2)
+public class ParallelMapI2R<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
 {
 
 	@Parameter
 	private OpService opService;
 
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> inCursor = getInput().cursor();
+				final Cursor<A> cursor = input.localizingCursor();
 
-				setToStart(inCursor, startIndex);
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					func.compute(t, t);
-					inCursor.jumpFwd(stepSize);
+					rndAccess.setPosition(cursor);
+					func.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, arg.size());
+		}, input.size());
 
-		return arg;
+		return output;
 	}
 }

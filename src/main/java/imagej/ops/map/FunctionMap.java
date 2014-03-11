@@ -28,66 +28,28 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionMap;
-import imagej.ops.map.Map;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}
+ * Interface for {@link FunctionMap}s. A {@link FunctionMap} provides a {@link Function} which
+ * maps values from <A> to <B>.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
-public class FunctionMapIIRAIP<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
-{
+public interface FunctionMap<A, B, F extends Function<A, B>> extends Op {
 
-	@Parameter
-	private OpService opService;
+	public static final String NAME = "map";
 
-	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+	/**
+	 * @return the {@link Function} used for mapping
+	 */
+	F getFunction();
 
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> cursor = input.localizingCursor();
-
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<B> rndAccess = output.randomAccess();
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					func.compute(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-
-		return output;
-	}
+	/**
+	 * @param function the {@link Function} used for mapping
+	 */
+	void setFunction(F function);
 }

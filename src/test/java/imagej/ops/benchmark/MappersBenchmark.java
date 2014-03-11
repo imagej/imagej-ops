@@ -32,12 +32,12 @@ package imagej.ops.benchmark;
 
 import imagej.module.Module;
 import imagej.ops.Op;
-import imagej.ops.map.FunctionMapIIRAI;
-import imagej.ops.map.InplaceMap;
-import imagej.ops.map.FunctionMapII;
-import imagej.ops.map.parallel.FunctionMapIIRAIP;
-import imagej.ops.map.parallel.InplaceMapP;
-import imagej.ops.map.parallel.FunctionMapIIP;
+import imagej.ops.map.MapI2R;
+import imagej.ops.map.Map;
+import imagej.ops.map.MapI2I;
+import imagej.ops.map.ParallelMap;
+import imagej.ops.map.ParallelMapI2I;
+import imagej.ops.map.ParallelMapI2R;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -45,8 +45,8 @@ import org.junit.Before;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link FunctionMapIIRAI}, {@link FunctionMapII},
- * {@link FunctionMapIIRAIP}, {@link FunctionMapIIP}
+ * {@link MapI2R}, {@link MapI2I},
+ * {@link ParallelMapI2R}, {@link ParallelMapI2I}
  * 
  * @author Christian Dietz
  */
@@ -86,53 +86,53 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapper() {
 		final Module module =
-			ops.module(new FunctionMapIIRAI<ByteType, ByteType>(), out, in,
+			ops.module(new MapI2R<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(FunctionMapIIRAI.class.getSimpleName(), module,
+		benchmarkAndPrint(MapI2R.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestMapperII() {
 		final Module module =
-			ops.module(new FunctionMapII<ByteType, ByteType>(), out, in,
+			ops.module(new MapI2I<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(FunctionMapII.class.getSimpleName(), module,
+		benchmarkAndPrint(MapI2I.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapper() {
 		final Module module =
-			ops.module(new FunctionMapIIRAIP<ByteType, ByteType>(), out, in,
+			ops.module(new ParallelMapI2R<ByteType, ByteType>(), out, in,
 				addConstant);
 
-		benchmarkAndPrint(FunctionMapIIRAIP.class.getSimpleName(), module,
+		benchmarkAndPrint(ParallelMapI2R.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperII() {
 		final Module module =
-			ops.module(new FunctionMapIIP<ByteType, ByteType>(), out, in,
+			ops.module(new ParallelMapI2I<ByteType, ByteType>(), out, in,
 				addConstant, out);
 
-		benchmarkAndPrint(FunctionMapIIP.class.getSimpleName(), module,
+		benchmarkAndPrint(ParallelMapI2I.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestMapperInplace() {
 		final Module module =
-			ops.module(new InplaceMap<ByteType>(), in, addConstant);
+			ops.module(new Map<ByteType>(), in, addConstant);
 
-		benchmarkAndPrint(InplaceMap.class.getSimpleName(), module,
+		benchmarkAndPrint(Map.class.getSimpleName(), module,
 			numRuns);
 	}
 
 	public void pixelWiseTestThreadedMapperInplace() {
 		final Module module =
-			ops.module(new InplaceMapP<ByteType>(), in.copy(), addConstant);
+			ops.module(new ParallelMap<ByteType>(), in.copy(), addConstant);
 
-		benchmarkAndPrint(InplaceMapP.class.getSimpleName(), module,
+		benchmarkAndPrint(ParallelMap.class.getSimpleName(), module,
 			numRuns);
 	}
 }

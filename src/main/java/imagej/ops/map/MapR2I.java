@@ -28,71 +28,44 @@
  * #L%
  */
 
-package imagej.ops.map.parallel;
+package imagej.ops.map;
 
-import imagej.ops.Contingent;
+import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.map.AbstractFunctionMap;
-import imagej.ops.map.Map;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}, which is specialized for the case, that
- * the two incoming {@link IterableInterval}s have the same IterationOrder.
+ * {@link FunctionMap} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link IterableInterval}
  * 
+ * @author Martin Horn
  * @author Christian Dietz
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 3)
-public class FunctionMapIIP<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent, Parallel
+@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY)
+public class MapR2I<A, B> extends
+	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
-	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
+	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+		final Cursor<B> cursor = output.localizingCursor();
+		final RandomAccess<A> rndAccess = input.randomAccess();
 
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> inCursor = input.cursor();
-				final Cursor<B> outCursor = output.cursor();
-
-				setToStart(inCursor, startIndex);
-				setToStart(outCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					func.compute(inCursor.get(), outCursor.get());
-					inCursor.jumpFwd(stepSize);
-					outCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(rndAccess.get(), cursor.get());
+		}
 
 		return output;
 	}
