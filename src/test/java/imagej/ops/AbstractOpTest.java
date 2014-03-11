@@ -40,6 +40,7 @@ import net.imglib2.util.Intervals;
 import org.junit.After;
 import org.junit.Before;
 import org.scijava.Context;
+import org.scijava.plugin.Parameter;
 
 /**
  * Base class for {@link Op} unit testing.
@@ -52,14 +53,16 @@ import org.scijava.Context;
  */
 public abstract class AbstractOpTest {
 
+	@Parameter
 	protected Context context;
+
+	@Parameter
 	protected OpService ops;
 
 	/** Sets up a SciJava context with {@link OpService}. */
 	@Before
 	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.service(OpService.class);
+		new Context(OpService.class).inject(this);
 	}
 
 	/**
