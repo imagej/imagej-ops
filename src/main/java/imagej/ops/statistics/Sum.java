@@ -33,12 +33,19 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Simple marker interface
+ * Base interface for "sum" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Sum.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */
 public interface Sum<I, O> extends Function<I, O> {
 
-	public static final String NAME = "sum";
+	String NAME = "sum";
 
 }

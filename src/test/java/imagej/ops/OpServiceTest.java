@@ -38,7 +38,6 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.Priority;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -55,133 +54,121 @@ public class OpServiceTest extends AbstractOpTest {
 	@Test
 	public void testRunByName() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		assertFalse(Double.isInfinite(output.get()));
-		final Object result = ops.run("infinity", output, value);
-		assertSame(output, result);
-		assertTrue(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
+		final Object result = ops.run("infinity", value);
+		assertSame(value, result);
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#run(Class, Object...)}. */
 	@Test
 	public void testRunByType() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		assertFalse(Double.isInfinite(output.get()));
-		final Object result = ops.run(InfinityOp.class, output, value);
-		assertSame(output, result);
-		assertTrue(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
+		final Object result = ops.run(InfinityOp.class, value);
+		assertSame(value, result);
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#run(Op, Object...)}. */
 	@Test
 	public void testRunByOp() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		assertFalse(Double.isInfinite(output.get()));
-		final Object result = ops.run(new InfinityOp(), output, value);
-		assertSame(output, result);
-		assertTrue(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
+		final Object result = ops.run(new InfinityOp(), value);
+		assertSame(value, result);
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#op(String, Object...)}. */
 	@Test
 	public void testOpByName() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		final Op op = ops.op("infinity", output, value);
+		final Op op = ops.op("infinity", value);
 		assertSame(InfinityOp.class, op.getClass());
 
-		assertFalse(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
 		op.run();
-		assertTrue(Double.isInfinite(output.get()));
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#op(Class, Object...)}. */
 	@Test
 	public void testOpByType() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		final Op op = ops.op(InfinityOp.class, output, value);
+		final Op op = ops.op(InfinityOp.class, value);
 		assertSame(InfinityOp.class, op.getClass());
 
-		assertFalse(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
 		op.run();
-		assertTrue(Double.isInfinite(output.get()));
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#module(Class, Object...)}. */
 	@Test
 	public void testModuleByName() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		final Module module = ops.module("infinity", output, value);
-		assertSame(output, module.getInput("out"));
-		assertSame(value, module.getInput("in"));
+		final Module module = ops.module("infinity", value);
+		assertSame(value, module.getInput("arg"));
 
-		assertFalse(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
 		module.run();
-		assertTrue(Double.isInfinite(output.get()));
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#module(Class, Object...)}. */
 	@Test
 	public void testModuleByType() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		final Module module = ops.module(InfinityOp.class, output, value);
-		assertSame(output, module.getInput("out"));
-		assertSame(value, module.getInput("in"));
+		final Module module = ops.module(InfinityOp.class, value);
+		assertSame(value, module.getInput("arg"));
 
-		assertFalse(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
 		module.run();
-		assertTrue(Double.isInfinite(output.get()));
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
-	/** Tests {@link OpService#module(Class, Object...)}. */
+	/** Tests {@link OpService#module(Op, Object...)}. */
 	@Test
 	public void testModuleByOp() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		final Module module = ops.module(new InfinityOp(), output, value);
+		final Module module = ops.module(new InfinityOp(), value);
 		assertSame(InfinityOp.class, module.getDelegateObject().getClass());
-		assertSame(output, module.getInput("out"));
-		assertSame(value, module.getInput("in"));
+		assertSame(value, module.getInput("arg"));
 
-		assertFalse(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
 		module.run();
-		assertTrue(Double.isInfinite(output.get()));
+		assertTrue(Double.isInfinite(value.get()));
 	}
 
 	/** Tests {@link OpService#run(String, Object...)}. */
 	@Test
 	public void testAliases() {
 		final DoubleType value = new DoubleType(123.456);
-		final DoubleType output = new DoubleType();
 
-		assertFalse(Double.isInfinite(output.get()));
-		final Object result = ops.run("infin", output, value);
-		assertSame(output, result);
-		assertTrue(Double.isInfinite(output.get()));
+		assertFalse(Double.isInfinite(value.get()));
+		final Object result = ops.run("infin", value);
+		assertSame(value, result);
+		assertTrue(Double.isInfinite(value.get()));
 
-		output.set(0.0);
-		assertFalse(Double.isInfinite(output.get()));
-		final Object result2 = ops.run("inf", output, value);
-		assertSame(output, result2);
-		assertTrue(Double.isInfinite(output.get()));
+		value.set(0.0);
+		assertFalse(Double.isInfinite(value.get()));
+		final Object result2 = ops.run("inf", value);
+		assertSame(value, result2);
+		assertTrue(Double.isInfinite(value.get()));
 
-		output.set(0.0);
+		value.set(0.0);
 		boolean noSuchAlias = false;
 		try {
-			ops.run("infini", output, value);
+			ops.run("infini", value);
 		}
 		catch (final IllegalArgumentException exc) {
 			noSuchAlias = true;
@@ -207,18 +194,12 @@ public class OpServiceTest extends AbstractOpTest {
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
-	public static class InfinityOp extends
-		AbstractFunction<DoubleType, DoubleType>
-	{
-
-		@Parameter
-		private LogService log;
+	public static class InfinityOp extends AbstractInplaceFunction<DoubleType> {
 
 		@Override
-		public DoubleType compute(final DoubleType input, final DoubleType output) {
-			log.info("Ignoring input value " + input.get());
-			output.set(Double.POSITIVE_INFINITY);
-			return output;
+		public DoubleType compute(final DoubleType arg) {
+			arg.set(Double.POSITIVE_INFINITY);
+			return arg;
 		}
 	}
 

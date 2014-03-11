@@ -33,8 +33,10 @@ package imagej.ops.threshold;
 import imagej.ops.Op;
 
 /**
- * Marker interface for threshold operations. Implementing classes should be
- * annotated with:
+ * Base interface for "threshold" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
  * <pre>
  * @Plugin(type = Op.class, name = Threshold.NAME)
@@ -44,6 +46,6 @@ import imagej.ops.Op;
  */
 public interface Threshold extends Op {
 
-	public static final String NAME = "threshold";
+	String NAME = "threshold";
 
 }

@@ -33,14 +33,19 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Simple marker interface
+ * Base interface for "quantile" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Quantile.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Quantile<T, V> extends Function<T, V> {
 
-	public static final String NAME = "quantile";
+	String NAME = "quantile";
 
 }

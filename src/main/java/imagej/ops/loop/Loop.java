@@ -4,7 +4,14 @@ package imagej.ops.loop;
 import imagej.ops.Function;
 
 /**
- * Marker interface
+ * Base interface for "loop" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Loop.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */

@@ -31,10 +31,19 @@
 package imagej.ops.project;
 
 /**
- * Marker interface
+ * Base interface for "project" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Projector.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */
 public interface Projector {
-	// NB: Marker interface
+
+	String NAME = "project";
+
 }

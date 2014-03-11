@@ -33,14 +33,19 @@ package imagej.ops.identity;
 import imagej.ops.InplaceFunction;
 
 /**
- * Marker interface for identity operations. Implementing classes should be
- * annotated with:
- * <pre>@Plugin(type = Op.class, name = Identity.NAME</pre>
+ * Base interface for "identity" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Identity.NAME)
+ * </pre>
  * 
  * @author Curtis Rueden
  */
 public interface Identity<A> extends InplaceFunction<A> {
 
-	public static final String NAME = "identity";
+	String NAME = "identity";
 
 }

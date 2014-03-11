@@ -7,12 +7,12 @@ import imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link FunctionLoop}.
+ * Abstract implementation of a {@link LoopFunction}.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractFunctionLoop<F extends Function<I, I>, I> extends
-	AbstractFunction<I, I> implements FunctionLoop<I>
+public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
+	AbstractFunction<I, I> implements LoopFunction<I>
 {
 
 	/** Function to loop. */

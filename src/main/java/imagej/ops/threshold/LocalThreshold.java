@@ -28,59 +28,55 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.threshold;
 
 import imagej.ops.AbstractFunction;
-import imagej.ops.Function;
+import imagej.ops.Op;
+import imagej.ops.threshold.LocalThresholdMethod.Pair;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
+import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
- * 
- * @author Christian Dietz
- * @param <A>
- * @param <B>
- * @param <C>
+ * @author Martin Horn
  */
-public abstract class AbstractFunctionJoin<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C>
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class LocalThreshold<T extends RealType<T>>
+	extends
+	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Threshold
 {
 
 	@Parameter
-	protected F1 first;
+	private LocalThresholdMethod<T> method;
 
 	@Parameter
-	protected F2 second;
+	private Shape shape;
 
-	/**
-	 * @return first {@link Function} to be joined
-	 */
-	public F1 getFirst() {
-		return first;
+	@Override
+	public RandomAccessibleInterval<BitType>
+		compute(RandomAccessibleInterval<T> input,
+			RandomAccessibleInterval<BitType> output)
+	{
+		// TODO: provide threaded implementation and specialized ones for
+		// rectangular neighborhoods (using integral images)
+
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(input);
+		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
+		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
+		Pair<T> pair = new Pair<T>();
+		for (final Neighborhood<T> neighborhood : neighborhoods) {
+			pair.neighborhood = neighborhood;
+			pair.pixel = inCursor.next();
+			method.compute(pair, outCursor.next());
+		}
+		return output;
 	}
-
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	public void setFirst(final F1 first) {
-		this.first = first;
-	}
-
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	public F2 getSecond() {
-		return second;
-	}
-
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
-
 }

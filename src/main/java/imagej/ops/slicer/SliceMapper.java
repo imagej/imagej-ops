@@ -33,14 +33,12 @@ import imagej.ops.Function;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
- * Interface for mappers which perform a slice-wise mapping
+ * Base interface for "map" operations which perform a slice-wise mapping.
  * 
  * @author Christian Dietz
- * 
- * @param <I>
- * @param <O>
  */
 public interface SliceMapper<I, O> extends
-		Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {
-	// NB: Marker interface for Slice Mappers
+	Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+{
+	// NB: Marker interface.
 }

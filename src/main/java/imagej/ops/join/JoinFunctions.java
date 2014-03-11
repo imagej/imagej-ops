@@ -28,46 +28,72 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+
+import java.util.Iterator;
+import java.util.List;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Join {@link Function}s.
+ * 
+ * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class ThresholdGlobal<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
-	Threshold
-{
+@Plugin(type = Op.class, name = "join")
+public class JoinFunctions<A> extends AbstractFunction<A, A> {
+
+	// list of functions to be joined
+	private List<Function<A, A>> functions;
 
 	@Parameter
-	private ThresholdMethod<T> method;
+	private A buffer;
 
-	@Parameter
-	private OpService ops;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public IterableInterval<BitType> compute(final IterableInterval<T> input,
-		final IterableInterval<BitType> output)
-	{
-		final T threshold = (T) ops.run(method, input);
-
-		Op thresholdOp =
-			ops
-				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
-
-		ops.run("map", output, input, threshold);
-		return output;
+	public A getBuffer() {
+		return buffer;
 	}
 
+	public void setBuffer(final A buffer) {
+		this.buffer = buffer;
+	}
+
+	public void setFunctions(final List<Function<A, A>> functions) {
+		this.functions = functions;
+	}
+
+	@Override
+	public A compute(final A input, final A output) {
+
+		final Iterator<Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
+	}
 }

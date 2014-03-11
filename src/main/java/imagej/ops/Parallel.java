@@ -31,7 +31,7 @@
 package imagej.ops;
 
 /**
- * Marker interface for {@link Op}s that use multithreading.
+ * Base interface for {@link Op}s that use multithreading.
  * 
  * @author Curtis Rueden
  */

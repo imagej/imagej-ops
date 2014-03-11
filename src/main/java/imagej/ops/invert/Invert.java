@@ -31,12 +31,19 @@
 package imagej.ops.invert;
 
 /**
- * Marker interface for invert-operations.
+ * Base interface for "invert" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Invert.NAME)
+ * </pre>
  * 
  * @author Martin Horn
  */
 public interface Invert {
 
-	public static final String NAME = "invert";
+	String NAME = "invert";
 
 }

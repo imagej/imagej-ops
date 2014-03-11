@@ -33,17 +33,19 @@ package imagej.ops.convert;
 import imagej.ops.Function;
 
 /**
- * /** Marker interface for convert operations. Implementing classes should be
- * annotated with:
+ * Base interface for "convert" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Convert.NAME
+ * @Plugin(type = Op.class, name = Convert.NAME)
  * </pre>
  * 
  * @author Martin Horn
  */
 public interface Convert<I, O> extends Function<I, O> {
 
-	public static final String NAME = "convert";
+	String NAME = "convert";
 
 }

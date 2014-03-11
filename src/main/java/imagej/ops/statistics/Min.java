@@ -33,14 +33,19 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Simple marker interface
+ * Base interface for "min" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Min.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Min<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "min";
+	String NAME = "min";
 
 }

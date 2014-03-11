@@ -6,14 +6,12 @@ import imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of a {@link AbstractInplaceLoop}
+ * Default implementation of a {@link AbstractLoopInplace}
  * 
  * @author Christian Dietz
- * @param <I>
- * @param <O>
  */
 @Plugin(type = Op.class, name = Loop.NAME)
-public class DefaultInplaceLoop<I> extends AbstractInplaceLoop<I> {
+public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override
 	public I compute(final I arg) {

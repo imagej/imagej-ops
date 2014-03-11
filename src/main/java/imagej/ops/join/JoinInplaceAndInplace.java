@@ -28,23 +28,29 @@
  * #L%
  */
 
-package imagej.ops.histogram;
+package imagej.ops.join;
 
+import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
 
-/**
- * Base interface for "histogram" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Histogram.NAME)
- * </pre>
- * 
- * @author Martin Horn
- */
-public interface Histogram extends Op {
+import org.scijava.plugin.Plugin;
 
-	String NAME = "histogram";
+/**
+ * Joins two {@link InplaceFunction}s
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = "join")
+public class JoinInplaceAndInplace<A> extends AbstractJoinInplace<A> {
+
+	@Override
+	public A compute(final A arg) {
+		return compute(arg, arg);
+	}
+
+	@Override
+	public A compute(final A input, final A output) {
+		first.compute(input, output);
+		return second.compute(input, output);
+	}
 }

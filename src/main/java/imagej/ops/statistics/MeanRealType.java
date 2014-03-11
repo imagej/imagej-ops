@@ -32,6 +32,7 @@ package imagej.ops.statistics;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
 import imagej.ops.misc.Size;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -42,23 +43,33 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * TODO
+ * 
  * @author Christian Dietz
- * @param <I>
- * @param <O>
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private Sum<Iterable<I>, DoubleType> sumFunc;
 
-	@Parameter
+	@Parameter(required = false)
 	private Size<Iterable<I>> sizeFunc;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public O compute(final Iterable<I> input, final O output) {
+
+		if (sumFunc == null) {
+			sumFunc = (Sum<Iterable<I>, DoubleType>) ops.op(Sum.class, output, input);
+		}
+		if (sizeFunc == null) {
+			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);
+		}
 
 		final LongType size = sizeFunc.compute(input, new LongType());
 		final DoubleType sum = sumFunc.compute(input, new DoubleType());

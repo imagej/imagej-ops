@@ -40,6 +40,7 @@ import net.imglib2.util.Intervals;
 import org.junit.After;
 import org.junit.Before;
 import org.scijava.Context;
+import org.scijava.plugin.Parameter;
 
 /**
  * Base class for {@link Op} unit testing.
@@ -49,19 +50,28 @@ import org.scijava.Context;
  * </p>
  * 
  * @author Johannes Schindelin
+ * @author Curtis Rueden
  */
 public abstract class AbstractOpTest {
 
+	@Parameter
 	protected Context context;
+
+	@Parameter
 	protected OpService ops;
 
-	/**
-	 * Sets up an {@link OpService}.
-	 */
+	@Parameter
+	protected OpMatchingService matcher;
+
+	/** Subclasses can override to create a context with different services. */
+	protected Context createContext() {
+		return new Context(OpService.class, OpMatchingService.class);
+	}
+
+	/** Sets up a SciJava context with {@link OpService}. */
 	@Before
 	public void setUp() {
-		context = new Context(OpService.class);
-		ops = context.service(OpService.class);
+		createContext().inject(this);
 	}
 
 	/**

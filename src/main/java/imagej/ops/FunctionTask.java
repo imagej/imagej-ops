@@ -34,8 +34,6 @@ package imagej.ops;
  * Helper class for multi threading of unary functions
  * 
  * @author Christian Dietz
- * @param <A>
- * @param <B>
  */
 public class FunctionTask<A, B> implements Runnable {
 

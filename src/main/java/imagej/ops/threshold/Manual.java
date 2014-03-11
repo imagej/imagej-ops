@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = "manualthreshold")
-public class Manual<T extends RealType<T>> extends ThresholdMethod<T> {
+public class Manual<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 
 	@Parameter
 	private double threshold;

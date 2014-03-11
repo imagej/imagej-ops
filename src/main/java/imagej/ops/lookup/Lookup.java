@@ -33,18 +33,25 @@ package imagej.ops.lookup;
 import imagej.ops.Op;
 
 /**
- * Marker interface for operations that look up ops. Implementing classes should
- * be annotated with:
+ * Base interface for "lookup" operations.
+ * <p>
+ * These operations look up matching ops given an operation name and list of
+ * arguments.
+ * </p>
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = "lookup",
- *   attrs = { @Attr(name = "alias", value = "op") })
+ * @Plugin(type = Op.class, name = Lookup.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Lookup.ALIASES) })
  * </pre>
  * 
  * @author Curtis Rueden
  */
 public interface Lookup extends Op {
 
-	public static final String NAME = "identity";
+	String NAME = "lookup";
+	String ALIASES = "op";
 
 }

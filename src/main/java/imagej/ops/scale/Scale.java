@@ -33,15 +33,20 @@ package imagej.ops.scale;
 import imagej.ops.Op;
 
 /**
- * Marker interface for all scaling operations. Implementing classes should be
- * annotated with
- * <code>@Plugin(type = Op.class, name = Scale.NAME, attrs = { @Attr(
-	name = "aliases", value = Scale.ALIASES) })</code>.
+ * Base interface for "scale" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Scale.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Scale.ALIASES) })
+ * </pre>
  * 
  * @author Martin Horn
  */
 public interface Scale extends Op {
 
-	public static final String NAME = "scale";
-	public static final String ALIASES = "resize";
+	String NAME = "scale";
+	String ALIASES = "resize";
 }

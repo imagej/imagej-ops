@@ -43,12 +43,12 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link Map}
+ * Parallelized {@link MapI}
  * 
  * @author Christian Dietz
  * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = FunctionMap.NAME, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class ParallelMap<A> extends
 	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {
@@ -64,7 +64,7 @@ public class ParallelMap<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<A> inCursor = getInput().cursor();
+				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);
 

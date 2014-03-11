@@ -63,13 +63,24 @@ public class ParallelMapI2I<A, B> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
+		return getOutput() == null || isValid(getInput(), getOutput());
+	}
+
+	private boolean isValid(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
+		if (!isValid(input, output)) {
+			throw new IllegalArgumentException(
+				"Input and Output do not have the same iteration order!");
+		}
+
 		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
 
 			@Override

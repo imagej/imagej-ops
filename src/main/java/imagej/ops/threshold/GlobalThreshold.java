@@ -30,45 +30,44 @@
 
 package imagej.ops.threshold;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.histogram.Histogram;
 import net.imglib2.IterableInterval;
-import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * @author Martin Horn
  */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class GlobalThreshold<T extends RealType<T>> extends
+	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
+	Threshold
+{
 
 	@Parameter
-	private IterableInterval<T> img;
+	private GlobalThresholdMethod<T> method;
 
 	@Parameter
 	private OpService ops;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(Histogram.class, img, null);
+	public IterableInterval<BitType> compute(final IterableInterval<T> input,
+		final IterableInterval<BitType> output)
+	{
+		final T threshold = (T) ops.run(method, input);
 
-		threshold = img.firstElement().createVariable();
+		Op thresholdOp =
+			ops
+				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
 
-		getThreshold(hist, threshold);
+		ops.run("map", output, input, threshold);
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
 }

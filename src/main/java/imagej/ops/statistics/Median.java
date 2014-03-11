@@ -31,14 +31,19 @@
 package imagej.ops.statistics;
 
 /**
- * Simple marker interface
+ * Base interface for "median" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Median.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Median<T, V> extends Quantile<T, V> {
 
-	public static final String NAME = "median";
+	String NAME = "median";
 
 }

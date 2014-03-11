@@ -46,7 +46,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "project", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Projector.NAME, priority = Priority.LOW_PRIORITY)
 public class DefaultProjector<T, V> extends
 	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
 	Contingent, Projector

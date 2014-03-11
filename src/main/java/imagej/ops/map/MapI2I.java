@@ -30,9 +30,10 @@
 
 package imagej.ops.map;
 
-import imagej.ops.Contingent;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
+
+import java.util.Iterator;
+
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
@@ -46,29 +47,20 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = FunctionMap.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapI2I<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>>
-	implements Contingent
+	AbstractFunctionMap<A, B, Iterable<A>, Iterable<B>>
+
 {
 
 	@Override
-	public boolean conforms() {
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
-	}
-
-	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
 	{
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		final Iterator<A> inCursor = input.iterator();
+		final Iterator<B> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
-			inCursor.fwd();
-			outCursor.fwd();
-			func.compute(inCursor.get(), outCursor.get());
+			func.compute(inCursor.next(), outCursor.next());
 		}
 
 		return output;

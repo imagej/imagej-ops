@@ -33,14 +33,19 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Simple marker interface
+ * Base interface for "variance" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Variance.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
- * @param <T>
- * @param <V>
  */
 public interface Variance<T, V> extends Function<Iterable<T>, V> {
 
-	public static final String NAME = "variance";
+	String NAME = "variance";
 
 }

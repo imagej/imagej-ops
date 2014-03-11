@@ -34,7 +34,7 @@ import imagej.command.Command;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.slicer.SliceMapper;
-import imagej.ops.threshold.ThresholdMethod;
+import imagej.ops.threshold.GlobalThresholdMethod;
 import net.imglib2.Axis;
 import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.logic.BitType;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 public class GlobalThresholder<T extends RealType<T>> implements Command {
 
     @Parameter
-    private ThresholdMethod<T> method;
+    private GlobalThresholdMethod<T> method;
 
     @Parameter
     private OpService ops;
