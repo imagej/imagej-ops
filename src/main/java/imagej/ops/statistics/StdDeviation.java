@@ -33,7 +33,14 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Simple marker interface
+ * Base interface for "stddev" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = StdDeviation.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */

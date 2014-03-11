@@ -33,7 +33,15 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Marker interface for mean operations.
+ * Base interface for "mean" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Mean.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Mean.ALIASES) })
+ * </pre>
  */
 public interface Mean<I, O> extends Function<I, O> {
 

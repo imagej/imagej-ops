@@ -31,7 +31,14 @@
 package imagej.ops.statistics;
 
 /**
- * Simple marker interface
+ * Base interface for "median" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Median.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */

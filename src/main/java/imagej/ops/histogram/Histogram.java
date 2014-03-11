@@ -33,8 +33,10 @@ package imagej.ops.histogram;
 import imagej.ops.Op;
 
 /**
- * Marker interface for operations that calculate a histogram. Implementing
- * classes should be annotated with:
+ * Base interface for "histogram" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
  * <pre>
  * @Plugin(type = Op.class, name = Histogram.NAME)

@@ -33,11 +33,13 @@ package imagej.ops.convolve;
 import imagej.ops.Op;
 
 /**
- * Marker interface for convolve operations. Implementing classes should be
- * annotated with:
+ * Base interface for "convolve" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Convolve.NAME
+ * @Plugin(type = Op.class, name = Convolve.NAME)
  * </pre>
  * 
  * @author Martin Horn
