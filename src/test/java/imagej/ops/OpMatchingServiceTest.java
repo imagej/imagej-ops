@@ -30,13 +30,17 @@
 
 package imagej.ops;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import imagej.module.Module;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 public class OpMatchingServiceTest extends AbstractOpTest {
 
-	/** Tests {@link OpMatchingService#findModule(String, Class, Object...)}. */
+	/** Tests {@link OpMatchingService#findModule}. */
 	@Test
 	public void testFindModule() {
 		final DoubleType value = new DoubleType(123.456);
@@ -67,6 +71,47 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		assertTrue(Double.isNaN(value.get()));
 	}
 
+	/** Tests support for matching when there are optional parameters. */
+	public void testOptionalParams() {
+		Module m;
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6, 7);
+		assertNull(m);
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6);
+		assertValues(m, 1, 2, 3, 4, 5, 6, -7);
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5);
+		assertValues(m, 1, 2, 3, 4, -5, 5, -7);
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4);
+		assertValues(m, 1, 2, 3, -4, -5, 4, -7);
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3);
+		assertValues(m, 1, -2, 2, -4, -5, 3, -7);
+
+		m = matcher.findModule(null, OptionalParams.class, 1, 2);
+		assertNull(m);
+	}
+
+	// -- Helper methods --
+
+	private void assertValues(final Module m, final int a, final int b,
+		final int c, final int d, final int e, final int f, final int result)
+	{
+		assertEquals(a, num(m.getInput("a")));
+		assertEquals(b, num(m.getInput("b")));
+		assertEquals(c, num(m.getInput("c")));
+		assertEquals(d, num(m.getInput("d")));
+		assertEquals(e, num(m.getInput("e")));
+		assertEquals(f, num(m.getInput("f")));
+		assertEquals(result, num(m.getOutput("result")));
+	}
+
+	private int num(final Object o) {
+		return (Integer) o;
+	}
+
 	// -- Helper classes --
 
 	/** A test {@link Op}. */
@@ -77,6 +122,31 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		public DoubleType compute(final DoubleType argument) {
 			argument.set(Double.NaN);
 			return argument;
+		}
+
+	}
+
+	@Plugin(type = Op.class)
+	public static class OptionalParams implements Op {
+
+		@Parameter
+		private final int a = -1;
+		@Parameter(required = false)
+		private final int b = -2;
+		@Parameter
+		private final int c = -3;
+		@Parameter(required = false)
+		private final int d = -4;
+		@Parameter(required = false)
+		private final int e = -5;
+		@Parameter
+		private final int f = -6;
+		@Parameter(type = ItemIO.OUTPUT)
+		private final int result = -7;
+
+		@Override
+		public void run() {
+			// NB: No action needed.
 		}
 
 	}
