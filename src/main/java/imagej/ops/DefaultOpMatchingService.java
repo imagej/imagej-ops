@@ -167,14 +167,38 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public Module match(final ModuleInfo info, final Object... args) {
+		// check the number of args, padding optional args with null as needed
+		int inputCount = 0, requiredCount = 0;
+		for (final ModuleItem<?> item : info.inputs()) {
+			inputCount++;
+			if (item.isRequired()) requiredCount++;
+		}
+		if (args.length > inputCount) return null; // too many arguments
+		if (args.length < requiredCount) return null; // too few arguments
+
+		if (args.length != inputCount) {
+			// pad optional parameters with null (from right to left)
+			final int argsToPad = inputCount - args.length;
+			final int optionalCount = inputCount - requiredCount;
+			final int optionalsToFill = optionalCount - argsToPad;
+			final Object[] paddedArgs = new Object[inputCount];
+			int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
+			for (final ModuleItem<?> item : info.inputs()) {
+				if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
+					// skip this optional parameter (pad with null)
+					continue;
+				}
+				paddedArgs[paddedIndex++] = args[argIndex++];
+			}
+			return match(info, paddedArgs);
+		}
+
 		// check that each parameter is compatible with its argument
 		int i = 0;
 		for (final ModuleItem<?> item : info.inputs()) {
-			if (i >= args.length) return null; // too few arguments
 			final Object arg = args[i++];
 			if (!canAssign(arg, item)) return null;
 		}
-		if (i != args.length) return null; // too many arguments
 
 		// create module and assign the inputs
 		final Module module = createModule(info, args);
