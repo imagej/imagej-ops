@@ -67,7 +67,7 @@ public class FunctionMapII<A, B> extends
 	public IterableInterval<B> compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		if (isValid(input, output)) {
+		if (!isValid(input, output)) {
 			throw new IllegalArgumentException(
 				"Input and Output don't have the same iteration order!");
 		}
