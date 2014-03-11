@@ -42,8 +42,8 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "lookup",
-	attrs = { @Attr(name = "alias", value = "op") })
+@Plugin(type = Op.class, name = Lookup.NAME,
+	attrs = { @Attr(name = "aliases", value = Lookup.ALIASES) })
 public class DefaultLookup extends AbstractLookup {
 
 	@Parameter
