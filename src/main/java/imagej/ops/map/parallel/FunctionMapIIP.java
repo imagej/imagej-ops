@@ -71,7 +71,7 @@ public class FunctionMapIIP<A, B> extends
 	private boolean isValid(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		return getInput().iterationOrder().equals(getOutput().iterationOrder());
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
