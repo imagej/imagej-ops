@@ -32,14 +32,10 @@ package imagej.ops.threshold;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.threshold.LocalThresholdMethod.Pair;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
-import net.imglib2.algorithm.region.localneighborhood.Shape;
+import imagej.ops.OpService;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -48,35 +44,30 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Threshold.NAME)
-public class ThresholdLocal<T extends RealType<T>>
-	extends
-	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-	implements Threshold
+public class GlobalThreshold<T extends RealType<T>> extends
+	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
+	Threshold
 {
 
 	@Parameter
-	private LocalThresholdMethod<T> method;
+	private GlobalThresholdMethod<T> method;
 
 	@Parameter
-	private Shape shape;
+	private OpService ops;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public RandomAccessibleInterval<BitType>
-		compute(RandomAccessibleInterval<T> input,
-			RandomAccessibleInterval<BitType> output)
+	public IterableInterval<BitType> compute(final IterableInterval<T> input,
+		final IterableInterval<BitType> output)
 	{
-		// TODO: provide threaded implementation and specialized ones for
-		// rectangular neighborhoods (using integral images)
+		final T threshold = (T) ops.run(method, input);
 
-		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(input);
-		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
-		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
-		Pair<T> pair = new Pair<T>();
-		for (final Neighborhood<T> neighborhood : neighborhoods) {
-			pair.neighborhood = neighborhood;
-			pair.pixel = inCursor.next();
-			method.compute(pair, outCursor.next());
-		}
+		Op thresholdOp =
+			ops
+				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
+
+		ops.run("map", output, input, threshold);
 		return output;
 	}
+
 }

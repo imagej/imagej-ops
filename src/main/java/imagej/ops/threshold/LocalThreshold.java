@@ -30,45 +30,53 @@
 
 package imagej.ops.threshold;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.Histogram;
-import net.imglib2.IterableInterval;
-import net.imglib2.histogram.Histogram1d;
+import imagej.ops.threshold.LocalThresholdMethod.Pair;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
+import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * @author Martin Horn
  */
-public abstract class ThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class LocalThreshold<T extends RealType<T>>
+	extends
+	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Threshold
+{
 
 	@Parameter
-	private IterableInterval<T> img;
+	private LocalThresholdMethod<T> method;
 
 	@Parameter
-	private OpService ops;
+	private Shape shape;
 
 	@Override
-	public void run() {
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(Histogram.class, img, null);
+	public RandomAccessibleInterval<BitType>
+		compute(RandomAccessibleInterval<T> input,
+			RandomAccessibleInterval<BitType> output)
+	{
+		// TODO: provide threaded implementation and specialized ones for
+		// rectangular neighborhoods (using integral images)
 
-		threshold = img.firstElement().createVariable();
-
-		getThreshold(hist, threshold);
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(input);
+		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
+		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
+		Pair<T> pair = new Pair<T>();
+		for (final Neighborhood<T> neighborhood : neighborhoods) {
+			pair.neighborhood = neighborhood;
+			pair.pixel = inCursor.next();
+			method.compute(pair, outCursor.next());
+		}
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

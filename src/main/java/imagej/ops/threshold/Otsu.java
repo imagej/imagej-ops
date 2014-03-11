@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "otsu")
-public class Otsu<T extends RealType<T>> extends ThresholdMethod<T> {
+public class Otsu<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 
 	@Override
 	protected final void
