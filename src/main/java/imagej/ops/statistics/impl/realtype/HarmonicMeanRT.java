@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * SciJava OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2013 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,54 +28,61 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.misc.Size;
+import imagej.ops.misc.Area;
+import imagej.ops.statistics.HarmonicMean;
+import imagej.ops.statistics.Kurtosis;
+import imagej.ops.statistics.impl.realtype.sums.SumOfInversesRT;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * TODO
- * 
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
-public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
+@Plugin(type = Op.class, name = HarmonicMean.NAME, label = HarmonicMean.LABEL,
+	priority = Priority.LOW_PRIORITY)
+public class HarmonicMeanRT extends AbstractFunctionIRT2RT implements
+	Kurtosis<Iterable<? extends RealType<?>>, RealType<?>>
 {
-
-	@Parameter(required = false)
-	private Sum<Iterable<I>, DoubleType> sumFunc;
-
-	@Parameter(required = false)
-	private Size<Iterable<I>> sizeFunc;
 
 	@Parameter
 	private OpService ops;
 
+	@Parameter(required = false)
+	private SumOfInversesRT inverseSum;
+
+	@Parameter(required = false)
+	private Area<Iterable<?>, RealType<?>> area;
+
+	// TODO remove?
+	final DoubleType tmp1 = new DoubleType();
+	final DoubleType tmp2 = new DoubleType();
+
 	@Override
-	public O compute(final Iterable<I> input, final O output) {
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
 
-		if (sumFunc == null) {
-			sumFunc = (Sum<Iterable<I>, DoubleType>) ops.op(Sum.class, output, input);
-		}
-		if (sizeFunc == null) {
-			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);
-		}
+		initFunctions(input);
 
-		final LongType size = sizeFunc.compute(input, new LongType());
-		final DoubleType sum = sumFunc.compute(input, new DoubleType());
-
-		output.setReal(size.get() / sum.get());
+		output.setReal(area.compute(input, tmp1).getRealDouble() /
+			inverseSum.compute(input, tmp2).getRealDouble());
 
 		return output;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initFunctions(final Iterable<? extends RealType<?>> input) {
+		if (area == null) area =
+			(Area<Iterable<?>, RealType<?>>) ops
+				.op(Area.class, RealType.class, input);
+
+		if (inverseSum == null) inverseSum =
+			(SumOfInversesRT) ops.op(SumOfInversesRT.class,
+				RealType.class, input);
 	}
 }

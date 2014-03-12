@@ -28,25 +28,62 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.Function;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.misc.Area;
+import imagej.ops.statistics.Mean;
+import imagej.ops.statistics.impl.realtype.sums.SumRT;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Base interface for "mean" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
+ * Calculates mean given an {@link Iterable}.
  * 
- * <pre>
- * @Plugin(type = Op.class, name = Mean.NAME,
- *   attrs = { @Attr(name = "aliases", value = Mean.ALIASES) })
- * </pre>
+ * @author Christian Dietz
  */
-public interface Mean<T, O> extends Function<T, O> {
+@Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL,
+	priority = Priority.LOW_PRIORITY)
+public class MeanRT extends AbstractFunctionIRT2RT implements
+	Mean<Iterable<? extends RealType<?>>, RealType<?>>
+{
 
-	String NAME = "mean";
-	String ALIASES = "avg";
-	String LABEL = "Mean";
+	@Parameter
+	private OpService ops;
 
+	@Parameter(required = false)
+	private SumRT sumFunc;
+
+	@Parameter(required = false)
+	private Area<Iterable<?>, DoubleType> areaFunc;
+
+	// TODO: Remove?
+	private DoubleType tmp;
+
+	@Override
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
+		initFuncs(input);
+
+		output.setReal(areaFunc.compute(input, tmp).getRealDouble() /
+			sumFunc.compute(input, tmp).getRealDouble());
+		return output;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void initFuncs(final Iterable<? extends RealType<?>> input) {
+
+		if (sumFunc == null) sumFunc =
+			(SumRT) ops.op(SumRT.class, DoubleType.class, input);
+
+		if (areaFunc == null) areaFunc =
+			(Area<Iterable<?>, DoubleType>) ops.op(Area.class, DoubleType.class,
+				input);
+	}
 }

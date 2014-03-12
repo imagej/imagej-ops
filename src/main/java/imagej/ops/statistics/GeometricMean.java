@@ -33,20 +33,21 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Base interface for "mean" operations.
+ * Base interface for "geometricmean" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Mean.NAME,
- *   attrs = { @Attr(name = "aliases", value = Mean.ALIASES) })
+ * @Plugin(type = Op.class, name = GeometricMean.NAME)
  * </pre>
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public interface Mean<T, O> extends Function<T, O> {
+public interface GeometricMean<T, V> extends Function<T, V> {
 
-	String NAME = "mean";
-	String ALIASES = "avg";
-	String LABEL = "Mean";
+	String NAME = "geometricmean";
+	String LABEL = "Geometric Mean";
 
 }

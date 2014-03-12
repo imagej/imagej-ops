@@ -33,20 +33,20 @@ package imagej.ops.statistics;
 import imagej.ops.Function;
 
 /**
- * Base interface for "mean" operations.
+ * Base interface for "harmonicmean" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Mean.NAME,
- *   attrs = { @Attr(name = "aliases", value = Mean.ALIASES) })
+ * @Plugin(type = Op.class, name = HarmonicMean.NAME)
  * </pre>
+ * 
+ * @author Christian Dietz
  */
-public interface Mean<T, O> extends Function<T, O> {
+public interface HarmonicMean<T, V> extends Function<Iterable<? extends T>, V> {
 
-	String NAME = "mean";
-	String ALIASES = "avg";
-	String LABEL = "Mean";
+	String NAME = "harmonicmean";
+	String LABEL = "Harmonic Mean";
 
 }
