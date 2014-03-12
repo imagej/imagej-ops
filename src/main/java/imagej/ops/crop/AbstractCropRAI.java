@@ -28,34 +28,51 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
-import imagej.ops.Op;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY)
-public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<?> out;
+public abstract class AbstractCropRAI<T, I extends RandomAccessibleInterval<T>>
+	implements Crop
+{
 
 	@Parameter
-	private RandomAccessibleInterval<?> in;
+	protected Interval interval;
 
-	@Parameter
-	private Interval interval;
+	protected RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in) {
+		boolean oneSizedDims = false;
 
-	@Override
-	public void run() {
-		out = slice(in, interval);
+		for (int d = 0; d < in.numDimensions(); d++) {
+			if (in.dimension(d) == 1) {
+				oneSizedDims = true;
+				break;
+			}
+		}
+
+		if (Intervals.equals(in, interval) && !oneSizedDims) return in;
+
+		IntervalView<T> res;
+		if (Intervals.contains(in, interval)) res =
+			Views.offsetInterval(in, interval);
+		else {
+			throw new RuntimeException("Intervals don't match!");
+		}
+
+		for (int d = interval.numDimensions() - 1; d >= 0; --d)
+			if (interval.dimension(d) == 1 && res.numDimensions() > 1) res =
+				Views.hyperSlice(res, d, 0);
+
+		return res;
 	}
+
 }

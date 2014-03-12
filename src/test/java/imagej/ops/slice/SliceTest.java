@@ -32,7 +32,7 @@ package imagej.ops.slice;
 
 import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractOpTest;
-import imagej.ops.slicer.Slicer;
+import imagej.ops.crop.Crop;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -46,9 +46,10 @@ import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.python.antlr.ast.Slice;
 
 /**
- * Tests the {@link Slicer}.
+ * Tests the {@link Slice}.
  * 
  * @author Christian Dietz
  */
@@ -64,7 +65,7 @@ public class SliceTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Verifies that the types of the objects returned by the {@link Slicer} are
+	 * Verifies that the types of the objects returned by the {@link Slice} are
 	 * correct.
 	 */
 	@Test
@@ -78,14 +79,14 @@ public class SliceTest extends AbstractOpTest {
 			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 18 });
 
 		// check if result is ImgView
-		assertTrue(ops.run("slicer", in, defInterval) instanceof Img);
+		assertTrue(ops.run(Crop.class, in, defInterval) instanceof Img);
 
 		// check if result is LabelingView
-		assertTrue(ops.run("slicer", new NativeImgLabeling<String, ByteType>(in),
+		assertTrue(ops.run(Crop.class, new NativeImgLabeling<String, ByteType>(in),
 			defInterval) instanceof Labeling);
 
 		// check if result is ImgPlus
-		assertTrue(ops.run("slicer", new ImgPlus<ByteType>(in), defInterval) instanceof ImgPlus);
+		assertTrue(ops.run(Crop.class, new ImgPlus<ByteType>(in), defInterval) instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval
 		final Object run =
@@ -100,7 +101,7 @@ public class SliceTest extends AbstractOpTest {
 
 		// Case 1: fix one dimension
 		Img<ByteType> res =
-			(Img<ByteType>) ops.run("slicer", in, new FinalInterval(new long[] { 0,
+			(Img<ByteType>) ops.run(Crop.class, in, new FinalInterval(new long[] { 0,
 				0, 5 }, new long[] { 19, 19, 5 }));
 
 		assertTrue(res.numDimensions() == 2);
@@ -109,7 +110,7 @@ public class SliceTest extends AbstractOpTest {
 
 		// Case B: Fix one dimension and don't start at zero
 		res =
-			(Img<ByteType>) ops.run("slicer", in, new FinalInterval(new long[] { 0,
+			(Img<ByteType>) ops.run(Crop.class, in, new FinalInterval(new long[] { 0,
 				0, 5 }, new long[] { 19, 0, 10 }));
 
 		assertTrue(res.numDimensions() == 2);
@@ -118,7 +119,7 @@ public class SliceTest extends AbstractOpTest {
 
 		// Case C: fix two dimensions
 		res =
-			(Img<ByteType>) ops.run("slicer", in, new FinalInterval(new long[] { 0,
+			(Img<ByteType>) ops.run(Crop.class, in, new FinalInterval(new long[] { 0,
 				0, 0 }, new long[] { 0, 15, 0 }));
 
 		assertTrue(res.numDimensions() == 1);

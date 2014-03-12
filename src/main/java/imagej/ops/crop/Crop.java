@@ -28,46 +28,25 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
-import imagej.ops.MetadataUtil;
 import imagej.ops.Op;
-import net.imglib2.Interval;
-import net.imglib2.img.ImgView;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.type.Type;
-
-import org.scijava.ItemIO;
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz
+ * Base interface for "crop" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Crop.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Crop.ALIASES) })
+ * </pre>
+ * 
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY + 1)
-public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
+public interface Crop extends Op {
 
-	@Parameter
-	private ImgPlus<T> in;
-
-	@Parameter
-	private Interval interval;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> out;
-
-	@Override
-	public void run() {
-		ImgPlus<T> unpackedIn = in;
-		while (unpackedIn.getImg() instanceof ImgPlus) {
-			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
-		}
-
-		out =
-			new ImgPlus<T>(new ImgView<T>(slice(unpackedIn.getImg(), interval),
-				in.factory()));
-
-		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
-	}
+	String NAME = "crop";
+	String ALIASES = "slice";
 }

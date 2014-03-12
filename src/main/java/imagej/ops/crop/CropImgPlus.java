@@ -28,35 +28,46 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
+import imagej.ops.MetadataUtil;
 import imagej.ops.Op;
-import net.imglib2.Interval;
-import net.imglib2.labeling.Labeling;
-import net.imglib2.labeling.LabelingView;
+import net.imglib2.img.ImgView;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY + 1)
-public class LabelingSlicer<L extends Comparable<L>> extends AbstractSlicer {
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+value = Crop.ALIASES) })
+public class CropImgPlus<T extends Type<T>> extends
+	AbstractCropRAI<T, ImgPlus<T>>
+{
 
 	@Parameter
-	private Labeling<L> in;
-
-	@Parameter
-	private Interval interval;
+	private ImgPlus<T> in;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
+	private ImgPlus<T> out;
 
 	@Override
 	public void run() {
-		out = new LabelingView<L>(slice(in, interval), in.<L> factory());
+		ImgPlus<T> unpackedIn = in;
+		while (unpackedIn.getImg() instanceof ImgPlus) {
+			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
+		}
+
+		out =
+			new ImgPlus<T>(new ImgView<T>(crop(unpackedIn.getImg()), in.factory()));
+
+		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
 }
