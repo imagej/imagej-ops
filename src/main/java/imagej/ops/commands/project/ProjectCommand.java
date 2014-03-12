@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Project")
-public class Projector<T extends RealType<T>> implements Command {
+public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	@Parameter(type = ItemIO.BOTH)
 	private ImgPlus<BitType> res;
