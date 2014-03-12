@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.convolve;
+package imagej.ops.gauss;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
@@ -52,8 +52,9 @@ import org.scijava.plugin.Plugin;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Op.class, name = "gauss")
-public class Gauss<T extends RealType<T>> extends
+public class GaussRAI2RAI<T extends RealType<T>> extends
 	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Gauss
 {
 
 	@Parameter
