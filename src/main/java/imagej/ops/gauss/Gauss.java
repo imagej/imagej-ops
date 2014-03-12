@@ -28,56 +28,26 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.gauss;
 
 import imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Plugin;
 
 /**
+ * Base interface for "smooth/gauss" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Gauss.NAME, 
+ *   attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) })
+ * </pre>
+ * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+public interface Gauss extends Op {
 
-	private double outMax;
-
-	private double outMin;
-
-	@Override
-	public O compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
-		return output;
-	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
-		outMin = outType.getMinValue();
-
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
+	public static final String NAME = "gauss";
+	public static final String ALIASES = "smooth";
 
 }

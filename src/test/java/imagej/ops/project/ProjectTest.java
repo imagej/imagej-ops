@@ -28,56 +28,61 @@
  * #L%
  */
 
-package imagej.ops.convert;
+package imagej.ops.project;
 
+import static org.junit.Assert.assertEquals;
+import imagej.ops.AbstractOpTest;
 import imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.project.parallel.DefaultProjectP;
+import imagej.ops.statistics.sums.Sum;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.plugin.Plugin;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+public class ProjectTest extends AbstractOpTest {
 
-	private double outMax;
+	private final int PROJECTION_DIM = 2;
 
-	private double outMin;
+	private Img<ByteType> in;
+	private Img<ByteType> out1;
+	private Img<ByteType> out2;
+	private Op op;
 
-	@Override
-	public O compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
+	@Before
+	public void initImg() {
+		in = generateByteTestImg(false, 10, 10, 10);
+
+		// fill in with ones
+		final Cursor<ByteType> cursor = in.cursor();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			cursor.get().set((byte) 1);
 		}
-		else if (v < outMin) {
-			output.setReal(outMin);
+
+		out1 = generateByteTestImg(false, 10, 10);
+		out2 = generateByteTestImg(false, 10, 10);
+
+		op = ops.op("sum", null, Sum.class);
+	}
+
+	@Test
+	public void testProjector() {
+		ops.run(ProjectRAI2II.class, out1, in, op, PROJECTION_DIM);
+		ops.run(DefaultProjectP.class, out2, in, op, PROJECTION_DIM);
+
+		// test
+		final Cursor<ByteType> out1Cursor = out1.cursor();
+		final Cursor<ByteType> out2Cursor = out2.cursor();
+
+		while (out1Cursor.hasNext()) {
+			out1Cursor.fwd();
+			out2Cursor.fwd();
+
+			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM));
+			assertEquals(out2Cursor.get().get(), in.dimension(PROJECTION_DIM));
 		}
-		else {
-			output.setReal(v);
-		}
-		return output;
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
-		outMin = outType.getMinValue();
-
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
-
 }

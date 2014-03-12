@@ -51,12 +51,12 @@ public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
+	public void checkInput(final I inType, final O outType) {
 		// nothing to do here
 	}
 
 	@Override
-	public void checkInputSource(IterableInterval<I> in) {
+	public void checkInput(IterableInterval<I> in) {
 		// nothing to do here
 	}
 

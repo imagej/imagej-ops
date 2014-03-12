@@ -30,6 +30,8 @@
 
 package imagej.ops.project;
 
+import imagej.ops.Op;
+
 /**
  * Base interface for "project" operations.
  * <p>
@@ -37,13 +39,14 @@ package imagej.ops.project;
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Projector.NAME)
+ * @Plugin(type = Op.class, name = Project.NAME)
  * </pre>
  * 
  * @author Christian Dietz
+ * @author Martin Horn
  */
-public interface Projector {
+public interface Project extends Op {
 
-	String NAME = "project";
+	public static final String NAME = "project";
 
 }

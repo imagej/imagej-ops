@@ -57,14 +57,14 @@ public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
+	public void checkInput(final I inType, final O outType) {
 		inMin = inType.getMinValue();
 		outMin = outType.getMinValue();
 		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
 	}
 
 	@Override
-	public void checkInputSource(IterableInterval<I> in) {
+	public void checkInput(IterableInterval<I> in) {
 		// nothing to do here
 	}
 
