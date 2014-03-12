@@ -30,25 +30,17 @@
 
 package imagej.ops.misc;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+/**
+ * Finite area, e.g. num pixels.
+ * 
+ * @author Christian Dietz
+ * @param <I>
+ * @param <O>
+ */
+public interface NumElements<I, O extends RealType<O>> extends Area<I, O> {
 
-@Plugin(type = Op.class, name = Size.NAME, priority = Priority.LOW_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
-{
-
-	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
-		output.set(input.size());
-		return output;
-	}
+	String LABEL = "Number of Element";
+	String NAME = "numelements";
 }

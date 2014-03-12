@@ -32,30 +32,23 @@ package imagej.ops.misc;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
-import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Size.NAME, priority = Priority.LAST_PRIORITY)
-public class SizeIterable extends AbstractFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
+@Plugin(type = Op.class, name = NumElements.NAME, label = NumElements.LABEL,
+	priority = Priority.LOW_PRIORITY + 1)
+public class NumElementsII2RT<O extends RealType<O>> extends
+	AbstractFunction<IterableInterval<?>, O> implements
+	NumElements<IterableInterval<?>, O>
 {
 
 	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
-		final Iterator<?> iterator = input.iterator();
-
-		long numElements = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			numElements++;
-		}
-
-		output.set(numElements);
+	public O compute(final IterableInterval<?> input, final O output) {
+		output.setReal(input.size());
 		return output;
 	}
+
 }

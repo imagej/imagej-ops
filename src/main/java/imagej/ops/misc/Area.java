@@ -31,9 +31,9 @@
 package imagej.ops.misc;
 
 import imagej.ops.Function;
-import net.imglib2.type.numeric.integer.LongType;
 
-public interface Size<I> extends Function<I, LongType> {
+public interface Area<I, O> extends Function<I, O> {
 
-	String NAME = "size";
+	String LABEL = "Area";
+	String NAME = "area";
 }
