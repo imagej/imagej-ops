@@ -32,6 +32,8 @@ package imagej.ops.crop;
 
 import imagej.ops.MetadataUtil;
 import imagej.ops.Op;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.img.ImgView;
 import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.Type;
@@ -52,11 +54,11 @@ public class CropImgPlus<T extends Type<T>> extends
 	AbstractCropRAI<T, ImgPlus<T>>
 {
 
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private ImgPlus<T> out;
+
 	@Parameter
 	private ImgPlus<T> in;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> out;
 
 	@Override
 	public void run() {
@@ -65,8 +67,22 @@ public class CropImgPlus<T extends Type<T>> extends
 			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
 		}
 
-		out =
-			new ImgPlus<T>(new ImgView<T>(crop(unpackedIn.getImg()), in.factory()));
+		// if out is not provided, just return a view on the image, else write into
+		// the result
+		ImgView<T> view = new ImgView<T>(crop(unpackedIn.getImg()), in.factory());
+		if (out == null) {
+			out = new ImgPlus<T>(view);
+		}
+		else {
+			// TODO: might be optimized here (using two cursors etc.)
+			Cursor<T> outC = out.cursor();
+			RandomAccess<T> viewRA = view.randomAccess();
+			while (outC.hasNext()) {
+				outC.fwd();
+				viewRA.setPosition(outC);
+				outC.get().set(viewRA.get());
+			}
+		}
 
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}

@@ -190,7 +190,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 			}
 
 			return (RandomAccessibleInterval<?>) opService.run(Crop.class,
-				new FinalInterval(tmpPosition, max), src);
+				new FinalInterval(tmpPosition, max), null, src);
 		}
 
 		@Override

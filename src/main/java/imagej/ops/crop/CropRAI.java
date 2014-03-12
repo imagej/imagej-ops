@@ -48,11 +48,11 @@ import org.scijava.plugin.Plugin;
 public class CropRAI<T> extends AbstractCropRAI<T, RandomAccessibleInterval<T>>
 {
 
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private RandomAccessibleInterval<T> out;
+
 	@Parameter
 	private RandomAccessibleInterval<T> in;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<T> out;
 
 	@Override
 	public void run() {

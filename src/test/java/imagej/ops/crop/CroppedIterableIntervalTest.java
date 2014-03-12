@@ -78,7 +78,7 @@ public class CroppedIterableIntervalTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testXYSlicing() {
+	public void testXYCropping() {
 
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };

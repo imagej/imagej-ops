@@ -51,14 +51,19 @@ public class CropLabeling<L extends Comparable<L>> extends
 	AbstractCropRAI<LabelingType<L>, Labeling<L>>
 {
 
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private Labeling<L> out;
+
 	@Parameter
 	private Labeling<L> in;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
-
 	@Override
 	public void run() {
-		out = new LabelingView<L>(crop(in), in.<L> factory());
+		if (out == null) {
+			out = new LabelingView<L>(crop(in), in.<L> factory());
+		}
+		else {
+			// TODO: write labeling view into the out-labeling
+		}
 	}
 }
