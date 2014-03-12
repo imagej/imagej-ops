@@ -121,5 +121,5 @@ public abstract class MapView<A, B, I, O> implements
 	 */
 	public void setType(final B type) {
 		this.type = type;
-	};
+	}
 }
