@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
-value = Crop.ALIASES) })
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
 public class CropLabeling<L extends Comparable<L>> extends
 	AbstractCropRAI<LabelingType<L>, Labeling<L>>
 {

@@ -34,6 +34,7 @@ import imagej.ops.Op;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -43,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
-	value = Crop.ALIASES) })
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY)
 public class CropRAI<T> extends AbstractCropRAI<T, RandomAccessibleInterval<T>>
 {
 

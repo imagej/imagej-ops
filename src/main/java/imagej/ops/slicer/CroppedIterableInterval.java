@@ -189,8 +189,8 @@ public class CroppedIterableInterval extends AbstractInterval implements
 				max[d] += sliceMax[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Crop.class, src,
-				new FinalInterval(tmpPosition, max));
+			return (RandomAccessibleInterval<?>) opService.run(Crop.class,
+				new FinalInterval(tmpPosition, max), src);
 		}
 
 		@Override
