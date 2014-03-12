@@ -34,7 +34,7 @@ import imagej.command.Command;
 import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.slicer.SliceMapper;
+import imagej.ops.slicer.Slicewise;
 import net.imglib2.Axis;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.meta.ImgPlus;
@@ -123,7 +123,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 				// doesn't match the input image dimensions, than we can still
 				// convolve
 				// each slice individually
-				ops.run(SliceMapper.class, out, in, op, axisIndices);
+				ops.run(Slicewise.class, out, in, op, axisIndices);
 			} else {
 				throw new IllegalArgumentException(
 						"The input image has more dimensions than the kernel!");

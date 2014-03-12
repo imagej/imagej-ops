@@ -27,18 +27,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package imagej.ops.slicer;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.Op;
+import imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
- * Base interface for "map" operations which perform a slice-wise mapping.
- * 
  * @author Christian Dietz
+ * @author Martin Horn
  */
-public interface SliceMapper<I, O> extends
-	Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+@Plugin(type = Op.class, name = "slicemapper",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O> extends
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements
+	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
-	// NB: Marker interface.
+
+	@Parameter
+	private OpService opService;
+
+	@Parameter
+	private Function<I, O> func;
+
+	@Parameter
+	private int[] axisIndices;
+
+	@Override
+	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
+	{
+
+		opService.run("map", new SlicingIterableInterval(opService, output,
+			axisIndices), new SlicingIterableInterval(opService, input, axisIndices),
+			func);
+
+		return output;
+	}
+
 }

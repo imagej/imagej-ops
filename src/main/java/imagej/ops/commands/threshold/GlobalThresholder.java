@@ -33,7 +33,7 @@ package imagej.ops.commands.threshold;
 import imagej.command.Command;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.slicer.SliceMapper;
+import imagej.ops.slicer.Slicewise;
 import imagej.ops.threshold.GlobalThresholdMethod;
 import net.imglib2.Axis;
 import net.imglib2.meta.ImgPlus;
@@ -77,7 +77,7 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
         Op threshold = ops.op("threshold", out, in, method);
 
         // TODO actually map axes to int array
-        ops.run(SliceMapper.class, out, in, threshold, new int[]{0, 1});
+        ops.run(Slicewise.class, out, in, threshold, new int[]{0, 1});
 
     }
 }
