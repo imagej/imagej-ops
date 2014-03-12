@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.sums;
 
 import imagej.ops.Function;
 
@@ -39,13 +39,14 @@ import imagej.ops.Function;
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Sum.NAME)
+ * @Plugin(type = Op.class, name = SumOfInverses.NAME)
  * </pre>
  * 
  * @author Christian Dietz
  */
-public interface Sum<I, O> extends Function<I, O> {
+public interface SumOfInverses<T, O> extends Function<T, O> {
 
-	String NAME = "sum";
+	String NAME = "sumofinverses";
+	String LABEL = "Sum of Inverses";
 
 }

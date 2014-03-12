@@ -28,25 +28,25 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.sums;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.Function;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "sum" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Sum.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Sum<T, O> extends Function<T, O> {
 
-@Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
-{
+	String NAME = "sum";
+	String LABEL = "Sum";
 
-	@Override
-	public V compute(final Iterable<T> input, final V output) {
-		for (final T t : input) {
-			output.setReal(output.getRealDouble() + t.getRealDouble());
-		}
-		return output;
-	}
 }
