@@ -45,5 +45,6 @@ package imagej.ops.statistics;
 public interface Median<T, V> extends Quantile<T, V> {
 
 	String NAME = "median";
+	String LABEL = "Median";
 
 }

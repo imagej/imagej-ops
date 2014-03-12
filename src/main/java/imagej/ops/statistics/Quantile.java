@@ -47,5 +47,6 @@ import imagej.ops.Function;
 public interface Quantile<T, V> extends Function<T, V> {
 
 	String NAME = "quantile";
+	String LABEL = "Quantile";
 
 }

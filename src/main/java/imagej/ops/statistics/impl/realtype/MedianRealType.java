@@ -28,13 +28,12 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.statistics.Median;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.imglib2.type.numeric.RealType;
@@ -42,19 +41,21 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Median.NAME, priority = Priority.LOW_PRIORITY)
-public class MedianRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
+@Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL,
+	priority = Priority.LOW_PRIORITY)
+public class MedianRealType extends AbstractFunctionIRT2RT implements
+	Median<Iterable<? extends RealType<?>>, RealType<?>>
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
 
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			statistics.add(it.next().getRealDouble());
+		for (final RealType<?> type : input) {
+			statistics.add(type.getRealDouble());
 		}
 
 		output.setReal(select(statistics, 0, statistics.size() - 1, statistics
