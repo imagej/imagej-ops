@@ -31,10 +31,13 @@
 package imagej.ops.commands.project;
 
 import imagej.command.Command;
-import imagej.ops.Function;
+import imagej.ops.AbstractFunction;
 import imagej.ops.OpService;
+import imagej.ops.project.Project;
+import imagej.ops.statistics.Mean;
+import net.imglib2.img.Img;
 import net.imglib2.meta.ImgPlus;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.meta.TypedAxis;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
@@ -45,20 +48,48 @@ import org.scijava.plugin.Plugin;
 public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	@Parameter(type = ItemIO.BOTH)
-	private ImgPlus<BitType> res;
+	private ImgPlus<T> out;
 
 	@Parameter
-	private ImgPlus<T> src;
+	private ImgPlus<T> in;
 
-	@Parameter(choices = { "min", "max", "sum", "average", "median", "stdev",
-		"variance" })
-	private Function<Iterable<T>, T> method;
+	// TODO: same problem as in the threshold: parameter aggregation ...
+	@Parameter
+	private ProjectMethod<T> method;
+
+	// the dimension that will be aggregated
+	@Parameter
+	private TypedAxis axis;
 
 	@Parameter
-	private OpService opService;
+	private OpService ops;
 
 	@Override
 	public void run() {
+		if (out == null) {
+			Img<T> img = in.factory().create(in, in.firstElement().createVariable());
+			out = new ImgPlus<T>(img, in);
+		}
+		int axisIndex = in.dimensionIndex(axis.type());
+		ops.run(Project.class, out, in, method, axisIndex);
+	}
+
+	/* -- Wrapper classes to mark certain operations as projection methods --*/
+
+	private class ProjectMean extends AbstractFunction<Iterable<T>, T> implements
+		ProjectMethod<T>
+	{
+
+		private Mean<Iterable<T>, T> mean;
+
+		@Override
+		public T compute(Iterable<T> input, T output) {
+			if (mean == null) {
+				mean = (Mean<Iterable<T>, T>) ops.op(Mean.class, output, input);
+			}
+			return mean.compute(input, output);
+		}
 
 	}
+
 }
