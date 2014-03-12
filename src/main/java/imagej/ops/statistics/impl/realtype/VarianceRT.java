@@ -28,34 +28,31 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
+import imagej.ops.statistics.Variance;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Variance.NAME, priority = Priority.LOW_PRIORITY)
-public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL,
+	priority = Priority.LOW_PRIORITY)
+public class VarianceRT extends AbstractFunctionIRT2RT implements
+	Variance<Iterable<? extends RealType<?>>, RealType<?>>
 {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
 
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
+		for (final RealType<?> next : input) {
+			final double px = next.getRealDouble();
 			++n;
 			sum += px;
 			sumSqr += px * px;

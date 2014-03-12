@@ -44,8 +44,9 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Variance<T, V> extends Function<Iterable<T>, V> {
+public interface Variance<T, V> extends Function<T, V> {
 
 	String NAME = "variance";
+	String LABEL = "Variance";
 
 }
