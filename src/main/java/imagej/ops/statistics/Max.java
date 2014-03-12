@@ -44,8 +44,9 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Max<T, V> extends Function<Iterable<T>, V> {
+public interface Max<T, V> extends Function<T, V> {
 
 	String NAME = "max";
+	String LABEL = "Maximum";
 
 }

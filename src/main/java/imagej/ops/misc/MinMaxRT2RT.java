@@ -28,36 +28,47 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.misc;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 
 import java.util.Iterator;
 
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Min.NAME, priority = Priority.LOW_PRIORITY)
-public class MinRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements Min<T, T>
-{
+/**
+ * Calculates the minimum and maximum value of an image.
+ */
+@Plugin(type = Op.class, name = "minmax")
+public class MinMaxRT2RT<T extends RealType<T>> implements Op {
+
+	@Parameter
+	private Iterable<T> img;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public void run() {
+		min = img.iterator().next().createVariable();
+		max = min.copy();
 
-		final Iterator<T> it = input.iterator();
-		T max = it.next();
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
 
+		final Iterator<T> it = img.iterator();
 		while (it.hasNext()) {
-			final T next = it.next();
-			if (max.compareTo(next) > 0) {
-				max = next;
-			}
+			final T i = it.next();
+			if (min.compareTo(i) > 0) min.set(i);
+			if (max.compareTo(i) < 0) max.set(i);
 		}
-		output.set(max);
-		return output;
 	}
+
 }

@@ -28,10 +28,10 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.statistics.Max;
 
 import java.util.Iterator;
 
@@ -41,23 +41,25 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
-public class MaxRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements Max<T, T>
+public class MaxRT extends AbstractFunctionIRT2RT implements
+	Max<Iterable<? extends RealType<?>>, RealType<?>>
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
 
-		final Iterator<T> it = input.iterator();
-		T max = it.next();
+		final Iterator<? extends RealType<?>> it = input.iterator();
+		RealType<?> max = it.next();
 
 		while (it.hasNext()) {
-			final T next = it.next();
-			if (max.compareTo(next) < 0) {
+			final RealType<?> next = it.next();
+			if (max.getRealDouble() < next.getRealDouble()) {
 				max = next;
 			}
 		}
-		output.set(max);
+		output.setReal(max.getRealDouble());
 		return output;
 	}
 }

@@ -44,8 +44,9 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Min<T, V> extends Function<Iterable<T>, V> {
+public interface Min<T, V> extends Function<T, V> {
 
 	String NAME = "min";
+	String LABEL = "Min";
 
 }
