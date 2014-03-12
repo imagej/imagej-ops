@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.slice;
+package imagej.ops.crop;
 
 import static org.junit.Assert.assertTrue;
 import imagej.ops.AbstractOpTest;
@@ -53,7 +53,7 @@ import org.python.antlr.ast.Slice;
  * 
  * @author Christian Dietz
  */
-public class SliceTest extends AbstractOpTest {
+public class CropTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 

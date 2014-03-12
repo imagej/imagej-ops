@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.slice;
+package imagej.ops.crop;
 
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
@@ -54,7 +54,7 @@ import org.scijava.Context;
  * 
  * @author Christian Dietz
  */
-public class SlicingIterableIntervalTest extends AbstractOpTest {
+public class CroppedIterableIntervalTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
