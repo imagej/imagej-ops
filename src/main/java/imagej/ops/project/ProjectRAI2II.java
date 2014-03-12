@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Project.NAME, priority = Priority.LOW_PRIORITY)
-public class DefaultProject<T, V> extends
+public class ProjectRAI2II<T, V> extends
 	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
 	Contingent, Project
 {

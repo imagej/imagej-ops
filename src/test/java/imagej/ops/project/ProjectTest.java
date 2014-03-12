@@ -70,7 +70,7 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Test
 	public void testProjector() {
-		ops.run(DefaultProject.class, out1, in, op, PROJECTION_DIM);
+		ops.run(ProjectRAI2II.class, out1, in, op, PROJECTION_DIM);
 		ops.run(DefaultProjectP.class, out2, in, op, PROJECTION_DIM);
 
 		// test
