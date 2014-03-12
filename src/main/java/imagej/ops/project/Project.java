@@ -30,6 +30,8 @@
 
 package imagej.ops.project;
 
+import imagej.ops.Op;
+
 /**
  * Base interface for "project" operations.
  * <p>
@@ -43,7 +45,7 @@ package imagej.ops.project;
  * @author Christian Dietz
  * @author Martin Horn
  */
-public interface Project {
+public interface Project extends Op {
 
 	public static final String NAME = "project";
 
