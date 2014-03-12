@@ -59,9 +59,9 @@ public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 	public IterableInterval<O> compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
-		pixConvert.checkInOutTypes(input.firstElement().createVariable(), output
+		pixConvert.checkInput(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
-		pixConvert.checkInputSource(input);
+		pixConvert.checkInput(input);
 		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
 	}
 

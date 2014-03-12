@@ -64,14 +64,14 @@ public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void checkInOutTypes(final I inType, final O outType) {
+	public void checkInput(final I inType, final O outType) {
 		outMax = outType.getMaxValue();
 		outMin = outType.getMinValue();
 
 	}
 
 	@Override
-	public void checkInputSource(IterableInterval<I> in) {
+	public void checkInput(IterableInterval<I> in) {
 		// nothing to do here
 	}
 
