@@ -28,43 +28,38 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
+import imagej.ops.statistics.StdDeviation;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StdDeviation.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class StdDevRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType> implements
-	StdDeviation<T, DoubleType>
+@Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviation.LABEL,
+	priority = Priority.LOW_PRIORITY + 1)
+public class StdDevDirectRT extends AbstractFunctionIRT2RT implements
+	StdDeviation<Iterable<? extends RealType<?>>, RealType<?>>
 {
 
-	@Parameter(required = false)
-	private Variance<T, DoubleType> variance;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (variance == null) {
-			variance =
-				(Variance<T, DoubleType>) ops.op(Variance.class, output, input);
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
+
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		for (final RealType<?> rt : input) {
+			final double px = rt.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
 		}
-		output.set(Math.sqrt(variance.compute(input, output).get()));
+
+		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
 		return output;
 	}
-//	@Override
-//	public String name() {
-//		return "Standard Deviation";
-//	}
-
 }

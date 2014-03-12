@@ -44,8 +44,9 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface StdDeviation<T, V> extends Function<Iterable<T>, V> {
+public interface StdDeviation<T, V> extends Function<T, V> {
 
 	String NAME = "stddev";
+	String LABEL = "Standard Deviation";
 
 }

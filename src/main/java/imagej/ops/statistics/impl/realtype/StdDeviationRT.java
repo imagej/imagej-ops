@@ -28,40 +28,49 @@
  * #L%
  */
 
-package imagej.ops.statistics;
+package imagej.ops.statistics.impl.realtype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-
-import java.util.Iterator;
-
+import imagej.ops.OpService;
+import imagej.ops.statistics.StdDeviation;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StdDeviation.NAME,
+@Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviation.LABEL,
 	priority = Priority.LOW_PRIORITY)
-public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T>
+public class StdDeviationRT extends AbstractFunctionIRT2RT implements
+	StdDeviation<Iterable<? extends RealType<?>>, RealType<?>>
 {
 
+	@Parameter
+	private OpService ops;
+
+	@Parameter(required = false)
+	private VarianceRT variance;
+
+	// TODO: Remove if we don't agree on ThreadableInterface
+	// tmp used for intermediate results
+	private DoubleType tmp = new DoubleType();
+
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public RealType<?> compute(final Iterable<? extends RealType<?>> input,
+		final RealType<?> output)
+	{
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+		if (variance == null) {
+			initFunctions(input);
 		}
 
-		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
+		output.setReal(Math.sqrt(variance.compute(input, tmp).getRealDouble()));
 		return output;
 	}
+
+	private void initFunctions(final Iterable<? extends RealType<?>> input) {
+		variance = (VarianceRT) ops.op(VarianceRT.class, DoubleType.class, input);
+	}
+
 }
