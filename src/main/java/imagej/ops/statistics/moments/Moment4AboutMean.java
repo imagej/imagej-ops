@@ -1,6 +1,3 @@
-
-package imagej.ops.statistics.moments;
-
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -31,23 +28,25 @@ package imagej.ops.statistics.moments;
  * #L%
  */
 
+package imagej.ops.statistics.moments;
+
 import imagej.ops.Function;
 
 /**
- * Base interface for "moment2aboutmean" operations.
+ * Base interface for "moment4aboutmean" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Moment2AboutMean.NAME)
+ * @Plugin(type = Op.class, name = Moment4AboutMean.NAME)
  * </pre>
  * 
  * @author Christian Dietz
  */
-public interface Moment2AboutMean<T, O> extends Function<T, O> {
+public interface Moment4AboutMean<T, O> extends Function<T, O> {
 
-	String NAME = "moment2aboutmean";
-	String LABEL = "Moment 2 About Mean";
+	String NAME = "moment1aboutmean";
+	String LABEL = "Moment 4 About Mean";
 
 }

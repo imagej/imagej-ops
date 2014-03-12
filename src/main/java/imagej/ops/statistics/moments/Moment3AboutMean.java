@@ -34,20 +34,20 @@ package imagej.ops.statistics.moments;
 import imagej.ops.Function;
 
 /**
- * Base interface for "moment2aboutmean" operations.
+ * Base interface for "moment3aboutmean" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Moment2AboutMean.NAME)
+ * @Plugin(type = Op.class, name = Moment3AboutMean.NAME)
  * </pre>
  * 
  * @author Christian Dietz
  */
-public interface Moment2AboutMean<T, O> extends Function<T, O> {
+public interface Moment3AboutMean<T, O> extends Function<T, O> {
 
-	String NAME = "moment2aboutmean";
-	String LABEL = "Moment 2 About Mean";
+	String NAME = "moment3aboutmean";
+	String LABEL = "Moment 3 About Mean";
 
 }

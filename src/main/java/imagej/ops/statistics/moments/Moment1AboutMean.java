@@ -30,54 +30,23 @@
 
 package imagej.ops.statistics.moments;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.misc.Size;
-import imagej.ops.statistics.Mean;
+import imagej.ops.Function;
 
-import java.util.Iterator;
+/**
+ * Base interface for "moment1aboutmean" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Moment1AboutMean.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Moment1AboutMean<T, O> extends Function<T, O> {
 
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
+	String NAME = "moment1aboutmean";
+	String LABEL = "Moment 1 About Mean";
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "moment1aboutmean")
-public class Moment1AboutMean<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Parameter(required = false)
-	private Size<Iterable<T>> size;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
-		}
-		if (size == null) {
-			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
-		}
-
-		final double mean = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
-		double res = 0.0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - mean;
-			res += val;
-		}
-		output.set(res / area);
-		return output;
-	}
 }
