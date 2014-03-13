@@ -91,7 +91,7 @@
 							<source>
 								templateDirectory = "${basedir}/src/template/java/";
 								translationsDirectory = "${basedir}/src/template/translations/";
-								outputDirectory = "${basedir}/src/main/java/imagej/ops/generated/";
+								outputDirectory = "${project.build.directory}/generated-sources/from-template/imagej/ops/generated/";
 
 								/*
 								 * Translates a template into many files in the outputDirectory,
@@ -140,6 +140,25 @@
 
 								translate('ArithmeticTemplate', 'ArithmeticList');
 							</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/from-template/</source>
+							</sources>
 						</configuration>
 					</execution>
 				</executions>
