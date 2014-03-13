@@ -2,3 +2,4 @@
 .project
 .settings
 target
+src/main/java/imagej/ops/generated/
