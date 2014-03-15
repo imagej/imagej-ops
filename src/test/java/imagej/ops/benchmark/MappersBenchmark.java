@@ -39,6 +39,7 @@ import imagej.ops.map.ParallelMap;
 import imagej.ops.map.ParallelMapI2I;
 import imagej.ops.map.ParallelMapI2R;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -80,7 +81,7 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
 
-		addConstant = ops.op("add", null, null, new ByteType((byte) 5));
+		addConstant = ops.op("add", null, NumericType.class, new ByteType((byte) 5));
 		numRuns = 10;
 	}
 

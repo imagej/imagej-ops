@@ -41,6 +41,7 @@ import imagej.ops.map.ParallelMapI2I;
 import imagej.ops.map.ParallelMapI2R;
 import imagej.ops.onthefly.ArithmeticOp;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 /**
@@ -61,7 +62,7 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 	public void fTestIterableIntervalMapperP() {
 		final Module module =
 			ops.module(ParallelMapI2I.class, out, in, ops.op(
-				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
+				AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
 
 		benchmarkAndPrint(ParallelMapI2I.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
@@ -70,7 +71,7 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 	public void fTestDefaultMapperP() {
 		final Module module =
 			ops.module(ParallelMapI2R.class, out, in, ops.op(
-				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
+				AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
 
 		benchmarkAndPrint(ParallelMapI2R.class.getSimpleName() +
 			" [Functional / Parallel]", module, numRuns);
