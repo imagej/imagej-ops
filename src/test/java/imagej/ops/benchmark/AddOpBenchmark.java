@@ -88,7 +88,7 @@ public class AddOpBenchmark extends AbstractOpBenchmark {
 	public void inTestDefaultInplaceMapperP() {
 		final Module module =
 			ops.module(ParallelMap.class, in, ops.op(
-				AddConstantToNumericType.class, null, null, new ByteType((byte) 10)));
+				AddConstantInplace.class, NumericType.class, new ByteType((byte) 10)));
 
 		benchmarkAndPrint(ParallelMap.class.getSimpleName() +
 			" [InPlace / Parallel]", module, numRuns);
