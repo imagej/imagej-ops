@@ -27,17 +27,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.benchmark;
 
-package imagej.ops.loop;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.Op;
+import net.imglib2.type.numeric.NumericType;
 
-import imagej.ops.InplaceFunction;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * Loops over an injected {@link InplaceFunction}. A {@link LoopInplace} applies
- * a {@link InplaceFunction} n-times to an input. Note: input will be modified!
- * 
- * @author Christian Dietz
- */
-public interface LoopInplace<I> extends InplaceFunction<I>, Loop<I> {
-	// NB: Marker interface
+@Plugin(type = Op.class)
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceFunction<T> {
+
+	@Parameter
+	private T value;
+
+	@Override
+	public T compute(T arg) {
+		arg.add(value);
+		return arg;
+	}
 }

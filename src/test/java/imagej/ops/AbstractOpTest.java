@@ -82,6 +82,8 @@ public abstract class AbstractOpTest {
 		if (context != null) {
 			context.dispose();
 			context = null;
+			ops = null;
+			matcher = null;
 		}
 	}
 

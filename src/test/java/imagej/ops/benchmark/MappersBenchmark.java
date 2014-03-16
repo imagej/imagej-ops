@@ -39,6 +39,7 @@ import imagej.ops.map.ParallelMap;
 import imagej.ops.map.ParallelMapI2I;
 import imagej.ops.map.ParallelMapI2R;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -56,6 +57,7 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 	private int numRuns;
 	private Img<ByteType> out;
 	private Op addConstant;
+	private Op addConstantInplace;
 
 	// run the benchmarks
 	public static void main(final String[] args) {
@@ -80,7 +82,8 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
 
-		addConstant = ops.op("add", null, null, new ByteType((byte) 5));
+		addConstant = ops.op("add", null, NumericType.class, new ByteType((byte) 5));
+		addConstantInplace = ops.op(AddConstantInplace.class, NumericType.class, new ByteType((byte) 5));
 		numRuns = 10;
 	}
 
@@ -122,7 +125,7 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestMapperInplace() {
 		final Module module =
-			ops.module(new MapI<ByteType>(), in, addConstant);
+			ops.module(new MapI<ByteType>(), in, addConstantInplace);
 
 		benchmarkAndPrint(MapI.class.getSimpleName(), module,
 			numRuns);
@@ -130,7 +133,7 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 	public void pixelWiseTestThreadedMapperInplace() {
 		final Module module =
-			ops.module(new ParallelMap<ByteType>(), in.copy(), addConstant);
+			ops.module(new ParallelMap<ByteType>(), in.copy(), addConstantInplace);
 
 		benchmarkAndPrint(ParallelMap.class.getSimpleName(), module,
 			numRuns);
