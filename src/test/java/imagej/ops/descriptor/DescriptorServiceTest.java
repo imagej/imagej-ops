@@ -1,4 +1,3 @@
-
 package imagej.ops.descriptor;
 
 import imagej.ops.AbstractOpTest;
@@ -37,14 +36,14 @@ public class DescriptorServiceTest extends AbstractOpTest {
 	@Override
 	protected Context createContext() {
 		return new Context(OpService.class, OpMatchingService.class,
-			DescriptorService.class);
+				DescriptorService.class);
 	}
 
 	@Test
 	public void meanTest() {
 
-		final ResolvedDescriptor<Mean, Img> updater =
-			descService.resolveDependencies(Mean.class, in.getClass());
+		final ResolvedDescriptor<Mean, Img> updater = descService
+				.resolveDependencies(Mean.class, in.getClass());
 
 		System.out.println(updater.update(in).getOutput());
 		System.out.println(updater.update(in2).getOutput());
@@ -53,8 +52,8 @@ public class DescriptorServiceTest extends AbstractOpTest {
 	@Test
 	public void kurtosisTest() {
 
-		final ResolvedDescriptor<Kurtosis, Img> updater =
-			descService.resolveDependencies(Kurtosis.class, in.getClass());
+		final ResolvedDescriptor<Kurtosis, Img> updater = descService
+				.resolveDependencies(Kurtosis.class, in.getClass());
 
 		System.out.println(updater.update(in).getOutput());
 		System.out.println(updater.update(in2).getOutput());
