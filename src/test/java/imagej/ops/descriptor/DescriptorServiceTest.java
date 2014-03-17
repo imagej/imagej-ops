@@ -4,8 +4,8 @@ package imagej.ops.descriptor;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.OpMatchingService;
 import imagej.ops.OpService;
-import imagej.ops.descriptors.ResolvedDescriptor;
 import imagej.ops.descriptors.DescriptorService;
+import imagej.ops.descriptors.ResolvedDescriptor;
 import imagej.ops.descriptors.statistics.Kurtosis;
 import imagej.ops.descriptors.statistics.Mean;
 import net.imglib2.img.Img;
@@ -43,7 +43,7 @@ public class DescriptorServiceTest extends AbstractOpTest {
 	@Test
 	public void meanTest() {
 
-		final ResolvedDescriptor<Mean> updater =
+		final ResolvedDescriptor<Mean, Img> updater =
 			descService.resolveDependencies(Mean.class, in.getClass());
 
 		System.out.println(updater.update(in).getOutput());
@@ -53,7 +53,7 @@ public class DescriptorServiceTest extends AbstractOpTest {
 	@Test
 	public void kurtosisTest() {
 
-		final ResolvedDescriptor<Kurtosis> updater =
+		final ResolvedDescriptor<Kurtosis, Img> updater =
 			descService.resolveDependencies(Kurtosis.class, in.getClass());
 
 		System.out.println(updater.update(in).getOutput());
