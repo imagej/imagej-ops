@@ -28,16 +28,25 @@
  * #L%
  */
 
-package imagej.ops.loop;
+package imagej.ops.crop;
 
-import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
 
 /**
- * Loops over an injected {@link InplaceFunction}. A {@link LoopInplace} applies
- * a {@link InplaceFunction} n-times to an input. Note: input will be modified!
+ * Base interface for "crop" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
  * 
- * @author Christian Dietz
+ * <pre>
+ * @Plugin(type = Op.class, name = Crop.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Crop.ALIASES) })
+ * </pre>
+ * 
+ * @author Martin Horn
  */
-public interface LoopInplace<I> extends InplaceFunction<I>, Loop<I> {
-	// NB: Marker interface
+public interface Crop extends Op {
+
+	String NAME = "crop";
+	String ALIASES = "slice";
 }

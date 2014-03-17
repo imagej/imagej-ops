@@ -30,44 +30,24 @@
 
 package imagej.ops.slicer;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import net.imglib2.RandomAccessibleInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
+ * Base interface for "slicewise" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Slicewise.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Slicewise.ALIASES) })
+ * </pre>
+ * 
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicemapper", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSliceMapper<I, O>
-		extends
-		AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-		implements SliceMapper<I, O> {
+public interface Slicewise<I, O> extends Function<I, O> {
 
-	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private Function<I, O> func;
-
-	@Parameter
-	private int[] axis;
-
-	@Override
-	public RandomAccessibleInterval<O> compute(
-			RandomAccessibleInterval<I> input,
-			RandomAccessibleInterval<O> output) {
-
-		opService.run("map", new SlicingIterableInterval(opService, output,
-				axis), new SlicingIterableInterval(opService, input, axis),
-				func);
-
-		return output;
-	}
-
+	// NB: Marker interface.
+	public static final String NAME = "slicewise";
 }

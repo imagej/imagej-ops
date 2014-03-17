@@ -28,34 +28,62 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
+import imagej.ops.MetadataUtil;
 import imagej.ops.Op;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
+import net.imglib2.img.ImgView;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY)
-public class RandomAccessibleIntervalSlicer extends AbstractSlicer {
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
+public class CropImgPlus<T extends Type<T>> extends
+	AbstractCropRAI<T, ImgPlus<T>>
+{
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<?> out;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private ImgPlus<T> out;
 
 	@Parameter
-	private RandomAccessibleInterval<?> in;
-
-	@Parameter
-	private Interval interval;
+	private ImgPlus<T> in;
 
 	@Override
 	public void run() {
-		out = slice(in, interval);
+		ImgPlus<T> unpackedIn = in;
+		while (unpackedIn.getImg() instanceof ImgPlus) {
+			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
+		}
+
+		// if out is not provided, just return a view on the image, else write into
+		// the result
+		ImgView<T> view = new ImgView<T>(crop(unpackedIn.getImg()), in.factory());
+		if (out == null) {
+			out = new ImgPlus<T>(view);
+		}
+		else {
+			// TODO: might be optimized here (using two cursors etc.)
+			Cursor<T> outC = out.cursor();
+			RandomAccess<T> viewRA = view.randomAccess();
+			while (outC.hasNext()) {
+				outC.fwd();
+				viewRA.setPosition(outC);
+				outC.get().set(viewRA.get());
+			}
+		}
+
+		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
 }

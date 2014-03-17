@@ -28,17 +28,35 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
 import imagej.ops.Op;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-public interface Slicer extends Op {
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY)
+public class CropRAI<T> extends AbstractCropRAI<T, RandomAccessibleInterval<T>>
+{
 
-	<T> RandomAccessibleInterval<T> slice(
-		final RandomAccessibleInterval<T> in, final Interval i);
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private RandomAccessibleInterval<T> out;
+
+	@Parameter
+	private RandomAccessibleInterval<T> in;
+
+	@Override
+	public void run() {
+		out = crop(in);
+	}
+
 }

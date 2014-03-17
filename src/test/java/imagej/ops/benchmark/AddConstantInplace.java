@@ -27,18 +27,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.slicer;
+package imagej.ops.benchmark;
 
-import imagej.ops.Function;
-import net.imglib2.RandomAccessibleInterval;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.Op;
+import net.imglib2.type.numeric.NumericType;
 
-/**
- * Base interface for "map" operations which perform a slice-wise mapping.
- * 
- * @author Christian Dietz
- */
-public interface SliceMapper<I, O> extends
-	Function<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-{
-	// NB: Marker interface.
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class)
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceFunction<T> {
+
+	@Parameter
+	private T value;
+
+	@Override
+	public T compute(T arg) {
+		arg.add(value);
+		return arg;
+	}
 }

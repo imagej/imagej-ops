@@ -62,26 +62,18 @@ public abstract class MapView<A, B, I, O> implements
 	@Parameter(type = ItemIO.OUTPUT)
 	private O output;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Function<A, B> getFunction() {
 		return function;
 	}
 
 	/**
-	 * Returns a converer based on the given {@link Function}
-	 * 
-	 * @return
+	 * @return a converter based on the given {@link Function}
 	 */
 	public Converter<A, B> getConverter() {
 		return new ConvertWithFunction<A, B>(function);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setFunction(final Function<A, B> function) {
 		this.function = function;
@@ -129,5 +121,5 @@ public abstract class MapView<A, B, I, O> implements
 	 */
 	public void setType(final B type) {
 		this.type = type;
-	};
+	}
 }

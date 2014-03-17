@@ -28,35 +28,42 @@
  * #L%
  */
 
-package imagej.ops.slicer;
+package imagej.ops.crop;
 
 import imagej.ops.Op;
-import net.imglib2.Interval;
 import net.imglib2.labeling.Labeling;
+import net.imglib2.labeling.LabelingType;
 import net.imglib2.labeling.LabelingView;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY + 1)
-public class LabelingSlicer<L extends Comparable<L>> extends AbstractSlicer {
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
+public class CropLabeling<L extends Comparable<L>> extends
+	AbstractCropRAI<LabelingType<L>, Labeling<L>>
+{
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private Labeling<L> out;
 
 	@Parameter
 	private Labeling<L> in;
 
-	@Parameter
-	private Interval interval;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Labeling<L> out;
-
 	@Override
 	public void run() {
-		out = new LabelingView<L>(slice(in, interval), in.<L> factory());
+		if (out == null) {
+			out = new LabelingView<L>(crop(in), in.<L> factory());
+		}
+		else {
+			// TODO: write labeling view into the out-labeling
+		}
 	}
 }

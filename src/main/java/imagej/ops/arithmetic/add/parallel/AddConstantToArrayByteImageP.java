@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Multi-Threaded version ofoptimized add constant for {@link ArrayImg}s of type
+ * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
  * {@link ByteType}
  * 
  * @author Christian Dietz

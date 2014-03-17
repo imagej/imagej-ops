@@ -31,6 +31,7 @@
 package imagej.ops.slicer;
 
 import imagej.ops.OpService;
+import imagej.ops.crop.Crop;
 
 import java.util.Iterator;
 
@@ -42,12 +43,18 @@ import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.Sampler;
+import net.imglib2.img.Img;
+import net.imglib2.iterator.IntervalIterator;
 import net.imglib2.util.Intervals;
 
 /**
+ * Helper class to iterate through subsets of {@link RandomAccessibleInterval}s
+ * (e.g. {@link Img}s)
+ * 
  * @author Christian Dietz
  */
-public class SlicingIterableInterval extends AbstractInterval implements
+public class CroppedIterableInterval extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
 {
 
@@ -57,7 +64,7 @@ public class SlicingIterableInterval extends AbstractInterval implements
 
 	private final RandomAccessibleInterval<?> source;
 
-	public SlicingIterableInterval(final OpService opService,
+	public CroppedIterableInterval(final OpService opService,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
 	{
 		super(initIntervals(source, axesOfInterest));
@@ -102,7 +109,7 @@ public class SlicingIterableInterval extends AbstractInterval implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new SliceCursor(source, opService, this, slice);
+		return new CroppedCursor(source, opService, this, slice);
 	}
 
 	@Override
@@ -133,6 +140,79 @@ public class SlicingIterableInterval extends AbstractInterval implements
 	@Override
 	public Iterator<RandomAccessibleInterval<?>> iterator() {
 		return cursor();
+	}
+
+	/**
+	 * Help class.
+	 * 
+	 * @author Christian Dietz
+	 */
+	private class CroppedCursor extends IntervalIterator implements
+		Cursor<RandomAccessibleInterval<?>>
+	{
+
+		private final long[] tmpPosition;
+		private final OpService opService;
+		private final RandomAccessibleInterval<?> src;
+		private final long[] sliceMax;
+
+		public CroppedCursor(final RandomAccessibleInterval<?> src,
+			final OpService service, final Interval fixedAxes, final Interval slice)
+		{
+			super(fixedAxes);
+
+			this.opService = service;
+			this.src = src;
+			this.tmpPosition = new long[fixedAxes.numDimensions()];
+			this.sliceMax = new long[slice.numDimensions()];
+			slice.max(sliceMax);
+		}
+
+		private CroppedCursor(final CroppedCursor cursor) {
+			super(cursor);
+
+			this.opService = cursor.opService;
+			this.src = cursor.src;
+			this.sliceMax = cursor.sliceMax;
+			this.tmpPosition = cursor.tmpPosition;
+
+			// set to the current position
+			jumpFwd(cursor.index);
+		}
+
+		@Override
+		public RandomAccessibleInterval<?> get() {
+			localize(tmpPosition);
+
+			final long[] max = tmpPosition.clone();
+			for (int d = 0; d < max.length; d++) {
+				max[d] += sliceMax[d];
+			}
+
+			return (RandomAccessibleInterval<?>) opService.run(Crop.class,
+				new FinalInterval(tmpPosition, max), null, src);
+		}
+
+		@Override
+		public Sampler<RandomAccessibleInterval<?>> copy() {
+			return copyCursor();
+		}
+
+		@Override
+		public RandomAccessibleInterval<?> next() {
+			fwd();
+			return get();
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException("Not supported");
+		}
+
+		@Override
+		public Cursor<RandomAccessibleInterval<?>> copyCursor() {
+			return new CroppedCursor(this);
+		}
 	}
 
 }

@@ -30,44 +30,47 @@
 
 package imagej.ops.slicer;
 
-import imagej.ops.MetadataUtil;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import imagej.ops.Op;
-import net.imglib2.Interval;
-import net.imglib2.img.ImgView;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.type.Type;
+import imagej.ops.OpService;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Christian Dietz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicer", priority = Priority.LOW_PRIORITY + 1)
-public class ImgPlusSlicer<T extends Type<T>> extends AbstractSlicer {
+@Plugin(type = Op.class, name = "slicemapper",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O> extends
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements
+	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+{
 
 	@Parameter
-	private ImgPlus<T> in;
+	private OpService opService;
 
 	@Parameter
-	private Interval interval;
+	private Function<I, O> func;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> out;
+	@Parameter
+	private int[] axisIndices;
 
 	@Override
-	public void run() {
-		ImgPlus<T> unpackedIn = in;
-		while (unpackedIn.getImg() instanceof ImgPlus) {
-			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
-		}
+	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
+	{
 
-		out =
-			new ImgPlus<T>(new ImgView<T>(slice(unpackedIn.getImg(), interval),
-				in.factory()));
+		opService.run("map", new CroppedIterableInterval(opService, output,
+			axisIndices), new CroppedIterableInterval(opService, input, axisIndices),
+			func);
 
-		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
+		return output;
 	}
+
 }

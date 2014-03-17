@@ -28,13 +28,13 @@
  * #L%
  */
 
-package imagej.ops.slice;
+package imagej.ops.crop;
 
 import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractOpTest;
 import imagej.ops.OpService;
-import imagej.ops.slicer.SliceMapper;
+import imagej.ops.slicer.Slicewise;
 
 import java.util.Iterator;
 
@@ -54,7 +54,7 @@ import org.scijava.Context;
  * 
  * @author Christian Dietz
  */
-public class SlicingIterableIntervalTest extends AbstractOpTest {
+public class CroppedIterableIntervalTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
@@ -78,12 +78,12 @@ public class SlicingIterableIntervalTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testXYSlicing() {
+	public void testXYCropping() {
 
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };
 
-		ops.run(SliceMapper.class, out, in, new DummyOp(), xyAxis);
+		ops.run(Slicewise.class, out, in, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
