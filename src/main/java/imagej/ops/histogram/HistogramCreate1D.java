@@ -31,6 +31,7 @@
 package imagej.ops.histogram;
 
 import imagej.ops.Op;
+import net.imglib2.histogram.Histogram1d;
 
 /**
  * Base interface for "histogram" operations.
@@ -44,7 +45,10 @@ import imagej.ops.Op;
  * 
  * @author Martin Horn
  */
-public interface Histogram extends Op {
+public interface HistogramCreate1D<T> extends Op {
 
-	String NAME = "histogram";
+	public final String NAME = "histogram";
+	public final String LABEL = "Histogram";
+
+	Histogram1d<T> getHistogram();
 }

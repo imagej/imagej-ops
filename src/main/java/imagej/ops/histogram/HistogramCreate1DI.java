@@ -30,26 +30,31 @@
 
 package imagej.ops.histogram;
 
+import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.misc.MinMaxRT;
+import imagej.ops.descriptors.statistics.MinMax;
 
 import java.util.List;
 
-import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn, University of Konstanz
  */
-public class HistogramCreate<T extends RealType<T>> implements Histogram {
+@Plugin(type = Op.class, name = HistogramCreate1D.NAME,
+	label = HistogramCreate1D.LABEL)
+public class HistogramCreate1DI<T extends RealType<T>> implements
+	HistogramCreate1D<T>
+{
 
 	@Parameter
-	private IterableInterval<T> in;
+	private Iterable<T> in;
 
 	@Parameter(required = false)
 	private int numBins = 256;
@@ -62,10 +67,16 @@ public class HistogramCreate<T extends RealType<T>> implements Histogram {
 
 	@Override
 	public void run() {
-		final List<T> res = (List<T>) ops.run(new MinMaxRT<T>(), in);
+		@SuppressWarnings("unchecked")
+		final List<T> res = (List<T>) ops.run(MinMax.class, in);
 		out =
 			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
 				.get(1).getRealDouble(), numBins, false));
 
+	}
+
+	@Override
+	public Histogram1d<T> getHistogram() {
+		return out;
 	}
 }
