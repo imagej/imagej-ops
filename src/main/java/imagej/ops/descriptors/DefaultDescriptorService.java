@@ -55,8 +55,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultDescriptorService extends AbstractService implements
-	DescriptorService
-{
+		DescriptorService {
 
 	@Parameter
 	private OpService ops;
@@ -66,45 +65,43 @@ public class DefaultDescriptorService extends AbstractService implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <OP extends Op, INPUTTYPE> ResolvedDescriptor<OP, INPUTTYPE>
-		resolveDependencies(final Class<OP> feature,
-			final Class<? extends INPUTTYPE> inputType)
-	{
+	public <OP extends Op, INPUTTYPE> ResolvedDescriptor<OP, INPUTTYPE> resolveDependencies(
+			final Class<OP> feature, final Class<? extends INPUTTYPE> inputType) {
 
-		// First pass: check if we can automatically create the op and remember all
+		// First pass: check if we can automatically create the op and remember
+		// all
 		// operations
-		final HashMap<Class<?>, Module> allExistingOps =
-			new HashMap<Class<?>, Module>();
+		final HashMap<Class<?>, Module> allExistingOps = new HashMap<Class<?>, Module>();
 
 		final Module module = initModule(feature, inputType, allExistingOps);
 
-		if (module == null) throw new IllegalArgumentException(
-			"cannot create feature");
+		if (module == null)
+			throw new IllegalArgumentException("cannot create feature");
 
-		// Second pass: set updaters for operations. recursive approach as the list
-		// of listeners must be correct, this means it must take into account the
+		// Second pass: set updaters for operations. recursive approach as the
+		// list
+		// of listeners must be correct, this means it must take into account
+		// the
 		// dependencies of the ops.
-		final List<InputUpdateListeners> listeners =
-			new ArrayList<InputUpdateListeners>();
+		final List<InputUpdateListeners> listeners = new ArrayList<InputUpdateListeners>();
 		postProcess(feature, inputType, allExistingOps, listeners,
-			new ArrayList<Class<?>>());
+				new ArrayList<Class<?>>());
 
-		return new ResolvedDescriptor<OP, INPUTTYPE>((OP) module
-			.getDelegateObject(), listeners);
+		return new ResolvedDescriptor<OP, INPUTTYPE>(
+				(OP) module.getDelegateObject(), listeners);
 	}
 
 	/* Set input updaters */
 	@SuppressWarnings("unchecked")
 	private void postProcess(final Class<? extends Op> feature,
-		final Class<?> inputType,
-		final HashMap<Class<?>, Module> instantiatedModules,
-		final List<InputUpdateListeners> listeners, final List<Class<?>> processed)
-	{
+			final Class<?> inputType,
+			final HashMap<Class<?>, Module> instantiatedModules,
+			final List<InputUpdateListeners> listeners,
+			final List<Class<?>> processed) {
 
 		processed.add(feature);
 
-		final List<InputUpdateListeners> localListeners =
-			new ArrayList<InputUpdateListeners>();
+		final List<InputUpdateListeners> localListeners = new ArrayList<InputUpdateListeners>();
 
 		final Module module = instantiatedModules.get(feature);
 		InputUpdateListeners myListener = null;
@@ -120,11 +117,10 @@ public class DefaultDescriptorService extends AbstractService implements
 			}
 
 			// its an op
-			if (Op.class.isAssignableFrom(item.getType()) &&
-				!processed.contains(item.getType()))
-			{
+			if (Op.class.isAssignableFrom(item.getType())
+					&& !processed.contains(item.getType())) {
 				postProcess((Class<? extends Op>) item.getType(), inputType,
-					instantiatedModules, localListeners, processed);
+						instantiatedModules, localListeners, processed);
 				continue;
 			}
 		}
@@ -142,8 +138,7 @@ public class DefaultDescriptorService extends AbstractService implements
 	 * @return
 	 */
 	private InputUpdateListeners createUpdateListener(final Module module,
-		final ModuleItem<?> item)
-	{
+			final ModuleItem<?> item) {
 		return new InputUpdateListeners() {
 
 			@Override
@@ -154,22 +149,24 @@ public class DefaultDescriptorService extends AbstractService implements
 		};
 	}
 
-	/* Recursively checking if we can automatically instantiate a module of type opType given input of type inputType. Reusing ops.*/
+	/*
+	 * Recursively checking if we can automatically instantiate a module of type
+	 * opType given input of type inputType. Reusing ops.
+	 */
 	@SuppressWarnings("unchecked")
 	private Module initModule(final Class<? extends Op> moduleType,
-		final Class<?> inputType, final HashMap<Class<?>, Module> existingOps)
-	{
-		final List<ModuleInfo> candidates =
-			matcher.findCandidates(null, moduleType);
-		if (candidates.size() == 0) return null;
+			final Class<?> inputType,
+			final HashMap<Class<?>, Module> existingOps) {
+		final List<ModuleInfo> candidates = matcher.findCandidates(null,
+				moduleType);
+		if (candidates.size() == 0)
+			return null;
 
-		loop:
-		for (final ModuleInfo parent : candidates) {
+		loop: for (final ModuleInfo parent : candidates) {
 
 			final List<Object> parameters = new ArrayList<Object>();
 
-			final HashMap<Class<?>, Module> tmpAllCreatedOps =
-				new HashMap<Class<?>, Module>();
+			final HashMap<Class<?>, Module> tmpAllCreatedOps = new HashMap<Class<?>, Module>();
 
 			// we have to parse our items for other ops/features
 			for (final ModuleItem<?> item : parent.inputs()) {
@@ -191,15 +188,16 @@ public class DefaultDescriptorService extends AbstractService implements
 					final Class<? extends Op> typeAsOp = (Class<? extends Op>) type;
 
 					if (existingOps.containsKey(typeAsOp)) {
-						parameters.add(existingOps.get(typeAsOp).getDelegateObject());
-					}
-					else if (tmpAllCreatedOps.containsKey(typeAsOp)) {
-						parameters.add(tmpAllCreatedOps.get(typeAsOp).getDelegateObject());
-					}
-					else {
-						final Object res =
-							initModule(typeAsOp, inputType, tmpAllCreatedOps);
-						if (res == null) return null;
+						parameters.add(existingOps.get(typeAsOp)
+								.getDelegateObject());
+					} else if (tmpAllCreatedOps.containsKey(typeAsOp)) {
+						parameters.add(tmpAllCreatedOps.get(typeAsOp)
+								.getDelegateObject());
+					} else {
+						final Object res = initModule(typeAsOp, inputType,
+								tmpAllCreatedOps);
+						if (res == null)
+							return null;
 
 						parameters.add(((Module) res).getDelegateObject());
 					}
@@ -221,7 +219,8 @@ public class DefaultDescriptorService extends AbstractService implements
 			tmpAllCreatedOps.put(moduleType, module);
 
 			// we know that only additional ops are in local map
-			for (final Entry<Class<?>, Module> entry : tmpAllCreatedOps.entrySet()) {
+			for (final Entry<Class<?>, Module> entry : tmpAllCreatedOps
+					.entrySet()) {
 				existingOps.put(entry.getKey(), entry.getValue());
 			}
 

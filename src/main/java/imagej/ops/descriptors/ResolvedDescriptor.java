@@ -42,8 +42,10 @@ import java.util.List;
  * 
  * @author Christian Dietz
  * 
- * @param <O> type of resulting op
- * @param <I> type of input
+ * @param <O>
+ *            type of resulting op
+ * @param <I>
+ *            type of input
  */
 public class ResolvedDescriptor<O extends Op, I> {
 
@@ -51,12 +53,12 @@ public class ResolvedDescriptor<O extends Op, I> {
 	private final List<InputUpdateListeners> listeners;
 
 	/**
-	 * @param op The {@link Op} with all dependencies resolved.
+	 * @param op
+	 *            The {@link Op} with all dependencies resolved.
 	 * @param listeners
 	 */
 	protected ResolvedDescriptor(final O op,
-		final List<InputUpdateListeners> listeners)
-	{
+			final List<InputUpdateListeners> listeners) {
 		this.listeners = listeners;
 		this.op = op;
 	}

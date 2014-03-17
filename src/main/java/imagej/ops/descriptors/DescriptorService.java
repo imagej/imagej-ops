@@ -48,6 +48,6 @@ import org.scijava.service.Service;
 public interface DescriptorService extends Service {
 
 	<O extends Op, I> ResolvedDescriptor<O, I> resolveDependencies(
-		Class<O> class1, Class<? extends I> input);
+			Class<O> class1, Class<? extends I> input);
 
 }
