@@ -81,6 +81,7 @@ public abstract class AbstractChunkExecutor implements ChunkExecutor {
 	}
 
 	/** Cancels the command execution, with the given reason for doing so. */
+	@Override
 	public void cancel(final String reason) {
 		cancelReason = reason;
 	}
