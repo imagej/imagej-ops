@@ -58,6 +58,11 @@ public abstract class AbstractChunkExecutor implements ChunkExecutor {
 	@Parameter
 	protected long numberOfElements;
 
+	/** Reason for cancelation, or null if not canceled. */
+	private String cancelReason;
+
+	// -- ChunkExecutor methods --
+
 	@Override
 	public void setChunkExecutable(final ChunkExecutable definition) {
 		this.chunkable = definition;
@@ -67,4 +72,22 @@ public abstract class AbstractChunkExecutor implements ChunkExecutor {
 	public void setNumberOfElements(final int totalSize) {
 		this.numberOfElements = totalSize;
 	}
+
+	// -- Cancelable methods --
+
+	@Override
+	public boolean isCanceled() {
+		return cancelReason != null;
+	}
+
+	/** Cancels the command execution, with the given reason for doing so. */
+	public void cancel(final String reason) {
+		cancelReason = reason;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancelReason;
+	}
+
 }

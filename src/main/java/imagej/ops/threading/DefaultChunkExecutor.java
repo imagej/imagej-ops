@@ -55,8 +55,6 @@ public class DefaultChunkExecutor extends AbstractChunkExecutor {
 	@Parameter
 	public LogService logService;
 
-	private String cancellationMsg;
-
 	@Override
 	public void run() {
 
@@ -99,19 +97,10 @@ public class DefaultChunkExecutor extends AbstractChunkExecutor {
 			}
 			catch (final Exception e) {
 				logService.error(e);
-				cancellationMsg = e.getMessage();
+				cancel(e.getMessage());
 				break;
 			}
 		}
 	}
 
-	@Override
-	public boolean isCanceled() {
-		return cancellationMsg != null;
-	}
-
-	@Override
-	public String getCancelReason() {
-		return cancellationMsg;
-	}
 }
