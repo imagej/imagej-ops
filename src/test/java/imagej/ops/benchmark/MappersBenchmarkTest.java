@@ -30,11 +30,10 @@
 
 package imagej.ops.benchmark;
 
-import imagej.module.Module;
 import imagej.ops.Op;
-import imagej.ops.map.MapII2RAI;
 import imagej.ops.map.MapI;
 import imagej.ops.map.MapII2II;
+import imagej.ops.map.MapII2RAI;
 import imagej.ops.map.ParallelMap;
 import imagej.ops.map.ParallelMapI2I;
 import imagej.ops.map.ParallelMapI2R;
@@ -43,6 +42,12 @@ import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
@@ -51,31 +56,17 @@ import org.junit.Before;
  * 
  * @author Christian Dietz
  */
-public class MappersBenchmark extends AbstractOpBenchmark {
+@BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 5)
+public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	private Img<ByteType> in;
-	private int numRuns;
 	private Img<ByteType> out;
 	private Op addConstant;
 	private Op addConstantInplace;
 
-	// run the benchmarks
-	public static void main(final String[] args) {
-		final MappersBenchmark mappersBenchmark = new MappersBenchmark();
-
-		mappersBenchmark.setUp();
-		mappersBenchmark.initImg();
-
-		// run the benchmarks
-		mappersBenchmark.pixelWiseTestMapper();
-		mappersBenchmark.pixelWiseTestMapperII();
-		mappersBenchmark.pixelWiseTestMapperInplace();
-		mappersBenchmark.pixelWiseTestThreadedMapper();
-		mappersBenchmark.pixelWiseTestThreadedMapperII();
-		mappersBenchmark.pixelWiseTestThreadedMapperInplace();
-
-		mappersBenchmark.cleanUp();
-	}
+	/** Needed for JUnit-Benchmarks */
+	@Rule
+	public TestRule benchmarkRun = new BenchmarkRule();
 
 	@Before
 	public void initImg() {
@@ -84,58 +75,39 @@ public class MappersBenchmark extends AbstractOpBenchmark {
 
 		addConstant = ops.op("add", null, NumericType.class, new ByteType((byte) 5));
 		addConstantInplace = ops.op(AddConstantInplace.class, NumericType.class, new ByteType((byte) 5));
-		numRuns = 10;
 	}
 
+	@Test
 	public void pixelWiseTestMapper() {
-		final Module module =
-			ops.module(new MapII2RAI<ByteType, ByteType>(), out, in,
-				addConstant);
-
-		benchmarkAndPrint(MapII2RAI.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new MapII2RAI<ByteType, ByteType>(), out, in,
+			addConstant).run();
 	}
 
+	@Test
 	public void pixelWiseTestMapperII() {
-		final Module module =
-			ops.module(new MapII2II<ByteType, ByteType>(), out, in,
-				addConstant);
-
-		benchmarkAndPrint(MapII2II.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new MapII2II<ByteType, ByteType>(), out, in,
+			addConstant).run();
 	}
 
+	@Test
 	public void pixelWiseTestThreadedMapper() {
-		final Module module =
-			ops.module(new ParallelMapI2R<ByteType, ByteType>(), out, in,
-				addConstant);
-
-		benchmarkAndPrint(ParallelMapI2R.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new ParallelMapI2R<ByteType, ByteType>(), out, in,
+			addConstant).run();
 	}
 
+	@Test
 	public void pixelWiseTestThreadedMapperII() {
-		final Module module =
-			ops.module(new ParallelMapI2I<ByteType, ByteType>(), out, in,
-				addConstant, out);
-
-		benchmarkAndPrint(ParallelMapI2I.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new ParallelMapI2I<ByteType, ByteType>(), out, in,
+			addConstant, out).run();
 	}
 
+	@Test
 	public void pixelWiseTestMapperInplace() {
-		final Module module =
-			ops.module(new MapI<ByteType>(), in, addConstantInplace);
-
-		benchmarkAndPrint(MapI.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new MapI<ByteType>(), in, addConstantInplace).run();
 	}
 
+	@Test
 	public void pixelWiseTestThreadedMapperInplace() {
-		final Module module =
-			ops.module(new ParallelMap<ByteType>(), in.copy(), addConstantInplace);
-
-		benchmarkAndPrint(ParallelMap.class.getSimpleName(), module,
-			numRuns);
+		ops.module(new ParallelMap<ByteType>(), in.copy(), addConstantInplace).run();
 	}
 }

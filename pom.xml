@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>1.150</version>
+		<version>1.152</version>
 		<relativePath />
 	</parent>
 
@@ -17,6 +17,11 @@
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
 	<url>http://developer.imagej.net/</url>
 	<inceptionYear>2014</inceptionYear>
+
+	<properties>
+		<!-- NB: JUnit >= 4.11 needed for JUnit-Benchmarks -->
+		<junit.version>4.11</junit.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -64,6 +69,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>${junit-benchmarks.groupId}</groupId>
+			<artifactId>junit-benchmarks</artifactId>
+			<version>${junit-benchmarks.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
