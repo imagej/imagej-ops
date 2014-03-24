@@ -56,7 +56,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
  * 
  * @author Christian Dietz
  */
-@BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 5)
+@BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	private Img<ByteType> in;

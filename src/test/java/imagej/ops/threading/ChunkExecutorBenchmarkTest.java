@@ -47,7 +47,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
  * @author Christian Dietz
  */
 // make sure that the data structure initialisation is not benchmarked
-@BenchmarkOptions(warmupRounds = 1)
+@BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class ChunkExecutorBenchmarkTest extends AbstractOpBenchmark {
 
 	private boolean expensiveTestsEnabled = "enabled".equals(System.getProperty("imagej.ops.expensive.tests"));
