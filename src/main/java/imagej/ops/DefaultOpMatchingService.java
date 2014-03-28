@@ -414,6 +414,7 @@ public class DefaultOpMatchingService extends
 			if (first) first = false;
 			else sb.append(", ");
 			sb.append(item.getType().getName() + " " + item.getName());
+			if (!item.isRequired()) sb.append("?");
 		}
 		return sb.toString();
 	}
