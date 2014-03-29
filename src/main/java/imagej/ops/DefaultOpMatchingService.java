@@ -188,6 +188,7 @@ public class DefaultOpMatchingService extends
 			for (final ModuleItem<?> item : info.inputs()) {
 				if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
 					// skip this optional parameter (pad with null)
+					paddedIndex++;
 					continue;
 				}
 				paddedArgs[paddedIndex++] = args[argIndex++];
