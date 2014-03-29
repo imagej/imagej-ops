@@ -32,9 +32,9 @@ package imagej.ops;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import imagej.module.Module;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -72,11 +72,17 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	}
 
 	/** Tests support for matching when there are optional parameters. */
+	@Test
 	public void testOptionalParams() {
 		Module m;
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6, 7);
-		assertNull(m);
+		try {
+			m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6, 7);
+			fail("Expected IllegalArgumentException for 7 args");
+		}
+		catch (final IllegalArgumentException exc) {
+			// NB: Expected.
+		}
 
 		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6);
 		assertValues(m, 1, 2, 3, 4, 5, 6, -7);
@@ -90,8 +96,13 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3);
 		assertValues(m, 1, -2, 2, -4, -5, 3, -7);
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2);
-		assertNull(m);
+		try {
+			m = matcher.findModule(null, OptionalParams.class, 1, 2);
+			fail("Expected IllegalArgumentException for 2 args");
+		}
+		catch (final IllegalArgumentException exc) {
+			// NB: Expected.
+		}
 	}
 
 	// -- Helper methods --
@@ -130,19 +141,19 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	public static class OptionalParams implements Op {
 
 		@Parameter
-		private final int a = -1;
+		private int a = -1;
 		@Parameter(required = false)
-		private final int b = -2;
+		private int b = -2;
 		@Parameter
-		private final int c = -3;
+		private int c = -3;
 		@Parameter(required = false)
-		private final int d = -4;
+		private int d = -4;
 		@Parameter(required = false)
-		private final int e = -5;
+		private int e = -5;
 		@Parameter
-		private final int f = -6;
+		private int f = -6;
 		@Parameter(type = ItemIO.OUTPUT)
-		private final int result = -7;
+		private int result = -7;
 
 		@Override
 		public void run() {
