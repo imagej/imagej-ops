@@ -167,6 +167,8 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public Module match(final ModuleInfo info, final Object... args) {
+		if (!info.isValid()) return null; // skip invalid modules
+
 		// check the number of args, padding optional args with null as needed
 		int inputCount = 0, requiredCount = 0;
 		for (final ModuleItem<?> item : info.inputs()) {
@@ -277,6 +279,7 @@ public class DefaultOpMatchingService extends
 	@Override
 	public String getOpString(final ModuleInfo info) {
 		final StringBuilder sb = new StringBuilder();
+		if (!info.isValid()) sb.append("{!INVALID!} ");
 		sb.append("[" + info.getPriority() + "] ");
 		sb.append("(" + paramString(info.outputs()) + ")");
 		sb.append(" = " + info.getDelegateClassName());
