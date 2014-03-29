@@ -384,14 +384,16 @@ public class DefaultOpMatchingService extends
 	private void assign(final Module module, final Object arg,
 		final ModuleItem<?> item)
 	{
-		Object value;
-		if (item instanceof CommandModuleItem) {
-			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-			final Type type = commandItem.getField().getGenericType();
-			value = convert(arg, type);
+		if (arg != null) {
+			Object value;
+			if (item instanceof CommandModuleItem) {
+				final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
+				final Type type = commandItem.getField().getGenericType();
+				value = convert(arg, type);
+			}
+			else value = convert(arg, item.getType());
+			module.setInput(item.getName(), value);
 		}
-		else value = convert(arg, item.getType());
-		module.setInput(item.getName(), value);
 		module.setResolved(item.getName(), true);
 	}
 
