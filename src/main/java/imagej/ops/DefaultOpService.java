@@ -38,6 +38,7 @@ import imagej.module.ModuleService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -126,11 +127,15 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Collection<String> getOperations() {
+		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
 			operations.add(info.getName());
 		}
-		return operations;
+		// convert the set into a sorted list
+		final ArrayList<String> sorted = new ArrayList<String>(operations);
+		Collections.sort(sorted);
+		return sorted;
 	}
 
 	// -- Operation shortcuts --
