@@ -127,7 +127,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Collection<String> operations() {
+	public Collection<String> ops() {
 		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
