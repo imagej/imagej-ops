@@ -30,6 +30,7 @@
 
 package imagej.ops.join;
 
+import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
@@ -68,7 +69,7 @@ public class JoinTest extends AbstractOpTest {
 		final Cursor<ByteType> c = in.cursor();
 
 		while (c.hasNext()) {
-			org.junit.Assert.assertEquals(2, c.next().get());
+			assertEquals(2, c.next().get());
 		}
 	}
 
@@ -82,7 +83,7 @@ public class JoinTest extends AbstractOpTest {
 		final Cursor<ByteType> c = out.cursor();
 
 		while (c.hasNext()) {
-			org.junit.Assert.assertEquals(2, c.next().get());
+			assertEquals(2, c.next().get());
 		}
 	}
 
@@ -96,7 +97,7 @@ public class JoinTest extends AbstractOpTest {
 		final Cursor<ByteType> c = out.cursor();
 
 		while (c.hasNext()) {
-			org.junit.Assert.assertEquals(2, c.next().get());
+			assertEquals(2, c.next().get());
 		}
 	}
 
@@ -111,7 +112,7 @@ public class JoinTest extends AbstractOpTest {
 		final Cursor<ByteType> c = out.cursor();
 
 		while (c.hasNext()) {
-			org.junit.Assert.assertEquals(2, c.next().get());
+			assertEquals(2, c.next().get());
 		}
 	}
 
