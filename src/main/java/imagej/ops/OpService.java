@@ -157,6 +157,15 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the names of all available operations. */
 	Collection<String> operations();
 
+	/** Gets documentation for the operations with the given name. */
+	String help(String name);
+
+	/** Gets documentation for the operations of the given type. */
+	String help(Class<? extends Op> type);
+
+	/** Gets documentation for the given {@link Op}. */
+	String help(Op op);
+
 	// -- Operation shortcuts --
 
 	/** Executes the "add" operation on the given arguments. */

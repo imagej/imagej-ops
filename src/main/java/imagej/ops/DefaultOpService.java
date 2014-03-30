@@ -33,6 +33,7 @@ package imagej.ops;
 import imagej.command.CommandInfo;
 import imagej.command.CommandService;
 import imagej.module.Module;
+import imagej.module.ModuleInfo;
 import imagej.module.ModuleItem;
 import imagej.module.ModuleService;
 
@@ -138,6 +139,42 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final ArrayList<String> sorted = new ArrayList<String>(operations);
 		Collections.sort(sorted);
 		return sorted;
+	}
+
+	@Override
+	public String help(final String name) {
+		return help(matcher.findCandidates(name, null));
+	}
+
+	@Override
+	public String help(final Class<? extends Op> type) {
+		return help(matcher.findCandidates(null, type));
+	}
+
+	@Override
+	public String help(final Op op) {
+		return help(Collections.singleton(info(op)));
+	}
+
+	private String help(final Collection<? extends ModuleInfo> infos) {
+		if (infos.size() == 0) {
+			return "No such operation.";
+		}
+
+		final StringBuilder sb = new StringBuilder("Available operations:");
+		for (final ModuleInfo info : infos) {
+			sb.append("\n\t" + matcher.getOpString(info));
+		}
+
+		if (infos.size() == 1) {
+			final ModuleInfo info = infos.iterator().next();
+			final String description = info.getDescription();
+			if (description != null && !description.isEmpty()) {
+				sb.append("\n\n" + description);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	// -- Operation shortcuts --
