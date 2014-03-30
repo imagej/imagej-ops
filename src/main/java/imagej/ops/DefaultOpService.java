@@ -130,8 +130,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
-			operations.add(info.getName());
+			final String name = info.getName();
+			if (name != null && !name.isEmpty()) operations.add(info.getName());
 		}
+
 		// convert the set into a sorted list
 		final ArrayList<String> sorted = new ArrayList<String>(operations);
 		Collections.sort(sorted);
