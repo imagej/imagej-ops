@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 5)
 public class ParallelMap<A> extends
 	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {
