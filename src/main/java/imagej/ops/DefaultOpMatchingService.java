@@ -258,6 +258,7 @@ public class DefaultOpMatchingService extends
 			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
 			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
 		}
+		log.warn(sb.toString());
 		return module;
 	}
 
