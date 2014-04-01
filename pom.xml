@@ -21,7 +21,6 @@
 	<properties>
 		<!-- NB: JUnit >= 4.11 needed for JUnit-Benchmarks -->
 		<junit.version>4.11</junit.version>
-		<scijava-common.version>2.11.3-SNAPSHOT</scijava-common.version>
 	</properties>
 
 	<dependencies>
