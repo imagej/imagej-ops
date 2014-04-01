@@ -1,5 +1,4 @@
 templateDirectory = project.properties['templateDirectory']
-translationsDirectory = project.properties['translationsDirectory']
 outputDirectory = project.properties['outputDirectory']
 
 /*
@@ -21,7 +20,7 @@ def translate(template, translations) {
   untranslated = builder.toString();
 
   /* read translation lines */
-  reader = new java.io.BufferedReader(new java.io.FileReader(translationsDirectory + '/' + translations));
+  reader = new java.io.BufferedReader(new java.io.FileReader(templateDirectory + '/' + translations));
   for (;;) {
     line = reader.readLine();
     if (line == null) break;
@@ -47,4 +46,4 @@ def translate(template, translations) {
   reader.close();
 }
 
-translate('ArithmeticTemplate', 'ArithmeticList');
+translate('Arithmetic.template', 'Arithmetic.list');
