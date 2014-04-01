@@ -89,9 +89,9 @@
 						</goals>
 						<configuration>
 							<properties>
-								<templateDirectory>${basedir}/src/template/java/</templateDirectory>
-								<translationsDirectory>${basedir}/src/template/translations/</translationsDirectory>
-								<outputDirectory>${project.build.directory}/generated-sources/from-template/imagej/ops/generated/</outputDirectory>
+								<templateDirectory>${basedir}/src/template/java</templateDirectory>
+								<translationsDirectory>${basedir}/src/template/translations</translationsDirectory>
+								<outputDirectory>${project.build.directory}/generated-sources/from-template/imagej/ops/generated</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>

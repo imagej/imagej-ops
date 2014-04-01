@@ -11,7 +11,7 @@ outputDirectory = project.properties['outputDirectory']
 def translate(template, translations) {
   /* read template */
   builder = new java.lang.StringBuilder()
-    reader = new java.io.BufferedReader(new java.io.FileReader(templateDirectory + template));
+    reader = new java.io.BufferedReader(new java.io.FileReader(templateDirectory + '/' + template));
   for (;;) {
     line = reader.readLine();
     if (line == null) break;
@@ -21,7 +21,7 @@ def translate(template, translations) {
   untranslated = builder.toString();
 
   /* read translation lines */
-  reader = new java.io.BufferedReader(new java.io.FileReader(translationsDirectory + translations));
+  reader = new java.io.BufferedReader(new java.io.FileReader(translationsDirectory + '/' + translations));
   for (;;) {
     line = reader.readLine();
     if (line == null) break;
