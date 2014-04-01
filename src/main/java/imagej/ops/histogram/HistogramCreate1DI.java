@@ -28,30 +28,39 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.histogram;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
+import imagej.ops.descriptors.statistics.MinMax;
+
+import java.util.List;
+
 import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * @author Martin Horn, University of Konstanz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, name = HistogramCreate1D.NAME,
+	label = HistogramCreate1D.LABEL)
+public class HistogramCreate1DI<T extends RealType<T>> implements
+	HistogramCreate1D<T>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
 	@Parameter
-	private Iterable<T> input;
+	private Iterable<T> in;
+
+	@Parameter(required = false)
+	private int numBins = 256;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
 
 	@Parameter
 	private OpService ops;
@@ -59,18 +68,15 @@ public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
 	@Override
 	public void run() {
 		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+		final List<T> res = (List<T>) ops.run(MinMax.class, in);
+		out =
+			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
+				.get(1).getRealDouble(), numBins, false));
 
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
 	}
 
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
+	@Override
+	public Histogram1d<T> getHistogram() {
+		return out;
+	}
 }

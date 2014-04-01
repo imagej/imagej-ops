@@ -28,49 +28,32 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.misc;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.polygon.ContourExtraction;
+import imagej.ops.polygon.CreateBitMask;
 
-import org.scijava.ItemIO;
+import java.awt.Polygon;
+
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
- */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+//TODO can such functions be generalized and automated (like an ops graph in which we are searching for paths to the desired goal given some parameters?)
+@Plugin(type = Op.class, name = ContourExtraction.NAME,
+	label = ContourExtraction.LABEL)
+public class ExtractContourViaBitMaskD extends
+	AbstractFunction<Object, Polygon>
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
 
 	@Parameter
 	private OpService ops;
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
+	public Polygon compute(final Object input, final Polygon output) {
+		return (Polygon) ops.run(ContourExtraction.class, Polygon.class, ops.run(
+			CreateBitMask.class, null, input));
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

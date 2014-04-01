@@ -28,49 +28,57 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
+import imagej.ops.descriptors.DescriptorService;
+import imagej.ops.descriptors.misc.Area;
+import imagej.ops.descriptors.statistics.Mean;
+import imagej.ops.descriptors.statistics.Moment1AboutMean;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Generic implementation of {@link Moment1AboutMean}. Use
+ * {@link DescriptorService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, name = Moment1AboutMean.NAME,
+	label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class Moment1AboutMeanGeneric extends AbstractFunctionIRT implements
+	Moment1AboutMean<Iterable<RealType<?>>, RealType<?>>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	@Parameter
+	private Mean<Iterable<RealType<?>>, DoubleType> meanFunc;
 
 	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
+	private Area<Iterable<?>, DoubleType> areaFunc;
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public RealType<?> compute(final Iterable<RealType<?>> input,
+		RealType<?> output)
+	{
 
-		threshold = input.iterator().next().createVariable();
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
+		}
 
-		getThreshold(hist, threshold);
+		final double mean = meanFunc.getOutput().get();
+
+		double res = 0.0;
+		for (final RealType<?> element : input) {
+			res += element.getRealDouble() - mean;
+		}
+
+		output.setReal(res / areaFunc.getOutput().get());
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

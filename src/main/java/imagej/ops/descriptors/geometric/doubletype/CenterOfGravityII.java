@@ -28,49 +28,49 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.geometric.doubletype;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.geometric.CenterOfGravity;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Calculating {@link CenterOfGravity} on {@link IterableInterval}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, label = CenterOfGravity.LABEL,
+	name = CenterOfGravity.NAME)
+public class CenterOfGravityII extends
+	AbstractFunction<IterableInterval<?>, double[]> implements
+	CenterOfGravity<IterableInterval<?>, double[]>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public double[] compute(final IterableInterval<?> input, double[] output) {
+		final Cursor<?> it = input.cursor();
 
-		threshold = input.iterator().next().createVariable();
+		if (output == null) {
+			output = new double[input.numDimensions()];
+		}
 
-		getThreshold(hist, threshold);
+		while (it.hasNext()) {
+			it.fwd();
+			for (int i = 0; i < output.length; i++) {
+				output[i] += it.getDoublePosition(i);
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] /= input.size();
+		}
+
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
 }

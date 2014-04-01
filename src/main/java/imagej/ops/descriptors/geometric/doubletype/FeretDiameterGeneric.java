@@ -28,49 +28,43 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.geometric.doubletype;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.DescriptorService;
+import imagej.ops.descriptors.geometric.Feret;
+import imagej.ops.descriptors.geometric.FeretResult;
+import imagej.ops.descriptors.geometric.FeretsDiameter;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Generic implementation of {@link FeretsDiameter}. Use
+ * {@link DescriptorService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, label = FeretsDiameter.LABEL,
+	name = FeretsDiameter.NAME)
+public class FeretDiameterGeneric extends AbstractFunction<Object, DoubleType>
+	implements FeretsDiameter<Object, DoubleType>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
 	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
+	private Feret<Object, FeretResult> feret;
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public DoubleType compute(final Object input, DoubleType output) {
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
+		}
 
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
+		output.setReal(feret.getOutput().max);
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

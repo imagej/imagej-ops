@@ -28,46 +28,69 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.geometric.doubletype;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.geometric.Feret;
+import imagej.ops.descriptors.geometric.FeretResult;
 
-import org.scijava.plugin.Parameter;
+import java.awt.Polygon;
+
+import net.imglib2.Point;
+
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculating {@link FeretResult} on {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class GlobalThreshold<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
-	Threshold
+@Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
+public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
+	implements Feret<Polygon, FeretResult>
 {
 
-	@Parameter
-	private GlobalThresholdMethod<T> method;
-
-	@Parameter
-	private OpService ops;
-
-	@SuppressWarnings("unchecked")
 	@Override
-	public IterableInterval<BitType> compute(final IterableInterval<T> input,
-		final IterableInterval<BitType> output)
-	{
-		final T threshold = (T) ops.run(method, input);
+	public FeretResult compute(final Polygon input, FeretResult output) {
+		if (output == null) output = new FeretResult();
 
-		final Op thresholdOp =
-			ops
-				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
+		double maxDiameter = -Double.MAX_VALUE;
+		final long[] tmp = { 0, 0 };
+		final Point maxP1 = new Point(tmp);
+		final Point maxP2 = new Point(tmp);
 
-		ops.run("map", output, input, thresholdOp);
+		for (int i = 0; i < input.npoints; i++) {
+			for (int j = 0; j < input.npoints; j++) {
+				if (i != j) {
+					double dist = 0.0;
+
+					dist +=
+						(input.xpoints[i] - input.xpoints[j]) *
+							(input.xpoints[i] - input.xpoints[j]);
+					dist +=
+						(input.ypoints[i] - input.ypoints[j]) *
+							(input.ypoints[i] - input.ypoints[j]);
+
+					if (dist > maxDiameter) {
+						maxP1.setPosition(input.xpoints[i], 0);
+						maxP1.setPosition(input.ypoints[i], 1);
+						maxP2.setPosition(input.xpoints[j], 0);
+						maxP2.setPosition(input.ypoints[j], 1);
+						maxDiameter = dist;
+					}
+				}
+			}
+		}
+
+		// sqrt for euclidean
+		maxDiameter = Math.sqrt(maxDiameter);
+
+		output.max = maxDiameter;
+		output.p1 = maxP1;
+		output.p2 = maxP2;
+
 		return output;
 	}
-
 }

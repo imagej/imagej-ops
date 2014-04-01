@@ -28,42 +28,67 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.geometric.doubletype;
 
-import imagej.ops.Op;
+import imagej.ops.AbstractFunction;
 import imagej.ops.OpService;
-import imagej.ops.descriptors.statistics.Mean;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.geometric.CenterOfGravity;
+import imagej.ops.descriptors.misc.Area;
+
+import java.awt.Polygon;
+
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculating {@link CenterOfGravity} on {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
+@Plugin(type = CenterOfGravity.class, priority = -1,
+	name = CenterOfGravity.NAME, label = CenterOfGravity.LABEL)
+public class CenterOfGravityPolygon extends AbstractFunction<Polygon, double[]>
+	implements CenterOfGravity<Polygon, double[]>
+{
 
 	@Parameter
 	private OpService ops;
 
-	private Mean<Iterable<T>, DoubleType> mean;
-
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public double[] compute(final Polygon input, double[] output) {
 
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+		if (output == null) output = new double[2];
+
+		final double area = ((DoubleType) ops.run(Area.class, input)).get();
+
+		// Yang Mingqiang:
+		// A Survey of Shape Feature Extraction Techniques
+		// in Pattern Recognition Techniques, Technology and Applications, 2008
+		for (int i = 0; i < input.npoints; i++) {
+			final double x = input.xpoints[i];
+			final double x1 = input.xpoints[i + 1];
+			final double y = input.ypoints[i];
+			final double y1 = input.ypoints[i + 1];
+
+			output[0] += (x + x1) * (x * y1 - x1 * y);
+			output[1] += (y + y1) * (x * y1 - x1 * y);
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		final double x = input.xpoints[input.npoints - 1];
+		final double x1 = input.xpoints[0];
+		final double y = input.ypoints[input.npoints - 1];
+		final double y1 = input.ypoints[0];
+
+		output[0] += (x + x1) * (x * y1 - x1 * y);
+		output[1] += (y + y1) * (x * y1 - x1 * y);
+
+		output[0] = (1 / (6 * area)) * Math.abs(output[0]);
+		output[1] = (1 / (6 * area)) * Math.abs(output[1]);
 
 		return output;
 	}
+
 }

@@ -27,50 +27,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.descriptors.geometric;
 
-package imagej.ops.threshold;
-
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import net.imglib2.Point;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Simple helper class to store results for Angle/Diameter computations.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
-{
+public class FeretResult {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	public double max;
 
-	@Parameter
-	private Iterable<T> input;
+	public Point p1;
 
-	@Parameter
-	private OpService ops;
+	public Point p2;
 
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public double getAngle() {
 
-		threshold = input.iterator().next().createVariable();
+		if (p1.getDoublePosition(0) == p2.getDoublePosition(0)) return (90);
 
-		getThreshold(hist, threshold);
+		// tan alpha = opposite leg / adjacent leg
+		// angle in radiants = atan(alpha)
+		// angle in degree = atan(alpha) * (180/pi)
+
+		final double opLeg = p2.getDoublePosition(1) - p1.getDoublePosition(1);
+		final double adjLeg = p2.getDoublePosition(0) - p1.getDoublePosition(0);
+
+		double degree = Math.atan((opLeg / adjLeg)) * (180.0 / Math.PI);
+
+		if (adjLeg < 0) degree = 180 - degree;
+
+		return Math.abs(degree);
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

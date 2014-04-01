@@ -28,49 +28,26 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.service.Service;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * TODO: Better documentation. A {@link DescriptorService} automatically tries
+ * to compile a descriptor. This means it's resolving all dependencies of an
+ * {@link Op} to other {@link Op}s, which are automatically instantiated.
+ * Additionally, an {@link Op} is only computed once for a given input. The
+ * strong assumptions are, that the input-type which is passed to the compiled
+ * descriptor never changes and no further parameters, but the input, are
+ * required.
+ * 
+ * @author Christian Dietz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
-{
+public interface DescriptorService extends Service {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
+	<O extends Op, I> ResolvedDescriptor<O, I> resolveDependencies(
+			Class<O> class1, Class<? extends I> input);
 
 }

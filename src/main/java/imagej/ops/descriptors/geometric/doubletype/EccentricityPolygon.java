@@ -28,49 +28,42 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.geometric.doubletype;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.AbstractFunction;
+import imagej.ops.descriptors.geometric.Eccentricity;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import java.awt.Polygon;
+import java.awt.geom.Rectangle2D;
+
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Calculating {@link Eccentricity} on {@link Polygon}. TODO: REVIEW
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Eccentricity.class, name = Eccentricity.NAME,
+	label = Eccentricity.LABEL)
+public class EccentricityPolygon extends AbstractFunction<Polygon, DoubleType>
+	implements Eccentricity<Polygon, DoubleType>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
+	// TODO REVIEW. This implementation is not correct!!
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public DoubleType compute(final Polygon input, DoubleType output) {
+		if (output == null) output = new DoubleType();
 
-		threshold = input.iterator().next().createVariable();
+		final Rectangle2D rec = input.getBounds2D();
 
-		getThreshold(hist, threshold);
+		output.set((rec.getWidth() > rec.getHeight()) ? rec.getWidth() /
+			rec.getHeight() : rec.getHeight() / rec.getWidth());
+
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
 }

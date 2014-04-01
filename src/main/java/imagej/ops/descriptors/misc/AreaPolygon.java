@@ -28,49 +28,51 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.misc;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import java.awt.Polygon;
+
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Calculate area of a {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL)
+public class AreaPolygon extends AbstractFunction<Polygon, DoubleType>
+	implements Area<Polygon, DoubleType>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public DoubleType compute(final Polygon input, DoubleType output) {
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
+		}
 
-		threshold = input.iterator().next().createVariable();
+		double sum1 = 0.0f;
+		double sum2 = 0.0f;
 
-		getThreshold(hist, threshold);
+		// Yang Mingqiang:
+		// A Survey of Shape Feature Extraction Techniques
+		// in Pattern Recognition Techniques, Technology and Applications, 2008
+		for (int i = 0; i < input.npoints - 1; i++) {
+			sum1 += input.xpoints[i] * input.ypoints[i + 1];
+			sum2 += input.ypoints[i] * input.xpoints[i + 1];
+		}
+
+		sum1 += input.xpoints[input.npoints - 1] * input.ypoints[0];
+		sum2 += input.ypoints[input.npoints - 1] * input.xpoints[0];
+
+		output.set(Math.abs(sum1 - sum2) / 2);
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
 }

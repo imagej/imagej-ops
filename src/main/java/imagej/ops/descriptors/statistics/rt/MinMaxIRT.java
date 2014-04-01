@@ -28,49 +28,60 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
+import imagej.ops.descriptors.statistics.MinMax;
+
+import java.util.Iterator;
+
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Calculates the minimum and maximum value of an {@link Iterable} of type
+ * {@link RealType}
+ * 
+ * @author Martin Horn
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
-{
+@Plugin(type = MinMax.class, name = MinMax.NAME)
+public class MinMaxIRT<T extends RealType<T>> implements MinMax<T> {
+
+	@Parameter
+	private Iterable<T> img;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	private T min;
 
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
 	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+		min = img.iterator().next().createVariable();
+		max = min.copy();
 
-		threshold = input.iterator().next().createVariable();
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
 
-		getThreshold(hist, threshold);
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0) min.set(i);
+			if (max.compareTo(i) < 0) max.set(i);
+		}
 	}
 
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
+	@Override
+	public T getMin() {
+		return min;
+	}
+
+	@Override
+	public T getMax() {
+		return max;
+	}
 
 }

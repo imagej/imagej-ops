@@ -28,49 +28,30 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.misc;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-/**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
- */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL,
+	priority = Priority.HIGH_PRIORITY)
+public class AreaII extends AbstractFunction<IterableInterval<?>, DoubleType>
+	implements Area<IterableInterval<?>, DoubleType>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
+	public DoubleType compute(final IterableInterval<?> input, DoubleType output)
+	{
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
+		}
+		output.set(input.size());
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

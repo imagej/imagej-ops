@@ -28,49 +28,23 @@
  * #L%
  */
 
-package imagej.ops.threshold;
-
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+package imagej.ops.descriptors.statistics;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Base interface for "median" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Median.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
-{
+public interface Median<T, V> extends Percentile<T, V> {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
+	String NAME = "median";
+	String LABEL = "Median";
 
 }

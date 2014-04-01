@@ -28,49 +28,48 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.statistics.Min;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import java.util.Iterator;
+
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Calculate {@link Min} of {@link Iterable} of {@link RealType}.
+ * 
+ * @author Christian Dietz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL,
+	priority = Priority.LOW_PRIORITY)
+public class MinIRT extends AbstractFunctionIRT implements
+	Min<Iterable<RealType<?>>, RealType<?>>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public RealType<?> compute(final Iterable<RealType<?>> input,
+		RealType<?> output)
+	{
+		if (output == null) output = new DoubleType();
 
-		threshold = input.iterator().next().createVariable();
+		final Iterator<? extends RealType<?>> it = input.iterator();
+		RealType<?> min = it.next();
 
-		getThreshold(hist, threshold);
+		while (it.hasNext()) {
+			final RealType<?> next = it.next();
+			if (min.getRealDouble() > next.getRealDouble()) {
+				min = next;
+			}
+		}
+
+		output.setReal(min.getRealDouble());
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
 
 }

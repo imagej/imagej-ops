@@ -28,49 +28,22 @@
  * #L%
  */
 
-package imagej.ops.threshold;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
+package imagej.ops.descriptors.statistics.rt;
+
+import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Simple helper to reduce generic mess in implementations. This
+ * {@link Function} maps from {@link Iterable} of {@link RealType} to
+ * {@link RealType}.
+ * 
+ * @author Christian Dietz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+public abstract class AbstractFunctionIRT extends
+	AbstractFunction<Iterable<RealType<?>>, RealType<?>>
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
+	// NB: Marker to reduce amount of generics
 }

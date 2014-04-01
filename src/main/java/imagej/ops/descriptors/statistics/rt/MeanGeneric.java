@@ -28,49 +28,49 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
+import imagej.ops.descriptors.DescriptorService;
+import imagej.ops.descriptors.misc.Area;
+import imagej.ops.descriptors.statistics.Mean;
+import imagej.ops.descriptors.statistics.Sum;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Generic implementation of {@link Mean}. Use {@link DescriptorService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+@Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME,
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class MeanGeneric extends AbstractFunction<Object, RealType<?>>
+	implements Mean<Object, RealType<?>>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	@Parameter
+	private Sum<Object, DoubleType> sum;
 
 	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
+	private Area<Object, DoubleType> numElements;
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+	public RealType<?> compute(final Object input, RealType<?> output) {
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
+		}
 
-		threshold = input.iterator().next().createVariable();
+		output.setReal(sum.getOutput().get() / numElements.getOutput().get());
 
-		getThreshold(hist, threshold);
+		return output;
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }

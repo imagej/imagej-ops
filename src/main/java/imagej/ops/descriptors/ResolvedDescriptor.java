@@ -28,49 +28,55 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors;
 
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.descriptors.DefaultDescriptorService.InputUpdateListeners;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import java.util.List;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Descriptor for which all dependencies were resolved by the
+ * {@link DefaultDescriptorService}. On update, all dependent {@link Op}s will
+ * be recalculated.
+ * 
+ * @author Christian Dietz
+ * 
+ * @param <O>
+ *            type of resulting op
+ * @param <I>
+ *            type of input
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
-{
+public class ResolvedDescriptor<O extends Op, I> {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	private final O op;
+	private final List<InputUpdateListeners> listeners;
 
-	@Parameter
-	private Iterable<T> input;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
-
-		threshold = input.iterator().next().createVariable();
-
-		getThreshold(hist, threshold);
+	/**
+	 * @param op
+	 *            The {@link Op} with all dependencies resolved.
+	 * @param listeners
+	 */
+	protected ResolvedDescriptor(final O op,
+			final List<InputUpdateListeners> listeners) {
+		this.listeners = listeners;
+		this.op = op;
 	}
 
 	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
+	 * Update descriptor and all dependent {@link Op}s.
+	 * 
+	 * @param input
+	 * @return
 	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
+	public O update(final I input) {
 
+		for (final InputUpdateListeners listener : listeners) {
+			listener.update(input);
+		}
+
+		op.run();
+
+		return op;
+	}
 }

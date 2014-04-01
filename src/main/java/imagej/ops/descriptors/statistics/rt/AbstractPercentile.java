@@ -28,49 +28,39 @@
  * #L%
  */
 
-package imagej.ops.threshold;
+package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.histogram.HistogramCreate1D;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import imagej.ops.AbstractFunction;
+import imagej.ops.descriptors.statistics.Percentile;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * @author Christian Dietz
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements
-	Op
+public abstract class AbstractPercentile<I, O> extends AbstractFunction<I, O>
+	implements Percentile<I, O>
 {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
+	protected double calculatePercentile(final double p, final double[] v) {
+		final double[] values = v;
+		final int size = values.length;
 
-	@Parameter
-	private Iterable<T> input;
+		if (size == 0) return Double.NaN;
 
-	@Parameter
-	private OpService ops;
+		if (size == 1) return values[0];
 
-	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(HistogramCreate1D.class, null, input);
+		final double n = size;
+		final double pos = p * (n + 1);
+		final double fpos = Math.floor(pos);
+		final int intPos = (int) fpos;
+		final double dif = pos - fpos;
 
-		threshold = input.iterator().next().createVariable();
+		if (pos < 1) return values[0];
 
-		getThreshold(hist, threshold);
+		if (pos >= n) return values[size - 1];
+
+		final double lower = values[intPos - 1];
+		final double upper = values[intPos];
+
+		return lower + dif * (upper - lower);
 	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
 }
