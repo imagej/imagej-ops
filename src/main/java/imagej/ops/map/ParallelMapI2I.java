@@ -44,8 +44,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}, which is specialized for the case, that
- * the two incoming {@link IterableInterval}s have the same IterationOrder.
+ * Parallelized {@link Map}, which is specialized for the case, that the two
+ * incoming {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>

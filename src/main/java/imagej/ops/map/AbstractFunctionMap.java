@@ -36,7 +36,7 @@ import imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link FunctionalMap}
+ * Abstract implementation of a {@link Map}.
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>

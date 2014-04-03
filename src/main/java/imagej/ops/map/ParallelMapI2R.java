@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}
+ * Parallelized {@link Map}.
  * 
  * @author Christian Dietz
  * @param <A> mapped on <B>
