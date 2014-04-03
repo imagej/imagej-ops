@@ -30,22 +30,28 @@
 
 package imagej.ops.chunker;
 
+import imagej.ops.Parallel;
+
 /**
- * A {@link Chunk}, which can be executed by the {@link Chunker}
- * A {@link Chunk} processes a subset of a bigger problem and can be executed
- * in parallel with other {@link Chunk}. The elements of the subproblem are identified
- * by enumerating the original problem.
+ * A {@link Chunk} of code which can be executed by a {@link Chunker}.
+ * <p>
+ * A {@link Chunk} processes a subset of a bigger problem and can be executed in
+ * parallel with other {@link Chunk}s. The elements of the subproblem are
+ * identified by enumerating the original problem.
+ * </p>
  * 
  * @author Christian Dietz
+ * @see Chunker
+ * @see Parallel
  */
 public interface Chunk {
 	
 	/**
-	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
-	 * and repeat numSteps.
+	 * Solve the subproblem for the element at startIndex, increase the index by
+	 * the given stepSize and repeat numSteps.
 	 * 
-	 * @param startIndex zero based index that identifies the first element of this
-	 * subproblem (w.r.t. the global problem enumeration)
+	 * @param startIndex zero based index that identifies the first element of
+	 *          this subproblem (w.r.t. the global problem enumeration)
 	 * @param stepSize the step-size between two consecutive elements
 	 * @param numSteps how many steps shall be taken
 	 */
