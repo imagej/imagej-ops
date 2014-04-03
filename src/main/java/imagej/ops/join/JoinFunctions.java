@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Join {@link Function}s.
+ * Joins {@link Function}s.
  * 
  * @author Christian Dietz
  */
