@@ -31,6 +31,7 @@ package imagej.ops.threading;
 
 import static org.junit.Assume.assumeTrue;
 import imagej.ops.benchmark.AbstractOpBenchmark;
+import imagej.ops.chunker.ChunkExecutor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 

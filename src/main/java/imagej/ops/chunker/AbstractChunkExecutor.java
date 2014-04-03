@@ -27,15 +27,68 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.threading;
 
-import net.imglib2.Cursor;
+package imagej.ops.chunker;
 
-public abstract class CursorBasedChunkExecutable implements ChunkExecutable {
-	
-	public static void setToStart(final Cursor<?> c, int startIndex) {
-		c.reset();
-		c.jumpFwd(startIndex + 1);
+import org.scijava.plugin.Parameter;
+import org.scijava.thread.ThreadService;
+
+/**
+ * Abstract {@link ChunkExecutor}.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractChunkExecutor implements ChunkExecutor {
+
+	/**
+	 * ThreadService used for multi-threading
+	 */
+	@Parameter
+	protected ThreadService threadService;
+
+	/**
+	 * {@link ChunkExecutable} to be executed
+	 */
+	@Parameter
+	protected ChunkExecutable chunkable;
+
+	/**
+	 * Total number of elements to be processed
+	 */
+	@Parameter
+	protected long numberOfElements;
+
+	/** Reason for cancelation, or null if not canceled. */
+	private String cancelReason;
+
+	// -- ChunkExecutor methods --
+
+	@Override
+	public void setChunkExecutable(final ChunkExecutable definition) {
+		this.chunkable = definition;
+	}
+
+	@Override
+	public void setNumberOfElements(final int totalSize) {
+		this.numberOfElements = totalSize;
+	}
+
+	// -- Cancelable methods --
+
+	@Override
+	public boolean isCanceled() {
+		return cancelReason != null;
+	}
+
+	/** Cancels the command execution, with the given reason for doing so. */
+	@Override
+	public void cancel(final String reason) {
+		cancelReason = reason;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancelReason;
 	}
 
 }

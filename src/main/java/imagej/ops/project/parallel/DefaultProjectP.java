@@ -36,9 +36,9 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.chunker.ChunkExecutor;
+import imagej.ops.chunker.CursorBasedChunkExecutable;
 import imagej.ops.project.Project;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
 
 import java.util.Iterator;
 

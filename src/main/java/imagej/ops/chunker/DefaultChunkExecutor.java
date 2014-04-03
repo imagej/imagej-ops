@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.chunker;
 
 import imagej.ops.Op;
 

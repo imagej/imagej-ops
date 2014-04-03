@@ -33,6 +33,8 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.chunker.CursorBasedChunkExecutable;
+import imagej.ops.chunker.DefaultChunkExecutor;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;

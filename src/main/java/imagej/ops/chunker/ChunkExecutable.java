@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.chunker;
 
 /**
  * A {@link ChunkExecutable}, which can be executed by the {@link ChunkExecutor}

@@ -33,6 +33,8 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.chunker.ChunkExecutable;
+import imagej.ops.chunker.InterleavedChunkExecutor;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;

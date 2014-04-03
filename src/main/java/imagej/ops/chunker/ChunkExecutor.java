@@ -28,67 +28,29 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.chunker;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.thread.ThreadService;
+import imagej.Cancelable;
+import imagej.ops.Op;
 
 /**
- * Abstract {@link ChunkExecutor}.
+ * ChunkExecutor to execute chunks of data.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractChunkExecutor implements ChunkExecutor {
+public interface ChunkExecutor extends Op, Cancelable {
 
 	/**
-	 * ThreadService used for multi-threading
+	 * Set the {@link ChunkExecutable} for which will be multi-threaded
+	 * 
+	 * @param executor
 	 */
-	@Parameter
-	protected ThreadService threadService;
+	void setChunkExecutable(final ChunkExecutable executor);
 
 	/**
-	 * {@link ChunkExecutable} to be executed
+	 * Set the total number of elements which should be processed in parallel
+	 * 
+	 * @param numberOfElements
 	 */
-	@Parameter
-	protected ChunkExecutable chunkable;
-
-	/**
-	 * Total number of elements to be processed
-	 */
-	@Parameter
-	protected long numberOfElements;
-
-	/** Reason for cancelation, or null if not canceled. */
-	private String cancelReason;
-
-	// -- ChunkExecutor methods --
-
-	@Override
-	public void setChunkExecutable(final ChunkExecutable definition) {
-		this.chunkable = definition;
-	}
-
-	@Override
-	public void setNumberOfElements(final int totalSize) {
-		this.numberOfElements = totalSize;
-	}
-
-	// -- Cancelable methods --
-
-	@Override
-	public boolean isCanceled() {
-		return cancelReason != null;
-	}
-
-	/** Cancels the command execution, with the given reason for doing so. */
-	@Override
-	public void cancel(final String reason) {
-		cancelReason = reason;
-	}
-
-	@Override
-	public String getCancelReason() {
-		return cancelReason;
-	}
-
+	void setNumberOfElements(final int numberOfElements);
 }

@@ -32,8 +32,8 @@ package imagej.ops.arithmetic.add.parallel;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.threading.ChunkExecutable;
-import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.chunker.ChunkExecutable;
+import imagej.ops.chunker.ChunkExecutor;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
