@@ -32,8 +32,16 @@ package imagej.ops;
 
 /**
  * Base interface for {@link Op}s that run across multiple threads.
+ * <p>
+ * A parallel op is one that executes across multiple threads. Typically, it
+ * parallelizes a {@link Threadable} op across those thread by relying on the
+ * {@link Threadable#getIndependentInstance()} method, but there is no
+ * requirement that parallel ops necessarily work in this way.
+ * </p>
  * 
  * @author Curtis Rueden
+ * @see Threadable
+ * @see imagej.ops.chunker
  */
 public interface Parallel {
 	// NB: Marker interface.
