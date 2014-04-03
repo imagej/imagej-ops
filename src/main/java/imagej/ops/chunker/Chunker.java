@@ -34,23 +34,26 @@ import imagej.Cancelable;
 import imagej.ops.Op;
 
 /**
- * Executes chunks of data using multiple threads.
+ * Base interface for "chunker" operations. These operations execute code across
+ * chunks of data using multiple threads.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Chunker.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */
 public interface Chunker extends Op, Cancelable {
 
-	/**
-	 * Set the {@link Chunk} for which will be multi-threaded
-	 * 
-	 * @param executor
-	 */
+	String NAME = "chunker";
+
+	/** Sets the {@link Chunk} for which will be multithreaded. */
 	void setChunk(final Chunk executor);
 
-	/**
-	 * Set the total number of elements which should be processed in parallel
-	 * 
-	 * @param numberOfElements
-	 */
+	/** Sets the total number of elements which should be processed in parallel. */
 	void setNumberOfElements(final int numberOfElements);
+
 }
