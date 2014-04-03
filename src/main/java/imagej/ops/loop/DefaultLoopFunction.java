@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies an {@link Function} numIteration times to an image
+ * Applies a {@link Function} multiple times to an image.
  * 
  * @author Christian Dietz
  */
