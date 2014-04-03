@@ -33,8 +33,8 @@ package imagej.ops;
 import org.scijava.ItemIO;
 
 /**
- * A function (in this context) is an {@link Op} that has a typed input
- * parameter, and a typed output parameter.
+ * A {@code Function} is an {@link Op} that has a typed input parameter, and a
+ * typed output parameter.
  * <p>
  * The function provides a {@link #compute} method to compute the function for
  * different input and output parameters.
