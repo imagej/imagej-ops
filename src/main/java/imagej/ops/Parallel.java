@@ -31,7 +31,7 @@
 package imagej.ops;
 
 /**
- * Base interface for {@link Op}s that use multithreading.
+ * Base interface for {@link Op}s that run across multiple threads.
  * 
  * @author Curtis Rueden
  */
