@@ -43,7 +43,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz
  */
-public class FunctionJoiner<A> extends AbstractFunction<A, A> {
+public class DefaultFunctionJoiner<A> extends AbstractFunction<A, A> {
 
 	/** List of functions to be joined. */
 	private List<Function<A, A>> functions;
