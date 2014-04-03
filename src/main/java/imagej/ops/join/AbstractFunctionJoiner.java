@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A>
+	extends AbstractFunction<A, A> implements FunctionJoiner<A, F>
 {
 
 	/** List of functions to be joined. */
@@ -53,18 +53,22 @@ public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
 	@Parameter
 	private A buffer;
 
+	@Override
 	public A getBuffer() {
 		return buffer;
 	}
 
+	@Override
 	public void setBuffer(final A buffer) {
 		this.buffer = buffer;
 	}
 
+	@Override
 	public List<? extends F> getFunctions() {
 		return functions;
 	}
 
+	@Override
 	public void setFunctions(final List<? extends F> functions) {
 		this.functions = functions;
 	}
