@@ -40,14 +40,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Join {@link InplaceFunction}s.
+ * Joins {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = "join")
 public class JoinInplaces<A> extends AbstractFunction<A, A> {
 
-	// list of functions to be joined
+	/** List of functions to be joined. */
 	private List<InplaceFunction<A>> functions;
 
 	@Parameter
@@ -67,7 +67,6 @@ public class JoinInplaces<A> extends AbstractFunction<A, A> {
 
 	@Override
 	public A compute(final A input, final A output) {
-
 		for (final InplaceFunction<A> inplace : functions) {
 			inplace.compute(input, output);
 		}
