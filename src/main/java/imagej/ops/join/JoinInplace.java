@@ -11,26 +11,8 @@ import imagej.ops.InplaceFunction;
  * 
  * @author Christian Dietz
  */
-public interface JoinInplace<A> extends Join {
-
-	/**
-	 * @return first {@link Function} to be joined
-	 */
-	InplaceFunction<A> getFirst();
-
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	void setFirst(InplaceFunction<A> first);
-
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	InplaceFunction<A> getSecond();
-
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	void setSecond(InplaceFunction<A> second);
-
+public interface JoinInplace<A> extends
+	JoinFunction<A, A, A, InplaceFunction<A>, InplaceFunction<A>>
+{
+	// NB: Marker interface.
 }
