@@ -42,5 +42,5 @@ import net.imglib2.type.numeric.RealType;
 public interface ProjectMethod<T extends RealType<T>> extends
 	Function<Iterable<T>, T>
 {
-
+	// NB: Marker interface.
 }
