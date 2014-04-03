@@ -31,19 +31,17 @@
 package imagej.ops.join;
 
 import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.Function;
 import imagej.ops.InplaceFunction;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
+ * Abstract superclass of {@link JoinInplace} implementations.
  * 
  * @author Christian Dietz
  */
 public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplace<A>
 {
 
 	@Parameter
@@ -52,30 +50,22 @@ public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
 	@Parameter
 	protected InplaceFunction<A> second;
 
-	/**
-	 * @return first {@link Function} to be joined
-	 */
+	@Override
 	public InplaceFunction<A> getFirst() {
 		return first;
 	}
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
+	@Override
 	public void setFirst(final InplaceFunction<A> first) {
 		this.first = first;
 	}
 
-	/**
-	 * @return second {@link Function} to be joined
-	 */
+	@Override
 	public InplaceFunction<A> getSecond() {
 		return second;
 	}
 
-	/**
-	 * @param second {@link Function} to be joined
-	 */
+	@Override
 	public void setSecond(final InplaceFunction<A> second) {
 		this.second = second;
 	}
