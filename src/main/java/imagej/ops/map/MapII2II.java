@@ -59,7 +59,7 @@ public class MapII2II<A, B> extends
 	private boolean isValid(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		return input.iterationOrder().equals(getOutput().iterationOrder());
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
