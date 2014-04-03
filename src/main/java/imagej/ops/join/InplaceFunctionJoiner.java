@@ -30,44 +30,25 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.InplaceFunction;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-
 /**
- * Joins {@link InplaceFunction}s.
+ * Helper class for joining {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public class InplaceFunctionJoiner<A> extends AbstractFunction<A, A> {
-
-	/** List of functions to be joined. */
-	private List<InplaceFunction<A>> functions;
-
-	@Parameter
-	private A buffer;
-
-	public A getBuffer() {
-		return buffer;
-	}
-
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
-	}
-
-	public void setFunctions(final List<InplaceFunction<A>> functions) {
-		this.functions = functions;
-	}
+public class InplaceFunctionJoiner<A> extends
+	AbstractFunctionJoiner<A, InplaceFunction<A>>
+{
 
 	@Override
 	public A compute(final A input, final A output) {
-		for (final InplaceFunction<A> inplace : functions) {
+		for (final InplaceFunction<A> inplace : getFunctions()) {
 			inplace.compute(input, output);
 		}
 
 		return output;
 	}
+
 }

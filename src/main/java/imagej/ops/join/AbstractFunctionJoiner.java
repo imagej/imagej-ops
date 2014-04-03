@@ -30,50 +30,43 @@
 
 package imagej.ops.join;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
 
-import java.util.Iterator;
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
+
 /**
- * Helper class for joining {@link Function}s.
+ * Abstract superclass of {@link FunctionJoiner}s.
  * 
  * @author Christian Dietz
  * @author Curtis Rueden
  */
-public class DefaultFunctionJoiner<A> extends
-	AbstractFunctionJoiner<A, Function<A, A>>
+public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A>
 {
 
-	@Override
-	public A compute(final A input, final A output) {
-		final List<? extends Function<A, A>> functions = getFunctions();
-		final Iterator<? extends Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
+	/** List of functions to be joined. */
+	private List<? extends F> functions;
 
-		if (functions.size() == 1) {
-			return first.compute(input, output);
-		}
+	@Parameter
+	private A buffer;
 
-		A tmpOutput = output;
-		A tmpInput = getBuffer();
-		A tmp;
+	public A getBuffer() {
+		return buffer;
+	}
 
-		if (functions.size() % 2 == 0) {
-			tmpOutput = getBuffer();
-			tmpInput = output;
-		}
+	public void setBuffer(final A buffer) {
+		this.buffer = buffer;
+	}
 
-		first.compute(input, tmpOutput);
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
 
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
-
-		return output;
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
 	}
 
 }
