@@ -1,77 +1,36 @@
-/*
- * #%L
- * ImageJ OPS: a framework for reusable algorithms.
- * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
- * %%
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * #L%
- */
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
+import imagej.ops.Function;
 import imagej.ops.InplaceFunction;
-import imagej.ops.Op;
-
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Join {@link InplaceFunction}s.
+ * A join operation which joins two {@link InplaceFunction}s. The resulting
+ * function will take the input of the first {@link Function} as input and the
+ * output of the second {@link Function} as the output;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "join")
-public class JoinInplace<A> extends AbstractFunction<A, A> {
+public interface JoinInplace<A> extends Join {
 
-	// list of functions to be joined
-	private List<InplaceFunction<A>> functions;
+	/**
+	 * @return first {@link Function} to be joined
+	 */
+	InplaceFunction<A> getFirst();
 
-	@Parameter
-	private A buffer;
+	/**
+	 * @param first {@link Function} to be joined
+	 */
+	void setFirst(InplaceFunction<A> first);
 
-	public A getBuffer() {
-		return buffer;
-	}
+	/**
+	 * @return second {@link Function} to be joined
+	 */
+	InplaceFunction<A> getSecond();
 
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
-	}
+	/**
+	 * @param second {@link Function} to be joined
+	 */
+	void setSecond(InplaceFunction<A> second);
 
-	public void setFunctions(final List<InplaceFunction<A>> functions) {
-		this.functions = functions;
-	}
-
-	@Override
-	public A compute(final A input, final A output) {
-
-		for (final InplaceFunction<A> inplace : functions) {
-			inplace.compute(input, output);
-		}
-
-		return output;
-	}
 }

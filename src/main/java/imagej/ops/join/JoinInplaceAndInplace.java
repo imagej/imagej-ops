@@ -36,11 +36,11 @@ import imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link InplaceFunction}s
+ * Joins two {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "join")
+@Plugin(type = Op.class, name = Join.NAME)
 public class JoinInplaceAndInplace<A> extends AbstractJoinInplace<A> {
 
 	@Override

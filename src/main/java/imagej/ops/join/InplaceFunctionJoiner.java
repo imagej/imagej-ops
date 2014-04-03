@@ -30,44 +30,25 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.InplaceFunction;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass of {@link JoinInplace} implementations.
+ * Helper class for joining {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
-	implements JoinInplace<A>
+public class InplaceFunctionJoiner<A> extends
+	AbstractFunctionJoiner<A, InplaceFunction<A>>
 {
 
-	@Parameter
-	protected InplaceFunction<A> first;
-
-	@Parameter
-	protected InplaceFunction<A> second;
-
 	@Override
-	public InplaceFunction<A> getFirst() {
-		return first;
-	}
+	public A compute(final A input, final A output) {
+		for (final InplaceFunction<A> inplace : getFunctions()) {
+			inplace.compute(input, output);
+		}
 
-	@Override
-	public void setFirst(final InplaceFunction<A> first) {
-		this.first = first;
-	}
-
-	@Override
-	public InplaceFunction<A> getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final InplaceFunction<A> second) {
-		this.second = second;
+		return output;
 	}
 
 }

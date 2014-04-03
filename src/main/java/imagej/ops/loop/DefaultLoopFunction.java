@@ -32,14 +32,14 @@ package imagej.ops.loop;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.join.JoinFunctions;
+import imagej.ops.join.DefaultFunctionJoiner;
 
 import java.util.ArrayList;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies an {@link Function} numIteration times to an image
+ * Applies a {@link Function} multiple times to an image.
  * 
  * @author Christian Dietz
  */
@@ -56,10 +56,10 @@ public class DefaultLoopFunction<A> extends
 		for (int i = 0; i < n; i++)
 			functions.add(function);
 
-		final JoinFunctions<A> joinFunctions = new JoinFunctions<A>();
-		joinFunctions.setFunctions(functions);
-		joinFunctions.setBuffer(buffer);
+		final DefaultFunctionJoiner<A> functionJoiner = new DefaultFunctionJoiner<A>();
+		functionJoiner.setFunctions(functions);
+		functionJoiner.setBuffer(buffer);
 
-		return joinFunctions.compute(input, output);
+		return functionJoiner.compute(input, output);
 	}
 }

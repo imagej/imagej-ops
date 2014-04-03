@@ -36,14 +36,12 @@ import imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
+ * Abstract superclass of {@link JoinFunction} implementations.
  * 
  * @author Christian Dietz
  */
 public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C>
+	extends AbstractFunction<A, C> implements JoinFunction<A, B, C, F1, F2>
 {
 
 	@Parameter
@@ -52,30 +50,22 @@ public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F
 	@Parameter
 	protected F2 second;
 
-	/**
-	 * @return first {@link Function} to be joined
-	 */
+	@Override
 	public F1 getFirst() {
 		return first;
 	}
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
+	@Override
 	public void setFirst(final F1 first) {
 		this.first = first;
 	}
 
-	/**
-	 * @return second {@link Function} to be joined
-	 */
+	@Override
 	public F2 getSecond() {
 		return second;
 	}
 
-	/**
-	 * @param second {@link Function} to be joined
-	 */
+	@Override
 	public void setSecond(final F2 second) {
 		this.second = second;
 	}

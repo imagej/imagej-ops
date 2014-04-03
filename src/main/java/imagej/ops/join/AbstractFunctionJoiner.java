@@ -32,68 +32,45 @@ package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import imagej.ops.Op;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Join {@link Function}s.
+ * Abstract superclass of {@link FunctionJoiner}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "join")
-public class JoinFunctions<A> extends AbstractFunction<A, A> {
+public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements FunctionJoiner<A, F>
+{
 
-	// list of functions to be joined
-	private List<Function<A, A>> functions;
+	/** List of functions to be joined. */
+	private List<? extends F> functions;
 
 	@Parameter
 	private A buffer;
 
+	@Override
 	public A getBuffer() {
 		return buffer;
 	}
 
+	@Override
 	public void setBuffer(final A buffer) {
 		this.buffer = buffer;
 	}
 
-	public void setFunctions(final List<Function<A, A>> functions) {
-		this.functions = functions;
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
 	}
 
 	@Override
-	public A compute(final A input, final A output) {
-
-		final Iterator<Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
-
-		if (functions.size() == 1) {
-			return first.compute(input, output);
-		}
-
-		A tmpOutput = output;
-		A tmpInput = buffer;
-		A tmp;
-
-		if (functions.size() % 2 == 0) {
-			tmpOutput = buffer;
-			tmpInput = output;
-		}
-
-		first.compute(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
-
-		return output;
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
 	}
+
 }

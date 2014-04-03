@@ -30,44 +30,50 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.InplaceFunction;
+import imagej.ops.Function;
 
-import org.scijava.plugin.Parameter;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * Abstract superclass of {@link JoinInplace} implementations.
+ * Helper class for joining {@link Function}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
-	implements JoinInplace<A>
+public class DefaultFunctionJoiner<A> extends
+	AbstractFunctionJoiner<A, Function<A, A>>
 {
 
-	@Parameter
-	protected InplaceFunction<A> first;
-
-	@Parameter
-	protected InplaceFunction<A> second;
-
 	@Override
-	public InplaceFunction<A> getFirst() {
-		return first;
-	}
+	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
 
-	@Override
-	public void setFirst(final InplaceFunction<A> first) {
-		this.first = first;
-	}
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
 
-	@Override
-	public InplaceFunction<A> getSecond() {
-		return second;
-	}
+		A tmpOutput = output;
+		A tmpInput = getBuffer();
+		A tmp;
 
-	@Override
-	public void setSecond(final InplaceFunction<A> second) {
-		this.second = second;
+		if (functions.size() % 2 == 0) {
+			tmpOutput = getBuffer();
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
 	}
 
 }
