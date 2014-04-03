@@ -46,12 +46,16 @@ import org.scijava.ItemIO;
  * and filled by the function. It is <em>required</em> that if an output value
  * is given in this way, it will be populated with the function's result.
  * </p>
+ * <p>
+ * Lastly, functions implement the {@link Threadable} interface, and hence can
+ * be reused across multiple threads of a {@link Parallel} op.
+ * </p>
  * 
  * @author Christian Dietz
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public interface Function<I, O> extends Op {
+public interface Function<I, O> extends Op, Threadable {
 
 	I getInput();
 
@@ -62,5 +66,8 @@ public interface Function<I, O> extends Op {
 	void setOutput(O output);
 
 	O compute(I input, O output);
+
+	@Override
+	Function<I, O> getIndependentInstance();
 
 }
