@@ -27,28 +27,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.threading;
 
-package imagej.ops.chunker;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.InterleavedChunker;
 
-/**
- * A {@link ChunkExecutable}, which can be executed by the {@link ChunkExecutor}
- * A {@link ChunkExecutable} processes a subset of a bigger problem and can be executed
- * in parallel with other {@link ChunkExecutable}. The elements of the subproblem are identified
- * by enumerating the original problem.
- * 
- * @author Christian Dietz
- */
-public interface ChunkExecutable {
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
+public class RunInterleavedChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
+
+	@Parameter
+	private OpService opService;
 	
-	/**
-	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
-	 * and repeat numSteps.
-	 * 
-	 * @param startIndex zero based index that identifies the first element of this
-	 * subproblem (w.r.t. the global problem enumeration)
-	 * @param stepSize the step-size between two consecutive elements
-	 * @param numSteps how many steps shall be taken
-	 */
-	void execute(int startIndex, int stepSize, int numSteps);
+	@Override
+	public A[] compute(final A[] input,
+			final A[] output) {
+		
+		opService.run(InterleavedChunker.class, new Chunk() {
 
+			@Override
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				int i = startIndex;
+				
+				int ctr = 0;
+				while (ctr < numSteps) {
+					output[i] = input[i];
+				    i += stepSize;
+					ctr++;
+				}
+			}
+		}, input.length);
+	
+		return output;
+		
+	}
 }

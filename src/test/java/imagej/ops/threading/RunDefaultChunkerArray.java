@@ -33,47 +33,38 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.chunker.CursorBasedChunkExecutable;
-import imagej.ops.chunker.InterleavedChunkExecutor;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.DefaultChunker;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
-public class RunInterleavedChunkExecutor<A extends RealType<A>> extends AbstractFunction<IterableInterval<A>, IterableInterval<A>> implements Parallel {
+public class RunDefaultChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
 
 	@Parameter
 	private OpService opService;
 	
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> input,
-			final IterableInterval<A> output) {
+	public A[] compute(final A[] input,
+			final A[] output) {
 		
-			opService.run(InterleavedChunkExecutor.class, new CursorBasedChunkExecutable() {
+		opService.run(DefaultChunker.class, new Chunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)
 			{
-				final Cursor<A> cursor = input.localizingCursor();
-				final Cursor<A> cursorOut = output.localizingCursor();
-			
-				setToStart(cursor, startIndex);
-				setToStart(cursorOut, startIndex);
-
+				int i = startIndex;
+				
 				int ctr = 0;
 				while (ctr < numSteps) {
-					cursorOut.get().set(cursor.get());
-					
-					cursorOut.jumpFwd(stepSize);
-					cursor.jumpFwd(stepSize);
+					output[i] = input[i];
+				    i += stepSize;
 					ctr++;
 				}
 			}
-		}, input.size());
+		}, input.length);
 	
 		return output;
 		

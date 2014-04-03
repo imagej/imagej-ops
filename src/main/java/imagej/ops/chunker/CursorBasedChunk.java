@@ -27,30 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package imagej.ops.chunker;
 
-import imagej.Cancelable;
-import imagej.ops.Op;
+import net.imglib2.Cursor;
 
-/**
- * ChunkExecutor to execute chunks of data.
- * 
- * @author Christian Dietz
- */
-public interface ChunkExecutor extends Op, Cancelable {
+public abstract class CursorBasedChunk implements Chunk {
+	
+	public static void setToStart(final Cursor<?> c, int startIndex) {
+		c.reset();
+		c.jumpFwd(startIndex + 1);
+	}
 
-	/**
-	 * Set the {@link ChunkExecutable} for which will be multi-threaded
-	 * 
-	 * @param executor
-	 */
-	void setChunkExecutable(final ChunkExecutable executor);
-
-	/**
-	 * Set the total number of elements which should be processed in parallel
-	 * 
-	 * @param numberOfElements
-	 */
-	void setNumberOfElements(final int numberOfElements);
 }

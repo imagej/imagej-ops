@@ -28,56 +28,27 @@
  * #L%
  */
 
-package imagej.ops.map;
-
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.chunker.Chunker;
-import imagej.ops.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+package imagej.ops.chunker;
 
 /**
- * Parallelized {@link MapI}
+ * A {@link Chunk}, which can be executed by the {@link Chunker}
+ * A {@link Chunk} processes a subset of a bigger problem and can be executed
+ * in parallel with other {@link Chunk}. The elements of the subproblem are identified
+ * by enumerating the original problem.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 5)
-public class ParallelMap<A> extends
-	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
-{
+public interface Chunk {
+	
+	/**
+	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
+	 * and repeat numSteps.
+	 * 
+	 * @param startIndex zero based index that identifies the first element of this
+	 * subproblem (w.r.t. the global problem enumeration)
+	 * @param stepSize the step-size between two consecutive elements
+	 * @param numSteps how many steps shall be taken
+	 */
+	void execute(int startIndex, int stepSize, int numSteps);
 
-	@Parameter
-	private OpService opService;
-
-	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(Chunker.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<A> inCursor = arg.cursor();
-
-				setToStart(inCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					func.compute(t, t);
-					inCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
-
-		return arg;
-	}
 }

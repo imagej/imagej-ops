@@ -35,58 +35,53 @@ import imagej.ops.Op;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import org.scijava.Priority;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Simple default implementation of a {@link ChunkExecutor}. The list of
- * elements is chunked into equally sized (besides the last one), disjoint
- * chunks, which are processed in parallel. The stepSize is set to one, i.e.
- * each chunk consists of consecutive elements.
+ * Implementation of a {@link Chunker} that interleaves the chunks. In a
+ * element enumeration from 1..n with <b>k</b> {@link Chunk}s the
+ * first one will process the elements 1, k+1, 2k+1, ... the second chunk
+ * executable 2, k+2, 2k+2 and so on.
  * 
- * @author Christian Dietz
+ * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = "chunker")
-public class DefaultChunkExecutor extends AbstractChunkExecutor {
-
-	private final int STEP_SIZE = 1;
+@Plugin(type = Op.class, name = "chunker",
+	priority = Priority.VERY_LOW_PRIORITY)
+public class InterleavedChunker extends AbstractChunker {
 
 	@Parameter
 	public LogService logService;
 
+	private String cancellationMsg;
+
 	@Override
 	public void run() {
 
-		// TODO: is there a better way to determine the optimal chunk size?
-		final int numSteps =
-			(int) (numberOfElements / Runtime.getRuntime().availableProcessors());
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		final int numStepsFloor = (int) (numberOfElements / numThreads);
+		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
-		final int numChunks = (int) (numberOfElements / numSteps);
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
 
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
-
-		for (int i = 0; i < numChunks - 1; i++) {
+		for (int i = 0; i < numThreads; i++) {
 			final int j = i;
 
 			futures.add(threadService.run(new Runnable() {
 
 				@Override
 				public void run() {
-					chunkable.execute(j * numSteps, STEP_SIZE, numSteps);
+					if (j < remainder) {
+						chunkable.execute(j, numThreads, (numStepsFloor + 1));
+					}
+					else {
+						chunkable.execute(j, numThreads, numStepsFloor);
+					}
 				}
 			}));
 		}
-
-		// last chunk additionally add the rest of elements
-		futures.add(threadService.run(new Runnable() {
-
-			@Override
-			public void run() {
-				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
-					(int) (numSteps + (numberOfElements % numSteps)));
-			}
-		}));
 
 		for (final Future<?> future : futures) {
 			try {
@@ -97,10 +92,19 @@ public class DefaultChunkExecutor extends AbstractChunkExecutor {
 			}
 			catch (final Exception e) {
 				logService.error(e);
-				cancel(e.getMessage());
+				cancellationMsg = e.getMessage();
 				break;
 			}
 		}
 	}
 
+	@Override
+	public boolean isCanceled() {
+		return cancellationMsg != null;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancellationMsg;
+	}
 }

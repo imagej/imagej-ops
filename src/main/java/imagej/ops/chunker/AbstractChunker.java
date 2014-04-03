@@ -34,11 +34,11 @@ import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
 /**
- * Abstract {@link ChunkExecutor}.
+ * Abstract {@link Chunker}.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractChunkExecutor implements ChunkExecutor {
+public abstract class AbstractChunker implements Chunker {
 
 	/**
 	 * ThreadService used for multi-threading
@@ -47,10 +47,10 @@ public abstract class AbstractChunkExecutor implements ChunkExecutor {
 	protected ThreadService threadService;
 
 	/**
-	 * {@link ChunkExecutable} to be executed
+	 * {@link Chunk} to be executed
 	 */
 	@Parameter
-	protected ChunkExecutable chunkable;
+	protected Chunk chunkable;
 
 	/**
 	 * Total number of elements to be processed
@@ -61,10 +61,10 @@ public abstract class AbstractChunkExecutor implements ChunkExecutor {
 	/** Reason for cancelation, or null if not canceled. */
 	private String cancelReason;
 
-	// -- ChunkExecutor methods --
+	// -- Chunker methods --
 
 	@Override
-	public void setChunkExecutable(final ChunkExecutable definition) {
+	public void setChunk(final Chunk definition) {
 		this.chunkable = definition;
 	}
 

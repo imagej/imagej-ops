@@ -27,46 +27,80 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.threading;
 
-import imagej.ops.AbstractFunction;
+package imagej.ops.chunker;
+
 import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import imagej.ops.chunker.ChunkExecutable;
-import imagej.ops.chunker.DefaultChunkExecutor;
 
-import org.scijava.Priority;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkExecutorArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
+/**
+ * Simple default implementation of a {@link Chunker}. The list of
+ * elements is chunked into equally sized (besides the last one), disjoint
+ * chunks, which are processed in parallel. The stepSize is set to one, i.e.
+ * each chunk consists of consecutive elements.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = "chunker")
+public class DefaultChunker extends AbstractChunker {
+
+	private final int STEP_SIZE = 1;
 
 	@Parameter
-	private OpService opService;
-	
+	public LogService logService;
+
 	@Override
-	public A[] compute(final A[] input,
-			final A[] output) {
-		
-		opService.run(DefaultChunkExecutor.class, new ChunkExecutable() {
+	public void run() {
+
+		// TODO: is there a better way to determine the optimal chunk size?
+		final int numSteps =
+			(int) (numberOfElements / Runtime.getRuntime().availableProcessors());
+
+		final int numChunks = (int) (numberOfElements / numSteps);
+
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
+
+		for (int i = 0; i < numChunks - 1; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					chunkable.execute(j * numSteps, STEP_SIZE, numSteps);
+				}
+			}));
+		}
+
+		// last chunk additionally add the rest of elements
+		futures.add(threadService.run(new Runnable() {
 
 			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				int i = startIndex;
-				
-				int ctr = 0;
-				while (ctr < numSteps) {
-					output[i] = input[i];
-				    i += stepSize;
-					ctr++;
-				}
+			public void run() {
+				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
+					(int) (numSteps + (numberOfElements % numSteps)));
 			}
-		}, input.length);
-	
-		return output;
-		
+		}));
+
+		for (final Future<?> future : futures) {
+			try {
+				if (isCanceled()) {
+					break;
+				}
+				future.get();
+			}
+			catch (final Exception e) {
+				logService.error(e);
+				cancel(e.getMessage());
+				break;
+			}
+		}
 	}
+
 }

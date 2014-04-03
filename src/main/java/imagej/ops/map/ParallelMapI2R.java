@@ -33,8 +33,8 @@ package imagej.ops.map;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.chunker.ChunkExecutor;
-import imagej.ops.chunker.CursorBasedChunkExecutable;
+import imagej.ops.chunker.Chunker;
+import imagej.ops.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -64,7 +64,7 @@ public class ParallelMapI2R<A, B> extends
 	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
