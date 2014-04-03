@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "join")
+@Plugin(type = Op.class, name = Join.NAME)
 public class JoinInplaceAndInplace<A> extends AbstractJoinInplace<A> {
 
 	@Override

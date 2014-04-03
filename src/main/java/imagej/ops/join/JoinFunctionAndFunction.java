@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "join")
+@Plugin(type = Op.class, name = Join.NAME)
 public class JoinFunctionAndFunction<A, B, C> extends
 	AbstractJoinFunction<A, B, C, Function<A, B>, Function<B, C>>
 {

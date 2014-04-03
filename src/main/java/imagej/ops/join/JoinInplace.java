@@ -11,7 +11,7 @@ import imagej.ops.InplaceFunction;
  * 
  * @author Christian Dietz
  */
-public interface JoinInplace<A> {
+public interface JoinInplace<A> extends Join {
 
 	/**
 	 * @return first {@link Function} to be joined
