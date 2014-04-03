@@ -48,10 +48,9 @@ import org.scijava.plugin.Plugin;
  * incoming {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
  */
-
 @Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 3)
 public class ParallelMapI2I<A, B> extends
 	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements

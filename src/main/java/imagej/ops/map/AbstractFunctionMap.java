@@ -39,10 +39,10 @@ import org.scijava.plugin.Parameter;
  * Abstract implementation of a {@link Map}.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
- * @param <C> provides <A>s
- * @param <D> provides <B>s
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
+ * @param <C> provides {@code <A>}s
+ * @param <D> provides {@code <B>}s
  */
 public abstract class AbstractFunctionMap<A, B, C, D> extends
 	AbstractFunction<C, D> implements Map<A, B, Function<A, B>>
