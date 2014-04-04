@@ -171,6 +171,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "add" operation on the given arguments. */
 	Object add(Object... args);
 
+	/** Executes the "ascii" operation on the given arguments. */
+	Object ascii(Object... args);
+
 	/** Executes the "chunker" operation on the given arguments. */
 	Object chunker(Object... args);
 
@@ -180,14 +183,35 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convolve" operation on the given arguments. */
 	Object convolve(Object... args);
 
+	/** Executes the "crop" operation on the given arguments. */
+	Object crop(Object... args);
+
 	/** Executes the "divide" operation on the given arguments. */
 	Object divide(Object... args);
+
+	/** Executes the "equation" operation on the given arguments. */
+	Object equation(Object... args);
 
 	/** Executes the "gauss" operation on the given arguments. */
 	Object gauss(Object... args);
 
-	/** Executes the "infinity" operation on the given arguments. */
-	Object infinity(Object... args);
+	/** Executes the "histogram" operation on the given arguments. */
+	Object histogram(Object... args);
+
+	/** Executes the "identity" operation on the given arguments. */
+	Object identity(Object... args);
+
+	/** Executes the "invert" operation on the given arguments. */
+	Object invert(Object... args);
+
+	/** Executes the "join" operation on the given arguments. */
+	Object join(Object... args);
+
+	/** Executes the "lookup" operation on the given arguments. */
+	Object lookup(Object... args);
+
+	/** Executes the "loop" operation on the given arguments. */
+	Object loop(Object... args);
 
 	/** Executes the "map" operation on the given arguments. */
 	Object map(Object... args);
@@ -195,29 +219,47 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "max" operation on the given arguments. */
 	Object max(Object... args);
 
+	/** Executes the "mean" operation on the given arguments. */
+	Object mean(Object... args);
+
+	/** Executes the "median" operation on the given arguments. */
+	Object median(Object... args);
+
+	/** Executes the "min" operation on the given arguments. */
+	Object min(Object... args);
+
 	/** Executes the "minmax" operation on the given arguments. */
 	Object minmax(Object... args);
 
 	/** Executes the "multiply" operation on the given arguments. */
 	Object multiply(Object... args);
 
-	/** Executes the "neighborhood" operation on the given arguments. */
-	Object neighborhood(Object... args);
+	/** Executes the "normalize" operation on the given arguments. */
+	Object normalize(Object... args);
 
 	/** Executes the "otsu" operation on the given arguments. */
 	Object otsu(Object... args);
 
-	/** Executes the "pixThreshold" operation on the given arguments. */
-	Object pixThreshold(Object... args);
-
 	/** Executes the "project" operation on the given arguments. */
 	Object project(Object... args);
+
+	/** Executes the "quantile" operation on the given arguments. */
+	Object quantile(Object... args);
+
+	/** Executes the "scale" operation on the given arguments. */
+	Object scale(Object... args);
+
+	/** Executes the "size" operation on the given arguments. */
+	Object size(Object... args);
 
 	/** Executes the "slicemapper" operation on the given arguments. */
 	Object slicemapper(Object... args);
 
-	/** Executes the "slicer" operation on the given arguments. */
-	Object slicer(Object... args);
+	/** Executes the "slicewise" operation on the given arguments. */
+	Object slicewise(Object... args);
+
+	/** Executes the "stddev" operation on the given arguments. */
+	Object stddev(Object... args);
 
 	/** Executes the "subtract" operation on the given arguments. */
 	Object subtract(Object... args);
@@ -227,5 +269,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "threshold" operation on the given arguments. */
 	Object threshold(Object... args);
+
+	/** Executes the "variance" operation on the given arguments. */
+	Object variance(Object... args);
 
 }
