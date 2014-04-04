@@ -1,6 +1,6 @@
-AddConstantToByte.java~NAME=Byte~PRIMITIVE=byte
-AddConstantToDouble.java~NAME=Double~PRIMITIVE=double
-AddConstantToFloat.java~NAME=Float~PRIMITIVE=float
-AddConstantToInteger.java~NAME=Integer~PRIMITIVE=int
-AddConstantToLong.java~NAME=Long~PRIMITIVE=long
-AddConstantToShort.java~NAME=Short~PRIMITIVE=short
+AddConstantToDouble.java~NAME=Double~PRIMITIVE=double~PRIORITY=0.6
+AddConstantToLong.java~NAME=Long~PRIMITIVE=long~PRIORITY=0.5
+AddConstantToFloat.java~NAME=Float~PRIMITIVE=float~PRIORITY=0.4
+AddConstantToInteger.java~NAME=Integer~PRIMITIVE=int~PRIORITY=0.3
+AddConstantToShort.java~NAME=Short~PRIMITIVE=short~PRIORITY=0.2
+AddConstantToByte.java~NAME=Byte~PRIMITIVE=byte~PRIORITY=0.1

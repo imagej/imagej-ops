@@ -37,7 +37,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
+@Plugin(type = Op.class, name = "add", priority = PRIORITY)
 public class AddConstantToNAME implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
