@@ -48,13 +48,13 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
 	 * Number of iterations
 	 */
 	@Parameter
-	protected Function<I, I> function;
+	private Function<I, I> function;
 
 	/**
 	 * Number of iterations
 	 */
 	@Parameter
-	protected int n;
+	private int n;
 
 	/**
 	 * @return the {@link Function} to be applied
@@ -70,5 +70,15 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
 	@Override
 	public void setFunction(final Function<I, I> function) {
 		this.function = function;
+	}
+
+	@Override
+	public int getNumLoops() {
+		return n;
+	}
+
+	@Override
+	public void setNumLoops(final int n) {
+		this.n = n;
 	}
 }
