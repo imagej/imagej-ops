@@ -59,14 +59,24 @@ public class DefaultASCII<T extends RealType<T>> implements ASCII {
 	@Parameter
 	private IterableInterval<T> image;
 
+	@Parameter(required = false)
+	private T min;
+
+	@Parameter(required = false)
+	private T max;
+
 	@Parameter(type = ItemIO.OUTPUT)
 	private String ascii;
 
 	@Override
 	public void run() {
-		@SuppressWarnings("unchecked")
-		final List<T> minmax = (List<T>) ops.minmax(image);
-		ascii = ascii(image, minmax.get(0), minmax.get(1));
+		if (min == null || max == null) {
+			@SuppressWarnings("unchecked")
+			final List<T> minmax = (List<T>) ops.minmax(image);
+			if (min == null) min = minmax.get(0);
+			if (max == null) max = minmax.get(1);
+		}
+		ascii = ascii(image, min, max);
 	}
 
 	// -- Utility methods --
