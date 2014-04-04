@@ -50,8 +50,8 @@ result = ij.op().map(data, addOp);
 ```
 
 For more details, see these tutorials:
-* [Using OPS](https://github.com/imagej/imagej-tutorials/using-ops)
-* [Create a new OP](https://github.com/imagej/imagej-tutorials/create-a-new-op)
+* [Using OPS](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
+* [Create a new OP](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
 
 How to contribute
 -----------------
