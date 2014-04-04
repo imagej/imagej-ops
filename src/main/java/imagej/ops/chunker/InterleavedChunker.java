@@ -28,67 +28,83 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.chunker;
 
+import imagej.ops.Op;
+
+import java.util.ArrayList;
+import java.util.concurrent.Future;
+
+import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
-import org.scijava.thread.ThreadService;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract {@link ChunkExecutor}.
+ * Implementation of a {@link Chunker} that interleaves the chunks. In a
+ * element enumeration from 1..n with <b>k</b> {@link Chunk}s the
+ * first one will process the elements 1, k+1, 2k+1, ... the second chunk
+ * executable 2, k+2, 2k+2 and so on.
  * 
- * @author Christian Dietz
+ * @author Michael Zinsmaier
  */
-public abstract class AbstractChunkExecutor implements ChunkExecutor {
+@Plugin(type = Op.class, name = Chunker.NAME,
+	priority = Priority.VERY_LOW_PRIORITY)
+public class InterleavedChunker extends AbstractChunker {
 
-	/**
-	 * ThreadService used for multi-threading
-	 */
 	@Parameter
-	protected ThreadService threadService;
+	public LogService logService;
 
-	/**
-	 * {@link ChunkExecutable} to be executed
-	 */
-	@Parameter
-	protected ChunkExecutable chunkable;
-
-	/**
-	 * Total number of elements to be processed
-	 */
-	@Parameter
-	protected long numberOfElements;
-
-	/** Reason for cancelation, or null if not canceled. */
-	private String cancelReason;
-
-	// -- ChunkExecutor methods --
+	private String cancellationMsg;
 
 	@Override
-	public void setChunkExecutable(final ChunkExecutable definition) {
-		this.chunkable = definition;
-	}
+	public void run() {
 
-	@Override
-	public void setNumberOfElements(final int totalSize) {
-		this.numberOfElements = totalSize;
-	}
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		final int numStepsFloor = (int) (numberOfElements / numThreads);
+		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
-	// -- Cancelable methods --
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
+
+		for (int i = 0; i < numThreads; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					if (j < remainder) {
+						chunkable.execute(j, numThreads, (numStepsFloor + 1));
+					}
+					else {
+						chunkable.execute(j, numThreads, numStepsFloor);
+					}
+				}
+			}));
+		}
+
+		for (final Future<?> future : futures) {
+			try {
+				if (isCanceled()) {
+					break;
+				}
+				future.get();
+			}
+			catch (final Exception e) {
+				logService.error(e);
+				cancellationMsg = e.getMessage();
+				break;
+			}
+		}
+	}
 
 	@Override
 	public boolean isCanceled() {
-		return cancelReason != null;
-	}
-
-	/** Cancels the command execution, with the given reason for doing so. */
-	@Override
-	public void cancel(final String reason) {
-		cancelReason = reason;
+		return cancellationMsg != null;
 	}
 
 	@Override
 	public String getCancelReason() {
-		return cancelReason;
+		return cancellationMsg;
 	}
-
 }

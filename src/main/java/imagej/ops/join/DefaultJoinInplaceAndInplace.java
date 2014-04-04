@@ -41,7 +41,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Join.NAME)
-public class DefaultJoinInplaceAndInplace<A> extends AbstractJoinInplaceAndInplace<A> {
+public class DefaultJoinInplaceAndInplace<A> extends
+	AbstractJoinInplaceAndInplace<A>
+{
 
 	@Override
 	public A compute(final A arg) {
@@ -52,5 +54,16 @@ public class DefaultJoinInplaceAndInplace<A> extends AbstractJoinInplaceAndInpla
 	public A compute(final A input, final A output) {
 		first.compute(input, output);
 		return second.compute(input, output);
+	}
+
+	@Override
+	public DefaultJoinInplaceAndInplace<A> getIndependentInstance() {
+		final DefaultJoinInplaceAndInplace<A> joiner =
+			new DefaultJoinInplaceAndInplace<A>();
+
+		joiner.first = first;
+		joiner.second = second;
+
+		return joiner;
 	}
 }

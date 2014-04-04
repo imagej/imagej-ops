@@ -27,54 +27,68 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.threading;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import imagej.ops.OpService;
-import imagej.ops.Parallel;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+package imagej.ops.chunker;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
-@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkExecutor<A extends RealType<A>> extends AbstractFunction<IterableInterval<A>, IterableInterval<A>> implements Parallel {
+/**
+ * Abstract {@link Chunker}.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractChunker implements Chunker {
 
+	/**
+	 * ThreadService used for multi-threading
+	 */
 	@Parameter
-	private OpService opService;
+	protected ThreadService threadService;
 
+	/**
+	 * {@link Chunk} to be executed
+	 */
+	@Parameter
+	protected Chunk chunkable;
+
+	/**
+	 * Total number of elements to be processed
+	 */
+	@Parameter
+	protected long numberOfElements;
+
+	/** Reason for cancelation, or null if not canceled. */
+	private String cancelReason;
+
+	// -- Chunker methods --
 
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> input,
-			final IterableInterval<A> output) {
-		
-			opService.run(DefaultChunkExecutor.class, new CursorBasedChunkExecutable() {
-
-			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				final Cursor<A> cursor = input.localizingCursor();
-				final Cursor<A> cursorOut = output.localizingCursor();
-			
-				setToStart(cursor, startIndex);
-				setToStart(cursorOut, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					cursorOut.get().set(cursor.get());
-					
-					cursorOut.jumpFwd(stepSize);
-					cursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-	
-		return output;
-		
+	public void setChunk(final Chunk definition) {
+		this.chunkable = definition;
 	}
+
+	@Override
+	public void setNumberOfElements(final int totalSize) {
+		this.numberOfElements = totalSize;
+	}
+
+	// -- Cancelable methods --
+
+	@Override
+	public boolean isCanceled() {
+		return cancelReason != null;
+	}
+
+	/** Cancels the command execution, with the given reason for doing so. */
+	@Override
+	public void cancel(final String reason) {
+		cancelReason = reason;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancelReason;
+	}
+
 }

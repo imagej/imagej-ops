@@ -43,6 +43,8 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
+	// -- Function methods --
+
 	@Override
 	public A getInput() {
 		return arg;
@@ -74,6 +76,16 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 	@Override
 	public void run() {
 		compute(getInput());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public InplaceFunction<A> getIndependentInstance() {
+		// NB: We assume the function instance is thread-safe by default.
+		// Individual function implementations can override this assumption if
+		// they have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

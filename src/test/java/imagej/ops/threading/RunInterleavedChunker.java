@@ -27,80 +27,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package imagej.ops.threading;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.chunker.CursorBasedChunk;
+import imagej.ops.chunker.InterleavedChunker;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-
-import org.scijava.log.LogService;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Simple default implementation of a {@link ChunkExecutor}. The list of
- * elements is chunked into equally sized (besides the last one), disjoint
- * chunks, which are processed in parallel. The stepSize is set to one, i.e.
- * each chunk consists of consecutive elements.
- * 
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = "chunker")
-public class DefaultChunkExecutor extends AbstractChunkExecutor {
-
-	private final int STEP_SIZE = 1;
+@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
+public class RunInterleavedChunker<A extends RealType<A>> extends AbstractFunction<IterableInterval<A>, IterableInterval<A>> implements Parallel {
 
 	@Parameter
-	public LogService logService;
-
+	private OpService opService;
+	
 	@Override
-	public void run() {
-
-		// TODO: is there a better way to determine the optimal chunk size?
-		final int numSteps =
-			(int) (numberOfElements / Runtime.getRuntime().availableProcessors());
-
-		final int numChunks = (int) (numberOfElements / numSteps);
-
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
-
-		for (int i = 0; i < numChunks - 1; i++) {
-			final int j = i;
-
-			futures.add(threadService.run(new Runnable() {
-
-				@Override
-				public void run() {
-					chunkable.execute(j * numSteps, STEP_SIZE, numSteps);
-				}
-			}));
-		}
-
-		// last chunk additionally add the rest of elements
-		futures.add(threadService.run(new Runnable() {
+	public IterableInterval<A> compute(final IterableInterval<A> input,
+			final IterableInterval<A> output) {
+		
+			opService.run(InterleavedChunker.class, new CursorBasedChunk() {
 
 			@Override
-			public void run() {
-				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
-					(int) (numSteps + (numberOfElements % numSteps)));
-			}
-		}));
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				final Cursor<A> cursor = input.localizingCursor();
+				final Cursor<A> cursorOut = output.localizingCursor();
+			
+				setToStart(cursor, startIndex);
+				setToStart(cursorOut, startIndex);
 
-		for (final Future<?> future : futures) {
-			try {
-				if (isCanceled()) {
-					break;
+				int ctr = 0;
+				while (ctr < numSteps) {
+					cursorOut.get().set(cursor.get());
+					
+					cursorOut.jumpFwd(stepSize);
+					cursor.jumpFwd(stepSize);
+					ctr++;
 				}
-				future.get();
 			}
-			catch (final Exception e) {
-				logService.error(e);
-				cancel(e.getMessage());
-				break;
-			}
-		}
+		}, input.size());
+	
+		return output;
+		
 	}
-
 }

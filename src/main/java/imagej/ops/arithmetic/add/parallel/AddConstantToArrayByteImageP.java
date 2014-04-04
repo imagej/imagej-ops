@@ -32,8 +32,8 @@ package imagej.ops.arithmetic.add.parallel;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.threading.ChunkExecutable;
-import imagej.ops.threading.ChunkExecutor;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.Chunker;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -64,7 +64,7 @@ public class AddConstantToArrayByteImageP implements Op {
 	@Override
 	public void run() {
 		final byte[] data = image.update(null).getCurrentStorageArray();
-		opService.run(ChunkExecutor.class, new ChunkExecutable() {
+		opService.run(Chunker.class, new Chunk() {
 			
 			@Override
 			public void execute(final int startIndex, final int stepSize, final int numSteps)

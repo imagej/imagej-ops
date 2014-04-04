@@ -31,11 +31,12 @@
 package imagej.ops.map;
 
 import imagej.ops.Contingent;
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
+import imagej.ops.chunker.Chunker;
+import imagej.ops.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -80,12 +81,14 @@ public class ParallelMapI2I<A, B> extends
 				"Input and Output do not have the same iteration order!");
 		}
 
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
+				final Function<A, B> safe = func.getIndependentInstance();
+				
 				final Cursor<A> inCursor = input.cursor();
 				final Cursor<B> outCursor = output.cursor();
 
@@ -94,7 +97,7 @@ public class ParallelMapI2I<A, B> extends
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					func.compute(inCursor.get(), outCursor.get());
+					safe.compute(inCursor.get(), outCursor.get());
 					inCursor.jumpFwd(stepSize);
 					outCursor.jumpFwd(stepSize);
 					ctr++;

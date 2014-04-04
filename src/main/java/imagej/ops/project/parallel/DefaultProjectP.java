@@ -36,9 +36,9 @@ import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.chunker.Chunker;
+import imagej.ops.chunker.CursorBasedChunk;
 import imagej.ops.project.Project;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
 
 import java.util.Iterator;
 
@@ -72,7 +72,7 @@ public class DefaultProjectP<T, V> extends
 	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
 			@Override
 			public void

@@ -33,13 +33,15 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.DefaultChunker;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkExecutorArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
+public class RunDefaultChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
 
 	@Parameter
 	private OpService opService;
@@ -48,7 +50,7 @@ public class RunDefaultChunkExecutorArray<A> extends AbstractFunction<A[], A[]> 
 	public A[] compute(final A[] input,
 			final A[] output) {
 		
-		opService.run(DefaultChunkExecutor.class, new ChunkExecutable() {
+		opService.run(DefaultChunker.class, new Chunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)

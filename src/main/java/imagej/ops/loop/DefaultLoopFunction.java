@@ -51,16 +51,28 @@ public class DefaultLoopFunction<A> extends
 	@Override
 	public A compute(final A input, final A output) {
 
+		final int n = getLoopCount();
+
 		final ArrayList<Function<A, A>> functions =
 			new ArrayList<Function<A, A>>(n);
 		for (int i = 0; i < n; i++)
-			functions.add(function);
+			functions.add(getFunction());
 
 		final DefaultJoinFunctions<A> functionJoiner =
 			new DefaultJoinFunctions<A>();
 		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(bufferFactory);
+		functionJoiner.setBufferFactory(getBufferFactory());
 
 		return functionJoiner.compute(input, output);
+	}
+
+	@Override
+	public DefaultLoopFunction<A> getIndependentInstance() {
+		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
+
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
+
+		return looper;
 	}
 }

@@ -28,27 +28,32 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.chunker;
+
+import imagej.Cancelable;
+import imagej.ops.Op;
 
 /**
- * A {@link ChunkExecutable}, which can be executed by the {@link ChunkExecutor}
- * A {@link ChunkExecutable} processes a subset of a bigger problem and can be executed
- * in parallel with other {@link ChunkExecutable}. The elements of the subproblem are identified
- * by enumerating the original problem.
+ * Base interface for "chunker" operations. These operations execute code across
+ * chunks of data using multiple threads.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Chunker.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
  */
-public interface ChunkExecutable {
-	
-	/**
-	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
-	 * and repeat numSteps.
-	 * 
-	 * @param startIndex zero based index that identifies the first element of this
-	 * subproblem (w.r.t. the global problem enumeration)
-	 * @param stepSize the step-size between two consecutive elements
-	 * @param numSteps how many steps shall be taken
-	 */
-	void execute(int startIndex, int stepSize, int numSteps);
+public interface Chunker extends Op, Cancelable {
+
+	String NAME = "chunker";
+
+	/** Sets the {@link Chunk} for which will be multithreaded. */
+	void setChunk(final Chunk executor);
+
+	/** Sets the total number of elements which should be processed in parallel. */
+	void setNumberOfElements(final int numberOfElements);
 
 }

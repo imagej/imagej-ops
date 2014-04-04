@@ -34,6 +34,7 @@ import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.scijava.plugin.Parameter;
@@ -70,4 +71,22 @@ public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
 
 		return input;
 	}
+
+	@Override
+	public DefaultJoinInplaceFunctions<A> getIndependentInstance() {
+
+		final DefaultJoinInplaceFunctions<A> joiner =
+			new DefaultJoinInplaceFunctions<A>();
+
+		final ArrayList<InplaceFunction<A>> funcs =
+			new ArrayList<InplaceFunction<A>>();
+		for (final InplaceFunction<A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setFunctions(funcs);
+
+		return joiner;
+	}
+
 }

@@ -30,11 +30,12 @@
 
 package imagej.ops.map;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
-import imagej.ops.threading.ChunkExecutor;
-import imagej.ops.threading.CursorBasedChunkExecutable;
+import imagej.ops.chunker.Chunker;
+import imagej.ops.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -58,12 +59,13 @@ public class ParallelMap<A> extends
 
 	@Override
 	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(ChunkExecutor.class, new CursorBasedChunkExecutable() {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
+				final Function<A, A> safe = func.getIndependentInstance();
 				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);
@@ -71,7 +73,7 @@ public class ParallelMap<A> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					final A t = inCursor.get();
-					func.compute(t, t);
+					safe.compute(t, t);
 					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}

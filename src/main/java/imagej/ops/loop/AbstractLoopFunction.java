@@ -47,15 +47,23 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 
 	/** Function to loop. */
 	@Parameter
-	protected Function<I, I> function;
+	private Function<I, I> function;
 
 	/** Buffer for intermediate results. */
 	@Parameter
-	protected OutputFactory<I, I> bufferFactory;
+	private OutputFactory<I, I> bufferFactory;
 
 	/** Number of iterations. */
 	@Parameter
-	protected int n;
+	private int n;
+
+	public OutputFactory<I, I> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final OutputFactory<I, I> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
 
 	@Override
 	public Function<I, I> getFunction() {
@@ -65,5 +73,15 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 	@Override
 	public void setFunction(final Function<I, I> function) {
 		this.function = function;
+	}
+	
+	@Override
+	public int getLoopCount() {
+		return n;
+	}
+
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
 	}
 }

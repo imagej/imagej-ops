@@ -48,8 +48,18 @@ public class DefaultJoinInplaceAndFunction<A, B> extends
 
 	@Override
 	public B compute(final A input, final B output) {
-		first.compute(input);
-		return second.compute(input, output);
+		getFirst().compute(input);
+		return getSecond().compute(input, output);
 	}
 
+	@Override
+	public DefaultJoinInplaceAndFunction<A, B> getIndependentInstance() {
+		final DefaultJoinInplaceAndFunction<A, B> joiner =
+			new DefaultJoinInplaceAndFunction<A, B>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+
+		return joiner;
+	}
 }
