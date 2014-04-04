@@ -39,8 +39,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToPlanarDoubleImage implements Op {
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddConstantToPlanarDoubleImage implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
 	private PlanarImg<DoubleType, DoubleArray> image;

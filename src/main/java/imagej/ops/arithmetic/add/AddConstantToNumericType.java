@@ -38,9 +38,9 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.LOW_PRIORITY)
 public class AddConstantToNumericType<T extends NumericType<T>> extends
-	AbstractFunction<T, T>
+	AbstractFunction<T, T> implements Add
 {
 
 	@Parameter

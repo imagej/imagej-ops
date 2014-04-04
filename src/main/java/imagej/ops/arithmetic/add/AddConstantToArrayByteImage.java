@@ -39,8 +39,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddConstantToArrayByteImage implements Op {
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddConstantToArrayByteImage implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
 	private ArrayImg<ByteType, ByteArray> image;

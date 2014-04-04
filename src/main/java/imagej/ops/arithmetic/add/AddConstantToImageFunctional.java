@@ -42,9 +42,10 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = Priority.VERY_LOW_PRIORITY)
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
 public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>>
+	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
+	Add
 {
 
 	@Parameter

@@ -42,8 +42,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add")
-public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>> implements Contingent, Op {
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>> implements Contingent, Add {
 
 	@Parameter(type = ItemIO.BOTH)
 	private IterableInterval<T> a;
