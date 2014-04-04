@@ -72,7 +72,7 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 
 	@Override
 	public void run() {
-		compute(getInput(), getOutput());
+		setOutput(compute(getInput(), getOutput()));
 	}
 
 	// -- Threadable methods --
