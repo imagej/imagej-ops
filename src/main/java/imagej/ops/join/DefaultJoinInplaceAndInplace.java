@@ -44,8 +44,8 @@ import org.scijava.plugin.Plugin;
 public class DefaultJoinInplaceAndInplace<A> extends AbstractJoinInplaceAndInplace<A> {
 
 	@Override
-	public A compute(final A arg) {
-		return compute(arg, arg);
+	public A compute(final A input) {
+		return compute(input, input);
 	}
 
 	@Override
