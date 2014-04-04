@@ -183,6 +183,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convolve" operation on the given arguments. */
 	Object convolve(Object... args);
 
+	/** Executes the "create" operation on the given arguments. */
+	Object create(Object... args);
+
 	/** Executes the "crop" operation on the given arguments. */
 	Object crop(Object... args);
 
