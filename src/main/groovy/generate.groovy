@@ -46,4 +46,10 @@ def translate(template, translations) {
   reader.close();
 }
 
-translate('Arithmetic.template', 'Arithmetic.list');
+// translate all templates in the template directory
+for (file in new java.io.File(templateDirectory).listFiles()) {
+  name = file.getName();
+  if (!name.endsWith('.template')) continue;
+  prefix = name.substring(0, name.length() - 9);
+  translate(name, prefix + '.list');
+}
