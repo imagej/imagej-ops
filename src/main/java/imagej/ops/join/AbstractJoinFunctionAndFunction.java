@@ -32,16 +32,18 @@ package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link JoinFunction} implementations.
+ * Abstract superclass of {@link JoinFunctionFunction} implementations.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C> implements JoinFunction<A, B, C, F1, F2>
+public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C> implements
+	JoinFunctionFunction<A, B, C, F1, F2>
 {
 
 	@Parameter
@@ -49,6 +51,20 @@ public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F
 
 	@Parameter
 	protected F2 second;
+
+	@Parameter
+	private OutputFactory<A, B> bufferFactory;
+
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.create(input);
+		return buffer;
+	}
+
+	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
 
 	@Override
 	public F1 getFirst() {
