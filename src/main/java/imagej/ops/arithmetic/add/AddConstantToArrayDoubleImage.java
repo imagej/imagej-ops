@@ -36,10 +36,11 @@ import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME)
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.HIGH_PRIORITY + 1)
 public class AddConstantToArrayDoubleImage implements Add {
 
 	@Parameter(type = ItemIO.BOTH)

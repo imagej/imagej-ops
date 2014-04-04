@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY + 10)
 public class AddConstantToArrayByteImageP implements Op {
 
 	@Parameter
