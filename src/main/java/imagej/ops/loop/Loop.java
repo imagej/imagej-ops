@@ -57,5 +57,15 @@ public interface Loop<A> {
 	 * @param func the {@link Function} used for looping
 	 */
 	void setFunction(Function<A, A> func);
+	
+	/**
+	 * @param number of loops
+	 */
+	void setNumLoops(int n);
+	
+	/**
+	 * @return number of loops
+	 */
+	int getNumLoops();
 
 }
