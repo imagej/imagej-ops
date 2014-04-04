@@ -48,7 +48,7 @@ public class DefaultJoinFunctionAndInplace<A, B> extends
 
 	@Override
 	public B compute(final A input, final B output) {
-		first.compute(input, output);
-		return second.compute(output);
+		getFirst().compute(input, output);
+		return getSecond().compute(output);
 	}
 }

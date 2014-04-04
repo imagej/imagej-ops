@@ -48,7 +48,7 @@ public class DefaultJoinFunctionAndFunction<A, B, C> extends
 	@Override
 	public C compute(final A input, final C output) {
 		final B buffer = getBuffer(input);
-		first.compute(input, buffer);
-		return second.compute(buffer, output);
+		getFirst().compute(input, buffer);
+		return getSecond().compute(buffer, output);
 	}
 }

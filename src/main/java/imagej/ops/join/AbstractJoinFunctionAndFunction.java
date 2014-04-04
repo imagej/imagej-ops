@@ -47,10 +47,10 @@ public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Functi
 {
 
 	@Parameter
-	protected F1 first;
+	private F1 first;
 
 	@Parameter
-	protected F2 second;
+	private F2 second;
 
 	@Parameter(required = false)
 	private OutputFactory<A, B> bufferFactory;
