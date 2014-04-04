@@ -28,7 +28,7 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.generated;
 
 import imagej.ops.Op;
 
