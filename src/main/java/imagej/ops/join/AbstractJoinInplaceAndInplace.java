@@ -36,12 +36,12 @@ import imagej.ops.InplaceFunction;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link JoinInplace} implementations.
+ * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
-	implements JoinInplace<A>
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplaceAndInplace<A>
 {
 
 	@Parameter
