@@ -32,35 +32,39 @@ package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
 import java.util.List;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link FunctionJoiner}s.
+ * Abstract superclass of {@link JoinFunctions}s.
  * 
  * @author Christian Dietz
  * @author Curtis Rueden
  */
-public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A> implements FunctionJoiner<A, F>
+public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
 {
 
 	/** List of functions to be joined. */
+	@Parameter
 	private List<? extends F> functions;
 
 	@Parameter
+	private OutputFactory<A, A> bufferFactory;
+
 	private A buffer;
 
 	@Override
-	public A getBuffer() {
-		return buffer;
+	public OutputFactory<A, A> getBufferFactory() {
+		return bufferFactory;
 	}
 
 	@Override
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
+	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
 	}
 
 	@Override
@@ -71,6 +75,17 @@ public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
 	@Override
 	public void setFunctions(final List<? extends F> functions) {
 		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.create(input);
+		}
+		return buffer;
 	}
 
 }
