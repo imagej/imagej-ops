@@ -7,7 +7,7 @@ import imagej.ops.OutputFactory;
 import java.util.List;
 
 /**
- * Base interface for helper classes which join {@link Function}s.
+ * A join operation which joins a list of {@link Function}s.
  * 
  * @author Christian Dietz
  * @author Curtis Rueden

@@ -36,7 +36,7 @@ import imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implementation of a general join of two {@link Function}s.
+ * Joins two {@link Function}s.
  * 
  * @author Christian Dietz
  */

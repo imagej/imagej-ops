@@ -39,7 +39,7 @@ import java.util.List;
 import org.scijava.plugin.Plugin;
 
 /**
- * Helper class for joining {@link Function}s.
+ * Joins a list of {@link Function}s.
  * 
  * @author Christian Dietz
  * @author Curtis Rueden

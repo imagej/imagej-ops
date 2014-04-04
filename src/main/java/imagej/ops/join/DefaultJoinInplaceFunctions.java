@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Join {@link InplaceFunction}s.
+ * Joins a list of {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
  */

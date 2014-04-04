@@ -37,7 +37,7 @@ import imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link InplaceFunction} with a {@link Function}
+ * Joins an {@link InplaceFunction} with a {@link Function}.
  * 
  * @author Christian Dietz
  */
