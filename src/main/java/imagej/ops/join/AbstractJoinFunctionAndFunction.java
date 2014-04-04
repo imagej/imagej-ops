@@ -62,6 +62,10 @@ public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Functi
 		return buffer;
 	}
 
+	public OutputFactory<A, B> getBufferFactory() {
+		return bufferFactory;
+	}
+
 	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
 		this.bufferFactory = bufferFactory;
 	}
