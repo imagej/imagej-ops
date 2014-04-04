@@ -30,6 +30,7 @@
 
 package imagej.ops.map;
 
+import imagej.ops.Function;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.Parallel;
@@ -70,6 +71,7 @@ public class ParallelMapI2R<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
+				final Function<A, B> safe = func.getIndependentInstance();
 				final Cursor<A> cursor = input.localizingCursor();
 
 				setToStart(cursor, startIndex);
@@ -79,7 +81,7 @@ public class ParallelMapI2R<A, B> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					rndAccess.setPosition(cursor);
-					func.compute(cursor.get(), rndAccess.get());
+					safe.compute(cursor.get(), rndAccess.get());
 					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
