@@ -30,47 +30,44 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Function;
-
-import java.util.List;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.InplaceFunction;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link FunctionJoiner}s.
+ * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
  * 
  * @author Christian Dietz
- * @author Curtis Rueden
  */
-public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A> implements FunctionJoiner<A, F>
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplaceAndInplace<A>
 {
 
-	/** List of functions to be joined. */
-	private List<? extends F> functions;
+	@Parameter
+	protected InplaceFunction<A> first;
 
 	@Parameter
-	private A buffer;
+	protected InplaceFunction<A> second;
 
 	@Override
-	public A getBuffer() {
-		return buffer;
+	public InplaceFunction<A> getFirst() {
+		return first;
 	}
 
 	@Override
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
+	public void setFirst(final InplaceFunction<A> first) {
+		this.first = first;
 	}
 
 	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
+	public InplaceFunction<A> getSecond() {
+		return second;
 	}
 
 	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
+	public void setSecond(final InplaceFunction<A> second) {
+		this.second = second;
 	}
 
 }

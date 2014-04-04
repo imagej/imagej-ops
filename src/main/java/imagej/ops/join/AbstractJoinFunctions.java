@@ -30,50 +30,62 @@
 
 package imagej.ops.join;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
-import java.util.Iterator;
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
+
 /**
- * Helper class for joining {@link Function}s.
+ * Abstract superclass of {@link JoinFunctions}s.
  * 
  * @author Christian Dietz
  * @author Curtis Rueden
  */
-public class DefaultFunctionJoiner<A> extends
-	AbstractFunctionJoiner<A, Function<A, A>>
+public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
 {
 
+	/** List of functions to be joined. */
+	@Parameter
+	private List<? extends F> functions;
+
+	@Parameter
+	private OutputFactory<A, A> bufferFactory;
+
+	private A buffer;
+
 	@Override
-	public A compute(final A input, final A output) {
-		final List<? extends Function<A, A>> functions = getFunctions();
-		final Iterator<? extends Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
+	public OutputFactory<A, A> getBufferFactory() {
+		return bufferFactory;
+	}
 
-		if (functions.size() == 1) {
-			return first.compute(input, output);
+	@Override
+	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.create(input);
 		}
-
-		A tmpOutput = output;
-		A tmpInput = getBuffer();
-		A tmp;
-
-		if (functions.size() % 2 == 0) {
-			tmpOutput = getBuffer();
-			tmpInput = output;
-		}
-
-		first.compute(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
-
-		return output;
+		return buffer;
 	}
 
 }

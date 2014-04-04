@@ -34,8 +34,15 @@ import static org.junit.Assert.assertEquals;
 import imagej.ops.AbstractFunction;
 import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.AbstractOpTest;
+import imagej.ops.Function;
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.OutputFactory;
 import imagej.ops.map.Map;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -62,7 +69,8 @@ public class JoinTest extends AbstractOpTest {
 
 	@Test
 	public void testInplaceJoin() {
-		final Op op = ops.op(JoinInplaceAndInplace.class, in, inplaceOp, inplaceOp);
+		final Op op =
+			ops.op(DefaultJoinInplaceAndInplace.class, in, inplaceOp, inplaceOp);
 		op.run();
 
 		// test
@@ -76,7 +84,8 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testFunctionInplaceJoin() {
 		final Op op =
-			ops.op(JoinFunctionAndInplace.class, out, in, functionalOp, inplaceOp);
+			ops.op(DefaultJoinFunctionAndInplace.class, out, in, functionalOp,
+				inplaceOp);
 		op.run();
 
 		// test
@@ -90,7 +99,8 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testInplaceFunctionJoin() {
 		final Op op =
-			ops.op(JoinInplaceAndFunction.class, out, in, inplaceOp, functionalOp);
+			ops.op(DefaultJoinInplaceAndFunction.class, out, in, inplaceOp,
+				functionalOp);
 		op.run();
 
 		// test
@@ -103,16 +113,55 @@ public class JoinTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionAndFunctionJoin() {
-		final Op op =
-			ops.op(JoinFunctionAndFunction.class, out, in, functionalOp,
-				functionalOp, in.copy());
-		op.run();
+
+		final OutputFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
+			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+
+				@Override
+				public Img<ByteType> create(final Img<ByteType> input) {
+					return input.factory().create(input,
+						input.firstElement().createVariable());
+				}
+			};
+
+		ops.run(DefaultJoinFunctionAndFunction.class, out, in, functionalOp,
+			functionalOp, bufferFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
 
 		while (c.hasNext()) {
 			assertEquals(2, c.next().get());
+		}
+	}
+
+	@Test
+	public void testJoinFunctions() {
+
+		final List<Function<Img<ByteType>, Img<ByteType>>> functions =
+			new ArrayList<Function<Img<ByteType>, Img<ByteType>>>();
+
+		for (int i = 0; i < 5; i++) {
+			functions.add(new AddOneFunctionalImg(ops));
+		}
+
+		final OutputFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
+			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+
+				@Override
+				public Img<ByteType> create(final Img<ByteType> input) {
+					return input.factory().create(input,
+						input.firstElement().createVariable());
+				}
+			};
+
+		ops.run(DefaultJoinFunctions.class, out, in, functions, bufferFactory);
+
+		// test
+		final Cursor<ByteType> c = out.cursor();
+
+		while (c.hasNext()) {
+			assertEquals(5, c.next().get());
 		}
 	}
 
@@ -132,6 +181,25 @@ public class JoinTest extends AbstractOpTest {
 		public ByteType compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
+			return output;
+		}
+	}
+
+	class AddOneFunctionalImg extends
+		AbstractFunction<Img<ByteType>, Img<ByteType>>
+	{
+
+		private OpService ops;
+
+		public AddOneFunctionalImg(final OpService ops) {
+			this.ops = ops;
+		}
+
+		@Override
+		public Img<ByteType> compute(final Img<ByteType> input,
+			final Img<ByteType> output)
+		{
+			ops.run(Map.class, output, input, new AddOneFunctional());
 			return output;
 		}
 	}

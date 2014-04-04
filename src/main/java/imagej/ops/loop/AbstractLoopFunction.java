@@ -32,6 +32,7 @@ package imagej.ops.loop;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
 import org.scijava.plugin.Parameter;
 
@@ -49,8 +50,8 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 	protected Function<I, I> function;
 
 	/** Buffer for intermediate results. */
-	@Parameter(required = false)
-	protected I buffer;
+	@Parameter
+	protected OutputFactory<I, I> bufferFactory;
 
 	/** Number of iterations. */
 	@Parameter

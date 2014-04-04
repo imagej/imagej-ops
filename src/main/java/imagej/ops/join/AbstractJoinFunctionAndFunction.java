@@ -28,39 +28,62 @@
  * #L%
  */
 
-package imagej.ops.loop;
+package imagej.ops.join;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import imagej.ops.Op;
-import imagej.ops.join.DefaultJoinFunctions;
+import imagej.ops.OutputFactory;
 
-import java.util.ArrayList;
-
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Applies a {@link Function} multiple times to an image.
+ * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<Function<A, A>, A>
+public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C> implements
+	JoinFunctionAndFunction<A, B, C, F1, F2>
 {
 
-	@Override
-	public A compute(final A input, final A output) {
+	@Parameter
+	protected F1 first;
 
-		final ArrayList<Function<A, A>> functions =
-			new ArrayList<Function<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(function);
+	@Parameter
+	protected F2 second;
 
-		final DefaultJoinFunctions<A> functionJoiner =
-			new DefaultJoinFunctions<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(bufferFactory);
+	@Parameter(required = false)
+	private OutputFactory<A, B> bufferFactory;
 
-		return functionJoiner.compute(input, output);
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.create(input);
+		return buffer;
 	}
+
+	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public F1 getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final F1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public F2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final F2 second) {
+		this.second = second;
+	}
+
 }

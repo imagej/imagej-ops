@@ -28,39 +28,58 @@
  * #L%
  */
 
-package imagej.ops.loop;
+package imagej.ops.join;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.join.DefaultJoinFunctions;
 
-import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link Function} multiple times to an image.
+ * Joins a list of {@link Function}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<Function<A, A>, A>
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctions<A> extends
+	AbstractJoinFunctions<A, Function<A, A>>
 {
 
 	@Override
 	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
 
-		final ArrayList<Function<A, A>> functions =
-			new ArrayList<Function<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(function);
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
 
-		final DefaultJoinFunctions<A> functionJoiner =
-			new DefaultJoinFunctions<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(bufferFactory);
+		final A buffer = getBuffer(input);
+		
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
 
-		return functionJoiner.compute(input, output);
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
 	}
+
 }
