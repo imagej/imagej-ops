@@ -31,9 +31,12 @@
 package imagej.ops.join;
 
 import imagej.ops.Function;
+import imagej.ops.Op;
 
 import java.util.Iterator;
 import java.util.List;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Helper class for joining {@link Function}s.
@@ -41,6 +44,7 @@ import java.util.List;
  * @author Christian Dietz
  * @author Curtis Rueden
  */
+@Plugin(type = Op.class, name = Join.NAME)
 public class DefaultJoinFunctions<A> extends
 	AbstractJoinFunctions<A, Function<A, A>>
 {
