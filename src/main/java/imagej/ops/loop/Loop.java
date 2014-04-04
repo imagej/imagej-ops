@@ -59,13 +59,13 @@ public interface Loop<A> {
 	void setFunction(Function<A, A> func);
 	
 	/**
-	 * @param number of loops
+	 * @param n number how often {@link Function} is looped
 	 */
-	void setNumLoops(int n);
+	void setLoopCount(int n);
 	
 	/**
-	 * @return number of loops
+	 * @return number how often the {@link Function} is looped
 	 */
-	int getNumLoops();
+	int getLoopCount();
 
 }

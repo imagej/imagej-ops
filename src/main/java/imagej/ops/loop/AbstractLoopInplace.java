@@ -63,12 +63,12 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
 	}
 
 	@Override
-	public int getNumLoops() {
+	public int getLoopCount() {
 		return n;
 	}
 
 	@Override
-	public void setNumLoops(final int n) {
+	public void setLoopCount(final int n) {
 		this.n = n;
 	}
 }

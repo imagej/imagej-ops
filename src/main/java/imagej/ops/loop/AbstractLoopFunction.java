@@ -76,12 +76,12 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 	}
 	
 	@Override
-	public int getNumLoops() {
+	public int getLoopCount() {
 		return n;
 	}
 
 	@Override
-	public void setNumLoops(final int n) {
+	public void setLoopCount(final int n) {
 		this.n = n;
 	}
 }

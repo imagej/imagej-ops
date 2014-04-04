@@ -51,7 +51,7 @@ public class DefaultLoopFunction<A> extends
 	@Override
 	public A compute(final A input, final A output) {
 
-		final int n = getNumLoops();
+		final int n = getLoopCount();
 
 		final ArrayList<Function<A, A>> functions =
 			new ArrayList<Function<A, A>>(n);
