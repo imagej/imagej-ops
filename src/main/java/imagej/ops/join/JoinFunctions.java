@@ -22,6 +22,9 @@ public interface JoinFunctions<A, F extends Function<A, A>> extends
 	OutputFactory<A, A> getBufferFactory();
 
 	/**
+	 * Sets the {@link OutputFactory} which is used to create intermediate
+	 * results.
+	 * 
 	 * @param bufferFactory used to create intermediate results
 	 */
 	void setBufferFactory(OutputFactory<A, A> bufferFactory);
@@ -33,7 +36,7 @@ public interface JoinFunctions<A, F extends Function<A, A>> extends
 	List<? extends F> getFunctions();
 
 	/**
-	 * Set the {@link Function}s which are joined in this {@link Join}
+	 * Sets the {@link Function}s which are joined in this {@link Join}.
 	 * 
 	 * @param functions joined in this {@link Join}
 	 */
