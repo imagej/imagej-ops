@@ -31,13 +31,14 @@
 package imagej.ops.generated;
 
 import imagej.ops.Op;
+import imagej.ops.arithmetic.add.Add;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "add")
-public static class AddConstantToNAME extends AddConstantToPrimitiveType {
+public class AddConstantToNAME implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
 	private PRIMITIVE a;
