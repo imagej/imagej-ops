@@ -97,7 +97,7 @@ public class DefaultASCII<T extends RealType<T>> implements ASCII {
 		// allocate ASCII character array
 		final char[] c = new char[w * h];
 		for (int y = 1; y <= h; y++) {
-			c[w * y] = '\n'; // end of row
+			c[w * y - 1] = '\n'; // end of row
 		}
 
 		// loop over all available positions
@@ -105,6 +105,7 @@ public class DefaultASCII<T extends RealType<T>> implements ASCII {
 		final int[] pos = new int[image.numDimensions()];
 		final T tmp = image.firstElement().copy();
 		while (cursor.hasNext()) {
+			cursor.fwd();
 			cursor.localize(pos);
 			final int index = w * pos[1] + pos[0];
 
@@ -113,8 +114,9 @@ public class DefaultASCII<T extends RealType<T>> implements ASCII {
 			tmp.sub(min);
 			tmp.div(span);
 
-			final int charIndex = (int) (CHARS.length() * tmp.getRealDouble());
-			c[index] = CHARS.charAt(charIndex);
+			final int charLen = CHARS.length();
+			final int charIndex = (int) (charLen * tmp.getRealDouble());
+			c[index] = CHARS.charAt(charIndex < charLen ? charIndex : charLen - 1);
 		}
 
 		return new String(c);
