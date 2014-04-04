@@ -12,7 +12,9 @@ import java.util.List;
  * @author Christian Dietz
  * @author Curtis Rueden
  */
-public interface JoinFunctions<A, F extends Function<A, A>> {
+public interface JoinFunctions<A, F extends Function<A, A>> extends
+	Function<A, A>, Join
+{
 
 	OutputFactory<A, A> getBufferFactory();
 
