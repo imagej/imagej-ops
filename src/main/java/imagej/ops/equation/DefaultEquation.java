@@ -81,9 +81,9 @@ public class DefaultEquation<T extends RealType<T>> extends
 		final IterableInterval<T> image;
 		if (output == null) {
 			// produce a 256x256 float64 array-backed image by default
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			final IterableInterval<T> newImage =
-				(IterableInterval<T>) ArrayImgs.doubles(256, 256);
+				(IterableInterval) ArrayImgs.doubles(256, 256);
 			image = newImage;
 		}
 		else image = output;
