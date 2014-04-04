@@ -12,7 +12,7 @@ import imagej.ops.Function;
  * @author Curtis Rueden
  */
 public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends Join
+	extends Function<A, C>, Join
 {
 
 	/**
