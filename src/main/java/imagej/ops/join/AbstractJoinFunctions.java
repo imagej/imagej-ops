@@ -28,19 +28,64 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.join;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.OutputFactory;
+
+import java.util.List;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Abstract superclass of {@link JoinFunctions}s.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
 {
-	// NB: Marker interface.
+
+	/** List of functions to be joined. */
+	@Parameter
+	private List<? extends F> functions;
+
+	@Parameter
+	private OutputFactory<A, A> bufferFactory;
+
+	private A buffer;
+
+	@Override
+	public OutputFactory<A, A> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	@Override
+	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.create(input);
+		}
+		return buffer;
+	}
+
 }

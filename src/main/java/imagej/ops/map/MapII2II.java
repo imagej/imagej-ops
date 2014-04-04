@@ -39,9 +39,8 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link FunctionalMap} mapping from {@link IterableInterval} to
- * {@link IterableInterval}. Conforms if the {@link IterableInterval}s have the
- * same IterationOrder.
+ * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
+ * Conforms if the {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Martin Horn
  * @author Christian Dietz
@@ -60,7 +59,7 @@ public class MapII2II<A, B> extends
 	private boolean isValid(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		return input.iterationOrder().equals(getOutput().iterationOrder());
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override

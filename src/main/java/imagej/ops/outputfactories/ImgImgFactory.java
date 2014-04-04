@@ -28,56 +28,40 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.outputfactories;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Function;
-
-import org.scijava.plugin.Parameter;
+import imagej.ops.OutputFactory;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
 /**
- * Join to {@link Function}s. The resulting function will take the input of the
- * first {@link Function} as input and the output of the second {@link Function}
- * as the output;
+ * {@link OutputFactory} used to create an empty output {@link Img} of type <V>
+ * and the dimensionality of the input {@link Img}
  * 
  * @author Christian Dietz
+ * @param <L>
  */
-public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C>
+public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
+	OutputFactory<Img<T>, Img<V>>
 {
 
-	@Parameter
-	protected F1 first;
-
-	@Parameter
-	protected F2 second;
+	private V resType;
 
 	/**
-	 * @return first {@link Function} to be joined
+	 * @param resType type of resulting {@link Img}
 	 */
-	public F1 getFirst() {
-		return first;
+	public ImgImgFactory(final V resType) {
+		this.resType = resType;
 	}
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	public void setFirst(final F1 first) {
-		this.first = first;
+	@Override
+	public Img<V> create(final Img<T> input) {
+		try {
+			return input.factory().imgFactory(resType).create(input, resType);
+		}
+		catch (final IncompatibleTypeException e) {
+			throw new RuntimeException(e);
+		}
 	}
-
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	public F2 getSecond() {
-		return second;
-	}
-
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
-
 }

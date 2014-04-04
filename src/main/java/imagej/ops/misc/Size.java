@@ -33,7 +33,20 @@ package imagej.ops.misc;
 import imagej.ops.Function;
 import net.imglib2.type.numeric.integer.LongType;
 
+/**
+ * Base interface for "size" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Size.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
 public interface Size<I> extends Function<I, LongType> {
 
 	String NAME = "size";
+
 }

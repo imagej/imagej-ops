@@ -28,19 +28,25 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.outputfactories;
 
-import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.OutputFactory;
+import net.imglib2.labeling.Labeling;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * {@link OutputFactory} used to create an empty output {@link Labeling} of same
+ * type and dimensionality as the input {@link Labeling}
  * 
- * @author Martin Horn
+ * @author Christian Dietz
+ * @param <L>
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+public class LabelingLabelingFactory<L extends Comparable<L>> implements
+	OutputFactory<Labeling<L>, Labeling<L>>
 {
-	// NB: Marker interface.
+
+	@Override
+	public Labeling<L> create(final Labeling<L> input) {
+		return input.<L> factory().create(input);
+	}
+
 }

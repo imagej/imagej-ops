@@ -46,11 +46,11 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link FunctionalMap}
+ * Parallelized {@link Map}.
  * 
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
  */
 @Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
 public class ParallelMapI2R<A, B> extends

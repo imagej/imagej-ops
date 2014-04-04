@@ -28,19 +28,58 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.join;
 
 import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.Op;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Joins a list of {@link Function}s.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctions<A> extends
+	AbstractJoinFunctions<A, Function<A, A>>
 {
-	// NB: Marker interface.
+
+	@Override
+	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		final A buffer = getBuffer(input);
+		
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
+	}
+
 }

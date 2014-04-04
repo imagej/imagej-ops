@@ -28,50 +28,25 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.outputfactories;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.InplaceFunction;
-import imagej.ops.Op;
-
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import imagej.ops.OutputFactory;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
 /**
- * Join {@link InplaceFunction}s.
+ * {@link OutputFactory} used to create an empty output {@link Img} of same type
+ * and dimensionality as the input {@link Img}.
  * 
  * @author Christian Dietz
+ * @param <L>
  */
-@Plugin(type = Op.class, name = "join")
-public class JoinInplace<A> extends AbstractFunction<A, A> {
-
-	// list of functions to be joined
-	private List<InplaceFunction<A>> functions;
-
-	@Parameter
-	private A buffer;
-
-	public A getBuffer() {
-		return buffer;
-	}
-
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
-	}
-
-	public void setFunctions(final List<InplaceFunction<A>> functions) {
-		this.functions = functions;
-	}
+public class ImgImgSameTypeFactory<T extends Type<T>> implements
+	OutputFactory<Img<T>, Img<T>>
+{
 
 	@Override
-	public A compute(final A input, final A output) {
-
-		for (final InplaceFunction<A> inplace : functions) {
-			inplace.compute(input, output);
-		}
-
-		return output;
+	public Img<T> create(final Img<T> input) {
+		return input.factory().create(input, input.firstElement().createVariable());
 	}
 }

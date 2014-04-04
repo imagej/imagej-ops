@@ -28,19 +28,46 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.join;
 
-import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.InplaceFunction;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplaceAndInplace<A>
 {
-	// NB: Marker interface.
+
+	@Parameter
+	protected InplaceFunction<A> first;
+
+	@Parameter
+	protected InplaceFunction<A> second;
+
+	@Override
+	public InplaceFunction<A> getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final InplaceFunction<A> first) {
+		this.first = first;
+	}
+
+	@Override
+	public InplaceFunction<A> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final InplaceFunction<A> second) {
+		this.second = second;
+	}
+
 }

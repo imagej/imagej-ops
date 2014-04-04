@@ -28,19 +28,62 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.join;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.OutputFactory;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C> implements
+	JoinFunctionAndFunction<A, B, C, F1, F2>
 {
-	// NB: Marker interface.
+
+	@Parameter
+	protected F1 first;
+
+	@Parameter
+	protected F2 second;
+
+	@Parameter(required = false)
+	private OutputFactory<A, B> bufferFactory;
+
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.create(input);
+		return buffer;
+	}
+
+	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public F1 getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final F1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public F2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final F2 second) {
+		this.second = second;
+	}
+
 }

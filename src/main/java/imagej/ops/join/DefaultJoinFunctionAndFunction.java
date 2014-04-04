@@ -28,19 +28,27 @@
  * #L%
  */
 
-package imagej.ops.commands.project;
+package imagej.ops.join;
 
 import imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
+import imagej.ops.Op;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Joins two {@link Function}s.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctionAndFunction<A, B, C> extends
+	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
 {
-	// NB: Marker interface.
+
+	@Override
+	public C compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		first.compute(input, buffer);
+		return second.compute(buffer, output);
+	}
 }
