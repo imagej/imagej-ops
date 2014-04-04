@@ -31,17 +31,14 @@ Calling OPS from a BeanShell script:
 ij = new ImageJ();
 
 // add two numbers
-seven = ij.op().run("add", 2, 5);
+seven = ij.op().add(2, 5);
 
 // add number to image
 data = ij.dataset().open("/path/to/data.tif");
-result = ij.op().run("add", data, 13);
+result = ij.op().add(data, 13);
 
 // add two images
 moredata = ij.data().open("/path/to/moredata.tif");
-result = ij.op().run("add", data, moredata);
-
-// built-ins can be called directly
 result = ij.op().add(data, moredata);
 
 // execute an op on every pixel of an image!
