@@ -30,60 +30,25 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
-import imagej.ops.OutputFactory;
+import imagej.ops.Op;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
+ * Implementation of a general join of two {@link Function}s.
  * 
  * @author Christian Dietz
  */
-public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C> implements
-	JoinFunctionAndFunction<A, B, C, F1, F2>
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctionAndFunction<A, B, C> extends
+	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
 {
 
-	@Parameter
-	protected F1 first;
-
-	@Parameter
-	protected F2 second;
-
-	@Parameter
-	private OutputFactory<A, B> bufferFactory;
-
-	private B buffer;
-
-	public B getBuffer(final A input) {
-		if (buffer == null) buffer = bufferFactory.create(input);
-		return buffer;
-	}
-
-	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
 	@Override
-	public F1 getFirst() {
-		return first;
+	public C compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		first.compute(input, buffer);
+		return second.compute(buffer, output);
 	}
-
-	@Override
-	public void setFirst(final F1 first) {
-		this.first = first;
-	}
-
-	@Override
-	public F2 getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
-
 }

@@ -31,25 +31,51 @@
 package imagej.ops.join;
 
 import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
-import imagej.ops.Op;
 
-import org.scijava.plugin.Plugin;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * Joins a {@link InplaceFunction} with a {@link Function}
+ * Helper class for joining {@link Function}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Join.NAME)
-public class JoinInplaceAndFunction<A, B> extends
-	AbstractJoinFunction<A, A, B, InplaceFunction<A>, Function<A, B>>
+public class DefaultJoinFunctions<A> extends
+	AbstractJoinFunctions<A, Function<A, A>>
 {
 
 	@Override
-	public B compute(final A input, final B output) {
-		first.compute(input);
-		return second.compute(input, output);
+	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		final A buffer = getBuffer(input);
+		
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
 	}
 
 }

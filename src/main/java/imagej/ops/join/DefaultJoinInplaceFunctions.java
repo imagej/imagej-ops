@@ -30,25 +30,63 @@
 
 package imagej.ops.join;
 
-import imagej.ops.Function;
+import imagej.ops.AbstractInplaceFunction;
 import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link Function} with an {@link InplaceFunction}
+ * Join {@link InplaceFunction}s.
  * 
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Join.NAME)
-public class JoinFunctionAndInplace<A, B> extends
-	AbstractJoinFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
+public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
+	implements Join
 {
 
-	@Override
-	public B compute(final A input, final B output) {
-		first.compute(input, output);
-		return second.compute(output);
+	// list of functions to be joined
+	@Parameter
+	private List<InplaceFunction<A>> functions;
+
+	public void setFunctions(final List<InplaceFunction<A>> functions) {
+		this.functions = functions;
 	}
+
+	public List<InplaceFunction<A>> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public A compute(final A input) {
+
+		for (final InplaceFunction<A> inplace : functions) {
+			inplace.compute(input);
+		}
+
+		return input;
+	}
+
+	@Override
+	public InplaceFunction<A> getIndependentInstance() {
+
+		final DefaultJoinInplaceFunctions<A> joiner = new DefaultJoinInplaceFunctions<A>();
+
+		final List<InplaceFunction<A>> functions =
+			new ArrayList<InplaceFunction<A>>();
+
+		for (final InplaceFunction<A> func : functions) {
+			functions.add(func.getIndependentInstance());
+		}
+
+		joiner.functions = functions;
+
+		return joiner;
+	}
+
 }
