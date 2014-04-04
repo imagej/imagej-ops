@@ -44,29 +44,19 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
 	implements LoopInplace<I>
 {
 
-	/**
-	 * Number of iterations
-	 */
+	/** Function used for looping */
 	@Parameter
 	private Function<I, I> function;
 
-	/**
-	 * Number of iterations
-	 */
+	/** Number of loops */
 	@Parameter
 	private int n;
 
-	/**
-	 * @return the {@link Function} to be applied
-	 */
 	@Override
 	public Function<I, I> getFunction() {
 		return function;
 	}
 
-	/**
-	 * @param function to be applied
-	 */
 	@Override
 	public void setFunction(final Function<I, I> function) {
 		this.function = function;
