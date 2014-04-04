@@ -65,4 +65,14 @@ public class DefaultLoopFunction<A> extends
 
 		return functionJoiner.compute(input, output);
 	}
+
+	@Override
+	public DefaultLoopFunction<A> getIndependentInstance() {
+		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
+
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
+
+		return looper;
+	}
 }

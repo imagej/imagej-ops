@@ -52,4 +52,12 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 		}
 		return arg;
 	}
+
+	@Override
+	public DefaultLoopInplace<I> getIndependentInstance() {
+		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<I>();
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setNumLoops(getNumLoops());
+		return looper;
+	}
 }

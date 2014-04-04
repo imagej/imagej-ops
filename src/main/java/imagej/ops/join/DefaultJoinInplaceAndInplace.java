@@ -55,4 +55,15 @@ public class DefaultJoinInplaceAndInplace<A> extends
 		first.compute(input, output);
 		return second.compute(input, output);
 	}
+
+	@Override
+	public DefaultJoinInplaceAndInplace<A> getIndependentInstance() {
+		final DefaultJoinInplaceAndInplace<A> joiner =
+			new DefaultJoinInplaceAndInplace<A>();
+
+		joiner.first = first;
+		joiner.second = second;
+
+		return joiner;
+	}
 }

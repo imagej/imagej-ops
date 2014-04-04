@@ -33,6 +33,7 @@ package imagej.ops.join;
 import imagej.ops.Function;
 import imagej.ops.Op;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class DefaultJoinFunctions<A> extends
 		}
 
 		final A buffer = getBuffer(input);
-		
+
 		A tmpOutput = output;
 		A tmpInput = buffer;
 		A tmp;
@@ -82,4 +83,19 @@ public class DefaultJoinFunctions<A> extends
 		return output;
 	}
 
+	@Override
+	public DefaultJoinFunctions<A> getIndependentInstance() {
+
+		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
+
+		final ArrayList<Function<A, A>> funcs = new ArrayList<Function<A, A>>();
+		for (final Function<A, A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setFunctions(funcs);
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

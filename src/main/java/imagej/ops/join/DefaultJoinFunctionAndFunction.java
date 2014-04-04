@@ -51,4 +51,17 @@ public class DefaultJoinFunctionAndFunction<A, B, C> extends
 		getFirst().compute(input, buffer);
 		return getSecond().compute(buffer, output);
 	}
+
+	@Override
+	public DefaultJoinFunctionAndFunction<A, B, C> getIndependentInstance() {
+
+		final DefaultJoinFunctionAndFunction<A, B, C> joiner =
+			new DefaultJoinFunctionAndFunction<A, B, C>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }
