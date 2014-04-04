@@ -46,8 +46,8 @@ public class DefaultJoinInplaceAndInplace<A> extends
 {
 
 	@Override
-	public A compute(final A input) {
-		return compute(input, input);
+	public A compute(final A arg) {
+		return compute(arg, arg);
 	}
 
 	@Override
