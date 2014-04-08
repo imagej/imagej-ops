@@ -37,14 +37,14 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $PRIORITY)
-public class AddConstantTo$NAME implements Add {
+@Plugin(type = Op.class, name = "add", priority = $priority)
+public class AddConstantTo$name implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
-	private $PRIMITIVE a;
+	private $primitive a;
 
 	@Parameter
-	private $PRIMITIVE b;
+	private $primitive b;
 
 	@Override
 	public void run() {

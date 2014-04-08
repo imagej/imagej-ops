@@ -1,4 +1,4 @@
 [Add.java]
-INTERFACE = Add
-OPTYPE = final int
-RESULTTYPE = final int[]
+interface = Add
+opType = final int
+resultType = final int[]
