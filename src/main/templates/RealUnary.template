@@ -1,0 +1,18 @@
+package imagej.ops.arithmetic.real;
+
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
+import imagej.ops.arithmetic.INTERFACE;
+
+import net.imglib2.type.numeric.RealType;
+IMPORTS
+
+import org.scijava.plugin.Plugin;
+
+JAVADOC
+@Plugin(type = Op.class, name = INTERFACE.NAME)
+public class RealINTERFACE<I extends RealType<I>, O extends RealType<O>> extends AbstractFunction<I, O>
+	implements INTERFACE
+{
+BODY
+}
