@@ -88,14 +88,6 @@ def translate(template, translations) {
   reader.close();
 }
 
-<<<<<<< HEAD
-/*
- * Generate classes from templates and lists
- */
-translate('Arithmetic.template', 'Arithmetic.list');
-translate('RealUnary.template', 'RealUnary_implementations.list');
-translate('RealUnaryInterface.template', 'RealUnary_interfaces.list');
-=======
 // translate all templates in the template directory
 for (file in new java.io.File(templateDirectory).listFiles()) {
   name = file.getName();
@@ -103,4 +95,4 @@ for (file in new java.io.File(templateDirectory).listFiles()) {
   prefix = name.substring(0, name.length() - 9);
   translate(name, prefix + '.list');
 }
->>>>>>> d3760a48927c61546f9cb582b2265148b8f46b04
+
