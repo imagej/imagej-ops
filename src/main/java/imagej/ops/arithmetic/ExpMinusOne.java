@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic;
 
 import imagej.ops.Op;
@@ -15,7 +16,7 @@ import imagej.ops.Op;
  * @author Jonathan Hale
  * @author Christian Dietz
  */
-public interface ExpMinusOne extends Op
-{
+public interface ExpMinusOne extends Op {
+
 	String NAME = "expminusone";
 }

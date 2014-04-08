@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic;
 
 import imagej.ops.Op;
@@ -15,7 +16,7 @@ import imagej.ops.Op;
  * @author Jonathan Hale
  * @author Christian Dietz
  */
-public interface Sinh extends Op
-{
+public interface Sinh extends Op {
+
 	String NAME = "sinh";
 }

@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -16,25 +17,22 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = MaxConstant.NAME )
-public class RealMaxConstant< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements MaxConstant
+@Plugin(type = Op.class, name = MaxConstant.NAME)
+public class RealMaxConstant<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements MaxConstant
 {
+
 	private final double constant;
 
-	public RealMaxConstant( double constant )
-	{
+	public RealMaxConstant(double constant) {
 		this.constant = constant;
 	}
 
 	@Override
-	public O compute( I x, O output )
-	{
+	public O compute(I x, O output) {
 		double value = x.getRealDouble();
-		if ( value < constant )
-			output.setReal( value );
-		else
-			output.setReal( constant );
+		if (value < constant) output.setReal(value);
+		else output.setReal(constant);
 		return output;
 	}
 

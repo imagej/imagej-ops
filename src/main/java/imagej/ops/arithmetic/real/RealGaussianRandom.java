@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import java.util.Random;
@@ -18,17 +19,17 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = GaussianRandom.NAME )
-public class RealGaussianRandom< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements GaussianRandom
+@Plugin(type = Op.class, name = GaussianRandom.NAME)
+public class RealGaussianRandom<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements GaussianRandom
 {
+
 	private Random rng = new Random();
 
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = rng.nextGaussian() * Math.abs( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = rng.nextGaussian() * Math.abs(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

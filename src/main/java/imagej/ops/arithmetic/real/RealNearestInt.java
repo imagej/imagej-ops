@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,15 +15,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = NearestInt.NAME )
-public class RealNearestInt< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements NearestInt
+@Plugin(type = Op.class, name = NearestInt.NAME)
+public class RealNearestInt<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements NearestInt
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.rint( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.rint(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

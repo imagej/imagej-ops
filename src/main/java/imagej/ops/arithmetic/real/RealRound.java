@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,14 +15,14 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Round.NAME )
-public class RealRound< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Round
+@Plugin(type = Op.class, name = Round.NAME)
+public class RealRound<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Round
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		output.setReal( Math.round( x.getRealDouble() ) );
+	public O compute(I x, O output) {
+		output.setReal(Math.round(x.getRealDouble()));
 		return output;
 	}
 

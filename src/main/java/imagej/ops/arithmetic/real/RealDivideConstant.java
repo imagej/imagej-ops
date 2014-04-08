@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -16,31 +17,28 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = DivideConstant.NAME )
-public class RealDivideConstant< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements DivideConstant
+@Plugin(type = Op.class, name = DivideConstant.NAME)
+public class RealDivideConstant<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements DivideConstant
 {
+
 	private final double constant;
 
 	private final double dbzVal;
 
-	public RealDivideConstant( double constant, double dbzVal )
-	{
+	public RealDivideConstant(double constant, double dbzVal) {
 		this.constant = constant;
 		this.dbzVal = dbzVal;
 	}
 
 	@Override
-	public O compute( I x, O output )
-	{
-		if ( constant == 0 )
-		{
-			output.setReal( dbzVal );
+	public O compute(I x, O output) {
+		if (constant == 0) {
+			output.setReal(dbzVal);
 		}
-		else
-		{
+		else {
 			double value = x.getRealDouble() / constant;
-			output.setReal( value );
+			output.setReal(value);
 		}
 		return output;
 	}

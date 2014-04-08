@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,14 +15,14 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Floor.NAME )
-public class RealFloor< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Floor
+@Plugin(type = Op.class, name = Floor.NAME)
+public class RealFloor<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Floor
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		output.setReal( Math.floor( x.getRealDouble() ) );
+	public O compute(I x, O output) {
+		output.setReal(Math.floor(x.getRealDouble()));
 		return output;
 	}
 

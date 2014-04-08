@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,14 +15,14 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Ceil.NAME )
-public class RealCeil< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Ceil
+@Plugin(type = Op.class, name = Ceil.NAME)
+public class RealCeil<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Ceil
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		output.setReal( Math.ceil( x.getRealDouble() ) );
+	public O compute(I x, O output) {
+		output.setReal(Math.ceil(x.getRealDouble()));
 		return output;
 	}
 

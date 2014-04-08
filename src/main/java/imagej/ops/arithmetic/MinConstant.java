@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic;
 
 import imagej.ops.Op;
@@ -15,7 +16,7 @@ import imagej.ops.Op;
  * @author Jonathan Hale
  * @author Christian Dietz
  */
-public interface MinConstant extends Op
-{
+public interface MinConstant extends Op {
+
 	String NAME = "minconstant";
 }

@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,15 +15,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Arcsin.NAME )
-public class RealArcsin< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Arcsin
+@Plugin(type = Op.class, name = Arcsin.NAME)
+public class RealArcsin<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Arcsin
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.asin( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.asin(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

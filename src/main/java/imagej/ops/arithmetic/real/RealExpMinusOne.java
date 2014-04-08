@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,15 +15,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = ExpMinusOne.NAME )
-public class RealExpMinusOne< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements ExpMinusOne
+@Plugin(type = Op.class, name = ExpMinusOne.NAME)
+public class RealExpMinusOne<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements ExpMinusOne
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.exp( x.getRealDouble() ) - 1;
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.exp(x.getRealDouble()) - 1;
+		output.setReal(value);
 		return output;
 	}
 

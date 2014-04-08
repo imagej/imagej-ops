@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -15,10 +16,11 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Invert.NAME )
-public class RealInvert< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Invert
+@Plugin(type = Op.class, name = Invert.NAME)
+public class RealInvert<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Invert
 {
+
 	private double specifiedMin;
 
 	private double specifiedMax;
@@ -26,22 +28,18 @@ public class RealInvert< I extends RealType< I >, O extends RealType< O >> exten
 	/**
 	 * Constructor.
 	 * 
-	 * @param specifiedMin
-	 *            - minimum value of the range to invert about
-	 * @param specifiedMax
-	 *            - maximum value of the range to invert about
+	 * @param specifiedMin - minimum value of the range to invert about
+	 * @param specifiedMax - maximum value of the range to invert about
 	 */
-	public RealInvert( final double specifiedMin, final double specifiedMax )
-	{
+	public RealInvert(final double specifiedMin, final double specifiedMax) {
 		this.specifiedMax = specifiedMax;
 		this.specifiedMin = specifiedMin;
 	}
 
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = specifiedMax - ( x.getRealDouble() - specifiedMin );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = specifiedMax - (x.getRealDouble() - specifiedMin);
+		output.setReal(value);
 		return output;
 	}
 

@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -16,15 +17,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Ulp.NAME )
-public class RealUlp< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Ulp
+@Plugin(type = Op.class, name = Ulp.NAME)
+public class RealUlp<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Ulp
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.ulp( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.ulp(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

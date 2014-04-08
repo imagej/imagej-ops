@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,21 +15,20 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Constant.NAME )
-public class RealConstant< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Constant
+@Plugin(type = Op.class, name = Constant.NAME)
+public class RealConstant<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Constant
 {
+
 	private final double constant;
 
-	public RealConstant( double constant )
-	{
+	public RealConstant(double constant) {
 		this.constant = constant;
 	}
 
 	@Override
-	public O compute( I x, O output )
-	{
-		output.setReal( constant );
+	public O compute(I x, O output) {
+		output.setReal(constant);
 		return output;
 	}
 

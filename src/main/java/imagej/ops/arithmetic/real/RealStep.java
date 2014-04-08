@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -16,17 +17,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Step.NAME )
-public class RealStep< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Step
+@Plugin(type = Op.class, name = Step.NAME)
+public class RealStep<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Step
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		if ( x.getRealDouble() < 0 )
-			output.setZero();
-		else
-			output.setOne();
+	public O compute(I x, O output) {
+		if (x.getRealDouble() < 0) output.setZero();
+		else output.setOne();
 		return output;
 	}
 

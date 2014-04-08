@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -15,15 +16,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = LogOnePlusX.NAME )
-public class RealLogOnePlusX< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements LogOnePlusX
+@Plugin(type = Op.class, name = LogOnePlusX.NAME)
+public class RealLogOnePlusX<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements LogOnePlusX
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.log1p( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.log1p(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

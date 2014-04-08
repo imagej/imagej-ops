@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -17,18 +18,18 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = UniformRandom.NAME )
-public class RealUniformRandom< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements UniformRandom
+@Plugin(type = Op.class, name = UniformRandom.NAME)
+public class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements UniformRandom
 {
+
 	private Random rng = new Random();
 
 	@Override
-	public O compute( I x, O output )
-	{
+	public O compute(I x, O output) {
 		double r = rng.nextDouble();
 		double value = r * x.getRealDouble();
-		output.setReal( value );
+		output.setReal(value);
 		return output;
 	}
 

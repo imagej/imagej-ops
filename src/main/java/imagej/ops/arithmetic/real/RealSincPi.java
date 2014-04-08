@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -15,20 +16,18 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = SincPi.NAME )
-public class RealSincPi< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements SincPi
+@Plugin(type = Op.class, name = SincPi.NAME)
+public class RealSincPi<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements SincPi
 {
+
 	@Override
-	public O compute( I input, O output )
-	{
+	public O compute(I input, O output) {
 		double x = input.getRealDouble();
 		double value;
-		if ( x == 0 )
-			value = 1;
-		else
-			value = Math.sin( Math.PI * x ) / ( Math.PI * x );
-		output.setReal( value );
+		if (x == 0) value = 1;
+		else value = Math.sin(Math.PI * x) / (Math.PI * x);
+		output.setReal(value);
 		return output;
 	}
 

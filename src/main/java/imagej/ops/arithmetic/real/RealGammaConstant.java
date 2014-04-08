@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -15,27 +16,24 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = GammaConstant.NAME )
-public class RealGammaConstant< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements GammaConstant
+@Plugin(type = Op.class, name = GammaConstant.NAME)
+public class RealGammaConstant<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements GammaConstant
 {
+
 	private final double constant;
 
-	public RealGammaConstant( double constant )
-	{
+	public RealGammaConstant(double constant) {
 		this.constant = constant;
 	}
 
 	@Override
-	public O compute( I x, O output )
-	{
+	public O compute(I x, O output) {
 		double inputVal = x.getRealDouble();
-		if ( inputVal <= 0 )
-			output.setReal( 0 );
-		else
-		{
-			double value = Math.exp( this.constant * Math.log( inputVal ) );
-			output.setReal( value );
+		if (inputVal <= 0) output.setReal(0);
+		else {
+			double value = Math.exp(this.constant * Math.log(inputVal));
+			output.setReal(value);
 		}
 		return output;
 	}

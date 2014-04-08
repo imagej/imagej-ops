@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,15 +15,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Sin.NAME )
-public class RealSin< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Sin
+@Plugin(type = Op.class, name = Sin.NAME)
+public class RealSin<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Sin
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
-		double value = Math.sin( x.getRealDouble() );
-		output.setReal( value );
+	public O compute(I x, O output) {
+		double value = Math.sin(x.getRealDouble());
+		output.setReal(value);
 		return output;
 	}
 

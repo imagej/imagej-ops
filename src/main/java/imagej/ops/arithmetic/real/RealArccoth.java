@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,16 +15,16 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Arccoth.NAME )
-public class RealArccoth< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Arccoth
+@Plugin(type = Op.class, name = Arccoth.NAME)
+public class RealArccoth<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Arccoth
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
+	public O compute(I x, O output) {
 		double xt = x.getRealDouble();
-		double value = 0.5 * Math.log( ( xt + 1 ) / ( xt - 1 ) );
-		output.setReal( value );
+		double value = 0.5 * Math.log((xt + 1) / (xt - 1));
+		output.setReal(value);
 		return output;
 	}
 

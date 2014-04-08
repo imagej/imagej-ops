@@ -1,3 +1,4 @@
+
 package imagej.ops.arithmetic.real;
 
 import imagej.ops.AbstractFunction;
@@ -14,15 +15,15 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  */
 
-@Plugin( type = Op.class, name = Negate.NAME )
-public class RealNegate< I extends RealType< I >, O extends RealType< O >> extends AbstractFunction< I, O >
-		implements Negate
+@Plugin(type = Op.class, name = Negate.NAME)
+public class RealNegate<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<I, O> implements Negate
 {
+
 	@Override
-	public O compute( I x, O output )
-	{
+	public O compute(I x, O output) {
 		double value = -x.getRealDouble();
-		output.setReal( value );
+		output.setReal(value);
 		return output;
 	}
 
