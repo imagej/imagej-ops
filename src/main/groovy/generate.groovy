@@ -69,6 +69,24 @@ def translate(templateFile, translationsFile) {
       continue;
     }
     pair = line.split('\\s*=\\s*', 2);
+    if (pair[1].equals('```')) {
+      // multi-line value
+      builder = new StringBuilder();
+      for (;;) {
+        line = reader.readLine();
+        if (line == null) {
+          throw new RuntimeException("Unfinished value: " + builder.toString());
+        }
+        if (line.equals('```')) {
+          break;
+        }
+        if (builder.length() > 0) {
+          builder.append("\n");
+        }
+        builder.append(line);
+      }
+      pair[1] = builder.toString();
+    }
     context.put(pair[0], pair[1]);
   }
   reader.close();
