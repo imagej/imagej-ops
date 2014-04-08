@@ -114,6 +114,20 @@
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>
 					</execution>
+					<execution>
+						<id>generate-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<templateDirectory>${basedir}/src/test/templates</templateDirectory>
+								<outputDirectory>${project.build.directory}/template-tests/</outputDirectory>
+							</properties>
+							<source>${basedir}/src/main/groovy/generate.groovy</source>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
