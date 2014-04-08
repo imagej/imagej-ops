@@ -30,6 +30,7 @@
 package imagej.ops;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.BufferedReader;
@@ -50,6 +51,10 @@ public class TemplateTest {
 		final BufferedReader reader = new BufferedReader(fileReader);
 		try {
 			assertEquals("Template test: Pinky", reader.readLine());
+			assertEquals("Multi-line: Ten weary, footsore travelers,", reader.readLine());
+			assertNotNull(reader.readLine());
+			assertNotNull(reader.readLine());
+			assertEquals("one dark and rainy night...!", reader.readLine());
 			assertNull(reader.readLine());
 		} finally {
 			reader.close();

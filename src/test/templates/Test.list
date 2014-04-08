@@ -1,2 +1,8 @@
 [TestTemplate.txt]
 name = Pinky
+multiLine = ```
+Ten weary, footsore travelers,
+all in a woeful plight,
+sought shelter in a way-side inn
+one dark and rainy night
+```
