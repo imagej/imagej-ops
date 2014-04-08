@@ -28,46 +28,25 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.outputfactories;
 
-import imagej.ops.AbstractInplaceFunction;
-import imagej.ops.InplaceFunction;
-
-import org.scijava.plugin.Parameter;
+import imagej.ops.OutputFactory;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
 /**
- * Abstract superclass of {@link JoinInplace} implementations.
+ * {@link OutputFactory} used to create an empty output {@link Img} of same type
+ * and dimensionality as the input {@link Img}.
  * 
  * @author Christian Dietz
+ * @param <L>
  */
-public abstract class AbstractJoinInplace<A> extends AbstractInplaceFunction<A>
-	implements JoinInplace<A>
+public class ImgImgSameTypeFactory<T extends Type<T>> implements
+	OutputFactory<Img<T>, Img<T>>
 {
 
-	@Parameter
-	protected InplaceFunction<A> first;
-
-	@Parameter
-	protected InplaceFunction<A> second;
-
 	@Override
-	public InplaceFunction<A> getFirst() {
-		return first;
+	public Img<T> create(final Img<T> input) {
+		return input.factory().create(input, input.firstElement().createVariable());
 	}
-
-	@Override
-	public void setFirst(final InplaceFunction<A> first) {
-		this.first = first;
-	}
-
-	@Override
-	public InplaceFunction<A> getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final InplaceFunction<A> second) {
-		this.second = second;
-	}
-
 }

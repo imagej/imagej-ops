@@ -37,19 +37,31 @@ import imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link InplaceFunction} with a {@link Function}
+ * Joins a {@link Function} with an {@link InplaceFunction}.
  * 
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Join.NAME)
-public class JoinInplaceAndFunction<A, B> extends
-	AbstractJoinFunction<A, A, B, InplaceFunction<A>, Function<A, B>>
+public class DefaultJoinFunctionAndInplace<A, B> extends
+	AbstractJoinFunctionAndFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
 {
 
 	@Override
 	public B compute(final A input, final B output) {
-		first.compute(input);
-		return second.compute(input, output);
+		getFirst().compute(input, output);
+		return getSecond().compute(output);
 	}
 
+	@Override
+	public DefaultJoinFunctionAndInplace<A, B> getIndependentInstance() {
+
+		final DefaultJoinFunctionAndInplace<A, B> joiner =
+			new DefaultJoinFunctionAndInplace<A, B>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

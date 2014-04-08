@@ -30,7 +30,7 @@
 
 package imagej.ops.arithmetic.add;
 
-import imagej.ops.AbstractFunction;
+import imagej.ops.Contingent;
 import imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -38,33 +38,43 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.Priority;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
-{
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>> implements Contingent, Add {
+
+	@Parameter(type = ItemIO.BOTH)
+	private IterableInterval<T> a;
 
 	@Parameter
-	private T value;
+	private RandomAccessibleInterval<T> b;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
+	public void run() {
+		final long[] pos = new long[a.numDimensions()];
+		final Cursor<T> cursor = a.cursor();
+		final RandomAccess<T> access = b.randomAccess();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			cursor.localize(pos);
+			access.setPosition(pos);
+			cursor.get().add(access.get());
 		}
-
-		return output;
 	}
+
+	@Override
+	public boolean conforms() {
+		int n = a.numDimensions();
+		if (n != b.numDimensions()) return false;
+		long[] dimsA = new long[n], dimsB = new long[n];
+		a.dimensions(dimsA);
+		b.dimensions(dimsB);
+		for (int i = 0; i < n; i++) {
+			if (dimsA[i] != dimsB[i]) return false;
+		}
+		return true;
+	}
+
 }

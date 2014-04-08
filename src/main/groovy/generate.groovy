@@ -51,7 +51,7 @@ def firstIndexOf(str, c) {
 def translate(template, translations) {
   /* read template */
   builder = new java.lang.StringBuilder()
-    reader = new java.io.BufferedReader(new java.io.FileReader(templateDirectory + '/' + template));
+    reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$template"));
   for (;;) {
     line = reader.readLine();
     if (line == null) break;
@@ -61,7 +61,7 @@ def translate(template, translations) {
   untranslated = builder.toString();
 
   /* read translation lines */
-  reader = new java.io.BufferedReader(new java.io.FileReader(templateDirectory + '/' + translations));
+  reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$translations"));
   for (;;) {
     line = reader.readLine();
     if (line == null) break;
@@ -88,9 +88,19 @@ def translate(template, translations) {
   reader.close();
 }
 
+<<<<<<< HEAD
 /*
  * Generate classes from templates and lists
  */
 translate('Arithmetic.template', 'Arithmetic.list');
 translate('RealUnary.template', 'RealUnary_implementations.list');
 translate('RealUnaryInterface.template', 'RealUnary_interfaces.list');
+=======
+// translate all templates in the template directory
+for (file in new java.io.File(templateDirectory).listFiles()) {
+  name = file.getName();
+  if (!name.endsWith('.template')) continue;
+  prefix = name.substring(0, name.length() - 9);
+  translate(name, prefix + '.list');
+}
+>>>>>>> d3760a48927c61546f9cb582b2265148b8f46b04

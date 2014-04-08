@@ -28,27 +28,40 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.join;
+
+import imagej.ops.Function;
+import imagej.ops.Op;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * A {@link ChunkExecutable}, which can be executed by the {@link ChunkExecutor}
- * A {@link ChunkExecutable} processes a subset of a bigger problem and can be executed
- * in parallel with other {@link ChunkExecutable}. The elements of the subproblem are identified
- * by enumerating the original problem.
+ * Joins two {@link Function}s.
  * 
  * @author Christian Dietz
  */
-public interface ChunkExecutable {
-	
-	/**
-	 * Solve the subproblem for the element at startIndex, increase the index by the given stepSize
-	 * and repeat numSteps.
-	 * 
-	 * @param startIndex zero based index that identifies the first element of this
-	 * subproblem (w.r.t. the global problem enumeration)
-	 * @param stepSize the step-size between two consecutive elements
-	 * @param numSteps how many steps shall be taken
-	 */
-	void execute(int startIndex, int stepSize, int numSteps);
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctionAndFunction<A, B, C> extends
+	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
+{
 
+	@Override
+	public C compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		getFirst().compute(input, buffer);
+		return getSecond().compute(buffer, output);
+	}
+
+	@Override
+	public DefaultJoinFunctionAndFunction<A, B, C> getIndependentInstance() {
+
+		final DefaultJoinFunctionAndFunction<A, B, C> joiner =
+			new DefaultJoinFunctionAndFunction<A, B, C>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

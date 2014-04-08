@@ -28,49 +28,32 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.chunker;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Function;
-
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
+import imagej.Cancelable;
+import imagej.ops.Op;
 
 /**
- * Abstract superclass of {@link FunctionJoiner}s.
+ * Base interface for "chunker" operations. These operations execute code across
+ * chunks of data using multiple threads.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Chunker.NAME)
+ * </pre>
  * 
  * @author Christian Dietz
- * @author Curtis Rueden
  */
-public abstract class AbstractFunctionJoiner<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A> implements FunctionJoiner<A, F>
-{
+public interface Chunker extends Op, Cancelable {
 
-	/** List of functions to be joined. */
-	private List<? extends F> functions;
+	String NAME = "chunker";
 
-	@Parameter
-	private A buffer;
+	/** Sets the {@link Chunk} for which will be multithreaded. */
+	void setChunk(final Chunk executor);
 
-	@Override
-	public A getBuffer() {
-		return buffer;
-	}
-
-	@Override
-	public void setBuffer(final A buffer) {
-		this.buffer = buffer;
-	}
-
-	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
-	}
-
-	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
-	}
+	/** Sets the total number of elements which should be processed in parallel. */
+	void setNumberOfElements(final int numberOfElements);
 
 }

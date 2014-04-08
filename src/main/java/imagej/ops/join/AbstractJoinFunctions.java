@@ -28,43 +28,64 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
-import org.scijava.Priority;
+import java.util.List;
+
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
+/**
+ * Abstract superclass of {@link JoinFunctions}s.
+ * 
+ * @author Christian Dietz
+ * @author Curtis Rueden
+ */
+public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
 {
 
+	/** List of functions to be joined. */
 	@Parameter
-	private T value;
+	private List<? extends F> functions;
+
+	@Parameter
+	private OutputFactory<A, A> bufferFactory;
+
+	private A buffer;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
+	public OutputFactory<A, A> getBufferFactory() {
+		return bufferFactory;
 	}
+
+	@Override
+	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.create(input);
+		}
+		return buffer;
+	}
+
 }

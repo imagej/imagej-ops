@@ -27,44 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.chunker;
 
-package imagej.ops.arithmetic.add;
-
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
 import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
-{
-
-	@Parameter
-	private T value;
-
-	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
+public abstract class CursorBasedChunk implements Chunk {
+	
+	public static void setToStart(final Cursor<?> c, int startIndex) {
+		c.reset();
+		c.jumpFwd(startIndex + 1);
 	}
+
 }

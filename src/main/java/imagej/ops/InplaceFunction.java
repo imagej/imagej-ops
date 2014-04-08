@@ -43,4 +43,7 @@ public interface InplaceFunction<A> extends Function<A, A> {
 
 	A compute(A arg);
 
+	@Override
+	InplaceFunction<A> getIndependentInstance();
+
 }

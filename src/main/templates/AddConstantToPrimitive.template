@@ -28,27 +28,27 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.generated;
 
-import imagej.ops.Function;
-import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
+import imagej.ops.arithmetic.add.Add;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Joins a {@link Function} with an {@link InplaceFunction}
- * 
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = Join.NAME)
-public class JoinFunctionAndInplace<A, B> extends
-	AbstractJoinFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
-{
+@Plugin(type = Op.class, name = "add", priority = PRIORITY)
+public class AddConstantToNAME implements Add {
+
+	@Parameter(type = ItemIO.BOTH)
+	private PRIMITIVE a;
+
+	@Parameter
+	private PRIMITIVE b;
 
 	@Override
-	public B compute(final A input, final B output) {
-		first.compute(input, output);
-		return second.compute(output);
+	public void run() {
+		a += b;
 	}
+
 }

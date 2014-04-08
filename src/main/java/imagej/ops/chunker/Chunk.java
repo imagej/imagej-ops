@@ -28,43 +28,33 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.chunker;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.Parallel;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * A {@link Chunk} of code which can be executed by a {@link Chunker}.
+ * <p>
+ * A {@link Chunk} processes a subset of a bigger problem and can be executed in
+ * parallel with other {@link Chunk}s. The elements of the subproblem are
+ * identified by enumerating the original problem.
+ * </p>
+ * 
+ * @author Christian Dietz
+ * @see Chunker
+ * @see Parallel
+ */
+public interface Chunk {
+	
+	/**
+	 * Solve the subproblem for the element at startIndex, increase the index by
+	 * the given stepSize and repeat numSteps.
+	 * 
+	 * @param startIndex zero based index that identifies the first element of
+	 *          this subproblem (w.r.t. the global problem enumeration)
+	 * @param stepSize the step-size between two consecutive elements
+	 * @param numSteps how many steps shall be taken
+	 */
+	void execute(int startIndex, int stepSize, int numSteps);
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
-{
-
-	@Parameter
-	private T value;
-
-	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
-	}
 }

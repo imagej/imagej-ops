@@ -28,52 +28,40 @@
  * #L%
  */
 
-package imagej.ops.join;
+package imagej.ops.outputfactories;
 
-import imagej.ops.Function;
-
-import java.util.Iterator;
-import java.util.List;
+import imagej.ops.OutputFactory;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
 /**
- * Helper class for joining {@link Function}s.
+ * {@link OutputFactory} used to create an empty output {@link Img} of type <V>
+ * and the dimensionality of the input {@link Img}
  * 
  * @author Christian Dietz
- * @author Curtis Rueden
+ * @param <L>
  */
-public class DefaultFunctionJoiner<A> extends
-	AbstractFunctionJoiner<A, Function<A, A>>
+public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
+	OutputFactory<Img<T>, Img<V>>
 {
 
-	@Override
-	public A compute(final A input, final A output) {
-		final List<? extends Function<A, A>> functions = getFunctions();
-		final Iterator<? extends Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
+	private V resType;
 
-		if (functions.size() == 1) {
-			return first.compute(input, output);
-		}
-
-		A tmpOutput = output;
-		A tmpInput = getBuffer();
-		A tmp;
-
-		if (functions.size() % 2 == 0) {
-			tmpOutput = getBuffer();
-			tmpInput = output;
-		}
-
-		first.compute(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
-
-		return output;
+	/**
+	 * @param resType type of resulting {@link Img}
+	 */
+	public ImgImgFactory(final V resType) {
+		this.resType = resType;
 	}
 
+	@Override
+	public Img<V> create(final Img<T> input) {
+		try {
+			return input.factory().imgFactory(resType).create(input, resType);
+		}
+		catch (final IncompatibleTypeException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

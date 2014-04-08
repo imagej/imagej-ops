@@ -28,83 +28,58 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.arithmetic.add.parallel;
 
 import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.Chunker;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-
+import org.scijava.ItemIO;
 import org.scijava.Priority;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implementation of a {@link ChunkExecutor} that interleaves the chunks. In a
- * element enumeration from 1..n with <b>k</b> {@link ChunkExecutable}s the
- * first one will process the elements 1, k+1, 2k+1, ... the second chunk
- * executable 2, k+2, 2k+2 and so on.
+ * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
+ * {@link DoubleType}.
  * 
- * @author Michael Zinsmaier
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "chunker",
-	priority = Priority.VERY_LOW_PRIORITY)
-public class InterleavedChunkExecutor extends AbstractChunkExecutor {
+@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY + 11)
+public class AddConstantToArrayDoubleImageP implements Op {
 
 	@Parameter
-	public LogService logService;
+	private OpService opService;
 
-	private String cancellationMsg;
+	@Parameter(type = ItemIO.BOTH)
+	private ArrayImg<DoubleType, DoubleArray> image;
+
+	@Parameter
+	private byte value;
 
 	@Override
 	public void run() {
+		final double[] data = image.update(null).getCurrentStorageArray();
+		opService.run(Chunker.class, new Chunk() {
 
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final int numStepsFloor = (int) (numberOfElements / numThreads);
-		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
-
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
-
-		for (int i = 0; i < numThreads; i++) {
-			final int j = i;
-
-			futures.add(threadService.run(new Runnable() {
-
-				@Override
-				public void run() {
-					if (j < remainder) {
-						chunkable.execute(j, numThreads, (numStepsFloor + 1));
-					}
-					else {
-						chunkable.execute(j, numThreads, numStepsFloor);
+			@Override
+			public void execute(final int startIndex, final int stepSize, final int numSteps)
+			{
+				if (stepSize != 1) {
+					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
+						data[i] += value;
 					}
 				}
-			}));
-		}
-
-		for (final Future<?> future : futures) {
-			try {
-				if (isCanceled()) {
-					break;
+				else {
+					for (int i = startIndex; i < startIndex + numSteps; i++) {
+						data[i] += value;
+					}
 				}
-				future.get();
 			}
-			catch (final Exception e) {
-				logService.error(e);
-				cancellationMsg = e.getMessage();
-				break;
-			}
-		}
-	}
-
-	@Override
-	public boolean isCanceled() {
-		return cancellationMsg != null;
-	}
-
-	@Override
-	public String getCancelReason() {
-		return cancellationMsg;
+		}, data.length);
 	}
 }

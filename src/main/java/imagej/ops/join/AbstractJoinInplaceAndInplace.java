@@ -28,43 +28,46 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.InplaceFunction;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
+/**
+ * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplaceAndInplace<A>
 {
 
 	@Parameter
-	private T value;
+	protected InplaceFunction<A> first;
+
+	@Parameter
+	protected InplaceFunction<A> second;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
+	public InplaceFunction<A> getFirst() {
+		return first;
 	}
+
+	@Override
+	public void setFirst(final InplaceFunction<A> first) {
+		this.first = first;
+	}
+
+	@Override
+	public InplaceFunction<A> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final InplaceFunction<A> second) {
+		this.second = second;
+	}
+
 }

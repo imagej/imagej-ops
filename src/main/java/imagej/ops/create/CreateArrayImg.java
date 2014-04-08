@@ -28,79 +28,42 @@
  * #L%
  */
 
-package imagej.ops.threading;
+package imagej.ops.create;
 
 import imagej.ops.Op;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.NativeType;
 
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-
-import org.scijava.log.LogService;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Simple default implementation of a {@link ChunkExecutor}. The list of
- * elements is chunked into equally sized (besides the last one), disjoint
- * chunks, which are processed in parallel. The stepSize is set to one, i.e.
- * each chunk consists of consecutive elements.
- * 
- * @author Christian Dietz
+ * Creates an image.
  */
-@Plugin(type = Op.class, name = "chunker")
-public class DefaultChunkExecutor extends AbstractChunkExecutor {
+@Plugin(type = Op.class, name = Create.NAME)
+public class CreateArrayImg<T extends NativeType<T>> implements Create {
 
-	private final int STEP_SIZE = 1;
+	@Parameter(type = ItemIO.OUTPUT)
+	private ArrayImg<T, ?> image;
 
 	@Parameter
-	public LogService logService;
+	private long[] dim;
+
+	@Parameter(required = false)
+	private T type;
 
 	@Override
 	public void run() {
-
-		// TODO: is there a better way to determine the optimal chunk size?
-		final int numSteps =
-			(int) (numberOfElements / Runtime.getRuntime().availableProcessors());
-
-		final int numChunks = (int) (numberOfElements / numSteps);
-
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
-
-		for (int i = 0; i < numChunks - 1; i++) {
-			final int j = i;
-
-			futures.add(threadService.run(new Runnable() {
-
-				@Override
-				public void run() {
-					chunkable.execute(j * numSteps, STEP_SIZE, numSteps);
-				}
-			}));
+		if (type == null) {
+			// when no type is given, force a DoubleType image
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			final ArrayImg<T, ?> coerced = (ArrayImg) ArrayImgs.doubles(dim);
+			image = coerced;
 		}
-
-		// last chunk additionally add the rest of elements
-		futures.add(threadService.run(new Runnable() {
-
-			@Override
-			public void run() {
-				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
-					(int) (numSteps + (numberOfElements % numSteps)));
-			}
-		}));
-
-		for (final Future<?> future : futures) {
-			try {
-				if (isCanceled()) {
-					break;
-				}
-				future.get();
-			}
-			catch (final Exception e) {
-				logService.error(e);
-				cancel(e.getMessage());
-				break;
-			}
-		}
+		else image = new ArrayImgFactory<T>().create(dim, type);
 	}
 
 }

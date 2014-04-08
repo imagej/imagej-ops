@@ -27,15 +27,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package imagej.ops.threading;
 
-import net.imglib2.Cursor;
+package imagej.ops.join;
 
-public abstract class CursorBasedChunkExecutable implements ChunkExecutable {
-	
-	public static void setToStart(final Cursor<?> c, int startIndex) {
-		c.reset();
-		c.jumpFwd(startIndex + 1);
+import imagej.ops.Function;
+import imagej.ops.InplaceFunction;
+import imagej.ops.Op;
+
+import org.scijava.plugin.Plugin;
+
+/**
+ * Joins an {@link InplaceFunction} with a {@link Function}.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinInplaceAndFunction<A, B> extends
+	AbstractJoinFunctionAndFunction<A, A, B, InplaceFunction<A>, Function<A, B>>
+{
+
+	@Override
+	public B compute(final A input, final B output) {
+		getFirst().compute(input);
+		return getSecond().compute(input, output);
 	}
 
+	@Override
+	public DefaultJoinInplaceAndFunction<A, B> getIndependentInstance() {
+		final DefaultJoinInplaceAndFunction<A, B> joiner =
+			new DefaultJoinInplaceAndFunction<A, B>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+
+		return joiner;
+	}
 }

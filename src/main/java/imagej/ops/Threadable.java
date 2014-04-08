@@ -30,44 +30,47 @@
 
 package imagej.ops;
 
-import org.scijava.ItemIO;
-
 /**
- * A {@code Function} is an {@link Op} that has a typed input parameter, and a
- * typed output parameter.
+ * Interface for {@link Op}s intended to be reused across multiple threads
+ * simultaneously.
  * <p>
- * The function provides a {@link #compute} method to compute the function for
- * different input and output parameters.
+ * In contrast to a {@link Parallel} Op, which marks an op that executes across
+ * multiple threads, a {@code Threadable} op knows how to provide multiple
+ * independent versions of itself, each of which will be used from a separate
+ * concurrent thread. Note that these versions may be deep copies, shallow
+ * copies, or even the same instance every time, depending on the nature of the
+ * object.
  * </p>
  * <p>
- * Note that the typed output is actually considered both an input <em>and</em>
- * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
- * This fact is critical so that a preallocated data structure may be passed in
- * and filled by the function. It is <em>required</em> that if an output value
- * is given in this way, it will be populated with the function's result.
+ * In a nutshell: {@link Parallel} ops make use of {@code Threadable} ops for
+ * doing their work in a multithreaded way.
  * </p>
  * <p>
- * Lastly, functions implement the {@link Threadable} interface, and hence can
- * be reused across multiple threads of a {@link Parallel} op.
+ * The requirement is merely that two threads using their respective object
+ * references as intended will not confuse one another's processing. As a rule
+ * of thumb, this means they might share read-only state, but not read-writable
+ * state (apart from perhaps lazily initialized state).
  * </p>
  * 
- * @author Christian Dietz
- * @author Martin Horn
  * @author Curtis Rueden
+ * @see Function
+ * @see Parallel
  */
-public interface Function<I, O> extends Op, Threadable {
+public interface Threadable {
 
-	I getInput();
-
-	O getOutput();
-
-	void setInput(I input);
-
-	void setOutput(O output);
-
-	O compute(I input, O output);
-
-	@Override
-	Function<I, O> getIndependentInstance();
+	/**
+	 * Gets a reference to an instance of this object which can be used
+	 * simultaneously from a second thread while this instance is being used from
+	 * "its" thread. This "independent instance" may be a deep copy, a shallow
+	 * copy, or even the same instance every time, depending on the nature of the
+	 * object.
+	 * <p>
+	 * It is expected that subclasses which override this method will narrow the
+	 * return type appropriately. We do not enforce this at compile time via
+	 * recursive generics due to their complexity: they introduce a host of
+	 * typing difficulties.
+	 * </p>
+	 */
+	Object getIndependentInstance();
 
 }

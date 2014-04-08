@@ -31,6 +31,7 @@ package imagej.ops.threading;
 
 import static org.junit.Assume.assumeTrue;
 import imagej.ops.benchmark.AbstractOpBenchmark;
+import imagej.ops.chunker.Chunker;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -42,13 +43,13 @@ import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 /**
- * Tests the {@link ChunkExecutor}.
+ * Tests the {@link Chunker}.
  *
  * @author Christian Dietz
  */
 // make sure that the data structure initialisation is not benchmarked
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
-public class ChunkExecutorBenchmarkTest extends AbstractOpBenchmark {
+public class ChunkerBenchmarkTest extends AbstractOpBenchmark {
 
 	private boolean expensiveTestsEnabled = "enabled".equals(System.getProperty("imagej.ops.expensive.tests"));
 
@@ -63,25 +64,25 @@ public class ChunkExecutorBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void run100MbTest() {
 		generateByteTestImgs(10240);
-		ops.module(RunDefaultChunkExecutor.class, out, in).run();
+		ops.module(RunDefaultChunker.class, out, in).run();
 	}
 
 	@Test
 	public void run100MbInterleaved() {
 		generateByteTestImgs(10240);
-		ops.module(RunInterleavedChunkExecutor.class, out, in).run();
+		ops.module(RunInterleavedChunker.class, out, in).run();
 	}
 
 	@Test
 	public void run1MbTest() {
 		generateByteTestImgs(1024);
-		ops.module(RunDefaultChunkExecutor.class, out, in).run();
+		ops.module(RunDefaultChunker.class, out, in).run();
 	}
 
 	@Test
 	public void run1MbInterleaved() {
 		generateByteTestImgs(1024);
-		ops.module(RunInterleavedChunkExecutor.class, out, in).run();
+		ops.module(RunInterleavedChunker.class, out, in).run();
 	}
 
 	//with arrays
@@ -89,25 +90,25 @@ public class ChunkExecutorBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void run100MbArrayTest() {
 		generateByteArrays(10240);
-		ops.module(RunDefaultChunkExecutorArray.class, out2, in2).run();
+		ops.module(RunDefaultChunkerArray.class, out2, in2).run();
 	}
 
 	@Test
 	public void run100MbArrayInterleavedTest() {
 		generateByteArrays(10240);
-		ops.module(RunInterleavedChunkExecutorArray.class, out2, in2).run();
+		ops.module(RunInterleavedChunkerArray.class, out2, in2).run();
 	}
 
 	@Test
 	public void run1MbArrayTest() {
 		generateByteArrays(1024);
-		ops.module(RunDefaultChunkExecutorArray.class, out2, in2).run();
+		ops.module(RunDefaultChunkerArray.class, out2, in2).run();
 	}
 
 	@Test
 	public void run1MbArrayInterleavedTest() {
 		generateByteArrays(1024);
-		ops.module(RunInterleavedChunkExecutorArray.class, out2, in2).run();
+		ops.module(RunInterleavedChunkerArray.class, out2, in2).run();
 	}
 
 	private void generateByteTestImgs(int size) {

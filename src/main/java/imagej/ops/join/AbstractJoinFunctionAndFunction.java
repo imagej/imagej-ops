@@ -28,43 +28,66 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.join;
 
 import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.Function;
+import imagej.ops.OutputFactory;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
+/**
+ * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C> implements
+	JoinFunctionAndFunction<A, B, C, F1, F2>
 {
 
 	@Parameter
-	private T value;
+	private F1 first;
+
+	@Parameter
+	private F2 second;
+
+	@Parameter(required = false)
+	private OutputFactory<A, B> bufferFactory;
+
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.create(input);
+		return buffer;
+	}
+
+	public OutputFactory<A, B> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
+	public F1 getFirst() {
+		return first;
 	}
+
+	@Override
+	public void setFirst(final F1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public F2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final F2 second) {
+		this.second = second;
+	}
+
 }

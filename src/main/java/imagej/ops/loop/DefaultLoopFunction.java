@@ -32,7 +32,7 @@ package imagej.ops.loop;
 
 import imagej.ops.Function;
 import imagej.ops.Op;
-import imagej.ops.join.DefaultFunctionJoiner;
+import imagej.ops.join.DefaultJoinFunctions;
 
 import java.util.ArrayList;
 
@@ -51,15 +51,28 @@ public class DefaultLoopFunction<A> extends
 	@Override
 	public A compute(final A input, final A output) {
 
+		final int n = getLoopCount();
+
 		final ArrayList<Function<A, A>> functions =
 			new ArrayList<Function<A, A>>(n);
 		for (int i = 0; i < n; i++)
-			functions.add(function);
+			functions.add(getFunction());
 
-		final DefaultFunctionJoiner<A> functionJoiner = new DefaultFunctionJoiner<A>();
+		final DefaultJoinFunctions<A> functionJoiner =
+			new DefaultJoinFunctions<A>();
 		functionJoiner.setFunctions(functions);
-		functionJoiner.setBuffer(buffer);
+		functionJoiner.setBufferFactory(getBufferFactory());
 
 		return functionJoiner.compute(input, output);
+	}
+
+	@Override
+	public DefaultLoopFunction<A> getIndependentInstance() {
+		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
+
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
+
+		return looper;
 	}
 }

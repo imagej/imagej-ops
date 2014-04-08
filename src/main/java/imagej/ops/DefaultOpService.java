@@ -185,6 +185,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object ascii(Object... args) {
+		return run("ascii", args);
+	}
+
+	@Override
 	public Object chunker(Object... args) {
 		return run("chunker", args);
 	}
@@ -200,8 +205,23 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object create(Object... args) {
+		return run("create", args);
+	}
+
+	@Override
+	public Object crop(Object... args) {
+		return run("crop", args);
+	}
+
+	@Override
 	public Object divide(Object... args) {
 		return run("divide", args);
+	}
+
+	@Override
+	public Object equation(Object... args) {
+		return run("equation", args);
 	}
 
 	@Override
@@ -210,8 +230,33 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object infinity(Object... args) {
-		return run("infinity", args);
+	public Object histogram(Object... args) {
+		return run("histogram", args);
+	}
+
+	@Override
+	public Object identity(Object... args) {
+		return run("identity", args);
+	}
+
+	@Override
+	public Object invert(Object... args) {
+		return run("invert", args);
+	}
+
+	@Override
+	public Object join(Object... args) {
+		return run("join", args);
+	}
+
+	@Override
+	public Object lookup(Object... args) {
+		return run("lookup", args);
+	}
+
+	@Override
+	public Object loop(Object... args) {
+		return run("loop", args);
 	}
 
 	@Override
@@ -225,6 +270,21 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object mean(Object... args) {
+		return run("mean", args);
+	}
+
+	@Override
+	public Object median(Object... args) {
+		return run("median", args);
+	}
+
+	@Override
+	public Object min(Object... args) {
+		return run("min", args);
+	}
+
+	@Override
 	public Object minmax(Object... args) {
 		return run("minmax", args);
 	}
@@ -235,8 +295,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object neighborhood(Object... args) {
-		return run("neighborhood", args);
+	public Object normalize(Object... args) {
+		return run("normalize", args);
 	}
 
 	@Override
@@ -245,13 +305,23 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object pixThreshold(Object... args) {
-		return run("pixThreshold", args);
+	public Object project(Object... args) {
+		return run("project", args);
 	}
 
 	@Override
-	public Object project(Object... args) {
-		return run("project", args);
+	public Object quantile(Object... args) {
+		return run("quantile", args);
+	}
+
+	@Override
+	public Object scale(Object... args) {
+		return run("scale", args);
+	}
+
+	@Override
+	public Object size(Object... args) {
+		return run("size", args);
 	}
 
 	@Override
@@ -260,8 +330,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object slicer(Object... args) {
-		return run("slicer", args);
+	public Object slicewise(Object... args) {
+		return run("slicewise", args);
+	}
+
+	@Override
+	public Object stddev(Object... args) {
+		return run("stddev", args);
 	}
 
 	@Override
@@ -277,6 +352,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object threshold(Object... args) {
 		return run("threshold", args);
+	}
+
+	@Override
+	public Object variance(Object... args) {
+		return run("variance", args);
 	}
 
 	// -- SingletonService methods --

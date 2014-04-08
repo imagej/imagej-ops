@@ -28,43 +28,25 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.outputfactories;
 
-import imagej.ops.AbstractFunction;
-import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import imagej.ops.OutputFactory;
+import net.imglib2.labeling.Labeling;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
+/**
+ * {@link OutputFactory} used to create an empty output {@link Labeling} of same
+ * type and dimensionality as the input {@link Labeling}
+ * 
+ * @author Christian Dietz
+ * @param <L>
+ */
+public class LabelingLabelingFactory<L extends Comparable<L>> implements
+	OutputFactory<Labeling<L>, Labeling<L>>
 {
 
-	@Parameter
-	private T value;
-
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
-
-		return output;
+	public Labeling<L> create(final Labeling<L> input) {
+		return input.<L> factory().create(input);
 	}
+
 }

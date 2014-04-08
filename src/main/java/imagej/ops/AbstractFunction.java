@@ -48,6 +48,8 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 	@Parameter
 	private I in;
 
+	// -- Function methods --
+
 	@Override
 	public I getInput() {
 		return in;
@@ -70,7 +72,17 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 
 	@Override
 	public void run() {
-		compute(getInput(), getOutput());
+		setOutput(compute(getInput(), getOutput()));
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public Function<I, O> getIndependentInstance() {
+		// NB: We assume the function instance is thread-safe by default.
+		// Individual function implementations can override this assumption if
+		// they have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

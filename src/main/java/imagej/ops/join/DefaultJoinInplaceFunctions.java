@@ -28,43 +28,65 @@
  * #L%
  */
 
-package imagej.ops.arithmetic.add;
+package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
+import imagej.ops.AbstractInplaceFunction;
+import imagej.ops.InplaceFunction;
 import imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.Priority;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
-	Add
+/**
+ * Joins a list of {@link InplaceFunction}s.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
+	implements Join
 {
 
+	// list of functions to be joined
 	@Parameter
-	private T value;
+	private List<InplaceFunction<A>> functions;
+
+	public void setFunctions(final List<InplaceFunction<A>> functions) {
+		this.functions = functions;
+	}
+
+	public List<InplaceFunction<A>> getFunctions() {
+		return functions;
+	}
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
+	public A compute(final A input) {
+
+		for (final InplaceFunction<A> inplace : functions) {
+			inplace.compute(input);
 		}
 
-		return output;
+		return input;
 	}
+
+	@Override
+	public DefaultJoinInplaceFunctions<A> getIndependentInstance() {
+
+		final DefaultJoinInplaceFunctions<A> joiner =
+			new DefaultJoinInplaceFunctions<A>();
+
+		final ArrayList<InplaceFunction<A>> funcs =
+			new ArrayList<InplaceFunction<A>>();
+		for (final InplaceFunction<A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setFunctions(funcs);
+
+		return joiner;
+	}
+
 }

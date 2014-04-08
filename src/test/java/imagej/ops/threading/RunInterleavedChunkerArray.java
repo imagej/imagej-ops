@@ -27,28 +27,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package imagej.ops.threading;
 
-package imagej.ops.join;
+import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
+import imagej.ops.OpService;
+import imagej.ops.Parallel;
+import imagej.ops.chunker.Chunk;
+import imagej.ops.chunker.InterleavedChunker;
 
-import imagej.ops.InplaceFunction;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * Helper class for joining {@link InplaceFunction}s.
- * 
- * @author Christian Dietz
- * @author Curtis Rueden
- */
-public class InplaceFunctionJoiner<A> extends
-	AbstractFunctionJoiner<A, InplaceFunction<A>>
-{
+@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
+public class RunInterleavedChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
 
+	@Parameter
+	private OpService opService;
+	
 	@Override
-	public A compute(final A input, final A output) {
-		for (final InplaceFunction<A> inplace : getFunctions()) {
-			inplace.compute(input, output);
-		}
+	public A[] compute(final A[] input,
+			final A[] output) {
+		
+		opService.run(InterleavedChunker.class, new Chunk() {
 
+			@Override
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				int i = startIndex;
+				
+				int ctr = 0;
+				while (ctr < numSteps) {
+					output[i] = input[i];
+				    i += stepSize;
+					ctr++;
+				}
+			}
+		}, input.length);
+	
 		return output;
+		
 	}
-
 }

@@ -29,19 +29,26 @@ output_image = map(input_image, add_op)
 Calling OPS from a BeanShell script:
 ```java
 ij = new ImageJ();
-seven = ij.ops().run("add", 2, 5); // add two numbers
+
+// add two numbers
+seven = ij.op().add(2, 5);
+
+// add number to image
 data = ij.dataset().open("/path/to/data.tif");
-result = ij.ops().run("add", data, 13); // add number to image
+result = ij.op().add(data, 13);
+
+// add two images
 moredata = ij.data().open("/path/to/moredata.tif");
-result = ij.ops().run("add", data, moredata); // add two images
-result = ij.ops().add(data, moredata); // built-ins can be called directly
-addOp = ij.ops().op("add", 5);
-result = ij.map(data, addOp); // execute add op on every image pixel
+result = ij.op().add(data, moredata);
+
+// execute an op on every pixel of an image!
+addOp = ij.op().op("add", 5);
+result = ij.op().map(data, addOp);
 ```
 
 For more details, see these tutorials:
-* [Using OPS](https://github.com/imagej/imagej-tutorials/using-ops)
-* [Create a new OP](https://github.com/imagej/imagej-tutorials/create-a-new-op)
+* [Using OPS](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
+* [Create a new OP](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
 
 How to contribute
 -----------------

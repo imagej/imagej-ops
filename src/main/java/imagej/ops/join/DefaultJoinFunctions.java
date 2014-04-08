@@ -30,44 +30,72 @@
 
 package imagej.ops.join;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Function;
+import imagej.ops.Op;
 
-import org.scijava.plugin.Parameter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass of {@link JoinFunction} implementations.
+ * Joins a list of {@link Function}s.
  * 
  * @author Christian Dietz
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C> implements JoinFunction<A, B, C, F1, F2>
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctions<A> extends
+	AbstractJoinFunctions<A, Function<A, A>>
 {
 
-	@Parameter
-	protected F1 first;
-
-	@Parameter
-	protected F2 second;
-
 	@Override
-	public F1 getFirst() {
-		return first;
+	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		final A buffer = getBuffer(input);
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
 	}
 
 	@Override
-	public void setFirst(final F1 first) {
-		this.first = first;
-	}
+	public DefaultJoinFunctions<A> getIndependentInstance() {
 
-	@Override
-	public F2 getSecond() {
-		return second;
-	}
+		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
 
-	@Override
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
+		final ArrayList<Function<A, A>> funcs = new ArrayList<Function<A, A>>();
+		for (final Function<A, A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
 
+		joiner.setFunctions(funcs);
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }
