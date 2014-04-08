@@ -19,7 +19,7 @@ def translate(template, translations) {
   reader.close();
   untranslated = builder.toString();
 
-  /* read translation lines */
+  // read translation lines
   reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$translations"));
   for (;;) {
     line = reader.readLine();
