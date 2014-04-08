@@ -1,47 +1,55 @@
 templateDirectory = project.properties['templateDirectory']
 outputDirectory = project.properties['outputDirectory']
 
+/* Processes a template using Apache Velocity. */
+def processTemplate(engine, context, templateFile, outFile) {
+  t = engine.getTemplate(templateFile);
+  writer = new StringWriter();
+  t.merge(context, writer);
+  out = new PrintWriter(outFile, "UTF-8");
+  out.print(writer.toString());
+  out.close();
+}
+
 /*
  * Translates a template into many files in the outputDirectory,
  * given translations where each line has the form:
  *
  * [filename]~[pattern]=[replacement~[pattern2]=[replacement2]...
  */
-def translate(template, translations) {
-  /* read template */
-  builder = new java.lang.StringBuilder()
-    reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$template"));
-  for (;;) {
-    line = reader.readLine();
-    if (line == null) break;
-    builder.append(line).append('\n');
-  }
-  reader.close();
-  untranslated = builder.toString();
+def translate(templateFile, translations) {
+  // initialize the Velocity engine
+  engine = new org.apache.velocity.app.VelocityEngine();
+  p = new java.util.Properties();
+  p.setProperty("file.resource.loader.path", "$templateDirectory");
+  // tell Velocity to log to stderr rather than to a velocity.log file
+  p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
+    "org.apache.velocity.runtime.log.SystemLogChute");
+  engine.init(p);
 
   // read translation lines
   reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$translations"));
   for (;;) {
+    // read the line
     line = reader.readLine();
     if (line == null) break;
-    translated = untranslated;
     pairs = line.split('~');
+    outputFilename = pairs[0];
+
+    // parse the patterns
+    context = new org.apache.velocity.VelocityContext();
     for (i = 1; i < pairs.length; i++) {
       split = pairs[i].split('=');
       if (split.length != 2) {
         throw new IllegalArgumentException("Illegal pair: '${pairs[i]}' in line '$line'");
       }
-      translated = translated.replaceAll(split[0], split[1]);
+      context.put(split[0], split[1]);
     }
 
-    // write out the file
-    outputFile = new java.io.File(outputDirectory, pairs[0]);
-    if (outputFile.getParentFile() != null) {
-      outputFile.getParentFile().mkdirs();
-    }
-    out = new java.io.FileOutputStream(outputFile);
-    out.write(translated.getBytes("UTF-8"));
-    out.close();
+    // process the template
+    outputFile = new java.io.File(outputDirectory, outputFilename);
+    if (outputFile.getParentFile() != null) outputFile.getParentFile().mkdirs();
+    processTemplate(engine, context, templateFile, outputFile);
   }
   reader.close();
 }
@@ -49,7 +57,7 @@ def translate(template, translations) {
 // translate all templates in the template directory
 for (file in new java.io.File(templateDirectory).listFiles()) {
   name = file.getName();
-  if (!name.endsWith('.template')) continue;
-  prefix = name.substring(0, name.length() - 9);
+  if (!name.endsWith('.vm')) continue;
+  prefix = name.substring(0, name.lastIndexOf('.'));
   translate(name, prefix + '.list');
 }
