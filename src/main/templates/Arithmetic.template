@@ -1,5 +1,0 @@
-package imagej.ops.generated;
-
-public interface INTERFACE {
-	public void add(OPTYPE a, OPTYPE b, RESULTTYPE c);
-}

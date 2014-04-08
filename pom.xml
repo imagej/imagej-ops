@@ -91,6 +91,13 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>groovy-maven-plugin</artifactId>
 				<version>1.5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.velocity</groupId>
+						<artifactId>velocity</artifactId>
+						<version>1.6.4</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
 						<id>generate-sources</id>
@@ -102,6 +109,20 @@
 							<properties>
 								<templateDirectory>${basedir}/src/main/templates</templateDirectory>
 								<outputDirectory>${project.build.directory}/generated-sources/from-template/imagej/ops/generated</outputDirectory>
+							</properties>
+							<source>${basedir}/src/main/groovy/generate.groovy</source>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<templateDirectory>${basedir}/src/test/templates</templateDirectory>
+								<outputDirectory>${project.build.directory}/template-tests/</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>
