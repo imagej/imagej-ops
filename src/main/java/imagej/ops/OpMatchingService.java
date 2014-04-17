@@ -30,13 +30,13 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
-import imagej.module.Module;
-import imagej.module.ModuleInfo;
 import imagej.service.ImageJService;
 
 import java.util.List;
 
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleInfo;
 import org.scijava.plugin.SingletonService;
 
 /**

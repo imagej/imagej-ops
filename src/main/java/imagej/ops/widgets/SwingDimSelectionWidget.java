@@ -30,13 +30,8 @@
 
 package imagej.ops.widgets;
 
-import imagej.command.CommandModuleItem;
 import imagej.data.Dataset;
-import imagej.module.Module;
-import imagej.module.ModuleItem;
 import imagej.plugins.uis.swing.widget.SwingInputWidget;
-import imagej.widget.InputWidget;
-import imagej.widget.WidgetModel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -54,10 +49,15 @@ import javax.swing.JToggleButton;
 import net.imglib2.meta.TypedAxis;
 import net.imglib2.meta.TypedSpace;
 
+import org.scijava.command.CommandModuleItem;
 import org.scijava.log.LogService;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.widget.InputWidget;
+import org.scijava.widget.WidgetModel;
 
 /**
  * Default Swing implementation of dimension selector widget.

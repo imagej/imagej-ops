@@ -30,7 +30,6 @@
 
 package imagej.ops.commands.threshold;
 
-import imagej.command.Command;
 import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.slicer.Slicewise;
@@ -41,6 +40,7 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

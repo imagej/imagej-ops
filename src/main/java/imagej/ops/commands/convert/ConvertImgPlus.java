@@ -30,13 +30,13 @@
 
 package imagej.ops.commands.convert;
 
-import imagej.command.Command;
 import imagej.ops.OpService;
 import imagej.ops.convert.ConvertPix;
 import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

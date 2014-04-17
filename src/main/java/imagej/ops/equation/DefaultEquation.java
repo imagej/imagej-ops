@@ -32,8 +32,6 @@ package imagej.ops.equation;
 
 import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.script.ScriptLanguage;
-import imagej.script.ScriptService;
 
 import javax.script.Bindings;
 import javax.script.ScriptContext;
@@ -48,6 +46,8 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.script.ScriptLanguage;
+import org.scijava.script.ScriptService;
 
 /**
  * Computes an image using an equation.

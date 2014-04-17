@@ -33,11 +33,11 @@ package imagej.ops;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import imagej.module.Module;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.Priority;
+import org.scijava.module.Module;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

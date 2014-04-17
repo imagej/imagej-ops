@@ -30,7 +30,8 @@
 
 package imagej.ops.benchmark;
 
-import imagej.module.Module;
+import org.scijava.module.Module;
+
 import imagej.ops.AbstractOpTest;
 
 /**

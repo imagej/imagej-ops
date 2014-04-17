@@ -31,8 +31,8 @@
 package imagej.ops;
 
 import imagej.ImageJPlugin;
-import imagej.module.Module;
 
+import org.scijava.module.Module;
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;
 import org.scijava.plugin.RichPlugin;

@@ -30,21 +30,20 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
-import imagej.command.CommandModuleItem;
-import imagej.command.CommandService;
-import imagej.module.Module;
-import imagej.module.ModuleInfo;
-import imagej.module.ModuleItem;
-import imagej.module.ModuleService;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.scijava.Context;
 import org.scijava.InstantiableException;
+import org.scijava.command.CommandInfo;
+import org.scijava.command.CommandModuleItem;
+import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleInfo;
+import org.scijava.module.ModuleItem;
+import org.scijava.module.ModuleService;
 import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

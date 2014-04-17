@@ -30,7 +30,8 @@
 
 package imagej.ops.widgets;
 
-import imagej.widget.InputWidget;
+import org.scijava.widget.InputWidget;
+
 import net.imglib2.meta.TypedAxis;
 
 /**

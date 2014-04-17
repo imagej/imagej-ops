@@ -29,9 +29,6 @@
  */
 package imagej.ops.onthefly;
 
-import imagej.command.CommandInfo;
-import imagej.module.Module;
-import imagej.module.ModuleService;
 import imagej.ops.AbstractOptimizer;
 import imagej.ops.Op;
 import imagej.ops.OpService;
@@ -42,6 +39,9 @@ import java.util.Map;
 
 import org.scijava.Context;
 import org.scijava.Priority;
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

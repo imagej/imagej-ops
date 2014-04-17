@@ -30,12 +30,12 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
-import imagej.module.Module;
 import imagej.service.ImageJService;
 
 import java.util.Collection;
 
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
 import org.scijava.plugin.PTService;
 
 /**

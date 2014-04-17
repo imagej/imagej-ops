@@ -30,20 +30,19 @@
 
 package imagej.ops;
 
-import imagej.command.CommandInfo;
-import imagej.command.CommandService;
-import imagej.module.Module;
-import imagej.module.ModuleInfo;
-import imagej.module.ModuleItem;
-import imagej.module.ModuleService;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.scijava.command.CommandInfo;
+import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleInfo;
+import org.scijava.module.ModuleItem;
+import org.scijava.module.ModuleService;
 import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
