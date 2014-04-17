@@ -34,6 +34,8 @@ import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -76,9 +78,11 @@ public class GaussRAI2RAI<T extends RealType<T>> extends
 		Arrays.fill(sigmas, sigma);
 
 		try {
+			final int numThreads = Runtime.getRuntime().availableProcessors();
+			final ExecutorService executorService =
+				Executors.newFixedThreadPool(numThreads);
 			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), eIn,
-				output, Runtime.getRuntime().availableProcessors());
-
+				output, executorService);
 		}
 		catch (final IncompatibleTypeException e) {
 			// TODO: better error handling
