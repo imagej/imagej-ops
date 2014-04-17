@@ -45,10 +45,9 @@ import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.python.antlr.ast.Slice;
 
 /**
- * Tests the {@link Slice}.
+ * Tests {@link Crop}.
  * 
  * @author Christian Dietz
  */
@@ -64,7 +63,7 @@ public class CropTest extends AbstractOpTest {
 	}
 
 	/**
-	 * Verifies that the types of the objects returned by the {@link Slice} are
+	 * Verifies that the types of the objects returned by the {@link Crop} are
 	 * correct.
 	 */
 	@Test
