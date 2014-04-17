@@ -77,12 +77,6 @@
 			<version>${junit-benchmarks.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij-app</artifactId>
-			<version>${imagej.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
