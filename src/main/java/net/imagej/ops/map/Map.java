@@ -28,27 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
+ * maps values from <A> to <B>.
+ * 
+ * @author Christian Dietz
+ */
+public interface Map<A, B, F extends Function<A, B>> extends Op {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	public static final String NAME = "map";
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/**
+	 * @return the {@link Function} used for mapping
+	 */
+	F getFunction();
 
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+	/**
+	 * @param function the {@link Function} used for mapping
+	 */
+	void setFunction(F function);
 }

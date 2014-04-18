@@ -28,27 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract implementation of a {@link Map}.
+ * 
+ * @author Christian Dietz
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
+ * @param <C> provides {@code <A>}s
+ * @param <D> provides {@code <B>}s
+ */
+public abstract class AbstractFunctionMap<A, B, C, D> extends
+	AbstractFunction<C, D> implements Map<A, B, Function<A, B>>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
+	/** {@link Function} to be used for mapping. */
 	@Parameter
-	private $primitive b;
+	protected Function<A, B> func;
 
 	@Override
-	public void run() {
-		a += b;
+	public Function<A, B> getFunction() {
+		return func;
 	}
 
+	@Override
+	public void setFunction(final Function<A, B> func) {
+		this.func = func;
+	}
 }

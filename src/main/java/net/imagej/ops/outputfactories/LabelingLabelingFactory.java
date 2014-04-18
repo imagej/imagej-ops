@@ -28,27 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.outputfactories;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OutputFactory;
+import net.imglib2.labeling.Labeling;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * {@link OutputFactory} used to create an empty output {@link Labeling} of same
+ * type and dimensionality as the input {@link Labeling}
+ * 
+ * @author Christian Dietz
+ * @param <L>
+ */
+public class LabelingLabelingFactory<L extends Comparable<L>> implements
+	OutputFactory<Labeling<L>, Labeling<L>>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public Labeling<L> create(final Labeling<L> input) {
+		return input.<L> factory().create(input);
 	}
 
 }

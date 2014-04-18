@@ -28,27 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.benchmark;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractOpTest;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.scijava.module.Module;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Christian Dietz
+ */
+public class AbstractOpBenchmark extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	public long bestOf(final Runnable runnable, final int n) {
+		long best = Long.MAX_VALUE;
 
-	@Parameter
-	private $primitive b;
+		for (int i = 0; i < n; i++) {
+			long time = System.nanoTime();
+			runnable.run();
+			time = System.nanoTime() - time;
 
-	@Override
-	public void run() {
-		a += b;
+			if (time < best) {
+				best = time;
+			}
+		}
+
+		return best;
 	}
 
+	public double asMilliSeconds(final long nanoTime) {
+		return nanoTime / 1000.0d / 1000.d;
+	}
+
+	public void benchmarkAndPrint(final String name, final Module module,
+		final int numRuns)
+	{
+		System.out.println("[" + name + "]: " +
+			asMilliSeconds(bestOf(module, numRuns)) + "ms !");
+	}
 }

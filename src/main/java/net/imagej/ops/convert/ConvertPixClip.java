@@ -28,27 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convert;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Convert.NAME)
+public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPix<I, O>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private double outMax;
 
-	@Parameter
-	private $primitive b;
+	private double outMin;
 
 	@Override
-	public void run() {
-		a += b;
+	public O compute(final I input, final O output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
+		}
+		else if (v < outMin) {
+			output.setReal(outMin);
+		}
+		else {
+			output.setReal(v);
+		}
+		return output;
+	}
+
+	@Override
+	public void checkInput(final I inType, final O outType) {
+		outMax = outType.getMaxValue();
+		outMin = outType.getMinValue();
+
+	}
+
+	@Override
+	public void checkInput(IterableInterval<I> in) {
+		// nothing to do here
+	}
+
+	@Override
+	public boolean conforms() {
+		return true;
 	}
 
 }

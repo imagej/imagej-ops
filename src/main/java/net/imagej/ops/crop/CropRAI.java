@@ -28,27 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.crop;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY)
+public class CropRAI<T> extends AbstractCropRAI<T, RandomAccessibleInterval<T>>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private RandomAccessibleInterval<T> out;
 
 	@Parameter
-	private $primitive b;
+	private RandomAccessibleInterval<T> in;
 
 	@Override
 	public void run() {
-		a += b;
+		out = crop(in);
 	}
 
 }

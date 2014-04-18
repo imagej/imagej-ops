@@ -28,27 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.outputfactories;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OutputFactory;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * {@link OutputFactory} used to create an empty output {@link Img} of type <V>
+ * and the dimensionality of the input {@link Img}
+ * 
+ * @author Christian Dietz
+ * @param <L>
+ */
+public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
+	OutputFactory<Img<T>, Img<V>>
+{
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	private V resType;
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+	/**
+	 * @param resType type of resulting {@link Img}
+	 */
+	public ImgImgFactory(final V resType) {
+		this.resType = resType;
 	}
 
+	@Override
+	public Img<V> create(final Img<T> input) {
+		try {
+			return input.factory().imgFactory(resType).create(input, resType);
+		}
+		catch (final IncompatibleTypeException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

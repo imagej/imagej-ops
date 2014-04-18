@@ -28,27 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.NativeType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Creates an image.
+ */
+@Plugin(type = Op.class, name = Create.NAME)
+public class CreateArrayImg<T extends NativeType<T>> implements Create {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(type = ItemIO.OUTPUT)
+	private ArrayImg<T, ?> image;
 
 	@Parameter
-	private $primitive b;
+	private long[] dim;
+
+	@Parameter(required = false)
+	private T type;
 
 	@Override
 	public void run() {
-		a += b;
+		if (type == null) {
+			// when no type is given, force a DoubleType image
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			final ArrayImg<T, ?> coerced = (ArrayImg) ArrayImgs.doubles(dim);
+			image = coerced;
+		}
+		else image = new ArrayImgFactory<T>().create(dim, type);
 	}
 
 }

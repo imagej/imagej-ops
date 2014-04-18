@@ -28,27 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
+import net.imglib2.converter.Converter;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Converter using an UnaryOperation to convert pixels
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @param <A>
+ * @param <B>
+ */
+//TODO where to move this class?
+public class ConvertWithFunction<A, B> implements Converter<A, B> {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	private final Function<A, B> function;
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+	public ConvertWithFunction(final Function<A, B> op) {
+		this.function = op;
 	}
 
+	@Override
+	public void convert(final A input, final B output) {
+		function.compute(input, output);
+	}
 }

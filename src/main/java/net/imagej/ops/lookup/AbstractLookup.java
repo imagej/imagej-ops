@@ -28,27 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.lookup;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Abstract superclass of {@link Lookup} implementations.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractLookup implements Lookup {
 
 	@Parameter
-	private $primitive b;
+	protected String name;
 
-	@Override
-	public void run() {
-		a += b;
+	@Parameter
+	protected Object[] args;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	protected Op op;
+
+	public Op getOp() {
+		return op;
 	}
 
 }

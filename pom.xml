@@ -93,7 +93,7 @@
 						<configuration>
 							<properties>
 								<templateDirectory>${basedir}/src/main/templates</templateDirectory>
-								<outputDirectory>${project.build.directory}/generated-sources/from-template/imagej/ops/generated</outputDirectory>
+								<outputDirectory>${project.build.directory}/generated-sources/from-template/net/imagej/ops/generated</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>

@@ -27,28 +27,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.threading;
 
-package net.imagej.ops.generated;
-
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunk;
+import net.imagej.ops.chunker.InterleavedChunker;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
+public class RunInterleavedChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
 
 	@Parameter
-	private $primitive b;
-
+	private OpService opService;
+	
 	@Override
-	public void run() {
-		a += b;
-	}
+	public A[] compute(final A[] input,
+			final A[] output) {
+		
+		opService.run(InterleavedChunker.class, new Chunk() {
 
+			@Override
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				int i = startIndex;
+				
+				int ctr = 0;
+				while (ctr < numSteps) {
+					output[i] = input[i];
+				    i += stepSize;
+					ctr++;
+				}
+			}
+		}, input.length);
+	
+		return output;
+		
+	}
 }

@@ -28,27 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.scale;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.RandomAccess;
+import net.imglib2.img.Img;
+import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Martin Horn
+ */
+public class ScaleImgTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Test
+	public void test() {
+		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		double[] scaleFactors = new double[] { 2, 2 };
+		Img<ByteType> out =
+			(Img<ByteType>) ops.run("scale", in, scaleFactors,
+				new NLinearInterpolatorFactory<ByteType>());
 
-	@Parameter
-	private $primitive b;
+		assertEquals(out.dimension(0), 20);
+		assertEquals(out.dimension(1), 20);
 
-	@Override
-	public void run() {
-		a += b;
+		RandomAccess<ByteType> inRA = in.randomAccess();
+		RandomAccess<ByteType> outRA = out.randomAccess();
+		inRA.setPosition(new long[] { 5, 5 });
+		outRA.setPosition(new long[] { 10, 10 });
+		assertEquals(inRA.get().get(), outRA.get().get());
+
 	}
-
 }

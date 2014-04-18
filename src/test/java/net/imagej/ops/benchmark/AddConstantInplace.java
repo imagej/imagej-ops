@@ -27,28 +27,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.benchmark;
 
-package net.imagej.ops.generated;
-
+import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class)
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceFunction<T> {
 
 	@Parameter
-	private $primitive b;
+	private T value;
 
 	@Override
-	public void run() {
-		a += b;
+	public T compute(T arg) {
+		arg.add(value);
+		return arg;
 	}
-
 }

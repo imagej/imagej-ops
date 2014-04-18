@@ -28,27 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Map values of {@link RandomAccessibleInterval} to a View
+ * 
+ * @author Christian Dietz
+ * 
+ * @param <A>
+ * @param <B>
+ */
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapRAI2View<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
+{
 
 	@Override
 	public void run() {
-		a += b;
+		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
+			getConverter(), getType()));
 	}
-
 }

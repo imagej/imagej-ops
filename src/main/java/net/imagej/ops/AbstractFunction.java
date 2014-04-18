@@ -28,27 +28,61 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+package net.imagej.ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract superclass for {@link Function} ops.
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @author Curtis Rueden
+ */
+public abstract class AbstractFunction<I, O> implements Function<I, O> {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
 
 	@Parameter
-	private $primitive b;
+	private I in;
+
+	// -- Function methods --
+
+	@Override
+	public I getInput() {
+		return in;
+	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
 
 	@Override
 	public void run() {
-		a += b;
+		setOutput(compute(getInput(), getOutput()));
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public Function<I, O> getIndependentInstance() {
+		// NB: We assume the function instance is thread-safe by default.
+		// Individual function implementations can override this assumption if
+		// they have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

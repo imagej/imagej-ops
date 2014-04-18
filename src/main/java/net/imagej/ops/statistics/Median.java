@@ -28,27 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+/**
+ * Base interface for "median" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Median.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Median<T, V> extends Quantile<T, V> {
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	String NAME = "median";
 
 }

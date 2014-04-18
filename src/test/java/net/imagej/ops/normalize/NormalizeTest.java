@@ -28,27 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.normalize;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import java.util.List;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+import org.junit.Test;
 
-	@Parameter
-	private $primitive b;
+/**
+ * @author Martin Horn
+ */
+public class NormalizeTest extends AbstractOpTest {
 
-	@Override
-	public void run() {
-		a += b;
+	@Test
+	public void testNormalize() {
+
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
+
+		// TODO: weird order of parameters
+		ops.run("normalize", out, in);
+
+		List<ByteType> minmax1 = (List<ByteType>) ops.run("minmax", in);
+		List<ByteType> minmax2 = (List<ByteType>) ops.run("minmax", out);
+
+		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
+		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
+
 	}
-
 }

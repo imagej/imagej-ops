@@ -28,27 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.misc;
+
+import java.util.Iterator;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Calculates the minimum and maximum value of an image.
+ */
+@Plugin(type = Op.class, name = "minmax")
+public class MinMaxRealType<T extends RealType<T>> implements Op {
 
 	@Parameter
-	private $primitive b;
+	private Iterable<T> img;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
 	public void run() {
-		a += b;
+		min = img.iterator().next().createVariable();
+		max = min.copy();
+
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
+
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0) min.set(i);
+			if (max.compareTo(i) < 0) max.set(i);
+		}
 	}
 
 }

@@ -28,27 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.crop;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+public abstract class AbstractCropRAI<T, I extends RandomAccessibleInterval<T>>
+	implements Crop
+{
 
 	@Parameter
-	private $primitive b;
+	protected Interval interval;
 
-	@Override
-	public void run() {
-		a += b;
+	protected RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in) {
+		boolean oneSizedDims = false;
+
+		for (int d = 0; d < in.numDimensions(); d++) {
+			if (in.dimension(d) == 1) {
+				oneSizedDims = true;
+				break;
+			}
+		}
+
+		if (Intervals.equals(in, interval) && !oneSizedDims) return in;
+
+		IntervalView<T> res;
+		if (Intervals.contains(in, interval)) res =
+			Views.offsetInterval(in, interval);
+		else {
+			throw new RuntimeException("Intervals don't match!");
+		}
+
+		for (int d = interval.numDimensions() - 1; d >= 0; --d)
+			if (interval.dimension(d) == 1 && res.numDimensions() > 1) res =
+				Views.hyperSlice(res, d, 0);
+
+		return res;
 	}
 
 }

@@ -28,27 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.InplaceFunction;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+	implements JoinInplaceAndInplace<A>
+{
 
 	@Parameter
-	private $primitive b;
+	protected InplaceFunction<A> first;
+
+	@Parameter
+	protected InplaceFunction<A> second;
 
 	@Override
-	public void run() {
-		a += b;
+	public InplaceFunction<A> getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final InplaceFunction<A> first) {
+		this.first = first;
+	}
+
+	@Override
+	public InplaceFunction<A> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final InplaceFunction<A> second) {
+		this.second = second;
 	}
 
 }

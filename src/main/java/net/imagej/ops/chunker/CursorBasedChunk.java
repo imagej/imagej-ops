@@ -27,28 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.chunker;
 
-package net.imagej.ops.generated;
+import net.imglib2.Cursor;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+public abstract class CursorBasedChunk implements Chunk {
+	
+	public static void setToStart(final Cursor<?> c, int startIndex) {
+		c.reset();
+		c.jumpFwd(startIndex + 1);
 	}
 
 }

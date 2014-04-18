@@ -28,27 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.threshold;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.statistics.Mean;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class)
+public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 
 	@Parameter
-	private $primitive b;
+	private double c;
+
+	@Parameter
+	private OpService ops;
+
+	private Mean<Iterable<T>, DoubleType> mean;
 
 	@Override
-	public void run() {
-		a += b;
+	public BitType compute(Pair<T> input, BitType output) {
+		if (mean == null) {
+			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+		}
+		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
+		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		return output;
 	}
-
 }

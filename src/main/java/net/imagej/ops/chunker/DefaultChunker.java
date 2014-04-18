@@ -28,27 +28,79 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.chunker;
+
+import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Simple default implementation of a {@link Chunker}. The list of
+ * elements is chunked into equally sized (besides the last one), disjoint
+ * chunks, which are processed in parallel. The stepSize is set to one, i.e.
+ * each chunk consists of consecutive elements.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Chunker.NAME)
+public class DefaultChunker extends AbstractChunker {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private final int STEP_SIZE = 1;
 
 	@Parameter
-	private $primitive b;
+	public LogService logService;
 
 	@Override
 	public void run() {
-		a += b;
+
+		// TODO: is there a better way to determine the optimal chunk size?
+		final int numSteps =
+			(int) (numberOfElements / Runtime.getRuntime().availableProcessors());
+
+		final int numChunks = (int) (numberOfElements / numSteps);
+
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
+
+		for (int i = 0; i < numChunks - 1; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					chunkable.execute(j * numSteps, STEP_SIZE, numSteps);
+				}
+			}));
+		}
+
+		// last chunk additionally add the rest of elements
+		futures.add(threadService.run(new Runnable() {
+
+			@Override
+			public void run() {
+				chunkable.execute((numChunks - 1) * numSteps, STEP_SIZE,
+					(int) (numSteps + (numberOfElements % numSteps)));
+			}
+		}));
+
+		for (final Future<?> future : futures) {
+			try {
+				if (isCanceled()) {
+					break;
+				}
+				future.get();
+			}
+			catch (final Exception e) {
+				logService.error(e);
+				cancel(e.getMessage());
+				break;
+			}
+		}
 	}
 
 }

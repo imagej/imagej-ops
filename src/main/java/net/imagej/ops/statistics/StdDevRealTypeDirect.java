@@ -28,27 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
+import java.util.Iterator;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+@Plugin(type = Op.class, name = StdDeviation.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class StdDevRealTypeDirect<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T>
+{
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public T compute(final Iterable<T> input, final T output) {
 
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		final Iterator<T> it = input.iterator();
+		while (it.hasNext()) {
+			final double px = it.next().getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
+		return output;
+	}
 }

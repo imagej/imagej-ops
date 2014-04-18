@@ -28,27 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
+public class AddConstantToImageFunctional<T extends NumericType<T>> extends
+	AbstractFunction<IterableInterval<T>, RandomAccessibleInterval<T>> implements
+	Add
+{
 
 	@Parameter
-	private $primitive b;
+	private T value;
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
+		final RandomAccessibleInterval<T> output)
+	{
+		final Cursor<T> c = input.localizingCursor();
+		final RandomAccess<T> ra = output.randomAccess();
+		while (c.hasNext()) {
+			final T in = c.next();
+			ra.setPosition(c);
+			final T out = ra.get();
+			out.set(in);
+			out.add(value);
+		}
 
+		return output;
+	}
 }

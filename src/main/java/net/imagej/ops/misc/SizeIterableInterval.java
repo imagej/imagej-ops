@@ -28,27 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.misc;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.integer.LongType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+@Plugin(type = Op.class, name = Size.NAME, priority = Priority.LOW_PRIORITY)
+public class SizeIterableInterval extends
+	AbstractFunction<IterableInterval<?>, LongType> implements
+	Size<IterableInterval<?>>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public LongType
+		compute(final IterableInterval<?> input, final LongType output)
+	{
+		output.set(input.size());
+		return output;
 	}
-
 }

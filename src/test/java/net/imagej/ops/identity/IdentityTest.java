@@ -28,27 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.identity;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.identity.Identity;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Tests {@link Identity}.
+ * 
+ * @author Curtis Rueden
+ */
+public class IdentityTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Test
+	public void testIdentity() {
+		final Byte b = 35;
+		final Object ib = ops.run("identity", b);
+		assertSame(b, ib);
 
-	@Parameter
-	private $primitive b;
+		final int i = 23;
+		final Object ii = ops.run("identity", i);
+		assertSame(i, ii);
 
-	@Override
-	public void run() {
-		a += b;
+		final String s = "hello";
+		final Object is = ops.run("identity", s);
+		assertSame(s, is);
 	}
 
 }

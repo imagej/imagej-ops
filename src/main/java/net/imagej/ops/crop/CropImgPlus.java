@@ -28,27 +28,62 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.crop;
 
+import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
+import net.imglib2.img.ImgView;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
+public class CropImgPlus<T extends Type<T>> extends
+	AbstractCropRAI<T, ImgPlus<T>>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private ImgPlus<T> out;
 
 	@Parameter
-	private $primitive b;
+	private ImgPlus<T> in;
 
 	@Override
 	public void run() {
-		a += b;
-	}
+		ImgPlus<T> unpackedIn = in;
+		while (unpackedIn.getImg() instanceof ImgPlus) {
+			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
+		}
 
+		// if out is not provided, just return a view on the image, else write into
+		// the result
+		ImgView<T> view = new ImgView<T>(crop(unpackedIn.getImg()), in.factory());
+		if (out == null) {
+			out = new ImgPlus<T>(view);
+		}
+		else {
+			// TODO: might be optimized here (using two cursors etc.)
+			Cursor<T> outC = out.cursor();
+			RandomAccess<T> viewRA = view.randomAccess();
+			while (outC.hasNext()) {
+				outC.fwd();
+				viewRA.setPosition(outC);
+				outC.get().set(viewRA.get());
+			}
+		}
+
+		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
+	}
 }

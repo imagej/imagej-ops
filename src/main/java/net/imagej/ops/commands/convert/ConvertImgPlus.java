@@ -28,27 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.commands.convert;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.convert.ConvertPix;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Command.class, menuPath = "Image > Convert")
+public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
+	implements Command
+{
 
 	@Parameter
-	private $primitive b;
+	private ImgPlus<I> in;
+
+	@Parameter
+	private ConvertPix<I, O> conversionMethod;
+
+	@Parameter(type = ItemIO.BOTH)
+	private ImgPlus<O> out;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public void run() {
-		a += b;
+		ops.run("convert", out, in, conversionMethod);
 	}
 
 }

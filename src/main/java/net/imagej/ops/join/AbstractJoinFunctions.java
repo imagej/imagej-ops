@@ -28,27 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import java.util.List;
 
-import org.scijava.ItemIO;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.OutputFactory;
+
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract superclass of {@link JoinFunctions}s.
+ * 
+ * @author Christian Dietz
+ * @author Curtis Rueden
+ */
+public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
+	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/** List of functions to be joined. */
+	@Parameter
+	private List<? extends F> functions;
 
 	@Parameter
-	private $primitive b;
+	private OutputFactory<A, A> bufferFactory;
+
+	private A buffer;
 
 	@Override
-	public void run() {
-		a += b;
+	public OutputFactory<A, A> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	@Override
+	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.create(input);
+		}
+		return buffer;
 	}
 
 }

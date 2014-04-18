@@ -28,27 +28,66 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.OutputFactory;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends AbstractFunction<A, C> implements
+	JoinFunctionAndFunction<A, B, C, F1, F2>
+{
 
 	@Parameter
-	private $primitive b;
+	private F1 first;
+
+	@Parameter
+	private F2 second;
+
+	@Parameter(required = false)
+	private OutputFactory<A, B> bufferFactory;
+
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.create(input);
+		return buffer;
+	}
+
+	public OutputFactory<A, B> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
 
 	@Override
-	public void run() {
-		a += b;
+	public F1 getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final F1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public F2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final F2 second) {
+		this.second = second;
 	}
 
 }

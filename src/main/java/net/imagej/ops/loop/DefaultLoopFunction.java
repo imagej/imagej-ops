@@ -28,27 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
+import java.util.ArrayList;
+
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.join.DefaultJoinFunctions;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Applies a {@link Function} multiple times to an image.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Loop.NAME)
+public class DefaultLoopFunction<A> extends
+	AbstractLoopFunction<Function<A, A>, A>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public A compute(final A input, final A output) {
+
+		final int n = getLoopCount();
+
+		final ArrayList<Function<A, A>> functions =
+			new ArrayList<Function<A, A>>(n);
+		for (int i = 0; i < n; i++)
+			functions.add(getFunction());
+
+		final DefaultJoinFunctions<A> functionJoiner =
+			new DefaultJoinFunctions<A>();
+		functionJoiner.setFunctions(functions);
+		functionJoiner.setBufferFactory(getBufferFactory());
+
+		return functionJoiner.compute(input, output);
 	}
 
+	@Override
+	public DefaultLoopFunction<A> getIndependentInstance() {
+		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
+
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
+
+		return looper;
+	}
 }

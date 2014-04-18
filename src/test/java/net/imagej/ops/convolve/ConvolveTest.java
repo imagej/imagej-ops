@@ -28,27 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convolve;
 
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.convolve.ConvolveFourier;
+import net.imagej.ops.convolve.ConvolveNaive;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Tests involving convolvers.
+ */
+public class ConvolveTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+		/** Tests that the correct convolver is selected. */
+    @Test
+    public void testConvolveMethodSelection() {
 
-	@Parameter
-	private $primitive b;
+        final Img<ByteType> in =
+                new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
+                        new ByteType());
+        final Img<ByteType> out = in.copy();
 
-	@Override
-	public void run() {
-		a += b;
-	}
+        // testing for a small kernel
+        Img<ByteType> kernel =
+                new ArrayImgFactory<ByteType>().create(new int[]{3, 3},
+                        new ByteType());
+        Op op = ops.op("convolve", out, in, kernel);
+        assertSame(ConvolveNaive.class, op.getClass());
 
+        // testing for a 'bigger' kernel
+        kernel =
+                new ArrayImgFactory<ByteType>().create(new int[]{10, 10},
+                        new ByteType());
+        op = ops.op("convolve", in, out, kernel);
+        assertSame(ConvolveFourier.class, op.getClass());
+
+    }
 }

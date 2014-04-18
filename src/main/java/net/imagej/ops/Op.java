@@ -28,27 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginService;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Ops are what all the cool kids are doing these days. They're the bee's knees!
+ * <p>
+ * Ops discoverable at runtime must implement this interface and be annotated
+ * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class.
+ * </p>
+ * 
+ * @author Curtis Rueden
+ * @see Plugin
+ * @see PluginService
+ */
+public interface Op extends Command {
+	// NB: Marker interface.
 }

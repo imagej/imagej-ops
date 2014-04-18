@@ -28,27 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
+
+import java.util.Iterator;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
+ * Conforms if the {@link IterableInterval}s have the same IterationOrder.
+ * 
+ * @author Martin Horn
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY - 1)
+public class MapI2I<A, B> extends
+	AbstractFunctionMap<A, B, Iterable<A>, Iterable<B>>
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+{
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
+	{
+		final Iterator<A> inCursor = input.iterator();
+		final Iterator<B> outCursor = output.iterator();
 
+		while (inCursor.hasNext()) {
+			func.compute(inCursor.next(), outCursor.next());
+		}
+
+		return output;
+	}
 }

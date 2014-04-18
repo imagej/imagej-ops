@@ -28,27 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Base interface for {@link Op}s that run across multiple threads.
+ * <p>
+ * A parallel op is one that executes across multiple threads. Typically, it
+ * parallelizes a {@link Threadable} op across those thread by relying on the
+ * {@link Threadable#getIndependentInstance()} method, but there is no
+ * requirement that parallel ops necessarily work in this way.
+ * </p>
+ * 
+ * @author Curtis Rueden
+ * @see Threadable
+ * @see net.imagej.ops.chunker
+ */
+public interface Parallel {
+	// NB: Marker interface.
 }

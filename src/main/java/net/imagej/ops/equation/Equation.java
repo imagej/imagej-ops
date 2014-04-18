@@ -28,27 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.equation;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
+import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "equation" operations. These operations compute image
+ * values from interval coordinates using an equation.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Equation.NAME)
+ * </pre>
+ * 
+ * @author Curtis Rueden
+ */
+public interface Equation<T> extends Function<String, IterableInterval<T>> {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	String NAME = "equation";
 
 }

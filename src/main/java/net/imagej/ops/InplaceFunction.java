@@ -28,27 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+/**
+ * Interface for in-place ops.
+ * <p>
+ * An in-place function is a special function whose sole argument is both its
+ * input and its output.
+ * </p>
+ * 
+ * @author Curtis Rueden
+ */
+public interface InplaceFunction<A> extends Function<A, A> {
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+	A compute(A arg);
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	InplaceFunction<A> getIndependentInstance();
 
 }

@@ -28,27 +28,32 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.HIGH_PRIORITY)
+public class AddConstantToArrayByteImage implements Add {
 
 	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private ArrayImg<ByteType, ByteArray> image;
 
 	@Parameter
-	private $primitive b;
+	private byte value;
 
 	@Override
 	public void run() {
-		a += b;
+		final byte[] data = image.update(null).getCurrentStorageArray();
+		for (int i = 0; i < data.length; i++) {
+			data[i] += value;
+		}
 	}
-
 }

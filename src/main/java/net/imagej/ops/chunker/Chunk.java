@@ -28,27 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.chunker;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Parallel;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+/**
+ * A {@link Chunk} of code which can be executed by a {@link Chunker}.
+ * <p>
+ * A {@link Chunk} processes a subset of a bigger problem and can be executed in
+ * parallel with other {@link Chunk}s. The elements of the subproblem are
+ * identified by enumerating the original problem.
+ * </p>
+ * 
+ * @author Christian Dietz
+ * @see Chunker
+ * @see Parallel
+ */
+public interface Chunk {
+	
+	/**
+	 * Solve the subproblem for the element at startIndex, increase the index by
+	 * the given stepSize and repeat numSteps.
+	 * 
+	 * @param startIndex zero based index that identifies the first element of
+	 *          this subproblem (w.r.t. the global problem enumeration)
+	 * @param stepSize the step-size between two consecutive elements
+	 * @param numSteps how many steps shall be taken
+	 */
+	void execute(int startIndex, int stepSize, int numSteps);
 
 }

@@ -28,27 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.threshold;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = "manualthreshold")
+public class Manual<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 
 	@Parameter
-	private $primitive b;
+	private double threshold;
 
 	@Override
-	public void run() {
-		a += b;
+	protected void getThreshold(Histogram1d<T> histogram, T threshold) {
+		threshold.setReal(this.threshold);
 	}
 
 }

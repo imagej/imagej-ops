@@ -28,27 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.identity;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Default implementation of the {@link Identity} op.
+ * 
+ * @author Curtis Rueden
+ */
+@Plugin(type = Op.class, name = "identity")
+public class DefaultIdentity<A> extends AbstractIdentity<A> {
 
 	@Override
-	public void run() {
-		a += b;
+	public A compute(A input) {
+		return input;
 	}
 
 }

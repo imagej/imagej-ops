@@ -28,27 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+package net.imagej.ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract superclass for {@link InplaceFunction} ops.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 
 	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private A arg;
 
-	@Parameter
-	private $primitive b;
+	// -- Function methods --
+
+	@Override
+	public A getInput() {
+		return arg;
+	}
+
+	@Override
+	public A getOutput() {
+		return arg;
+	}
+
+	@Override
+	public void setInput(final A input) {
+		arg = input;
+	}
+
+	@Override
+	public void setOutput(final A output) {
+		arg = output;
+	}
+
+	@Override
+	public A compute(final A input, final A output) {
+		if (input != output) {
+			throw new IllegalArgumentException("Input and output must match");
+		}
+		return compute(input);
+	}
 
 	@Override
 	public void run() {
-		a += b;
+		compute(getInput());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public InplaceFunction<A> getIndependentInstance() {
+		// NB: We assume the function instance is thread-safe by default.
+		// Individual function implementations can override this assumption if
+		// they have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

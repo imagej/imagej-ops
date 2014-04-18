@@ -28,27 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
+import java.util.Iterator;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+@Plugin(type = Op.class, name = Min.NAME, priority = Priority.LOW_PRIORITY)
+public class MinRealType<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, T> implements Min<T, T>
+{
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public T compute(final Iterable<T> input, final T output) {
 
+		final Iterator<T> it = input.iterator();
+		T max = it.next();
+
+		while (it.hasNext()) {
+			final T next = it.next();
+			if (max.compareTo(next) > 0) {
+				max = next;
+			}
+		}
+		output.set(max);
+		return output;
+	}
 }

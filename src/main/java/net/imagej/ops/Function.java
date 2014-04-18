@@ -28,27 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+package net.imagej.ops;
 
 import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * A {@code Function} is an {@link Op} that has a typed input parameter, and a
+ * typed output parameter.
+ * <p>
+ * The function provides a {@link #compute} method to compute the function for
+ * different input and output parameters.
+ * </p>
+ * <p>
+ * Note that the typed output is actually considered both an input <em>and</em>
+ * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
+ * This fact is critical so that a preallocated data structure may be passed in
+ * and filled by the function. It is <em>required</em> that if an output value
+ * is given in this way, it will be populated with the function's result.
+ * </p>
+ * <p>
+ * Lastly, functions implement the {@link Threadable} interface, and hence can
+ * be reused across multiple threads of a {@link Parallel} op.
+ * </p>
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @author Curtis Rueden
+ */
+public interface Function<I, O> extends Op, Threadable {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	I getInput();
 
-	@Parameter
-	private $primitive b;
+	O getOutput();
+
+	void setInput(I input);
+
+	void setOutput(O output);
+
+	O compute(I input, O output);
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	Function<I, O> getIndependentInstance();
 
 }

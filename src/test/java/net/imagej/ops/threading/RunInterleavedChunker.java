@@ -27,28 +27,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.threading;
 
-package net.imagej.ops.generated;
-
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imagej.ops.chunker.InterleavedChunker;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
+public class RunInterleavedChunker<A extends RealType<A>> extends AbstractFunction<IterableInterval<A>, IterableInterval<A>> implements Parallel {
 
 	@Parameter
-	private $primitive b;
-
+	private OpService opService;
+	
 	@Override
-	public void run() {
-		a += b;
-	}
+	public IterableInterval<A> compute(final IterableInterval<A> input,
+			final IterableInterval<A> output) {
+		
+			opService.run(InterleavedChunker.class, new CursorBasedChunk() {
 
+			@Override
+			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				final Cursor<A> cursor = input.localizingCursor();
+				final Cursor<A> cursorOut = output.localizingCursor();
+			
+				setToStart(cursor, startIndex);
+				setToStart(cursorOut, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					cursorOut.get().set(cursor.get());
+					
+					cursorOut.jumpFwd(stepSize);
+					cursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
+	
+		return output;
+		
+	}
 }

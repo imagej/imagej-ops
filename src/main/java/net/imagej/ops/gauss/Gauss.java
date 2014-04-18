@@ -28,27 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.gauss;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "smooth/gauss" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Gauss.NAME, 
+ *   attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) })
+ * </pre>
+ * 
+ * @author Martin Horn
+ */
+public interface Gauss extends Op {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	public static final String NAME = "gauss";
+	public static final String ALIASES = "smooth";
 
 }

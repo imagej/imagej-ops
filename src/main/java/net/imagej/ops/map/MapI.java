@@ -28,27 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Default (slower) implementation of an {@link MapI}.
+ * 
+ * @author Curtis Rueden
+ * @author Christian Dietz
+ * @param <A>
+ */
+@Plugin(type = Op.class, name = Map.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class MapI<A> extends AbstractInplaceMap<A, Iterable<A>> {
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
 
+		return arg;
+	}
 }

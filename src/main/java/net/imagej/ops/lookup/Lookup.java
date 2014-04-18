@@ -28,27 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.lookup;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "lookup" operations.
+ * <p>
+ * These operations look up matching ops given an operation name and list of
+ * arguments.
+ * </p>
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Lookup.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Lookup.ALIASES) })
+ * </pre>
+ * 
+ * @author Curtis Rueden
+ */
+public interface Lookup extends Op {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	String NAME = "lookup";
+	String ALIASES = "op";
 
 }

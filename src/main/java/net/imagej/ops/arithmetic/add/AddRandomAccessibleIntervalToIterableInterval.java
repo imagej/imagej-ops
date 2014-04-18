@@ -28,27 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>> implements Contingent, Add {
 
 	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private IterableInterval<T> a;
 
 	@Parameter
-	private $primitive b;
+	private RandomAccessibleInterval<T> b;
 
 	@Override
 	public void run() {
-		a += b;
+		final long[] pos = new long[a.numDimensions()];
+		final Cursor<T> cursor = a.cursor();
+		final RandomAccess<T> access = b.randomAccess();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			cursor.localize(pos);
+			access.setPosition(pos);
+			cursor.get().add(access.get());
+		}
+	}
+
+	@Override
+	public boolean conforms() {
+		int n = a.numDimensions();
+		if (n != b.numDimensions()) return false;
+		long[] dimsA = new long[n], dimsB = new long[n];
+		a.dimensions(dimsA);
+		b.dimensions(dimsB);
+		for (int i = 0; i < n; i++) {
+			if (dimsA[i] != dimsB[i]) return false;
+		}
+		return true;
 	}
 
 }

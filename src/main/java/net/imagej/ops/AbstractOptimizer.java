@@ -28,27 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import org.scijava.plugin.AbstractRichPlugin;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Abstract superclass for {@link Optimizer}s.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractOptimizer extends AbstractRichPlugin implements
+	Optimizer
+{
+	// NB: No implementation needed.
 }

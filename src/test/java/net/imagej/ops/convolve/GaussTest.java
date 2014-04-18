@@ -28,27 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convolve;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Tests involving Gaussian convolution.
+ * 
+ * @author Martin Horn
+ */
+public class GaussTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/** Tests the Gaussian. */
+	@Test
+	public void test() {
 
-	@Parameter
-	private $primitive b;
+		final Img<ByteType> in =
+			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
+				new ByteType());
+		final Img<ByteType> out = in.copy();
+		final double sigma = 5;
 
-	@Override
-	public void run() {
-		a += b;
+		ops.run("gauss", out, in, sigma);
+
 	}
-
 }
