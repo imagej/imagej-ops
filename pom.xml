@@ -10,7 +10,7 @@
 
 	<groupId>net.imagej</groupId>
 	<artifactId>imagej-ops</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.2.0</version>
 
 	<name>ImageJ Operations</name>
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
@@ -278,7 +278,7 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 	<scm>
 		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
 		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
-		<tag>HEAD</tag>
+		<tag>imagej-ops-0.2.0</tag>
 		<url>https://github.com/imagej/imagej-ops</url>
 	</scm>
 
