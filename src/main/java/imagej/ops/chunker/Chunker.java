@@ -30,9 +30,9 @@
 
 package imagej.ops.chunker;
 
-import org.scijava.Cancelable;
-
 import imagej.ops.Op;
+
+import org.scijava.Cancelable;
 
 /**
  * Base interface for "chunker" operations. These operations execute code across

@@ -30,6 +30,10 @@
 package imagej.ops.threading;
 
 import static org.junit.Assume.assumeTrue;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
+
 import imagej.ops.benchmark.AbstractOpBenchmark;
 import imagej.ops.chunker.Chunker;
 import net.imglib2.img.Img;
@@ -38,9 +42,6 @@ import net.imglib2.type.numeric.integer.ByteType;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-
-import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
-import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 /**
  * Tests the {@link Chunker}.

@@ -30,9 +30,9 @@
 
 package imagej.ops.widgets;
 
-import org.scijava.widget.InputWidget;
-
 import net.imglib2.meta.TypedAxis;
+
+import org.scijava.widget.InputWidget;
 
 /**
  * Widget interface for dimension selectors.

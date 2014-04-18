@@ -30,10 +30,11 @@
 
 package imagej.ops.ascii;
 
-import java.util.List;
-
 import imagej.ops.Op;
 import imagej.ops.OpService;
+
+import java.util.List;
+
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;

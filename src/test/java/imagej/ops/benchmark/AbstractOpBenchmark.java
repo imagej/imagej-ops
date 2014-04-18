@@ -30,9 +30,9 @@
 
 package imagej.ops.benchmark;
 
-import org.scijava.module.Module;
-
 import imagej.ops.AbstractOpTest;
+
+import org.scijava.module.Module;
 
 /**
  * @author Christian Dietz
