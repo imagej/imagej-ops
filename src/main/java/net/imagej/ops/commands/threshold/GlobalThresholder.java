@@ -28,27 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.commands.threshold;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.slicer.Slicewise;
+import net.imagej.ops.threshold.GlobalThresholdMethod;
+import net.imglib2.Axis;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * TODO: should actually live in a different package!! OR: can this be
+ * auto-generated?? (e.g. based on other plugin annotations)#
+ * 
+ * @author Martin Horn
+ */
+@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
+public class GlobalThresholder<T extends RealType<T>> implements Command {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+    @Parameter
+    private GlobalThresholdMethod<T> method;
 
-	@Parameter
-	private $primitive b;
+    @Parameter
+    private OpService ops;
 
-	@Override
-	public void run() {
-		a += b;
-	}
+    // should not be Dataset, DisplayService, ...
+    @Parameter
+    private ImgPlus<T> in;
 
+    // needs to be created by the pre-processor!
+    @Parameter(type = ItemIO.BOTH)
+    private ImgPlus<BitType> out;
+
+    // we need another widget for this!!
+    @Parameter
+    private Axis[] axes;
+
+    @Override
+    public void run() {
+
+        Op threshold = ops.op("threshold", out, in, method);
+
+        // TODO actually map axes to int array
+        ops.run(Slicewise.class, out, in, threshold, new int[]{0, 1});
+
+    }
 }

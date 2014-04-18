@@ -28,27 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.identity;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractInplaceFunction;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Abstract superclass of {@link Identity} implementations.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractIdentity<T> extends AbstractInplaceFunction<T> {
+	// NB: No implementation needed.
 }

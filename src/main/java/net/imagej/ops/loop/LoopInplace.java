@@ -28,27 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.InplaceFunction;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Loops over an injected {@link InplaceFunction}. A {@link LoopInplace} applies
+ * a {@link InplaceFunction} n-times to an input. Note: input will be modified!
+ * 
+ * @author Christian Dietz
+ */
+public interface LoopInplace<I> extends InplaceFunction<I>, Loop<I> {
+	// NB: Marker interface
 }

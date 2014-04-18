@@ -28,27 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "loop" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Loop.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Loop<A> {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	public final static String NAME = "loop";
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/**
+	 * @return the {@link Function} used for looping
+	 */
+	Function<A, A> getFunction();
 
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	/**
+	 * @param func the {@link Function} used for looping
+	 */
+	void setFunction(Function<A, A> func);
+	
+	/**
+	 * @param n number how often {@link Function} is looped
+	 */
+	void setLoopCount(int n);
+	
+	/**
+	 * @return number how often the {@link Function} is looped
+	 */
+	int getLoopCount();
 
 }

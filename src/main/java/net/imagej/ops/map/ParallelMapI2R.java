@@ -28,27 +28,66 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Parallelized {@link Map}.
+ * 
+ * @author Christian Dietz
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 2)
+public class ParallelMapI2R<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
+{
 
 	@Parameter
-	private $primitive b;
+	private OpService opService;
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Function<A, B> safe = func.getIndependentInstance();
+				final Cursor<A> cursor = input.localizingCursor();
+
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<B> rndAccess = output.randomAccess();
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					rndAccess.setPosition(cursor);
+					safe.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
+
+		return output;
+	}
 }

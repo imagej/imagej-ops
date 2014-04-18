@@ -28,27 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+@Plugin(type = Op.class, name = Sum.NAME, priority = Priority.LOW_PRIORITY)
+public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
+	AbstractFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public V compute(final Iterable<T> input, final V output) {
+		for (final T t : input) {
+			output.setReal(output.getRealDouble() + t.getRealDouble());
+		}
+		return output;
 	}
-
 }

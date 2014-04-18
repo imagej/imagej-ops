@@ -28,27 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+/**
+ * A contingency that may hold, or not, depending on the circumstances.
+ * 
+ * @author Curtis Rueden
+ */
+public interface Contingent {
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	/**
+	 * True if the contingency holds; i.e., the current circumstances conform to
+	 * the contingency's requirements.
+	 */
+	boolean conforms();
 
 }

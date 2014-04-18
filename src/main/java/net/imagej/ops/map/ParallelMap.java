@@ -28,27 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Parallelized {@link MapI}
+ * 
+ * @author Christian Dietz
+ * @param <A> mapped on <A>
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 5)
+public class ParallelMap<A> extends
+	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
+{
 
 	@Parameter
-	private $primitive b;
+	private OpService opService;
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Function<A, A> safe = func.getIndependentInstance();
+				final Cursor<A> inCursor = arg.cursor();
+
+				setToStart(inCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					final A t = inCursor.get();
+					safe.compute(t, t);
+					inCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, arg.size());
+
+		return arg;
+	}
 }

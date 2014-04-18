@@ -28,27 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ImageJPlugin;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.module.Module;
 import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginService;
+import org.scijava.plugin.RichPlugin;
+import org.scijava.plugin.SingletonPlugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * An optimizer is a routine for improving the performance of an {@link Op}
+ * under certain circumstances. An optimized {@link Op} is guaranteed to produce
+ * the same outputs as the original {@link Op}.
+ * <p>
+ * Optimizers discoverable at runtime must implement this interface and be
+ * annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
+ * {@link Optimizer}.class. While it possible to create an optimizer merely by
+ * implementing this interface, it is encouraged to instead extend
+ * {@link AbstractOptimizer} for convenience.
+ * </p>
+ * 
+ * @author Curtis Rueden
+ * @see Plugin
+ * @see PluginService
+ */
+public interface Optimizer extends RichPlugin, SingletonPlugin, ImageJPlugin {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	/**
+	 * Attempt to optimize the given {@link Module} for performance.
+	 * 
+	 * @param module The module to optimize.
+	 * @return An optimized {@link Module} whose behavior is identical to the
+	 *         original {@link Module}'s, or null if it cannot be handled by this
+	 *         optimizer.
+	 */
+	Module optimize(Module module);
 
 }

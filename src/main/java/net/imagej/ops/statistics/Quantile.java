@@ -28,27 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "quantile" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Quantile.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Quantile<T, V> extends Function<T, V> {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	String NAME = "quantile";
 
 }

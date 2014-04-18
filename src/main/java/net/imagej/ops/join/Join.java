@@ -28,27 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+/**
+ * Base interface for "join" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Join.NAME)
+ * </pre>
+ * 
+ * @author Curtis Rueden
+ */
+public interface Join {
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	String NAME = "join";
 
 }

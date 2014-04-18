@@ -28,27 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.slicer;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "slicewise" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Slicewise.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Slicewise.ALIASES) })
+ * </pre>
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+public interface Slicewise<I, O> extends Function<I, O> {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+	// NB: Marker interface.
+	public static final String NAME = "slicewise";
 }

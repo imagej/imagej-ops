@@ -28,27 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link IterableInterval}
+ * 
+ * @author Martin Horn
+ * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapRAI2III<A, B> extends
+	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+{
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		final Cursor<B> cursor = output.localizingCursor();
+		final RandomAccess<A> rndAccess = input.randomAccess();
 
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			func.compute(rndAccess.get(), cursor.get());
+		}
+
+		return output;
+	}
 }

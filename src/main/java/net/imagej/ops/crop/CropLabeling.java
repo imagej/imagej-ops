@@ -28,27 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.crop;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.labeling.Labeling;
+import net.imglib2.labeling.LabelingType;
+import net.imglib2.labeling.LabelingView;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
+	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
+public class CropLabeling<L extends Comparable<L>> extends
+	AbstractCropRAI<LabelingType<L>, Labeling<L>>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private Labeling<L> out;
 
 	@Parameter
-	private $primitive b;
+	private Labeling<L> in;
 
 	@Override
 	public void run() {
-		a += b;
+		if (out == null) {
+			out = new LabelingView<L>(crop(in), in.<L> factory());
+		}
+		else {
+			// TODO: write labeling view into the out-labeling
+		}
 	}
-
 }

@@ -28,27 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Joins two {@link Function}s.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctionAndFunction<A, B, C> extends
+	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public C compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		getFirst().compute(input, buffer);
+		return getSecond().compute(buffer, output);
 	}
 
+	@Override
+	public DefaultJoinFunctionAndFunction<A, B, C> getIndependentInstance() {
+
+		final DefaultJoinFunctionAndFunction<A, B, C> joiner =
+			new DefaultJoinFunctionAndFunction<A, B, C>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

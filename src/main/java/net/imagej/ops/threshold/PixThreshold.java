@@ -28,27 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.threshold;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.logic.BitType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class PixThreshold<T extends Comparable<T>> extends
+	AbstractFunction<T, BitType> implements Threshold
+{
 
 	@Parameter
-	private $primitive b;
+	private T threshold;
 
 	@Override
-	public void run() {
-		a += b;
+	public BitType compute(final T input, final BitType output) {
+		output.set(input.compareTo(threshold) > 0);
+		return output;
 	}
 
 }

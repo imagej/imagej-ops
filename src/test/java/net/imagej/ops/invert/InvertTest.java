@@ -28,27 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.invert;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Martin Horn
+ */
+public class InvertTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Test
+	public void testInvertSigned() {
 
-	@Parameter
-	private $primitive b;
+		// signed type test
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-	@Override
-	public void run() {
-		a += b;
+		ops.run("invert", out, in);
+
+		ByteType firstIn = in.firstElement();
+		ByteType firstOut = out.firstElement();
+
+		assertEquals(firstIn.get() * -1 - 1, firstOut.get());
+
 	}
 
+	@Test
+	public void testInvertUnsigned() {
+
+		// unsigned type test
+		Img<UnsignedByteType> in = generateUnsignedByteTestImg(true, 5, 5);
+		Img<UnsignedByteType> out = in.factory().create(in, new UnsignedByteType());
+
+		ops.run("invert", out, in);
+
+		UnsignedByteType firstIn = in.firstElement();
+		UnsignedByteType firstOut = out.firstElement();
+
+		assertEquals((int) firstIn.getMaxValue() - firstIn.getInteger(), firstOut
+			.getInteger());
+
+	}
 }

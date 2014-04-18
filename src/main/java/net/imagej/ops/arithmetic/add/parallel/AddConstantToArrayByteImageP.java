@@ -28,27 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add.parallel;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.chunker.Chunk;
+import net.imagej.ops.chunker.Chunker;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
+ * {@link ByteType}
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY + 10)
+public class AddConstantToArrayByteImageP implements Op {
 
 	@Parameter
-	private $primitive b;
+	private OpService opService;
+
+	@Parameter(type = ItemIO.BOTH)
+	private ArrayImg<ByteType, ByteArray> image;
+
+	@Parameter
+	private byte value;
 
 	@Override
 	public void run() {
-		a += b;
+		final byte[] data = image.update(null).getCurrentStorageArray();
+		opService.run(Chunker.class, new Chunk() {
+			
+			@Override
+			public void execute(final int startIndex, final int stepSize, final int numSteps)
+			{
+				if (stepSize != 1) {
+					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
+						data[i] += value;
+					}
+				}
+				else {
+					for (int i = startIndex; i < startIndex + numSteps; i++) {
+						data[i] += value;
+					}
+				}
+			}
+		}, data.length);
 	}
-
 }

@@ -28,27 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convert;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.convert.ConvertII;
+import net.imagej.ops.convert.ConvertPixCopy;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.ShortType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * A test of {@link ConvertII}.
+ * 
+ * @author Martin Horn
+ */
+public class ConvertIITest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/** The test. */
+	@Test
+	public void test() throws IncompatibleTypeException {
 
-	@Parameter
-	private $primitive b;
+		final Img<ShortType> img =
+			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
+				new ShortType());
+		final Img<ByteType> res =
+			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-	@Override
-	public void run() {
-		a += b;
+		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
+
+		// FIXME won't work neither, as the pre-processor to create the result is
+		// missing
+//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+
 	}
-
 }

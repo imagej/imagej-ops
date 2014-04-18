@@ -28,27 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = StdDeviation.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class StdDevRealType<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType> implements
+	StdDeviation<T, DoubleType>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(required = false)
+	private Variance<T, DoubleType> variance;
 
 	@Parameter
-	private $primitive b;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		a += b;
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (variance == null) {
+			variance =
+				(Variance<T, DoubleType>) ops.op(Variance.class, output, input);
+		}
+		output.set(Math.sqrt(variance.compute(input, output).get()));
+		return output;
 	}
+//	@Override
+//	public String name() {
+//		return "Standard Deviation";
+//	}
 
 }

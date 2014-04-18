@@ -28,27 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.threshold;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class GlobalThreshold<T extends RealType<T>> extends
+	AbstractFunction<IterableInterval<T>, IterableInterval<BitType>> implements
+	Threshold
+{
 
 	@Parameter
-	private $primitive b;
+	private GlobalThresholdMethod<T> method;
 
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		a += b;
+	public IterableInterval<BitType> compute(final IterableInterval<T> input,
+		final IterableInterval<BitType> output)
+	{
+		final T threshold = (T) ops.run(method, input);
+
+		Op thresholdOp =
+			ops
+				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
+
+		ops.run("map", output, input, threshold);
+		return output;
 	}
 
 }

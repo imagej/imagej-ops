@@ -28,27 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.slicer;
 
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imglib2.RandomAccessibleInterval;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = "slicemapper",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O> extends
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements
+	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+{
 
 	@Parameter
-	private $primitive b;
+	private OpService opService;
+
+	@Parameter
+	private Function<I, O> func;
+
+	@Parameter
+	private int[] axisIndices;
 
 	@Override
-	public void run() {
-		a += b;
+	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
+	{
+
+		opService.run("map", new CroppedIterableInterval(opService, output,
+			axisIndices), new CroppedIterableInterval(opService, input, axisIndices),
+			func);
+
+		return output;
 	}
 
 }

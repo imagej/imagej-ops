@@ -27,28 +27,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops;
 
-package net.imagej.ops.generated;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
+import org.scijava.util.ClassUtils;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+public class TemplateTest {
+	@Test
+	public void testTemplate() throws IOException {
+		final String prefix = ClassUtils.getLocation(getClass()).getFile();
+		final File testFile = new File(prefix
+				+ "/../template-tests/TestTemplate.txt");
+		final FileReader fileReader = new FileReader(testFile);
+		final BufferedReader reader = new BufferedReader(fileReader);
+		try {
+			assertEquals("Template test: Pinky", reader.readLine());
+			assertEquals("Multi-line: Ten weary, footsore travelers,", reader.readLine());
+			assertNotNull(reader.readLine());
+			assertNotNull(reader.readLine());
+			assertEquals("one dark and rainy night...!", reader.readLine());
+			assertNull(reader.readLine());
+		} finally {
+			reader.close();
+		}
 	}
-
 }

@@ -28,27 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class, name = Add.NAME, priority = Priority.LOW_PRIORITY)
+public class AddConstantToNumericType<T extends NumericType<T>> extends
+	AbstractFunction<T, T> implements Add
+{
 
 	@Parameter
-	private $primitive b;
+	private T value;
 
 	@Override
-	public void run() {
-		a += b;
+	public T compute(final T input, final T output) {
+		output.set(input);
+		output.add(value);
+		return output;
 	}
 
 }

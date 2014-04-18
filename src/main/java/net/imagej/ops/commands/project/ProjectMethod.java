@@ -28,27 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.commands.project;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+/**
+ * Interface marking functions that can be used within the
+ * {@link ProjectCommand}.
+ * 
+ * @author Martin Horn
+ */
+public interface ProjectMethod<T extends RealType<T>> extends
+	Function<Iterable<T>, T>
+{
+	// NB: Marker interface.
 }

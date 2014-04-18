@@ -28,27 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.chunker;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.scijava.Cancelable;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Base interface for "chunker" operations. These operations execute code across
+ * chunks of data using multiple threads.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Chunker.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
+public interface Chunker extends Op, Cancelable {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	String NAME = "chunker";
 
-	@Parameter
-	private $primitive b;
+	/** Sets the {@link Chunk} for which will be multithreaded. */
+	void setChunk(final Chunk executor);
 
-	@Override
-	public void run() {
-		a += b;
-	}
+	/** Sets the total number of elements which should be processed in parallel. */
+	void setNumberOfElements(final int numberOfElements);
 
 }

@@ -28,27 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.normalize;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Normalize.ALIASES) })
+public class NormalizeRealType<T extends RealType<T>> extends
+	AbstractFunction<T, T> implements Normalize
+{
 
 	@Parameter
-	private $primitive b;
+	private double oldMin;
+
+	@Parameter
+	private double oldMax;
+
+	@Parameter
+	private double newMin;
+
+	@Parameter
+	private double newMax;
+
+	@Parameter
+	private double factor;
 
 	@Override
-	public void run() {
-		a += b;
+	public T compute(T input, T output) {
+		output.setReal(Math.min(newMax, Math.max(newMin,
+			(input.getRealDouble() - oldMin) * factor + newMin)));
+		return output;
+	}
+
+	/**
+	 * Determines the factor to map the interval [oldMin, oldMax] to
+	 * [newMin,newMax].
+	 * 
+	 * @param oldMin
+	 * @param oldMax
+	 * @param newMin
+	 * @param newMax
+	 * @return the normalization factor
+	 */
+	public static double normalizationFactor(double oldMin, double oldMax,
+		double newMin, double newMax)
+	{
+		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
 	}
 
 }

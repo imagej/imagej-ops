@@ -28,27 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Tests {@link AddConstantToNumericType}.
+ * 
+ * @author Johannes Schindelin
+ * @author Curtis Rueden
+ */
+public class AddConstantToNumericTypeTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/**
+	 * Verifies that {@link OpService#add(Object...)} finds the
+	 * {@link AddConstantToNumericType}.
+	 */
+	@Test
+	public void testAdd() {
+		final ByteType a = new ByteType((byte) 17);
+		final ByteType b = new ByteType((byte) 34);
+		final Op op = ops.op("add", a, a, b);
+		assertSame(AddConstantToNumericType.class, op.getClass());
 
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+		op.run();
+		assertEquals((byte) 51, a.get());
 	}
 
 }

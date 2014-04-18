@@ -28,27 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = Variance.NAME, priority = Priority.LOW_PRIORITY)
+public class VarianceRealType<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType> implements Variance<T, DoubleType>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(required = false)
+	private Moment2AboutMean<T> moment2;
 
 	@Parameter
-	private $primitive b;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		a += b;
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (moment2 == null) {
+			moment2 =
+				(Moment2AboutMean<T>) ops.op(Moment2AboutMean.class, output, input);
+		}
+		return moment2.compute(input, output);
 	}
-
 }

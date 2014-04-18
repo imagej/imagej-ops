@@ -28,27 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+/**
+ * Factory which creates an object of type <O> given the input of type <I>
+ * 
+ * @author Christian Dietz
+ */
+public interface OutputFactory<I, O> {
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+	/**
+	 * @param input which determines how to create the output
+	 * @return output, depending on the input
+	 */
+	O create(I input);
 }

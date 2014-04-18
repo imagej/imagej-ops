@@ -28,27 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convert;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Convert.NAME)
+public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements
+	Convert<IterableInterval<I>, IterableInterval<O>>
+{
 
 	@Parameter
-	private $primitive b;
+	private ConvertPix<I, O> pixConvert;
 
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		a += b;
+	public IterableInterval<O> compute(final IterableInterval<I> input,
+		final IterableInterval<O> output)
+	{
+		pixConvert.checkInput(input.firstElement().createVariable(), output
+			.firstElement().createVariable());
+		pixConvert.checkInput(input);
+		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
 	}
 
 }

@@ -28,27 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Default implementation of a {@link AbstractLoopInplace}
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Loop.NAME)
+public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override
-	public void run() {
-		a += b;
+	public I compute(final I arg) {
+		final int n = getLoopCount();
+		final Function<I, I> func = getFunction();
+		for (int i = 0; i < n; i++) {
+			func.compute(arg, arg);
+		}
+		return arg;
 	}
 
+	@Override
+	public DefaultLoopInplace<I> getIndependentInstance() {
+		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<I>();
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setLoopCount(getLoopCount());
+		return looper;
+	}
 }

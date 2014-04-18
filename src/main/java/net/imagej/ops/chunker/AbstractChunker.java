@@ -28,27 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.chunker;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
-
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract {@link Chunker}.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractChunker implements Chunker {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
+	/**
+	 * ThreadService used for multi-threading
+	 */
 	@Parameter
-	private $primitive b;
+	protected ThreadService threadService;
+
+	/**
+	 * {@link Chunk} to be executed
+	 */
+	@Parameter
+	protected Chunk chunkable;
+
+	/**
+	 * Total number of elements to be processed
+	 */
+	@Parameter
+	protected long numberOfElements;
+
+	/** Reason for cancelation, or null if not canceled. */
+	private String cancelReason;
+
+	// -- Chunker methods --
 
 	@Override
-	public void run() {
-		a += b;
+	public void setChunk(final Chunk definition) {
+		this.chunkable = definition;
+	}
+
+	@Override
+	public void setNumberOfElements(final int totalSize) {
+		this.numberOfElements = totalSize;
+	}
+
+	// -- Cancelable methods --
+
+	@Override
+	public boolean isCanceled() {
+		return cancelReason != null;
+	}
+
+	/** Cancels the command execution, with the given reason for doing so. */
+	@Override
+	public void cancel(final String reason) {
+		cancelReason = reason;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancelReason;
 	}
 
 }

@@ -28,27 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract implementation of a {@link LoopInplace}.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
+	implements LoopInplace<I>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
+	/** Function used for looping */
 	@Parameter
-	private $primitive b;
+	private Function<I, I> function;
+
+	/** Number of loops */
+	@Parameter
+	private int n;
 
 	@Override
-	public void run() {
-		a += b;
+	public Function<I, I> getFunction() {
+		return function;
 	}
 
+	@Override
+	public void setFunction(final Function<I, I> function) {
+		this.function = function;
+	}
+
+	@Override
+	public int getLoopCount() {
+		return n;
+	}
+
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
+	}
 }

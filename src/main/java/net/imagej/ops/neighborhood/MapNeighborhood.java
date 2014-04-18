@@ -28,27 +28,62 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.neighborhood;
 
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
+import net.imglib2.algorithm.region.localneighborhood.Shape;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * Evaluates an {@link Function} for each {@link Neighborhood} on the in
+ * {@link RandomAccessibleInterval}.
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapNeighborhood<I, O> extends
+	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements Map<Iterable<I>, O, Function<Iterable<I>, O>>
+{
 
 	@Parameter
-	private $primitive b;
+	private Shape shape;
+
+	@Parameter
+	private OpService ops;
+
+	@Parameter
+	private Function<Iterable<I>, O> func;
 
 	@Override
-	public void run() {
-		a += b;
+	public RandomAccessibleInterval<O> compute(
+		final RandomAccessibleInterval<I> input,
+		final RandomAccessibleInterval<O> output)
+	{
+		ops.run("map", output, shape.neighborhoodsSafe(input), func);
+		// TODO: threaded map neighborhood
+		// TODO: optimization with integral images, if there is a rectangular
+		// neighborhood
+		return output;
 	}
 
+	@Override
+	public Function<Iterable<I>, O> getFunction() {
+		return func;
+	}
+
+	@Override
+	public void setFunction(Function<Iterable<I>, O> function) {
+		func = function;
+	}
 }

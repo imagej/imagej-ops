@@ -28,27 +28,74 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Joins a list of {@link Function}s.
+ * 
+ * @author Christian Dietz
+ * @author Curtis Rueden
+ */
+@Plugin(type = Op.class, name = Join.NAME)
+public class DefaultJoinFunctions<A> extends
+	AbstractJoinFunctions<A, Function<A, A>>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public A compute(final A input, final A output) {
+		final List<? extends Function<A, A>> functions = getFunctions();
+		final Iterator<? extends Function<A, A>> it = functions.iterator();
+		final Function<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			return first.compute(input, output);
+		}
+
+		final A buffer = getBuffer(input);
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+
+		return output;
 	}
 
+	@Override
+	public DefaultJoinFunctions<A> getIndependentInstance() {
+
+		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
+
+		final ArrayList<Function<A, A>> funcs = new ArrayList<Function<A, A>>();
+		for (final Function<A, A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setFunctions(funcs);
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

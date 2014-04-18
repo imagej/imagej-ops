@@ -28,27 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapII2View<A, B extends Type<B>> extends
+	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
+{
 
 	@Override
 	public void run() {
-		a += b;
+		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getConverter(),
+			getType()));
 	}
-
 }

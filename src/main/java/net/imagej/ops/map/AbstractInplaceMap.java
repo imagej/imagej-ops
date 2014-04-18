@@ -28,27 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.InplaceFunction;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract implementation of an {@link MapI}
+ * 
+ * @author Christian Dietz
+ * @param <A> type of values to be mapped
+ * @param <I> {@link Iterable} of <A>s
+ */
+public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
+	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
+	/**
+	 * {@link Function} to be used for mapping
+	 */
 	@Parameter
-	private $primitive b;
+	protected InplaceFunction<A> func;
 
 	@Override
-	public void run() {
-		a += b;
+	public InplaceFunction<A> getFunction() {
+		return func;
+	}
+
+	@Override
+	public void setFunction(final InplaceFunction<A> func) {
+		this.func = func;
 	}
 
 }

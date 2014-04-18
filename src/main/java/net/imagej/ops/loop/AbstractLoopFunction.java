@@ -28,27 +28,60 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.loop;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.OutputFactory;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract implementation of a {@link LoopFunction}.
+ * 
+ * @author Christian Dietz
+ */
+public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
+	AbstractFunction<I, I> implements LoopFunction<I>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
+	/** Function to loop. */
 	@Parameter
-	private $primitive b;
+	private Function<I, I> function;
 
-	@Override
-	public void run() {
-		a += b;
+	/** Buffer for intermediate results. */
+	@Parameter
+	private OutputFactory<I, I> bufferFactory;
+
+	/** Number of iterations. */
+	@Parameter
+	private int n;
+
+	public OutputFactory<I, I> getBufferFactory() {
+		return bufferFactory;
 	}
 
+	public void setBufferFactory(final OutputFactory<I, I> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public Function<I, I> getFunction() {
+		return function;
+	}
+
+	@Override
+	public void setFunction(final Function<I, I> function) {
+		this.function = function;
+	}
+	
+	@Override
+	public int getLoopCount() {
+		return n;
+	}
+
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
+	}
 }

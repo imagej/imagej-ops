@@ -28,27 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.join;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.Function;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * A join operation which joins two {@link Function}s. The resulting function
+ * will take the input of the first {@link Function} as input and the output of
+ * the second {@link Function} as the output.
+ * 
+ * @author Christian Dietz
+ * @author Curtis Rueden
+ */
+public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
+	extends Function<A, C>, Join
+{
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	/**
+	 * @return first {@link Function} to be joined
+	 */
+	F1 getFirst();
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	/**
+	 * @param first {@link Function} to be joined
+	 */
+	void setFirst(F1 first);
 
-	@Parameter
-	private $primitive b;
+	/**
+	 * @return second {@link Function} to be joined
+	 */
+	F2 getSecond();
 
-	@Override
-	public void run() {
-		a += b;
-	}
+	/**
+	 * @param second {@link Function} to be joined
+	 */
+	void setSecond(F2 second);
 
 }

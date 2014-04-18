@@ -28,27 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.threshold;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.threshold.LocalMean;
+import net.imagej.ops.threshold.Threshold;
+import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * @author Martin Horn
+ */
+public class LocalThresholdTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Test
+	public void test() throws IncompatibleTypeException {
+		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		Img<BitType> out =
+			in.factory().imgFactory(new BitType()).create(in, new BitType());
 
-	@Parameter
-	private $primitive b;
+		ops.run(Threshold.class, out, in, ops.op(LocalMean.class, out
+			.firstElement(), in.firstElement(), 0d), new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
-	@Override
-	public void run() {
-		a += b;
+		assertEquals(out.firstElement().get(), true);
 	}
-
 }

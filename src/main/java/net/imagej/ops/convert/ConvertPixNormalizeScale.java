@@ -28,27 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convert;
+
+import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.normalize.NormalizeRealType;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Convert.NAME)
+public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPixScale<I, O>
+{
 
 	@Parameter
-	private $primitive b;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		a += b;
+	public void checkInput(final I inType, final O outType) {
+		outMin = outType.getMinValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void checkInput(IterableInterval<I> in) {
+		List<I> minmax = (List<I>) ops.run("minmax", in);
+		I inType = in.firstElement().createVariable();
+		factor =
+			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
+				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
+					.getMaxValue());
+
+		inMin = minmax.get(0).getRealDouble();
+
+	}
+
+	@Override
+	public boolean conforms() {
+		// only conforms if an input source has been provided and the scale factor
+		// was calculated
+		return factor != 0;
 	}
 
 }

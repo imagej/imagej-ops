@@ -28,27 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.normalize;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * Base interface for "normalize" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Normalize.NAME,
+ *   attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) })
+ * </pre>
+ */
+public interface Normalize extends Op {
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
-
+	String NAME = "normalize";
+	String ALIASES = "norm";
 }

@@ -28,27 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.outputfactories;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OutputFactory;
+import net.imglib2.img.Img;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * {@link OutputFactory} used to create an empty output {@link Img} of same type
+ * and dimensionality as the input {@link Img}.
+ * 
+ * @author Christian Dietz
+ * @param <L>
+ */
+public class ImgImgSameTypeFactory<T extends Type<T>> implements
+	OutputFactory<Img<T>, Img<T>>
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public Img<T> create(final Img<T> input) {
+		return input.factory().create(input, input.firstElement().createVariable());
 	}
-
 }

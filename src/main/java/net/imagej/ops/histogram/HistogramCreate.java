@@ -28,27 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.histogram;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import java.util.List;
+
+import net.imagej.ops.OpService;
+import net.imagej.ops.misc.MinMaxRealType;
+import net.imglib2.IterableInterval;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+/**
+ * @author Martin Horn, University of Konstanz
+ */
+public class HistogramCreate<T extends RealType<T>> implements Histogram {
 
 	@Parameter
-	private $primitive b;
+	private IterableInterval<T> in;
+
+	@Parameter(required = false)
+	private int numBins = 256;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
+
+	@Parameter
+	private OpService ops;
 
 	@Override
 	public void run() {
-		a += b;
-	}
+		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+		out =
+			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
+				.get(1).getRealDouble(), numBins, false));
 
+	}
 }

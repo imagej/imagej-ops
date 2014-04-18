@@ -28,27 +28,55 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.statistics.moments;
 
+import java.util.Iterator;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.OpService;
+import net.imagej.ops.misc.Size;
+import net.imagej.ops.statistics.Mean;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = "moment1aboutmean")
+public class Moment1AboutMean<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, DoubleType>
+{
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	@Parameter(required = false)
+	private Mean<Iterable<T>, DoubleType> mean;
+
+	@Parameter(required = false)
+	private Size<Iterable<T>> size;
 
 	@Parameter
-	private $primitive b;
+	private OpService ops;
 
 	@Override
-	public void run() {
-		a += b;
-	}
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (mean == null) {
+			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+		}
+		if (size == null) {
+			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
+		}
 
+		final double mean = this.mean.compute(input, new DoubleType()).get();
+		final double area = this.size.compute(input, new LongType()).get();
+		double res = 0.0;
+
+		final Iterator<T> it = input.iterator();
+		while (it.hasNext()) {
+			final double val = it.next().getRealDouble() - mean;
+			res += val;
+		}
+		output.set(res / area);
+		return output;
+	}
 }

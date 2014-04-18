@@ -1,4 +1,4 @@
-package imagej.ops.generated;
+package net.imagej.ops.generated;
 
 public interface $interface {
 	public void add($opType a, $opType b, $resultType c);

@@ -28,27 +28,32 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.convert;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Contingent;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * @author Martin Horn
+ */
+public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractFunction<I, O> implements Convert<I, O>, Contingent
+{
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+	/**
+	 * Allows the convert pix operation to determine some parameters from the
+	 * conrete input and output types.
+	 */
+	public abstract void checkInput(I inType, O outType);
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
-	}
+	/**
+	 * If the pixels to be converted stem from an {@link IterableInterval} some
+	 * additionally needed parameters (e.g. for normalization) can be calculated
+	 * here (hence, some heavier calculation might take place here). Might never
+	 * be called!
+	 */
+	public abstract void checkInput(IterableInterval<I> in);
 
 }

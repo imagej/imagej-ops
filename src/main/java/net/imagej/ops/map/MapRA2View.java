@@ -28,27 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.RandomAccessible;
+import net.imglib2.converter.read.ConvertedRandomAccessible;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * Maps values of a {@link RandomAccessible} in View.
+ * 
+ * @author Christian Dietz
+ * 
+ * @param <A>
+ * @param <B>
+ */
+@Plugin(type = Op.class, name = Map.NAME)
+public class MapRA2View<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
+{
 
 	@Override
 	public void run() {
-		a += b;
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getConverter(),
+			getType()));
 	}
-
 }

@@ -28,27 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.arithmetic.add;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+@Plugin(type = Op.class, name = Add.NAME)
+public class AddConstantToImageInPlace<T extends NumericType<T>> implements Add
+{
 
 	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private IterableRealInterval<T> image;
 
 	@Parameter
-	private $primitive b;
+	private T value;
 
 	@Override
 	public void run() {
-		a += b;
+		for (final T t : image) {
+			t.add(value);
+		}
 	}
 
 }

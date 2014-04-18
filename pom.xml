@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>1.152</version>
+		<version>1.161</version>
 		<relativePath />
 	</parent>
 
@@ -18,57 +18,48 @@
 	<inceptionYear>2014</inceptionYear>
 
 	<properties>
-		<scijava-common.version>2.13.0</scijava-common.version>
 		<!-- NB: JUnit >= 4.11 needed for JUnit-Benchmarks -->
 		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>
+		<!-- SciJava dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>
-			<artifactId>ij-core</artifactId>
-			<version>${imagej.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij-ui-swing</artifactId>
-			<version>${imagej.version}</version>
+			<artifactId>imagej-common</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2</artifactId>
-			<version>${imglib2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-algorithms</artifactId>
-			<version>${imglib2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-realtransform</artifactId>
-			<version>${imglib2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-meta</artifactId>
-			<version>${imglib2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>
-			<version>${scijava-common.version}</version>
 		</dependency>
+
+		<!-- Third-party dependencies -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.16.1-GA</version>
 		</dependency>
 
+		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -102,7 +93,7 @@
 						<configuration>
 							<properties>
 								<templateDirectory>${basedir}/src/main/templates</templateDirectory>
-								<outputDirectory>${project.build.directory}/generated-sources/from-template/imagej/ops/generated</outputDirectory>
+								<outputDirectory>${project.build.directory}/generated-sources/from-template/net/imagej/ops/generated</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>

@@ -28,27 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
-
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
+/**
+ * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
+ * Conforms if the {@link IterableInterval}s have the same IterationOrder.
+ * 
+ * @author Martin Horn
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+public class MapII2II<A, B> extends
+	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	Contingent
+{
 
 	@Override
-	public void run() {
-		a += b;
+	public boolean conforms() {
+		return getOutput() == null || isValid(getInput(), getOutput());
 	}
 
+	private boolean isValid(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		return input.iterationOrder().equals(output.iterationOrder());
+	}
+
+	@Override
+	public IterableInterval<B> compute(final IterableInterval<A> input,
+		final IterableInterval<B> output)
+	{
+		if (!isValid(input, output)) {
+			throw new IllegalArgumentException(
+				"Input and Output don't have the same iteration order!");
+		}
+
+		final Cursor<A> inCursor = input.cursor();
+		final Cursor<B> outCursor = output.cursor();
+
+		while (inCursor.hasNext()) {
+			func.compute(inCursor.next(), outCursor.next());
+		}
+
+		return output;
+	}
 }
