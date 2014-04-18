@@ -23,6 +23,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- SciJava dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij-core</artifactId>
@@ -51,12 +52,15 @@
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>
 		</dependency>
+
+		<!-- Third-party dependencies -->
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.16.1-GA</version>
 		</dependency>
 
+		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
