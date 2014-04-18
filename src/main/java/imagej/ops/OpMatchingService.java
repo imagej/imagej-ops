@@ -30,9 +30,9 @@
 
 package imagej.ops;
 
-import imagej.service.ImageJService;
-
 import java.util.List;
+
+import net.imagej.service.ImageJService;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;

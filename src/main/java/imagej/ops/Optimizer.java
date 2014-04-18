@@ -30,7 +30,7 @@
 
 package imagej.ops;
 
-import imagej.ImageJPlugin;
+import net.imagej.ImageJPlugin;
 
 import org.scijava.module.Module;
 import org.scijava.plugin.Plugin;
