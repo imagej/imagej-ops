@@ -33,8 +33,6 @@ package net.imagej.ops.convolve;
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.convolve.ConvolveFourier;
-import net.imagej.ops.convolve.ConvolveNaive;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;

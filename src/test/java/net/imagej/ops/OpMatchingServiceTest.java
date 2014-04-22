@@ -35,9 +35,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpMatchingService;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;

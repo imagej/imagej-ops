@@ -32,7 +32,6 @@ package net.imagej.ops.identity;
 
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.identity.Identity;
 
 import org.junit.Test;
 

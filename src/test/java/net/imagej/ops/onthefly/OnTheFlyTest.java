@@ -33,7 +33,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.onthefly.ArithmeticOp;
 import net.imagej.ops.onthefly.ArithmeticOp.AddOp;
 import net.imagej.ops.onthefly.ArithmeticOp.DivideOp;
 import net.imagej.ops.onthefly.ArithmeticOp.SubtractOp;

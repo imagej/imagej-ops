@@ -33,7 +33,6 @@ package net.imagej.ops.project;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.project.ProjectRAI2II;
 import net.imagej.ops.project.parallel.DefaultProjectP;
 import net.imagej.ops.statistics.Sum;
 import net.imglib2.Cursor;

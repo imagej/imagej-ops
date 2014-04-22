@@ -30,9 +30,6 @@
 
 package net.imagej.ops;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpMatchingService;
-import net.imagej.ops.OpService;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;

@@ -34,8 +34,6 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.loop.LoopFunction;
-import net.imagej.ops.loop.LoopInplace;
 import net.imagej.ops.map.Map;
 import net.imagej.ops.outputfactories.ImgImgSameTypeFactory;
 import net.imglib2.Cursor;
