@@ -142,7 +142,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<packageName>imagej.ops</packageName>
+							<packageName>net.imagej.ops</packageName>
 						</manifest>
 					</archive>
 				</configuration>
