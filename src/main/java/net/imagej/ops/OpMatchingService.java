@@ -32,7 +32,7 @@ package net.imagej.ops;
 
 import java.util.List;
 
-import net.imagej.service.ImageJService;
+import net.imagej.ImageJService;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
