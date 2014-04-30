@@ -160,7 +160,8 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<!-- NB: Make Eclipse generate code in a full build, based on http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
+					<!-- NB: Make Eclipse generate code in a full build; see:
+					     http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
 					<version>1.0.0</version>
