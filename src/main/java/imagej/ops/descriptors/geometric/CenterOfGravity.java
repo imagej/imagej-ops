@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "centerofgravity" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface CenterOfGravity<I, O> extends Function<I, O> {
+public interface CenterOfGravity<I, O> {
 
 	public final String NAME = "centerofgravity";
 	public final String LABEL = "Center of Gravity";

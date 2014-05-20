@@ -31,11 +31,12 @@
 package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Sum;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,25 +47,19 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL,
 	priority = Priority.LOW_PRIORITY)
-public class SumIRT extends AbstractFunctionIRT implements
-	Sum<Iterable<RealType<?>>, RealType<?>>
-{
+public class SumIRT extends AbstractFeature implements Sum {
+
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
+	public double compute() {
+
+		double sum = 0;
+		for (final RealType<?> d : irt) {
+			sum += d.getRealDouble();
 		}
 
-		double res = 0;
-		for (final RealType<?> type : input) {
-			res += type.getRealDouble();
-		}
-		output.setReal(res);
-
-		return output;
+		return sum;
 	}
 }

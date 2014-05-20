@@ -30,9 +30,9 @@
 
 package imagej.ops.descriptors.misc;
 
-import imagej.ops.Function;
+import imagej.ops.descriptors.statistics.Feature;
 
-public interface Area<I, O> extends Function<I, O> {
+public interface Area extends Feature {
 
 	String LABEL = "Area";
 	String NAME = "area";

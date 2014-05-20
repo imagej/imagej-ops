@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "mean" operations.
  * <p>
@@ -46,7 +44,7 @@ import imagej.ops.Function;
  * @author Martin Horn
  * @author Christian Dietz
  */
-public interface Mean<I, O> extends Function<I, O> {
+public interface Mean extends Feature {
 
 	String NAME = "mean";
 	String ALIASES = "avg";

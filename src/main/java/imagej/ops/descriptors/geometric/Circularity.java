@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "circularity" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Circularity<I, O> extends Function<I, O> {
+public interface Circularity<I, O> {
 
 	public final String NAME = "circularity";
 	public final String LABEL = "Circularity";

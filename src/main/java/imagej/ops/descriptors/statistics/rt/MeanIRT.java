@@ -33,8 +33,8 @@ package imagej.ops.descriptors.statistics.rt;
 import imagej.ops.Op;
 import imagej.ops.descriptors.statistics.Mean;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -43,29 +43,23 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class MeanIRT extends AbstractFunctionIRT implements
-	Mean<Iterable<RealType<?>>, RealType<?>>
-{
+public class MeanIRT implements Mean {
+
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public double compute() {
 
 		int k = 0;
-		double res = 0;
-		for (final RealType<?> d : input) {
-			res += d.getRealDouble();
+		final double[] res = new double[1];
+		for (final RealType<?> d : irt) {
+			res[0] += d.getRealDouble();
 			k++;
 		}
-		res /= k;
 
-		output.setReal(res);
-		return output;
+		res[0] /= k;
+
+		return res;
 	}
-
 }

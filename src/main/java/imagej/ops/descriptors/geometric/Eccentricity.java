@@ -27,9 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "eccentricity" operations.
@@ -43,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Eccentricity<I, O> extends Function<I, O> {
+public interface Eccentricity<I, O> {
 
 	public final static String NAME = "eccentricity";
 	public final static String LABEL = "Eccentricity";

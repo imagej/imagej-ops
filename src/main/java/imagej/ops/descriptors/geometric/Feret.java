@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "feret" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Feret<I, O> extends Function<I, O> {
+public interface Feret<I, O> {
 
 	public final String NAME = "feret";
 	public final String LABEL = "Feret";

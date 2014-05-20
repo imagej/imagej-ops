@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "sum" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Sum<I, O> extends Function<I, O> {
+public interface Sum extends Feature {
 
 	String NAME = "sum";
 	String LABEL = "Sum";
