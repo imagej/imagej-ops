@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "harmonicmean" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface HarmonicMean<T, V> extends Function<T, V> {
+public interface HarmonicMean extends Feature {
 
 	String NAME = "harmonicmean";
 	String LABEL = "Harmonic Mean";

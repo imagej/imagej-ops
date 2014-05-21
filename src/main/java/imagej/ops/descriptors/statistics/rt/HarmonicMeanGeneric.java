@@ -28,17 +28,14 @@
  * #L%
  */
 
-
 package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
 import imagej.ops.descriptors.misc.Area;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.HarmonicMean;
 import imagej.ops.descriptors.statistics.SumOfInverses;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -51,26 +48,24 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = HarmonicMean.LABEL, name = HarmonicMean.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class HarmonicMeanGeneric extends AbstractFunction<Object, RealType<?>>
-	implements HarmonicMean<Object, RealType<?>>
-{
+@Plugin(type = Op.class, label = HarmonicMean.LABEL, name = HarmonicMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class HarmonicMeanGeneric extends AbstractFeature implements
+		HarmonicMean {
 
 	@Parameter
-	private SumOfInverses<Object, DoubleType> inverseSum;
+	private SumOfInverses inverseSum;
 
 	@Parameter
-	private Area<Object, DoubleType> area;
+	private Area area;
 
 	@Override
-	public RealType<?> compute(final Object input, RealType<?> output) {
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
+	public double compute() {
+
+		double invSum = inverseSum.getFeature();
+		if (invSum != 0) {
+			return area.getFeature() / inverseSum.getFeature();
 		}
 
-		output.setReal(area.getOutput().get() / inverseSum.getOutput().get());
-		return output;
+		return 0;
 	}
 }
