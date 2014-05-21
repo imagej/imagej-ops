@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "stddev" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface StdDev<T, V> extends Function<T, V> {
+public interface StdDev extends Feature {
 
 	String NAME = "stddev";
 	String LABEL = "Standard Deviation";
