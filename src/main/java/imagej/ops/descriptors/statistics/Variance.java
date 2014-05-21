@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "variance" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Variance<T, V> extends Function<T, V> {
+public interface Variance extends Feature {
 
 	String NAME = "variance";
 	String LABEL = "Variance";

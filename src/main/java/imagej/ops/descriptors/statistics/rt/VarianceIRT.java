@@ -31,11 +31,12 @@
 package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Variance;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -44,33 +45,26 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL,
-	priority = Priority.LOW_PRIORITY)
-public class VarianceIRT extends AbstractFunctionIRT implements
-	Variance<Iterable<RealType<?>>, RealType<?>>
-{
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.LOW_PRIORITY)
+public class VarianceIRT extends AbstractFeature implements Variance {
+
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public double compute() {
 
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
 
-		for (final RealType<?> next : input) {
+		for (final RealType<?> next : irt) {
 			final double px = next.getRealDouble();
 			++n;
 			sum += px;
 			sumSqr += px * px;
 		}
 
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
-		return output;
+		return (sumSqr - (sum * sum / n)) / (n - 1);
 	}
 }
