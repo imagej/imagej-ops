@@ -28,17 +28,14 @@
  * #L%
  */
 
-
 package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Kurtosis;
 import imagej.ops.descriptors.statistics.Moment4AboutMean;
 import imagej.ops.descriptors.statistics.StdDev;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -51,36 +48,25 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class KurtosisGeneric extends AbstractFunction<Object, RealType<?>>
-	implements Kurtosis<Object, RealType<?>>
-{
+@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class KurtosisGeneric extends AbstractFeature implements Kurtosis {
 
 	@Parameter
-	private StdDev<Object, DoubleType> stddev;
+	private StdDev stddev;
 
 	@Parameter
-	private Moment4AboutMean<Object, DoubleType> moment4;
+	private Moment4AboutMean moment4;
 
 	@Override
-	public RealType<?> compute(final Object input, RealType<?> output) {
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		};
+	public double compute() {
 
-		final double std = this.stddev.getOutput().get();
-		final double moment4 = this.moment4.getOutput().get();
+		final double std = this.stddev.getFeature();
+		final double moment4 = this.moment4.getFeature();
 
 		if (std != 0) {
-			output.setReal((moment4) / (std * std * std * std));
+			return ((moment4) / (std * std * std * std));
 		}
-		else {
-			// no Kurtosis in case std = 0
-			output.setReal(0.0);
-		};
 
-		return output;
+		return 0;
 	}
 }

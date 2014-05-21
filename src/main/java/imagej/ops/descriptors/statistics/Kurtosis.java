@@ -44,7 +44,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Kurtosis<T, V> extends Function<T, V> {
+public interface Kurtosis extends Feature {
 
 	String NAME = "kurtosis";
 	String LABEL = "Kurtosis";
