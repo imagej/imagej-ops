@@ -30,23 +30,24 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.AbstractFunction;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Percentile;
 
 /**
  * @author Christian Dietz
  */
-public abstract class AbstractPercentile<I, O> extends AbstractFunction<I, O>
-	implements Percentile<I, O>
-{
+public abstract class AbstractPercentile extends AbstractFeature implements
+		Percentile {
 
 	protected double calculatePercentile(final double p, final double[] v) {
 		final double[] values = v;
 		final int size = values.length;
 
-		if (size == 0) return Double.NaN;
+		if (size == 0)
+			return Double.NaN;
 
-		if (size == 1) return values[0];
+		if (size == 1)
+			return values[0];
 
 		final double n = size;
 		final double pos = p * (n + 1);
@@ -54,9 +55,11 @@ public abstract class AbstractPercentile<I, O> extends AbstractFunction<I, O>
 		final int intPos = (int) fpos;
 		final double dif = pos - fpos;
 
-		if (pos < 1) return values[0];
+		if (pos < 1)
+			return values[0];
 
-		if (pos >= n) return values[size - 1];
+		if (pos >= n)
+			return values[size - 1];
 
 		final double lower = values[intPos - 1];
 		final double upper = values[intPos];

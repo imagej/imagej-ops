@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "quantile" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Percentile<T, V> extends Function<T, V> {
+public interface Percentile extends Feature {
 
 	String NAME = "quantile";
 	String LABEL = "Quantile";
