@@ -57,12 +57,13 @@ public class MeanIRT extends AbstractFeature implements Mean {
 		double sum = 0;
 		double count = 0;
 
-		Iterator<? extends RealType<?>> it = irt.iterator();
-		while (it.hasNext()) {
-			sum += it.next().getRealDouble();
+		for (RealType<?> val : irt) {
+			sum += val.getRealDouble();
 			++count;
+
 		}
 
-		return sum / count;
+		// check that we don't divide by zero
+		return (count == 0) ? 0 : sum / count;
 	}
 }
