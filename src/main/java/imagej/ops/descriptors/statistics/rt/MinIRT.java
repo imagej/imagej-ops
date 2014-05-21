@@ -31,14 +31,12 @@
 package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Min;
-
-import java.util.Iterator;
-
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,30 +44,28 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL,
-	priority = Priority.LOW_PRIORITY)
-public class MinIRT extends AbstractFunctionIRT implements
-	Min<Iterable<RealType<?>>, RealType<?>>
-{
+@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
+public class MinIRT extends AbstractFeature implements Min {
 
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
+
+	/**
+	 * Returns Double.POSITIVE_INFINITY if the given iterable interval is empty.
+	 */
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-		if (output == null) output = new DoubleType();
+	public double compute() {
 
-		final Iterator<? extends RealType<?>> it = input.iterator();
-		RealType<?> min = it.next();
+		double min = Double.POSITIVE_INFINITY;
 
-		while (it.hasNext()) {
-			final RealType<?> next = it.next();
-			if (min.getRealDouble() > next.getRealDouble()) {
-				min = next;
+		for (RealType<?> val : irt) {
+			double tmp = val.getRealDouble();
+			if (tmp < min) {
+				min = tmp;
 			}
 		}
 
-		output.setReal(min.getRealDouble());
-		return output;
+		return min;
 	}
 
 }

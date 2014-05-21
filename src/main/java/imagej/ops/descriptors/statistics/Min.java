@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "min" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Min<T, V> extends Function<T, V> {
+public interface Min extends Feature {
 
 	String NAME = "min";
 	String LABEL = "Min";
