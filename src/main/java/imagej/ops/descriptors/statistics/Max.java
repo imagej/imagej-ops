@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "max" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Max<T, V> extends Function<T, V> {
+public interface Max extends Feature {
 
 	String NAME = "max";
 	String LABEL = "Maximum";

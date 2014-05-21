@@ -31,14 +31,12 @@
 package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Max;
-
-import java.util.Iterator;
-
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -47,29 +45,26 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
-public class MaxIRT extends AbstractFunctionIRT implements
-	Max<Iterable<RealType<?>>, RealType<?>>
-{
+public class MaxIRT extends AbstractFeature implements Max {
 
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
+
+	/**
+	 * Returns Double.NEGATIVE_INFINITY if the given iterable interval is empty.
+	 */
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
+	public double compute() {
 
-		if (output == null) {
-			output = new DoubleType();
-		}
+		double max = Double.NEGATIVE_INFINITY;
 
-		final Iterator<? extends RealType<?>> it = input.iterator();
-		RealType<?> max = it.next();
-
-		while (it.hasNext()) {
-			final RealType<?> next = it.next();
-			if (max.getRealDouble() < next.getRealDouble()) {
-				max = next;
+		for (RealType<?> val : irt) {
+			double tmp = val.getRealDouble();
+			if (tmp > max) {
+				max = tmp;
 			}
 		}
-		output.setReal(max.getRealDouble());
-		return output;
+
+		return max;
 	}
 }
