@@ -30,7 +30,10 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import java.util.Iterator;
+
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
 import net.imglib2.type.numeric.RealType;
 
@@ -43,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class MeanIRT implements Mean {
+public class MeanIRT extends AbstractFeature implements Mean {
 
 	@Parameter
 	private Iterable<? extends RealType<?>> irt;
@@ -51,15 +54,15 @@ public class MeanIRT implements Mean {
 	@Override
 	public double compute() {
 
-		int k = 0;
-		final double[] res = new double[1];
-		for (final RealType<?> d : irt) {
-			res[0] += d.getRealDouble();
-			k++;
+		double sum = 0;
+		double count = 0;
+
+		Iterator<? extends RealType<?>> it = irt.iterator();
+		while (it.hasNext()) {
+			sum += it.next().getRealDouble();
+			++count;
 		}
 
-		res[0] /= k;
-
-		return res;
+		return sum / count;
 	}
 }
