@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "skewness" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Skewness<T, V> extends Function<T, V> {
+public interface Skewness extends Feature {
 
 	String NAME = "skewness";
 	String LABEL = "Skewness";
