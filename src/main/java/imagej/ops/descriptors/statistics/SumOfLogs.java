@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "sumoflogs" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface SumOfLogs<T, O> extends Function<T, O> {
+public interface SumOfLogs extends Feature {
 
 	String NAME = "sumoflogs";
 	String LABEL = "Sum of Logs";
