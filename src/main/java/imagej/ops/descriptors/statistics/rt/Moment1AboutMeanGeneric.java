@@ -37,7 +37,6 @@ import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
 import imagej.ops.descriptors.statistics.Moment1AboutMean;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
