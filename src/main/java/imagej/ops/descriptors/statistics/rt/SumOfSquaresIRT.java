@@ -56,7 +56,8 @@ public class SumOfSquaresIRT extends AbstractFeature implements SumOfSquares {
 
 		double result = 0;
 		for (RealType<?> val : irt) {
-			result += Math.pow(val.getRealDouble(), 2);
+			final double tmp = val.getRealDouble();
+			result += (tmp * tmp);
 		}
 
 		return result;
