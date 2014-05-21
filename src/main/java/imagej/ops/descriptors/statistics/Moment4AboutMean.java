@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "moment4aboutmean" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Moment4AboutMean<T, O> extends Function<T, O> {
+public interface Moment4AboutMean extends Feature {
 
 	String NAME = "moment4aboutmean";
 	String LABEL = "Moment 4 About Mean";
