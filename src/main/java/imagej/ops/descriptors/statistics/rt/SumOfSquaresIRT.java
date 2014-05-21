@@ -29,13 +29,14 @@
  */
 
 package imagej.ops.descriptors.statistics.rt;
+
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.SumOfSquares;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
 
 /**
  * Calculate {@link SumOfSquares} on {@link Iterable} of {@link RealType}
@@ -45,29 +46,20 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
-public class SumOfSquaresIRT extends AbstractFunctionIRT implements
-	SumOfSquares<Iterable<RealType<?>>, RealType<?>>
-{
+public class SumOfSquaresIRT extends AbstractFeature implements SumOfSquares {
+
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public double compute() {
 
 		double result = 0;
-		for (final RealType<?> type : input) {
-			final double val = type.getRealDouble();
-			result += (val * val);
+		for (RealType<?> val : irt) {
+			result += Math.pow(val.getRealDouble(), 2);
 		}
-		output.setReal(result);
 
-		return output;
-
+		return result;
 	}
 
 }
