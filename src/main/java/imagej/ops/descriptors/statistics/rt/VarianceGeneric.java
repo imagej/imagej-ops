@@ -35,7 +35,6 @@ import imagej.ops.descriptors.DescriptorService;
 import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Moment2AboutMean;
 import imagej.ops.descriptors.statistics.Variance;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -52,10 +51,10 @@ import org.scijava.plugin.Plugin;
 public class VarianceGeneric extends AbstractFeature implements Variance {
 
 	@Parameter
-	private Moment2AboutMean<Object, DoubleType> moment2;
+	private Moment2AboutMean moment2;
 
 	@Override
 	public double compute() {
-		return moment2.getOutput().get();
+		return moment2.getFeature();
 	}
 }
