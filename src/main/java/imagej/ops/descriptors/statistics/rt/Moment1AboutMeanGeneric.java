@@ -33,6 +33,7 @@ package imagej.ops.descriptors.statistics.rt;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
 import imagej.ops.descriptors.misc.Area;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
 import imagej.ops.descriptors.statistics.Moment1AboutMean;
 import net.imglib2.type.numeric.RealType;
@@ -49,36 +50,28 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Moment1AboutMean.NAME,
-	label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
-public class Moment1AboutMeanGeneric extends AbstractFunctionIRT implements
-	Moment1AboutMean<Iterable<RealType<?>>, RealType<?>>
-{
+@Plugin(type = Op.class, name = Moment1AboutMean.NAME, label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class Moment1AboutMeanGeneric extends AbstractFeature implements
+		Moment1AboutMean {
 
 	@Parameter
-	private Mean<Iterable<RealType<?>>, DoubleType> meanFunc;
+	private Iterable<? extends RealType<?>> irt;
 
 	@Parameter
-	private Area<Iterable<?>, DoubleType> areaFunc;
+	private Mean mean;
+
+	@Parameter
+	private Area area;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
-
-		final double mean = meanFunc.getOutput().get();
+	public double compute() {
+		final double tmpMean = mean.getFeature();
 
 		double res = 0.0;
-		for (final RealType<?> element : input) {
-			res += element.getRealDouble() - mean;
+		for (final RealType<?> val : irt) {
+			res += val.getRealDouble() - tmpMean;
 		}
 
-		output.setReal(res / areaFunc.getOutput().get());
-		return output;
+		return (res / area.getFeature());
 	}
 }
