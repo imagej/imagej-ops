@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "kurtosis" operations.
