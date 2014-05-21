@@ -30,7 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
 
 /**
  * Base interface for "sumofinverses" operations.
@@ -44,7 +43,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface SumOfInverses<T, O> extends Function<T, O> {
+public interface SumOfInverses extends Feature {
 
 	String NAME = "sumofinverses";
 	String LABEL = "Sum of Inverses";

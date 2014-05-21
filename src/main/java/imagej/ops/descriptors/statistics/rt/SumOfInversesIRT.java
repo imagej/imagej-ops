@@ -31,11 +31,12 @@
 package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
+import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.SumOfInverses;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,24 +46,19 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  * 
  */
-@Plugin(type = Op.class, name = SumOfInverses.NAME,
-	label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
-public class SumOfInversesIRT extends AbstractFunctionIRT implements
-	SumOfInverses<Iterable<RealType<?>>, RealType<?>>
-{
+@Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
+public class SumOfInversesIRT extends AbstractFeature implements SumOfInverses {
+
+	@Parameter
+	private Iterable<? extends RealType<?>> irt;
 
 	@Override
-	public RealType<?> compute(final Iterable<RealType<?>> input,
-		RealType<?> output)
-	{
-		if (output == null) output = new DoubleType();
-
+	public double compute() {
 		double res = 0.0;
-		for (final RealType<?> type : input) {
+		for (final RealType<?> type : irt) {
 			res += (1.0d / type.getRealDouble());
 		}
 
-		output.setReal(res);
-		return output;
+		return res;
 	}
 }
