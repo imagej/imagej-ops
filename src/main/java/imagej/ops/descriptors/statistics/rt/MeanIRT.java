@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
-import java.util.Iterator;
-
 import imagej.ops.Op;
 import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
