@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Median<T, V> extends Percentile<T, V> {
+public interface Median extends Percentile {
 
 	String NAME = "median";
 	String LABEL = "Median";
