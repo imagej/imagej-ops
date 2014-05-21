@@ -30,8 +30,6 @@
 
 package imagej.ops.descriptors.statistics;
 
-import imagej.ops.Function;
-
 /**
  * Base interface for "geometricmean" operations.
  * <p>
@@ -44,7 +42,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface GeometricMean<T, V> extends Function<T, V> {
+public interface GeometricMean extends Feature {
 
 	String NAME = "geometricmean";
 	String LABEL = "Geometric Mean";
