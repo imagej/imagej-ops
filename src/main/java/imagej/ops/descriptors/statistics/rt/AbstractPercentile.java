@@ -35,7 +35,7 @@ import imagej.ops.descriptors.statistics.Percentile;
 /**
  * @author Christian Dietz
  */
-public abstract class AbstractPercentile extends Percentile<DoubleType> {
+public abstract class AbstractPercentile implements Percentile {
 
 	protected double calculatePercentile(final double p, final double[] v) {
 		final double[] values = v;
