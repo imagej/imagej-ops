@@ -43,7 +43,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Min extends Feature {
+public interface Min extends SingleOutputOp {
 
 	String NAME = "min";
 	String LABEL = "Min";

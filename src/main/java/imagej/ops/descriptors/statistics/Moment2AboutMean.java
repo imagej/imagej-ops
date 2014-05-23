@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Moment2AboutMean extends Feature {
+public interface Moment2AboutMean extends SingleOutputOp {
 
 	String NAME = "moment2aboutmean";
 	String LABEL = "Moment 2 About Mean";

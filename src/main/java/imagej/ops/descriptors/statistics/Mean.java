@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "mean" operations.
  * <p>
@@ -44,7 +46,7 @@ package imagej.ops.descriptors.statistics;
  * @author Martin Horn
  * @author Christian Dietz
  */
-public interface Mean extends Feature {
+public interface Mean extends SingleOutputOp<DoubleType> {
 
 	String NAME = "mean";
 	String ALIASES = "avg";

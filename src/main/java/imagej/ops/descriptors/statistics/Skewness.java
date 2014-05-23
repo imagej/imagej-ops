@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Skewness extends Feature {
+public interface Skewness extends SingleOutputOp {
 
 	String NAME = "skewness";
 	String LABEL = "Skewness";

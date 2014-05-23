@@ -30,6 +30,7 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Base interface for "quantile" operations.
@@ -43,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Percentile extends Feature {
+public interface Percentile extends Descriptor<DoubleType> {
 
 	String NAME = "quantile";
 	String LABEL = "Quantile";

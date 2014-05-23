@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfSquares extends Feature {
+public interface SumOfSquares extends SingleOutputOp {
 
 	String NAME = "sumofsquares";
 	String LABEL = "Sum of Squares";

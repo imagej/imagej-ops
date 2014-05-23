@@ -33,10 +33,11 @@ package imagej.ops.descriptors.statistics.rt;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
 import imagej.ops.descriptors.misc.Area;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
 import imagej.ops.descriptors.statistics.Sum;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -50,7 +51,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME,
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class MeanGeneric extends AbstractFeature implements Mean {
+public class MeanGeneric implements Mean {
 
 	@Parameter
 	private Sum sum;
@@ -58,8 +59,18 @@ public class MeanGeneric extends AbstractFeature implements Mean {
 	@Parameter
 	private Area numElements;
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
+
 	@Override
-	public double compute() {
-		return sum.getFeature() / numElements.getFeature();
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void run() {
+		out = new DoubleType();
+		out.add(sum.getOutput());
+		out.div(numElements.getOutput());
 	}
 }

@@ -30,12 +30,12 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Mean;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -44,24 +44,24 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class MeanIRT extends AbstractFeature implements Mean {
-
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+public class MeanIRT extends
+	AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements Mean
+{
 
 	@Override
-	public double compute() {
-
+	public DoubleType compute(final Iterable<? extends RealType<?>> input,
+		final DoubleType output)
+	{
 		double sum = 0;
 		double count = 0;
 
-		for (RealType<?> val : irt) {
+		for (final RealType<?> val : getInput()) {
 			sum += val.getRealDouble();
 			++count;
-
 		}
 
-		// check that we don't divide by zero
-		return (count == 0) ? 0 : sum / count;
+		output.set((count == 0) ? 0 : sum / count);
+
+		return output;
 	}
 }

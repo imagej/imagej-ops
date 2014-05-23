@@ -43,7 +43,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfInverses extends Feature {
+public interface SumOfInverses extends SingleOutputOp {
 
 	String NAME = "sumofinverses";
 	String LABEL = "Sum of Inverses";

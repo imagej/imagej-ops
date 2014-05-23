@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface GeometricMean extends Feature {
+public interface GeometricMean extends SingleOutputOp {
 
 	String NAME = "geometricmean";
 	String LABEL = "Geometric Mean";

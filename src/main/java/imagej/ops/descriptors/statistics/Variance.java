@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Variance extends Feature {
+public interface Variance extends SingleOutputOp {
 
 	String NAME = "variance";
 	String LABEL = "Variance";

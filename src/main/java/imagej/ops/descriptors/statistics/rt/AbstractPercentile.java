@@ -30,14 +30,12 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Percentile;
 
 /**
  * @author Christian Dietz
  */
-public abstract class AbstractPercentile extends AbstractFeature implements
-		Percentile {
+public abstract class AbstractPercentile extends Percentile<DoubleType> {
 
 	protected double calculatePercentile(final double p, final double[] v) {
 		final double[] values = v;

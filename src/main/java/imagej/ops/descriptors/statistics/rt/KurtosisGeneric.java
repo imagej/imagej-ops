@@ -32,11 +32,11 @@ package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Kurtosis;
 import imagej.ops.descriptors.statistics.Moment4AboutMean;
 import imagej.ops.descriptors.statistics.StdDev;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -48,8 +48,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class KurtosisGeneric extends AbstractFeature implements Kurtosis {
+@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME,
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class KurtosisGeneric implements Kurtosis {
 
 	@Parameter
 	private StdDev stddev;
@@ -57,16 +58,22 @@ public class KurtosisGeneric extends AbstractFeature implements Kurtosis {
 	@Parameter
 	private Moment4AboutMean moment4;
 
-	@Override
-	public double compute() {
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
-		final double std = this.stddev.getFeature();
-		final double moment4 = this.moment4.getFeature();
+	@Override
+	public void run() {
+
+		final double std = this.stddev.getFeatureValue();
+		final double moment4 = this.moment4.getFeatureValue();
 
 		if (std != 0) {
-			return ((moment4) / (std * std * std * std));
+			out = ((moment4) / (std * std * std * std));
 		}
+	}
 
-		return 0;
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

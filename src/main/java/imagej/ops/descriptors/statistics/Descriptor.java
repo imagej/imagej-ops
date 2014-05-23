@@ -3,20 +3,20 @@ package imagej.ops.descriptors.statistics;
 
 import imagej.ops.Op;
 
-public interface Descriptor extends Op {
+public interface Descriptor<O> extends Op {
 
 	/**
 	 * Reference passed.
 	 * 
 	 * @return
 	 */
-	double[] getOutput();
+	O getOutput();
 
 	/**
 	 * pass reference
 	 * 
 	 * @param output
 	 */
-	void setOutput(double[] output);
+	void setOutput(O output);
 
 }

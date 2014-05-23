@@ -4,18 +4,18 @@ package imagej.ops.descriptors.statistics;
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
-public abstract class AbstractDescriptor implements Descriptor {
+public abstract class AbstractDescriptor<O> implements Descriptor<O> {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double[] output;
+	private O output;
 
 	@Override
-	public double[] getOutput() {
+	public O getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final double[] output) {
+	public void setOutput(final O output) {
 		this.output = output;
 	}
 
@@ -25,8 +25,8 @@ public abstract class AbstractDescriptor implements Descriptor {
 		compute(output);
 	}
 
-	protected abstract void compute(double[] output);
+	protected abstract void compute(O output);
 
-	public abstract double[] initOutput();
+	public abstract O initOutput();
 
 }

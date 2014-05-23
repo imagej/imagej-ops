@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import imagej.ops.Op;
+
 
 /**
  * Base interface for "kurtosis" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Kurtosis extends Feature {
+public interface Kurtosis extends Op, SingleOutputOp {
 
 	String NAME = "kurtosis";
 	String LABEL = "Kurtosis";

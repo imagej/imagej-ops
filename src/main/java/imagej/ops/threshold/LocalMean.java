@@ -32,7 +32,7 @@ package imagej.ops.threshold;
 
 import imagej.ops.Op;
 import imagej.ops.OpService;
-import imagej.ops.descriptors.statistics.Mean;
+import imagej.ops.descriptors.statistics.rt.MeanIRT;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -52,13 +52,14 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 	@Parameter
 	private OpService ops;
 
-	private Mean<Iterable<T>, DoubleType> mean;
+	private MeanIRT mean;
 
 	@Override
 	public BitType compute(final Pair<T> input, final BitType output) {
 
 		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
+			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
 		}
 
 		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());

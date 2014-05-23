@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "sum" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Sum extends Feature {
+public interface Sum extends SingleOutputOp<DoubleType> {
 
 	String NAME = "sum";
 	String LABEL = "Sum";

@@ -43,7 +43,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Max extends Feature {
+public interface Max extends SingleOutputOp {
 
 	String NAME = "max";
 	String LABEL = "Maximum";

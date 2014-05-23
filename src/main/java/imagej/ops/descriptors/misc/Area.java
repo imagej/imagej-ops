@@ -30,9 +30,10 @@
 
 package imagej.ops.descriptors.misc;
 
-import imagej.ops.descriptors.statistics.Feature;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
-public interface Area extends Feature {
+public interface Area extends SingleOutputOp<DoubleType> {
 
 	String LABEL = "Area";
 	String NAME = "area";

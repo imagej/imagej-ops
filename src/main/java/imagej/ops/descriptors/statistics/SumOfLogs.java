@@ -43,7 +43,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfLogs extends Feature {
+public interface SumOfLogs extends SingleOutputOp {
 
 	String NAME = "sumoflogs";
 	String LABEL = "Sum of Logs";

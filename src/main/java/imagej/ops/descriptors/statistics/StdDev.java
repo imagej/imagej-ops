@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface StdDev extends Feature {
+public interface StdDev extends SingleOutputOp {
 
 	String NAME = "stddev";
 	String LABEL = "Standard Deviation";

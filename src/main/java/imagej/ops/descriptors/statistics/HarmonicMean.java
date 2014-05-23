@@ -42,7 +42,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface HarmonicMean extends Feature {
+public interface HarmonicMean extends SingleOutputOp {
 
 	String NAME = "harmonicmean";
 	String LABEL = "Harmonic Mean";
