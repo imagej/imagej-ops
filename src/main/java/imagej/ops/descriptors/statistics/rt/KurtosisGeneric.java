@@ -36,6 +36,8 @@ import imagej.ops.descriptors.statistics.Kurtosis;
 import imagej.ops.descriptors.statistics.Moment4AboutMean;
 import imagej.ops.descriptors.statistics.StdDev;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -48,32 +50,31 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class KurtosisGeneric implements Kurtosis {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private StdDev stddev;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Moment4AboutMean moment4;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private DoubleType out;
 
 	@Override
 	public void run() {
 
-		final double std = this.stddev.getFeatureValue();
-		final double moment4 = this.moment4.getFeatureValue();
+		final double std = this.stddev.getOutput().getRealDouble();
+		final double moment4 = this.moment4.getOutput().getRealDouble();
 
 		if (std != 0) {
-			out = ((moment4) / (std * std * std * std));
+			out = new DoubleType(((moment4) / (std * std * std * std)));
 		}
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public DoubleType getOutput() {
 		return out;
 	}
 }

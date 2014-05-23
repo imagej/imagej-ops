@@ -53,10 +53,10 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class MeanGeneric implements Mean {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Sum sum;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Area numElements;
 
 	@Parameter(type = ItemIO.OUTPUT)

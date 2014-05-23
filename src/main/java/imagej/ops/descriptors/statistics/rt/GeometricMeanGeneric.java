@@ -33,10 +33,11 @@ package imagej.ops.descriptors.statistics.rt;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
 import imagej.ops.descriptors.misc.Area;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.GeometricMean;
 import imagej.ops.descriptors.statistics.SumOfLogs;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -49,25 +50,33 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = GeometricMean.LABEL, name = GeometricMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class GeometricMeanGeneric extends AbstractFeature implements
-		GeometricMean {
+public class GeometricMeanGeneric implements GeometricMean {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private SumOfLogs logSum;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Area area;
 
-	@Override
-	public double compute() {
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
-		double area = this.area.getFeature();
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void run() {
+
+		double area = this.area.getOutput().getRealDouble();
 
 		if (area != 0) {
-			return Math.exp(logSum.getFeature() / area);
+			out = new DoubleType(Math.exp(logSum.getOutput().getRealDouble()
+					/ area));
+		} else {
+			out = new DoubleType(0);
 		}
-
-		return 0;
 	}
 
 }

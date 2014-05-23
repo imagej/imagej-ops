@@ -32,10 +32,12 @@ package imagej.ops.descriptors.statistics.rt;
 
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Moment2AboutMean;
 import imagej.ops.descriptors.statistics.Variance;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -48,13 +50,22 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Variance.LABEL, name = Variance.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class VarianceGeneric extends AbstractFeature implements Variance {
+public class VarianceGeneric implements Variance {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Moment2AboutMean moment2;
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
+
 	@Override
-	public double compute() {
-		return moment2.getFeature();
+	public DoubleType getOutput() {
+		return out;
 	}
+
+	@Override
+	public void run() {
+		out = moment2.getOutput().copy();
+	}
+
 }
