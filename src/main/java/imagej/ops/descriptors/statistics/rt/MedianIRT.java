@@ -30,17 +30,17 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Median;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -49,23 +49,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
-public class MedianIRT extends AbstractFeature implements Median {
-
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
-
-	@Override
-	public double compute() {
-
-		final ArrayList<Double> statistics = new ArrayList<Double>();
-
-		for (final RealType<?> type : irt) {
-			statistics.add(type.getRealDouble());
-		}
-
-		return select(statistics, 0, statistics.size() - 1,
-				statistics.size() / 2);
-	}
+public class MedianIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		Median {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
@@ -137,5 +123,19 @@ public class MedianIRT extends AbstractFeature implements Median {
 		final double temp = array.get(a);
 		array.set(a, array.get(b));
 		array.set(b, temp);
+	}
+
+	@Override
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
+		final ArrayList<Double> statistics = new ArrayList<Double>();
+
+		for (final RealType<?> type : input) {
+			statistics.add(type.getRealDouble());
+		}
+
+		output = new DoubleType(select(statistics, 0, statistics.size() - 1,
+				statistics.size() / 2));
+		return output;
 	}
 }
