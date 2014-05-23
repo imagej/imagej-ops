@@ -38,15 +38,12 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL, priority = Priority.HIGH_PRIORITY)
 public class AreaII extends AbstractFunction<IterableInterval<?>, DoubleType>
-	implements Area<IterableInterval<?>, DoubleType>
-{
+		implements Area {
 
 	@Override
-	public DoubleType compute(final IterableInterval<?> input, DoubleType output)
-	{
+	public DoubleType compute(final IterableInterval<?> input, DoubleType output) {
 		if (output == null) {
 			output = new DoubleType();
 			setOutput(output);

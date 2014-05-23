@@ -47,8 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL)
 public class AreaPolygon extends AbstractFunction<Polygon, DoubleType>
-	implements Area<Polygon, DoubleType>
-{
+		implements Area {
 
 	@Override
 	public DoubleType compute(final Polygon input, DoubleType output) {
