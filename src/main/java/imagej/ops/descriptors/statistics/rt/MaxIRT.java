@@ -30,13 +30,13 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Max;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,26 +45,23 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
-public class MaxIRT extends AbstractFeature implements Max {
+public class MaxIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		Max {
 
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
-
-	/**
-	 * Returns Double.NEGATIVE_INFINITY if the given iterable interval is empty.
-	 */
 	@Override
-	public double compute() {
-
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
 		double max = Double.NEGATIVE_INFINITY;
 
-		for (RealType<?> val : irt) {
+		for (RealType<?> val : input) {
 			double tmp = val.getRealDouble();
 			if (tmp > max) {
 				max = tmp;
 			}
 		}
 
-		return max;
+		output = new DoubleType(max);
+		return output;
 	}
 }

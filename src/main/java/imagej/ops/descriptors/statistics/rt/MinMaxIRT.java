@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = MinMax.class, name = MinMax.NAME)
 public class MinMaxIRT<T extends RealType<T>> implements MinMax<T> {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Iterable<T> img;
 
 	@Parameter(type = ItemIO.OUTPUT)

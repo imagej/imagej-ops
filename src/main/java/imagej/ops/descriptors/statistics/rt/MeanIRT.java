@@ -45,13 +45,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
 public class MeanIRT extends
-	AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements Mean
-{
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		Mean {
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-		final DoubleType output)
-	{
+			final DoubleType output) {
 		double sum = 0;
 		double count = 0;
 

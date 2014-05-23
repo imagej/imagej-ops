@@ -30,13 +30,13 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Variance;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,25 +46,25 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.LOW_PRIORITY)
-public class VarianceIRT extends AbstractFeature implements Variance {
-
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+public class VarianceIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		Variance {
 
 	@Override
-	public double compute() {
-
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
 
-		for (final RealType<?> next : irt) {
+		for (final RealType<?> next : input) {
 			final double px = next.getRealDouble();
 			++n;
 			sum += px;
 			sumSqr += px * px;
 		}
 
-		return (sumSqr - (sum * sum / n)) / (n - 1);
+		output = new DoubleType((sumSqr - (sum * sum / n)) / (n - 1));
+		return output;
 	}
 }

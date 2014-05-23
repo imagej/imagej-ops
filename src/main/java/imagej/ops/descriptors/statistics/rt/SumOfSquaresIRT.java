@@ -30,12 +30,12 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.SumOfSquares;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -46,21 +46,20 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
-public class SumOfSquaresIRT extends AbstractFeature implements SumOfSquares {
-
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+public class SumOfSquaresIRT extends AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements SumOfSquares {
 
 	@Override
-	public double compute() {
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
 
 		double result = 0;
-		for (RealType<?> val : irt) {
+		for (RealType<?> val : input) {
 			final double tmp = val.getRealDouble();
 			result += (tmp * tmp);
 		}
 
-		return result;
+		output = new DoubleType(result);
+		return output;
 	}
 
 }

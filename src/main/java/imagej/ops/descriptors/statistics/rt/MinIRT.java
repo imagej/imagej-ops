@@ -30,13 +30,13 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.Min;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,27 +45,24 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
-public class MinIRT extends AbstractFeature implements Min {
+public class MinIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		Min {
 
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
-
-	/**
-	 * Returns Double.POSITIVE_INFINITY if the given iterable interval is empty.
-	 */
 	@Override
-	public double compute() {
-
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
 		double min = Double.POSITIVE_INFINITY;
 
-		for (RealType<?> val : irt) {
+		for (RealType<?> val : input) {
 			double tmp = val.getRealDouble();
 			if (tmp < min) {
 				min = tmp;
 			}
 		}
 
-		return min;
+		output = new DoubleType(min);
+		return output;
 	}
 
 }

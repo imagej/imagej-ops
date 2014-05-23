@@ -30,34 +30,36 @@
 
 package imagej.ops.descriptors.statistics.rt;
 
+import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.AbstractFeature;
 import imagej.ops.descriptors.statistics.StdDev;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = StdDev.NAME, label = StdDev.LABEL, priority = Priority.LOW_PRIORITY + 1)
-public class StdDeviationIRT extends AbstractFeature implements StdDev {
-
-	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+public class StdDeviationIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		StdDev {
 
 	@Override
-	public double compute() {
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
 
-		for (final RealType<?> rt : irt) {
+		for (final RealType<?> rt : input) {
 			final double px = rt.getRealDouble();
 			++n;
 			sum += px;
 			sumSqr += px * px;
 		}
 
-		return (Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
+		output.set((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
+
+		return output;
 	}
 }
