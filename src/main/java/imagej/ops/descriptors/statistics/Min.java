@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "min" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Min extends SingleOutputOp {
+public interface Min extends SingleOutputOp<DoubleType> {
 
 	String NAME = "min";
 	String LABEL = "Min";

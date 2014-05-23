@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "moment4aboutmean" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Moment4AboutMean extends SingleOutputOp {
+public interface Moment4AboutMean extends SingleOutputOp<DoubleType> {
 
 	String NAME = "moment4aboutmean";
 	String LABEL = "Moment 4 About Mean";

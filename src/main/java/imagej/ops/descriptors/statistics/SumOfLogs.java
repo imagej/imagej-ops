@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "sumoflogs" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfLogs extends SingleOutputOp {
+public interface SumOfLogs extends SingleOutputOp<DoubleType> {
 
 	String NAME = "sumoflogs";
 	String LABEL = "Sum of Logs";

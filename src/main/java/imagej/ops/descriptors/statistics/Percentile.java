@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Christian Dietz
  */
-public interface Percentile extends Descriptor<DoubleType> {
+public interface Percentile extends SingleOutputOp<DoubleType> {
 
 	String NAME = "quantile";
 	String LABEL = "Quantile";

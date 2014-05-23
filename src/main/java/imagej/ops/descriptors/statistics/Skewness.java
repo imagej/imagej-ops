@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "skewness" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Skewness extends SingleOutputOp {
+public interface Skewness extends SingleOutputOp<DoubleType> {
 
 	String NAME = "skewness";
 	String LABEL = "Skewness";

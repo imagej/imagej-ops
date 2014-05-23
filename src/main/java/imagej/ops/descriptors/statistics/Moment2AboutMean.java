@@ -1,5 +1,7 @@
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Moment2AboutMean extends SingleOutputOp {
+public interface Moment2AboutMean extends SingleOutputOp<DoubleType> {
 
 	String NAME = "moment2aboutmean";
 	String LABEL = "Moment 2 About Mean";

@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "harmonicmean" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface HarmonicMean extends SingleOutputOp {
+public interface HarmonicMean extends SingleOutputOp<DoubleType> {
 
 	String NAME = "harmonicmean";
 	String LABEL = "Harmonic Mean";

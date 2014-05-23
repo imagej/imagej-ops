@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "variance" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Variance extends SingleOutputOp {
+public interface Variance extends SingleOutputOp<DoubleType> {
 
 	String NAME = "variance";
 	String LABEL = "Variance";

@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "sumofinverses" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfInverses extends SingleOutputOp {
+public interface SumOfInverses extends SingleOutputOp<DoubleType> {
 
 	String NAME = "sumofinverses";
 	String LABEL = "Sum of Inverses";

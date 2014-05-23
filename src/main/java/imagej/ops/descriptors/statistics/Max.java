@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "max" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface Max extends SingleOutputOp {
+public interface Max extends SingleOutputOp<DoubleType> {
 
 	String NAME = "max";
 	String LABEL = "Maximum";

@@ -30,6 +30,7 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
 import imagej.ops.Op;
 
 
@@ -45,7 +46,7 @@ import imagej.ops.Op;
  * 
  * @author Christian Dietz
  */
-public interface Kurtosis extends Op, SingleOutputOp {
+public interface Kurtosis extends Op, SingleOutputOp<DoubleType> {
 
 	String NAME = "kurtosis";
 	String LABEL = "Kurtosis";

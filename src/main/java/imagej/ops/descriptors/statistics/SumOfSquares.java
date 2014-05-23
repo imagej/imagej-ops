@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "sumofsquares" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface SumOfSquares extends SingleOutputOp {
+public interface SumOfSquares extends SingleOutputOp<DoubleType> {
 
 	String NAME = "sumofsquares";
 	String LABEL = "Sum of Squares";

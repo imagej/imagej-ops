@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "stddev" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface StdDev extends SingleOutputOp {
+public interface StdDev extends SingleOutputOp<DoubleType> {
 
 	String NAME = "stddev";
 	String LABEL = "Standard Deviation";

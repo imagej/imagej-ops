@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.statistics;
 
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
  * Base interface for "geometricmean" operations.
  * <p>
@@ -42,7 +44,7 @@ package imagej.ops.descriptors.statistics;
  * 
  * @author Christian Dietz
  */
-public interface GeometricMean extends SingleOutputOp {
+public interface GeometricMean extends SingleOutputOp<DoubleType> {
 
 	String NAME = "geometricmean";
 	String LABEL = "Geometric Mean";
