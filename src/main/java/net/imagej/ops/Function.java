@@ -55,15 +55,7 @@ import org.scijava.ItemIO;
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public interface Function<I, O> extends Op, Threadable {
-
-	I getInput();
-
-	O getOutput();
-
-	void setInput(I input);
-
-	void setOutput(O output);
+public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable {
 
 	O compute(I input, O output);
 
