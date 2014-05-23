@@ -30,14 +30,13 @@
 
 package imagej.ops.descriptors.geometric.doubletype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
-import imagej.ops.descriptors.geometric.Feret;
 import imagej.ops.descriptors.geometric.FeretResult;
 import imagej.ops.descriptors.geometric.FeretsDiameter;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -48,23 +47,22 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = FeretsDiameter.LABEL,
-	name = FeretsDiameter.NAME)
-public class FeretDiameterGeneric extends AbstractFunction<Object, DoubleType>
-	implements FeretsDiameter<Object, DoubleType>
-{
+@Plugin(type = Op.class, label = FeretsDiameter.LABEL, name = FeretsDiameter.NAME)
+public class FeretDiameterGeneric implements FeretsDiameter {
 
-	@Parameter
-	private Feret<Object, FeretResult> feret;
+	@Parameter(type = ItemIO.INPUT)
+	private FeretResult result;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public DoubleType compute(final Object input, DoubleType output) {
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public void run() {
+		out = new DoubleType(result.max);
+	}
 
-		output.setReal(feret.getOutput().max);
-		return output;
+	@Override
+	public DoubleType getOutput() {
+		return out;
 	}
 }

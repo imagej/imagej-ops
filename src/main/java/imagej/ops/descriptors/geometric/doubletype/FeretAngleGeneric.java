@@ -30,14 +30,13 @@
 
 package imagej.ops.descriptors.geometric.doubletype;
 
-import imagej.ops.AbstractFunction;
 import imagej.ops.Op;
 import imagej.ops.descriptors.DescriptorService;
-import imagej.ops.descriptors.geometric.Feret;
 import imagej.ops.descriptors.geometric.FeretResult;
 import imagej.ops.descriptors.geometric.FeretsAngle;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,22 +48,21 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = FeretsAngle.LABEL, name = FeretsAngle.NAME)
-public class FeretAngleGeneric extends AbstractFunction<Object, DoubleType>
-	implements FeretsAngle<Object, DoubleType>
-{
+public class FeretAngleGeneric implements FeretsAngle {
 
-	@Parameter
-	private Feret<Object, FeretResult> feret;
+	@Parameter(type = ItemIO.INPUT)
+	private FeretResult result;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public DoubleType compute(final Object input, DoubleType output) {
+	public void run() {
+		out = new DoubleType(result.getAngle());
+	}
 
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
-		output.setReal(feret.getOutput().getAngle());
-
-		return output;
+	@Override
+	public DoubleType getOutput() {
+		return out;
 	}
 }
