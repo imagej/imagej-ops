@@ -30,6 +30,9 @@
 
 package imagej.ops.descriptors.geometric;
 
+import net.imglib2.type.numeric.real.DoubleType;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+
 
 /**
  * Base interface for "eccentricity" operations.
@@ -43,7 +46,7 @@ package imagej.ops.descriptors.geometric;
  * 
  * @author Christian Dietz
  */
-public interface Eccentricity<I, O> {
+public interface Eccentricity extends SingleOutputOp<DoubleType> {
 
 	public final static String NAME = "eccentricity";
 	public final static String LABEL = "Eccentricity";

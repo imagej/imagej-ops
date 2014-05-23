@@ -30,7 +30,8 @@
 
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Base interface for "feretsdiameter" operations.
@@ -44,7 +45,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface FeretsDiameter<I, O> extends Function<I, O> {
+public interface FeretsDiameter extends SingleOutputOp<DoubleType> {
 
 	public final String NAME = "feretsdiameter";
 	public final String LABEL = "Ferets Diameter";

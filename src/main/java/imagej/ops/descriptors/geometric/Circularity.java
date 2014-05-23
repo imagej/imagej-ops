@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.geometric;
 
+import net.imglib2.type.numeric.real.DoubleType;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
 
 /**
  * Base interface for "circularity" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.geometric;
  * 
  * @author Christian Dietz
  */
-public interface Circularity<I, O> {
+public interface Circularity extends SingleOutputOp<DoubleType> {
 
 	public final String NAME = "circularity";
 	public final String LABEL = "Circularity";

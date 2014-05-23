@@ -29,7 +29,9 @@
  */
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
+
 
 /**
  * Base interface for "feretsangle" operations.
@@ -43,7 +45,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface FeretsAngle<I, O> extends Function<I, O> {
+public interface FeretsAngle extends SingleOutputOp<DoubleType> {
 
 	public final String NAME = "feretsangle";
 	public final String LABEL = "Ferets Angle";

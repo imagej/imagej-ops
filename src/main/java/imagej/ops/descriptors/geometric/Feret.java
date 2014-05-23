@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.geometric;
 
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+
 
 /**
  * Base interface for "feret" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.geometric;
  * 
  * @author Christian Dietz
  */
-public interface Feret<I, O> {
+public interface Feret extends SingleOutputOp<FeretResult> {
 
 	public final String NAME = "feret";
 	public final String LABEL = "Feret";

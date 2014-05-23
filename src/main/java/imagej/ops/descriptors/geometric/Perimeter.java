@@ -30,7 +30,8 @@
 
 package imagej.ops.descriptors.geometric;
 
-import imagej.ops.Function;
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Base interface for "perimeter" operations.
@@ -44,7 +45,7 @@ import imagej.ops.Function;
  * 
  * @author Christian Dietz
  */
-public interface Perimeter<I, O> extends Function<I, O> {
+public interface Perimeter extends SingleOutputOp<DoubleType> {
 
 	public final static String NAME = "perimeter";
 	public final static String LABEL = "Perimeter";

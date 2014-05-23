@@ -30,6 +30,8 @@
 
 package imagej.ops.descriptors.geometric;
 
+import imagej.ops.descriptors.statistics.SingleOutputOp;
+
 
 /**
  * Base interface for "centerofgravity" operations.
@@ -43,7 +45,7 @@ package imagej.ops.descriptors.geometric;
  * 
  * @author Christian Dietz
  */
-public interface CenterOfGravity<I, O> {
+public interface CenterOfGravity extends SingleOutputOp<double[]> {
 
 	public final String NAME = "centerofgravity";
 	public final String LABEL = "Center of Gravity";
