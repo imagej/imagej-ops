@@ -45,16 +45,14 @@ import net.imglib2.Point;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
-public class FeretII extends
-	AbstractFunction<IterableInterval<?>, FeretResult> implements
-	Feret<IterableInterval<?>, FeretResult>
-{
+public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
+		implements Feret {
 
 	@Override
-	public FeretResult
-		compute(final IterableInterval<?> input, FeretResult output)
-	{
-		if (output == null) output = new FeretResult();
+	public FeretResult compute(final IterableInterval<?> input,
+			FeretResult output) {
+		if (output == null)
+			output = new FeretResult();
 
 		double maxDiameter = 0.0f;
 		Point maxP1 = null;
@@ -74,9 +72,8 @@ public class FeretII extends
 			for (final Point p2 : points) {
 				double dist = 0.0f;
 				for (int i = 0; i < p.numDimensions(); i++) {
-					dist +=
-						(p.getIntPosition(i) - p2.getIntPosition(i)) *
-							(p.getIntPosition(i) - p2.getIntPosition(i));
+					dist += (p.getIntPosition(i) - p2.getIntPosition(i))
+							* (p.getIntPosition(i) - p2.getIntPosition(i));
 				}
 
 				if (dist > maxDiameter) {

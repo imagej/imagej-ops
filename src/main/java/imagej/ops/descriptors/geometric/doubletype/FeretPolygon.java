@@ -49,12 +49,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
 public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
-	implements Feret<Polygon, FeretResult>
-{
+		implements Feret {
 
 	@Override
 	public FeretResult compute(final Polygon input, FeretResult output) {
-		if (output == null) output = new FeretResult();
+		if (output == null)
+			output = new FeretResult();
 
 		double maxDiameter = -Double.MAX_VALUE;
 		final long[] tmp = { 0, 0 };
@@ -66,12 +66,10 @@ public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
 				if (i != j) {
 					double dist = 0.0;
 
-					dist +=
-						(input.xpoints[i] - input.xpoints[j]) *
-							(input.xpoints[i] - input.xpoints[j]);
-					dist +=
-						(input.ypoints[i] - input.ypoints[j]) *
-							(input.ypoints[i] - input.ypoints[j]);
+					dist += (input.xpoints[i] - input.xpoints[j])
+							* (input.xpoints[i] - input.xpoints[j]);
+					dist += (input.ypoints[i] - input.ypoints[j])
+							* (input.ypoints[i] - input.ypoints[j]);
 
 					if (dist > maxDiameter) {
 						maxP1.setPosition(input.xpoints[i], 0);

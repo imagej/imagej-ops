@@ -31,6 +31,7 @@
 package imagej.ops.descriptors.geometric.doubletype;
 
 import imagej.ops.AbstractFunction;
+import imagej.ops.Op;
 import imagej.ops.OpService;
 import imagej.ops.descriptors.geometric.CenterOfGravity;
 import imagej.ops.descriptors.misc.Area;
@@ -48,11 +49,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = CenterOfGravity.class, priority = -1,
-	name = CenterOfGravity.NAME, label = CenterOfGravity.LABEL)
+@Plugin(type = Op.class, priority = -1, name = CenterOfGravity.NAME, label = CenterOfGravity.LABEL)
 public class CenterOfGravityPolygon extends AbstractFunction<Polygon, double[]>
-	implements CenterOfGravity<Polygon, double[]>
-{
+		implements CenterOfGravity {
 
 	@Parameter
 	private OpService ops;
@@ -60,7 +59,8 @@ public class CenterOfGravityPolygon extends AbstractFunction<Polygon, double[]>
 	@Override
 	public double[] compute(final Polygon input, double[] output) {
 
-		if (output == null) output = new double[2];
+		if (output == null)
+			output = new double[2];
 
 		final double area = ((DoubleType) ops.run(Area.class, input)).get();
 

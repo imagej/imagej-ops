@@ -44,12 +44,10 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = CenterOfGravity.LABEL,
-	name = CenterOfGravity.NAME)
+@Plugin(type = Op.class, label = CenterOfGravity.LABEL, name = CenterOfGravity.NAME)
 public class CenterOfGravityII extends
-	AbstractFunction<IterableInterval<?>, double[]> implements
-	CenterOfGravity<IterableInterval<?>, double[]>
-{
+		AbstractFunction<IterableInterval<?>, double[]> implements
+		CenterOfGravity {
 
 	@Override
 	public double[] compute(final IterableInterval<?> input, double[] output) {

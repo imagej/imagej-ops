@@ -45,18 +45,16 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Eccentricity.NAME, label = Eccentricity.LABEL,
-	priority = -1.0)
+@Plugin(type = Op.class, name = Eccentricity.NAME, label = Eccentricity.LABEL, priority = -1.0)
 public class EccentricityII extends
-	AbstractFunction<IterableInterval<?>, DoubleType> implements
-	Eccentricity<IterableInterval<?>, DoubleType>
-{
+		AbstractFunction<IterableInterval<?>, DoubleType> implements
+		Eccentricity {
 
 	@Override
-	public DoubleType compute(final IterableInterval<?> input, DoubleType output)
-	{
+	public DoubleType compute(final IterableInterval<?> input, DoubleType output) {
 
-		if (output == null) output = new DoubleType();
+		if (output == null)
+			output = new DoubleType();
 
 		final Cursor<?> cursor = input.localizingCursor();
 
@@ -87,8 +85,7 @@ public class EccentricityII extends
 		double res = 0;
 		if (length[0] > length[1]) {
 			res = length[0] / length[1];
-		}
-		else {
+		} else {
 			res = length[1] / length[0];
 		}
 
