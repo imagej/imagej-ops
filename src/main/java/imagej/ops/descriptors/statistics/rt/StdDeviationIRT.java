@@ -47,6 +47,11 @@ public class StdDeviationIRT extends
 	@Override
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
@@ -59,7 +64,6 @@ public class StdDeviationIRT extends
 		}
 
 		output.set((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
-
 		return output;
 	}
 }

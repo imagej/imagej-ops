@@ -19,12 +19,16 @@ public class AreaIRT extends
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
 
-		output = new DoubleType();
-
-		for (RealType<?> realType : input) {
-			output.inc();
+		if(output == null){
+			output = new DoubleType();
 		}
 
+		double count = 0;
+		for (RealType<?> realType : input) {
+			++count;
+		}
+
+		output.set(count);
 		return output;
 	}
 

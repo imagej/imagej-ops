@@ -51,14 +51,18 @@ public class SumOfSquaresIRT extends AbstractFunction<Iterable<? extends RealTyp
 	@Override
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
-
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		double result = 0;
 		for (RealType<?> val : input) {
 			final double tmp = val.getRealDouble();
 			result += (tmp * tmp);
 		}
 
-		output = new DoubleType(result);
+		output.set(result);
 		return output;
 	}
 

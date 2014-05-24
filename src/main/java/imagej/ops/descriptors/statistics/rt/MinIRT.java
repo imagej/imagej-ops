@@ -52,6 +52,11 @@ public class MinIRT extends
 	@Override
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
+
+		if (output == null) {
+			output = new DoubleType();
+		}
+
 		double min = Double.POSITIVE_INFINITY;
 
 		for (RealType<?> val : input) {
@@ -61,7 +66,7 @@ public class MinIRT extends
 			}
 		}
 
-		output = new DoubleType(min);
+		output.set(min);
 		return output;
 	}
 

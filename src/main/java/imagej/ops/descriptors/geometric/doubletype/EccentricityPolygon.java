@@ -54,8 +54,9 @@ public class EccentricityPolygon extends AbstractFunction<Polygon, DoubleType>
 
 	@Override
 	public DoubleType compute(final Polygon input, DoubleType output) {
-		if (output == null)
+		if(output == null){
 			output = new DoubleType();
+		}
 
 		final Rectangle2D rec = input.getBounds2D();
 

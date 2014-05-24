@@ -128,13 +128,18 @@ public class MedianIRT extends
 	@Override
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
 		for (final RealType<?> type : input) {
 			statistics.add(type.getRealDouble());
 		}
 
-		output = new DoubleType(select(statistics, 0, statistics.size() - 1,
+		output.set(select(statistics, 0, statistics.size() - 1,
 				statistics.size() / 2));
 		return output;
 	}

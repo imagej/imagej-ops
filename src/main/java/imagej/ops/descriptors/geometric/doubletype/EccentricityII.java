@@ -53,8 +53,9 @@ public class EccentricityII extends
 	@Override
 	public DoubleType compute(final IterableInterval<?> input, DoubleType output) {
 
-		if (output == null)
+		if(output == null){
 			output = new DoubleType();
+		}
 
 		final Cursor<?> cursor = input.localizingCursor();
 

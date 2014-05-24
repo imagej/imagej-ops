@@ -54,11 +54,15 @@ public class SumOfInversesIRT extends
 	@Override
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		double res = 0.0;
 		for (final RealType<?> type : input) {
 			res += (1.0d / type.getRealDouble());
 		}
-		output = new DoubleType(res);
+		output.set(res);
 		return output;
 	}
 }
