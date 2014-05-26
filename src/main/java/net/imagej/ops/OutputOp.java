@@ -30,36 +30,16 @@
 
 package net.imagej.ops;
 
-import org.scijava.ItemIO;
-
 /**
- * A {@code Function} is an {@link Op} that has a typed input parameter, and a
- * typed output parameter.
- * <p>
- * The function provides a {@link #compute} method to compute the function for
- * different input and output parameters.
- * </p>
- * <p>
- * Note that the typed output is actually considered both an input <em>and</em>
- * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
- * This fact is critical so that a preallocated data structure may be passed in
- * and filled by the function. It is <em>required</em> that if an output value
- * is given in this way, it will be populated with the function's result.
- * </p>
- * <p>
- * Lastly, functions implement the {@link Threadable} interface, and hence can
- * be reused across multiple threads of a {@link Parallel} op.
- * </p>
+ * An {@code OutputOp} is an {@link Op} that has a typed output parameter.
  * 
- * @author Christian Dietz
- * @author Martin Horn
  * @author Curtis Rueden
+ * @author Christian Dietz
  */
-public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable {
+public interface OutputOp<O> extends Op {
 
-	O compute(I input, O output);
+	O getOutput();
 
-	@Override
-	Function<I, O> getIndependentInstance();
+	void setOutput(O output);
 
 }
