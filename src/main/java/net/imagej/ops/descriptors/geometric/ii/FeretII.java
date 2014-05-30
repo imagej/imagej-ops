@@ -30,9 +30,6 @@
 
 package net.imagej.ops.descriptors.geometric.ii;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.Feret;
@@ -52,31 +49,41 @@ public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
 			final FeretResult output) {
 
 		double maxDiameter = 0.0f;
-		Point maxP1 = null;
-		Point maxP2 = null;
+		
+		final Point maxP1 = new Point(input.numDimensions());
+		final Point maxP2 = new Point(input.numDimensions());
 
 		final Cursor<?> cursor = input.localizingCursor();
-		final List<Point> points = new ArrayList<Point>((int) input.size());
 
 		final int[] position = new int[cursor.numDimensions()];
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			cursor.localize(position);
-			points.add(new Point(position));
 		}
 
-		for (final Point p : points) {
-			for (final Point p2 : points) {
+		final Cursor<?> cursor1 = input.localizingCursor();
+
+		// TODO: Is this really correct? Distances are accumulated twice (as p1
+		// + p2 distance and p2 + p1). Can't we avoid this?
+		while (cursor1.hasNext()) {
+			cursor1.fwd();
+
+			final Cursor<?> cursor2 = input.localizingCursor();
+			while (cursor2.hasNext()) {
+				cursor2.fwd();
+
 				double dist = 0.0f;
-				for (int i = 0; i < p.numDimensions(); i++) {
-					dist += (p.getIntPosition(i) - p2.getIntPosition(i))
-							* (p.getIntPosition(i) - p2.getIntPosition(i));
+				for (int i = 0; i < cursor1.numDimensions(); i++) {
+					dist += (cursor1.getIntPosition(i) - cursor2
+							.getIntPosition(i))
+							* (cursor1.getIntPosition(i) - cursor2
+									.getIntPosition(i));
 				}
 
 				if (dist > maxDiameter) {
 					maxDiameter = dist;
-					maxP1 = p;
-					maxP2 = p2;
+					maxP1.setPosition(cursor1);
+					maxP2.setPosition(cursor2);
 				}
 			}
 		}
