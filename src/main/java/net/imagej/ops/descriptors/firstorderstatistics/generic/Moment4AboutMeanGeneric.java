@@ -86,8 +86,7 @@ public class Moment4AboutMeanGeneric implements Moment4AboutMean {
 
 	@Override
 	public void setOutput(final DoubleType output) {
-		// TODO Auto-generated method stub
-
+		out = output;
 	}
 
 }

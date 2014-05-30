@@ -52,11 +52,7 @@ public class VarianceIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-
-		if (output == null) {
-			output = new DoubleType();
-		}
+			final DoubleType output) {
 
 		double sum = 0;
 		double sumSqr = 0;

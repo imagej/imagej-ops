@@ -56,11 +56,7 @@ public class CenterOfGravityPolygon extends AbstractFunction<Polygon, double[]>
 	private OpService ops;
 
 	@Override
-	public double[] compute(final Polygon input, double[] output) {
-
-		if(output == null){
-			output = new double[2];
-		}
+	public double[] compute(final Polygon input, final double[] output) {
 
 		final double area = ((DoubleType) ops.run(Area.class, input)).get();
 

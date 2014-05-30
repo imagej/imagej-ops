@@ -50,12 +50,8 @@ public class CenterOfGravityII extends
 		CenterOfGravity {
 
 	@Override
-	public double[] compute(final IterableInterval<?> input, double[] output) {
+	public double[] compute(final IterableInterval<?> input, final double[] output) {
 		final Cursor<?> it = input.cursor();
-
-		if (output == null) {
-			output = new double[input.numDimensions()];
-		}
 
 		while (it.hasNext()) {
 			it.fwd();

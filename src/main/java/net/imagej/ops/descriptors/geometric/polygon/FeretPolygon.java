@@ -51,9 +51,7 @@ public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
 		implements Feret {
 
 	@Override
-	public FeretResult compute(final Polygon input, FeretResult output) {
-		if (output == null)
-			output = new FeretResult();
+	public FeretResult compute(final Polygon input, final FeretResult output) {
 
 		double maxDiameter = -Double.MAX_VALUE;
 		final long[] tmp = { 0, 0 };

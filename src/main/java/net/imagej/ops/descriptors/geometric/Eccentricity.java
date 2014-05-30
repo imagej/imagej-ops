@@ -47,6 +47,6 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 public interface Eccentricity extends OutputOp<DoubleType> {
 
-	public final static String NAME = "eccentricity";
-	public final static String LABEL = "Eccentricity";
+	public final String NAME = "eccentricity";
+	public final String LABEL = "Eccentricity";
 }

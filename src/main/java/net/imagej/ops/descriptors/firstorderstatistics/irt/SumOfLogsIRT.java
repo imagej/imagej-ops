@@ -51,12 +51,8 @@ public class SumOfLogsIRT extends
 		SumOfLogs {
 
 	@Override
-	public DoubleType compute(Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-		
-		if (output == null) {
-			output = new DoubleType();
-		}
+	public DoubleType compute(final Iterable<? extends RealType<?>> input,
+			final DoubleType output) {
 
 		double result = 0.0;
 		for (final RealType<?> type : input) {

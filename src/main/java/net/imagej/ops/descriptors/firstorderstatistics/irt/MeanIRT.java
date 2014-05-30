@@ -50,11 +50,7 @@ public class MeanIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-
-		if (output == null) {
-			output = new DoubleType();
-		}
+			final DoubleType output) {
 
 		double sum = 0;
 		double count = 0;

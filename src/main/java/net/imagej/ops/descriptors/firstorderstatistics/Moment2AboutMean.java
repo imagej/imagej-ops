@@ -1,8 +1,3 @@
-package net.imagej.ops.descriptors.firstorderstatistics;
-
-import net.imagej.ops.OutputOp;
-import net.imglib2.type.numeric.real.DoubleType;
-
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -32,6 +27,11 @@ import net.imglib2.type.numeric.real.DoubleType;
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
+package net.imagej.ops.descriptors.firstorderstatistics;
+
+import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Base interface for "moment2aboutmean" operations.

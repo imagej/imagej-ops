@@ -49,10 +49,7 @@ public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
 
 	@Override
 	public FeretResult compute(final IterableInterval<?> input,
-			FeretResult output) {
-		if(output == null){
-			output = new FeretResult();
-		}
+			final FeretResult output) {
 
 		double maxDiameter = 0.0f;
 		Point maxP1 = null;

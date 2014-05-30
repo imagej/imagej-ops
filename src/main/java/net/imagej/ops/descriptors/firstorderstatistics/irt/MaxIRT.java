@@ -51,11 +51,8 @@ public class MaxIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
+			final DoubleType output) {
 
-		if (output == null) {
-			output = new DoubleType();
-		}
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (final RealType<?> val : input) {

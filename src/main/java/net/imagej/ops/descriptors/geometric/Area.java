@@ -33,6 +33,18 @@ package net.imagej.ops.descriptors.geometric;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
+/**
+ * Base interface for "area" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Area.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
+ */
 public interface Area extends OutputOp<DoubleType> {
 
 	String LABEL = "Area";

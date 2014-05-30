@@ -45,13 +45,13 @@ public class StdDeviationIRT extends
 		StdDev {
 
 	@Override
-	public DoubleType compute(Iterable<? extends RealType<?>> input,
+	public DoubleType compute(final Iterable<? extends RealType<?>> input,
 			DoubleType output) {
-		
+
 		if (output == null) {
 			output = new DoubleType();
 		}
-		
+
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;

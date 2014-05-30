@@ -33,7 +33,14 @@ package net.imagej.ops.descriptors.firstorderstatistics;
 import net.imagej.ops.Op;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Base interface for "minmax" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = MinMax.NAME)
+ * </pre>
  * 
  * @author Martin Horn
  * @author Christian Dietz
@@ -41,6 +48,8 @@ import net.imagej.ops.Op;
 public interface MinMax<T> extends Op {
 
 	public static final String NAME = "minmax";
+
+	public static final String LABEL = "Minimum and Maximum";
 
 	T getMin();
 

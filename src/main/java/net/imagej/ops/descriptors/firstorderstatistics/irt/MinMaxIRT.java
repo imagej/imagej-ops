@@ -68,8 +68,10 @@ public class MinMaxIRT<T extends RealType<T>> implements MinMax<T> {
 		final Iterator<T> it = img.iterator();
 		while (it.hasNext()) {
 			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+			if (min.compareTo(i) > 0)
+				min.set(i);
+			if (max.compareTo(i) < 0)
+				max.set(i);
 		}
 	}
 

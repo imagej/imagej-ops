@@ -52,10 +52,7 @@ public class SumIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-		if (output == null) {
-			output = new DoubleType();
-		}
+			final DoubleType output) {
 
 		double sum = 0;
 		for (final RealType<?> d : input) {

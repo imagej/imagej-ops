@@ -44,11 +44,7 @@ public class AreaII extends AbstractFunction<IterableInterval<?>, DoubleType>
 		implements Area {
 
 	@Override
-	public DoubleType compute(final IterableInterval<?> input, DoubleType output) {
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public DoubleType compute(final IterableInterval<?> input, final DoubleType output) {
 		output.set(input.size());
 		return output;
 	}

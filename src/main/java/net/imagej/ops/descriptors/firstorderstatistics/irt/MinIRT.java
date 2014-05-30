@@ -51,11 +51,7 @@ public class MinIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-
-		if (output == null) {
-			output = new DoubleType();
-		}
+			final DoubleType output) {
 
 		double min = Double.POSITIVE_INFINITY;
 

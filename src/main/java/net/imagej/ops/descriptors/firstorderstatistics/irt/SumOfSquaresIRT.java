@@ -46,18 +46,16 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
-public class SumOfSquaresIRT extends AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements SumOfSquares {
+public class SumOfSquaresIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		SumOfSquares {
 
 	@Override
-	public DoubleType compute(Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-		
-		if (output == null) {
-			output = new DoubleType();
-		}
-		
+	public DoubleType compute(final Iterable<? extends RealType<?>> input,
+			final DoubleType output) {
+
 		double result = 0;
-		for (RealType<?> val : input) {
+		for (final RealType<?> val : input) {
 			final double tmp = val.getRealDouble();
 			result += (tmp * tmp);
 		}

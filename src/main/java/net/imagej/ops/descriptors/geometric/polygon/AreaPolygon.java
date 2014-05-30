@@ -50,11 +50,7 @@ public class AreaPolygon extends AbstractFunction<Polygon, DoubleType>
 		implements Area {
 
 	@Override
-	public DoubleType compute(final Polygon input, DoubleType output) {
-		if (output == null) {
-			output = new DoubleType();
-			setOutput(output);
-		}
+	public DoubleType compute(final Polygon input, final DoubleType output) {
 
 		double sum1 = 0.0f;
 		double sum2 = 0.0f;

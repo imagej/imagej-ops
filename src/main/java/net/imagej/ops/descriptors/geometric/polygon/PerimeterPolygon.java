@@ -51,10 +51,7 @@ public class PerimeterPolygon extends AbstractFunction<Polygon, DoubleType>
 		implements Perimeter {
 
 	@Override
-	public DoubleType compute(final Polygon input, DoubleType output) {
-
-		if (output == null)
-			output = new DoubleType();
+	public DoubleType compute(final Polygon input, final DoubleType output) {
 
 		double dx, dy;
 		double length = 0.0;
