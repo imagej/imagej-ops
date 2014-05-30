@@ -1,114 +1,21 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.scijava</groupId>
-		<artifactId>pom-scijava</artifactId>
-		<version>1.149</version>
+		<groupId>net.imagej</groupId>
+		<artifactId>pom-imagej</artifactId>
+		<version>2.7</version>
 		<relativePath />
 	</parent>
 
 	<groupId>net.imagej</groupId>
-	<artifactId>ij-ops</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<artifactId>imagej-ops</artifactId>
+	<version>0.3.1-SNAPSHOT</version>
 
 	<name>ImageJ Operations</name>
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
-	<url>http://developer.imagej.net/</url>
 	<inceptionYear>2014</inceptionYear>
-
-	<dependencies>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij-core</artifactId>
-			<version>${imagej.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij-ui-swing</artifactId>
-			<version>${imagej.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2</artifactId>
-			<version>${imglib2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-algorithms</artifactId>
-			<version>${imglib2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-realtransform</artifactId>
-			<version>${imglib2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-meta</artifactId>
-			<version>${imglib2.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.scijava</groupId>
-			<artifactId>scijava-common</artifactId>
-			<version>${scijava-common.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.16.1-GA</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij-app</artifactId>
-			<version>${imagej.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<packageName>imagej.ops</packageName>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<licenseName>bsd_2</licenseName>
-					<organizationName>Board of Regents of the University of
-Wisconsin-Madison and University of Konstanz.</organizationName>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<licenses>
-		<license>
-			<name>Simplified BSD License</name>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<organization>
-		<name>ImageJ</name>
-		<url>http://developer.imagej.net/</url>
-	</organization>
 
 	<developers>
 		<developer>
@@ -165,6 +72,13 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 		</developer>
 	</developers>
 
+	<scm>
+		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
+		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/imagej/imagej-ops</url>
+	</scm>
+
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/imagej/imagej-ops/issues</url>
@@ -175,29 +89,185 @@ Wisconsin-Madison and University of Konstanz.</organizationName>
 		<url>http://jenkins.imagej.net/job/ImageJ-OPS/</url>
 	</ciManagement>
 
-	<mailingLists>
-		<mailingList>
-			<name>ImageJ-devel</name>
-			<subscribe>http://imagej.net/mailman/listinfo/imagej-devel</subscribe>
-			<unsubscribe>http://imagej.net/mailman/listinfo/imagej-devel</unsubscribe>
-			<post>imagej-devel@imagej.net</post>
-			<archive>http://imagej.net/pipermail/imagej-devel/</archive>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
-		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
-		<tag>HEAD</tag>
-		<url>https://github.com/imagej/imagej-ops</url>
-	</scm>
+	<properties>
+		<!-- NB: JUnit >= 4.11 needed for JUnit-Benchmarks -->
+		<junit.version>4.11</junit.version>
+	</properties>
 
 	<repositories>
-		<!-- NB: for project parent -->
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<dependencies>
+		<!-- ImageJ dependencies -->
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-common</artifactId>
+		</dependency>
+
+		<!-- ImgLib2 dependencies -->
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-algorithms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-realtransform</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-meta</artifactId>
+		</dependency>
+
+		<!-- SciJava dependencies -->
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-common</artifactId>
+		</dependency>
+
+		<!-- Third-party dependencies -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.16.1-GA</version>
+		</dependency>
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>junit-benchmarks</artifactId>
+			<version>${junit-benchmarks.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<!-- NB: Make Eclipse generate code in a full build; see:
+					     http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>groovy-maven-plugin</artifactId>
+										<versionRange>1.5</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<runOnIncremental>false</runOnIncremental>
+										</execute>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<version>1.5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.velocity</groupId>
+						<artifactId>velocity</artifactId>
+						<version>1.6.4</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<templateDirectory>${basedir}/src/main/templates</templateDirectory>
+								<outputDirectory>${project.build.directory}/generated-sources/from-template/net/imagej/ops/generated</outputDirectory>
+							</properties>
+							<source>${basedir}/src/main/groovy/generate.groovy</source>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-test-sources</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<templateDirectory>${basedir}/src/test/templates</templateDirectory>
+								<outputDirectory>${project.build.directory}/template-tests/</outputDirectory>
+							</properties>
+							<source>${basedir}/src/main/groovy/generate.groovy</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/from-template/</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<packageName>net.imagej.ops</packageName>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<organizationName>Board of Regents of the University of
+Wisconsin-Madison and University of Konstanz.</organizationName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
