@@ -1,12 +1,9 @@
-package imagej.ops.descriptor;
+package net.imagej.ops;
 
-import imagej.ops.AbstractOpTest;
-import imagej.ops.OpMatchingService;
-import imagej.ops.OpService;
-import imagej.ops.descriptors.DescriptorService;
-import imagej.ops.descriptors.ResolvedDescriptor;
-import imagej.ops.descriptors.statistics.Kurtosis;
-import imagej.ops.descriptors.statistics.Mean;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.ResolvedDescriptor;
+import net.imagej.ops.descriptors.firstorderstatistics.Kurtosis;
+import net.imagej.ops.descriptors.firstorderstatistics.Mean;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 

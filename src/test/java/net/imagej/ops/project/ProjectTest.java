@@ -31,17 +31,10 @@
 package net.imagej.ops.project;
 
 import static org.junit.Assert.assertEquals;
-<<<<<<< HEAD:src/test/java/imagej/ops/project/ProjectTest.java
-import imagej.ops.AbstractOpTest;
-import imagej.ops.Op;
-import imagej.ops.descriptors.statistics.Sum;
-import imagej.ops.project.parallel.DefaultProjectP;
-=======
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.firstorderstatistics.Sum;
 import net.imagej.ops.project.parallel.DefaultProjectP;
-import net.imagej.ops.statistics.Sum;
->>>>>>> master:src/test/java/net/imagej/ops/project/ProjectTest.java
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
