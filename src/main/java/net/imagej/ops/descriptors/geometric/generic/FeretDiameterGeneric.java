@@ -65,9 +65,4 @@ public class FeretDiameterGeneric implements FeretsDiameter {
 	public DoubleType getOutput() {
 		return out;
 	}
-
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
 }

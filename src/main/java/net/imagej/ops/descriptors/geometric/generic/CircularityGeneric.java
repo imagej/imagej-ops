@@ -72,10 +72,4 @@ public class CircularityGeneric implements Circularity {
 				* (area.getOutput().get() / Math.pow(perimeter.getOutput()
 						.get(), 2)));
 	}
-
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
-
 }

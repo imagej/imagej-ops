@@ -76,10 +76,4 @@ public class KurtosisGeneric implements Kurtosis {
 	public DoubleType getOutput() {
 		return out;
 	}
-	
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
-
 }

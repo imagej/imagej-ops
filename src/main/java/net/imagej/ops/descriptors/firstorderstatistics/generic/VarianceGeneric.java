@@ -67,9 +67,4 @@ public class VarianceGeneric implements Variance {
 		out = moment2.getOutput().copy();
 	}
 
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
-
 }

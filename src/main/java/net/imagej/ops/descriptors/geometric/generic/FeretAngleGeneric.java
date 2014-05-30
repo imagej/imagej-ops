@@ -65,9 +65,5 @@ public class FeretAngleGeneric implements FeretsAngle {
 	public DoubleType getOutput() {
 		return out;
 	}
-	
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
+
 }

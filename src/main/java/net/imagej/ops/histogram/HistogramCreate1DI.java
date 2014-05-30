@@ -46,11 +46,9 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn, University of Konstanz
  */
-@Plugin(type = Op.class, name = HistogramCreate1D.NAME,
-	label = HistogramCreate1D.LABEL)
+@Plugin(type = Op.class, name = HistogramCreate1D.NAME, label = HistogramCreate1D.LABEL)
 public class HistogramCreate1DI<T extends RealType<T>> implements
-	HistogramCreate1D<T>
-{
+		HistogramCreate1D<T> {
 
 	@Parameter
 	private Iterable<T> in;
@@ -68,14 +66,13 @@ public class HistogramCreate1DI<T extends RealType<T>> implements
 	public void run() {
 		@SuppressWarnings("unchecked")
 		final List<T> res = (List<T>) ops.run(MinMax.class, in);
-		out =
-			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
-				.get(1).getRealDouble(), numBins, false));
+		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
+				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
 
 	}
 
 	@Override
-	public Histogram1d<T> getHistogram() {
+	public Histogram1d<T> getOutput() {
 		return out;
 	}
 }

@@ -77,9 +77,4 @@ public class SkewnessGeneric implements Skewness {
 		}
 
 	}
-
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
 }

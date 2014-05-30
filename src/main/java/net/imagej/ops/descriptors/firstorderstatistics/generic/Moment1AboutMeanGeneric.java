@@ -82,9 +82,4 @@ public class Moment1AboutMeanGeneric implements Moment1AboutMean {
 		out = new DoubleType(res);
 		out.div(area.getOutput());
 	}
-
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
 }

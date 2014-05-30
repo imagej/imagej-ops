@@ -49,8 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class MeanGeneric implements Mean {
 
 	@Parameter(type = ItemIO.INPUT)
@@ -72,11 +71,5 @@ public class MeanGeneric implements Mean {
 		out = new DoubleType();
 		out.add(sum.getOutput());
 		out.div(numElements.getOutput());
-	}
-	
-	
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
 	}
 }

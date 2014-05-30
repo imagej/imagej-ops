@@ -30,7 +30,7 @@
 
 package net.imagej.ops.histogram;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.OutputOp;
 import net.imglib2.histogram.Histogram1d;
 
 /**
@@ -45,10 +45,9 @@ import net.imglib2.histogram.Histogram1d;
  * 
  * @author Martin Horn
  */
-public interface HistogramCreate1D<T> extends Op {
+public interface HistogramCreate1D<T> extends OutputOp<Histogram1d<T>> {
 
 	public final String NAME = "histogram";
 	public final String LABEL = "Histogram";
 
-	Histogram1d<T> getHistogram();
 }

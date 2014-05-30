@@ -67,10 +67,4 @@ public class StdDevGeneric implements StdDev {
 	public void run() {
 		out = new DoubleType(Math.sqrt(variance.getOutput().getRealDouble()));
 	}
-
-	
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
 }

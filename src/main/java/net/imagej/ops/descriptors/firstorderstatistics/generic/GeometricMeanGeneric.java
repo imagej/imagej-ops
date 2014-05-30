@@ -79,9 +79,4 @@ public class GeometricMeanGeneric implements GeometricMean {
 		}
 	}
 
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
-
 }

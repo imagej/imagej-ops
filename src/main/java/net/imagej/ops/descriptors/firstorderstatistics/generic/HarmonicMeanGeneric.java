@@ -75,10 +75,5 @@ public class HarmonicMeanGeneric implements HarmonicMean {
 			out.div(inverseSum.getOutput());
 		}
 	}
-	
-	@Override
-	public void setOutput(final DoubleType output) {
-		out = output;
-	}
 
 }
