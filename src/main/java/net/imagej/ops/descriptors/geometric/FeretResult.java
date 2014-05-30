@@ -47,7 +47,8 @@ public class FeretResult {
 
 	public double getAngle() {
 
-		if (p1.getDoublePosition(0) == p2.getDoublePosition(0)) return (90);
+		if (p1.getDoublePosition(0) == p2.getDoublePosition(0))
+			return (90);
 
 		// tan alpha = opposite leg / adjacent leg
 		// angle in radiants = atan(alpha)
@@ -58,7 +59,8 @@ public class FeretResult {
 
 		double degree = Math.atan((opLeg / adjLeg)) * (180.0 / Math.PI);
 
-		if (adjLeg < 0) degree = 180 - degree;
+		if (adjLeg < 0)
+			degree = 180 - degree;
 
 		return Math.abs(degree);
 	}

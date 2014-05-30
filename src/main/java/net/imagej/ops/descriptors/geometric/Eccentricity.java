@@ -33,7 +33,6 @@ package net.imagej.ops.descriptors.geometric;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-
 /**
  * Base interface for "eccentricity" operations.
  * <p>

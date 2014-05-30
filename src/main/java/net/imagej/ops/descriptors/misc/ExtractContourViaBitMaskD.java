@@ -42,18 +42,16 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 //TODO can such functions be generalized and automated (like an ops graph in which we are searching for paths to the desired goal given some parameters?)
-@Plugin(type = Op.class, name = ContourExtraction.NAME,
-	label = ContourExtraction.LABEL)
+@Plugin(type = Op.class, name = ContourExtraction.NAME, label = ContourExtraction.LABEL)
 public class ExtractContourViaBitMaskD extends
-	AbstractFunction<Object, Polygon>
-{
+		AbstractFunction<Object, Polygon> {
 
 	@Parameter
 	private OpService ops;
 
 	@Override
 	public Polygon compute(final Object input, final Polygon output) {
-		return (Polygon) ops.run(ContourExtraction.class, Polygon.class, ops.run(
-			CreateBitMask.class, null, input));
+		return (Polygon) ops.run(ContourExtraction.class, Polygon.class,
+				ops.run(CreateBitMask.class, null, input));
 	}
 }

@@ -33,7 +33,6 @@ package net.imagej.ops.descriptors.statistics;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-
 /**
  * Base interface for "max" operations.
  * <p>

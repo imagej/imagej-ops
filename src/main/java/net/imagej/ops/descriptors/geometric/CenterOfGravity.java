@@ -32,7 +32,6 @@ package net.imagej.ops.descriptors.geometric;
 
 import net.imagej.ops.OutputOp;
 
-
 /**
  * Base interface for "centerofgravity" operations.
  * <p>

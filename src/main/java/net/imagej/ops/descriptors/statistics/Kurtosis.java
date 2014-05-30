@@ -34,7 +34,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-
 /**
  * Base interface for "kurtosis" operations.
  * <p>

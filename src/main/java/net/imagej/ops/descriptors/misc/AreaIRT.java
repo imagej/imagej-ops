@@ -48,7 +48,7 @@ public class AreaIRT extends
 	public DoubleType compute(Iterable<? extends RealType<?>> input,
 			DoubleType output) {
 
-		if(output == null){
+		if (output == null) {
 			output = new DoubleType();
 		}
 
