@@ -28,43 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.generic;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.firstorderstatistics.Moment3AboutMean;
+import net.imagej.ops.descriptors.firstorderstatistics.Skewness;
+import net.imagej.ops.descriptors.firstorderstatistics.StdDev;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Generic implementation of {@link Skewness}. Use {@link DescriptorService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, label = Skewness.LABEL, name = Skewness.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class SkewnessGeneric implements Skewness {
 
-	@Parameter
-	private double c;
+	@Parameter(type = ItemIO.INPUT)
+	private Moment3AboutMean moment3;
 
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.INPUT)
+	private StdDev stdDev;
 
-	private MeanIRT mean;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public DoubleType getOutput() {
+		return out;
+	}
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+	@Override
+	public void run() {
+		final double moment3 = this.moment3.getOutput().getRealDouble();
+		final double std = this.stdDev.getOutput().getRealDouble();
+
+		out = new DoubleType(0);
+		if (std != 0) {
+			out = new DoubleType(((moment3) / (std * std * std)));
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+	}
 
-		return output;
+	@Override
+	public void setOutput(final DoubleType output) {
+		out = output;
 	}
 }

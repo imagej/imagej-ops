@@ -28,43 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
+import java.util.Iterator;
+
+import net.imagej.ops.descriptors.firstorderstatistics.MinMax;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Calculates the minimum and maximum value of an {@link Iterable} of type
+ * {@link RealType}
+ * 
  * @author Martin Horn
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = MinMax.class, name = MinMax.NAME)
+public class MinMaxIRT<T extends RealType<T>> implements MinMax<T> {
 
-	@Parameter
-	private double c;
+	@Parameter(type = ItemIO.INPUT)
+	private Iterable<T> img;
 
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
 
-	private MeanIRT mean;
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public void run() {
+		min = img.iterator().next().createVariable();
+		max = min.copy();
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
+
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0) min.set(i);
+			if (max.compareTo(i) < 0) max.set(i);
 		}
-
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
-		return output;
 	}
+
+	@Override
+	public T getMin() {
+		return min;
+	}
+
+	@Override
+	public T getMax() {
+		return max;
+	}
+
 }

@@ -28,43 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.generic;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.firstorderstatistics.Moment2AboutMean;
+import net.imagej.ops.descriptors.firstorderstatistics.Variance;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Generic implementation of {@link Variance}. Use {@link DescriptorService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, label = Variance.LABEL, name = Variance.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class VarianceGeneric implements Variance {
 
-	@Parameter
-	private double c;
+	@Parameter(type = ItemIO.INPUT)
+	private Moment2AboutMean moment2;
 
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
-		}
-
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
-		return output;
+	public DoubleType getOutput() {
+		return out;
 	}
+
+	@Override
+	public void run() {
+		out = moment2.getOutput().copy();
+	}
+
+	@Override
+	public void setOutput(final DoubleType output) {
+		out = output;
+	}
+
 }

@@ -28,43 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.polygon;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import java.awt.Polygon;
+
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.descriptors.geometric.Perimeter;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * see: Perimeter of a polygon as used in imagej
+ * (http://rsb.info.nih.gov/ij/developer
+ * /source/ij/process/FloatPolygon.java.html)
+ * 
+ * @author Andreas Graumann
+ * @author Christian Dietz
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Perimeter.class, priority = 1)
+public class PerimeterPolygon extends AbstractFunction<Polygon, DoubleType>
+		implements Perimeter {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public DoubleType compute(final Polygon input, DoubleType output) {
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		if (output == null)
+			output = new DoubleType();
+
+		double dx, dy;
+		double length = 0.0;
+		for (int i = 0; i < (input.npoints - 1); i++) {
+			dx = input.xpoints[i + 1] - input.xpoints[i];
+			dy = input.ypoints[i + 1] - input.ypoints[i];
+			length += Math.sqrt(dx * dx + dy * dy);
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		dx = input.xpoints[0] - input.xpoints[input.npoints - 1];
+		dy = input.ypoints[0] - input.ypoints[input.npoints - 1];
+		length += Math.sqrt(dx * dx + dy * dy);
 
+		output.setReal(0.9 * length);
 		return output;
 	}
 }

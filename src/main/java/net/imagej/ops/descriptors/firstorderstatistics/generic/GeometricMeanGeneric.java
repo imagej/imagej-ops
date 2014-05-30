@@ -28,43 +28,60 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.generic;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.firstorderstatistics.GeometricMean;
+import net.imagej.ops.descriptors.firstorderstatistics.SumOfLogs;
+import net.imagej.ops.descriptors.geometric.Area;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Generic implementation of {@link GeometricMean}. Use
+ * {@link DescriptorService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, label = GeometricMean.LABEL, name = GeometricMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class GeometricMeanGeneric implements GeometricMean {
 
-	@Parameter
-	private double c;
+	@Parameter(type = ItemIO.INPUT)
+	private SumOfLogs logSum;
 
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.INPUT)
+	private Area area;
 
-	private MeanIRT mean;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
-		}
-
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
-		return output;
+	public DoubleType getOutput() {
+		return out;
 	}
+
+	@Override
+	public void run() {
+
+		final double area = this.area.getOutput().getRealDouble();
+
+		if (area != 0) {
+			out = new DoubleType(Math.exp(logSum.getOutput().getRealDouble()
+					/ area));
+		} else {
+			out = new DoubleType(0);
+		}
+	}
+
+	@Override
+	public void setOutput(final DoubleType output) {
+		out = output;
+	}
+
 }

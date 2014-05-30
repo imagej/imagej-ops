@@ -28,43 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.polygon;
 
+import java.awt.Polygon;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.geometric.Area;
+import net.imagej.ops.descriptors.geometric.CenterOfGravity;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculating {@link CenterOfGravity} on {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
+@Plugin(type = Op.class, priority = -1, name = CenterOfGravity.NAME, label = CenterOfGravity.LABEL)
+public class CenterOfGravityPolygon extends AbstractFunction<Polygon, double[]>
+		implements CenterOfGravity {
 
 	@Parameter
 	private OpService ops;
 
-	private MeanIRT mean;
-
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public double[] compute(final Polygon input, double[] output) {
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		if(output == null){
+			output = new double[2];
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		final double area = ((DoubleType) ops.run(Area.class, input)).get();
+
+		// Yang Mingqiang:
+		// A Survey of Shape Feature Extraction Techniques
+		// in Pattern Recognition Techniques, Technology and Applications, 2008
+		for (int i = 0; i < input.npoints; i++) {
+			final double x = input.xpoints[i];
+			final double x1 = input.xpoints[i + 1];
+			final double y = input.ypoints[i];
+			final double y1 = input.ypoints[i + 1];
+
+			output[0] += (x + x1) * (x * y1 - x1 * y);
+			output[1] += (y + y1) * (x * y1 - x1 * y);
+		}
+
+		final double x = input.xpoints[input.npoints - 1];
+		final double x1 = input.xpoints[0];
+		final double y = input.ypoints[input.npoints - 1];
+		final double y1 = input.ypoints[0];
+
+		output[0] += (x + x1) * (x * y1 - x1 * y);
+		output[1] += (y + y1) * (x * y1 - x1 * y);
+
+		output[0] = (1 / (6 * area)) * Math.abs(output[0]);
+		output[1] = (1 / (6 * area)) * Math.abs(output[1]);
 
 		return output;
 	}
+
 }

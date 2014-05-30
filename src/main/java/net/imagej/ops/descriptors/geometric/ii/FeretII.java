@@ -28,54 +28,69 @@
  * #L%
  */
 
-package net.imagej.ops.histogram;
+package net.imagej.ops.descriptors.geometric.ii;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.MinMax;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.geometric.Feret;
+import net.imagej.ops.descriptors.geometric.FeretResult;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.Point;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn, University of Konstanz
- */
-@Plugin(type = Op.class, name = HistogramCreate1D.NAME,
-	label = HistogramCreate1D.LABEL)
-public class HistogramCreate1DI<T extends RealType<T>> implements
-	HistogramCreate1D<T>
-{
-
-	@Parameter
-	private Iterable<T> in;
-
-	@Parameter(required = false)
-	private int numBins = 256;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Histogram1d<T> out;
-
-	@Parameter
-	private OpService ops;
+@Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
+public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
+		implements Feret {
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final List<T> res = (List<T>) ops.run(MinMax.class, in);
-		out =
-			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
-				.get(1).getRealDouble(), numBins, false));
+	public FeretResult compute(final IterableInterval<?> input,
+			FeretResult output) {
+		if(output == null){
+			output = new FeretResult();
+		}
 
-	}
+		double maxDiameter = 0.0f;
+		Point maxP1 = null;
+		Point maxP2 = null;
 
-	@Override
-	public Histogram1d<T> getHistogram() {
-		return out;
+		final Cursor<?> cursor = input.localizingCursor();
+		final List<Point> points = new ArrayList<Point>((int) input.size());
+
+		final int[] position = new int[cursor.numDimensions()];
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			cursor.localize(position);
+			points.add(new Point(position));
+		}
+
+		for (final Point p : points) {
+			for (final Point p2 : points) {
+				double dist = 0.0f;
+				for (int i = 0; i < p.numDimensions(); i++) {
+					dist += (p.getIntPosition(i) - p2.getIntPosition(i))
+							* (p.getIntPosition(i) - p2.getIntPosition(i));
+				}
+
+				if (dist > maxDiameter) {
+					maxDiameter = dist;
+					maxP1 = p;
+					maxP2 = p2;
+				}
+			}
+		}
+
+		// sqrt for euclidean
+		maxDiameter = Math.sqrt(maxDiameter);
+
+		output.max = maxDiameter;
+		output.p1 = maxP1;
+		output.p2 = maxP2;
+
+		return output;
 	}
 }

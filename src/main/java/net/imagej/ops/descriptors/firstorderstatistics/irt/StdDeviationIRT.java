@@ -28,43 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.descriptors.firstorderstatistics.StdDev;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, name = StdDev.NAME, label = StdDev.LABEL, priority = Priority.LOW_PRIORITY + 1)
+public class StdDeviationIRT extends
+		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
+		StdDev {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		for (final RealType<?> rt : input) {
+			final double px = rt.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
+		output.set((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
 		return output;
 	}
 }

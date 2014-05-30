@@ -28,43 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * @author Christian Dietz
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+public abstract class AbstractPercentile implements Percentile {
 
-	@Parameter
-	private double c;
+	protected double calculatePercentile(final double p, final double[] v) {
+		final double[] values = v;
+		final int size = values.length;
 
-	@Parameter
-	private OpService ops;
+		if (size == 0)
+			return Double.NaN;
 
-	private MeanIRT mean;
+		if (size == 1)
+			return values[0];
 
-	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+		final double n = size;
+		final double pos = p * (n + 1);
+		final double fpos = Math.floor(pos);
+		final int intPos = (int) fpos;
+		final double dif = pos - fpos;
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
-		}
+		if (pos < 1)
+			return values[0];
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		if (pos >= n)
+			return values[size - 1];
 
-		return output;
+		final double lower = values[intPos - 1];
+		final double upper = values[intPos];
+
+		return lower + dif * (upper - lower);
 	}
 }

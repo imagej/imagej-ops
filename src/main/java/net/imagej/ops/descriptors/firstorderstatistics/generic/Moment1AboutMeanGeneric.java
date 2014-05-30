@@ -28,43 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.generic;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.firstorderstatistics.Mean;
+import net.imagej.ops.descriptors.firstorderstatistics.Moment1AboutMean;
+import net.imagej.ops.descriptors.geometric.Area;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Generic implementation of {@link Moment1AboutMean}. Use
+ * {@link DescriptorService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, name = Moment1AboutMean.NAME, label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class Moment1AboutMeanGeneric implements Moment1AboutMean {
 
-	@Parameter
-	private double c;
+	@Parameter(type = ItemIO.INPUT)
+	private Iterable<? extends RealType<?>> irt;
 
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.INPUT)
+	private Mean mean;
 
-	private MeanIRT mean;
+	@Parameter(type = ItemIO.INPUT)
+	private Area area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType out;
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public DoubleType getOutput() {
+		return out;
+	}
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+	@Override
+	public void run() {
+		final double tmpMean = mean.getOutput().getRealDouble();
+
+		double res = 0.0;
+		for (final RealType<?> val : irt) {
+			res += val.getRealDouble() - tmpMean;
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
-		return output;
+		out = new DoubleType(res);
+		out.div(area.getOutput());
+	}
+	
+	
+	@Override
+	public void setOutput(final DoubleType output) {
+		out = output;
 	}
 }

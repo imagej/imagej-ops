@@ -1,3 +1,8 @@
+package net.imagej.ops.descriptors.firstorderstatistics;
+
+import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
+
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -28,43 +33,21 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * @author Martin Horn
+ * Base interface for "moment3aboutmean" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = Moment3AboutMean.NAME)
+ * </pre>
+ * 
+ * @author Christian Dietz
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+public interface Moment3AboutMean extends OutputOp<DoubleType> {
 
-	@Parameter
-	private double c;
+	String NAME = "moment3aboutmean";
+	String LABEL = "Moment 3 About Mean";
 
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
-
-	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
-		}
-
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
-		return output;
-	}
 }

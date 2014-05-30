@@ -28,43 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.ii;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.descriptors.geometric.CenterOfGravity;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculating {@link CenterOfGravity} on {@link IterableInterval}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, label = CenterOfGravity.LABEL, name = CenterOfGravity.NAME)
+public class CenterOfGravityII extends
+		AbstractFunction<IterableInterval<?>, double[]> implements
+		CenterOfGravity {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public double[] compute(final IterableInterval<?> input, double[] output) {
+		final Cursor<?> it = input.cursor();
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		if (output == null) {
+			output = new double[input.numDimensions()];
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		while (it.hasNext()) {
+			it.fwd();
+			for (int i = 0; i < output.length; i++) {
+				output[i] += it.getDoublePosition(i);
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] /= input.size();
+		}
 
 		return output;
 	}
+
 }

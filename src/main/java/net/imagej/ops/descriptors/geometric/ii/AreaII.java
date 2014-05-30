@@ -28,43 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.ii;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.geometric.Area;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL, priority = Priority.HIGH_PRIORITY)
+public class AreaII extends AbstractFunction<IterableInterval<?>, DoubleType>
+		implements Area {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+	public DoubleType compute(final IterableInterval<?> input, DoubleType output) {
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
 		}
-
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
+		output.set(input.size());
 		return output;
 	}
 }

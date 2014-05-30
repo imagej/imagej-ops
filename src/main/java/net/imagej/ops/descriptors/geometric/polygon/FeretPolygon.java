@@ -28,42 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.polygon;
 
+import java.awt.Polygon;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.descriptors.geometric.Feret;
+import net.imagej.ops.descriptors.geometric.FeretResult;
+import net.imglib2.Point;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculating {@link FeretResult} on {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
+public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
+		implements Feret {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
+	public FeretResult compute(final Polygon input, FeretResult output) {
+		if (output == null)
+			output = new FeretResult();
 
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+		double maxDiameter = -Double.MAX_VALUE;
+		final long[] tmp = { 0, 0 };
+		final Point maxP1 = new Point(tmp);
+		final Point maxP2 = new Point(tmp);
+
+		for (int i = 0; i < input.npoints; i++) {
+			for (int j = 0; j < input.npoints; j++) {
+				if (i != j) {
+					double dist = 0.0;
+
+					dist += (input.xpoints[i] - input.xpoints[j])
+							* (input.xpoints[i] - input.xpoints[j]);
+					dist += (input.ypoints[i] - input.ypoints[j])
+							* (input.ypoints[i] - input.ypoints[j]);
+
+					if (dist > maxDiameter) {
+						maxP1.setPosition(input.xpoints[i], 0);
+						maxP1.setPosition(input.ypoints[i], 1);
+						maxP2.setPosition(input.xpoints[j], 0);
+						maxP2.setPosition(input.ypoints[j], 1);
+						maxDiameter = dist;
+					}
+				}
+			}
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		// sqrt for euclidean
+		maxDiameter = Math.sqrt(maxDiameter);
+
+		output.max = maxDiameter;
+		output.p1 = maxP1;
+		output.p2 = maxP2;
 
 		return output;
 	}

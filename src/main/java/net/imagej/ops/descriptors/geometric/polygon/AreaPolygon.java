@@ -28,43 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.geometric.polygon;
 
+import java.awt.Polygon;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.descriptors.geometric.Area;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculate area of a {@link Polygon}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL)
+public class AreaPolygon extends AbstractFunction<Polygon, DoubleType>
+		implements Area {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+	public DoubleType compute(final Polygon input, DoubleType output) {
+		if (output == null) {
+			output = new DoubleType();
+			setOutput(output);
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		double sum1 = 0.0f;
+		double sum2 = 0.0f;
 
+		// Yang Mingqiang:
+		// A Survey of Shape Feature Extraction Techniques
+		// in Pattern Recognition Techniques, Technology and Applications, 2008
+		for (int i = 0; i < input.npoints - 1; i++) {
+			sum1 += input.xpoints[i] * input.ypoints[i + 1];
+			sum2 += input.ypoints[i] * input.xpoints[i + 1];
+		}
+
+		sum1 += input.xpoints[input.npoints - 1] * input.ypoints[0];
+		sum2 += input.ypoints[input.npoints - 1] * input.xpoints[0];
+
+		output.set(Math.abs(sum1 - sum2) / 2);
 		return output;
 	}
+
 }

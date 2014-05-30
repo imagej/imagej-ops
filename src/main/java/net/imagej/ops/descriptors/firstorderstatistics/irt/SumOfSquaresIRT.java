@@ -28,43 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.descriptors.firstorderstatistics.SumOfSquares;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Calculate {@link SumOfSquares} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ * 
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private MeanIRT mean;
+@Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
+public class SumOfSquaresIRT extends AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements SumOfSquares {
 
 	@Override
-	public BitType compute(final Pair<T> input, final BitType output) {
-
-		if (mean == null) {
-			// TODO: Allow ops.op to search for ops which have a certain supertype (e.g. functions, features etc).
-			mean = (MeanIRT) ops.op(MeanIRT.class, output, input);
+	public DoubleType compute(Iterable<? extends RealType<?>> input,
+			DoubleType output) {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		double result = 0;
+		for (RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			result += (tmp * tmp);
 		}
 
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-
+		output.set(result);
 		return output;
 	}
+
 }

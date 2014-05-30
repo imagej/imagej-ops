@@ -32,7 +32,7 @@ package net.imagej.ops.commands.project;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.descriptors.statistics.rt.MeanIRT;
+import net.imagej.ops.descriptors.firstorderstatistics.irt.MeanIRT;
 import net.imagej.ops.project.Project;
 import net.imglib2.img.Img;
 import net.imglib2.meta.ImgPlus;
