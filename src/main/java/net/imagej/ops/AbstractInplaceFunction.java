@@ -60,7 +60,6 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		arg = input;
 	}
 
-	@Override
 	public void setOutput(final A output) {
 		arg = output;
 	}
@@ -84,7 +83,8 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 	public InplaceFunction<A> getIndependentInstance() {
 		// NB: We assume the function instance is thread-safe by default.
 		// Individual function implementations can override this assumption if
-		// they have state (such as buffers) that cannot be shared across threads.
+		// they have state (such as buffers) that cannot be shared across
+		// threads.
 		return this;
 	}
 

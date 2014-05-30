@@ -39,7 +39,4 @@ package net.imagej.ops;
 public interface OutputOp<O> extends Op {
 
 	O getOutput();
-
-	void setOutput(O output);
-
 }
