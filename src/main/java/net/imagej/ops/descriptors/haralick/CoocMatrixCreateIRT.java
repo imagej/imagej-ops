@@ -37,7 +37,6 @@ import java.util.Arrays;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.MinMax;
-import net.imagej.ops.descriptors.haralick.helpers.CoocParameter;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.ops.data.CooccurrenceMatrix;

@@ -31,9 +31,9 @@
  * policies, either expressed or implied, of any organization.
  * #L%
  */
-package net.imagej.ops.descriptors.haralick.helpers;
+package net.imagej.ops.descriptors.haralick;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.DescriptorParameterSet;
 import net.imglib2.ops.data.CooccurrenceMatrix.MatrixOrientation;
 
 import org.scijava.plugin.Parameter;
@@ -41,8 +41,8 @@ import org.scijava.plugin.Parameter;
 /**
  * 
  */
-public class CoocParameter implements Op {
-	
+public class CoocParameter implements DescriptorParameterSet {
+
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
 	public double nrGrayLevels;
 
@@ -85,8 +85,4 @@ public class CoocParameter implements Op {
 		}
 	}
 
-	@Override
-	public void run() {
-		// nothing to do here
-	}
 }

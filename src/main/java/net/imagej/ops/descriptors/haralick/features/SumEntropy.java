@@ -35,8 +35,8 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.descriptors.haralick.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXPlusY;
-import net.imagej.ops.descriptors.haralick.helpers.CoocParameter;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
