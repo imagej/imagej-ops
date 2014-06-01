@@ -36,6 +36,7 @@ package net.imagej.ops.descriptors.haralick;
 import java.util.Arrays;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.firstorderstatistics.MinMax;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;

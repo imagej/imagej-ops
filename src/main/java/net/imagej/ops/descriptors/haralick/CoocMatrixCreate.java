@@ -4,7 +4,7 @@ import net.imagej.ops.OutputOp;
 import net.imglib2.ops.data.CooccurrenceMatrix;
 
 /**
- * Base interface for "cooccurrencematrix" operations.
+ * Base interface for "createcoocmatrix" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
@@ -16,5 +16,5 @@ import net.imglib2.ops.data.CooccurrenceMatrix;
  * @author Christian Dietz
  */
 public interface CoocMatrixCreate extends OutputOp<CooccurrenceMatrix> {
-	public final String NAME = "cooccurrencematrix";
+	public final String NAME = "createcoocmatrix";
 }
