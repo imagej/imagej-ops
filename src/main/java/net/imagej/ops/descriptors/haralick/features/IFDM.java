@@ -35,15 +35,16 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imglib2.ops.data.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: IFDM")
-public class IFDM implements OutputOp<Double> {
+public class IFDM implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocParameter param;
@@ -52,10 +53,10 @@ public class IFDM implements OutputOp<Double> {
 	private CooccurrenceMatrix matrix;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -70,6 +71,6 @@ public class IFDM implements OutputOp<Double> {
 			}
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 }

@@ -35,15 +35,16 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXMinusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Difference Entropy")
-public class DifferenceEntropy implements OutputOp<Double> {
+public class DifferenceEntropy implements OutputOp<DoubleType> {
 
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
@@ -55,10 +56,10 @@ public class DifferenceEntropy implements OutputOp<Double> {
 	private CoocPXMinusY coocPXMinusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -74,7 +75,7 @@ public class DifferenceEntropy implements OutputOp<Double> {
 
 		res = -res;
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }

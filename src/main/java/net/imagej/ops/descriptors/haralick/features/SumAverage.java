@@ -35,15 +35,16 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXPlusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Sum Average")
-public class SumAverage implements OutputOp<Double> {
+public class SumAverage implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocPXPlusY coocPXPlusY;
@@ -52,10 +53,10 @@ public class SumAverage implements OutputOp<Double> {
 	private CoocParameter param;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -69,7 +70,7 @@ public class SumAverage implements OutputOp<Double> {
 			res += i * pxplusy[i];
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }

@@ -36,22 +36,23 @@ package net.imagej.ops.descriptors.haralick.features;
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXMinusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Difference Variance")
-public class DifferenceVariance implements OutputOp<Double> {
+public class DifferenceVariance implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocPXMinusY coocPXMinusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -68,6 +69,6 @@ public class DifferenceVariance implements OutputOp<Double> {
 			res += (k - sum) * pxminusy[k];
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 }

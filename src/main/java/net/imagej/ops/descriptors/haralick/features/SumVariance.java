@@ -35,15 +35,16 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXPlusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Sum Variance")
-public class SumVariance implements OutputOp<Double> {
+public class SumVariance implements OutputOp<DoubleType> {
 
 	@Parameter
 	private SumAverage sumAverage;
@@ -55,10 +56,10 @@ public class SumVariance implements OutputOp<Double> {
 	private CoocParameter param;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -66,14 +67,14 @@ public class SumVariance implements OutputOp<Double> {
 	public void run() {
 		final double[] pxplusy = coocPXPlusY.getOutput();
 		final int nrGrayLevels = param.getNrGrayLevels();
-		final double average = sumAverage.getOutput();
+		final double average = sumAverage.getOutput().get();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
 			res += (i - average) * (i - average) * pxplusy[i];
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }

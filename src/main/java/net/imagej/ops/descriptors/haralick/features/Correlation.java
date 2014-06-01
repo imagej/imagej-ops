@@ -35,19 +35,20 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocMeanX;
 import net.imagej.ops.descriptors.haralick.helpers.CoocMeanY;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdX;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdY;
 import net.imglib2.ops.data.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Correlation")
-public class Correlation implements OutputOp<Double> {
+public class Correlation implements OutputOp<DoubleType> {
 	@Parameter
 	private CoocParameter param;
 
@@ -65,12 +66,12 @@ public class Correlation implements OutputOp<Double> {
 
 	@Parameter
 	private CoocStdY coocStdY;
-	
+
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -96,6 +97,6 @@ public class Correlation implements OutputOp<Double> {
 			res = 0;
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 }

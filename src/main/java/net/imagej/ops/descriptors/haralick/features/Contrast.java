@@ -35,15 +35,16 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXMinusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick2D: Contrast")
-public class Contrast implements OutputOp<Double> {
+public class Contrast implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocPXMinusY coocPXMinusZ;
@@ -52,10 +53,10 @@ public class Contrast implements OutputOp<Double> {
 	private CoocParameter param;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -69,7 +70,7 @@ public class Contrast implements OutputOp<Double> {
 			res += k * k * pxminusxy[k];
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }

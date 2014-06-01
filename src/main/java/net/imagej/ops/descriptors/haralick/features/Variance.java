@@ -36,27 +36,28 @@ package net.imagej.ops.descriptors.haralick.features;
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdX;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Variance")
-public class Variance implements OutputOp<Double> {
+public class Variance implements OutputOp<DoubleType> {
 	@Parameter
 	private CoocStdX coocStdX;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
 	@Override
 	public void run() {
-		output = coocStdX.getOutput() * coocStdX.getOutput();
+		output = new DoubleType(coocStdX.getOutput() * coocStdX.getOutput());
 	}
 
 }

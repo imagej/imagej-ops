@@ -35,9 +35,10 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.haralick.CoocParameter;
+import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdX;
 import net.imglib2.ops.data.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -46,7 +47,7 @@ import org.scijava.plugin.Plugin;
 //cluster promenence (from cellcognition)
 // https://github.com/CellCognition/cecog/blob/master/csrc/include/cecog/features.hxx#L479
 @Plugin(type = Op.class, label = "Haralick2D: Cluster Promenence")
-public class ClusterPromenence implements OutputOp<Double> {
+public class ClusterPromenence implements OutputOp<DoubleType> {
 	@Parameter
 	private CoocParameter param;
 
@@ -57,10 +58,10 @@ public class ClusterPromenence implements OutputOp<Double> {
 	private CoocStdX coocStdX;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
@@ -78,7 +79,7 @@ public class ClusterPromenence implements OutputOp<Double> {
 			}
 		}
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }

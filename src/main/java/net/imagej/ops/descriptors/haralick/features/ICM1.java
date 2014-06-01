@@ -36,13 +36,14 @@ package net.imagej.ops.descriptors.haralick.features;
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.descriptors.haralick.helpers.CoocHXY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: ICM1")
-public class ICM1 implements OutputOp<Double> {
+public class ICM1 implements OutputOp<DoubleType> {
 	@Parameter
 	private Entropy entropy;
 
@@ -50,20 +51,20 @@ public class ICM1 implements OutputOp<Double> {
 	private CoocHXY coocHXY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType output;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
 	@Override
 	public void run() {
 		final double[] coochxy = coocHXY.getOutput();
-		final double res = (entropy.getOutput() - coochxy[2])
+		final double res = (entropy.getOutput().get() - coochxy[2])
 				/ Math.max(coochxy[0], coochxy[1]);
 
-		output = res;
+		output = new DoubleType(res);
 	}
 
 }
