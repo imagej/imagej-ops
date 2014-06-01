@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.StdDev;
 import net.imglib2.type.numeric.RealType;
@@ -41,8 +41,8 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = StdDev.NAME, label = StdDev.LABEL, priority = Priority.LOW_PRIORITY + 1)
 public class StdDeviationIRT extends
-		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
-		StdDev {
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+		implements StdDev {
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
@@ -66,4 +66,10 @@ public class StdDeviationIRT extends
 		output.set((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
 		return output;
 	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
 }

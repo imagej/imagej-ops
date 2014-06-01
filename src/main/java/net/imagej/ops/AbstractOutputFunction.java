@@ -28,46 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.descriptors.firstorderstatistics.irt;
-
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.descriptors.firstorderstatistics.Mean;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
+package net.imagej.ops;
 
 /**
- * Calculate {@link Mean} of {@link Iterable} of {@link RealType}.
+ * Abstract superclass for a {@link Function} which knows how to create its
+ * output.
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class MeanIRT extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
-		implements Mean {
+public abstract class AbstractOutputFunction<I, O> extends
+		AbstractFunction<I, O> implements OutputFunction<I, O> {
 
 	@Override
-	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			final DoubleType output) {
-
-		double sum = 0;
-		double count = 0;
-
-		for (final RealType<?> val : getInput()) {
-			sum += val.getRealDouble();
-			++count;
+	public void run() {
+		// we may not reuse the already create output
+		if (getOutput() == null) {
+			setOutput(compute(getInput()));
+		} else {
+			setOutput(compute(getInput(), getOutput()));
 		}
-
-		output.set((count == 0) ? 0 : sum / count);
-
-		return output;
 	}
 
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O compute(I input) {
+		return compute(input, createOutput(input));
 	}
 
+	protected abstract O createOutput(I input);
 }

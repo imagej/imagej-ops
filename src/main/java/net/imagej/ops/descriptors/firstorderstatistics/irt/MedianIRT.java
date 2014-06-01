@@ -33,7 +33,7 @@ package net.imagej.ops.descriptors.firstorderstatistics.irt;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.Median;
 import net.imglib2.type.numeric.RealType;
@@ -49,8 +49,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
 public class MedianIRT extends
-		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
-		Median {
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+		implements Median {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
@@ -126,11 +126,7 @@ public class MedianIRT extends
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			DoubleType output) {
-
-		if (output == null) {
-			output = new DoubleType();
-		}
+			final DoubleType output) {
 
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
@@ -142,4 +138,10 @@ public class MedianIRT extends
 				statistics.size() / 2));
 		return output;
 	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
 }

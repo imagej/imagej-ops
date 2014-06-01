@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.geometric.ii;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.CenterOfGravity;
 import net.imglib2.Cursor;
@@ -41,16 +41,17 @@ import org.scijava.plugin.Plugin;
 /**
  * Calculating {@link CenterOfGravity} on {@link IterableInterval}
  * 
- * @author Christian Dietz
- * @author Andreas Graumann
+ * @author Christian Dietz (University of Konstanz)
+ * @author Andreas Graumann (University of Konstanz)
  */
 @Plugin(type = Op.class, label = CenterOfGravity.LABEL, name = CenterOfGravity.NAME)
 public class CenterOfGravityII extends
-		AbstractFunction<IterableInterval<?>, double[]> implements
+		AbstractOutputFunction<IterableInterval<?>, double[]> implements
 		CenterOfGravity {
 
 	@Override
-	public double[] compute(final IterableInterval<?> input, final double[] output) {
+	public double[] compute(final IterableInterval<?> input,
+			final double[] output) {
 		final Cursor<?> it = input.cursor();
 
 		while (it.hasNext()) {
@@ -65,6 +66,11 @@ public class CenterOfGravityII extends
 		}
 
 		return output;
+	}
+
+	@Override
+	public double[] createOutput(IterableInterval<?> input) {
+		return new double[input.numDimensions()];
 	}
 
 }

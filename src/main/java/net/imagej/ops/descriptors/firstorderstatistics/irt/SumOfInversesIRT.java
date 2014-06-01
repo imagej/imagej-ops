@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.SumOfInverses;
 import net.imglib2.type.numeric.RealType;
@@ -48,8 +48,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
 public class SumOfInversesIRT extends
-		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
-		SumOfInverses {
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+		implements SumOfInverses {
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
@@ -62,4 +62,10 @@ public class SumOfInversesIRT extends
 		output.set(res);
 		return output;
 	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
 }

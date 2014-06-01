@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.Max;
 import net.imglib2.type.numeric.RealType;
@@ -46,8 +46,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
 public class MaxIRT extends
-		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
-		Max {
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+		implements Max {
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
@@ -64,6 +64,11 @@ public class MaxIRT extends
 
 		output.set(max);
 		return output;
+	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
 	}
 
 }

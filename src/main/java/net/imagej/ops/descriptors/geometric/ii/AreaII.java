@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.geometric.ii;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.Area;
 import net.imglib2.IterableInterval;
@@ -40,12 +40,19 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL, priority = Priority.HIGH_PRIORITY)
-public class AreaII extends AbstractFunction<IterableInterval<?>, DoubleType>
-		implements Area {
+public class AreaII extends
+		AbstractOutputFunction<IterableInterval<?>, DoubleType> implements Area {
 
 	@Override
-	public DoubleType compute(final IterableInterval<?> input, final DoubleType output) {
+	public DoubleType compute(final IterableInterval<?> input,
+			final DoubleType output) {
 		output.set(input.size());
 		return output;
 	}
+
+	@Override
+	public DoubleType createOutput(final IterableInterval<?> input) {
+		return new DoubleType();
+	}
+
 }

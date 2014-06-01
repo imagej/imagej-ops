@@ -84,5 +84,4 @@ public class MinMaxIRT<T extends RealType<T>> implements MinMax<T> {
 	public T getMax() {
 		return max;
 	}
-
 }

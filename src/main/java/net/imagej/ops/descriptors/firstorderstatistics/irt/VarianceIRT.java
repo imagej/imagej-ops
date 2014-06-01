@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.firstorderstatistics.irt;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.firstorderstatistics.Variance;
 import net.imglib2.type.numeric.RealType;
@@ -47,8 +47,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.LOW_PRIORITY)
 public class VarianceIRT extends
-		AbstractFunction<Iterable<? extends RealType<?>>, DoubleType> implements
-		Variance {
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+		implements Variance {
 
 	@Override
 	public DoubleType compute(final Iterable<? extends RealType<?>> input,
@@ -68,4 +68,10 @@ public class VarianceIRT extends
 		output.set((sumSqr - (sum * sum / n)) / (n - 1));
 		return output;
 	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
 }
