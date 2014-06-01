@@ -50,4 +50,7 @@ public interface HistogramCreate1D<T> extends OutputOp<Histogram1d<T>> {
 	public final String NAME = "histogram";
 	public final String LABEL = "Histogram";
 
+	void setNumBins(int numBins);
+
+	int getNumBins();
 }
