@@ -31,15 +31,20 @@
 package net.imagej.ops.descriptors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
+import net.imglib2.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.scijava.module.Module;
+import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
@@ -48,8 +53,7 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 /**
- * Default implementation of {@link DescriptorService}. Resolves all
- * dependencies for a {@link Op} or a set of {@link Op}s.
+ * TODO: Clean-up TODO: JavaDoc
  * 
  * @author Christian Dietz
  */
@@ -63,165 +67,116 @@ public class DefaultDescriptorService extends AbstractService implements
 	@Parameter
 	private OpMatchingService matcher;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <OP extends Op, INPUTTYPE> ResolvedDescriptor<OP, INPUTTYPE> resolveDependencies(
-			final Class<OP> feature, final Class<? extends INPUTTYPE> inputType) {
-
-		// First pass: check if we can automatically create the op and remember
-		// all
-		// operations
-		final HashMap<Class<?>, Module> allExistingOps = new HashMap<Class<?>, Module>();
-
-		final Module module = initModule(feature, inputType, allExistingOps);
-
-		if (module == null)
-			throw new IllegalArgumentException("cannot create feature");
-
-		// Second pass: set updaters for operations. recursive approach as the
-		// list
-		// of listeners must be correct, this means it must take into account
-		// the
-		// dependencies of the ops.
-		final List<InputUpdateListeners> listeners = new ArrayList<InputUpdateListeners>();
-		postProcess(feature, inputType, allExistingOps, listeners,
-				new ArrayList<Class<?>>());
-
-		return new ResolvedDescriptor<OP, INPUTTYPE>(
-				(OP) module.getDelegateObject(), listeners);
-	}
-
-	/* Set input updaters */
-	@SuppressWarnings("unchecked")
-	private void postProcess(final Class<? extends Op> feature,
-			final Class<?> inputType,
-			final HashMap<Class<?>, Module> instantiatedModules,
-			final List<InputUpdateListeners> listeners,
-			final List<Class<?>> processed) {
-
-		processed.add(feature);
-
-		final List<InputUpdateListeners> localListeners = new ArrayList<InputUpdateListeners>();
-
-		final Module module = instantiatedModules.get(feature);
-		InputUpdateListeners myListener = null;
-		for (final ModuleItem<?> item : module.getInfo().inputs()) {
-			if (!item.isRequired()) {
-				continue;
-			}
-
-			if (item.getType().isAssignableFrom(inputType)) {
-				// TODO: we need to take care about generics here.
-				myListener = createUpdateListener(module, item);
-				continue;
-			}
-
-			// its an op
-			if (Op.class.isAssignableFrom(item.getType())
-					&& !processed.contains(item.getType())) {
-				postProcess((Class<? extends Op>) item.getType(), inputType,
-						instantiatedModules, localListeners, processed);
-				continue;
-			}
-		}
-
-		listeners.addAll(localListeners);
-
-		if (myListener != null) {
-			listeners.add(myListener);
-		}
-	}
-
-	/**
-	 * @param module
-	 * @param item
-	 * @return
-	 */
-	private InputUpdateListeners createUpdateListener(final Module module,
-			final ModuleItem<?> item) {
-		return new InputUpdateListeners() {
-
-			@Override
-			public void update(final Object o) {
-				module.setInput(item.getName(), o);
-				module.run();
-			}
-		};
-	}
-
 	/*
-	 * Recursively checking if we can automatically instantiate a module of type
-	 * opType given input of type inputType. Reusing ops.
+	 * Recursively checking if we can automatically instantiate a descriptor set
+	 * and setting all instances
 	 */
-	@SuppressWarnings("unchecked")
-	private Module initModule(final Class<? extends Op> moduleType,
-			final Class<?> inputType,
-			final HashMap<Class<?>, Module> existingOps) {
+	private CachedDescriptorModule resolveModule(
+			final Class<? extends Op> moduleType, final Class<?> inputType,
+			final Map<Class<?>, CachedDescriptorModule> availableModules)
+			throws ModuleException {
+
+		if (availableModules.containsKey(moduleType)) {
+			return availableModules.get(moduleType);
+		}
+
+		// get all candidate ops for this module type
 		final List<ModuleInfo> candidates = matcher.findCandidates(null,
 				moduleType);
+
+		// if there are no canidates, we can't resolve this module (and we fail)
 		if (candidates.size() == 0)
 			return null;
 
-		loop: for (final ModuleInfo parent : candidates) {
+		// now: we check for the candidates. A candidate can be used, if all
+		// fields can be resolved, given the available set of operations.
+		// the only expceptions are special fields which are neither of
+		// inputType nor a DescriptorParameterSet.
+		loop: for (final ModuleInfo required : candidates) {
 
 			final List<Object> parameters = new ArrayList<Object>();
 
-			final HashMap<Class<?>, Module> tmpAllCreatedOps = new HashMap<Class<?>, Module>();
+			final List<CachedDescriptorModule> dependencies = new ArrayList<CachedDescriptorModule>();
+
+			final HashMap<Class<?>, CachedDescriptorModule> tmpModules = new HashMap<Class<?>, CachedDescriptorModule>(
+					availableModules);
 
 			// we have to parse our items for other ops/features
-			for (final ModuleItem<?> item : parent.inputs()) {
-				final Class<?> type = item.getType();
+			for (final ModuleItem<?> item : required.inputs()) {
+				final Class<?> itemType = item.getType();
 
 				// Ignore if it is a service
-				if (Service.class.isAssignableFrom(type)) {
-					continue;
-				}
-
-				// Place-holder for non-required attributes
-				if (!item.isRequired()) {
-					parameters.add(item.getType());
+				if (Service.class.isAssignableFrom(itemType)) {
 					continue;
 				}
 
 				// Handle operation
-				if (Op.class.isAssignableFrom(type)) {
-					final Class<? extends Op> typeAsOp = (Class<? extends Op>) type;
+				if (Op.class.isAssignableFrom(itemType)) {
+					@SuppressWarnings("unchecked")
+					final Class<? extends Op> typeAsOp = (Class<? extends Op>) itemType;
 
-					if (existingOps.containsKey(typeAsOp)) {
-						parameters.add(existingOps.get(typeAsOp)
+					if (tmpModules.containsKey(typeAsOp)) {
+						parameters.add(tmpModules.get(typeAsOp)
 								.getDelegateObject());
-					} else if (tmpAllCreatedOps.containsKey(typeAsOp)) {
-						parameters.add(tmpAllCreatedOps.get(typeAsOp)
-								.getDelegateObject());
+						dependencies.add(tmpModules.get(typeAsOp));
 					} else {
-						final Object res = initModule(typeAsOp, inputType,
-								tmpAllCreatedOps);
-						if (res == null)
-							return null;
+						final CachedDescriptorModule res = resolveModule(typeAsOp,
+								inputType, tmpModules);
 
-						parameters.add(((Module) res).getDelegateObject());
+						if (res == null)
+							continue loop;
+
+						dependencies.add(res);
+						parameters.add(res.getDelegateObject());
 					}
 
 					continue;
 				}
 
-				// Set input
-				// TODO: Generic check
-				if (type.isAssignableFrom(inputType)) {
-					parameters.add(inputType.getClass());
+				if (!item.isRequired()) {
+					continue;
+				}
+
+				if (DescriptorParameters.class.isAssignableFrom(itemType)
+						|| itemType.isAssignableFrom(inputType)) {
+					parameters.add(itemType);
+					continue;
+				}
+
+				// its not an operation, it must be something else
+				// Place-holder for non-required attributes and attributes which
+				// can be provided by some existing operation
+
+				// TODO: Later we can try to find these operations automatically
+				// and optimize etc... but for now its fine
+				final CachedDescriptorModule matchingModule = findMatchingOutputOp(
+						itemType, inputType, tmpModules);
+				if (matchingModule != null) {
+					parameters.add(itemType);
+					dependencies.add(matchingModule);
+					tmpModules.put(itemType, matchingModule);
 					continue;
 				}
 
 				continue loop;
 			}
 
-			final Module module = ops.module(moduleType, parameters.toArray());
-			tmpAllCreatedOps.put(moduleType, module);
+			final CachedDescriptorModule module = new CachedDescriptorModule(
+					ops.module(moduleType, parameters.toArray()));
 
-			// we know that only additional ops are in local map
-			for (final Entry<Class<?>, Module> entry : tmpAllCreatedOps
+			// set-up graph...
+			for (final CachedDescriptorModule dependency : dependencies) {
+				dependency.addSuccessor(module);
+				module.addPredecessor(dependency);
+			}
+
+			// we build our "tree"
+			tmpModules.put(moduleType, module);
+
+			// we know that only additional modules are in local map
+			for (final Entry<Class<?>, CachedDescriptorModule> entry : tmpModules
 					.entrySet()) {
-				existingOps.put(entry.getKey(), entry.getValue());
+				availableModules.put(entry.getKey(), entry.getValue());
 			}
 
 			return module;
@@ -230,9 +185,165 @@ public class DefaultDescriptorService extends AbstractService implements
 		return null;
 	}
 
-	public interface InputUpdateListeners {
+	/*
+	 * Tries to find an Op which has at east one output of type outputType and
+	 * which can be resolved using inputType
+	 */
+	private CachedDescriptorModule findMatchingOutputOp(
+			final Class<?> outputType, final Class<?> inputType,
+			final Map<Class<?>, CachedDescriptorModule> availableModules)
+			throws ModuleException {
 
-		void update(Object o);
+		if (availableModules.containsKey(outputType)) {
+			return availableModules.get(outputType);
+		}
+
+		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
+
+		for (final ModuleInfo info : matcher.getOps()) {
+			final Iterable<ModuleItem<?>> outputs = info.outputs();
+
+			for (final ModuleItem<?> output : outputs) {
+				if (outputType.isAssignableFrom(output.getType())) {
+					candidates.add(info);
+					break;
+				}
+			}
+		}
+
+		// Sort by priority
+		Collections.sort(candidates);
+
+		// we can be smarter here of course
+		for (final ModuleInfo candidate : candidates) {
+			Class<?> delegate = candidate.createModule().getDelegateObject()
+					.getClass();
+			if (Op.class.isAssignableFrom(delegate)) {
+				@SuppressWarnings("unchecked")
+				CachedDescriptorModule module = resolveModule(
+						(Class<? extends Op>) delegate, inputType,
+						availableModules);
+
+				if (module != null) {
+					return module;
+				}
+			}
+		}
+
+		// we didn't find a matching module
+		return null;
 	}
 
+	/*
+	 * Set InputUpdaters. These classes listen, if some input is updated from
+	 * outside, i.e. the input or some parameters.
+	 */
+	private List<InputUpdateListener> postProcess(
+			final HashMap<Class<?>, CachedDescriptorModule> availableModules) {
+		final List<InputUpdateListener> listeners = new ArrayList<InputUpdateListener>();
+
+		for (final CachedDescriptorModule module : availableModules.values()) {
+			for (final ModuleItem<?> item : module.getInfo().inputs()) {
+				final Class<?> type = item.getType();
+
+				// fields we can ignore during post-processing
+				if (Op.class.isAssignableFrom(type)
+						|| Service.class.isAssignableFrom(type)
+						|| !item.isRequired()) {
+					continue;
+				}
+
+				// TODO: we need to take care about generics here.
+				final InputUpdateListener listener = createUpdateListener(
+						module, item);
+				listeners.add(listener);
+
+				// now we check if the update is performed by an internal
+				// operation or from outside
+				final CachedDescriptorModule internalModule = availableModules
+						.get(type);
+
+				// from inside, then its an update listener
+				if (internalModule != null) {
+					internalModule.registerOutputReceiver(item, listener);
+				}
+
+				continue;
+			}
+
+		}
+
+		return listeners;
+	}
+
+	/* Create one update listener */
+	private InputUpdateListener createUpdateListener(
+			final CachedDescriptorModule module, final ModuleItem<?> item) {
+		return new InputUpdateListener() {
+
+			@Override
+			public void update(final Object o) {
+				module.setInput(item.getName(), o);
+				module.markDirty();
+			}
+
+			// TODO: be more restrictive concerning generics here
+			@Override
+			public boolean listensTo(final Class<?> clazz) {
+				return item.getType().isAssignableFrom(clazz);
+			}
+
+			@Override
+			public String toString() {
+				return module.getInfo().getName();
+			}
+		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Pair<List<Module>, List<InputUpdateListener>> compile(
+			DescriptorSet set, Class<?> inputType, List<Class<? extends Op>> ops)
+			throws ModuleException {
+
+		final HashMap<Class<?>, CachedDescriptorModule> modulePool = new HashMap<Class<?>, CachedDescriptorModule>();
+
+		for (final Class<? extends Op> op : ops) {
+			final CachedDescriptorModule module = resolveModule(op, inputType,
+					modulePool);
+			if (module == null)
+				throw new IllegalArgumentException(
+						"Can't compile DescriptorSet" + set.toString()
+								+ " Reason:" + op.getSimpleName()
+								+ " can't be instantiated!");
+		}
+
+		// append update listeners
+		final List<InputUpdateListener> listeners = postProcess(modulePool);
+
+		// just return the visible ops
+		final List<Module> compiledOps = new ArrayList<Module>();
+
+		for (final Class<? extends Op> opClazz : ops) {
+			compiledOps.add(modulePool.get(opClazz));
+		}
+
+		return new ValuePair<List<Module>, List<InputUpdateListener>>(
+				compiledOps, listeners);
+	}
+
+	/**
+	 * Simple Interface to mark Descriptors which listen for updates of external
+	 * inputs (i.e. inputs which are not generated by an {@link Op}).
+	 * 
+	 * @author Christian Dietz (University of Konstanz)
+	 */
+	public interface InputUpdateListener {
+
+		void update(Object o);
+
+		boolean listensTo(Class<?> clazz);
+	}
 }

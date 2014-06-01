@@ -34,6 +34,7 @@ import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.descriptors.descriptorsets.ZernikeDescriptorSet;
 import net.imagej.ops.descriptors.geometric.CenterOfGravity;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -46,11 +47,11 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Andreas Graumann (University of Konstanz)
  */
-@Plugin(type = Op.class, label = "Zernike Moments 2D")
+@Plugin(type = Op.class, label = "Zernike Moments 2D", name = "zernikemoments")
 public class ZernikeMomentComputer implements OutputOp<double[]> {
 
 	@Parameter
-	private ZernikeParameter param;
+	private ZernikeDescriptorSet.ZernikeParameter param;
 
 	@Parameter
 	private IterableInterval<? extends RealType<?>> ii;

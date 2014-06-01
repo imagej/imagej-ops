@@ -28,21 +28,59 @@
  * #L%
  */
 
+package net.imagej.ops.descriptors;
 
-package net.imagej.ops.descriptors.firstorderstatistics.irt;
+import java.util.Iterator;
 
-import net.imagej.ops.AbstractFunction;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OutputOp;
+import net.imglib2.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.ValuePair;
+
+import org.scijava.Context;
+import org.scijava.module.Module;
 
 /**
- * Simple helper to reduce generic mess in implementations. This
- * {@link Function} maps from {@link Iterable} of {@link RealType} to
- * {@link RealType}.
+ * Abstract DescriptorSet which wraps several {@link OutputOp} of type
+ * {@link DoubleType}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
+ * 
  */
-public abstract class AbstractFunctionIRT extends
-	AbstractFunction<Iterable<RealType<?>>, RealType<?>>
-{
-	// NB: Marker to reduce amount of generics
+public class AbstractDoubleDescSet extends AbstractGenericDescSet {
+
+	public AbstractDoubleDescSet(final Context context) {
+		super(context);
+	}
+
+	@Override
+	protected Iterator<Pair<String, Double>> createIterator() {
+		final Iterator<Module> it = getCompilationInfo().getA().iterator();
+
+		return new Iterator<Pair<String, Double>>() {
+
+			@Override
+			public boolean hasNext() {
+				return it.hasNext();
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public Pair<String, Double> next() {
+
+				final Module module = it.next();
+				module.run();
+
+				return new ValuePair<String, Double>(module.getInfo()
+						.getLabel(),
+						((OutputOp<DoubleType>) module.getDelegateObject())
+								.getOutput().get());
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Remove not supported!");
+			}
+		};
+	}
 }

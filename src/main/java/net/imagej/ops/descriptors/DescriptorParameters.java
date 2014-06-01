@@ -27,26 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptors.moments.zernike;
 
-import net.imagej.ops.descriptors.DescriptorParameterSet;
-
-import org.scijava.plugin.Parameter;
+package net.imagej.ops.descriptors;
 
 /**
+ * Simple marker interface for the parameters of {@link DescriptorSet}s
+ * 
  * @author Christian Dietz (University of Konstanz)
- * @author Andreas Graumann (University of Konstanz)
  */
-public class ZernikeParameter implements DescriptorParameterSet {
-
-	@Parameter(label = "Order", min = "0", max = "10", stepSize = "1", initializer = "3")
-	private double order;
-
-	public int getOrder() {
-		return (int) order;
-	}
-
-	public void setOrder(final int _order) {
-		this.order = _order;
-	}
+public interface DescriptorParameters {
+	// NB: Marker interface
 }

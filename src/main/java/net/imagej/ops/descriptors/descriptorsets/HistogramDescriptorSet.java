@@ -28,55 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.descriptors;
+package net.imagej.ops.descriptors.descriptorsets;
 
-import java.util.List;
+import java.util.Iterator;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.descriptors.DefaultDescriptorService.InputUpdateListeners;
+import net.imagej.ops.descriptors.AbstractGenericDescSet;
+import net.imagej.ops.histogram.HistogramCreate1D;
+import net.imglib2.Pair;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.util.ValuePair;
+
+import org.scijava.Context;
 
 /**
- * Descriptor for which all dependencies were resolved by the
- * {@link DefaultDescriptorService}. On update, all dependent {@link Op}s will
- * be recalculated.
+ * TODO: JavaDoc
  * 
- * @author Christian Dietz
- * 
- * @param <O>
- *            type of resulting op
- * @param <I>
- *            type of input
+ * @author Christian Dietz (University of Konstanz)
  */
-public class ResolvedDescriptor<O extends Op, I> {
+public class HistogramDescriptorSet extends AbstractGenericDescSet {
 
-	private final O op;
-	private final List<InputUpdateListeners> listeners;
+	private int numBins;
 
-	/**
-	 * @param op
-	 *            The {@link Op} with all dependencies resolved.
-	 * @param listeners
-	 */
-	protected ResolvedDescriptor(final O op,
-			final List<InputUpdateListeners> listeners) {
-		this.listeners = listeners;
-		this.op = op;
+	public HistogramDescriptorSet(final Context context, int numBins) {
+		super(context);
+		this.numBins = numBins;
+		addOp(HistogramCreate1D.class);
 	}
 
-	/**
-	 * Update descriptor and all dependent {@link Op}s.
-	 * 
-	 * @param input
-	 * @return
-	 */
-	public O update(final I input) {
+	public void setNumBins(int numBins) {
+		this.numBins = numBins;
+	}
 
-		for (final InputUpdateListeners listener : listeners) {
-			listener.update(input);
-		}
+	@Override
+	protected Iterator<Pair<String, Double>> createIterator() {
 
-		op.run();
+		final HistogramCreate1D<?> histogram = (HistogramCreate1D<?>) (getCompilationInfo()
+				.getA().get(0)).getDelegateObject();
 
-		return op;
+		histogram.setNumBins(numBins);
+		histogram.run();
+
+		return new Iterator<Pair<String, Double>>() {
+
+			final Iterator<LongType> output = histogram.getOutput().iterator();
+
+			int binNr = 0;
+
+			@Override
+			public boolean hasNext() {
+				return output.hasNext();
+			}
+
+			@Override
+			public Pair<String, Double> next() {
+				return new ValuePair<String, Double>("Histogram 1D [Bin:"
+						+ binNr++ + "]", output.next().getRealDouble());
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Not Supported");
+			}
+		};
 	}
 }

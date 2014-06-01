@@ -30,34 +30,79 @@
 
 package net.imagej.ops.descriptors;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.DefaultDescriptorService.InputUpdateListener;
 import net.imglib2.Pair;
 
+import org.scijava.Context;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleException;
-import org.scijava.service.Service;
+import org.scijava.plugin.Parameter;
 
 /**
- * TODO: Better documentation. A {@link DescriptorService} automatically tries
- * to compile a descriptor. This means it's resolving all dependencies of an
- * {@link Op} to other {@link Op}s, which are automatically instantiated.
- * Additionally, an {@link Op} is only computed once for a given input. The
- * strong assumptions are, that the input-type which is passed to the compiled
- * descriptor never changes and no further parameters, but the input, are
- * required.
+ * Abstract {@link DescriptorSet} to wrap arbitrary {@link Op}s
  * 
- * @author Christian Dietz
+ * TODO: Activate / Deactivate individual descriptors of the descriptor set.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
  */
-public interface DescriptorService extends Service {
+public abstract class AbstractGenericDescSet implements DescriptorSet {
 
-	/**
-	 * TODO JAVA DOC
-	 */
-	Pair<List<Module>, List<InputUpdateListener>> compile(
-			DescriptorSet descriptorSet, Class<?> inputType,
-			List<Class<? extends Op>> requiredOps) throws ModuleException;
+	@Parameter
+	private DescriptorService service;
 
+	private Pair<List<Module>, List<InputUpdateListener>> compilationInfo;
+
+	private ArrayList<Class<? extends Op>> allOps = new ArrayList<Class<? extends Op>>();
+
+	public AbstractGenericDescSet(final Context context) {
+		service = context.getService(DescriptorService.class);
+	}
+
+	protected Pair<List<Module>, List<InputUpdateListener>> getCompilationInfo() {
+		return compilationInfo;
+	}
+
+	@Override
+	public void compileFor(final Class<?> inputType) {
+		try {
+			compilationInfo = service.compile(this, inputType, allOps);
+		} catch (ModuleException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void update(final Object obj) {
+		checkStatus();
+
+		for (final InputUpdateListener listener : compilationInfo.getB()) {
+			if (listener.listensTo(obj.getClass()))
+				listener.update(obj);
+		}
+	}
+
+	private void checkStatus() {
+		if (compilationInfo == null) {
+			throw new IllegalStateException(
+					"DescriptorSet has not been compiled!");
+		}
+	}
+
+	@Override
+	public Iterator<Pair<String, Double>> iterator() {
+		checkStatus();
+		return createIterator();
+	}
+
+	protected void addOp(Class<? extends Op> op) {
+		allOps.add(op);
+	}
+
+	protected abstract Iterator<Pair<String, Double>> createIterator();
 }
