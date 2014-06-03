@@ -35,8 +35,8 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXPlusY;
+import net.imagej.ops.histogram.CooccurrenceMatrix;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -49,7 +49,7 @@ public class SumEntropy implements OutputOp<DoubleType> {
 	private static final double EPSILON = 0.00000001f;
 
 	@Parameter
-	private CoocParameter param;
+	private CooccurrenceMatrix matrix;
 
 	@Parameter
 	private CoocPXPlusY coocPXPlusY;
@@ -65,7 +65,7 @@ public class SumEntropy implements OutputOp<DoubleType> {
 	@Override
 	public void run() {
 		final double[] pxplusy = coocPXPlusY.getOutput();
-		final int numGrayLevels = param.getNrGrayLevels();
+		final int numGrayLevels = matrix.getLength();
 
 		double res = 0;
 

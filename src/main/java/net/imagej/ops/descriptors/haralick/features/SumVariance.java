@@ -35,8 +35,8 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocPXPlusY;
+import net.imagej.ops.histogram.CooccurrenceMatrix;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -53,7 +53,7 @@ public class SumVariance implements OutputOp<DoubleType> {
 	private CoocPXPlusY coocPXPlusY;
 
 	@Parameter
-	private CoocParameter param;
+	private CooccurrenceMatrix matrix;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private DoubleType output;
@@ -66,7 +66,7 @@ public class SumVariance implements OutputOp<DoubleType> {
 	@Override
 	public void run() {
 		final double[] pxplusy = coocPXPlusY.getOutput();
-		final int nrGrayLevels = param.getNrGrayLevels();
+		final int nrGrayLevels = matrix.getLength();
 		final double average = sumAverage.getOutput().get();
 
 		double res = 0;

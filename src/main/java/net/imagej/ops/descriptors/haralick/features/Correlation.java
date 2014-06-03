@@ -35,12 +35,11 @@ package net.imagej.ops.descriptors.haralick.features;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.haralick.helpers.CoocMeanX;
 import net.imagej.ops.descriptors.haralick.helpers.CoocMeanY;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdX;
 import net.imagej.ops.descriptors.haralick.helpers.CoocStdY;
-import net.imglib2.ops.data.CooccurrenceMatrix;
+import net.imagej.ops.histogram.CooccurrenceMatrix;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -49,8 +48,6 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Correlation")
 public class Correlation implements OutputOp<DoubleType> {
-	@Parameter
-	private CoocParameter param;
 
 	@Parameter
 	private CooccurrenceMatrix matrix;
@@ -77,8 +74,7 @@ public class Correlation implements OutputOp<DoubleType> {
 
 	@Override
 	public void run() {
-		final int nrGrayLevels = param.getNrGrayLevels();
-
+		final int nrGrayLevels = matrix.getLength();
 		final double meanx = coocMeanX.getOutput();
 		final double meany = coocMeanY.getOutput();
 		final double stdx = coocStdX.getOutput();

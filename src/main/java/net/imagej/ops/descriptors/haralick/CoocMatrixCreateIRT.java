@@ -36,11 +36,11 @@ package net.imagej.ops.descriptors.haralick;
 import java.util.Arrays;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
 import net.imagej.ops.descriptors.firstorderstatistics.MinMax;
+import net.imagej.ops.histogram.CooccurrenceMatrix;
+import net.imagej.ops.histogram.CooccurrenceMatrix.MatrixOrientation;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.ops.data.CooccurrenceMatrix;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
@@ -50,8 +50,28 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class)
 public class CoocMatrixCreateIRT implements CoocMatrixCreate {
 
-	@Parameter
-	private CoocParameter parameter;
+	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
+	private int nrGrayLevels;
+
+	@Parameter(label = "Distance", min = "0", max = "128", stepSize = "1", initializer = "1")
+	private int distance;
+
+	// TODO use enum here
+	@Parameter(label = "Matrix Orientation", choices = { "DIAGONAL",
+			"ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
+	private String orientation;
+
+	public MatrixOrientation getOrientation() {
+		if (orientation == "DIAGONAL") {
+			return MatrixOrientation.DIAGONAL;
+		} else if (orientation == "ANTIDIAGONAL") {
+			return MatrixOrientation.ANTIDIAGONAL;
+		} else if (orientation == "HORIZONTAL") {
+			return MatrixOrientation.HORIZONTAL;
+		} else {
+			return MatrixOrientation.VERTICAL;
+		}
+	}
 
 	@Parameter
 	private IterableInterval<? extends RealType<?>> ii;
@@ -64,6 +84,9 @@ public class CoocMatrixCreateIRT implements CoocMatrixCreate {
 
 	@Override
 	public void run() {
+
+		final MatrixOrientation orientation = MatrixOrientation
+				.valueOf(this.orientation);
 
 		final Cursor<? extends RealType<?>> cursor = ii.cursor();
 
@@ -78,14 +101,13 @@ public class CoocMatrixCreateIRT implements CoocMatrixCreate {
 			Arrays.fill(pixels[i], Integer.MAX_VALUE);
 		}
 
-		final CooccurrenceMatrix matrix = new CooccurrenceMatrix(
-				parameter.getNrGrayLevels());
+		final CooccurrenceMatrix matrix = new CooccurrenceMatrix(nrGrayLevels);
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			pixels[cursor.getIntPosition(0) - (int) ii.min(0)][cursor
 					.getIntPosition(1) - (int) ii.min(1)] = (int) (((cursor
-					.get().getRealDouble() - localMin) / (localMax - localMin)) * (parameter.nrGrayLevels - 1));
+					.get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGrayLevels - 1));
 		}
 
 		int nrPairs = 0;
@@ -98,15 +120,11 @@ public class CoocMatrixCreateIRT implements CoocMatrixCreate {
 				}
 
 				// // get second pixel
-				final int sx = x + parameter.getOrientation().dx
-						* parameter.getDistance();
-				final int sy = y + parameter.getOrientation().dy
-						* parameter.getDistance();
+				final int sx = x + orientation.dx * distance;
+				final int sy = y + orientation.dy * distance;
 				// get third pixel
-				final int tx = x - parameter.getOrientation().dx
-						* parameter.getDistance();
-				final int ty = y - parameter.getOrientation().dy
-						* parameter.getDistance();
+				final int tx = x - orientation.dx * distance;
+				final int ty = y - orientation.dy * distance;
 
 				// second pixel in interval and mask
 				if (sx >= 0 && sy >= 0 && sy < pixels.length

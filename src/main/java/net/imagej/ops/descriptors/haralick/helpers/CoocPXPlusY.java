@@ -35,8 +35,7 @@ package net.imagej.ops.descriptors.haralick.helpers;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
-import net.imglib2.ops.data.CooccurrenceMatrix;
+import net.imagej.ops.histogram.CooccurrenceMatrix;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -44,8 +43,6 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
 public class CoocPXPlusY implements OutputOp<double[]> {
-	@Parameter
-	private CoocParameter param;
 
 	@Parameter
 	private CooccurrenceMatrix matrix;
@@ -55,7 +52,7 @@ public class CoocPXPlusY implements OutputOp<double[]> {
 
 	@Override
 	public void run() {
-		final int nrGrayLevels = param.getNrGrayLevels();
+		final int nrGrayLevels = matrix.getLength();
 
 		final double[] pxplusy = new double[2 * nrGrayLevels + 1];
 
