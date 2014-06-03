@@ -32,7 +32,6 @@ package net.imagej.ops.descriptors.descriptorsets;
 
 import java.util.Iterator;
 
-import net.imagej.ops.descriptors.ADescriptorSet;
 import net.imagej.ops.descriptors.moments.zernike.ZernikeMomentComputer;
 import net.imglib2.Pair;
 import net.imglib2.type.numeric.real.DoubleType;

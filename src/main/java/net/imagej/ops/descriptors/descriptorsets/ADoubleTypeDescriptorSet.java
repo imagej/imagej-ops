@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.ADescriptorSet;
 import net.imglib2.Pair;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;

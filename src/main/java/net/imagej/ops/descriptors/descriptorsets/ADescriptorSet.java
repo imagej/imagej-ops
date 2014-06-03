@@ -28,47 +28,92 @@
  * #L%
  */
 
-package net.imagej.ops.descriptors;
+package net.imagej.ops.descriptors.descriptorsets;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.Source;
 import net.imglib2.Pair;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Context;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleException;
 
 /**
+ * Abstract {@link DescriptorSet} to wrap arbitrary {@link Op}s
+ * 
+ * TODO: Activate / Deactivate individual descriptors of the descriptor set.
+ * 
  * @author Christian Dietz (University of Konstanz)
+ * 
  */
-public interface DescriptorSet extends Iterable<Pair<String, DoubleType>> {
+public abstract class ADescriptorSet<I> implements DescriptorSet {
+
+	private List<Class<? extends Op>> ops = new ArrayList<Class<? extends Op>>();
+
+	private Source<I> inputSource;
+
+	private DescriptorService service;
+
+	private Map<Class<? extends Op>, Module> compiledModules;
+
+	public ADescriptorSet(final Context context, final Class<I> type) {
+		service = context.getService(DescriptorService.class);
+		inputSource = new Source<I>(type);
+	}
+
+	public void update(final I obj) {
+		inputSource.update(obj);
+	}
+
+	@Override
+	public Map<Class<? extends Op>, Module> compile()
+			throws IllegalArgumentException, ModuleException {
+		return compiledModules = service.compile(ops, inputSource);
+	}
 
 	/**
-	 * Compiles the {@link DescriptorSet} for a given input type. If this
-	 * {@link DescriptorSet} can't be compiled for a certain input type, an
-	 * {@link IllegalArgumentException} is thrown.
+	 * Add Op and (if required) some additional sources to it.
 	 * 
-	 * @param inputType
-	 *            type of the input for which the {@link DescriptorSet} will be
-	 *            compiled.
-	 * @return
-	 * @throws ModuleException
-	 * 
+	 * @param opClass
+	 * @param sources
 	 */
-	public Map<Class<? extends Op>, Module> compile()
-			throws IllegalArgumentException, ModuleException;
-	
-	/**
-	 * Iterator over a descriptor set. Descriptors are of type double, their
-	 * names are given as strings. Please note, that the {@link DescriptorSet}
-	 * needs to be compiled for a given input type before you can iterate over
-	 * the individual descriptor values or update the set.
-	 * 
-	 * @return {@link Iterator} over {@link Pair}s of descriptor names (string)
-	 *         and values (double)
-	 */
+	protected void addOp(final Class<? extends Op> opClass) {
+		ops.add(opClass);
+	}
+
 	@Override
-	public Iterator<Pair<String, DoubleType>> iterator();
+	public Iterator<Pair<String, DoubleType>> iterator() {
+		return createIterator();
+	}
+
+	private void tryCompile() {
+		try {
+			if (compiledModules == null) {
+				compiledModules = compile();
+			}
+		} catch (final IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (final ModuleException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public Map<Class<? extends Op>, Module> getCompiledModules() {
+		tryCompile();
+		return compiledModules;
+	}
+
+	protected List<Class<? extends Op>> ops() {
+		return ops;
+	}
+
+	protected abstract Iterator<Pair<String, DoubleType>> createIterator();
+
 }
