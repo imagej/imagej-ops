@@ -33,15 +33,15 @@ package net.imagej.ops.descriptors;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.descriptors.DefaultDescriptorService.InputUpdateListener;
 import net.imglib2.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Context;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleException;
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract {@link DescriptorSet} to wrap arbitrary {@link Op}s
@@ -51,58 +51,67 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * 
  */
-public abstract class AbstractGenericDescSet implements DescriptorSet {
+public abstract class ADescriptorSet<I> implements DescriptorSet {
 
-	@Parameter
+	private List<Class<? extends Op>> ops = new ArrayList<Class<? extends Op>>();
+
+	private Source<I> inputSource;
+
 	private DescriptorService service;
 
-	private Pair<List<Module>, List<InputUpdateListener>> compilationInfo;
+	private Map<Class<? extends Op>, Module> compiledModules;
 
-	private ArrayList<Class<? extends Op>> allOps = new ArrayList<Class<? extends Op>>();
-
-	public AbstractGenericDescSet(final Context context) {
+	public ADescriptorSet(final Context context, final Class<I> type) {
 		service = context.getService(DescriptorService.class);
+		inputSource = new Source<I>(type);
 	}
 
-	protected Pair<List<Module>, List<InputUpdateListener>> getCompilationInfo() {
-		return compilationInfo;
+	public void update(final I obj) {
+		inputSource.update(obj);
 	}
 
 	@Override
-	public void compileFor(final Class<?> inputType) {
+	public Map<Class<? extends Op>, Module> compile()
+			throws IllegalArgumentException, ModuleException {
+		return compiledModules = service.compile(ops, inputSource);
+	}
+
+	/**
+	 * Add Op and (if required) some additional sources to it.
+	 * 
+	 * @param opClass
+	 * @param sources
+	 */
+	protected void addOp(final Class<? extends Op> opClass) {
+		ops.add(opClass);
+	}
+
+	@Override
+	public Iterator<Pair<String, DoubleType>> iterator() {
+		return createIterator();
+	}
+
+	private void tryCompile() {
 		try {
-			compilationInfo = service.compile(this, inputType, allOps);
-		} catch (ModuleException e) {
+			if (compiledModules == null) {
+				compiledModules = compile();
+			}
+		} catch (final IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (final ModuleException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	@Override
-	public void update(final Object obj) {
-		checkStatus();
-
-		for (final InputUpdateListener listener : compilationInfo.getB()) {
-			if (listener.listensTo(obj.getClass()))
-				listener.update(obj);
-		}
+	public Map<Class<? extends Op>, Module> getCompiledModules() {
+		tryCompile();
+		return compiledModules;
 	}
 
-	private void checkStatus() {
-		if (compilationInfo == null) {
-			throw new IllegalStateException(
-					"DescriptorSet has not been compiled!");
-		}
+	protected List<Class<? extends Op>> ops() {
+		return ops;
 	}
 
-	@Override
-	public Iterator<Pair<String, Double>> iterator() {
-		checkStatus();
-		return createIterator();
-	}
+	protected abstract Iterator<Pair<String, DoubleType>> createIterator();
 
-	protected void addOp(Class<? extends Op> op) {
-		allOps.add(op);
-	}
-
-	protected abstract Iterator<Pair<String, Double>> createIterator();
 }

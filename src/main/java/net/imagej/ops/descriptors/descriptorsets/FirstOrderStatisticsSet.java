@@ -30,18 +30,18 @@
 
 package net.imagej.ops.descriptors.descriptorsets;
 
-import net.imagej.ops.descriptors.AbstractDoubleDescSet;
+import net.imagej.ops.OutputOp;
 import net.imagej.ops.descriptors.firstorderstatistics.GeometricMean;
 import net.imagej.ops.descriptors.firstorderstatistics.HarmonicMean;
 import net.imagej.ops.descriptors.firstorderstatistics.Kurtosis;
 import net.imagej.ops.descriptors.firstorderstatistics.Max;
 import net.imagej.ops.descriptors.firstorderstatistics.Mean;
+import net.imagej.ops.descriptors.firstorderstatistics.Median;
 import net.imagej.ops.descriptors.firstorderstatistics.Min;
 import net.imagej.ops.descriptors.firstorderstatistics.Moment1AboutMean;
 import net.imagej.ops.descriptors.firstorderstatistics.Moment2AboutMean;
 import net.imagej.ops.descriptors.firstorderstatistics.Moment3AboutMean;
 import net.imagej.ops.descriptors.firstorderstatistics.Moment4AboutMean;
-import net.imagej.ops.descriptors.firstorderstatistics.Percentile;
 import net.imagej.ops.descriptors.firstorderstatistics.Skewness;
 import net.imagej.ops.descriptors.firstorderstatistics.StdDev;
 import net.imagej.ops.descriptors.firstorderstatistics.Sum;
@@ -49,6 +49,7 @@ import net.imagej.ops.descriptors.firstorderstatistics.SumOfInverses;
 import net.imagej.ops.descriptors.firstorderstatistics.SumOfLogs;
 import net.imagej.ops.descriptors.firstorderstatistics.SumOfSquares;
 import net.imagej.ops.descriptors.firstorderstatistics.Variance;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Context;
 
@@ -58,28 +59,23 @@ import org.scijava.Context;
  * @author Christian Dietz (University of Konstanz)
  * 
  */
-public class FirstOrderStatisticsSet extends AbstractDoubleDescSet {
+public class FirstOrderStatisticsSet<I> extends ADoubleTypeDescriptorSet<I> {
 
-	public FirstOrderStatisticsSet(final Context context) {
-		super(context);
+	public FirstOrderStatisticsSet(final Context context, final Class<I> type) {
+		super(context, type);
+	}
 
-		addOp(GeometricMean.class);
-		addOp(Max.class);
-		addOp(Min.class);
-		addOp(HarmonicMean.class);
-		addOp(Kurtosis.class);
-		addOp(Mean.class);
-		addOp(Moment1AboutMean.class);
-		addOp(Moment2AboutMean.class);
-		addOp(Moment3AboutMean.class);
-		addOp(Moment4AboutMean.class);
-		addOp(Percentile.class);
-		addOp(Skewness.class);
-		addOp(StdDev.class);
-		addOp(Sum.class);
-		addOp(SumOfInverses.class);
-		addOp(SumOfLogs.class);
-		addOp(SumOfSquares.class);
-		addOp(Variance.class);
+	@SuppressWarnings("unchecked")
+	public static final Class<? extends OutputOp<DoubleType>>[] OPS = new Class[] {
+			GeometricMean.class, Max.class, Min.class, HarmonicMean.class,
+			Kurtosis.class, Mean.class, Moment1AboutMean.class,
+			Moment2AboutMean.class, Moment3AboutMean.class,
+			Moment4AboutMean.class, Median.class, Skewness.class,
+			StdDev.class, Sum.class, SumOfInverses.class, SumOfSquares.class,
+			SumOfLogs.class, Variance.class };
+
+	@Override
+	protected Class<? extends OutputOp<DoubleType>>[] descriptors() {
+		return OPS;
 	}
 }

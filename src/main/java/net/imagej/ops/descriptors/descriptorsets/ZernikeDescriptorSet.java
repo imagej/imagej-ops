@@ -32,40 +32,45 @@ package net.imagej.ops.descriptors.descriptorsets;
 
 import java.util.Iterator;
 
-import net.imagej.ops.descriptors.AbstractGenericDescSet;
-import net.imagej.ops.descriptors.DescriptorParameters;
+import net.imagej.ops.descriptors.ADescriptorSet;
 import net.imagej.ops.descriptors.moments.zernike.ZernikeMomentComputer;
 import net.imglib2.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
 
 import org.scijava.Context;
 import org.scijava.module.Module;
-import org.scijava.plugin.Parameter;
 
 /**
  * TODO: JavaDoc
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public class ZernikeDescriptorSet extends AbstractGenericDescSet {
+public class ZernikeDescriptorSet<I> extends ADescriptorSet<I> {
 
-	public ZernikeDescriptorSet(final Context context) {
-		super(context);
+	public ZernikeDescriptorSet(final Context context, final Class<I> type) {
+		super(context, type);
+
 		addOp(ZernikeMomentComputer.class);
 	}
 
+	public void updateOrder(final int order) {
+		getCompiledModules().get(ZernikeMomentComputer.class).setInput("order",
+				order);
+	}
+
 	@Override
-	public Iterator<Pair<String, Double>> createIterator() {
-		final Module module = getCompilationInfo().getA().get(0);
+	public Iterator<Pair<String, DoubleType>> createIterator() {
+		final Module module = getCompiledModules().get(
+				ZernikeMomentComputer.class);
+		final DoubleType tmp = new DoubleType();
 
 		module.run();
 
-		final ZernikeMomentComputer zernike = (ZernikeMomentComputer) module
-				.getDelegateObject();
+		return new Iterator<Pair<String, DoubleType>>() {
 
-		return new Iterator<Pair<String, Double>>() {
-
-			final double[] output = zernike.getOutput();
+			final double[] output = ((ZernikeMomentComputer) module
+					.getDelegateObject()).getOutput();
 
 			int idx = 0;
 
@@ -75,9 +80,10 @@ public class ZernikeDescriptorSet extends AbstractGenericDescSet {
 			}
 
 			@Override
-			public Pair<String, Double> next() {
-				return new ValuePair<String, Double>(
-						"Zernike 2D [" + idx + "]", output[idx++]);
+			public Pair<String, DoubleType> next() {
+				tmp.set(output[idx]);
+				return new ValuePair<String, DoubleType>("Zernike 2D [" + idx++
+						+ "]", tmp);
 			}
 
 			@Override
@@ -85,32 +91,5 @@ public class ZernikeDescriptorSet extends AbstractGenericDescSet {
 				throw new UnsupportedOperationException("Not Supported");
 			}
 		};
-	}
-
-	/**
-	 * {@link DescriptorParameters} for {@link ZernikeDescriptorSet}
-	 * 
-	 * @author Christian Dietz (University of Konstanz)
-	 */
-	public class ZernikeParameter implements DescriptorParameters {
-
-		@Parameter(label = "Order", min = "0", max = "10", stepSize = "1", initializer = "3")
-		private double order;
-
-		public ZernikeParameter(final double order) {
-			this.order = order;
-		}
-
-		public ZernikeParameter() {
-			//
-		}
-
-		public int getOrder() {
-			return (int) order;
-		}
-
-		public void setOrder(final int _order) {
-			this.order = _order;
-		}
 	}
 }

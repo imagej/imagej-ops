@@ -28,59 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.descriptors;
+package net.imagej.ops.descriptors.geometric.ii;
 
-import java.util.Iterator;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.geometric.CenterOfGravity;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.roi.IterableRegionOfInterest;
+import net.imglib2.type.logic.BitType;
 
-import net.imagej.ops.OutputOp;
-import net.imglib2.Pair;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.ValuePair;
-
-import org.scijava.Context;
-import org.scijava.module.Module;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract DescriptorSet which wraps several {@link OutputOp} of type
- * {@link DoubleType}
+ * Calculating {@link CenterOfGravity} on {@link IterableInterval}
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Andreas Graumann (University of Konstanz)
  * 
+ *         TODO: Adjust priority. This is a hack until ops support smarter
+ *         generics
  */
-public class AbstractDoubleDescSet extends AbstractGenericDescSet {
+@Plugin(type = Op.class, label = CenterOfGravity.LABEL, name = CenterOfGravity.NAME, priority = Priority.VERY_LOW_PRIORITY)
+public class CenterOfGravityIROI extends
+		AbstractOutputFunction<IterableRegionOfInterest, double[]> implements
+		CenterOfGravity {
 
-	public AbstractDoubleDescSet(final Context context) {
-		super(context);
+	@Override
+	public double[] compute(final IterableRegionOfInterest input,
+			final double[] output) {
+
+		final IterableInterval<BitType> iroi = input
+				.getIterableIntervalOverROI(null);
+
+		final Cursor<BitType> it = iroi.cursor();
+
+		while (it.hasNext()) {
+			it.fwd();
+			for (int i = 0; i < output.length; i++) {
+				output[i] += it.getDoublePosition(i);
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] /= iroi.size();
+		}
+
+		return output;
 	}
 
 	@Override
-	protected Iterator<Pair<String, Double>> createIterator() {
-		final Iterator<Module> it = getCompilationInfo().getA().iterator();
-
-		return new Iterator<Pair<String, Double>>() {
-
-			@Override
-			public boolean hasNext() {
-				return it.hasNext();
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public Pair<String, Double> next() {
-
-				final Module module = it.next();
-				module.run();
-
-				return new ValuePair<String, Double>(module.getInfo()
-						.getLabel(),
-						((OutputOp<DoubleType>) module.getDelegateObject())
-								.getOutput().get());
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException("Remove not supported!");
-			}
-		};
+	public double[] createOutput(final IterableRegionOfInterest input) {
+		return new double[input.numDimensions()];
 	}
+
 }

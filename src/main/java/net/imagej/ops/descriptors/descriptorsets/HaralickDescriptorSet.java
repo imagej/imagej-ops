@@ -30,7 +30,11 @@
 
 package net.imagej.ops.descriptors.descriptorsets;
 
-import net.imagej.ops.descriptors.AbstractDoubleDescSet;
+import java.util.Map;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.descriptors.haralick.CoocMatrixCreate;
 import net.imagej.ops.descriptors.haralick.features.ASM;
 import net.imagej.ops.descriptors.haralick.features.ClusterPromenence;
 import net.imagej.ops.descriptors.haralick.features.ClusterShade;
@@ -39,39 +43,57 @@ import net.imagej.ops.descriptors.haralick.features.Correlation;
 import net.imagej.ops.descriptors.haralick.features.DifferenceEntropy;
 import net.imagej.ops.descriptors.haralick.features.DifferenceVariance;
 import net.imagej.ops.descriptors.haralick.features.Entropy;
+import net.imagej.ops.descriptors.haralick.features.HaralickVariance;
 import net.imagej.ops.descriptors.haralick.features.ICM1;
 import net.imagej.ops.descriptors.haralick.features.ICM2;
 import net.imagej.ops.descriptors.haralick.features.IFDM;
 import net.imagej.ops.descriptors.haralick.features.SumAverage;
 import net.imagej.ops.descriptors.haralick.features.SumEntropy;
 import net.imagej.ops.descriptors.haralick.features.SumVariance;
-import net.imagej.ops.descriptors.haralick.features.Variance;
+import net.imagej.ops.histogram.CooccurrenceMatrix.MatrixOrientation;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Context;
+import org.scijava.module.Module;
 
 /**
  * TODO: JavaDoc
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public class HaralickDescriptorSet extends AbstractDoubleDescSet {
+public class HaralickDescriptorSet<I> extends ADoubleTypeDescriptorSet<I> {
 
-	public HaralickDescriptorSet(final Context context) {
-		super(context);
-		addOp(ASM.class);
-		addOp(ClusterPromenence.class);
-		addOp(ClusterShade.class);
-		addOp(Contrast.class);
-		addOp(Correlation.class);
-		addOp(DifferenceEntropy.class);
-		addOp(DifferenceVariance.class);
-		addOp(Entropy.class);
-		addOp(ICM1.class);
-		addOp(ICM2.class);
-		addOp(IFDM.class);
-		addOp(SumAverage.class);
-		addOp(SumEntropy.class);
-		addOp(SumVariance.class);
-		addOp(Variance.class);
+	@SuppressWarnings("unchecked")
+	public static final Class<? extends OutputOp<DoubleType>>[] OPS = new Class[] {
+			ASM.class, ClusterPromenence.class, ClusterShade.class,
+			Contrast.class, Correlation.class, DifferenceEntropy.class,
+			DifferenceVariance.class, Entropy.class, ICM1.class, ICM2.class,
+			IFDM.class, SumAverage.class, SumEntropy.class, SumVariance.class,
+			HaralickVariance.class };
+
+	public HaralickDescriptorSet(final Context context, final Class<I> type) {
+		super(context, type);
+
+		for (final Class<? extends OutputOp<?>> op : OPS) {
+			addOp(op);
+		}
+
+		addOp(CoocMatrixCreate.class);
+	}
+
+	public void updateParameters(final int nrGrayLevels, final int distance,
+			final MatrixOrientation orientation) {
+
+		final Map<Class<? extends Op>, Module> compiledModules = getCompiledModules();
+		final Module module = compiledModules.get(CoocMatrixCreate.class);
+
+		module.setInput("nrGrayLevels", nrGrayLevels);
+		module.setInput("distance", distance);
+		module.setInput("orientation", orientation.toString());
+	}
+
+	@Override
+	protected Class<? extends OutputOp<DoubleType>>[] descriptors() {
+		return OPS;
 	}
 }

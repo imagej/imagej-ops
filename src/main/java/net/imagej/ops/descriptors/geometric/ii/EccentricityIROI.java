@@ -35,6 +35,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.Eccentricity;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.roi.IterableRegionOfInterest;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -46,14 +47,17 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = Eccentricity.NAME, label = Eccentricity.LABEL, priority = -1.0)
-public class EccentricityII extends
-		AbstractFunction<IterableInterval<?>, DoubleType> implements
+public class EccentricityIROI extends
+		AbstractFunction<IterableRegionOfInterest, DoubleType> implements
 		Eccentricity {
 
 	@Override
-	public DoubleType compute(final IterableInterval<?> input, final DoubleType output) {
+	public DoubleType compute(final IterableRegionOfInterest input,
+			final DoubleType output) {
 
-		final Cursor<?> cursor = input.localizingCursor();
+		final IterableInterval<?> iroi = input
+				.getIterableIntervalOverROI(null);
+		final Cursor<?> cursor = iroi.localizingCursor();
 
 		final int d = cursor.numDimensions();
 		final long[] c1 = new long[d];

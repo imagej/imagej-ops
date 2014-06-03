@@ -30,24 +30,20 @@
 
 package net.imagej.ops.descriptors;
 
-import java.awt.Polygon;
 import java.util.Iterator;
+import java.util.Map;
 
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
 import net.imglib2.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.module.Module;
+import org.scijava.module.ModuleException;
 
 /**
- * Set of {@link Op}s to numerically describe certain objects. A
- * {@link DescriptorSet} can be compiled for several inputs. For example
- * geometric descriptors may be calculated on {@link Polygon}s or on
- * {@link IterableInterval}s. If you compile the {@link DescriptorSet} for
- * {@link IterableInterval}s the descriptors will be selected accordingly.
- * 
  * @author Christian Dietz (University of Konstanz)
- * 
  */
-public interface DescriptorSet extends Iterable<Pair<String, Double>> {
+public interface DescriptorSet extends Iterable<Pair<String, DoubleType>> {
 
 	/**
 	 * Compiles the {@link DescriptorSet} for a given input type. If this
@@ -57,21 +53,13 @@ public interface DescriptorSet extends Iterable<Pair<String, Double>> {
 	 * @param inputType
 	 *            type of the input for which the {@link DescriptorSet} will be
 	 *            compiled.
+	 * @return
+	 * @throws ModuleException
 	 * 
 	 */
-	public void compileFor(final Class<?> inputType)
-			throws IllegalArgumentException;
-
-	/**
-	 * Update the {@link DescriptorSet}. For example, an object may be an
-	 * {@link Iterable} or {@link DescriptorParameters}
-	 * 
-	 * @param object
-	 *            used to update the {@link DescriptorSet}
-	 * 
-	 */
-	public void update(Object object);
-
+	public Map<Class<? extends Op>, Module> compile()
+			throws IllegalArgumentException, ModuleException;
+	
 	/**
 	 * Iterator over a descriptor set. Descriptors are of type double, their
 	 * names are given as strings. Please note, that the {@link DescriptorSet}
@@ -82,5 +70,5 @@ public interface DescriptorSet extends Iterable<Pair<String, Double>> {
 	 *         and values (double)
 	 */
 	@Override
-	public Iterator<Pair<String, Double>> iterator();
+	public Iterator<Pair<String, DoubleType>> iterator();
 }

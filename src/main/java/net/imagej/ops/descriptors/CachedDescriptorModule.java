@@ -60,8 +60,10 @@ class CachedDescriptorModule implements Module {
 
 	private final Module module;
 
-	public CachedDescriptorModule(final Module op) {
-		this.module = op;
+	public CachedDescriptorModule(final Module module) {
+		this.module = module;
+
+		System.out.println(module);
 	}
 
 	boolean dirty = true;
@@ -160,6 +162,7 @@ class CachedDescriptorModule implements Module {
 
 	@Override
 	public void setInput(final String name, final Object value) {
+		markDirty();
 		module.setInput(name, value);
 	}
 
@@ -170,7 +173,9 @@ class CachedDescriptorModule implements Module {
 
 	@Override
 	public void setInputs(final Map<String, Object> inputs) {
-		module.setInputs(inputs);
+		for (final Entry<String, Object> entry : inputs.entrySet()) {
+			setInput(entry.getKey(), entry.getValue());
+		}
 	}
 
 	@Override
@@ -189,7 +194,7 @@ class CachedDescriptorModule implements Module {
 	}
 
 	public void registerOutputReceiver(final ModuleItem<?> item,
-			InputUpdateListener listener) {
+			final InputUpdateListener listener) {
 		Set<InputUpdateListener> listeners = outputReceivers.get(item);
 		if (listeners == null) {
 			listeners = new HashSet<InputUpdateListener>();

@@ -37,23 +37,26 @@ import net.imagej.ops.descriptors.geometric.FeretResult;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Point;
+import net.imglib2.roi.IterableRegionOfInterest;
 
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
-public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
-		implements Feret {
+public class FeretIROI extends
+		AbstractFunction<IterableRegionOfInterest, FeretResult> implements
+		Feret {
 
 	@Override
-	public FeretResult compute(final IterableInterval<?> input,
+	public FeretResult compute(final IterableRegionOfInterest input,
 			final FeretResult output) {
 
 		double maxDiameter = 0.0f;
-		
+
 		final Point maxP1 = new Point(input.numDimensions());
 		final Point maxP2 = new Point(input.numDimensions());
 
-		final Cursor<?> cursor = input.localizingCursor();
+		final IterableInterval<?> iroi = input.getIterableIntervalOverROI(null);
+		final Cursor<?> cursor = iroi.localizingCursor();
 
 		final int[] position = new int[cursor.numDimensions()];
 		while (cursor.hasNext()) {
@@ -61,14 +64,14 @@ public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
 			cursor.localize(position);
 		}
 
-		final Cursor<?> cursor1 = input.localizingCursor();
+		final Cursor<?> cursor1 = iroi.localizingCursor();
 
 		// TODO: Is this really correct? Distances are accumulated twice (as p1
 		// + p2 distance and p2 + p1). Can't we avoid this?
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 
-			final Cursor<?> cursor2 = input.localizingCursor();
+			final Cursor<?> cursor2 = iroi.localizingCursor();
 			while (cursor2.hasNext()) {
 				cursor2.fwd();
 

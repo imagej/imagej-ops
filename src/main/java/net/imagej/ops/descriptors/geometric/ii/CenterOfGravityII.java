@@ -52,6 +52,7 @@ public class CenterOfGravityII extends
 	@Override
 	public double[] compute(final IterableInterval<?> input,
 			final double[] output) {
+
 		final Cursor<?> it = input.cursor();
 
 		while (it.hasNext()) {
@@ -69,7 +70,7 @@ public class CenterOfGravityII extends
 	}
 
 	@Override
-	public double[] createOutput(IterableInterval<?> input) {
+	public double[] createOutput(final IterableInterval<?> input) {
 		return new double[input.numDimensions()];
 	}
 

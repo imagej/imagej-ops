@@ -28,13 +28,32 @@
  * #L%
  */
 
-package net.imagej.ops.descriptors;
+package net.imagej.ops.descriptors.geometric.ii;
 
-/**
- * Simple marker interface for the parameters of {@link DescriptorSet}s
- * 
- * @author Christian Dietz (University of Konstanz)
- */
-public interface DescriptorParameters {
-	// NB: Marker interface
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.descriptors.geometric.Area;
+import net.imglib2.roi.IterableRegionOfInterest;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL, priority = Priority.HIGH_PRIORITY)
+public class AreaIROI extends
+		AbstractOutputFunction<IterableRegionOfInterest, DoubleType> implements
+		Area {
+
+	@Override
+	public DoubleType compute(final IterableRegionOfInterest input,
+			final DoubleType output) {
+		output.set(input.getIterableIntervalOverROI(null).size());
+		return output;
+	}
+
+	@Override
+	public DoubleType createOutput(final IterableRegionOfInterest input) {
+		return new DoubleType();
+	}
+
 }

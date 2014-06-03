@@ -31,33 +31,20 @@
 package net.imagej.ops.descriptors;
 
 import java.util.List;
+import java.util.Map;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.descriptors.DefaultDescriptorService.InputUpdateListener;
-import net.imglib2.Pair;
 
 import org.scijava.module.Module;
 import org.scijava.module.ModuleException;
 import org.scijava.service.Service;
 
 /**
- * TODO: Better documentation. A {@link DescriptorService} automatically tries
- * to compile a descriptor. This means it's resolving all dependencies of an
- * {@link Op} to other {@link Op}s, which are automatically instantiated.
- * Additionally, an {@link Op} is only computed once for a given input. The
- * strong assumptions are, that the input-type which is passed to the compiled
- * descriptor never changes and no further parameters, but the input, are
- * required.
  * 
- * @author Christian Dietz
  */
 public interface DescriptorService extends Service {
 
-	/**
-	 * TODO JAVA DOC
-	 */
-	Pair<List<Module>, List<InputUpdateListener>> compile(
-			DescriptorSet descriptorSet, Class<?> inputType,
-			List<Class<? extends Op>> requiredOps) throws ModuleException;
+	Map<Class<? extends Op>, Module> compile(List<Class<? extends Op>> ops,
+			Source<?> inputSource) throws ModuleException;
 
 }

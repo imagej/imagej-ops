@@ -30,6 +30,7 @@
 
 package net.imagej.ops.descriptors;
 
+
 /**
  * Utility class holding several helper methods
  * 
@@ -38,6 +39,7 @@ package net.imagej.ops.descriptors;
  */
 public class DescriptorUtils {
 
+	
 	/**
 	 * Calculate the p-th percentile on values
 	 * 

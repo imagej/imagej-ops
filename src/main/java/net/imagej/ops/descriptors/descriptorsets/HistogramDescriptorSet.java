@@ -32,63 +32,65 @@ package net.imagej.ops.descriptors.descriptorsets;
 
 import java.util.Iterator;
 
-import net.imagej.ops.descriptors.AbstractGenericDescSet;
+import net.imagej.ops.descriptors.ADescriptorSet;
 import net.imagej.ops.histogram.HistogramCreate1D;
 import net.imglib2.Pair;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.ValuePair;
 
 import org.scijava.Context;
+import org.scijava.module.Module;
 
 /**
  * TODO: JavaDoc
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public class HistogramDescriptorSet extends AbstractGenericDescSet {
+public class HistogramDescriptorSet<I> extends ADescriptorSet<I> {
 
-	private int numBins;
-
-	public HistogramDescriptorSet(final Context context, int numBins) {
-		super(context);
-		this.numBins = numBins;
+	public HistogramDescriptorSet(final Context context, final Class<I> type) {
+		super(context, type);
 		addOp(HistogramCreate1D.class);
 	}
 
-	public void setNumBins(int numBins) {
-		this.numBins = numBins;
+	public void updateNumBins(final int numBins) {
+		getCompiledModules().get(HistogramCreate1D.class).setInput("numBins",
+				numBins);
 	}
 
 	@Override
-	protected Iterator<Pair<String, Double>> createIterator() {
+	protected Iterator<Pair<String, DoubleType>> createIterator() {
 
-		final HistogramCreate1D<?> histogram = (HistogramCreate1D<?>) (getCompilationInfo()
-				.getA().get(0)).getDelegateObject();
+		final Module module = getCompiledModules().get(HistogramCreate1D.class);
+		final DoubleType tmp = new DoubleType();
 
-		histogram.setNumBins(numBins);
-		histogram.run();
+		module.run();
 
-		return new Iterator<Pair<String, Double>>() {
+		return new Iterator<Pair<String, DoubleType>>() {
 
-			final Iterator<LongType> output = histogram.getOutput().iterator();
-
-			int binNr = 0;
+			private int idx = 0;
+			private final Histogram1d<?> hist = ((HistogramCreate1D<?>) getCompiledModules()
+					.get(HistogramCreate1D.class).getDelegateObject())
+					.getOutput();
 
 			@Override
 			public boolean hasNext() {
-				return output.hasNext();
+				return idx < hist.getBinCount();
 			}
 
 			@Override
-			public Pair<String, Double> next() {
-				return new ValuePair<String, Double>("Histogram 1D [Bin:"
-						+ binNr++ + "]", output.next().getRealDouble());
+			public Pair<String, DoubleType> next() {
+				tmp.set(hist.frequency(idx));
+				return new ValuePair<String, DoubleType>("Histogram 1D [Bin:"
+						+ idx++ + "]", tmp);
 			}
 
 			@Override
 			public void remove() {
-				throw new UnsupportedOperationException("Not Supported");
+				throw new UnsupportedOperationException("Remove not supported!");
 			}
 		};
 	}
+
 }
