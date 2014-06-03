@@ -34,7 +34,6 @@ import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.descriptors.descriptorsets.ZernikeDescriptorSet;
 import net.imagej.ops.descriptors.geometric.CenterOfGravity;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -46,12 +45,16 @@ import org.scijava.plugin.Plugin;
 
 /**
  * @author Andreas Graumann (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ *         TOOD: (a) validate results. (b) does it make sense on "non-bittype"
+ *         images?
  */
 @Plugin(type = Op.class, label = "Zernike Moments 2D", name = "zernikemoments")
 public class ZernikeMomentComputer implements OutputOp<double[]> {
 
-	@Parameter
-	private ZernikeDescriptorSet.ZernikeParameter param;
+	@Parameter(label = "Zernike Order", min = "1", max = "10", stepSize = "1", initializer = "3")
+	private int order;
 
 	@Parameter
 	private IterableInterval<? extends RealType<?>> ii;
@@ -69,8 +72,6 @@ public class ZernikeMomentComputer implements OutputOp<double[]> {
 
 	@Override
 	public void run() {
-		final int order = param.getOrder();
-
 		final List<Double> fR = new ArrayList<Double>();
 
 		for (int o = 0; o <= order; o++) {
@@ -132,6 +133,7 @@ public class ZernikeMomentComputer implements OutputOp<double[]> {
 
 		final Cursor<? extends RealType<?>> it = ii.localizingCursor();
 
+		final double minVal = it.get().getMinValue();
 		final double maxVal = it.get().getMaxValue();
 
 		while (it.hasNext()) {
@@ -144,7 +146,8 @@ public class ZernikeMomentComputer implements OutputOp<double[]> {
 			final double ang = m * Math.atan2(y, x);
 
 			final double value = polynomOrthogonalRadial.evaluate(r);
-			final double pixel = it.get().getRealDouble() / maxVal;
+			final double pixel = (it.get().getRealDouble() - minVal)
+					/ (maxVal - minVal);
 
 			real += pixel * value * Math.cos(ang);
 			imag -= pixel * value * Math.sin(ang);
