@@ -1,18 +1,20 @@
 package net.imagej.ops;
 
 import net.imagej.ops.descriptors.DescriptorService;
-import net.imagej.ops.descriptors.descriptorsets.CoocParameter;
-import net.imagej.ops.descriptors.descriptorsets.FirstOrderStatisticsSet;
 import net.imagej.ops.descriptors.descriptorsets.HaralickDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.HistogramDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.ZernikeDescriptorSet;
+import net.imagej.ops.histogram.CooccurrenceMatrix.MatrixOrientation;
+import net.imglib2.IterableInterval;
 import net.imglib2.Pair;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.scijava.Context;
+import org.scijava.module.ModuleException;
 
 public class DescriptorServiceTest extends AbstractOpTest {
 
@@ -33,77 +35,85 @@ public class DescriptorServiceTest extends AbstractOpTest {
 				DescriptorService.class);
 	}
 
+	// @Test
+	// public void firstOrderStatisticsTest() {
+	//
+	// final FirstOrderStatisticsSet set = new FirstOrderStatisticsSet(context);
+	//
+	// // make it ready for
+	// set.compileFor(in.getClass());
+	//
+	// // First image
+	// set.update(in);
+	//
+	// for (final Pair<String, Double> res : set) {
+	// System.out.println("First: " + res.getA() + " " + res.getB());
+	// }
+	//
+	// // Second image
+	// set.update(in2);
+	// for (final Pair<String, Double> res : set) {
+	// System.out.println("Second: " + res.getA() + " " + res.getB());
+	// }
+	//
+	// }
+
+	@SuppressWarnings("rawtypes")
 	@Test
-	public void firstOrderStatisticsTest() {
+	public void haralickTest() throws IllegalArgumentException, ModuleException {
 
-		final FirstOrderStatisticsSet set = new FirstOrderStatisticsSet(context);
+		final HaralickDescriptorSet<IterableInterval> desc = new HaralickDescriptorSet<IterableInterval>(
+				context, IterableInterval.class);
 
-		// make it ready for
-		set.compileFor(in.getClass());
-
-		// First image
-		set.update(in);
-
-		for (final Pair<String, Double> res : set) {
-			System.out.println("First: " + res.getA() + " " + res.getB());
-		}
-
-		// Second image
-		set.update(in2);
-		for (final Pair<String, Double> res : set) {
-			System.out.println("Second: " + res.getA() + " " + res.getB());
-		}
-
-	}
-
-	@Test
-	public void haralickTest() {
-
-		final HaralickDescriptorSet desc = new HaralickDescriptorSet(context);
-		desc.compileFor(in.getClass());
-
-		// we need to set parameters.
-		final CoocParameter coocParameter = new CoocParameter();
-		coocParameter.setDistance(1);
-		coocParameter.setOrientation("HORIZONTAL");
-		coocParameter.setNrGrayLevels(32);
-
-		desc.update(coocParameter);
-
-		// First image
+		desc.compile();
 		desc.update(in);
 
-		for (final Pair<String, Double> res : desc) {
-			System.out.println("First: " + res.getA() + " " + res.getB());
+		desc.updateParameters(32, 1, MatrixOrientation.VERTICAL);
+
+		System.out.println("### FIRST RUN ####");
+		for (final Pair<String, DoubleType> res : desc) {
+			System.out.println(res.getA() + " " + res.getB().get());
 		}
-	}
 
-	@Test
-	public void histogramTest() {
+		System.out.println("\n");
+		desc.updateParameters(32, 1, MatrixOrientation.HORIZONTAL);
 
-		final HistogramDescriptorSet desc = new HistogramDescriptorSet(context,
-				256);
-		desc.compileFor(in.getClass());
-
-		// First image
-		desc.update(in);
-
-		for (final Pair<String, Double> res : desc) {
-			System.out.println("First: " + res.getA() + " " + res.getB());
+		System.out.println("### SECOND RUN ####");
+		for (final Pair<String, DoubleType> res : desc) {
+			System.out.println(res.getA() + " " + res.getB().get());
 		}
 	}
 
 	@Test
-	public void zernikeTest() {
+	public void histogramTest() throws IllegalArgumentException,
+			ModuleException {
 
-		final ZernikeDescriptorSet desc = new ZernikeDescriptorSet(context);
-		desc.compileFor(in.getClass());
+		final HistogramDescriptorSet<IterableInterval> desc = new HistogramDescriptorSet<IterableInterval>(
+				context, IterableInterval.class);
 
+		desc.compile();
+
+		desc.updateNumBins(10);
 		desc.update(in);
-		desc.update(desc.new ZernikeParameter(1));
 
-		for (final Pair<String, Double> res : desc) {
-			System.out.println("First: " + res.getA() + " " + res.getB());
+		for (final Pair<String, DoubleType> res : desc) {
+			System.out.println("First: " + res.getA() + " " + res.getB().get());
+		}
+	}
+
+	@Test
+	public void zernikeTest() throws IllegalArgumentException, ModuleException {
+
+		@SuppressWarnings("rawtypes")
+		final ZernikeDescriptorSet<IterableInterval> desc = new ZernikeDescriptorSet<IterableInterval>(
+				context, IterableInterval.class);
+		desc.compile();
+
+		desc.updateOrder(1);
+		desc.update(in);
+
+		for (final Pair<String, DoubleType> res : desc) {
+			System.out.println(res.getA() + " " + res.getB().get());
 		}
 	}
 }
