@@ -81,14 +81,21 @@ public class HaralickDescriptorSet<I> extends ADoubleTypeDescriptorSet<I> {
 		addOp(CoocMatrixCreate.class);
 	}
 
-	public void updateParameters(final int nrGrayLevels, final int distance,
-			final MatrixOrientation orientation) {
-
+	public void updateParameterNrGrayLevels(final int nrGrayLevels) {
 		final Map<Class<? extends Op>, Module> compiledModules = getCompiledModules();
 		final Module module = compiledModules.get(CoocMatrixCreate.class);
-
 		module.setInput("nrGrayLevels", nrGrayLevels);
+	}
+
+	public void updateParameterDistance(final int distance) {
+		final Map<Class<? extends Op>, Module> compiledModules = getCompiledModules();
+		final Module module = compiledModules.get(CoocMatrixCreate.class);
 		module.setInput("distance", distance);
+	}
+
+	public void updateParameterOrientation(final MatrixOrientation orientation) {
+		final Map<Class<? extends Op>, Module> compiledModules = getCompiledModules();
+		final Module module = compiledModules.get(CoocMatrixCreate.class);
 		module.setInput("orientation", orientation.toString());
 	}
 

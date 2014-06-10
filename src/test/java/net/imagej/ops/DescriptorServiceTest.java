@@ -68,7 +68,9 @@ public class DescriptorServiceTest extends AbstractOpTest {
 		desc.compile();
 		desc.update(in);
 
-		desc.updateParameters(32, 1, MatrixOrientation.VERTICAL);
+		desc.updateParameterNrGrayLevels(32);
+		desc.updateParameterDistance(1);
+		desc.updateParameterOrientation(MatrixOrientation.VERTICAL);
 
 		System.out.println("### FIRST RUN ####");
 		for (final Pair<String, DoubleType> res : desc) {
@@ -76,7 +78,9 @@ public class DescriptorServiceTest extends AbstractOpTest {
 		}
 
 		System.out.println("\n");
-		desc.updateParameters(32, 1, MatrixOrientation.HORIZONTAL);
+		desc.updateParameterNrGrayLevels(32);
+		desc.updateParameterDistance(1);
+		desc.updateParameterOrientation(MatrixOrientation.HORIZONTAL);
 
 		System.out.println("### SECOND RUN ####");
 		for (final Pair<String, DoubleType> res : desc) {
