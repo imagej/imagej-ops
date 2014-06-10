@@ -1,9 +1,9 @@
 /*
  * #%L
- * SciJava OPS: a framework for reusable algorithms.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2013 Board of Regents of the University of
- * Wisconsin-Madison, and University of Konstanz.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,10 +25,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
- * The views and conclusions contained in the software and documentation are
- * those of the authors and should not be interpreted as representing official
- * policies, either expressed or implied, of any organization.
  * #L%
  */
 package net.imagej.ops.descriptors.haralick.helpers;
