@@ -53,7 +53,7 @@ import org.scijava.module.ModuleException;
  * @author Christian Dietz (University of Konstanz)
  * 
  */
-public abstract class ADescriptorSet<I> implements DescriptorSet {
+public abstract class ADescriptorSet<I> implements DescriptorSet<I> {
 
 	private List<Class<? extends Op>> ops = new ArrayList<Class<? extends Op>>();
 
@@ -68,6 +68,7 @@ public abstract class ADescriptorSet<I> implements DescriptorSet {
 		inputSource = new Source<I>(type);
 	}
 
+	@Override
 	public void update(final I obj) {
 		inputSource.update(obj);
 	}

@@ -43,7 +43,7 @@ import org.scijava.module.ModuleException;
 /**
  * @author Christian Dietz (University of Konstanz)
  */
-public interface DescriptorSet extends Iterable<Pair<String, DoubleType>> {
+public interface DescriptorSet<I> extends Iterable<Pair<String, DoubleType>> {
 
 	/**
 	 * Compiles the {@link DescriptorSet} for a given input type. If this
@@ -59,7 +59,15 @@ public interface DescriptorSet extends Iterable<Pair<String, DoubleType>> {
 	 */
 	public Map<Class<? extends Op>, Module> compile()
 			throws IllegalArgumentException, ModuleException;
-	
+
+	/**
+	 * Updates the input of the descriptor set. All descriptors are marked as
+	 * dirty.
+	 * 
+	 * @param obj
+	 */
+	public void update(final I obj);
+
 	/**
 	 * Iterator over a descriptor set. Descriptors are of type double, their
 	 * names are given as strings. Please note, that the {@link DescriptorSet}
