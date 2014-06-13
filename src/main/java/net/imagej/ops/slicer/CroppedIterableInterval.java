@@ -63,6 +63,17 @@ public class CroppedIterableInterval extends AbstractInterval implements
 
 	private final RandomAccessibleInterval<?> source;
 
+	/**
+	 * 
+	 * @param opService
+	 *            {@link OpService} used
+	 * @param source
+	 *            {@link RandomAccessibleInterval} which will be virtually
+	 *            cropped
+	 * @param axesOfInterest
+	 *            axes which define a plane, cube, hypercube, ...! All other
+	 *            axes will be iterated.
+	 */
 	public CroppedIterableInterval(final OpService opService,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
 	{
