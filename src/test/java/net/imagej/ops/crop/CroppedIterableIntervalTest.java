@@ -37,13 +37,16 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
+import net.imagej.ops.slicer.CroppedIterableInterval;
 import net.imagej.ops.slicer.Slicewise;
 import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +56,7 @@ import org.scijava.Context;
  * Testing functionality of SlicingIterableIntervals
  * 
  * @author Christian Dietz
+ * @author Brian Northan
  */
 public class CroppedIterableIntervalTest extends AbstractOpTest {
 
@@ -89,6 +93,52 @@ public class CroppedIterableIntervalTest extends AbstractOpTest {
 			cur.fwd();
 			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
+	}
+
+	@Test
+	public void LoopThroughHyperSlicesTest() {
+		final int xSize = 40;
+		final int ySize = 50;
+		final int numChannels = 3;
+		final int numSlices = 25;
+		final int numTimePoints = 5;
+
+		final Img<UnsignedByteType> testImage = generateUnsignedByteTestImg(
+				true, xSize, ySize, numChannels, numSlices, numTimePoints);
+
+		final int[] axisIndices = new int[3];
+
+		// set up the axis so the resulting hyperslices are x,y,z and
+		// we loop through channels and time
+		axisIndices[0] = 0;
+		axisIndices[1] = 1;
+		axisIndices[2] = 3;
+
+		final CroppedIterableInterval hyperSlices = new CroppedIterableInterval(
+				ops, testImage, axisIndices);
+
+		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
+
+		int numHyperSlices = 0;
+		while (c.hasNext()) {
+
+			c.fwd();
+			numHyperSlices++;
+			try {
+				final RandomAccessibleInterval<?> hyperSlice = c.get();
+
+				assertEquals(3, hyperSlice.numDimensions());
+				assertEquals(hyperSlice.dimension(0), xSize);
+				assertEquals(hyperSlice.dimension(1), ySize);
+				assertEquals(hyperSlice.dimension(2), numSlices);
+
+			} catch (final Exception e) {
+				System.out.println(e);
+			}
+		}
+
+		assertEquals(numChannels * numTimePoints, numHyperSlices);
+
 	}
 
 	class DummyOp extends
