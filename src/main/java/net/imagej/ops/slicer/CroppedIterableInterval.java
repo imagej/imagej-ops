@@ -97,7 +97,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 			for (int j = 0; j < axesOfInterest.length; j++) {
 
 				if (axesOfInterest[j] == i) {
-					dimensionsToIterate[j] = 1;
+					dimensionsToIterate[i] = 1;
 					break;
 				}
 			}
