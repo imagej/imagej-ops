@@ -30,7 +30,7 @@
 
 package net.imagej.ops.descriptors.geometric.ii;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.Feret;
 import net.imagej.ops.descriptors.geometric.FeretResult;
@@ -41,61 +41,66 @@ import net.imglib2.Point;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
-public class FeretII extends AbstractFunction<IterableInterval<?>, FeretResult>
-		implements Feret {
+public class FeretII extends AbstractOutputFunction<IterableInterval<?>, FeretResult>
+implements Feret {
 
-	@Override
-	public FeretResult compute(final IterableInterval<?> input,
-			final FeretResult output) {
+    @Override
+    public FeretResult compute(final IterableInterval<?> input,
+	    final FeretResult output) {
 
-		double maxDiameter = 0.0f;
+	double maxDiameter = 0.0f;
 
-		final Point maxP1 = new Point(input.numDimensions());
-		final Point maxP2 = new Point(input.numDimensions());
+	final Point maxP1 = new Point(input.numDimensions());
+	final Point maxP2 = new Point(input.numDimensions());
 
-		final Cursor<?> cursor = input.localizingCursor();
+	final Cursor<?> cursor = input.localizingCursor();
 
-		final int[] position = new int[cursor.numDimensions()];
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.localize(position);
-		}
-
-		final Cursor<?> cursor1 = input.localizingCursor();
-
-		// TODO: Is this really correct? Distances are accumulated twice (as p1
-		// + p2 distance and p2 + p1). Can't we avoid this? This is
-		// inefficient!!!!
-		while (cursor1.hasNext()) {
-			cursor1.fwd();
-
-			final Cursor<?> cursor2 = input.localizingCursor();
-			while (cursor2.hasNext()) {
-				cursor2.fwd();
-
-				double dist = 0.0f;
-				for (int i = 0; i < cursor1.numDimensions(); i++) {
-					dist += (cursor1.getIntPosition(i) - cursor2
-							.getIntPosition(i))
-							* (cursor1.getIntPosition(i) - cursor2
-									.getIntPosition(i));
-				}
-
-				if (dist > maxDiameter) {
-					maxDiameter = dist;
-					maxP1.setPosition(cursor1);
-					maxP2.setPosition(cursor2);
-				}
-			}
-		}
-
-		// sqrt for euclidean
-		maxDiameter = Math.sqrt(maxDiameter);
-
-		output.max = maxDiameter;
-		output.p1 = maxP1;
-		output.p2 = maxP2;
-
-		return output;
+	final int[] position = new int[cursor.numDimensions()];
+	while (cursor.hasNext()) {
+	    cursor.fwd();
+	    cursor.localize(position);
 	}
+
+	final Cursor<?> cursor1 = input.localizingCursor();
+
+	// TODO: Is this really correct? Distances are accumulated twice (as p1
+	// + p2 distance and p2 + p1). Can't we avoid this? This is
+	// inefficient!!!!
+	while (cursor1.hasNext()) {
+	    cursor1.fwd();
+
+	    final Cursor<?> cursor2 = input.localizingCursor();
+	    while (cursor2.hasNext()) {
+		cursor2.fwd();
+
+		double dist = 0.0f;
+		for (int i = 0; i < cursor1.numDimensions(); i++) {
+		    dist += (cursor1.getIntPosition(i) - cursor2
+			    .getIntPosition(i))
+			    * (cursor1.getIntPosition(i) - cursor2
+				    .getIntPosition(i));
+		}
+
+		if (dist > maxDiameter) {
+		    maxDiameter = dist;
+		    maxP1.setPosition(cursor1);
+		    maxP2.setPosition(cursor2);
+		}
+	    }
+	}
+
+	// sqrt for euclidean
+	maxDiameter = Math.sqrt(maxDiameter);
+
+	output.max = maxDiameter;
+	output.p1 = maxP1;
+	output.p2 = maxP2;
+
+	return output;
+    }
+
+    @Override
+    protected FeretResult createOutput(final IterableInterval<?> input) {
+	return new FeretResult();
+    }
 }
