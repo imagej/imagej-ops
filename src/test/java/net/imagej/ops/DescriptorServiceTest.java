@@ -122,10 +122,10 @@ public class DescriptorServiceTest extends AbstractOpTest {
 	}
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
     public void geometricTest() throws IllegalArgumentException,
     ModuleException {
+	@SuppressWarnings("rawtypes")
 	final GeometricDescriptorSet<IterableInterval> geomDescs = new GeometricDescriptorSet<IterableInterval>(
 		context, IterableInterval.class);
 
@@ -133,13 +133,8 @@ public class DescriptorServiceTest extends AbstractOpTest {
 
 	geomDescs.update(in);
 
-	// FIXME: cannot cast results to DoubleType (polygon, feretresult,
-	// double[], etc)
-	// for (final Pair<String, DoubleType> pair : geomDescs) {
-	// System.out.println(pair.getA() + " " + pair.getB().get());
-	// }
-
-	geomDescs.update(in2);
-
+	for (final Pair<String, DoubleType> pair : geomDescs) {
+	    System.out.println(pair.getA() + " " + pair.getB().get());
+	}
     }
 }
