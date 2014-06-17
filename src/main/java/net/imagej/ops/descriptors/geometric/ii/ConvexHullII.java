@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.ConvexHull;
 import net.imglib2.Cursor;
@@ -23,7 +23,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = ConvexHull.NAME, label = ConvexHull.LABEL)
 public class ConvexHullII extends
-AbstractFunction<IterableInterval<?>, Polygon> implements ConvexHull {
+AbstractOutputFunction<IterableInterval<?>, Polygon> implements ConvexHull {
 
     /**
      * Andrew's monotone chain convex hull algorithm constructs the convex hull
@@ -49,6 +49,7 @@ AbstractFunction<IterableInterval<?>, Polygon> implements ConvexHull {
 	final List<Point2D> points = new ArrayList<Point2D>();
 	final double[] pos = new double[2];
 	while (cursor.hasNext()) {
+	    cursor.next();
 	    cursor.localize(pos);
 	    points.add(new Point2D.Double(pos[0], pos[1]));
 	}
@@ -111,12 +112,11 @@ AbstractFunction<IterableInterval<?>, Polygon> implements ConvexHull {
 	L.addAll(U);
 
 	// convert list into polygon
-	final Polygon result = new Polygon();
 	for (final Point2D point2d : L) {
-	    result.addPoint((int) point2d.getX(), (int) point2d.getY());
+	    output.addPoint((int) point2d.getX(), (int) point2d.getY());
 	}
 
-	return result;
+	return output;
     }
 
     /**
@@ -137,6 +137,11 @@ AbstractFunction<IterableInterval<?>, Polygon> implements ConvexHull {
     private double ccw(final Point2D o, final Point2D a, final Point2D b) {
 	return (a.getX() - o.getX()) * (b.getY() - o.getY())
 		- (a.getY() - o.getY()) * (b.getX() - o.getX());
+    }
+
+    @Override
+    protected Polygon createOutput(final IterableInterval<?> input) {
+	return new Polygon();
     }
 
 }
