@@ -50,20 +50,20 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, label = FeretsAngle.LABEL, name = FeretsAngle.NAME)
 public class FeretAngleGeneric implements FeretsAngle {
 
-	@Parameter(type = ItemIO.INPUT)
-	private FeretResult result;
+    @Parameter(type = ItemIO.INPUT)
+    private FeretResult result;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public void run() {
-		out = new DoubleType(result.getAngle());
-	}
+    @Override
+    public void run() {
+	out = new DoubleType(result.getAngle());
+    }
 
-	@Override
-	public DoubleType getOutput() {
-		return out;
-	}
+    @Override
+    public DoubleType getOutput() {
+	return out;
+    }
 
 }

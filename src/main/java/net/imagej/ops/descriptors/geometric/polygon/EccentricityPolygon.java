@@ -45,21 +45,21 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Eccentricity.class, name = Eccentricity.NAME, label = Eccentricity.LABEL)
+@Plugin(type = Eccentricity.class, name = Eccentricity.NAME, label = Eccentricity.LABEL, priority = -1.0)
 public class EccentricityPolygon extends AbstractFunction<Polygon, DoubleType>
-		implements Eccentricity {
+implements Eccentricity {
 
-	// TODO REVIEW. This implementation is not correct!!
+    // TODO REVIEW. This implementation is not correct!!
 
-	@Override
-	public DoubleType compute(final Polygon input, final DoubleType output) {
+    @Override
+    public DoubleType compute(final Polygon input, final DoubleType output) {
 
-		final Rectangle2D rec = input.getBounds2D();
+	final Rectangle2D rec = input.getBounds2D();
 
-		output.set((rec.getWidth() > rec.getHeight()) ? rec.getWidth()
-				/ rec.getHeight() : rec.getHeight() / rec.getWidth());
+	output.set((rec.getWidth() > rec.getHeight()) ? rec.getWidth()
+		/ rec.getHeight() : rec.getHeight() / rec.getWidth());
 
-		return output;
-	}
+	return output;
+    }
 
 }

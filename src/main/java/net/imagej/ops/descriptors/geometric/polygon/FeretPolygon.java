@@ -46,46 +46,46 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL)
+@Plugin(type = Op.class, name = Feret.NAME, label = Feret.LABEL, priority=-1)
 public class FeretPolygon extends AbstractFunction<Polygon, FeretResult>
-		implements Feret {
+implements Feret {
 
-	@Override
-	public FeretResult compute(final Polygon input, final FeretResult output) {
+    @Override
+    public FeretResult compute(final Polygon input, final FeretResult output) {
 
-		double maxDiameter = -Double.MAX_VALUE;
-		final long[] tmp = { 0, 0 };
-		final Point maxP1 = new Point(tmp);
-		final Point maxP2 = new Point(tmp);
+	double maxDiameter = -Double.MAX_VALUE;
+	final long[] tmp = { 0, 0 };
+	final Point maxP1 = new Point(tmp);
+	final Point maxP2 = new Point(tmp);
 
-		for (int i = 0; i < input.npoints; i++) {
-			for (int j = 0; j < input.npoints; j++) {
-				if (i != j) {
-					double dist = 0.0;
+	for (int i = 0; i < input.npoints; i++) {
+	    for (int j = 0; j < input.npoints; j++) {
+		if (i != j) {
+		    double dist = 0.0;
 
-					dist += (input.xpoints[i] - input.xpoints[j])
-							* (input.xpoints[i] - input.xpoints[j]);
-					dist += (input.ypoints[i] - input.ypoints[j])
-							* (input.ypoints[i] - input.ypoints[j]);
+		    dist += (input.xpoints[i] - input.xpoints[j])
+			    * (input.xpoints[i] - input.xpoints[j]);
+		    dist += (input.ypoints[i] - input.ypoints[j])
+			    * (input.ypoints[i] - input.ypoints[j]);
 
-					if (dist > maxDiameter) {
-						maxP1.setPosition(input.xpoints[i], 0);
-						maxP1.setPosition(input.ypoints[i], 1);
-						maxP2.setPosition(input.xpoints[j], 0);
-						maxP2.setPosition(input.ypoints[j], 1);
-						maxDiameter = dist;
-					}
-				}
-			}
+		    if (dist > maxDiameter) {
+			maxP1.setPosition(input.xpoints[i], 0);
+			maxP1.setPosition(input.ypoints[i], 1);
+			maxP2.setPosition(input.xpoints[j], 0);
+			maxP2.setPosition(input.ypoints[j], 1);
+			maxDiameter = dist;
+		    }
 		}
-
-		// sqrt for euclidean
-		maxDiameter = Math.sqrt(maxDiameter);
-
-		output.max = maxDiameter;
-		output.p1 = maxP1;
-		output.p2 = maxP2;
-
-		return output;
+	    }
 	}
+
+	// sqrt for euclidean
+	maxDiameter = Math.sqrt(maxDiameter);
+
+	output.max = maxDiameter;
+	output.p1 = maxP1;
+	output.p2 = maxP2;
+
+	return output;
+    }
 }

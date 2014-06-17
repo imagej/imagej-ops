@@ -37,6 +37,7 @@ import net.imagej.ops.descriptors.geometric.FeretsDiameter;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,22 +48,22 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, label = FeretsDiameter.LABEL, name = FeretsDiameter.NAME)
+@Plugin(type = Op.class, label = FeretsDiameter.LABEL, name = FeretsDiameter.NAME, priority = Priority.HIGH_PRIORITY)
 public class FeretDiameterGeneric implements FeretsDiameter {
 
-	@Parameter(type = ItemIO.INPUT)
-	private FeretResult result;
+    @Parameter(type = ItemIO.INPUT)
+    private FeretResult result;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public void run() {
-		out = new DoubleType(result.max);
-	}
+    @Override
+    public void run() {
+	out = new DoubleType(result.max);
+    }
 
-	@Override
-	public DoubleType getOutput() {
-		return out;
-	}
+    @Override
+    public DoubleType getOutput() {
+	return out;
+    }
 }
