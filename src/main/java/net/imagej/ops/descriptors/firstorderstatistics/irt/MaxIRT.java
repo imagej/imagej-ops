@@ -44,31 +44,31 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Max.NAME, label = Max.LABEL, priority = Priority.LOW_PRIORITY)
 public class MaxIRT extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
-		implements Max {
+AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
+implements Max {
 
-	@Override
-	public DoubleType compute(final Iterable<? extends RealType<?>> input,
-			final DoubleType output) {
+    @Override
+    public DoubleType compute(final Iterable<? extends RealType<?>> input,
+	    final DoubleType output) {
 
-		double max = Double.NEGATIVE_INFINITY;
+	double max = Double.NEGATIVE_INFINITY;
 
-		for (final RealType<?> val : input) {
-			final double tmp = val.getRealDouble();
-			if (tmp > max) {
-				max = tmp;
-			}
-		}
-
-		output.set(max);
-		return output;
+	for (final RealType<?> val : input) {
+	    final double tmp = val.getRealDouble();
+	    if (tmp > max) {
+		max = tmp;
+	    }
 	}
 
-	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
-	}
+	output.set(max);
+	return output;
+    }
+
+    @Override
+    public DoubleType createOutput(final Iterable<? extends RealType<?>> in) {
+	return new DoubleType();
+    }
 
 }
