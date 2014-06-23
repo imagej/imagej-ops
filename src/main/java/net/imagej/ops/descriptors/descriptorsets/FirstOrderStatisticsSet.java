@@ -61,21 +61,26 @@ import org.scijava.Context;
  */
 public class FirstOrderStatisticsSet<I> extends ADoubleTypeDescriptorSet<I> {
 
-	public FirstOrderStatisticsSet(final Context context, final Class<I> type) {
-		super(context, type);
-	}
+    @SuppressWarnings("unchecked")
+    public static final Class<? extends OutputOp<DoubleType>>[] OPS = new Class[] {
+	GeometricMean.class, Max.class, Min.class, HarmonicMean.class,
+	Kurtosis.class, Mean.class, Moment1AboutMean.class,
+	Moment2AboutMean.class, Moment3AboutMean.class,
+	Moment4AboutMean.class, Median.class, Skewness.class, StdDev.class,
+	Sum.class, SumOfInverses.class, SumOfSquares.class,
+	SumOfLogs.class, Variance.class };
 
-	@SuppressWarnings("unchecked")
-	public static final Class<? extends OutputOp<DoubleType>>[] OPS = new Class[] {
-			GeometricMean.class, Max.class, Min.class, HarmonicMean.class,
-			Kurtosis.class, Mean.class, Moment1AboutMean.class,
-			Moment2AboutMean.class, Moment3AboutMean.class,
-			Moment4AboutMean.class, Median.class, Skewness.class,
-			StdDev.class, Sum.class, SumOfInverses.class, SumOfSquares.class,
-			SumOfLogs.class, Variance.class };
+    public FirstOrderStatisticsSet(final Context context, final Class<I> type) {
+	super(context, type);
 
-	@Override
-	protected Class<? extends OutputOp<DoubleType>>[] descriptors() {
-		return OPS;
+	// ops should be added
+	for (final Class<? extends OutputOp<DoubleType>> op : OPS) {
+	    addOp(op);
 	}
+    }
+
+    @Override
+    protected Class<? extends OutputOp<DoubleType>>[] descriptors() {
+	return OPS;
+    }
 }
