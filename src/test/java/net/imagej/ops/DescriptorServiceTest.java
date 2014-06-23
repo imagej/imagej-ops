@@ -1,6 +1,8 @@
 package net.imagej.ops;
 
+import io.scif.img.ImgIOException;
 import net.imagej.ops.descriptors.DescriptorService;
+import net.imagej.ops.descriptors.descriptorsets.FirstOrderStatisticsSet;
 import net.imagej.ops.descriptors.descriptorsets.GeometricDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.HaralickDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.HistogramDescriptorSet;
@@ -36,28 +38,21 @@ public class DescriptorServiceTest extends AbstractOpTest {
 		DescriptorService.class);
     }
 
-    // @Test
-    // public void firstOrderStatisticsTest() {
-    //
-    // final FirstOrderStatisticsSet set = new FirstOrderStatisticsSet(context);
-    //
-    // // make it ready for
-    // set.compileFor(in.getClass());
-    //
-    // // First image
-    // set.update(in);
-    //
-    // for (final Pair<String, Double> res : set) {
-    // System.out.println("First: " + res.getA() + " " + res.getB());
-    // }
-    //
-    // // Second image
-    // set.update(in2);
-    // for (final Pair<String, Double> res : set) {
-    // System.out.println("Second: " + res.getA() + " " + res.getB());
-    // }
-    //
-    // }
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void firstOrderStatisticsTest() throws IllegalArgumentException,
+    ModuleException, ImgIOException {
+
+	final FirstOrderStatisticsSet<IterableInterval> desc = new FirstOrderStatisticsSet<IterableInterval>(
+		context, IterableInterval.class);
+
+	desc.compile();
+	desc.update(in);
+
+	for (final Pair<String, DoubleType> results : desc) {
+	    System.out.println(results.getA() + " " + results.getB());
+	}
+    }
 
     @SuppressWarnings("rawtypes")
     @Test
