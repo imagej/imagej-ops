@@ -32,8 +32,11 @@ package net.imagej.ops;
 
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.util.Intervals;
 
@@ -123,5 +126,21 @@ public abstract class AbstractOpTest {
 		}
 
 		return ArrayImgs.unsignedBytes(array, dims);
+	}
+
+	public ArrayImg<FloatType, FloatArray> generateFloatArrayTestImg(
+		final boolean fill, final long... dims)
+	{
+		final float[] array =
+			new float[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (fill) {
+			seed = 17;
+			for (int i = 0; i < array.length; i++) {
+				array[i] = (float) pseudoRandom() / (float) Integer.MAX_VALUE;
+			}
+		}
+
+		return ArrayImgs.floats(array, dims);
 	}
 }
