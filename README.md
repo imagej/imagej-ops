@@ -54,7 +54,8 @@ ij.op().add(sinusoid, 13.0)
 gradient = ij.op().equation(ij.op().create(dims), "p[0]+p[1]")
 
 # add the two images
-composite = ij.op().add(sinusoid, gradient)
+composite = ij.op().create(dims)
+ij.op().add(composite, sinusoid, gradient)
 
 # dump the image to the console
 ascii = ij.op().ascii(composite)
