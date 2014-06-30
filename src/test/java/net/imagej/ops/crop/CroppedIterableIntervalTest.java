@@ -94,6 +94,39 @@ public class CroppedIterableIntervalTest extends AbstractOpTest {
 			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
 	}
+	
+	@Test
+	public void testXYZCropping() {
+		// the slices can end up being processed in parallel.  So try with a few different timepoint values
+		// in order to test the chunker with various chunk sizes
+		testXYZCropping(1);
+		testXYZCropping(5);
+		testXYZCropping(11);
+		testXYZCropping(17);
+		testXYZCropping(27);
+	}
+	
+	private void testXYZCropping(int t) {
+		
+		Img<ByteType> inSequence=ArrayImgs.bytes(20, 20, 21, t);
+		ArrayImg<ByteType, ByteArray> outSequence=ArrayImgs.bytes(20, 20, 21, t);
+		
+		// fill array img with values (plane position = value in px);
+		for (final Cursor<ByteType> cur = inSequence.cursor(); cur.hasNext();) {
+			cur.fwd();
+			cur.get().set((byte) cur.getIntPosition(2));
+		}
+		
+		// selected interval XYZ
+		final int[] xyAxis = new int[] { 0, 1, 2 };
+
+		ops.run(Slicewise.class, outSequence, inSequence, new DummyOp(), xyAxis);
+
+		for (final Cursor<ByteType> cur = outSequence.cursor(); cur.hasNext();) {
+			cur.fwd();
+			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
+		}
+	}
 
 	@Test
 	public void LoopThroughHyperSlicesTest() {
