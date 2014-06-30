@@ -96,8 +96,7 @@ public class CroppedIterableIntervalTest extends AbstractOpTest {
 	}
 	
 	@Test
-	public void testXYZCropping()
-	{
+	public void testXYZCropping() {
 		// the slices can end up being processed in parallel.  So try with a few different timepoint values
 		// in order to test the chunker with various chunk sizes
 		testXYZCropping(1);
