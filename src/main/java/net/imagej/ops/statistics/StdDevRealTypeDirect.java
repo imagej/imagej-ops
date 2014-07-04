@@ -42,8 +42,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = StdDeviation.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T>
-{
+		AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T> {
 
 	@Override
 	public T compute(final Iterable<T> input, final T output) {
