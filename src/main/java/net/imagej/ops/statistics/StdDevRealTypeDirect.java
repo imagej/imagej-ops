@@ -39,8 +39,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StdDeviation.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = StdDeviation.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T> {
 
