@@ -49,8 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
-{
+		AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O> {
 
 	@Parameter(required = false)
 	private Sum<Iterable<I>, DoubleType> sumFunc;
@@ -65,7 +64,8 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	public O compute(final Iterable<I> input, final O output) {
 
 		if (sumFunc == null) {
-			sumFunc = (Sum<Iterable<I>, DoubleType>) ops.op(Sum.class, output, input);
+			sumFunc = (Sum<Iterable<I>, DoubleType>) ops.op(Sum.class, output,
+					input);
 		}
 		if (sizeFunc == null) {
 			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);

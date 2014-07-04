@@ -40,12 +40,10 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StdDeviation.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = StdDeviation.NAME, priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType> implements
-	StdDeviation<T, DoubleType>
-{
+		AbstractFunction<Iterable<T>, DoubleType> implements
+		StdDeviation<T, DoubleType> {
 
 	@Parameter(required = false)
 	private Variance<T, DoubleType> variance;
@@ -56,15 +54,11 @@ public class StdDevRealType<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (variance == null) {
-			variance =
-				(Variance<T, DoubleType>) ops.op(Variance.class, output, input);
+			variance = (Variance<T, DoubleType>) ops.op(Variance.class, output,
+					input);
 		}
 		output.set(Math.sqrt(variance.compute(input, output).get()));
 		return output;
 	}
-//	@Override
-//	public String name() {
-//		return "Standard Deviation";
-//	}
 
 }
