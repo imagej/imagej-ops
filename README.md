@@ -73,7 +73,7 @@ How to contribute
 
 We welcome [pull requests](https://help.github.com/articles/using-pull-requests)!
 * Use an
-  [existing op](https://github.com/imagej/imagej-tutorials/create-a-new-op)
+  [existing op](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
   as a starting point
 * Use [ImageJ code style](http://developer.imagej.net/coding-style)
 * Use
