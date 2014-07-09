@@ -34,6 +34,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imglib2.type.numeric.NumericType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
+
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.command.CommandInfo;
@@ -369,7 +377,12 @@ public class DefaultOpMatchingService extends
 			// NB: Class argument for matching, to help differentiate op signatures.
 			return true;
 		}
-		return ConversionUtils.canConvert(o, type);
+		boolean canConvert =  ConversionUtils.canConvert(o, type);
+		if (!canConvert && o instanceof Number) {
+			NumericType<?> nt = getNumericType((Number)o);
+			canConvert = ConversionUtils.canConvert(nt, type);
+		}
+		return canConvert;
 	}
 
 	private boolean canConvert(final Object o, final Class<?> type) {
@@ -377,7 +390,12 @@ public class DefaultOpMatchingService extends
 			// NB: Class argument for matching, to help differentiate op signatures.
 			return true;
 		}
-		return ConversionUtils.canConvert(o, type);
+		boolean canConvert =  ConversionUtils.canConvert(o, type);
+		if (!canConvert && o instanceof Number) {
+			NumericType<?> nt = getNumericType((Number)o);
+			canConvert = ConversionUtils.canConvert(nt, type);
+		}
+		return canConvert;
 	}
 
 	/** Helper method of {@link #assignInputs}. */
@@ -402,7 +420,12 @@ public class DefaultOpMatchingService extends
 			// NB: Class argument for matching; fill with null.
 			return null;
 		}
-		return ConversionUtils.convert(o, type);
+		Object c =  ConversionUtils.convert(o, type);
+		if (c == null && o instanceof Number) {
+			NumericType<?> nt = getNumericType((Number)o);
+			c = nt != null ? ConversionUtils.convert(nt, type) : null;
+		}
+		return c;
 	}
 
 	private Object convert(final Object o, final Class<?> type) {
@@ -410,7 +433,37 @@ public class DefaultOpMatchingService extends
 			// NB: Class argument for matching; fill with null.
 			return true;
 		}
-		return ConversionUtils.convert(o, type);
+		Object c =  ConversionUtils.convert(o, type);
+		if (c == null && o instanceof Number) {
+			NumericType<?> nt = getNumericType((Number)o);
+			c = nt != null ? ConversionUtils.convert(nt, type) : null;
+		}
+		return c;
+	}
+
+	/**
+	 * @return A converted {@link NumericType} based on the given number.
+	 */
+	private NumericType<?> getNumericType(Number o) {
+		if (o instanceof Short) {
+			return new ShortType(((Short) o).shortValue());
+		}
+		else if (o instanceof Integer) {
+			return new IntType(((Integer) o).intValue());
+		}
+		else if (o instanceof Long) {
+			return new LongType(((Long) o).longValue());
+		}
+		else if (o instanceof Double) {
+			return new DoubleType(((Double) o).doubleValue());
+		}
+		else if (o instanceof Float) {
+			return new FloatType(((Float) o).floatValue());
+		}
+		else if (o instanceof Byte) {
+			return new ByteType(((Byte) o).byteValue());
+		}
+		return null;
 	}
 
 	private String paramString(final Iterable<ModuleItem<?>> items) {
