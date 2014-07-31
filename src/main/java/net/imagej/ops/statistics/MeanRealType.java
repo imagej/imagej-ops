@@ -72,8 +72,10 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 
 		final O result;
 		if (output == null) {
+			// HACK: Need to cast through Object to satisfy javac.
+			final Object o = new DoubleType();
 			@SuppressWarnings("unchecked")
-			final O newOutput = (O) new DoubleType();
+			final O newOutput = (O) o;
 			result = newOutput;
 		}
 		else result = output;
