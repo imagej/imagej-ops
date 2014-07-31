@@ -74,8 +74,16 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		final LongType size = sizeFunc.compute(input, new LongType());
 		final DoubleType sum = sumFunc.compute(input, new DoubleType());
 
-		output.setReal(size.get() / sum.get());
+		final O result;
+		if (output == null) {
+			@SuppressWarnings("unchecked")
+			final O newOutput = (O) new DoubleType();
+			result = newOutput;
+		}
+		else result = output;
 
-		return output;
+		result.setReal(size.get() / sum.get());
+
+		return result;
 	}
 }
