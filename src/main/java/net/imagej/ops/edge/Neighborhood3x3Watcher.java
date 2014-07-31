@@ -1,4 +1,3 @@
-package net.imagej.ops.edge;
 
 /*
  * #%L
@@ -30,6 +29,8 @@ package net.imagej.ops.edge;
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
+package net.imagej.ops.edge;
  
  
 /**
