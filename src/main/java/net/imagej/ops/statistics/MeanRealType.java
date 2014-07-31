@@ -52,7 +52,7 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O> {
 
 	@Parameter(required = false)
-	private Sum<Iterable<I>, DoubleType> sumFunc;
+	private Sum<Iterable<I>, O> sumFunc;
 
 	@Parameter(required = false)
 	private Size<Iterable<I>> sizeFunc;
@@ -64,15 +64,11 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	public O compute(final Iterable<I> input, final O output) {
 
 		if (sumFunc == null) {
-			sumFunc = (Sum<Iterable<I>, DoubleType>) ops.op(Sum.class, output,
-					input);
+			sumFunc = (Sum<Iterable<I>, O>) ops.op(Sum.class, output, input);
 		}
 		if (sizeFunc == null) {
 			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);
 		}
-
-		final LongType size = sizeFunc.compute(input, new LongType());
-		final DoubleType sum = sumFunc.compute(input, new DoubleType());
 
 		final O result;
 		if (output == null) {
@@ -82,7 +78,13 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		}
 		else result = output;
 
-		result.setReal(size.get() / sum.get());
+		final LongType size = sizeFunc.compute(input, new LongType());
+		final O sum = sumFunc.compute(input, result.copy());
+
+		// TODO: Better way to go LongType -> O without going through double?
+		result.setReal(size.getRealDouble());
+
+		result.div(sum);
 
 		return result;
 	}
