@@ -9,7 +9,6 @@
 		<relativePath />
 	</parent>
 
-	<groupId>net.imagej</groupId>
 	<artifactId>imagej-ops</artifactId>
 	<version>0.4.3-SNAPSHOT</version>
 
