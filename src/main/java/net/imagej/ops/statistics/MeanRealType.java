@@ -43,7 +43,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO
+ * Computes the mean of values for the input {@link Iterable}.
  * 
  * @author Christian Dietz
  */
