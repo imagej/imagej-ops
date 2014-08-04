@@ -6,3 +6,4 @@ all in a woeful plight,
 sought shelter in a way-side inn
 one dark and rainy night
 ```
+mapList = [{name:alice, age:123}, { name : bob, age:1.2}, {name : "charly"}]

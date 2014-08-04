@@ -55,6 +55,11 @@ public class TemplateTest {
 			assertNotNull(reader.readLine());
 			assertNotNull(reader.readLine());
 			assertEquals("one dark and rainy night...!", reader.readLine());
+			assertNotNull(reader.readLine());
+			assertEquals("The list of maps:", reader.readLine());
+			assertEquals("alice who is 123 years old", reader.readLine());
+			assertEquals("bob who is 1.2 years old", reader.readLine());
+			assertEquals("charly ", reader.readLine());
 			assertNull(reader.readLine());
 		} finally {
 			reader.close();
