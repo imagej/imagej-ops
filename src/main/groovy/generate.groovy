@@ -47,6 +47,138 @@ def processTemplate(engine, context, templateFile, outFilename) {
   out.close();
 }
 
+class ValueParsingException extends Exception {
+  public ValueParsingException(String msg) {
+    super(msg)
+  }
+}
+
+/*
+ * Parse a string as string, list or map
+ */
+def parseValue(str) {
+  Stack<Character> symbols = new Stack<Character>();
+  Stack<Object> parsed = new Stack<Object>();
+  
+  String buffer = "";
+  boolean escaped = false;
+  
+  for (char c :  str.toCharArray()) {
+    try {
+      // top symbol determines what kind of structure we're
+      // currently working on TODO: Speedup?
+      char top = symbols.peek();
+      
+      if (top == '\\') {
+        escaped = true;
+        symbols.pop();
+      } else {
+        escaped = false;
+      }
+      
+      if (!escaped) {
+        if (top == '{') {
+          if (c == ':') {
+            // key is complete, push the key to parsed
+            if (!buffer.isEmpty()) {
+              parsed.push(new String(buffer));
+              buffer = "";
+            } // else
+                // buffer has probably already been pushed, therefore
+                // must have been enclosen in '"'
+            continue;
+          }
+          if (c == ',' || c == '}') {
+            Object value;
+            if (buffer.isEmpty()) {
+              value = parsed.pop();
+            } else {
+              value = new String(buffer);
+              buffer = "";
+            }
+            
+            String key = (String) parsed.pop();
+            
+            ((Map<Object, Object>)parsed.peek()).put(key.trim(), value);
+            
+            if (c == '}') {
+              // finish up this map.
+              symbols.pop();
+            }
+            
+            continue;
+          }
+        } else if (top == '[') {
+          if (c == ',' || c == ']') {
+            Object value = null;
+            if (buffer.isEmpty()) {
+              value = parsed.pop();
+            } else {
+              value = new String(buffer);
+              buffer = "";
+            }
+            
+            ((List<Object>)parsed.peek()).add(value);
+            
+            if (c == ']') {
+              // finish up this map.
+              symbols.pop();
+            }
+            
+            continue;
+          }
+        } else if (top == '"') {
+          if (c == '"') {
+            parsed.push(new String(buffer));
+            buffer = "";
+            symbols.pop();
+            continue;
+          }
+        }
+      
+        if (c == '[') {
+          symbols.push(c);
+          parsed.push(new ArrayList<Object>());
+          continue;
+        }
+        if (c == '{') {
+          symbols.push(c);
+          parsed.push(new HashMap<Object, Object>());
+          continue;
+        }
+        if (c == '"') {
+          symbols.push(c);
+          continue;
+          // uses buffer
+        }
+      }
+      
+      // no special meaning to this char.
+      if (buffer.isEmpty() && c == ' ') {
+        // skip leading whitespaces
+        continue;
+      }
+      buffer += c;
+    } catch (EmptyStackException e) {
+      if (c == ' ' || c == '\t') {
+        // skip leading whitespaces and tabs
+      } else if (c == '{') {
+        symbols.push(c);
+        parsed.push(new HashMap<Object, Object>());
+      } else if (c == '[') {
+        symbols.push(c);
+        parsed.push(new ArrayList<Object>());
+      } else {
+        // this is a simple string value, we're done.
+        parsed.push(new String(str.trim()));
+        break;
+      }
+    }
+  }
+  
+  return parsed.pop();
+}
+
 /*
  * Translates a template into many files in the outputDirectory,
  * given a translations file in INI style; e.g.:
@@ -67,7 +199,7 @@ def translate(templateFile, translationsFile) {
   p.setProperty("file.resource.loader.path", "$templateDirectory");
   // tell Velocity to log to stderr rather than to a velocity.log file
   p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
-    "org.apache.velocity.runtime.log.SystemLogChute");
+      "org.apache.velocity.runtime.log.SystemLogChute");
   engine.init(p);
 
   // read translation lines
@@ -76,8 +208,8 @@ def translate(templateFile, translationsFile) {
   for (;;) {
     // read the line
     line = reader.readLine();
-    if (line == null) break;
 
+    if (line == null) break;
     // check if the line starts a new section
     if (line.startsWith("[") && line.endsWith("]")) {
       // write out the previous file
@@ -97,8 +229,13 @@ def translate(templateFile, translationsFile) {
       print("[WARNING] $translationsFile: Ignoring spurious line: $line");
       continue;
     }
-    pair = line.split('\\s*=\\s*', 2);
-    if (pair[1].equals('```')) {
+    pair = new String[2];
+    
+    int idx = line.indexOf('=');
+    pair[0] = line.substring(0, idx);
+    pair[1] = line.substring(idx + 1);
+    
+    if (pair[1].trim().equals('```')) {
       // multi-line value
       builder = new StringBuilder();
       for (;;) {
@@ -116,7 +253,10 @@ def translate(templateFile, translationsFile) {
       }
       pair[1] = builder.toString();
     }
-    context.put(pair[0], pair[1]);
+
+    //For debugging: System.out.println("<" + pair[0] + ">: " + parseValue(pair[1]).toString());
+    
+    context.put(pair[0].trim(), parseValue(pair[1]));
   }
   reader.close();
 
