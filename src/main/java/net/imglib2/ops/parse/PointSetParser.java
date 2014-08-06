@@ -1,12 +1,9 @@
 /*
  * #%L
- * ImgLib2: a general-purpose, multidimensional image processing library.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2009 - 2014 Stephan Preibisch, Tobias Pietzsch, Barry DeZonia,
- * Stephan Saalfeld, Albert Cardona, Curtis Rueden, Christian Dietz, Jean-Yves
- * Tinevez, Johannes Schindelin, Lee Kamentsky, Larry Lindsey, Grant Harris,
- * Mark Hiner, Aivar Grislis, Martin Horn, Nick Perry, Michael Zinsmaier,
- * Steffen Jaensch, Jan Funke, Mark Longair, and Dimiter Prodanov.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -220,7 +217,7 @@ public class PointSetParser {
 
 	/*
 	dimension =
-			 identifier “=” “[“ values “]”
+			 identifier ???=??? ???[??? values ???]???
 	*/
 	private ParseStatus dimension(List<Token> tokens, int pos) {
 		if (!ParseUtils.match(Variable.class, tokens, pos))
@@ -269,8 +266,8 @@ public class PointSetParser {
 
 	/*
 	range =
-			 int “..” int |
-			 int “,” int “..” int
+			 int ???..??? int |
+			 int ???,??? int ???..??? int
 	*/
 	private ParseStatus range(List<Token> tokens, int pos) {
 		ParseStatus status1 = integer(tokens, pos);
@@ -333,7 +330,7 @@ public class PointSetParser {
 	/*
 	intList =
 	 integer |
-	 integer “,” intList
+	 integer ???,??? intList
 	*/
 	private ParseStatus intList(List<Token> tokens, int pos, List<Long> values) {
 		ParseStatus status1 = integer(tokens, pos);
@@ -395,9 +392,9 @@ public class PointSetParser {
 	/*
 	compoundBoolExpression =
 	 boolClause |
-	 boolClause “and” compoundBoolExpression
-	 boolClause “or” compundBoolExpression
-	 boolClause “xor” compundBoolExpression
+	 boolClause ???and??? compoundBoolExpression
+	 boolClause ???or??? compundBoolExpression
+	 boolClause ???xor??? compundBoolExpression
 	*/
 	private ParseStatus compoundBoolExpression(List<Token> tokens, int pos) {
 		ParseStatus status1 = boolClause(tokens, pos);
@@ -424,7 +421,7 @@ public class PointSetParser {
 	/*
 	boolClause =
 	 expression |
-	 “not” expression
+	 ???not??? expression
 	*/
 	private ParseStatus boolClause(List<Token> tokens, int pos) {
 		if (ParseUtils.match(Not.class, tokens, pos)) {
@@ -454,7 +451,7 @@ public class PointSetParser {
 	}
 
 	/*
-	relop = “<” | “<=” | “>” | “>=” | “==” | “!=”
+	relop = ???<??? | ???<=??? | ???>??? | ???>=??? | ???==??? | ???!=???
 	 (in java the last two have higher precedence than first four. maybe can ignore)
 	*/
 	private ParseStatus relop(List<Token> tokens, int pos) {
