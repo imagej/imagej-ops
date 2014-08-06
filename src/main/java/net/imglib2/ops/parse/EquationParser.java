@@ -1,12 +1,9 @@
 /*
  * #%L
- * ImgLib2: a general-purpose, multidimensional image processing library.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2009 - 2014 Stephan Preibisch, Tobias Pietzsch, Barry DeZonia,
- * Stephan Saalfeld, Albert Cardona, Curtis Rueden, Christian Dietz, Jean-Yves
- * Tinevez, Johannes Schindelin, Lee Kamentsky, Larry Lindsey, Grant Harris,
- * Mark Hiner, Aivar Grislis, Martin Horn, Nick Perry, Michael Zinsmaier,
- * Steffen Jaensch, Jan Funke, Mark Longair, and Dimiter Prodanov.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -81,18 +78,18 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 equation =
 term |
-term “+” equation |
-term “-” equation
+term ???+??? equation |
+term ???-??? equation
 
 term =
 factor |
-factor “*” term |
-factor “\” term |
-factor “%” term
+factor ???*??? term |
+factor ???\??? term |
+factor ???%??? term
 
 factor =
 signedAtom |
-signedAtom “^” factor
+signedAtom ???^??? factor
 
 signedAtom
  atom |
@@ -101,14 +98,14 @@ signedAtom
 atom =
 identifier |
 "img" |
-function “(“ equation “)” |
+function ???(??? equation ???)??? |
 num |
-“(“ equation “)”
+???(??? equation ???)???
 
 function =
-“log” | “exp” | “abs” | “ceil” | “floor” | “round” | “signum” | “sqrt” | “sqr” | ???
+???log??? | ???exp??? | ???abs??? | ???ceil??? | ???floor??? | ???round??? | ???signum??? | ???sqrt??? | ???sqr??? | ???
 
-num = real | int | “E” | “PI”
+num = real | int | ???E??? | ???PI???
 (actually LEXER detects E and PI constants and creates appropriate Reals)
 
 */
@@ -133,8 +130,8 @@ public class EquationParser<T extends RealType<T>> {
 	/*
 	equation =
 	 term |
-	 term “+” equation |
-	 term “-” equation
+	 term ???+??? equation |
+	 term ???-??? equation
 	*/
 	public ParseStatus equation(List<Token> tokens, int pos) {
 		ParseStatus status1 = term(tokens, pos);
@@ -164,9 +161,9 @@ public class EquationParser<T extends RealType<T>> {
 	/*
 	term =
 	 factor |
-	 factor “*” term |
-	 factor “\” term |
-	 factor “%” term
+	 factor ???*??? term |
+	 factor ???\??? term |
+	 factor ???%??? term
 	*/
 	private ParseStatus term(List<Token> tokens, int pos) {
 		ParseStatus status1 = factor(tokens, pos);
@@ -205,7 +202,7 @@ public class EquationParser<T extends RealType<T>> {
 	/*
 	factor =
 	 signedAtom |
-	 signedAtom “^” factor
+	 signedAtom ???^??? factor
 	*/
 	private ParseStatus factor(List<Token> tokens, int pos) {
 		ParseStatus status1 = signedAtom(tokens, pos);
@@ -252,9 +249,9 @@ public class EquationParser<T extends RealType<T>> {
 	/*
 	atom =
 	 identifier |
-	 function “(“ equation “)” |
+	 function ???(??? equation ???)??? |
 	 num |
-	 “(“ equation “)” 
+	 ???(??? equation ???)??? 
 	*/
 	private ParseStatus atom(List<Token> tokens, int pos) {
 		if (ParseUtils.match(Variable.class, tokens, pos)) {
