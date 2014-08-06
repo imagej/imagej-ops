@@ -92,7 +92,7 @@ dimensions =
    (the decision to terminate is based on if 1st token after comma is not a variable)
 
 dimension =
- identifier “=” “[“ values “]”
+ identifier '=' '[' values ']'
 
 identifier =
  [a-zA-Z]+
@@ -102,19 +102,19 @@ values =
  intList (if all just ints and commas)
 
 range =
- int “..” int |
- int “,” int “..” int
+ int '..' int |
+ int ',' int '..' int
 
 intList =
  int |
- int “,” intList
+ int ',' intList
 
 int =
  [0-9]+ |
  sign [0-9]+
 
 sign =
- “+” | “-”
+ '+' | '-'
 
 restrictions =
  compoundBoolExpression |
@@ -122,18 +122,18 @@ restrictions =
 
 compoundBoolExpression =
  boolClause |
- boolClause “and” compoundBoolExpression
- boolClause “or” compoundBoolExpression
- boolClause “xor” compoundBoolExpression
+ boolClause 'and' compoundBoolExpression
+ boolClause '[or' compoundBoolExpression
+ boolClause 'xor' compoundBoolExpression
 
 boolClause =
  expression |
- “not” expression
+ 'not' expression
 
 expression =
  equation relop equation
 
-relop = “<” | “<=” | “>” | “>=” | “==” | “!=”
+relop = '<' | '<=' | '>' | '>=' | '==' | '!='
  (in java the last two have higher precedence than first four. maybe can ignore)
 
 equation = (see EquationParser)
