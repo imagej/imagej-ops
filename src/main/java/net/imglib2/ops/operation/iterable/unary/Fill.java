@@ -38,7 +38,7 @@ import net.imglib2.ops.operation.UnaryOperation;
 import net.imglib2.type.Type;
 
 /**
- * @author Felix Schönenberger (University of Konstanz)
+ * @author Felix Schonenberger (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
  * @param <T>
  */
