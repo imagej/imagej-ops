@@ -37,7 +37,9 @@ import net.imglib2.type.Type;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class BinaryOperationAssignment< I extends Type< I >, V extends Type< V >, O extends Type< O >> implements BinaryOperation< IterableInterval< I >, IterableInterval< V >, IterableInterval< O >>
 {
 	/* Operation to be wrapped */

@@ -38,7 +38,9 @@ import net.imglib2.ops.function.Function;
  * of the alternate space. Continuous (double[]) version.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ContinuousTranslationFunction<T>
 	implements Function<double[],T>
 {

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @author Barry DeZonia
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class FunctionGreaterCondition<T extends RealType<T>> extends
 	AbstractFunctionCondition<T>
 {

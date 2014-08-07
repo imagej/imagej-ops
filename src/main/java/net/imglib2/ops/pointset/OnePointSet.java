@@ -38,7 +38,9 @@ import net.imglib2.AbstractCursor;
  * OnePointSet represents a {@link PointSet} that contains exactly one point.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class OnePointSet extends AbstractPointSet {
 
 	// -- instance varaibles --

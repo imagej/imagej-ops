@@ -33,7 +33,9 @@ package net.imglib2.ops.operation;
 /**
  * 
  * @author Christian Dietz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface BinaryOutputOperation< INPUT1, INPUT2, OUTPUT > extends BinaryOperation< INPUT1, INPUT2, OUTPUT >
 {
 	OUTPUT createEmptyOutput( INPUT1 in1, INPUT2 in2 );

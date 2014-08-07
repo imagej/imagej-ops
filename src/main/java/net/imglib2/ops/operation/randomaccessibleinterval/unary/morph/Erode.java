@@ -38,7 +38,9 @@ import net.imglib2.type.logic.BitType;
 
 /**
  * @author Felix Schoenenberger (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Erode implements UnaryOperation< RandomAccessibleInterval< BitType >, RandomAccessibleInterval< BitType > >
 {
 

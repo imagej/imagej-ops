@@ -53,7 +53,9 @@ import net.imglib2.type.numeric.ComplexType;
  * @param <U>
  * @param <V>
  * @param <INPUT>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class SerialImageAssignment<U extends ComplexType<U>,V extends ComplexType<V>,INPUT> {
 
 	private final RandomAccessible<U> img;

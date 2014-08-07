@@ -36,7 +36,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Sets an output complex number to the complex number zero.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexZero<I extends ComplexType<I>, O extends ComplexType<O>>
 	implements ComplexUnaryOperation<I,O>
 {

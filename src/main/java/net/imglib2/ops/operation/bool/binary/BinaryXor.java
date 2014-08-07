@@ -37,7 +37,9 @@ import net.imglib2.type.logic.BitType;
  * Sets a BitType output to the XOR of two BitType numbers.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class BinaryXor implements BinaryOperation<BitType, BitType, BitType> {
 
 	@Override

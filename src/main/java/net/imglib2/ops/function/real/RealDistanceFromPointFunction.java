@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class RealDistanceFromPointFunction<T extends RealType<T>>
 	implements Function<long[],T>
 {

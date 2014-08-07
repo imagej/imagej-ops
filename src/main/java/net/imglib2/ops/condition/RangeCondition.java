@@ -39,7 +39,9 @@ package net.imglib2.ops.condition;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class RangeCondition implements Condition<long[]> {
 	final int dimIndex;
 	final long first;

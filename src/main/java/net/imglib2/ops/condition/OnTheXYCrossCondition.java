@@ -39,7 +39,9 @@ import net.imglib2.ops.util.Tuple2;
  * the PointSet.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class OnTheXYCrossCondition implements Condition<Tuple2<PointSet,long[]>> {
 	
 	// -- Condition methods --

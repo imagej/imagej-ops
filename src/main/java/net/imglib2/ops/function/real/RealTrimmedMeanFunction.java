@@ -41,7 +41,9 @@ import net.imglib2.type.numeric.RealType;
  * constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealTrimmedMeanFunction<T extends RealType<T>> extends
 	AbstractRealStatFunction<T>
 {

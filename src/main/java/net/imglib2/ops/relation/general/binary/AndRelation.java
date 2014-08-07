@@ -37,7 +37,9 @@ import net.imglib2.ops.relation.BinaryRelation;
  * holds if both of the child relations hold.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class AndRelation<T,U> implements BinaryRelation<T,U> {
 
 	// -- instance variables --

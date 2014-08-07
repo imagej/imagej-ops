@@ -37,7 +37,9 @@ import net.imglib2.type.Type;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class UnaryOperationAssignment< T extends Type< T >, V extends Type< V >> implements UnaryOperation< IterableInterval< T >, IterableInterval< V >>
 {
 

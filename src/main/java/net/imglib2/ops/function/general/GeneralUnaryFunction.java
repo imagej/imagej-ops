@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
  * The mutation is done using a {@link UnaryOperation}.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class GeneralUnaryFunction<INPUT, C extends ComplexType<C>,
 		OUTPUT extends ComplexType<OUTPUT>>
 	implements Function<INPUT, OUTPUT>

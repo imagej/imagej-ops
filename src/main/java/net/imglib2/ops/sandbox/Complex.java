@@ -35,7 +35,9 @@ import net.imglib2.ops.util.DataCopier;
 /**
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Complex implements Comparable<Complex>, DataCopier<Complex> {
 	private double x;
 	private double y;

@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Min< T extends RealType< T >, V extends RealType< V >> implements UnaryOperation< Iterator< T >, V >
 {
 

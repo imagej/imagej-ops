@@ -35,7 +35,9 @@ package net.imglib2.ops.function;
  * to calculate an inverse computation.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface BijectiveFunction<INPUT,OUTPUT>
 	extends Function<INPUT,OUTPUT>
 {

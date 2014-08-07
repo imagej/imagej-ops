@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * Wraps the real values of a complex {@link Function} as a real Function.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealAdapterFunction<INPUT, C extends ComplexType<C>, R extends RealType<R>> 
 	implements Function<INPUT,R>
 {

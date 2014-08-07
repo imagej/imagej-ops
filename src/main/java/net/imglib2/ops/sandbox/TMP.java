@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.real.FloatType;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class TMP {
 
 	public <V extends ComplexType<V>> void complex(V arg) {

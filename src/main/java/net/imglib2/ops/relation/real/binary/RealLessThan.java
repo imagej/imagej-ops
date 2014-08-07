@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Given two real values returns true of the first is less than the second.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealLessThan<T extends RealType<T>,U extends RealType<U>>
 	implements BinaryRelation<T,U>
 {

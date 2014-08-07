@@ -36,7 +36,9 @@ package net.imglib2.ops.operation;
  * no changes to the input is to be made by implementors of this interface.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface UnaryOperation< INPUT_TYPE, OUTPUT_TYPE >
 {
 	OUTPUT_TYPE compute( INPUT_TYPE input, OUTPUT_TYPE output );

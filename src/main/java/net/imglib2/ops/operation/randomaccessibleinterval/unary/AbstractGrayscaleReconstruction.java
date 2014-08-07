@@ -49,7 +49,9 @@ import net.imglib2.type.Type;
  * Analysis: Application and Efficient Algorithms.<br>
  * 
  * @author Clemens Muehting (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class AbstractGrayscaleReconstruction< T extends Type< T >, V extends Type< V > > implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< V > >
 {
 

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * @author Markus Friedrich (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class MeanLocalThreshold< T extends RealType< T > > implements BinaryOperation< Iterator< T >, T, BitType >
 {
 

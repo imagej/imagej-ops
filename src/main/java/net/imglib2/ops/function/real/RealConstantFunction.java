@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Returns a real constant value whenever queried (regardless of input data).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealConstantFunction<INPUT, O extends RealType<O>>
 	implements Function<INPUT, O>
 {

@@ -33,7 +33,9 @@ package net.imglib2.ops.sandbox;
 /**
  * TODO
  * 
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface NewFunc< U, V >
 {
 	void evaluate( NewIterableInterval< U > interval, V output );

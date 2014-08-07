@@ -42,7 +42,9 @@ import net.imglib2.type.numeric.RealType;
  * @param <T>
  *   A {@link RealType} representing the output type filled during the
  *   call to compute().
+ *   @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealPointCountFunction <T extends RealType<T>>
 	implements Function<PointSet,T>
 {

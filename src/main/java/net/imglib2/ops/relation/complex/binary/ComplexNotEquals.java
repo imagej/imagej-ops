@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Returns true if two complex values are not equal and false otherwise.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexNotEquals<T extends ComplexType<T>,U extends ComplexType<U>>
 	implements BinaryRelation<T,U>
 {

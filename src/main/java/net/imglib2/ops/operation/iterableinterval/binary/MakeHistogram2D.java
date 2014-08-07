@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * Felix Schoenenberger (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MakeHistogram2D< T extends RealType< T >> implements BinaryOutputOperation< IterableInterval< T >, IterableInterval< T >, Histogram2D >
 {
 

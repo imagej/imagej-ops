@@ -34,7 +34,9 @@ package net.imglib2.ops.condition;
  * A {@link Condition} that negates the result of another Condition.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NotCondition<T> implements Condition<T> {
 
 	// -- instance variables --

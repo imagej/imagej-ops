@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * value range are specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class WithinRangeCondition<T extends RealType<T>> implements Condition<long[]> {
 
 	// -- instance variables --

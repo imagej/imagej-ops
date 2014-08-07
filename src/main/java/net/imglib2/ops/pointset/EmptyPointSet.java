@@ -37,7 +37,9 @@ import net.imglib2.AbstractCursor;
  * use by PointSets that may combine other PointSets.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class EmptyPointSet extends AbstractPointSet {
 
 	// -- instance variables --

@@ -43,7 +43,9 @@ import net.imglib2.type.Type;
  * @author Martin Horn (University of Konstanz)
  * @param <T>
  *            image type
+ *            @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Inset< T extends Type< T > > implements UnaryOperation< IterableInterval< T >, RandomAccessibleInterval< T >>
 {
 

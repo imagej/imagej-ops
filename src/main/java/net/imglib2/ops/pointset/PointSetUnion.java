@@ -37,7 +37,9 @@ import net.imglib2.AbstractCursor;
  * in two input PointSets (the logical union).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetUnion extends AbstractPointSet {
 	
 	// -- instance variables --

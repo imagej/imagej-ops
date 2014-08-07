@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * @author Felix Sch??nenberger (University of Konstanz)
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Max< T extends RealType< T >, V extends RealType< V >> implements UnaryOperation< Iterator< T >, V >
 {
 

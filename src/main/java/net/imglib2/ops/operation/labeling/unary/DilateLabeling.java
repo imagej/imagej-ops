@@ -49,7 +49,9 @@ import net.imglib2.view.Views;
  * @author Felix Schoenenberger (University of Konstanz)
  * 
  * @param <L>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class DilateLabeling< L extends Comparable< L >> implements UnaryOperation< Labeling< L >, Labeling< L >>
 {
 

@@ -38,7 +38,9 @@ import net.imglib2.FlatIterationOrder;
  * space. It can be thought of as a regularly spaced n-dimensional grid.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class HyperVolumePointSet extends AbstractPointSet {
 	
 	// -- instance variables --

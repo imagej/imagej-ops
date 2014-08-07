@@ -35,7 +35,9 @@ import net.imglib2.ops.operation.UnaryOperation;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CopyMetadata implements UnaryOperation< ImgPlusMetadata, ImgPlusMetadata >
 {
 

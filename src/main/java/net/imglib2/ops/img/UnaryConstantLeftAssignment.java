@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class UnaryConstantLeftAssignment< V extends RealType< V >, T extends RealType< T >, O extends RealType< O >> implements BinaryOperation< V, IterableInterval< T >, IterableInterval< O >>
 {
 

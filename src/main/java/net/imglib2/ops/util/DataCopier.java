@@ -35,7 +35,9 @@ package net.imglib2.ops.util;
  * the specified type T.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface DataCopier<T> {
 	void setValue(T fromValue);
 }

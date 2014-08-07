@@ -38,7 +38,9 @@ import net.imglib2.ops.function.Function;
  * of the alternate space. Discrete (long[]) version.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class DiscreteTranslationFunction<T>
 	implements Function<long[],T>
 {

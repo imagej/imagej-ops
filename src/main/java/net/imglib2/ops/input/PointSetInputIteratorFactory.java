@@ -36,7 +36,9 @@ import net.imglib2.ops.pointset.PointSet;
  * A {@link InputIteratorFactory} used to create a {@link PointSetInputIterator}.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetInputIteratorFactory implements InputIteratorFactory<PointSet> {
 
 	private final PointSet subspace;

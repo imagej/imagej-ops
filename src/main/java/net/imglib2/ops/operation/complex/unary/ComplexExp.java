@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
  * number (the constant e raised to a complex power).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexExp<I extends ComplexType<I>, O extends ComplexType<O>>
 	implements ComplexUnaryOperation<I,O>
 {

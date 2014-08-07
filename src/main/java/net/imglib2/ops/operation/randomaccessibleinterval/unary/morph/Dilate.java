@@ -40,7 +40,9 @@ import net.imglib2.type.logic.BitType;
  * @author Felix Schonenberger (University of Konstanz)
  * 
  * @param <I>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Dilate implements UnaryOperation< RandomAccessibleInterval< BitType >, RandomAccessibleInterval< BitType > >
 {
 

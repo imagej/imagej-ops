@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * the input number equals 0.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealSignum<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

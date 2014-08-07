@@ -40,7 +40,9 @@ import net.imglib2.AbstractCursor;
  * Treats a general collection of points as a PointSet.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class GeneralPointSet extends AbstractPointSet {
 	
 	// -- instance variables --

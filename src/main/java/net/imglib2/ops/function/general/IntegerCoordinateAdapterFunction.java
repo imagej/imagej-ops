@@ -37,7 +37,9 @@ import net.imglib2.ops.function.Function;
  * that expects to receive double[] input coordinates.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class IntegerCoordinateAdapterFunction<T> implements Function<long[], T>
 {
 

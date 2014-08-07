@@ -38,7 +38,9 @@ import net.imglib2.AbstractCursor;
  * those points that are members of both input PointSets.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetIntersection extends AbstractPointSet {
 	
 	// -- instance variables --

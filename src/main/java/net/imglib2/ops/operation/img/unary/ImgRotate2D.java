@@ -42,7 +42,9 @@ import net.imglib2.view.Views;
 /**
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgRotate2D< T extends Type< T > & Comparable< T >> implements UnaryOutputOperation< Img< T >, Img< T >>
 {
 

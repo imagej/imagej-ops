@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * by zero the value is set to a value also specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealDivideConstant<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

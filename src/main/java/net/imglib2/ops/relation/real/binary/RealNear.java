@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * other. The tolerance can be specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealNear<T extends RealType<T>, U extends RealType<U>> implements BinaryRelation<T,U> {
 
 	// -- instance variables --

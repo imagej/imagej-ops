@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Christian Dietz (University of Konstanz)
  *
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Clipper< T extends RealType< T >> implements UnaryOperation< Iterable< T >, T >
 {
 

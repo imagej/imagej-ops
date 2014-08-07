@@ -44,7 +44,9 @@ import net.imglib2.type.numeric.ComplexType;
  * output the function should assign to (such as ComplexDoubleType).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ComplexImageFunction<I extends ComplexType<I>,O extends ComplexType<O>>
 	implements Function<long[],O>
 {

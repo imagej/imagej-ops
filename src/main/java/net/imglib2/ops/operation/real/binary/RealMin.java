@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * value of the real components of input 1 and input 2.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealMin<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

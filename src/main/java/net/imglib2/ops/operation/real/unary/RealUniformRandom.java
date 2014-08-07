@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * 0 and (input real number).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

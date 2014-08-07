@@ -34,7 +34,9 @@ import java.util.Arrays;
 
 /**
  * @author Markus Friedrich (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ThresholdValueCollection
 {
 

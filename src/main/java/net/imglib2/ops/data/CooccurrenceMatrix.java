@@ -41,7 +41,9 @@ import net.imglib2.ops.operation.iterableinterval.unary.MakeCooccurrenceMatrix.H
  * {@link HaralickFeature}
  * 
  * @author Stephan Sellien, University of Konstanz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CooccurrenceMatrix
 {
 

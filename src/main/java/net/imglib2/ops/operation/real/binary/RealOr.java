@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * integral real types to this method.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealOr<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

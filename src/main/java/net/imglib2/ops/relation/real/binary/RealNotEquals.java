@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Returns true if two real values are not equal and false otherwise.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealNotEquals<T extends RealType<T>,	U extends RealType<U>>
 	implements BinaryRelation<T,U>
 {

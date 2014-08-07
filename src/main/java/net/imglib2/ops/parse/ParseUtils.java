@@ -40,7 +40,9 @@ import net.imglib2.ops.pointset.EmptyPointSet;
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ParseUtils {
 
 	private ParseUtils() {}

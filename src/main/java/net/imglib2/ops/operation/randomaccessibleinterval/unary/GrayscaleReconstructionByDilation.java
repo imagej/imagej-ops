@@ -36,7 +36,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Clemens Muething (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class GrayscaleReconstructionByDilation< T extends RealType< T >, V extends RealType< V >> extends AbstractGrayscaleReconstruction< T, V >
 {
 

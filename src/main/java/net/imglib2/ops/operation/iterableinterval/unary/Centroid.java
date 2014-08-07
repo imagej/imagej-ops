@@ -38,7 +38,9 @@ import net.imglib2.type.Type;
 /**
  * @author Felix Schoenenberger (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Centroid
                 implements
                 UnaryOperation<IterableInterval<? extends Type<?>>, double[]> {

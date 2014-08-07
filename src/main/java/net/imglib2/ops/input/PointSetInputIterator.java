@@ -38,7 +38,9 @@ import net.imglib2.ops.pointset.PointSet;
  * point of iteration.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetInputIterator implements InputIterator<PointSet> {
 
 	// -- instance variables --

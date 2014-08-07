@@ -43,7 +43,9 @@ import net.imglib2.type.numeric.RealType;
  * The weights are specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealWeightedAverageFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

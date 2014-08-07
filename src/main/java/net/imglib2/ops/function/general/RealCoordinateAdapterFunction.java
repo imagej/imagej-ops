@@ -38,7 +38,9 @@ import net.imglib2.ops.function.Function;
  * coordinates are rounded during translation.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealCoordinateAdapterFunction<T> implements Function<double[], T> {
 
 	// -- instance variables --

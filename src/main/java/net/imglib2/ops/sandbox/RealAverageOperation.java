@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealAverageOperation<U extends RealType<U>,V extends RealType<V>>
 {
 	public void evaluate(IterableInterval<U> region, V output) {

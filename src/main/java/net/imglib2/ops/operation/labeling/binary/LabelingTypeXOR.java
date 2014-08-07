@@ -39,7 +39,9 @@ import net.imglib2.ops.operation.BinaryOperation;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <L>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class LabelingTypeXOR<L extends Comparable<L>> implements
 		BinaryOperation<LabelingType<L>, LabelingType<L>, LabelingType<L>> {
 

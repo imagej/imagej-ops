@@ -55,7 +55,9 @@ import net.imglib2.type.Type;
  * Applies a given Operation to each interval Separately.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class IterateBinaryOperation< T extends Type< T >, V extends Type< V >, O extends Type< O > > implements BinaryOperation< RandomAccessibleInterval<T>, RandomAccessibleInterval<V>, RandomAccessibleInterval<O> >
 {
 

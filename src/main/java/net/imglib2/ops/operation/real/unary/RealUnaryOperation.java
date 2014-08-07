@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * A {@link UnaryOperation} between {@link RealType}s.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface RealUnaryOperation<
 		I extends RealType<I>, O extends RealType<O>>
 	extends ComplexUnaryOperation<I,O>

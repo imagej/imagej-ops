@@ -40,7 +40,9 @@ import net.imglib2.type.logic.BitType;
  *   
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class UVInsideRoiCondition implements Condition<long[]> {
 
 	// -- instance variables --

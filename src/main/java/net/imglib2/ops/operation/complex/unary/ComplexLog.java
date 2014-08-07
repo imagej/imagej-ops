@@ -41,7 +41,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Sets an output complex number to the log of an input complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexLog<I extends ComplexType<I>, O extends ComplexType<O>>
 	implements ComplexUnaryOperation<I,O>
 {

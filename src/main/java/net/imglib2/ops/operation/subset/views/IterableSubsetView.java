@@ -61,7 +61,9 @@ import net.imglib2.view.Views;
  * @param <T>
  * 
  * IMPORTANT: WILL BE INTEGRATED IN VIEW FRAMEWORK IN THE FUTURE
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class IterableSubsetView< T extends Type< T >> extends IterableRandomAccessibleInterval< T >
 {
 

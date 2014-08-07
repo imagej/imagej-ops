@@ -42,7 +42,9 @@ import net.imglib2.view.Views;
  * @author Felix Schoenenberger (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ErodeGray< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T > >
 {
 

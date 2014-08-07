@@ -43,7 +43,9 @@ import net.imglib2.type.numeric.RealType;
  * Sets an output real to the real component of a complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexRealToRealAdapter
 		implements UnaryOperation<ComplexType<?>, RealType<?>> {
 

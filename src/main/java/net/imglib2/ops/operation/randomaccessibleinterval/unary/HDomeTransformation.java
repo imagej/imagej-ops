@@ -47,7 +47,9 @@ import net.imglib2.view.Views;
  * @author Clemens Muething (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class HDomeTransformation< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T >>
 {
 

@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * These should make their way into Imglib classes when possible.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ComplexHelper {
 	
 	private ComplexHelper() {

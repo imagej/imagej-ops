@@ -53,7 +53,9 @@ import net.imglib2.ops.util.Tuple2;
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class TextSpecifiedPointSet extends AbstractPointSet {
 
 	// -- instance variables --

@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * @author Markus Friedrich (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Bernsen< T extends RealType< T > > implements BinaryOperation< Iterator< T >, T, BitType >
 {
 

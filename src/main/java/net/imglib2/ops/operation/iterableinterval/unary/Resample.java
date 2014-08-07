@@ -51,6 +51,8 @@ import net.imglib2.view.Views;
  * 
  * @param <T>
  */
+@deprecated Use net.imagej.ops instead.
+@Deprecated
 @Deprecated
 public class Resample< T extends RealType< T > > implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T > >
 {

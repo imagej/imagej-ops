@@ -42,7 +42,9 @@ import net.imglib2.view.Views;
  * 
  * @author dietzc, hornm, zinsmaierm, seebacherd, riesst (University of
  *         Konstanz)
+ *         @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class QuantileFilter< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T >>
 {
 

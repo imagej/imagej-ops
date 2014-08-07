@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * The maximum value is specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealMaxConstant<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

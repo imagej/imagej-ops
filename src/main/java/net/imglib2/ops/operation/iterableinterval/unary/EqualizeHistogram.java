@@ -47,7 +47,9 @@ import net.imglib2.type.numeric.real.FloatType;
  * TODO
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class EqualizeHistogram<T extends RealType<T>> implements
         UnaryOperation<IterableInterval<T>, IterableInterval<T>> {
 

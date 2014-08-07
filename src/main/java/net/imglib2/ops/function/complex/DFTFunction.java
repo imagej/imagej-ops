@@ -48,7 +48,9 @@ import net.imglib2.type.numeric.complex.ComplexDoubleType;
  * (frequency domain) of another (spatial) Function.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class DFTFunction<T extends ComplexType<T>>
 	implements Function<long[], T>
 {

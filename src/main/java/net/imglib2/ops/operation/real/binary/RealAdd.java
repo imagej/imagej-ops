@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * the real components of two inputs.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealAdd<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

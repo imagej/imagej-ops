@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * as sin(x) / x.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealSinc<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

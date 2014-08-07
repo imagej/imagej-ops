@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the minimum value another function takes on across a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealMinFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

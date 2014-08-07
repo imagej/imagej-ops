@@ -45,7 +45,9 @@ import net.imglib2.view.Views;
  * First attempt to voronoi-like local region growing. NOT FINISHED YET!
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class VoronoiLikeLocalRegionGrowing< L extends Comparable< L >, T extends Type< T > & Comparable< T >> extends VoronoiLikeRegionGrowing< L, T >
 {
 

@@ -46,7 +46,9 @@ import net.imglib2.view.Views;
  * TODO: This class can now be used to combine to {@link RandomAccessibleIntervals}.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgCombine
 	< U extends RealType< U >, V extends RealType< V >, W extends RealType< W >>
 implements BinaryOperation< RandomAccessibleInterval< U >, RandomAccessibleInterval< V >, RandomAccessibleInterval< W > >

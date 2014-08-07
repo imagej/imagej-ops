@@ -34,7 +34,9 @@ package net.imglib2.ops.parse.token;
  * TODO 
  *
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Divide extends Token {
 
 	public Divide(int start, String text) {

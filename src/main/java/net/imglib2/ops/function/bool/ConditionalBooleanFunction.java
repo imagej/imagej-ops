@@ -39,7 +39,9 @@ import net.imglib2.type.logic.BitType;
  * of an evaluation of a {@link Condition} for a set of input.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ConditionalBooleanFunction<INPUT> implements Function<INPUT,BitType>
 {
 	// -- instance variables --

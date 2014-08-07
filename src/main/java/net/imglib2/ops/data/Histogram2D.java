@@ -34,7 +34,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Felix Schoenenberger (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Histogram2D
 {
 

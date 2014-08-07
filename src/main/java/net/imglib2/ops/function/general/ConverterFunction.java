@@ -46,7 +46,9 @@ import net.imglib2.type.numeric.NumericType;
  * of this Function. The final type must be some kind of {@link NumericType}.
  *   
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ConverterFunction<
 		INPUT,
 		INTERMEDIATE_TYPE,

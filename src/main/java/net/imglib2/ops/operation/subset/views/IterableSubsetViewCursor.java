@@ -43,7 +43,9 @@ import net.imglib2.type.Type;
  * 
  * IMPORTANT: WILL BE INTEGRATED IN VIEW FRAMEWORK IN THE FUTURE
  * 
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 class IterableSubsetViewCursor< T extends Type< T >> implements Cursor< T >
 {
 

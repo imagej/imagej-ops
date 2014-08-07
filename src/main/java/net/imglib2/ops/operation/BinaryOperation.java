@@ -36,7 +36,9 @@ package net.imglib2.ops.operation;
  * no changes to the inputs are to be made by implementors of this interface.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface BinaryOperation< INPUT1_TYPE, INPUT2_TYPE, OUTPUT_TYPE >
 {
 	OUTPUT_TYPE compute( INPUT1_TYPE input1, INPUT2_TYPE input2, OUTPUT_TYPE output );

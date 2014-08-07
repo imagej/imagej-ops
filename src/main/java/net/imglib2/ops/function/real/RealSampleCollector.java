@@ -42,7 +42,9 @@ import org.scijava.util.DoubleArray;
  * range of a point set.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealSampleCollector<T extends RealType<T>> {
 
 	private PointSet lastPointSet;

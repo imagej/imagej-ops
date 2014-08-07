@@ -42,7 +42,9 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @param <T>
  * @param <V>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class OpBasedConverter< T extends RealType< T >, V extends RealType< V >> implements Converter< T, V >
 {
 

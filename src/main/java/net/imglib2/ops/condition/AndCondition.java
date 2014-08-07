@@ -35,7 +35,9 @@ package net.imglib2.ops.condition;
  * The Condition is true if both child conditions are true and false otherwise.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class AndCondition<T> implements Condition<T> {
 
 	// -- instance variables --

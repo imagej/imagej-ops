@@ -52,7 +52,9 @@ import net.imglib2.type.numeric.RealType;
  * {@link RealCorrelationFunction}).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealConvolutionFunction<T extends RealType<T>>
 	implements Function<PointSet,T>
 {

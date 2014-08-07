@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Base class for some simple conditions based upon values of functions.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class AbstractFunctionCondition<T extends RealType<T>>
 	implements Condition<long[]>
 {

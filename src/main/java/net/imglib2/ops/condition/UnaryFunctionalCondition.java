@@ -39,7 +39,9 @@ import net.imglib2.ops.relation.UnaryRelation;
  * specific input.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class UnaryFunctionalCondition<INPUT, T> implements Condition<INPUT> {
 
 	// -- instance variables --

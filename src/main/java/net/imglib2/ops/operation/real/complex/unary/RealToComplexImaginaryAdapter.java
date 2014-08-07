@@ -45,7 +45,9 @@ import net.imglib2.type.numeric.RealType;
  * value of the real input.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealToComplexImaginaryAdapter
 		implements UnaryOperation<RealType<?>, ComplexType<?>> {
 

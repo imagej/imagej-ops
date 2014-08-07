@@ -69,7 +69,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Function<long[],INTERMEDIATE>. OUTPUT and INTERMEDIATE extend ComplexType<?>.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImageAssignment
 	<OUTPUT extends ComplexType<OUTPUT>,
 		INTERMEDIATE extends ComplexType<INTERMEDIATE>,

@@ -38,7 +38,9 @@ import net.imglib2.ops.operation.BinaryOperation;
 /**
  * Computes the intersection between two labelings types
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class LabelingTypeIntersect<L extends Comparable<L>> implements
 		BinaryOperation<LabelingType<L>, LabelingType<L>, LabelingType<L>> {
 

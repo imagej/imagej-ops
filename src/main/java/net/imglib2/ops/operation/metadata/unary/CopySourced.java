@@ -36,7 +36,9 @@ import net.imglib2.ops.operation.UnaryOperation;
 /**
  * @author Christian Dietz (University of Konstanz)
  * @param <S>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CopySourced< S extends Sourced > implements UnaryOperation< S, S >
 {
 

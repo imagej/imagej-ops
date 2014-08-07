@@ -51,7 +51,9 @@ import org.scijava.util.DoubleArray;
  * return the median value of the last point set searched.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealAdaptiveMedianFunction<T extends RealType<T>> 
 	implements Function<PointSet,T>
 {

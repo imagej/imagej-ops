@@ -47,7 +47,9 @@ import net.imglib2.type.numeric.RealType;
  * @author Stephan Sellien, University of Konstanz
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class MakeCooccurrenceMatrix< T extends RealType< T >> implements UnaryOperation< IterableInterval< T >, CooccurrenceMatrix >
 {
 

@@ -37,7 +37,9 @@ import net.imglib2.type.logic.BitType;
  * Returns a boolean constant value whenever queried (regardless of input data).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class BooleanConstantFunction<INPUT>
 	implements Function<INPUT,BitType>
 {

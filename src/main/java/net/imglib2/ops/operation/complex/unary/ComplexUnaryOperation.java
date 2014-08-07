@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * A {@link UnaryOperation} between {@link ComplexType}s.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface ComplexUnaryOperation<
 		I extends ComplexType<I>, O extends ComplexType<O>>
 	extends UnaryOperation<I,O> 

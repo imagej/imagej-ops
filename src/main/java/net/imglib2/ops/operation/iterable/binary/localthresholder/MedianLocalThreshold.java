@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 /**
  * @author Markus Friedrich (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class MedianLocalThreshold< T extends RealType< T >> implements BinaryOperation< Iterator< T >, T, BitType >
 {
 

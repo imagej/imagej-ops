@@ -44,7 +44,9 @@ import net.imglib2.type.numeric.IntegerType;
  * TODO
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class FloodFill< T extends IntegerType< T >> implements BinaryOperation< RandomAccessibleInterval<T>, Localizable, RandomAccessibleInterval<T> >
 {
 

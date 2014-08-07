@@ -37,7 +37,9 @@ import net.imglib2.AbstractCursor;
  * space.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class UniversalPointSet extends AbstractPointSet {
 
 	// -- instance variables --

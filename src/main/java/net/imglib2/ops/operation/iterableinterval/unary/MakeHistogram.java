@@ -41,7 +41,9 @@ import net.imglib2.util.ValuePair;
  * @author dietzc (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MakeHistogram< T extends RealType< T >> implements UnaryOutputOperation< Iterable< T >, Histogram1d< T > >
 {
 

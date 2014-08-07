@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * component of the right (or second) of two inputs.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealCopyRight<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

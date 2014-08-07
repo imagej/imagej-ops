@@ -39,7 +39,9 @@ import net.imglib2.ops.relation.BinaryRelation;
  * specific input.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class BinaryFunctionalCondition<INPUT,O1,O2> implements Condition<INPUT> {
 
 	// -- instance variables --

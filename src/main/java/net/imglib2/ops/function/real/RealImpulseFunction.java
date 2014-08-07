@@ -41,7 +41,9 @@ import net.imglib2.type.numeric.RealType;
  * Returns 1.0 when evaluated at the keypoint of a region. Otherwise returns 0.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealImpulseFunction<T extends RealType<T>>
 	implements Function<Tuple2<PointSet,long[]>,T>
 {

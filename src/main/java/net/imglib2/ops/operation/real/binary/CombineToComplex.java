@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * @param <T>
  * @param <V>
  * @param <C>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CombineToComplex<T extends RealType<T>, V extends RealType<V>, C extends ComplexType<C>>
                 implements BinaryOperation<T, V, C> {
 

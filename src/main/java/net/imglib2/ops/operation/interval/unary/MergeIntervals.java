@@ -40,7 +40,9 @@ import net.imglib2.ops.operation.UnaryOutputOperation;
 /**
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MergeIntervals implements UnaryOutputOperation< Interval[], Interval[] >
 {
 

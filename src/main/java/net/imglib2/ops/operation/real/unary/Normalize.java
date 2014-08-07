@@ -44,7 +44,9 @@ import net.imglib2.type.numeric.RealType;
  * @author Martin Horn (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Normalize< T extends RealType< T >> implements UnaryOperation< T, T >, Converter< T, T >
 {
 

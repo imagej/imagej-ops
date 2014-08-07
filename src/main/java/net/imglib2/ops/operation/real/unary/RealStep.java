@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * with h(0) = 1 rather than 0.5.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealStep<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
  * complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexConjugate<I extends ComplexType<I>, O extends ComplexType<O>>
 	implements ComplexUnaryOperation<I,O>
 {

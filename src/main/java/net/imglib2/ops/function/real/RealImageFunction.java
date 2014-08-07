@@ -46,7 +46,9 @@ import net.imglib2.type.numeric.RealType;
  * of output the function should assign to (such as DoubleType).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealImageFunction<I extends RealType<I>, O extends RealType<O>>
 	implements Function<long[],O>
 {

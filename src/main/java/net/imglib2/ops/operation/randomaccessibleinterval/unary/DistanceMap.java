@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.real.FloatType;
  * Image distance Map.
  * 
  * @author Jens Metzner (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class DistanceMap< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< FloatType > >
 {
 

@@ -35,7 +35,9 @@ package net.imglib2.ops.util;
  * methods that would like to return three values from a computation.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Tuple3<ONE,TWO,THREE> {
 	
 	// -- instance variables --

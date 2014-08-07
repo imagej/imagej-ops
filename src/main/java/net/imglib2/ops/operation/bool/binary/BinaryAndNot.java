@@ -38,7 +38,9 @@ import net.imglib2.type.logic.BitType;
  * NOT of a second BitType number.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class BinaryAndNot implements BinaryOperation<BitType, BitType, BitType> {
 
 	@Override

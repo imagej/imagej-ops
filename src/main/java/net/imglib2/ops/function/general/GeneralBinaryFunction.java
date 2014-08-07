@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Combines the two outputs using a {@link BinaryOperation}.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class GeneralBinaryFunction<INPUT,
 		C1 extends ComplexType<C1>,
 		C2 extends ComplexType<C2>,
