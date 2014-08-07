@@ -43,7 +43,9 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * @author Felix Schoenenberger (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CalculateDiameter implements
 		UnaryOperation<IterableInterval<BitType>, DoubleType> {
 

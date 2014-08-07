@@ -59,7 +59,9 @@ import net.imglib2.type.Type;
  * @author Christian Dietz (University of Konstanz)
  * @author Clemens Muething (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class IterateUnaryOperation< T extends Type< T >, V extends Type< V >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< V > >
 {
 

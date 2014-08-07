@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the product of all the values of another function over a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealProductFunction<T extends RealType<T>> extends
 	AbstractRealStatFunction<T>
 {

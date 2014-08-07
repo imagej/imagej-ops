@@ -44,7 +44,9 @@ import net.imglib2.ops.condition.Condition;
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ConditionalPointSet extends AbstractPointSet {
 
 	// -- instance variables --

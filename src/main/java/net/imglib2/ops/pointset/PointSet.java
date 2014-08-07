@@ -38,7 +38,9 @@ import net.imglib2.IterableInterval;
  * analyses. But a PointSet can be irregularly shaped.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface PointSet extends IterableInterval<long[]> {
 	
 	/**

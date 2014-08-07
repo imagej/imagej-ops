@@ -35,7 +35,9 @@ import net.imglib2.RandomAccess;
 /**
  *
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface TypeBridge<IMG_TYPE, INTERNAL_TYPE> {
 	RandomAccess<? extends IMG_TYPE> randomAccess();
 	void setPixel(RandomAccess<? extends IMG_TYPE> accessor, INTERNAL_TYPE value);

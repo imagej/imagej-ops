@@ -37,7 +37,9 @@ import net.imglib2.type.logic.BitType;
  * Returns true if two boolean values are not equal and false otherwise.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class BoolNotEquals implements BinaryRelation<BitType,BitType> {
 
 	// -- BinaryRelation methods --

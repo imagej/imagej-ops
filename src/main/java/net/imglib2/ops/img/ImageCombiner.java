@@ -66,7 +66,9 @@ import net.imglib2.type.numeric.real.FloatType;
  * 
  * @author Barry DeZonia
  * 
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImageCombiner
 {
 	// -- public API --

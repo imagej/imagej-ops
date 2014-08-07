@@ -42,7 +42,9 @@ import net.imglib2.type.numeric.complex.ComplexDoubleType;
  * complex power represented by a second complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexPower<
 		I1 extends ComplexType<I1>,
 		I2 extends ComplexType<I2>,

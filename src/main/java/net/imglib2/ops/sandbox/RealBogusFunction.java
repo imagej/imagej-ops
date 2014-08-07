@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealBogusFunction<IN,OUT extends RealType<OUT>> implements Function<IN,OUT> {
 
 	UnaryOperation<IN,OUT> op;

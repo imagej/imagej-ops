@@ -38,7 +38,9 @@ import net.imglib2.ops.function.Function;
  * the value of a {@link Condition} at an input region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ConditionalFunction<INPUT, T>
 	implements Function<INPUT,T>
 {

@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * are specified in the constructor.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealConvert<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

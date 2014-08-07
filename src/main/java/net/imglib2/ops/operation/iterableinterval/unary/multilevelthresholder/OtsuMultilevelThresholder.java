@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Markus Friedrich (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class OtsuMultilevelThresholder< T extends RealType< T >, IN extends IterableInterval< T > & RandomAccessibleInterval< T >> implements UnaryOutputOperation< IN, ThresholdValueCollection >
 {
 

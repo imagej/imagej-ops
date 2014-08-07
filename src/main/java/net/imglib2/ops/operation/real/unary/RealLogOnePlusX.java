@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * explicitly calling log(1.0 + x).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealLogOnePlusX<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

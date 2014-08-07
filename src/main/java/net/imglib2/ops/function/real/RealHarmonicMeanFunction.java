@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the harmonic mean of the values of another function over a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealHarmonicMeanFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

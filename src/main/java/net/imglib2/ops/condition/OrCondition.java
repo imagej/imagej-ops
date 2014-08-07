@@ -36,7 +36,9 @@ package net.imglib2.ops.condition;
  * false otherwise.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class OrCondition<T> implements Condition<T> {
 
 	// -- instance variables --

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @author Barry DeZonia
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class AbstractRealStatFunction<T extends RealType<T>> implements
 	Function<PointSet, T>
 {

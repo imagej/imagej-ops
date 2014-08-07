@@ -144,7 +144,9 @@ equation = (see EquationParser)
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetParser {
 
 	private Map<String, Integer> varMap;

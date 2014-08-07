@@ -43,7 +43,9 @@ import net.imglib2.type.Type;
  * Crops an image.
  * 
  * @author dietzc, hornm, University of Konstanz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgCrop< T extends Type< T >> implements UnaryOperation< Img< T >, Img< T >>
 {
 

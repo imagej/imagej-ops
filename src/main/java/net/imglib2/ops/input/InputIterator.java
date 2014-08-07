@@ -35,7 +35,9 @@ package net.imglib2.ops.input;
  * long[]'s or PointSets. See {@link: InputIteratorFactory}
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface InputIterator<INPUT> {
 	boolean hasNext();
 	INPUT next(INPUT currVal);

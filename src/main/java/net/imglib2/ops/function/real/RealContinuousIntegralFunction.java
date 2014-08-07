@@ -42,7 +42,9 @@ import net.imglib2.type.numeric.RealType;
  * Does a numerical integration of another function over a user specified region.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealContinuousIntegralFunction<T extends RealType<T>>
 	implements Function<double[],T>
 {

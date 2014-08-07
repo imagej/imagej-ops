@@ -78,7 +78,9 @@ import org.scijava.util.DoubleArray;
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class StatCalculator<T extends RealType<T>> {
 
 	// -- instance variables --

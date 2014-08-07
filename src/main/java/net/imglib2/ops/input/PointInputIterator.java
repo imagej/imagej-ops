@@ -38,7 +38,9 @@ import net.imglib2.ops.pointset.PointSetIterator;
  * {@link PointSet}) a point at a time returning each long[] coordinate.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointInputIterator implements InputIterator<long[]> {
 
 	// -- instance variables --

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * is actually just a sum.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealDiscreteIntegralFunction<T extends RealType<T>>
 	implements Function<PointSet,T>
 {

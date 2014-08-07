@@ -43,7 +43,9 @@ import net.imglib2.type.numeric.RealType;
  *
  * @param <L>
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class LabelingToImg< L extends Comparable< L >, T extends RealType< T >> implements UnaryOperation< Labeling< L >, IterableInterval< T >>
 {
 

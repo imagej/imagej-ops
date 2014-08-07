@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * the second.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealGreaterThanOrEqual<T extends RealType<T>,
 											U extends RealType<U>>
 	implements BinaryRelation<T,U>

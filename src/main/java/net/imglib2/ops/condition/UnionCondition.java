@@ -39,7 +39,9 @@ import java.util.List;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class UnionCondition<T> implements Condition<T> {
 	private final Condition<T> condition;
 	

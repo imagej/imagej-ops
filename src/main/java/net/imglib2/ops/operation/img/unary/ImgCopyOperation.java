@@ -39,7 +39,9 @@ import net.imglib2.type.Type;
  * TODO: Can now copy IterableIntervals. Possibly rename/move to different package?
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgCopyOperation< T extends Type< T >> implements UnaryOperation< IterableInterval< T >, IterableInterval< T >>
 {
 

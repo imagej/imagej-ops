@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.real.DoubleType;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class FunctionCall extends Token {
 
 	private final UnaryOperation<DoubleType,DoubleType> op;

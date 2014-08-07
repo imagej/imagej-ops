@@ -41,7 +41,9 @@ import net.imglib2.type.numeric.RealType;
  * treated as inputs to a complex number of a polar (r,theta) type.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PolarComplexFunction<
 		INPUT,
 		R1 extends RealType<R1>,

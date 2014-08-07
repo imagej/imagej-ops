@@ -45,7 +45,9 @@ import net.imglib2.util.ValuePair;
  * 
  * @param <T>
  *            TODO
+ *            @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MinMaxWithSaturation< T extends RealType< T >> implements UnaryOutputOperation< IterableInterval< T >, ValuePair< T, T >>
 {
 

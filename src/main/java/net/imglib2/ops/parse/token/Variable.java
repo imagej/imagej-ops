@@ -36,7 +36,9 @@ import java.util.Map;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class Variable extends Token {
 	public Variable(int start, String name, Map<String,Integer> varMap) {
 		super(start, name);

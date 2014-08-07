@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * A {@link Function} that always returns NaN values.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NullNumericFunction<INPUT, T extends ComplexType<T>>
 	implements Function<INPUT,T>
 {

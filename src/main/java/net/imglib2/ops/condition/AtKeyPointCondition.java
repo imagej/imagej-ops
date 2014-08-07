@@ -40,7 +40,9 @@ import net.imglib2.ops.util.Tuple2;
  * of an input {@link PointSet}.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class AtKeyPointCondition implements Condition<Tuple2<PointSet,long[]>> {
 	
 	// -- Condition methods --

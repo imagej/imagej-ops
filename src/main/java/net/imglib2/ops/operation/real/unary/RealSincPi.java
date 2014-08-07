@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * defined as sin(x*pi) / (x*pi).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealSincPi<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

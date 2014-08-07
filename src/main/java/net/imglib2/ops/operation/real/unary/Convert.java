@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  *
  * @param <I>
  * @param <O>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class Convert< I extends RealType< I >, O extends RealType< O >> implements UnaryOperation< I, O >, Converter< I, O >
 {
 

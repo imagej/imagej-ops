@@ -39,7 +39,9 @@ import net.imglib2.type.Type;
 /**
  * 
  * @author hornm, dietzc University of Konstanz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgPlusCopy< T extends Type< T >> implements UnaryOperation< ImgPlus< T >, ImgPlus< T >>
 {
 

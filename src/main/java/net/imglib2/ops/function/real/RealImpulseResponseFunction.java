@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
  * value of the other function at the keypoint of the given region.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealImpulseResponseFunction<T extends RealType<T>>
 	implements Function<PointSet,T>
 {

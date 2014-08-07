@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NewAvgFunc<U extends RealType<U>,V extends RealType<V>>
 	implements NewFunc<U, V>
 {

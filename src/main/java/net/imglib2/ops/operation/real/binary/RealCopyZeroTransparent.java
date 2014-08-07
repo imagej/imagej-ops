@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * from input 1. Otherwise output is assigned from input 2.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealCopyZeroTransparent<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

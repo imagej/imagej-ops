@@ -35,7 +35,9 @@ package net.imglib2.ops.relation;
  * values. The relationship is defined by the API user.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface BinaryRelation<T,U> {
 	boolean holds(T val1, U val2);
 	BinaryRelation<T,U> copy();

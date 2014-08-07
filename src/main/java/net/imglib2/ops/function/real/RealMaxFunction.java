@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the maximum value another function takes on across a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealMaxFunction<T extends RealType<T>> extends
 	AbstractRealStatFunction<T>
 {

@@ -46,7 +46,9 @@ import net.imglib2.type.Type;
  * Extends the image by new dimensions, if they don't exist yet.
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgPlusExtendDims< T extends Type< T >> implements UnaryOutputOperation< ImgPlus< T >, ImgPlus< T >>
 {
 

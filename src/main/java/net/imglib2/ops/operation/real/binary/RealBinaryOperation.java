@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * A {@link BinaryOperation} between {@link RealType}s.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface RealBinaryOperation<
 		I1 extends RealType<I1>,
 		I2 extends RealType<I2>,

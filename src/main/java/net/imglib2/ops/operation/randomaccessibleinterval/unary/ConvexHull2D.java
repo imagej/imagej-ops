@@ -46,7 +46,9 @@ import net.imglib2.view.Views;
  * Creates the convex hull from a point cloud in a binary image.
  * 
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ConvexHull2D implements UnaryOperation< RandomAccessibleInterval<BitType>, RandomAccessibleInterval<BitType> >
 {
 

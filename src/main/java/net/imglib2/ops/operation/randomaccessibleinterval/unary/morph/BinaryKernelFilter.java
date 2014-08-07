@@ -45,7 +45,9 @@ import net.imglib2.view.Views;
 
 /**
  * @author Felix Schonenberger (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class BinaryKernelFilter< T extends RealType< T > > implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T > >
 {
 

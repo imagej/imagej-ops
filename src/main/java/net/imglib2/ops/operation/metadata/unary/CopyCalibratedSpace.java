@@ -41,7 +41,9 @@ import net.imglib2.ops.operation.UnaryOperation;
  * 
  * @param <S>
  *            The type of the space to copy
+ *            @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CopyCalibratedSpace< S extends CalibratedSpace< CalibratedAxis > > implements UnaryOperation< S, S >
 {
 	private Interval interval;

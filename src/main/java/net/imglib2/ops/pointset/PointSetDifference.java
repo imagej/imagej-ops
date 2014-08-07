@@ -39,7 +39,9 @@ import net.imglib2.AbstractCursor;
  * and the second.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetDifference extends AbstractPointSet {
 	
 	// -- instance variables --

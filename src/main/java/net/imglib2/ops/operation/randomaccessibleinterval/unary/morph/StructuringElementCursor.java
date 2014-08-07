@@ -50,7 +50,9 @@ import net.imglib2.type.numeric.IntegerType;
  * @author Felix Schoenenberger (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class StructuringElementCursor< T extends Type< T >> extends AbstractCursor< T >
 {
 

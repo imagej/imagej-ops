@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * the values in the region contain the full population of values then use this.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealPopulationStdDevFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

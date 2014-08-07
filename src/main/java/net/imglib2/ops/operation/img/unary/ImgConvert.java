@@ -50,7 +50,9 @@ import net.imglib2.view.Views;
  * TODO: Can now convert RandomAccessibleIntervals from one type into another.
  * 
  * @author hornm, dietzc, University of Konstanz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgConvert< I extends RealType< I >, O extends RealType< O > & NativeType< O >> implements UnaryOutputOperation< RandomAccessibleInterval< I >, RandomAccessibleInterval< O >>
 {
 

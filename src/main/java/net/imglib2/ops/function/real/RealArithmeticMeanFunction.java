@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the arithmetic mean (average) of a function over a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealArithmeticMeanFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

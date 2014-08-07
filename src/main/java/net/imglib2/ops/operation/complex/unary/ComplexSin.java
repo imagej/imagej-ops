@@ -42,7 +42,9 @@ import net.imglib2.type.numeric.complex.ComplexDoubleType;
  * Sets an output complex number to the sine of an input complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexSin<I extends ComplexType<I>, O extends ComplexType<O>>
 	implements ComplexUnaryOperation<I,O>
 {

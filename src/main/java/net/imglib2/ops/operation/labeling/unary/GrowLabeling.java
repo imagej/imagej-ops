@@ -45,7 +45,9 @@ import net.imglib2.view.Views;
 /**
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class GrowLabeling< L extends Comparable< L >> extends AbstractRegionGrowing< LabelingType< L >, L>
 {
 

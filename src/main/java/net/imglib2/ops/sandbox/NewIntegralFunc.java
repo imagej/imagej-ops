@@ -36,7 +36,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NewIntegralFunc<U extends RealType<U>> implements NewFunc<U,U> {
 
 	private NewFunc<U,U> otherFunc;

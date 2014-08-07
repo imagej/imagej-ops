@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Sets a complex number output to the product of two complex number inputs.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexMultiply<
 		I1 extends ComplexType<I1>,
 		I2 extends ComplexType<I2>,

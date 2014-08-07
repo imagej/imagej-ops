@@ -43,7 +43,9 @@ import net.imglib2.type.numeric.RealType;
  * @author Barry DeZonia
  *
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealBilinearInterpolatingFunction<T extends RealType<T>> 
 	implements Function<double[],T>
 {

@@ -46,7 +46,9 @@ import net.imglib2.type.numeric.real.DoubleType;
  * etc.). All axis names must be declared before being referenced.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealEquationFunction<T extends RealType<T>>
 	implements Function<long[], T>
 {

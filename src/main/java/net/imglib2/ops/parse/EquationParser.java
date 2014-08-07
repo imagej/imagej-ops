@@ -116,7 +116,9 @@ num = real | int | ???E??? | ???PI???
  * 
  * @author Barry DeZonia
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class EquationParser<T extends RealType<T>> {
 	
 	private Map<String,Integer> varMap;

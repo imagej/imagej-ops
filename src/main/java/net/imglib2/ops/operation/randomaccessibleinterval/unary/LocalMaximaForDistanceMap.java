@@ -47,7 +47,9 @@ import net.imglib2.view.Views;
  * 
  * @param <T>
  * @param <K>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class LocalMaximaForDistanceMap< T extends RealType< T > > implements UnaryOperation< RandomAccessibleInterval< T >, List< long[] >>
 {
 

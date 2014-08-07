@@ -38,7 +38,9 @@ import net.imglib2.type.numeric.RealType;
  * function take over a region.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealSumOfSquaredDeviationsFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

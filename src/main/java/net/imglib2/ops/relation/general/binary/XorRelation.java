@@ -37,7 +37,9 @@ import net.imglib2.ops.relation.BinaryRelation;
  * holds if one and only one of the child relations hold.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class XorRelation<T,U> implements BinaryRelation<T,U> {
 
 	private final BinaryRelation<T,U> rel1;

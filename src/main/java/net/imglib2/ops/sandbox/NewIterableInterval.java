@@ -43,7 +43,9 @@ import net.imglib2.Sampler;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NewIterableInterval<T> extends AbstractInterval implements IterableInterval<T>{
 
 	private List<PrivateCursor<T>> cursors;

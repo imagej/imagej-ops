@@ -43,7 +43,9 @@ import net.imglib2.view.Views;
  * Martin Horn (University of Konstanz)
  * 
  * @param <K>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class FillHoles implements UnaryOperation< RandomAccessibleInterval< BitType >, RandomAccessibleInterval< BitType > >
 {
 

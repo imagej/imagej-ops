@@ -36,7 +36,9 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 /**
  * @author Markus Friedrich (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class Sauvola< T extends RealType< T >> implements BinaryOperation< Iterator<T>, T, BitType >
 {
 

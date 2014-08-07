@@ -34,7 +34,9 @@ package net.imglib2.ops.parse.token;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class Assign extends Token {
 
 	public Assign(int start, String text) {

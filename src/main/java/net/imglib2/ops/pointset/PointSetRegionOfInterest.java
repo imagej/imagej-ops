@@ -44,7 +44,9 @@ import net.imglib2.roi.RegionOfInterest;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class PointSetRegionOfInterest extends AbstractRegionOfInterest implements RegionOfInterest {
 
 	private final PointSet points;

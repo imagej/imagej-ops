@@ -38,7 +38,9 @@ import java.util.List;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public enum ConnectedType
 {
 	/**

@@ -49,7 +49,9 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  *
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class FunctionDefinitionIdeas {
 
 	/*

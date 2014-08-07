@@ -42,7 +42,9 @@ import net.imglib2.ops.pointset.PointSet;
  * rectangle.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface InputIteratorFactory<INPUT> {
 	InputIterator<INPUT> createInputIterator(PointSet ps);
 }

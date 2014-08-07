@@ -32,7 +32,9 @@ package net.imglib2.ops.operation.iterableinterval.unary.multilevelthresholder;
 
 /**
  * @author Markus Friedrich (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public enum MultilevelThresholderType
 {
 

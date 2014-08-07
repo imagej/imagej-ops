@@ -40,7 +40,9 @@ import net.imglib2.ops.operation.UnaryOperation;
  * @param <B>
  * @param <C>
  * @param <D>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class BinaryUnaryOperationAdapter< A, B, C, D > implements BinaryOperation< A, B, D >
 {
 

@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.RealType;
  * Computes the variance of a sample of values of another function.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class RealSampleVarianceFunction<T extends RealType<T>>
  extends
 	AbstractRealStatFunction<T>

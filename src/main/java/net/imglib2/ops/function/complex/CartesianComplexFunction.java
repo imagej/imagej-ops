@@ -40,7 +40,9 @@ import net.imglib2.type.numeric.RealType;
  * treated as inputs to a complex number of a cartesian (x,y) type.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CartesianComplexFunction<
 		INPUT,
 		R1 extends RealType<R1>,

@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  *
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class IterableIntervalCopy<T extends RealType<T>> implements
                 UnaryOperation<IterableInterval<T>, IterableInterval<T>> {
 

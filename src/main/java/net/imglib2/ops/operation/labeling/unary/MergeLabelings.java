@@ -62,7 +62,9 @@ import net.imglib2.type.numeric.IntegerType;
  * 
  */
 
+@deprecated Use net.imagej.ops instead.
 @SuppressWarnings( "rawtypes" )
+@Deprecated
 public final class MergeLabelings< L extends Comparable< L >> implements UnaryOutputOperation< Labeling< L >[], NativeImgLabeling< L, ? extends IntegerType< ? >>>
 {
 

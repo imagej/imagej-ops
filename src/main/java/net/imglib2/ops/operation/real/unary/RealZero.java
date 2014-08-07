@@ -36,7 +36,9 @@ import net.imglib2.type.numeric.RealType;
  * Sets the real component of an output real number to zero.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class RealZero<I extends RealType<I>, O extends RealType<O>>
 	implements RealUnaryOperation<I,O>
 {

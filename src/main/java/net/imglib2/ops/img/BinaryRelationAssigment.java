@@ -41,7 +41,9 @@ import net.imglib2.type.numeric.RealType;
 /**
  * 
  * @author Christian Dietz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class BinaryRelationAssigment< T extends RealType< T >, V extends RealType< V >> implements BinaryOperation< IterableInterval< T >, IterableInterval< V >, IterableInterval< BitType >>
 {
 

@@ -49,7 +49,9 @@ package net.imglib2.ops.pointset;
  * use {@link PointSetDifference}.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class PointSetComplement extends AbstractPointSet {
 	
 	// -- instance variables --

@@ -46,7 +46,9 @@ import net.imglib2.view.Views;
  * @author Jonathan Hale (University of Konstanz)
  * 
  * @param <T>
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class DilateGray< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T > >
 {
 

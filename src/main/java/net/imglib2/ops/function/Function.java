@@ -34,7 +34,9 @@ package net.imglib2.ops.function;
  * Functions map input values to output values.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface Function<INPUT, OUTPUT> {
 
 	/**

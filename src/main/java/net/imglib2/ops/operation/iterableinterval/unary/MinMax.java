@@ -43,7 +43,9 @@ import net.imglib2.util.ValuePair;
  * 
  * @param <T>
  *            TODO
+ *            @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MinMax< T extends RealType< T >> implements UnaryOutputOperation< Iterable< T >, ValuePair< T, T >>
 {
 

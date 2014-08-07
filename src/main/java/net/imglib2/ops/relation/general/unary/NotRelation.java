@@ -37,7 +37,9 @@ import net.imglib2.ops.relation.UnaryRelation;
  * child relation is false and vice versa.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class NotRelation<T> implements UnaryRelation<T> {
 
 	// -- instance variables --

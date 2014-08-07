@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * number inputs.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexDifference<
 		I1 extends ComplexType<I1>,
 		I2 extends ComplexType<I2>,

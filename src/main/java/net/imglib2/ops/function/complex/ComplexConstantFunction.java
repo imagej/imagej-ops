@@ -37,7 +37,9 @@ import net.imglib2.type.numeric.ComplexType;
  * Returns a complex constant value whenever queried (regardless of input data).
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ComplexConstantFunction<INPUT, C extends ComplexType<C>>
 	implements Function<INPUT,C>
 {

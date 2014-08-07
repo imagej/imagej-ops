@@ -36,7 +36,9 @@ package net.imglib2.ops.img;
 /**
  * TODO
  *
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class FunctionalAssignment {
 
 }

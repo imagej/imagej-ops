@@ -44,7 +44,9 @@ import net.imglib2.view.Views;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CCA< T extends RealType< T >> extends AbstractRegionGrowing< T, Integer >
 {
 

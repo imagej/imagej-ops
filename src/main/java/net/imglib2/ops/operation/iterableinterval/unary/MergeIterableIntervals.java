@@ -57,7 +57,9 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @author Christian Dietz (University of Konstanz)
  * 
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class MergeIterableIntervals< T extends RealType< T >> implements UnaryOutputOperation< IterableInterval< T >[], Img< T >>
 {
 

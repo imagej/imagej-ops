@@ -41,7 +41,9 @@ import net.imglib2.type.Type;
  * {@link RandomAccessibleInterval} which behaves exactly as an {@link ImgPlus}.
  * 
  * @author dietzc, hornm University of Konstanz
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgPlusView< T extends Type< T >> extends ImgPlus< T >
 {
 

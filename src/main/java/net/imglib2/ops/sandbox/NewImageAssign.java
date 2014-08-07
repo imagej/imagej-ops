@@ -44,7 +44,9 @@ import net.imglib2.type.numeric.real.DoubleType;
 /**
  * TODO
  * 
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class NewImageAssign< U extends ComplexType< U >, V extends ComplexType< V >>
 {
 

@@ -41,7 +41,9 @@ import net.imglib2.ops.function.Function;
  * AlternatingFunction interleaves data from a set of input {@link Function}s.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class AlternatingFunction<T>
 	implements Function<long[],T>
 {

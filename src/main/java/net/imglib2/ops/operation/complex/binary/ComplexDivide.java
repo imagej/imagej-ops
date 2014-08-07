@@ -39,7 +39,9 @@ import net.imglib2.type.numeric.ComplexType;
  * complex number.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public final class ComplexDivide<
 		I1 extends ComplexType<I1>,
 		I2 extends ComplexType<I2>,

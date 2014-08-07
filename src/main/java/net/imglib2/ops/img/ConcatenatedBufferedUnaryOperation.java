@@ -34,7 +34,9 @@ import net.imglib2.ops.operation.UnaryOperation;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class ConcatenatedBufferedUnaryOperation< T > implements UnaryOperation< T, T >
 {
 

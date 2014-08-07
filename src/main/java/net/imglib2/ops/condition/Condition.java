@@ -34,7 +34,9 @@ package net.imglib2.ops.condition;
  * An interface that can be tested for truth or falsity for a given input.
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface Condition<T> {
 	
 	boolean isTrue(T val);

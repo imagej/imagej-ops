@@ -35,7 +35,9 @@ package net.imglib2.ops.relation;
  * value. The relationship is defined by the API user.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public interface UnaryRelation<T> {
 	boolean holds(T val);
 	UnaryRelation<T> copy();

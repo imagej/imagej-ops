@@ -50,7 +50,9 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ImgProject< T extends RealType< T >> implements UnaryOutputOperation< Img< T >, Img< T >>
 {
 

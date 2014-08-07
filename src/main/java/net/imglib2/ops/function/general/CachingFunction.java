@@ -45,7 +45,9 @@ import net.imglib2.ops.util.DataCopier;
  * relatively expensive in its own right)
  *  
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class CachingFunction<T extends DataCopier<T>> implements Function<long[],T> {
 
 	// -- instance variables --

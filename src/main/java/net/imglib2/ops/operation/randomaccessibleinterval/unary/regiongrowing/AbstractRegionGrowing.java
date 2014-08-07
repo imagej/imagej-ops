@@ -56,7 +56,9 @@ import net.imglib2.util.ValuePair;
  * TODO: Efficiency!!!!
  *
  * @author Martin Horn (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public abstract class AbstractRegionGrowing< T extends Type< T >, L extends Comparable< L >> implements UnaryOperation< RandomAccessibleInterval< T >, Labeling< L >>
 {
 

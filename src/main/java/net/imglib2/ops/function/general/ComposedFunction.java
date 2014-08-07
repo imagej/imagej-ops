@@ -73,7 +73,9 @@ import net.imglib2.ops.pointset.PointSet;
  * done by the first matching region as input to the add() method.
  * 
  * @author Barry DeZonia
+ * @deprecated Use net.imagej.ops instead.
  */
+@Deprecated
 public class ComposedFunction<T>
 	implements Function<long[],T>
 {

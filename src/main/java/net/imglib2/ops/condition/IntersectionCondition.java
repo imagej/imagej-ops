@@ -39,7 +39,9 @@ import java.util.List;
 * 
 * @author Barry DeZonia
 *
+* @deprecated Use net.imagej.ops instead.
 */
+@Deprecated
 public class IntersectionCondition<T> implements Condition<T> {
 	
 	// -- instance variables --
