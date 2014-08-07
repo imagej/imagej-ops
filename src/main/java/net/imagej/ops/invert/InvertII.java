@@ -38,13 +38,14 @@ import net.imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "invert")
+@Plugin(type = Op.class, name = "invert", priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements Invert
 {
