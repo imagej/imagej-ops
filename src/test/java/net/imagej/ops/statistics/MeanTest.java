@@ -49,7 +49,8 @@ public class MeanTest extends AbstractOpTest {
 	public void testMean() {
 		final Img<ByteType> image = generateByteTestImg(true, 40, 50);
 		final DoubleType mean = (DoubleType) ops.mean(image);
-		assertEquals(15.625, mean.get(), 0.0);
+		assertEquals(1.0 / 15.625, mean.get(), 0.0);
+
 	}
 
 }

@@ -82,12 +82,12 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		else result = output;
 
 		final LongType size = sizeFunc.compute(input, new LongType());
-		final O sum = sumFunc.compute(input, result.copy());
+		final O sum = sumFunc.compute(input, result.createVariable());
 
 		// TODO: Better way to go LongType -> O without going through double?
-		result.setReal(size.getRealDouble());
+		double mean = sum.getRealDouble() / size.getRealDouble();
 
-		result.div(sum);
+		result.setReal(mean);
 
 		return result;
 	}
