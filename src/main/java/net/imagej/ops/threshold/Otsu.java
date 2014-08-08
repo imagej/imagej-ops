@@ -118,7 +118,10 @@ public class Otsu<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 		// k
 		// (the algorithm was developed for I-> 1 if I <= k.)
 
-		threshold.setReal(kStar);
+		// at this point the threshold is expressed as a bin number. Convert bin
+		// number to corresponding
+		// gray level
+		hist.getCenterValue(kStar, threshold);
 
 	}
 
