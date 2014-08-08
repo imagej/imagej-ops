@@ -65,9 +65,11 @@ public class HistogramCreate<T extends RealType<T>> implements Histogram {
 	@Override
 	public void run() {
 		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+
 		out =
 			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
 				.get(1).getRealDouble(), numBins, false));
+		out.countData(in);
 
 	}
 }
