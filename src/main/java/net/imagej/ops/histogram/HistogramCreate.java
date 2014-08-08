@@ -32,6 +32,7 @@ package net.imagej.ops.histogram;
 
 import java.util.List;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.misc.MinMaxRealType;
 import net.imglib2.IterableInterval;
@@ -41,10 +42,12 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn, University of Konstanz
  */
+@Plugin(type = Op.class, name = Histogram.NAME)
 public class HistogramCreate<T extends RealType<T>> implements Histogram {
 
 	@Parameter
@@ -62,9 +65,11 @@ public class HistogramCreate<T extends RealType<T>> implements Histogram {
 	@Override
 	public void run() {
 		final List<T> res = (List<T>) ops.run(new MinMaxRealType<T>(), in);
+
 		out =
 			new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0).getRealDouble(), res
 				.get(1).getRealDouble(), numBins, false));
+		out.countData(in);
 
 	}
 }
