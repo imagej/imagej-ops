@@ -66,7 +66,7 @@ public class GlobalThreshold<T extends RealType<T>> extends
 			ops
 				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
 
-		ops.run("map", output, input, threshold);
+		ops.run("map", output, input, thresholdOp);
 		return output;
 	}
 
