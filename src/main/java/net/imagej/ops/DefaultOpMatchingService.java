@@ -422,10 +422,15 @@ public class DefaultOpMatchingService extends
 		for (final ModuleItem<?> item : items) {
 			if (first) first = false;
 			else sb.append(", ");
-			sb.append(item.getType().getName() + " " + item.getName());
+			sb.append(getTypeName(item.getGenericType()) + " " + item.getName());
 			if (!item.isRequired()) sb.append("?");
 		}
 		return sb.toString();
+	}
+
+	private String getTypeName(final Type type) {
+		if (type instanceof Class) return ((Class<?>) type).getName();
+		return type.toString();
 	}
 
 }
