@@ -48,15 +48,15 @@ public class MinRealType<T extends RealType<T>> extends
 	public T compute(final Iterable<T> input, final T output) {
 
 		final Iterator<T> it = input.iterator();
-		T max = it.next();
+		T min = it.next().copy();
 
 		while (it.hasNext()) {
 			final T next = it.next();
-			if (max.compareTo(next) > 0) {
-				max = next;
+			if (min.compareTo(next) > 0) {
+				min.set(next);
 			}
 		}
-		output.set(max);
+		output.set(min);
 		return output;
 	}
 }

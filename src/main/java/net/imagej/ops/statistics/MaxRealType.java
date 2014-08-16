@@ -48,12 +48,12 @@ public class MaxRealType<T extends RealType<T>> extends
 	public T compute(final Iterable<T> input, final T output) {
 
 		final Iterator<T> it = input.iterator();
-		T max = it.next();
+		T max = it.next().copy();
 
 		while (it.hasNext()) {
 			final T next = it.next();
 			if (max.compareTo(next) < 0) {
-				max = next;
+				max.set(next);
 			}
 		}
 		output.set(max);
