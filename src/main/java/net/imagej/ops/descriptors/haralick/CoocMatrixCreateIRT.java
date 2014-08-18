@@ -101,8 +101,8 @@ public class CoocMatrixCreateIRT implements CoocMatrixCreate {
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			pixels[cursor.getIntPosition(0) - (int) ii.min(0)][cursor
-					.getIntPosition(1) - (int) ii.min(1)] = (int) (((cursor
+			pixels[cursor.getIntPosition(1) - (int) ii.min(1)][cursor
+					.getIntPosition(0) - (int) ii.min(0)] = (int) (((cursor
 					.get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGrayLevels - 1));
 		}
 
