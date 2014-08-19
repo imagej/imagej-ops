@@ -31,14 +31,19 @@
 package net.imagej.ops;
 
 /**
- * Factory which creates an object of type <O> given the input of type <I>
+ * Factory which creates an output object of type <O> given the input of type
+ * <I>
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface OutputFactory<I, O> {
 
 	/**
-	 * @param input which determines how to create the output
+	 * Create an output object given some input.
+	 * 
+	 * @param input
+	 *            which determines how to create the output
+	 * 
 	 * @return output, depending on the input
 	 */
 	O create(I input);
