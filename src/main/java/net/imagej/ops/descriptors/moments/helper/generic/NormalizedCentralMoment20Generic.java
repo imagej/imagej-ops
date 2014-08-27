@@ -33,6 +33,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.descriptors.geometric.Area;
 import net.imagej.ops.descriptors.moments.helper.ii.CentralMoment20II;
+import net.imagej.ops.descriptors.moments.helper.ii.Moment00II;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -40,8 +41,9 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Normalized central moment p = 2 and q = 0")
 public class NormalizedCentralMoment20Generic implements OutputOp<Double> {
+
 	@Parameter
-	private Area ii;
+	private Moment00II m00;
 
 	@Parameter
 	private CentralMoment20II m20;
@@ -58,7 +60,7 @@ public class NormalizedCentralMoment20Generic implements OutputOp<Double> {
 	public void run() {
 		final int p = 2;
 		final int q = 0;
-		final double norm = Math.pow(ii.getOutput().get(), (p + q + 2) / 2);
+		final double norm = Math.pow(m00.getOutput(), 1 + ((p + q) / 2d));
 		output = m20.getOutput() / norm;
 	}
 }

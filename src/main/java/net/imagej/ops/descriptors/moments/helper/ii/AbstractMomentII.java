@@ -62,11 +62,17 @@ public abstract class AbstractMomentII implements OutputOp<Double> {
 		final Cursor<? extends RealType<?>> it = ii.localizingCursor();
 		while (it.hasNext()) {
 			it.fwd();
-			final double x = it.getIntPosition(0);
-			final double y = it.getIntPosition(1);
 
-			result += it.get().getRealDouble() * Math.pow(x, getP())
-					* Math.pow(y, getQ());
+			// + 1 on the position
+			final double x = it.getDoublePosition(0) + 1;
+			final double y = it.getDoublePosition(1) + 1;
+
+			result = result
+					+ (Math.pow(x, getP()) * Math.pow(y, getQ()) * it.get()
+							.getRealDouble());
+//
+//			result += it.get().getRealDouble() * Math.pow(x, getP())
+//					* Math.pow(y, getQ());
 		}
 
 		output = result;
