@@ -64,8 +64,8 @@ public abstract class AbstractMomentII implements OutputOp<Double> {
 			it.fwd();
 
 			// + 1 on the position
-			final double x = it.getDoublePosition(0) + 1;
-			final double y = it.getDoublePosition(1) + 1;
+			final double x = it.getDoublePosition(0);
+			final double y = it.getDoublePosition(1);
 
 			result = result
 					+ (Math.pow(x, getP()) * Math.pow(y, getQ()) * it.get()

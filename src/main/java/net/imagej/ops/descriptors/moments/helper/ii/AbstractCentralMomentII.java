@@ -80,8 +80,8 @@ public abstract class AbstractCentralMomentII implements OutputOp<Double> {
 		final Cursor<? extends RealType<?>> it = ii.localizingCursor();
 		while (it.hasNext()) {
 			it.fwd();
-			final double x = it.getIntPosition(0) + 1 - centerX;
-			final double y = it.getIntPosition(1) + 1 - centerY;
+			final double x = it.getIntPosition(0) - centerX;
+			final double y = it.getIntPosition(1) - centerY;
 
 			result += it.get().getRealDouble() * Math.pow(x, p)
 					* Math.pow(y, q);
