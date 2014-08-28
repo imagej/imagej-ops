@@ -70,9 +70,6 @@ public abstract class AbstractMomentII implements OutputOp<Double> {
 			result = result
 					+ (Math.pow(x, getP()) * Math.pow(y, getQ()) * it.get()
 							.getRealDouble());
-//
-//			result += it.get().getRealDouble() * Math.pow(x, getP())
-//					* Math.pow(y, getQ());
 		}
 
 		output = result;
