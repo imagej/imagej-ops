@@ -82,31 +82,31 @@ public class HuMoments implements OutputOp<double[]> {
 	@Override
 	public void run() {
 
-		final double n20 = this.n20.getOutput();
-		final double n02 = this.n02.getOutput();
-		final double n30 = this.n30.getOutput();
-		final double n12 = this.n12.getOutput();
-		final double n21 = this.n21.getOutput();
-		final double n03 = this.n03.getOutput();
-		final double n11 = this.n11.getOutput();
+		double n11 = this.n11.getOutput();
+		double n02 = this.n02.getOutput();
+		double n20 = this.n20.getOutput();
+		double n12 = this.n12.getOutput();
+		double n21 = this.n21.getOutput();
+		double n03 = this.n03.getOutput();
+		double n30 = this.n30.getOutput();
 
-		final double[] result = new double[7];
+		double[] result = new double[7];
+
 		result[0] = n20 + n02;
-		result[1] = Math.pow((n20 - n02), 2) + 4 * Math.pow(n11, 2);
-		result[2] = Math.pow(n30 - 3 * n12, 2) + Math.pow((3 * n21 - n03), 2);
-		result[3] = Math.pow(n30 + n12, 2) + Math.pow(n12 + n03, 2);
+		result[1] = Math.pow(n20 - n02, 2) + 4 * Math.pow(n11, 2);
+		result[2] = Math.pow(n30 - 3 * n12, 2) + Math.pow(3 * n21 - n03, 2);
+		result[3] = Math.pow(n30 + n12, 2) + Math.pow(n21 + n03, 2);
 		result[4] = (n30 - 3 * n12) * (n30 + n12)
-				* (Math.pow((n30 + n12), 2) - 3 * Math.pow((n21 + n03), 2))
+				* (Math.pow(n30 + n12, 2) - 3 * Math.pow(n21 + n03, 2))
 				+ (3 * n21 - n03) * (n21 + n03)
-				* (3 * Math.pow((n30 + n12), 2) - Math.pow((n21 + n03), 2));
+				* (3 * Math.pow(n30 + n12, 2) - Math.pow(n21 + n03, 2));
 		result[5] = (n20 - n02)
-				* (Math.pow((n30 + n12), 2) - Math.pow((n21 + n03), 2)) + 4
-				* n11 * (n30 + n12) * (n21 + n03);
-
+				* (Math.pow(n30 + n12, 2) - Math.pow(n21 + n03, 2)) + 4 * n11
+				* (n30 + n12) * (n21 + n03);
 		result[6] = (3 * n21 - n03) * (n30 + n12)
-				* (Math.pow((n30 + n12), 2) - 3 * Math.pow((n21 + n03), 2))
-				+ (n30 - 3 * n12) * (n21 + n03)
-				* (3 * Math.pow((n30 + n12), 2) - Math.pow((n21 + n03), 2));
+				* (Math.pow(n30 + n12, 2) - 3 * Math.pow(n21 + n03, 2))
+				- (n30 - 3 * n12) * (n21 + n03)
+				* (3 * Math.pow(n30 + n12, 2) - Math.pow(n21 + n03, 2));
 
 		output = result;
 	}
