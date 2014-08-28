@@ -5,8 +5,11 @@ import io.scif.img.ImgIOException;
 
 import java.util.Iterator;
 
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
 import net.imagej.ops.descriptors.DescriptorService;
 import net.imagej.ops.descriptors.descriptorsets.CentralImageMomentsDescriptorSet;
+import net.imagej.ops.descriptors.descriptorsets.FirstOrderStatisticsSet;
 import net.imagej.ops.descriptors.descriptorsets.HuMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.ImageMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.NormalizedCentralImageMomentsDescriptorSet;
@@ -592,5 +595,61 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 			assertEquals("h7", -1.483900227169219e-26, iterator.next().getB()
 					.getRealDouble(), SMALL_DELTA);
 		}
+	}
+
+	@Test
+	public void testFirstOrderStatistics() throws IllegalArgumentException,
+			ModuleException {
+		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
+		final long[] dim = new long[] { 100, 100 };
+
+		FirstOrderStatisticsSet<IterableInterval> fosds = new FirstOrderStatisticsSet<IterableInterval>(
+				context, IterableInterval.class);
+
+		fosds.compile();
+
+		// 1. check empty image, everything should be 0
+		fosds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Minimum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Mean", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Median", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Standard Deviation", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Sum of Inverses", Double.POSITIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", Double.NEGATIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+		}
+
 	}
 }
