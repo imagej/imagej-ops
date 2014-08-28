@@ -49,8 +49,14 @@ public abstract class AbstractCentralMomentII implements OutputOp<Double> {
 	@Parameter
 	private IterableInterval<? extends RealType<?>> ii;
 
-	@Parameter
-	private CenterOfGravity center;
+	@Parameter(type = ItemIO.INPUT)
+	private Moment00II m00;
+
+	@Parameter(type = ItemIO.INPUT)
+	private Moment01II m01;
+
+	@Parameter(type = ItemIO.INPUT)
+	private Moment10II m10;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double output;
@@ -63,8 +69,8 @@ public abstract class AbstractCentralMomentII implements OutputOp<Double> {
 	@Override
 	public void run() {
 
-		final double centerX = center.getOutput()[0];
-		final double centerY = center.getOutput()[1];
+		final double centerX = m10.getOutput() / m00.getOutput();
+		final double centerY = m01.getOutput() / m00.getOutput();
 
 		final int p = getP();
 		final int q = getQ();
