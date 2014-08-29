@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
 public class VarianceIRT extends
 		AbstractOutputFunction<Iterable<? extends RealType<?>>, DoubleType>
 		implements Variance {

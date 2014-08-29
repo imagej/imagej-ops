@@ -63,6 +63,7 @@ public class KurtosisGeneric implements Kurtosis {
 
 	@Override
 	public void run() {
+		out = new DoubleType(Double.NaN);
 
 		final double std = this.stddev.getOutput().getRealDouble();
 		final double moment4 = this.moment4.getOutput().getRealDouble();

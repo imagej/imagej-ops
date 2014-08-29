@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import net.imagej.ops.descriptors.DescriptorService;
 import net.imagej.ops.descriptors.descriptorsets.CentralImageMomentsDescriptorSet;
+import net.imagej.ops.descriptors.descriptorsets.FirstOrderStatisticsSet;
 import net.imagej.ops.descriptors.descriptorsets.HuMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.ImageMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.NormalizedCentralImageMomentsDescriptorSet;
@@ -29,12 +30,17 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	 * Really small number, used for assertEquals with floating or double
 	 * values.
 	 */
-	private static final double SMALL_DELTA = 1e-15;
+	private static final double SMALL_DELTA = 1e-10;
+
+	/**
+	 * Medium small number, used for assertEquals with very little error margin.
+	 */
+	private static final double MEDIUM_DELTA = 1e-7;
 
 	/**
 	 * Small number, used for assertEquals if a little error margin is allowed.
 	 */
-	private static final double BIG_DELTA = 1e-4;
+	private static final double BIG_DELTA = 1e-3;
 
 	/**
 	 * Don't change the seed value, otherwise the OpenCV results have to be
@@ -590,6 +596,334 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 			assertEquals("h6", 3.887536000931268e-19, iterator.next().getB()
 					.getRealDouble(), SMALL_DELTA);
 			assertEquals("h7", -1.483900227169219e-26, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+		}
+	}
+
+	/**
+	 * Test for the first order statistic methods. The results to verify our
+	 * implementation were taken from MATLAB.
+	 * 
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws ModuleException
+	 */
+	@Test
+	public void testFirstOrderStatistics() throws IllegalArgumentException,
+			ModuleException {
+		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
+		final long[] dim = new long[] { 100, 100 };
+
+		FirstOrderStatisticsSet<IterableInterval> fosds = new FirstOrderStatisticsSet<IterableInterval>(
+				context, IterableInterval.class);
+		fosds.compile();
+
+		// 1. check empty image, everything should be 0
+		fosds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Minimum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Mean", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Median", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Standard Deviation", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Sum of Inverses", Double.POSITIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", Double.NEGATIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+		}
+
+		/*
+		 * CONSTANT VALUES, RESULTS HARDCODED (TAKEN FROM MATLAB)
+		 */
+
+		// 2. constant value 15
+		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 14.9999999999985, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 15, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Minimum", 15, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 14.9999999999985, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Mean", 15, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Median", 15, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Standard Deviation", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 150000, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Sum of Inverses", 666.666666666766, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 2250000, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", 27080.5020110211, iterator.next()
+					.getB().getRealDouble(), 1);
+			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+		}
+
+		// 3. constant value 50
+		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 49.9999999999878, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 50, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Minimum", 50, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 49.9999999999929, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Mean", 50, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Median", 50, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Standard Deviation", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 500000, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Sum of Inverses", 200.000000000029, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 25000000, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", 39120.230054279, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+		}
+
+		// 4. constant value 127
+		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 126.999999999896, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 127,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Minimum", 127,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Harmonic Mean", 127.000000000011, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Mean", 127, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Median", 127, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", Double.NaN, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Standard Deviation", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 1270000,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Inverses", 78.7401574803079, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 161290000, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", 48441.8708645777, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+		}
+
+		/*
+		 * RANDOM VALUES, RESULTS HARDCODED (TAKEN FROM MATLAB)
+		 */
+
+		// 5. first random image
+		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 254,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Minimum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", 1.79464849937733, iterator.next().getB()
+					.getRealDouble(), BIG_DELTA);
+			assertEquals("Mean", 127.7534, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 5437.93418843998, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", -507.810691261427, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 53069780.9168701, iterator
+					.next().getB().getRealDouble(), MEDIUM_DELTA);
+			assertEquals("Median", 128, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", -0.00126634173185859, iterator.next()
+					.getB().getRealDouble(), BIG_DELTA);
+			assertEquals("Standard Deviation", 73.7460374274008, iterator
+					.next().getB().getRealDouble(), 0.01);
+			assertEquals("Sum", 1277534,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Inverses", Double.POSITIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 217588654, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", Double.NEGATIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 5438.4780362436, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+		}
+
+		// 6. second random image
+		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 254,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Minimum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", 1.80497222449748, iterator.next().getB()
+					.getRealDouble(), BIG_DELTA);
+			assertEquals("Mean", 126.1968, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 5381.94026975999, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 7698.92644262249, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 52281527.8011748, iterator
+					.next().getB().getRealDouble(), MEDIUM_DELTA);
+			assertEquals("Median", 125, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", 0.0194994274666443, iterator.next().getB()
+					.getRealDouble(), BIG_DELTA);
+			assertEquals("Standard Deviation", 73.3653768313893, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 1261968,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Inverses", Double.POSITIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 213075726, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", Double.NEGATIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 5382.47851761176, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+		}
+
+		// 7. third random image
+		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		{
+			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
+
+			assertEquals("Geometric Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Maximum", 254,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Minimum", 0, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Harmonic Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Kurtosis", 1.79895091953959, iterator.next().getB()
+					.getRealDouble(), BIG_DELTA);
+			assertEquals("Mean", 126.0717, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 1 About Mean", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 2 About Mean", 5427.93915911003, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 3 About Mean", 6519.9232182735, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Moment 4 About Mean", 53001633.7692662, iterator
+					.next().getB().getRealDouble(), MEDIUM_DELTA);
+			assertEquals("Median", 125, iterator.next().getB().getRealDouble(),
+					SMALL_DELTA);
+			assertEquals("Skewness", 0.0163038445053382, iterator.next().getB()
+					.getRealDouble(), BIG_DELTA);
+			assertEquals("Standard Deviation", 73.6782329274444, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum", 1260717,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Inverses", Double.POSITIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Squares", 213220127, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum of Logs", Double.NEGATIVE_INFINITY, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 5428.48200731076, iterator.next().getB()
 					.getRealDouble(), SMALL_DELTA);
 		}
 	}
