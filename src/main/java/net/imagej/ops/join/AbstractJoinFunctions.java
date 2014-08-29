@@ -34,7 +34,7 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Function;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.BufferFactory;
 
 import org.scijava.plugin.Parameter;
 
@@ -53,17 +53,17 @@ public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
 	private List<? extends F> functions;
 
 	@Parameter
-	private OutputFactory<A, A> bufferFactory;
+	private BufferFactory<A, A> bufferFactory;
 
 	private A buffer;
 
 	@Override
-	public OutputFactory<A, A> getBufferFactory() {
+	public BufferFactory<A, A> getBufferFactory() {
 		return bufferFactory;
 	}
 
 	@Override
-	public void setBufferFactory(final OutputFactory<A, A> bufferFactory) {
+	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
 		this.bufferFactory = bufferFactory;
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
 	 */
 	protected A getBuffer(final A input) {
 		if (buffer == null) {
-			buffer = bufferFactory.create(input);
+			buffer = bufferFactory.createBuffer(input);
 		}
 		return buffer;
 	}

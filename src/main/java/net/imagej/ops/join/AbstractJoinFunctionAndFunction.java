@@ -32,7 +32,7 @@ package net.imagej.ops.join;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Function;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.BufferFactory;
 
 import org.scijava.plugin.Parameter;
 
@@ -53,20 +53,20 @@ public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Functi
 	private F2 second;
 
 	@Parameter(required = false)
-	private OutputFactory<A, B> bufferFactory;
+	private BufferFactory<A, B> bufferFactory;
 
 	private B buffer;
 
 	public B getBuffer(final A input) {
-		if (buffer == null) buffer = bufferFactory.create(input);
+		if (buffer == null) buffer = bufferFactory.createBuffer(input);
 		return buffer;
 	}
 
-	public OutputFactory<A, B> getBufferFactory() {
+	public BufferFactory<A, B> getBufferFactory() {
 		return bufferFactory;
 	}
 
-	public void setBufferFactory(final OutputFactory<A, B> bufferFactory) {
+	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
 		this.bufferFactory = bufferFactory;
 	}
 
