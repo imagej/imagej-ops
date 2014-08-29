@@ -71,7 +71,7 @@ public class SkewnessGeneric implements Skewness {
 		final double moment3 = this.moment3.getOutput().getRealDouble();
 		final double std = this.stdDev.getOutput().getRealDouble();
 
-		out = new DoubleType(0);
+		out = new DoubleType(Double.NaN);
 		if (std != 0) {
 			out = new DoubleType(((moment3) / (std * std * std)));
 		}
