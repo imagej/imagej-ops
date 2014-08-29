@@ -31,8 +31,8 @@
 package net.imagej.ops;
 
 /**
- * {@link Function} which is able to create the output object using an
- * {@link BufferFactory}.
+ * An {@link OutputFunction} is an {@link Function} which is able to create the
+ * output object itself.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -40,8 +40,7 @@ public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
 		Threadable {
 
 	/**
-	 * Compute the output given some input. The output object is automatically
-	 * created using an {@link BufferFactory}.
+	 * Compute the output of a function, given some input.
 	 * 
 	 * @param input
 	 *            of the {@link OutputFunction}
@@ -51,7 +50,9 @@ public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
 	O compute(I input);
 
 	/**
-	 * @return {@link BufferFactory} used to create outputs.
+	 * @return create an output object of type O, given some input. The output
+	 *         can then be used to call compute(I input, O output), which will
+	 *         fill the output with the result.
 	 */
 	O createOutput(I input);
 }
