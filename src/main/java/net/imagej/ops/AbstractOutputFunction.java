@@ -41,7 +41,6 @@ public abstract class AbstractOutputFunction<I, O> extends
 
 	@Override
 	public void run() {
-		// we may not reuse the already created output
 		if (getOutput() == null) {
 			setOutput(compute(getInput()));
 		} else {
