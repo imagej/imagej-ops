@@ -32,7 +32,7 @@ package net.imagej.ops;
 
 /**
  * {@link Function} which is able to create the output object using an
- * {@link OutputFactory}.
+ * {@link BufferFactory}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -41,7 +41,7 @@ public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
 
 	/**
 	 * Compute the output given some input. The output object is automatically
-	 * created using an {@link OutputFactory}.
+	 * created using an {@link BufferFactory}.
 	 * 
 	 * @param input
 	 *            of the {@link OutputFunction}
@@ -51,7 +51,7 @@ public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
 	O compute(I input);
 
 	/**
-	 * @return {@link OutputFactory} used to create outputs.
+	 * @return {@link BufferFactory} used to create outputs.
 	 */
 	O createOutput(I input);
 }
