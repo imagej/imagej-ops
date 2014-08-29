@@ -28,25 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.outputfactories;
-
-import net.imagej.ops.OutputFactory;
-import net.imglib2.img.Img;
-import net.imglib2.type.Type;
+package net.imagej.ops;
 
 /**
- * {@link OutputFactory} used to create an empty output {@link Img} of same type
- * and dimensionality as the input {@link Img}.
+ * Factory which creates an output object of type <O> given the input of type
+ * <I>
  * 
- * @author Christian Dietz
- * @param <L>
+ * @author Christian Dietz (University of Konstanz)
  */
-public class ImgImgSameTypeFactory<T extends Type<T>> implements
-	OutputFactory<Img<T>, Img<T>>
-{
+public interface BufferFactory<I, O> {
 
-	@Override
-	public Img<T> create(final Img<T> input) {
-		return input.factory().create(input, input.firstElement().createVariable());
-	}
+	/**
+	 * Create an output object given some input.
+	 * 
+	 * @param input
+	 *            which determines how to create the output
+	 * 
+	 * @return output, depending on the input
+	 */
+	O createBuffer(I input);
 }

@@ -41,7 +41,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.BufferFactory;
 import net.imagej.ops.map.Map;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -114,11 +114,11 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testFunctionAndFunctionJoin() {
 
-		final OutputFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
-			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
+			new BufferFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
-				public Img<ByteType> create(final Img<ByteType> input) {
+				public Img<ByteType> createBuffer(final Img<ByteType> input) {
 					return input.factory().create(input,
 						input.firstElement().createVariable());
 				}
@@ -145,11 +145,11 @@ public class JoinTest extends AbstractOpTest {
 			functions.add(new AddOneFunctionalImg(ops));
 		}
 
-		final OutputFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
-			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
+			new BufferFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
-				public Img<ByteType> create(final Img<ByteType> input) {
+				public Img<ByteType> createBuffer(final Img<ByteType> input) {
 					return input.factory().create(input,
 						input.firstElement().createVariable());
 				}

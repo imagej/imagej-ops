@@ -31,17 +31,16 @@
 package net.imagej.ops;
 
 /**
- * Abstract superclass for a {@link Function} which knows how to create its
- * output.
+ * Abstract superclass for a {@link OutputFunction} which is capable creating an
+ * output object.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractOutputFunction<I, O> extends
 		AbstractFunction<I, O> implements OutputFunction<I, O> {
 
 	@Override
 	public void run() {
-		// we may not reuse the already create output
 		if (getOutput() == null) {
 			setOutput(compute(getInput()));
 		} else {
@@ -50,9 +49,7 @@ public abstract class AbstractOutputFunction<I, O> extends
 	}
 
 	@Override
-	public O compute(I input) {
+	public O compute(final I input) {
 		return compute(input, createOutput(input));
 	}
-
-	protected abstract O createOutput(I input);
 }

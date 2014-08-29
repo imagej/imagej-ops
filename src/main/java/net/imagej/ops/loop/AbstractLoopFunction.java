@@ -32,7 +32,7 @@ package net.imagej.ops.loop;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Function;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.BufferFactory;
 
 import org.scijava.plugin.Parameter;
 
@@ -51,17 +51,17 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 
 	/** Buffer for intermediate results. */
 	@Parameter
-	private OutputFactory<I, I> bufferFactory;
+	private BufferFactory<I, I> bufferFactory;
 
 	/** Number of iterations. */
 	@Parameter
 	private int n;
 
-	public OutputFactory<I, I> getBufferFactory() {
+	public BufferFactory<I, I> getBufferFactory() {
 		return bufferFactory;
 	}
 
-	public void setBufferFactory(final OutputFactory<I, I> bufferFactory) {
+	public void setBufferFactory(final BufferFactory<I, I> bufferFactory) {
 		this.bufferFactory = bufferFactory;
 	}
 
