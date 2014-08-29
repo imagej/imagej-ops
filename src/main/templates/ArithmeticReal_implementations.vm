@@ -1,3 +1,13 @@
+#**
+
+	Template for generation RealType implementations of arithmetic ops interfaces
+
+	@author Jonathan Hale
+
+*#
+#** set default values *#
+#foreach ($member in $members)#if (!$member.type)$!member.put("type","double")#end#end
+#if (!$authors)#set($authors = ["Barry DeZonia", "Jonathan Hale"])#end
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -27,81 +37,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
-package net.imagej.ops.invert;
+package net.imagej.ops.generated.arithmetic.real;
 
 import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.map.Map;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.generated.arithmetic.${interface};
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
+import net.imglib2.type.numeric.RealType;
+#foreach ($imp in $imports)
+import $imp;
+#end
+
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = "invert", priority = Priority.NORMAL_PRIORITY + 1)
-public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements Invert
-{
 
-	@Parameter
-	private OpService ops;
+/**
+#foreach ($line in $javadoc.split('\n'))
+ * $line
+#end
+#foreach ($author in $authors)
+ * @author $author
+#end
+ */
+@Plugin(type = Op.class, name = ${interface}.NAME)
+public class Real$interface<I extends RealType<I>, O extends RealType<O>> extends AbstractFunction<I, O>
+	implements $interface
+{
+#foreach ($member in $members)
+#if (!$member.isEmpty())
+	private #if ($member.modifiers)${member.modifiers} #end${member.type} ${member.name}#if ($member.init)= ${member.init}#end;
+#end
+#end
+
+#set($first = 0)
+	public Real$interface(#foreach ($member in $members)
+#if (!${member.contruct}&&!${member.init})#if ($first != 0),#end final ${member.type} ${member.name}#set($first = 1)#end
+#end){
+#foreach ($member in $members)#if (${member.construct})
+		this.${member.name} = ${member.construct};
+#elseif(!${member.init})
+		this.${member.name} = ${member.name};
+#end#end
+		$!constructor
+	}
 
 	@Override
-	public IterableInterval<O> compute(IterableInterval<I> input,
-		IterableInterval<O> output)
-	{
-		I inType = input.firstElement().createVariable();
-		Function<I, O> invert;
-		if (inType.getMinValue() < 0) {
-			invert = new SignedRealInvert<I, O>();
-		}
-		else {
-			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
-		}
-		ops.run(Map.class, output, input, invert);
+	public O compute(final I input, O output){
+		#if ($compute_body)
+		$compute_body
+		#end
+		#if ($compute_expr)
+		output.setReal(${compute_expr});
+		#end
+		#if (!$omit_return)
 		return output;
+		#end
 	}
-
-	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractFunction<II, OO>
-	{
-
-		@Override
-		public OO compute(final II x, final OO output) {
-			final double value = x.getRealDouble() * -1.0 - 1;
-			output.setReal(value);
-			return output;
-		}
-
-	}
-
-	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractFunction<II, OO>
-	{
-
-		private final double max;
-
-		/**
-		 * @param max - maximum value of the range to invert about
-		 */
-		public UnsignedRealInvert(final double max) {
-			this.max = max;
-		}
-
-		@Override
-		public OO compute(final II x, final OO output) {
-			final double value = max - x.getRealDouble();
-			output.setReal(value);
-			return output;
-		}
-
-	}
-
 }

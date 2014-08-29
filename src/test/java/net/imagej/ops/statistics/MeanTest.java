@@ -27,42 +27,29 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops;
+
+package net.imagej.ops.statistics;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
-import org.scijava.util.ClassUtils;
 
-public class TemplateTest {
+/**
+ * Tests {@link Mean}.
+ * 
+ * @author Curtis Rueden
+ */
+public class MeanTest extends AbstractOpTest {
+
 	@Test
-	public void testTemplate() throws IOException {
-		final String prefix = ClassUtils.getLocation(getClass()).getFile();
-		final File testFile = new File(prefix
-				+ "/../template-tests/TestTemplate.txt");
-		final FileReader fileReader = new FileReader(testFile);
-		final BufferedReader reader = new BufferedReader(fileReader);
-		try {
-			assertEquals("Template test: Pinky", reader.readLine());
-			assertEquals("Multi-line: Ten weary, footsore travelers,", reader.readLine());
-			assertNotNull(reader.readLine());
-			assertNotNull(reader.readLine());
-			assertEquals("one dark and rainy night...!", reader.readLine());
-			assertNotNull(reader.readLine());
-			assertEquals("The list of maps:", reader.readLine());
-			assertEquals("alice who is 123 years old", reader.readLine());
-			assertEquals("bob who is 1.2 years old", reader.readLine());
-			assertEquals("charly ", reader.readLine());
-			assertNull(reader.readLine());
-		} finally {
-			reader.close();
-		}
+	public void testMean() {
+		final Img<ByteType> image = generateByteTestImg(true, 40, 50);
+		final DoubleType mean = (DoubleType) ops.mean(image);
+		assertEquals(15.625, mean.get(), 0.0);
 	}
+
 }

@@ -67,5 +67,4 @@ public class SumIRT extends
 	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
 		return new DoubleType();
 	}
-
 }

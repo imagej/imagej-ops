@@ -1,0 +1,21 @@
+package net.imagej.ops.generated.arithmetic;
+
+import net.imagej.ops.Op;
+
+/**
+ * Base interface for "${opname}" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = ${interface}.NAME)
+ * </pre>
+ * 
+ * @author Jonathan Hale
+ * @author Christian Dietz
+ */
+public interface ${interface} extends Op
+{
+	String NAME = "${opname}";
+}

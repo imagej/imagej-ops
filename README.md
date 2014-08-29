@@ -35,12 +35,13 @@ Working example
 
 Try this Jython script in
 [ImageJ2's Script Editor](http://developer.imagej.net/downloads)!
+
 ```python
 # @ImageJ ij
 
 # create a new blank image
 from jarray import array
-dims = array([78, 23], 'l')
+dims = array([150, 100], 'l')
 blank = ij.op().create(dims)
 
 # fill in the image with a sinusoid using a formula
@@ -54,46 +55,25 @@ ij.op().add(sinusoid, 13.0)
 gradient = ij.op().equation(ij.op().create(dims), "p[0]+p[1]")
 
 # add the two images
-composite = ij.op().add(sinusoid, gradient)
+composite = ij.op().create(dims)
+ij.op().add(composite, sinusoid, gradient)
 
-# dump the image to the console
-ascii = ij.op().ascii(composite)
-print("Composite sinusoidal gradient image:\n" + ascii)
+# display the images
+ij.ui().show("sinusoid", sinusoid)
+ij.ui().show("gradient", gradient)
+ij.ui().show("composite", composite)
 ```
+
 The output:
-```
-Composite sinusoidal gradient image:
-               ...,,,,,,,,,,,...,,,,---++++++++++-----+++ooo**********ooooo***
-.....         ...,,,-----,,,,,,,,,,---++++oooo++++++++++ooo****OOO************
-.......      ...,,,--------,,,,,,,---+++oooooooo+++++++ooo***OOOOOOO********OO
-......... .....,,,-----------,,,----+++oooooooooo+++++ooo***OOOOOOOOOO*****OOO
-,,,,..........,,,----+++------------++ooooo*ooooooooooooo***OOOOOOOOOOOO**OOOO
-,,,,,.........,,,---+++++----------+++oooo****oooooooooo***OOOO###OOOOOOOOOOOO
-,,,,,.........,,,---++++++---------+++ooo*****oooooooooo***OOOO###OOOOOOOOOOO#
-,,,,,.........,,,---++++++---------+++ooo*****oooooooooo***OOOO###OOOOOOOOOOO#
-,,,,,.........,,,---+++++----------+++oooo****oooooooooo***OOOO###OOOOOOOOOOOO
-,,,,..........,,,----+++------------++ooooo*ooooooooooooo***OOOOOOOOOOO***OOOO
-.,.............,,,------------,,----+++ooooooooooo++++ooo***OOOOOOOOOO*****OOO
-........    ...,,,----------,,,,,----++oooooooooo++++++ooo***OOOOOOOO*******OO
-.......      ...,,,--------,,,,,,,---+++oooooooo+++++++ooo***OOOOOOO********OO
-......       ...,,,-------,,,,,,,,---++++oooooo+++++++++ooo***OOOOO**********O
-......       ...,,,,------,,,,,,,,,---+++ooooo++++++++++ooo***OOOOO**********O
-......       ...,,,,------,,,,,,,,,---+++ooooo++++++++++ooo***OOOOO**********O
-......       ...,,,-------,,,,,,,,---++++oooooo+++++++++ooo***OOOOO**********O
-.......      ...,,,--------,,,,,,,---+++oooooooo+++++++ooo***OOOOOOO********OO
-........   ....,,,-----------,,,,---+++oooooooooo+++++oooo**OOOOOOOOO*******OO
-,,,,..........,,,----+++------------++ooooo*ooooooooooooo***OOOOOOOOOOOO**OOOO
-,,,,,,.......,,,---+++++++--------+++oooo******ooooooooo***OOO#####OOOOOOOOOO#
-,,,,,,,,...,,,,---+++++++++++----+++ooo**********ooooo****OO#########OOOOOOO##
-----,,,,,,,,,,---+++ooooo++++++++++ooo****OOO************OO###################
-```
+
+![sinusoid](images/sinusoid.png) ![gradient](images/gradient.png) ![composite](images/composite.png)
 
 How to contribute
 -----------------
 
 We welcome [pull requests](https://help.github.com/articles/using-pull-requests)!
 * Use an
-  [existing op](https://github.com/imagej/imagej-tutorials/create-a-new-op)
+  [existing op](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
   as a starting point
 * Use [ImageJ code style](http://developer.imagej.net/coding-style)
 * Use
