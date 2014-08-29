@@ -39,8 +39,6 @@ package net.imagej.ops;
 public abstract class AbstractOutputFunction<I, O> extends
 		AbstractFunction<I, O> implements OutputFunction<I, O> {
 
-	private OutputFactory<I, O> outputFactory;
-
 	@Override
 	public void run() {
 		// we may not reuse the already created output
@@ -53,14 +51,6 @@ public abstract class AbstractOutputFunction<I, O> extends
 
 	@Override
 	public O compute(final I input) {
-		if (outputFactory == null)
-			outputFactory = getOutputFactory();
-
-		return compute(input, getOutputFactory().create(input));
-	}
-
-	@Override
-	public void setOutputFactory(final OutputFactory<I, O> outputFactory) {
-		this.outputFactory = outputFactory;
+		return compute(input, createOutput(input));
 	}
 }

@@ -53,15 +53,5 @@ public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
 	/**
 	 * @return {@link OutputFactory} used to create outputs.
 	 */
-	OutputFactory<I, O> getOutputFactory();
-
-	/**
-	 * Set the {@link OutputFactory}, which is used to create outputs given some
-	 * input
-	 * 
-	 * @param outputFactory
-	 *            set the {@link OutputFactory} used to create outputs
-	 */
-	void setOutputFactory(OutputFactory<I, O> outputFactory);
-
+	O createOutput(I input);
 }
