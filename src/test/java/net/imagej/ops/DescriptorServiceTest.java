@@ -958,35 +958,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		/*
@@ -998,35 +999,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		// 3. constant value 50
@@ -1034,35 +1036,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		// 4. constant value 127
@@ -1070,35 +1073,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		/*
@@ -1109,108 +1113,108 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 369.157, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 56.814, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 8.273, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", -0.012, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.848, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.93, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.057, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.329, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 8.044, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.435, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 8.07, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.086, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0201346699, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 369.1571031787, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 56.8141540828, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 8.2726262626, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", -0.0123827841, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.8476756085, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", 2.95770352654046E-016, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9295886956, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0008158104, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0565857962, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3288476115, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 8.0443434343, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4348598585, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 8.0702558821, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0857205362, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 
 		// 6. second random image
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 370.505, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 56.537, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 7.878, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", 0.02, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.838, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.926, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.053, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.342, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 7.969, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.444, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 8.2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.019, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0201525406, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 370.5048602141, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 56.5374605181, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 7.8781818182, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", 0.0199937766, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.8381955201, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", 1.93421667571414E-016, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9262165423, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0007184896, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0530844958, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3421490122, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 7.9688888889, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4435465582, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 8.1996381594, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0194549944, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 
 		// 7. third random image
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 353.316, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 54.09, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 8.207, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", -0.01, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.853, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.924, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.053, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.335, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 7.957, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.436, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 8.046, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.063, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0201946638, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 353.3155921219, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 54.0902444282, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 8.2066666667, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", -0.0098849512, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.8531269678, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", 7.11236625150491E-017, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9241095239, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0007175723, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0530364098, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3348860418, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 7.9567676768, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4355708296, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 8.0460097541, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0631691052, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 	}
 
@@ -1242,35 +1246,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		/*
@@ -1282,35 +1287,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		// 3. constant value 50
@@ -1318,35 +1324,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		// 4. constant value 127
@@ -1354,35 +1361,36 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Cluster Promenence", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Clustershade", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Contrast", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Correlation", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", -0.00000001, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", -0.00000001, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("ICM1", -0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("ICM2", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("IFDM", 1, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 			assertEquals("Sum Average", 2, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", -0.00000001
+
+			, iterator.next().getB().getRealDouble(), SMALL_DELTA);
 			assertEquals("Sum Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+					.getRealDouble(), SMALL_DELTA);
 			assertEquals("Variance", 0, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
+					SMALL_DELTA);
 		}
 
 		/*
@@ -1393,108 +1401,108 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 372.09, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 56.841, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 8.168, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", 0.002, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.848, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.929, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.056, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.332, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 8.041, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.443, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 8.194, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.091, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0201395694, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 372.0901144312, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 56.8411803578, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 8.1684521988, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", 0.0015698512, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.8484551654, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", 1.67400815431762E-016, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9292013066, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0007909654, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0557157477, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3320004334, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 8.0407101316, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4434314877, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 8.1941390325, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0906478078, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 
 		// 6. second random image
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 359.61, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 55.516, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 8.049, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", -0.001, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.842, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", -0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.926, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.048, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.334, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 7.965, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.433, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 8.038, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.022, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0201418076, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 359.6104611987, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 55.5157249328, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 8.049382716, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", -0.0007370857, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.841692822, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", -1.96891114523368E-016,
+					iterator.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9263569627, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0005938005, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0482641539, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3343027612, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 7.9646974798, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4328974142, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 8.037525286, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0217270005, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 
 		// 7. third random image
 		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
-			assertEquals("ASM", 0.02, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Cluster Promenence", 340.526, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Clustershade", 52.939, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Contrast", 8.37, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Correlation", -0.03, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Entropy", 1.856, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Difference Variance", 0, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Entropy", 3.923, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("ICM1", -0.001,
-					iterator.next().getB().getRealDouble(), BIG_DELTA);
-			assertEquals("ICM2", 0.07, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("IFDM", 0.33, iterator.next().getB().getRealDouble(),
-					BIG_DELTA);
-			assertEquals("Sum Average", 7.955, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Entropy", 2.426, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Sum Variance", 7.875, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
-			assertEquals("Variance", 4.061, iterator.next().getB()
-					.getRealDouble(), BIG_DELTA);
+			assertEquals("ASM", 0.0202370818, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Cluster Promenence", 340.5262710759, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Clustershade", 52.9390627707, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Contrast", 8.3704724008, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Correlation", -0.0304984492, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Entropy", 1.8562357445, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Difference Variance", 1.36175792864179E-016, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Entropy", 3.9225802035, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM1", -0.0012456886, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("ICM2", 0.0698384415, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("IFDM", 0.3300269405, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Average", 7.9548005306, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Entropy", 2.4261132258, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Sum Variance", 7.8750103699, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Variance", 4.0613706927, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
 		}
 	}
 
