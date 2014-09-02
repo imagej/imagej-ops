@@ -33,6 +33,7 @@ package net.imagej.ops.descriptors.geometric.polygon;
 import java.awt.Polygon;
 
 import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.descriptors.geometric.CenterOfGravity;
 import net.imagej.ops.descriptors.geometric.Perimeter;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -46,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  * @author Christian Dietz
  */
-@Plugin(type = Perimeter.class, priority = 1)
+@Plugin(type = Perimeter.class, priority = 1, label = Perimeter.LABEL, name = Perimeter.NAME)
 public class PerimeterPolygon extends
 		AbstractOutputFunction<Polygon, DoubleType> implements Perimeter {
 
@@ -55,17 +56,24 @@ public class PerimeterPolygon extends
 
 		double dx, dy;
 		double length = 0.0;
-		for (int i = 0; i < (input.npoints - 1); i++) {
-			dx = input.xpoints[i + 1] - input.xpoints[i];
-			dy = input.ypoints[i + 1] - input.ypoints[i];
-			length += Math.sqrt(dx * dx + dy * dy);
+
+		for (int i = 0; i < input.npoints - 1; i++) {
+			dx = Math.abs(input.xpoints[i + 1] - input.xpoints[i]);
+			dy = Math.abs(input.ypoints[i + 1] - input.ypoints[i]);
+			dx = (dx == 0) ? 0 : dx + 1;
+			dy = (dy == 0) ? 0 : dy + 1;
+
+			length += Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 		}
 
-		dx = input.xpoints[0] - input.xpoints[input.npoints - 1];
-		dy = input.ypoints[0] - input.ypoints[input.npoints - 1];
-		length += Math.sqrt(dx * dx + dy * dy);
+		dx = Math.abs(input.xpoints[input.npoints - 1] - input.xpoints[0]);
+		dy = Math.abs(input.ypoints[input.npoints - 1] - input.ypoints[0]);
+		dx = (dx == 0) ? 0 : dx + 1;
+		dy = (dy == 0) ? 0 : dy + 1;
 
-		output.setReal(0.9 * length);
+		length += Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+		output.setReal(length);
 		return output;
 	}
 
