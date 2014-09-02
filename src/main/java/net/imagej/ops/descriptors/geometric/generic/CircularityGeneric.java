@@ -67,9 +67,15 @@ public class CircularityGeneric implements Circularity {
 
 	@Override
 	public void run() {
-		out = new DoubleType(4
-				* Math.PI
-				* (area.getOutput().get() / Math.pow(perimeter.getOutput()
-						.get(), 2)));
+
+		double area = this.area.getOutput().getRealDouble();
+		double perimeter = this.perimeter.getOutput().getRealDouble();
+
+		if (0 == perimeter) {
+			out = new DoubleType(0);
+		} else {
+			double result = 4d * Math.PI * (area / Math.pow(perimeter, 2));
+			out = new DoubleType(result);
+		}
 	}
 }
