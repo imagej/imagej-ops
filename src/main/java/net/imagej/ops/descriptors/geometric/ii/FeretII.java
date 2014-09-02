@@ -49,24 +49,12 @@ public class FeretII extends
 	public FeretResult compute(final IterableInterval<?> input,
 			final FeretResult output) {
 
-		double maxDiameter = 0.0f;
-
+		double maxDiameter = Double.MIN_VALUE;
 		final Point maxP1 = new Point(input.numDimensions());
 		final Point maxP2 = new Point(input.numDimensions());
 
-		final Cursor<?> cursor = input.localizingCursor();
-
-		final int[] position = new int[cursor.numDimensions()];
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.localize(position);
-		}
-
 		final Cursor<?> cursor1 = input.localizingCursor();
 
-		// TODO: Is this really correct? Distances are accumulated twice (as p1
-		// + p2 distance and p2 + p1). Can't we avoid this? This is
-		// inefficient!!!!
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 
@@ -76,10 +64,10 @@ public class FeretII extends
 
 				double dist = 0.0f;
 				for (int i = 0; i < cursor1.numDimensions(); i++) {
-					dist += (cursor1.getIntPosition(i) - cursor2
-							.getIntPosition(i))
-							* (cursor1.getIntPosition(i) - cursor2
-									.getIntPosition(i));
+					double a = Math.abs(cursor1.getIntPosition(i)
+							- cursor2.getIntPosition(i)) + 1;
+					dist += a * a;
+
 				}
 
 				if (dist > maxDiameter) {
