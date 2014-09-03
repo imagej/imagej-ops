@@ -7,7 +7,7 @@ if (inputVal <= 0) output.setReal(0); else {
 ```
 javadoc=Sets the real component of an output real number to the gamma value of the real component of an input real number. The constant value is specified in the constructor.
 interface=GammaConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealCubeRoot.java]
@@ -39,7 +39,7 @@ do {
 ```
 javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise. The noise parameters are specified in the constructor.
 interface=AddNoise
-members=[{name:rangeMin,modifiers:final},{name:rangeMax,modifiers:final},{name:rangeStdDev,modifiers:final},{name:rng,construct:new Random(),modifiers:final,type:Random}]
+members=[{name:rangeMin},{name:rangeMax},{name:rangeStdDev},{name:rng,construct:new Random(),type:Random}]
 imports=[java.util.Random]
 constructor=```
 this.rng.setSeed(System.currentTimeMillis());
@@ -85,7 +85,7 @@ interface=Arctanh
 compute_expr= constant | (long) input.getRealDouble()
 javadoc=Sets the real component of an output real number to the logical OR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
 interface=OrConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
 [RealLog.java]
@@ -104,7 +104,7 @@ interface=NearestInt
 compute_expr=constant
 javadoc=Sets the real component of an output real number to a constant value. The constant value is specified in the constructor.
 interface=Constant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealCoth.java]
@@ -143,7 +143,7 @@ interface=Copy
 compute_expr= Math.pow(input.getRealDouble(), constant)
 javadoc=Sets the real component of an output real number to the raising of the real component of an input real number to a constant value. The constant value is specified in the constructor.
 interface=PowerConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealRound.java]
@@ -177,7 +177,7 @@ if (value > constant) output.setReal(value); else output.setReal(constant);
 ```
 javadoc=Sets the real component of an output real number to the real component of an input real number unless it is less then a minimum value. If it is less than the minimum value then it sets the output real component to that minimum value. The minimum value is specified in the constructor.
 interface=MinConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealCsc.java]
@@ -196,7 +196,7 @@ interface=Abs
 compute_expr= constant ^ (long) input.getRealDouble()
 javadoc=Sets the real component of an output real number to the logical XOR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
 interface=XorConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
 [RealFloor.java]
@@ -221,7 +221,7 @@ interface=Exp
 compute_expr= input.getRealDouble() - constant
 javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value. The constant value is specified in the constructor.
 interface=SubtractConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealNegate.java]
@@ -293,7 +293,7 @@ if (constant == 0) {
 ```
 javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value. The constant value is specified in the constructor. In the case of division by zero the value is set to a value also specified in the constructor.
 interface=DivideConstant
-members=[{name:constant,modifiers:final},{name:dbzVal,modifiers:final}]
+members=[{name:constant},{name:dbzVal}]
 
 
 [RealArcsech.java]
@@ -336,7 +336,7 @@ if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException("arcsec(x) : x out
 ```
 javadoc=Sets the real component of an output real number to the inverse secant of the real component of an input real number.
 interface=Arcsec
-members=[{name:asin,init:"new RealArcsin<DoubleType, DoubleType>()",modifiers:final,type:"RealArcsin<DoubleType, DoubleType>"},{name:angle,init:new DoubleType(),type:DoubleType},{name:tmp,init:new DoubleType(),type:DoubleType}]
+members=[{name:asin,init:"new RealArcsin<DoubleType, DoubleType>()",modifiers:final static,type:"RealArcsin<DoubleType, DoubleType>"},{name:angle,init:new DoubleType(),type:DoubleType},{name:tmp,init:new DoubleType(),type:DoubleType}]
 imports=[net.imglib2.type.numeric.real.DoubleType]
 
 
@@ -386,7 +386,7 @@ if (value < constant) output.setReal(value); else output.setReal(constant);
 ```
 javadoc=Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value. The maximum value is specified in the constructor.
 interface=MaxConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealReciprocal.java]
@@ -396,7 +396,7 @@ if (inputVal == 0) output.setReal(dbzVal); else output.setReal(1.0 / inputVal);
 ```
 javadoc=Sets the real component of an output real number to the reciprocal of the real component of an input real number.
 interface=Reciprocal
-members=[{name:dbzVal,modifiers:final}]
+members=[{name:dbzVal}]
 
 
 [RealCos.java]
@@ -409,7 +409,7 @@ interface=Cos
 compute_expr= input.getRealDouble() * constant
 javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value. The constant value is specified in the constructor.
 interface=MultiplyConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealLogOnePlusX.java]
@@ -460,7 +460,7 @@ interface=Zero
 compute_expr= input.getRealDouble() + constant
 javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value. The constant value is specified in the constructor.
 interface=AddConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
 [RealArcsin.java]
@@ -479,7 +479,7 @@ interface=Sinh
 compute_expr= constant & (long) input.getRealDouble()
 javadoc=Sets the real component of an output real number to the logical AND of the real component of an input real number with a constant value. The constant value is specified in the constructor.
 interface=AndConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
 [RealTanh.java]
