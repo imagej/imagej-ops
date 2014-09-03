@@ -5,7 +5,7 @@ if (inputVal <= 0) output.setReal(0); else {
 	output.setReal( Math.exp(this.constant * Math.log(inputVal)) );
 }
 ```
-javadoc=Sets the real component of an output real number to the gamma value of the real component of an input real number. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the gamma value of the real component of an input real number.
 interface=GammaConstant
 members=[{name:constant}]
 
@@ -40,7 +40,7 @@ do {
     if (i++ > 100) throw new IllegalArgumentException("noise function failing to terminate. probably misconfigured.");
 } while (true);
 ```
-javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise. The noise parameters are specified in the constructor.
+javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise.
 interface=AddNoise
 members=[{name:rangeMin},{name:rangeMax},{name:rangeStdDev},{name:rng,type:Random}]
 imports=[java.util.Random]
@@ -82,7 +82,7 @@ interface=Arctanh
 
 [RealOrConstant.java]
 compute_expr= constant | (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical OR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical OR of the real component of an input real number with a constant value.
 interface=OrConstant
 members=[{name:constant,type:long}]
 
@@ -101,7 +101,7 @@ interface=NearestInt
 
 [RealConstant.java]
 compute_expr=constant
-javadoc=Sets the real component of an output real number to a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to a constant value.
 interface=Constant
 members=[{name:constant}]
 
@@ -140,7 +140,7 @@ interface=Copy
 
 [RealPowerConstant.java]
 compute_expr= Math.pow(input.getRealDouble(), constant)
-javadoc=Sets the real component of an output real number to the raising of the real component of an input real number to a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the raising of the real component of an input real number to a constant value.
 interface=PowerConstant
 members=[{name:constant}]
 
@@ -174,7 +174,7 @@ compute_body=```
 double value = input.getRealDouble();
 if (value > constant) output.setReal(value); else output.setReal(constant);
 ```
-javadoc=Sets the real component of an output real number to the real component of an input real number unless it is less then a minimum value. If it is less than the minimum value then it sets the output real component to that minimum value. The minimum value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the real component of an input real number unless it is less then a minimum value. If it is less than the minimum value then it sets the output real component to that minimum value.
 interface=MinConstant
 members=[{name:constant}]
 
@@ -193,7 +193,7 @@ interface=Abs
 
 [RealXorConstant.java]
 compute_expr= constant ^ (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical XOR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical XOR of the real component of an input real number with a constant value.
 interface=XorConstant
 members=[{name:constant,type:long}]
 
@@ -218,7 +218,7 @@ interface=Exp
 
 [RealSubtractConstant.java]
 compute_expr= input.getRealDouble() - constant
-javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value.
 interface=SubtractConstant
 members=[{name:constant}]
 
@@ -277,7 +277,7 @@ interface=Log10
 
 [RealInvert.java]
 compute_expr= specifiedMax - (input.getRealDouble() - specifiedMin)
-javadoc=Sets the real component of an output real number to the inversion of the real component of an input real number about a range. The range is specified in the constructor.
+javadoc=Sets the real component of an output real number to the inversion of the real component of an input real number about a range.
 interface=Invert
 members=[{name:specifiedMin},{name:specifiedMax}]
 
@@ -290,7 +290,7 @@ if (constant == 0) {
 	output.setReal( input.getRealDouble() / constant );
 }
 ```
-javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value. The constant value is specified in the constructor. In the case of division by zero the value is set to a value also specified in the constructor.
+javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value.
 interface=DivideConstant
 members=[{name:constant},{name:dbzVal}]
 
@@ -383,7 +383,7 @@ compute_body=```
 double value = input.getRealDouble();
 if (value < constant) output.setReal(value); else output.setReal(constant);
 ```
-javadoc=Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value. The maximum value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value.
 interface=MaxConstant
 members=[{name:constant}]
 
@@ -406,7 +406,7 @@ interface=Cos
 
 [RealMultiplyConstant.java]
 compute_expr= input.getRealDouble() * constant
-javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value.
 interface=MultiplyConstant
 members=[{name:constant}]
 
@@ -457,7 +457,7 @@ interface=Zero
 
 [RealAddConstant.java]
 compute_expr= input.getRealDouble() + constant
-javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value.
 interface=AddConstant
 members=[{name:constant}]
 
@@ -476,7 +476,7 @@ interface=Sinh
 
 [RealAndConstant.java]
 compute_expr= constant & (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical AND of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical AND of the real component of an input real number with a constant value.
 interface=AndConstant
 members=[{name:constant,type:long}]
 
