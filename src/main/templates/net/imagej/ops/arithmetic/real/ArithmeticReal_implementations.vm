@@ -48,6 +48,7 @@ import net.imglib2.type.numeric.RealType;
 import $imp;
 #end
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 
@@ -65,21 +66,12 @@ public class Real$interface<I extends RealType<I>, O extends RealType<O>>
 {
 #foreach ($member in $members)
 #if (!$member.isEmpty())
+#if (!$member.modifiers.equals("final static"))
+	@Parameter
+#end
 	private #if ($member.modifiers)${member.modifiers} #end${member.type} ${member.name}#if ($member.init)= ${member.init}#end;
 #end
 #end
-
-#set($first = 0)
-	public Real$interface(#foreach ($member in $members)
-#if (!${member.contruct}&&!${member.init})#if ($first != 0),#end final ${member.type} ${member.name}#set($first = 1)#end
-#end){
-#foreach ($member in $members)#if (${member.construct})
-		this.${member.name} = ${member.construct};
-#elseif(!${member.init})
-		this.${member.name} = ${member.name};
-#end#end
-		$!constructor
-	}
 
 	@Override
 	public O compute(final I input, O output){
