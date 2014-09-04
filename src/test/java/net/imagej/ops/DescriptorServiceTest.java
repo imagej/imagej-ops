@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.imagej.ops.descriptors.DescriptorService;
 import net.imagej.ops.descriptors.descriptorsets.CentralImageMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.FirstOrderStatisticsSet;
+import net.imagej.ops.descriptors.descriptorsets.GeometricDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.HaralickDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.HuMomentsDescriptorSet;
 import net.imagej.ops.descriptors.descriptorsets.ImageMomentsDescriptorSet;
@@ -16,10 +17,13 @@ import net.imagej.ops.histogram.CooccurrenceMatrix.MatrixOrientation;
 import net.imglib2.IterableInterval;
 import net.imglib2.Pair;
 import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.scijava.Context;
 import org.scijava.module.ModuleException;
@@ -50,6 +54,29 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	 */
 	private static final long SEED = 1234567890L;
 
+	private static Img<UnsignedByteType> empty;
+	private static Img<UnsignedByteType> constant1;
+	private static Img<UnsignedByteType> constant2;
+	private static Img<UnsignedByteType> constant3;
+	private static Img<UnsignedByteType> random1;
+	private static Img<UnsignedByteType> random2;
+	private static Img<UnsignedByteType> random3;
+
+	@BeforeClass
+	public static void setup() {
+		ImageGenerator dataGenerator = new ImageGenerator(SEED);
+		long[] dim = new long[] { 100, 100 };
+
+		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
+		constant1 = dataGenerator.getConstantUnsignedByteImg(dim, 15);
+		constant2 = dataGenerator.getConstantUnsignedByteImg(dim, 50);
+		constant3 = dataGenerator.getConstantUnsignedByteImg(dim, 127);
+		random1 = dataGenerator.getRandomUnsignedByteImg(dim);
+		random2 = dataGenerator.getRandomUnsignedByteImg(dim);
+		random3 = dataGenerator.getRandomUnsignedByteImg(dim);
+
+	}
+
 	/** Subclasses can override to create a context with different services. */
 	@Override
 	protected Context createContext() {
@@ -58,17 +85,287 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	}
 
 	@Test
+	public void testGeometricFeatures() throws IllegalArgumentException,
+			ModuleException, ImgIOException, IncompatibleTypeException {
+
+		GeometricDescriptorSet<IterableInterval> gds = new GeometricDescriptorSet<IterableInterval>(
+				context, IterableInterval.class);
+		gds.compile();
+
+		/*
+		 * VALUES HARDCODED (TAKEN FROM IMAGEJ 1)
+		 */
+		gds.update(empty);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(constant1);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(constant2);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(constant3);
+		{
+
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(random1);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(random2);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+
+		gds.update(random3);
+		{
+			Iterator<Pair<String, DoubleType>> iterator = gds.iterator();
+			assertEquals("Area", 10000.0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - X", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Center of Gravity - Y", 49.5, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Eccentricity", 1, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Diameter", 141.42135623731, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Feret Angle", 45, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P0 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P1 [Y]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [X]", empty.dimension(0) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P2 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [X]", 0, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Convex Hull P3 [Y]", empty.dimension(1) - 1, iterator
+					.next().getB().getRealDouble(), SMALL_DELTA);
+			assertEquals("Perimeter", 400, iterator.next().getB()
+					.getRealDouble(), SMALL_DELTA);
+			assertEquals("Circularity", 0.785398163397448, iterator.next()
+					.getB().getRealDouble(), SMALL_DELTA);
+		}
+	}
+
+	@Test
 	public void testImageMoments() throws IllegalArgumentException,
 			ModuleException, ImgIOException, IncompatibleTypeException {
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
 
 		ImageMomentsDescriptorSet<IterableInterval> imds = new ImageMomentsDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 		imds.compile();
 
 		// 1. check empty image
-		imds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		imds.update(empty);
 		for (Pair<String, DoubleType> pair : imds) {
 			assertEquals(0, pair.getB().getRealDouble(), SMALL_DELTA);
 		}
@@ -78,7 +375,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		imds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		imds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 150000.0, iterator.next().getB()
@@ -92,7 +389,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		imds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		imds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 500000.0, iterator.next().getB()
@@ -106,7 +403,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		imds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		imds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 1270000.0, iterator.next().getB()
@@ -124,7 +421,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		imds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		imds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 1277534.0, iterator.next().getB()
@@ -138,7 +435,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		imds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		imds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 1261968.0, iterator.next().getB()
@@ -152,7 +449,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		imds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		imds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = imds.iterator();
 			assertEquals("m00", 1260717.0, iterator.next().getB()
@@ -169,15 +466,13 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	@Test
 	public void testCentralImageMoments() throws IllegalArgumentException,
 			ModuleException, ImgIOException, IncompatibleTypeException {
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
 
 		CentralImageMomentsDescriptorSet<IterableInterval> cimds = new CentralImageMomentsDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 		cimds.compile();
 
 		// 1. check empty image
-		cimds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		cimds.update(empty);
 		for (Pair<String, DoubleType> pair : cimds) {
 			assertEquals(Double.NaN, pair.getB().getRealDouble(), SMALL_DELTA);
 		}
@@ -187,7 +482,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		cimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		cimds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", 0, iterator.next().getB().getRealDouble(),
@@ -207,7 +502,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		cimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		cimds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", 0, iterator.next().getB().getRealDouble(),
@@ -227,7 +522,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		cimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		cimds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", 0, iterator.next().getB().getRealDouble(),
@@ -251,7 +546,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		cimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		cimds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", -5275876.956702232, iterator.next().getB()
@@ -271,7 +566,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		cimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		cimds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", 1985641.887743473, iterator.next().getB()
@@ -291,7 +586,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		cimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		cimds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = cimds.iterator();
 			assertEquals("mu11", -3201090.973862648, iterator.next().getB()
@@ -315,15 +610,13 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	public void testNormalizedCentralImageMoments()
 			throws IllegalArgumentException, ModuleException, ImgIOException,
 			IncompatibleTypeException {
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
 
 		NormalizedCentralImageMomentsDescriptorSet<IterableInterval> ncimds = new NormalizedCentralImageMomentsDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 		ncimds.compile();
 
 		// 1. check empty image
-		ncimds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		ncimds.update(empty);
 		for (Pair<String, DoubleType> pair : ncimds) {
 			assertEquals(Double.NaN, pair.getB().getRealDouble(), SMALL_DELTA);
 		}
@@ -333,7 +626,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		ncimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		ncimds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", 0, iterator.next().getB().getRealDouble(),
@@ -353,7 +646,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		ncimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		ncimds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", 0, iterator.next().getB().getRealDouble(),
@@ -373,7 +666,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		ncimds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		ncimds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", 0, iterator.next().getB().getRealDouble(),
@@ -397,7 +690,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		ncimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		ncimds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", -3.2325832933879204E-6, iterator.next().getB()
@@ -417,7 +710,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		ncimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		ncimds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", 1.2468213798789547E-6, iterator.next().getB()
@@ -437,7 +730,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		ncimds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		ncimds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = ncimds.iterator();
 			assertEquals("nu11", -2.0140154540164537E-6, iterator.next().getB()
@@ -460,15 +753,13 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	@Test
 	public void testHuMoments() throws IllegalArgumentException,
 			ModuleException, ImgIOException, IncompatibleTypeException {
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
 
 		HuMomentsDescriptorSet<IterableInterval> hmds = new HuMomentsDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 		hmds.compile();
 
 		// 1. check empty image
-		hmds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		hmds.update(empty);
 		for (Pair<String, DoubleType> pair : hmds) {
 			assertEquals(Double.NaN, pair.getB().getRealDouble(), SMALL_DELTA);
 		}
@@ -478,7 +769,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		hmds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		hmds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.01111, iterator.next().getB().getRealDouble(),
@@ -498,7 +789,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		hmds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		hmds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.003333,
@@ -518,7 +809,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		hmds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		hmds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.001312204724409449, iterator.next().getB()
@@ -542,7 +833,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		hmds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hmds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.001303862018475966, iterator.next().getB()
@@ -562,7 +853,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		hmds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hmds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.001315476219524848, iterator.next().getB()
@@ -582,7 +873,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		hmds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hmds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hmds.iterator();
 			assertEquals("h1", 0.001319209396694632, iterator.next().getB()
@@ -613,15 +904,12 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	@Test
 	public void testFirstOrderStatistics() throws IllegalArgumentException,
 			ModuleException {
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
-
 		FirstOrderStatisticsSet<IterableInterval> fosds = new FirstOrderStatisticsSet<IterableInterval>(
 				context, IterableInterval.class);
 		fosds.compile();
 
 		// 1. check empty image, everything should be 0
-		fosds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		fosds.update(empty);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -668,7 +956,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		fosds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -711,7 +999,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		fosds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -754,7 +1042,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		fosds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		fosds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -801,7 +1089,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		fosds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -844,7 +1132,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		fosds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -887,7 +1175,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		fosds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		fosds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = fosds.iterator();
 
@@ -941,10 +1229,6 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	@Test
 	public void testHaralickHorizontalFeature()
 			throws IllegalArgumentException, ModuleException {
-
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
-
 		HaralickDescriptorSet<IterableInterval> hds = new HaralickDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 
@@ -954,7 +1238,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.updateParameterOrientation(MatrixOrientation.HORIZONTAL);
 
 		// 1. empty image
-		hds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		hds.update(empty);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -995,7 +1279,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		hds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1032,7 +1316,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		hds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1069,7 +1353,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		hds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1110,7 +1394,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201346699, iterator.next().getB()
@@ -1146,7 +1430,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201525406, iterator.next().getB()
@@ -1182,7 +1466,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201946638, iterator.next().getB()
@@ -1230,9 +1514,6 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	public void testHaralickDiagonalFeature() throws IllegalArgumentException,
 			ModuleException {
 
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
-
 		HaralickDescriptorSet<IterableInterval> hds = new HaralickDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 
@@ -1242,7 +1523,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.updateParameterOrientation(MatrixOrientation.DIAGONAL);
 
 		// 1. empty image
-		hds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		hds.update(empty);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1283,7 +1564,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		hds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1320,7 +1601,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		hds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1357,7 +1638,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		hds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1398,7 +1679,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201395694, iterator.next().getB()
@@ -1434,7 +1715,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201418076, iterator.next().getB()
@@ -1470,7 +1751,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0202370818, iterator.next().getB()
@@ -1517,10 +1798,6 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	@Test
 	public void testHaralickVerticalFeature() throws IllegalArgumentException,
 			ModuleException {
-
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
-
 		HaralickDescriptorSet<IterableInterval> hds = new HaralickDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 
@@ -1530,7 +1807,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.updateParameterOrientation(MatrixOrientation.VERTICAL);
 
 		// 1. empty image
-		hds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		hds.update(empty);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1571,7 +1848,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		hds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1608,7 +1885,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		hds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1645,7 +1922,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		hds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1686,7 +1963,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201282012, iterator.next().getB()
@@ -1723,7 +2000,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201257219, iterator.next().getB()
@@ -1761,7 +2038,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201885063, iterator.next().getB()
@@ -1809,9 +2086,6 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 	public void testHaralickAntiDiagonalFeature()
 			throws IllegalArgumentException, ModuleException {
 
-		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		final long[] dim = new long[] { 100, 100 };
-
 		HaralickDescriptorSet<IterableInterval> hds = new HaralickDescriptorSet<IterableInterval>(
 				context, IterableInterval.class);
 
@@ -1821,7 +2095,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		hds.updateParameterOrientation(MatrixOrientation.ANTIDIAGONAL);
 
 		// 1. empty image
-		hds.update(dataGenerator.getEmptyUnsignedByteImg(dim));
+		hds.update(empty);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1861,7 +2135,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 2. constant value 15
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 15));
+		hds.update(constant1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1897,7 +2171,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 3. constant value 50
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 50));
+		hds.update(constant2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1933,7 +2207,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 4. constant value 127
-		hds.update(dataGenerator.getConstantUnsignedByteImg(dim, 127));
+		hds.update(constant3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 1, iterator.next().getB().getRealDouble(),
@@ -1973,7 +2247,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		 */
 
 		// 5. first random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random1);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201046119, iterator.next().getB()
@@ -2009,7 +2283,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 6. second random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random2);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0201537897, iterator.next().getB()
@@ -2045,7 +2319,7 @@ public class DescriptorServiceTest<T extends RealType<T> & NativeType<T>>
 		}
 
 		// 7. third random image
-		hds.update(dataGenerator.getRandomUnsignedByteImg(dim));
+		hds.update(random3);
 		{
 			Iterator<Pair<String, DoubleType>> iterator = hds.iterator();
 			assertEquals("ASM", 0.0202223305, iterator.next().getB()
