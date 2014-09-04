@@ -30,6 +30,8 @@
 
 package net.imagej.ops.descriptors.geometric.ii;
 
+import java.util.Arrays;
+
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.descriptors.geometric.CenterOfGravity;
@@ -52,6 +54,8 @@ public class CenterOfGravityII extends
 	@Override
 	public double[] compute(final IterableInterval<?> input,
 			final double[] output) {
+
+		Arrays.fill(output, 0);
 
 		final Cursor<?> it = input.cursor();
 

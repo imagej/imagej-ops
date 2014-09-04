@@ -48,11 +48,10 @@ public class ConvexHullII extends
 		// afterwards
 		final Cursor<?> cursor = input.localizingCursor();
 		final List<Point2D> points = new ArrayList<Point2D>();
-		final double[] pos = new double[2];
 		while (cursor.hasNext()) {
-			cursor.next();
-			cursor.localize(pos);
-			points.add(new Point2D.Double(pos[0], pos[1]));
+			cursor.fwd();
+			points.add(new Point2D.Double(cursor.getDoublePosition(0), cursor
+					.getDoublePosition(1)));
 		}
 
 		// Sort the points of P by x-coordinate (in case of a tie, sort by
@@ -112,6 +111,9 @@ public class ConvexHullII extends
 		// concatenate L and U
 		L.addAll(U);
 
+		// reset to zero...
+		output.npoints = 0;
+		
 		// convert list into polygon
 		for (final Point2D point2d : L) {
 			output.addPoint((int) point2d.getX(), (int) point2d.getY());
