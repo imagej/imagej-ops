@@ -47,24 +47,9 @@ import net.imglib2.ops.operation.UnaryOutputOperation;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.IntegerType;
 
-/**
- * Operation to merge several intervals and their content to a resulting Img. If
- * intervals intersects, the interval with a higher offset will override the
- * interval with lower offset. Gaps between intervals will be filled with
- * emptyType.
- * 
- * This operation is mostly designed to compute rectangular subsets of images
- * and merge them back again.
- * 
- * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * 
- */
-
-@deprecated Use net.imagej.ops instead.
-@SuppressWarnings( "rawtypes" )
+/** @deprecated Use net.imagej.ops instead. */
 @Deprecated
+@SuppressWarnings( "rawtypes" )
 public final class MergeLabelings< L extends Comparable< L >> implements UnaryOutputOperation< Labeling< L >[], NativeImgLabeling< L, ? extends IntegerType< ? >>>
 {
 

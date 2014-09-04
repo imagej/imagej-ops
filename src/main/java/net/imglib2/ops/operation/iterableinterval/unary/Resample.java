@@ -44,15 +44,7 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
-/**
- * Implement more interpolators (e.g. bilinear interpolation)
- * 
- * @author Christian Dietz (University of Konstanz)
- * 
- * @param <T>
- */
-@deprecated Use net.imagej.ops instead.
-@Deprecated
+/** @deprecated Use net.imagej.ops instead. */
 @Deprecated
 public class Resample< T extends RealType< T > > implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T > >
 {

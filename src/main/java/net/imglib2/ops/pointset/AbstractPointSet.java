@@ -33,8 +33,8 @@ package net.imglib2.ops.pointset;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.Positionable;
 import net.imglib2.RealPositionable;
-@deprecated Use net.imagej.ops instead.
 
+/** @deprecated Use net.imagej.ops instead. */
 @Deprecated
 public abstract class AbstractPointSet implements PointSet {
 
