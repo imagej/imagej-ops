@@ -147,7 +147,6 @@
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>junit-benchmarks</artifactId>
-			<version>${junit-benchmarks.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
