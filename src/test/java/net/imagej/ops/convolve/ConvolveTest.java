@@ -44,28 +44,28 @@ import org.junit.Test;
  */
 public class ConvolveTest extends AbstractOpTest {
 
-		/** Tests that the correct convolver is selected. */
-    @Test
-    public void testConvolveMethodSelection() {
+	/** Tests that the correct convolver is selected. */
+	@Test
+	public void testConvolveMethodSelection() {
 
-        final Img<ByteType> in =
-                new ArrayImgFactory<ByteType>().create(new int[]{20, 20},
-                        new ByteType());
-        final Img<ByteType> out = in.copy();
+		final Img<ByteType> in =
+			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
+				new ByteType());
+		final Img<ByteType> out = in.copy();
 
-        // testing for a small kernel
-        Img<ByteType> kernel =
-                new ArrayImgFactory<ByteType>().create(new int[]{3, 3},
-                        new ByteType());
-        Op op = ops.op("convolve", out, in, kernel);
-        assertSame(ConvolveNaive.class, op.getClass());
+		// testing for a small kernel
+		Img<ByteType> kernel =
+			new ArrayImgFactory<ByteType>()
+				.create(new int[] { 3, 3 }, new ByteType());
+		Op op = ops.op("convolve", out, in, kernel);
+		assertSame(ConvolveNaive.class, op.getClass());
 
-        // testing for a 'bigger' kernel
-        kernel =
-                new ArrayImgFactory<ByteType>().create(new int[]{10, 10},
-                        new ByteType());
-        op = ops.op("convolve", in, out, kernel);
-        assertSame(ConvolveFourier.class, op.getClass());
+		// testing for a 'bigger' kernel 
+		kernel =
+			new ArrayImgFactory<ByteType>().create(new int[] { 10, 10 },
+				new ByteType());
+		op = ops.op("convolve", in, out, kernel);
+		assertSame(ConvolveFourier.class, op.getClass());
 
-    }
+	}
 }
