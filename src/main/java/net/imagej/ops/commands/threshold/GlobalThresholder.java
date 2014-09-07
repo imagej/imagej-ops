@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 public class GlobalThresholder<T extends RealType<T>> implements Command {
 
     @Parameter
-    private GlobalThresholdMethod<T> method;
+    private GlobalThresholdMethod<ImgPlus<T>,T> method;
 
     @Parameter
     private OpService ops;

@@ -30,25 +30,38 @@
 
 package net.imagej.ops.threshold;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = "manualthreshold")
-public class Manual<T extends RealType<T>> extends GlobalThresholdMethod<T> {
+@Plugin(type = Op.class, name = "manual")
+public class Manual<T extends RealType<T>> extends AbstractFunction<Object, T>
+		implements GlobalThresholdMethod<Object, T> {
 
 	@Parameter
-	private double threshold;
+	private T threshold;
+
 
 	@Override
-	protected void getThreshold(Histogram1d<T> histogram, T threshold) {
-		threshold.setReal(this.threshold);
+	public T getOutput() {
+		return threshold;
+	}
+
+	@Override
+	public void setOutput(T output) {
+		threshold = output;
+	}
+
+	@Override
+	public T compute(Object input, T output) {
+		return threshold;
 	}
 
 }

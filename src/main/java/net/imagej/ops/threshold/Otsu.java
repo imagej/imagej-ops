@@ -30,19 +30,31 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.OpService;
+import net.imagej.ops.histogram.HistogramCreate;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "otsu")
-public class Otsu<T extends RealType<T>> extends GlobalThresholdMethod<T> {
+@Plugin(type = GlobalThresholdMethod.class, name = "otsu")
+public class Otsu<T extends RealType<T>> extends
+		AbstractFunction<Iterable<T>, T> implements
+		GlobalThresholdMethod<Iterable<T>, T> {
+
+	@Parameter
+	private OpService ops;
 
 	@Override
-	protected final void
-		getThreshold(final Histogram1d<T> hist, final T threshold)
-	{
+	public T compute(Iterable<T> input, T output) {
+
+		// TODO how to handle service == null?
+		@SuppressWarnings("unchecked")
+		Histogram1d<T> hist = (Histogram1d<T>) ops.run(HistogramCreate.class,
+				input);
+
 		final long[] data = hist.toLongArray();
 		final int maxValue = (int) hist.getBinCount() - 1;
 
@@ -102,8 +114,7 @@ public class Otsu<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 				// num =
 				// MAX_VALUE*N = approx 8E7
 				BCV = (num * num) / denom;
-			}
-			else {
+			} else {
 				BCV = 0;
 			}
 
@@ -121,7 +132,7 @@ public class Otsu<T extends RealType<T>> extends GlobalThresholdMethod<T> {
 		// at this point the threshold is expressed as a bin number. Convert bin
 		// number to corresponding
 		// gray level
-		hist.getCenterValue(kStar, threshold);
+		hist.getCenterValue(kStar, output);
+		return output;
 	}
-
 }
