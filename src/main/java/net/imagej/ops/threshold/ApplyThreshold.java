@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Threshold.NAME)
-public class PixThreshold<T extends Comparable<T>> extends
+public class ApplyThreshold<T extends Comparable<T>> extends
 	AbstractFunction<T, BitType> implements Threshold
 {
 
