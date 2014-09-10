@@ -49,7 +49,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O> {
+	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
+{
 
 	@Parameter(required = false)
 	private Sum<Iterable<I>, O> sumFunc;
@@ -81,12 +82,12 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		else result = output;
 
 		final LongType size = sizeFunc.compute(input, new LongType());
-		final O sum = sumFunc.compute(input, result.copy());
+		final O sum = sumFunc.compute(input, result.createVariable());
 
 		// TODO: Better way to go LongType -> O without going through double?
-		result.setReal(size.getRealDouble());
+		double mean = sum.getRealDouble() / size.getRealDouble();
 
-		result.div(sum);
+		result.setReal(mean);
 
 		return result;
 	}
