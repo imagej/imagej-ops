@@ -33,22 +33,25 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
+@Plugin(type = Op.class, name = Threshold.NAME, priority=Priority.HIGH_PRIORITY)
 public class GlobalThreshold<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, Iterable<BitType>> implements Threshold {
 
+	// TODO: do we require a ready to go op here or something we need to still
+	// fill..?
 	@Parameter
-	private GlobalThresholdMethod<Iterable<T>, T> method;
+	private T  threshold;
 
 	@Parameter
 	private OpService ops;
@@ -57,12 +60,10 @@ public class GlobalThreshold<T extends RealType<T>> extends
 	public Iterable<BitType> compute(final Iterable<T> input,
 			final Iterable<BitType> output) {
 
-		method.run();
+		Object applyThreshold = ops.op(ApplyThreshold.class, BitType.class,
+				threshold.getClass(), threshold);
 
-		Op thresholdOp = ops.op(ApplyThreshold.class, new BitType(), input
-				.iterator().next().createVariable(), method.getOutput());
-
-		ops.run("map", output, input, thresholdOp);
+		ops.run("map", output, input, applyThreshold);
 
 		return output;
 	}

@@ -33,16 +33,18 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.histogram.HistogramCreate;
+import net.imglib2.Cursor;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = GlobalThresholdMethod.class, name = "otsu")
+@Plugin(type = AutoThresholdMethod.class, name = "otsu")
 public class Otsu<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, T> implements
-		GlobalThresholdMethod<Iterable<T>, T> {
+		AutoThresholdMethod<Iterable<T>, T> {
 
 	@Parameter
 	private OpService ops;
@@ -55,7 +57,6 @@ public class Otsu<T extends RealType<T>> extends
 		Histogram1d<T> hist = (Histogram1d<T>) ops.run(HistogramCreate.class,
 				input);
 
-		final long[] data = hist.toLongArray();
 		final int maxValue = (int) hist.getBinCount() - 1;
 
 		// Otsu's threshold algorithm
@@ -77,13 +78,15 @@ public class Otsu<T extends RealType<T>> extends
 		// Initialize values:
 		s = 0;
 		n = 0;
+		Cursor<LongType> cursor = hist.cursor();
 		for (k = 0; k < L; k++) {
-			s += k * data[k]; // Total histogram intensity
-			n += data[k]; // Total number of data points
+			final long val = cursor.next().get();
+			s += k * val; // Total histogram intensity
+			n += val; // Total number of data points
 		}
 
 		sk = 0;
-		n1 = data[0]; // The entry for zero intensity
+		n1 = hist.firstElement().get(); // The entry for zero intensity
 		BCV = 0;
 		BCVmax = 0;
 		kStar = 0;
@@ -91,11 +94,16 @@ public class Otsu<T extends RealType<T>> extends
 		// Look at each possible threshold value,
 		// calculate the between-class variance, and decide if it's a
 		// max
+		cursor.reset();
+		cursor.fwd();
+		
 		for (k = 1; k < (L - 1); k++) { // No need to check endpoints k =
 			// 0 or k =
 			// L-1
-			sk += k * data[k];
-			n1 += data[k];
+	
+			final long val = cursor.next().get();
+			sk += k * val;
+			n1 += val;
 
 			// The float casting here is to avoid compiler warning
 			// about loss of

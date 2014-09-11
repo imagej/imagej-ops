@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = "manual")
 public class Manual<T extends RealType<T>> extends AbstractFunction<Object, T>
-		implements GlobalThresholdMethod<Object, T> {
+		implements AutoThresholdMethod<Object, T> {
 
 	@Parameter
 	private T threshold;

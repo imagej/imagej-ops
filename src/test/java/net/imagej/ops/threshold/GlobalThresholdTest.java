@@ -32,16 +32,20 @@ package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ij.ImagePlus;
 import ij.process.AutoThresholder.Method;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.ShortType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 import net.imglib2.img.display.imagej.ImageJFunctions;
 
@@ -51,6 +55,37 @@ import net.imglib2.img.display.imagej.ImageJFunctions;
  * @author bnorthan
  */
 public class GlobalThresholdTest extends AbstractOpTest {
+
+	int xSize = 10;
+	int ySize = 10;
+
+	Img<UnsignedShortType> in;
+
+	@Before
+	public void initialize() {
+
+		long[] dimensions = new long[] { xSize, ySize };
+
+		// create image and output
+		in = new ArrayImgFactory<UnsignedShortType>().create(dimensions,
+				new UnsignedShortType());
+	}
+
+	@Test
+	public void testManualThreshold() throws IncompatibleTypeException {
+
+		Img<BitType> manual = in.factory().imgFactory(new BitType())
+				.create(in, new BitType());
+
+		UnsignedShortType threshold = new UnsignedShortType();
+		threshold.set(1009);
+
+		ops.module(
+				"threshold",
+				manual,
+				in,
+				threshold).run();
+	}
 
 	/**
 	 * This test generates a 2D ramp image then thresholds. After thresholding
@@ -62,18 +97,6 @@ public class GlobalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testThreshold() throws IncompatibleTypeException {
-
-		int xSize = 10;
-		int ySize = 10;
-
-		long[] dimensions = new long[] { xSize, ySize };
-
-		// create image and output
-		Img<UnsignedShortType> in = new ArrayImgFactory<UnsignedShortType>()
-				.create(dimensions, new UnsignedShortType());
-
-		Img<BitType> manual = in.factory().imgFactory(new BitType())
-				.create(in, new BitType());
 
 		Img<BitType> otsu = in.factory().imgFactory(new BitType())
 				.create(in, new BitType());
@@ -93,8 +116,12 @@ public class GlobalThresholdTest extends AbstractOpTest {
 		// TODO: Example here ops.module("threshold", res, in, Otsu.class). We
 		// can do that as soon as otsu knows how to create its output.
 
-		ops.module("threshold", otsu, in,
-				ops.op("otsu", new UnsignedShortType(), in)).run();
+		// TODO what do you expect here? a ready to go (everything injected) op
+		// or just like a pointer to an op.
+		Op otsuOp = ops.op(Otsu.class, in.firstElement().createVariable()
+				.getClass(), IterableInterval.class);
+
+		ops.module("threshold", otsu, in, otsuOp).run();
 
 		// loop through the output pixels and count
 		// the number that are above zero
@@ -105,28 +132,29 @@ public class GlobalThresholdTest extends AbstractOpTest {
 			}
 		}
 
-		// convert to IJ1 ImagePlus
-		ImagePlus imp = ImageJFunctions.wrapUnsignedShort(in, "gradient16");
-
-		// run IJ1 Otsu Auto threshold
-		imp.getProcessor().setAutoThreshold(Method.Otsu, true);
-		double minthreshold = imp.getProcessor().getMinThreshold();
-
-		short count2 = 0;
-
-		// loop through all the pixels counting the foreground (>minthreshold)
-		// pixels
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
-				if (imp.getPixel(y, x)[0] >= minthreshold)
-					count2 += 1;
-			}
-		}
-
-		// verify the count of foreground pixels from the op and imagej1 test
-		// are
-		// equal
-		assertEquals(count, count2);
+		// // convert to IJ1 ImagePlus
+		// ImagePlus imp = ImageJFunctions.wrapUnsignedShort(in, "gradient16");
+		//
+		// // run IJ1 Otsu Auto threshold
+		// imp.getProcessor().setAutoThreshold(Method.Otsu, true);
+		// double minthreshold = imp.getProcessor().getMinThreshold();
+		//
+		// short count2 = 0;
+		//
+		// // loop through all the pixels counting the foreground
+		// (>minthreshold)
+		// // pixels
+		// for (int x = 0; x < xSize; x++) {
+		// for (int y = 0; y < ySize; y++) {
+		// if (imp.getPixel(y, x)[0] >= minthreshold)
+		// count2 += 1;
+		// }
+		// }
+		//
+		// // verify the count of foreground pixels from the op and imagej1 test
+		// // are
+		// // equal
+		assertEquals(count, 45);
 	}
 
 }
