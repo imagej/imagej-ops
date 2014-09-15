@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,25 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.outputfactories;
-
-import net.imagej.ops.OutputFactory;
-import net.imglib2.img.Img;
-import net.imglib2.type.Type;
+package net.imagej.ops;
 
 /**
- * {@link OutputFactory} used to create an empty output {@link Img} of same type
- * and dimensionality as the input {@link Img}.
+ * Abstract superclass for a {@link OutputFunction} which is capable creating an
+ * output object.
  * 
- * @author Christian Dietz
- * @param <L>
+ * @author Christian Dietz (University of Konstanz)
  */
-public class ImgImgSameTypeFactory<T extends Type<T>> implements
-	OutputFactory<Img<T>, Img<T>>
-{
+public abstract class AbstractOutputFunction<I, O> extends
+		AbstractFunction<I, O> implements OutputFunction<I, O> {
 
 	@Override
-	public Img<T> create(final Img<T> input) {
-		return input.factory().create(input, input.firstElement().createVariable());
+	public void run() {
+		if (getOutput() == null) {
+			setOutput(compute(getInput()));
+		} else {
+			setOutput(compute(getInput(), getOutput()));
+		}
+	}
+
+	@Override
+	public O compute(final I input) {
+		return compute(input, createOutput(input));
 	}
 }

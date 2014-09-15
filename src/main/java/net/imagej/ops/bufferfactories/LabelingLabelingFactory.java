@@ -28,64 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops.bufferfactories;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Function;
 import net.imagej.ops.BufferFactory;
-
-import org.scijava.plugin.Parameter;
+import net.imglib2.labeling.Labeling;
 
 /**
- * Abstract superclass of {@link JoinFunctions}s.
+ * {@link BufferFactory} used to create an empty output {@link Labeling} of same
+ * type and dimensionality as the input {@link Labeling}
  * 
  * @author Christian Dietz
- * @author Curtis Rueden
+ * @param <L>
  */
-public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
+public class LabelingLabelingFactory<L extends Comparable<L>> implements
+	BufferFactory<Labeling<L>, Labeling<L>>
 {
 
-	/** List of functions to be joined. */
-	@Parameter
-	private List<? extends F> functions;
-
-	@Parameter
-	private BufferFactory<A, A> bufferFactory;
-
-	private A buffer;
-
 	@Override
-	public BufferFactory<A, A> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	@Override
-	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
-	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
-	}
-
-	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
-	}
-
-	/**
-	 * @param input helping to create the buffer
-	 * @return the buffer which can be used for the join.
-	 */
-	protected A getBuffer(final A input) {
-		if (buffer == null) {
-			buffer = bufferFactory.createBuffer(input);
-		}
-		return buffer;
+	public Labeling<L> createBuffer(final Labeling<L> input) {
+		return input.<L> factory().create(input);
 	}
 
 }

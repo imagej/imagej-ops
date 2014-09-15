@@ -33,7 +33,7 @@ package net.imagej.ops.join;
 import java.util.List;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.BufferFactory;
 
 /**
  * A join operation which joins a list of {@link Function}s.
@@ -46,17 +46,17 @@ public interface JoinFunctions<A, F extends Function<A, A>> extends
 {
 
 	/**
-	 * @return {@link OutputFactory} used to create intermediate results
+	 * @return {@link BufferFactory} used to create intermediate results
 	 */
-	OutputFactory<A, A> getBufferFactory();
+	BufferFactory<A, A> getBufferFactory();
 
 	/**
-	 * Sets the {@link OutputFactory} which is used to create intermediate
+	 * Sets the {@link BufferFactory} which is used to create intermediate
 	 * results.
 	 * 
 	 * @param bufferFactory used to create intermediate results
 	 */
-	void setBufferFactory(OutputFactory<A, A> bufferFactory);
+	void setBufferFactory(BufferFactory<A, A> bufferFactory);
 
 	/**
 	 * @return {@link List} of {@link Function}s which are joined in this

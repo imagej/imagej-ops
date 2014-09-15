@@ -28,40 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.outputfactories;
+package net.imagej.ops.bufferfactories;
 
-import net.imagej.ops.OutputFactory;
-import net.imglib2.exception.IncompatibleTypeException;
+import net.imagej.ops.BufferFactory;
 import net.imglib2.img.Img;
 import net.imglib2.type.Type;
 
 /**
- * {@link OutputFactory} used to create an empty output {@link Img} of type <V>
- * and the dimensionality of the input {@link Img}
+ * {@link BufferFactory} used to create an empty output {@link Img} of same type
+ * and dimensionality as the input {@link Img}.
  * 
  * @author Christian Dietz
  * @param <L>
  */
-public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
-	OutputFactory<Img<T>, Img<V>>
+public class ImgImgSameTypeFactory<T extends Type<T>> implements
+	BufferFactory<Img<T>, Img<T>>
 {
 
-	private V resType;
-
-	/**
-	 * @param resType type of resulting {@link Img}
-	 */
-	public ImgImgFactory(final V resType) {
-		this.resType = resType;
-	}
-
 	@Override
-	public Img<V> create(final Img<T> input) {
-		try {
-			return input.factory().imgFactory(resType).create(input, resType);
-		}
-		catch (final IncompatibleTypeException e) {
-			throw new RuntimeException(e);
-		}
+	public Img<T> createBuffer(final Img<T> input) {
+		return input.factory().create(input, input.firstElement().createVariable());
 	}
 }

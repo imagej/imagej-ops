@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -31,15 +31,28 @@
 package net.imagej.ops;
 
 /**
- * Factory which creates an object of type <O> given the input of type <I>
+ * An {@link OutputFunction} is an {@link Function} which is able to create the
+ * output object itself.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface OutputFactory<I, O> {
+public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
+		Threadable {
 
 	/**
-	 * @param input which determines how to create the output
-	 * @return output, depending on the input
+	 * Compute the output of a function, given some input.
+	 * 
+	 * @param input
+	 *            of the {@link OutputFunction}
+	 * 
+	 * @return output
 	 */
-	O create(I input);
+	O compute(I input);
+
+	/**
+	 * @return create an output object of type O, given some input. The output
+	 *         can then be used to call compute(I input, O output), which will
+	 *         fill the output with the result.
+	 */
+	O createOutput(I input);
 }

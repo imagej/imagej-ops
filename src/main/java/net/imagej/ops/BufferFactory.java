@@ -28,64 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.join;
-
-import java.util.List;
-
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Function;
-import net.imagej.ops.BufferFactory;
-
-import org.scijava.plugin.Parameter;
+package net.imagej.ops;
 
 /**
- * Abstract superclass of {@link JoinFunctions}s.
+ * Factory which creates an output object of type <O> given the input of type
+ * <I>
  * 
- * @author Christian Dietz
- * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
-	extends AbstractFunction<A, A> implements JoinFunctions<A, F>
-{
-
-	/** List of functions to be joined. */
-	@Parameter
-	private List<? extends F> functions;
-
-	@Parameter
-	private BufferFactory<A, A> bufferFactory;
-
-	private A buffer;
-
-	@Override
-	public BufferFactory<A, A> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	@Override
-	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
-	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
-	}
-
-	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
-	}
+public interface BufferFactory<I, O> {
 
 	/**
-	 * @param input helping to create the buffer
-	 * @return the buffer which can be used for the join.
+	 * Create an output object given some input.
+	 * 
+	 * @param input
+	 *            which determines how to create the output
+	 * 
+	 * @return output, depending on the input
 	 */
-	protected A getBuffer(final A input) {
-		if (buffer == null) {
-			buffer = bufferFactory.createBuffer(input);
-		}
-		return buffer;
-	}
-
+	O createBuffer(I input);
 }
