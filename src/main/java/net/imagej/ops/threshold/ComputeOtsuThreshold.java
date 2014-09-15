@@ -137,6 +137,7 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 		// k
 		// (the algorithm was developed for I-> 1 if I <= k.)
 
+		// TODO: push this logic into the abstract superclass
 		// at this point the threshold is expressed as a bin number. Convert bin
 		// number to corresponding
 		// gray level
