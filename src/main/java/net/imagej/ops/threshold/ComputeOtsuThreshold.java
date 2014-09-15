@@ -139,9 +139,9 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 
 		// TODO: push this logic into the abstract superclass
 		// at this point the threshold is expressed as a bin number. Convert bin
-		// number to corresponding
-		// gray level
+		// number to corresponding gray level
 		hist.getCenterValue(kStar, output);
 		return output;
 	}
+
 }
