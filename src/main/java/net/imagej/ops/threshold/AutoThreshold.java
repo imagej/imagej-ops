@@ -47,8 +47,6 @@ import org.scijava.plugin.Plugin;
 public class AutoThreshold<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, Iterable<BitType>> implements Threshold {
 
-	// TODO: do we require a ready to go op here or something we need to still
-	// fill..?
 	@Parameter
 	private ComputeThreshold<Iterable<T>, T> method;
 
