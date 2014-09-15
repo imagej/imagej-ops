@@ -35,21 +35,30 @@ package net.imagej.ops;
  * output object.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
 public abstract class AbstractOutputFunction<I, O> extends
 		AbstractFunction<I, O> implements OutputFunction<I, O> {
 
 	@Override
-	public void run() {
-		if (getOutput() == null) {
-			setOutput(compute(getInput()));
-		} else {
-			setOutput(compute(getInput(), getOutput()));
-		}
-	}
-
-	@Override
 	public O compute(final I input) {
 		return compute(input, createOutput(input));
 	}
+
+	@Override
+	public O compute(final I input, final O output) {
+		return safeCompute(input, output == null ? createOutput(input) : output);
+	}
+
+	// -- Internal methods --
+
+	/**
+	 * Does the work of computing the function.
+	 * 
+	 * @param input Non-null input value.
+	 * @param output Non-null output value.
+	 * @return The computed output value.
+	 */
+	protected abstract O safeCompute(I input, O output);
+
 }
