@@ -38,6 +38,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * TODO
+ * 
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Threshold.NAME)
