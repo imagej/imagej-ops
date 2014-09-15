@@ -88,4 +88,11 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		return this;
 	}
 
+	// -- Converter methods --
+
+	@Override
+	public void convert(final A input, final A output) {
+		compute(input, output);
+	}
+
 }
