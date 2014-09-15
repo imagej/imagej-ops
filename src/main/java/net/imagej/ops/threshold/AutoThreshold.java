@@ -50,7 +50,7 @@ public class AutoThreshold<T extends RealType<T>> extends
 	// TODO: do we require a ready to go op here or something we need to still
 	// fill..?
 	@Parameter
-	private AutoThresholdMethod<Iterable<T>, T> method;
+	private ComputeThreshold<Iterable<T>, T> method;
 
 	@Parameter
 	private OpService ops;

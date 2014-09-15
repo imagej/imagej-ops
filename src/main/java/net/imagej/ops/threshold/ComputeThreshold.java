@@ -38,7 +38,7 @@ import net.imagej.ops.Function;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface AutoThresholdMethod<I, O extends Comparable<O>> extends
+public interface ComputeThreshold<I, O extends Comparable<O>> extends
 		Function<I, O> {
 	// NB: Marker interface
 }

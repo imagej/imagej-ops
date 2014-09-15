@@ -41,10 +41,10 @@ import net.imglib2.type.numeric.integer.LongType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = AutoThresholdMethod.class, name = "otsu")
+@Plugin(type = ComputeThreshold.class, name = "otsu")
 public class Otsu<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, T> implements
-		AutoThresholdMethod<Iterable<T>, T> {
+		ComputeThreshold<Iterable<T>, T> {
 
 	@Parameter
 	private OpService ops;
