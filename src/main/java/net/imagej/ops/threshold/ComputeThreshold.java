@@ -33,8 +33,7 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.Function;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * An algorithm for thresholding an image into two classes of pixels.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
