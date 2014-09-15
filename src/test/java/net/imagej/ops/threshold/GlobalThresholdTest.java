@@ -121,7 +121,7 @@ public class GlobalThresholdTest extends AbstractOpTest {
 		Op otsuOp = ops.op(Otsu.class, in.firstElement().createVariable()
 				.getClass(), IterableInterval.class);
 
-		ops.module("threshold", otsu, in, otsuOp).run();
+		ops.run("threshold", otsu in, otsuOp);
 
 		// loop through the output pixels and count
 		// the number that are above zero
