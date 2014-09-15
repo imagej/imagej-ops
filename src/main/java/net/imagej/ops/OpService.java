@@ -114,7 +114,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @param args The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
-	Op op(Class<? extends Op> type, Object... args);
+	<O extends Op> O op(Class<O> type, Object... args);
 
 	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,

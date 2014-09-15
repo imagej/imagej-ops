@@ -97,10 +97,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Op op(final Class<? extends Op> type, final Object... args) {
+	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
 		if (module == null) return null;
-		return (Op) module.getDelegateObject();
+		@SuppressWarnings("unchecked")
+		final OP op = (OP) module.getDelegateObject();
+		return op;
 	}
 
 	@Override
