@@ -63,7 +63,6 @@ public class GlobalThresholder<T extends RealType<T>> implements Op {
     @Parameter
     private ImgPlus<T> in;
 
-    // needs to be created by the pre-processor!
     @Parameter(type = ItemIO.OUTPUT)
     private ImgPlus<BitType> out;
 
