@@ -33,7 +33,9 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.Op;
 
 /**
- * Base interface for "threshold" operations.
+ * Base interface for "threshold" operations, including both threshold
+ * computation (see {@link ComputeThreshold}) and threshold application (see
+ * {@link ApplyThreshold}).
  * <p>
  * Implementing classes should be annotated with:
  * </p>
