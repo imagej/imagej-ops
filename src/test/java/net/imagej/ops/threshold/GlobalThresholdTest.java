@@ -96,7 +96,7 @@ public class GlobalThresholdTest extends AbstractOpTest {
 	 * @throws IncompatibleTypeException
 	 */
 	@Test
-	public void testThreshold() throws IncompatibleTypeException {
+	public void testOtsuThreshold() throws IncompatibleTypeException {
 
 		Img<BitType> otsu = in.factory().imgFactory(new BitType())
 				.create(in, new BitType());
