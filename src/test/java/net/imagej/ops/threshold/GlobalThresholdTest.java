@@ -118,7 +118,7 @@ public class GlobalThresholdTest extends AbstractOpTest {
 
 		// TODO what do you expect here? a ready to go (everything injected) op
 		// or just like a pointer to an op.
-		Op otsuOp = ops.op(Otsu.class, in.firstElement().createVariable()
+		Op otsuOp = ops.op(ComputeOtsuThreshold.class, in.firstElement().createVariable()
 				.getClass(), IterableInterval.class);
 
 		ops.run("threshold", out, in, otsuOp);

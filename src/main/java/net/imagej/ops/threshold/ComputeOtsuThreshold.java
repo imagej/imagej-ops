@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = ComputeThreshold.class, name = "otsu")
-public class Otsu<T extends RealType<T>> extends
+public class ComputeOtsuThreshold<T extends RealType<T>> extends
 		AbstractFunction<Iterable<T>, T> implements
 		ComputeThreshold<Iterable<T>, T> {
 
