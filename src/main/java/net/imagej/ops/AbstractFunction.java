@@ -85,4 +85,11 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 		return this;
 	}
 
+	// -- Converter methods --
+
+	@Override
+	public void convert(final I input, final O output) {
+		compute(input, output);
+	}
+
 }

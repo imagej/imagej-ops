@@ -30,6 +30,8 @@
 
 package net.imagej.ops;
 
+import net.imglib2.converter.Converter;
+
 import org.scijava.ItemIO;
 
 /**
@@ -55,7 +57,9 @@ import org.scijava.ItemIO;
  * @author Martin Horn
  * @author Curtis Rueden
  */
-public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable {
+public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable,
+	Converter<I, O>
+{
 
 	O compute(I input, O output);
 
