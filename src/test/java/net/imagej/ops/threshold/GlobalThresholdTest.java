@@ -98,7 +98,7 @@ public class GlobalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testOtsuThreshold() throws IncompatibleTypeException {
 
-		Img<BitType> otsu = in.factory().imgFactory(new BitType())
+		Img<BitType> out = in.factory().imgFactory(new BitType())
 				.create(in, new BitType());
 
 		RandomAccess<UnsignedShortType> ra = in.randomAccess();
@@ -121,12 +121,15 @@ public class GlobalThresholdTest extends AbstractOpTest {
 		Op otsuOp = ops.op(Otsu.class, in.firstElement().createVariable()
 				.getClass(), IterableInterval.class);
 
-		ops.run("threshold", otsu in, otsuOp);
+		ops.run("threshold", out, in, otsuOp);
+
+		// Ideally, we instead want this to be simpler:
+		// out = ops.op("otsu", inputImgPlus);
 
 		// loop through the output pixels and count
 		// the number that are above zero
 		long count = 0;
-		for (BitType b : otsu) {
+		for (BitType b : out) {
 			if (b.getRealFloat() > 0) {
 				count++;
 			}
