@@ -12,6 +12,10 @@ import net.imagej.ops.Function;
  * @Plugin(type = Op.class, name = ConvertCopy.NAME)
  * </pre>
  * 
+ * <p>
+ * Converts from <I> to <O> by just copying the values.
+ * </p>
+ * 
  * @author Christian Dietz
  */
 public interface ConvertCopy<I, O> extends Function<I, O> {
