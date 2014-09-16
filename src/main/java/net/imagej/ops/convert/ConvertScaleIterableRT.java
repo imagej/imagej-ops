@@ -33,8 +33,7 @@ package net.imagej.ops.convert;
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.scalepixel.ScalePixel;
-import net.imagej.ops.scalepixel.ScaleUtils;
+import net.imagej.ops.scale.pixel.GenericScale;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
@@ -59,19 +58,12 @@ public class ConvertScaleIterableRT<T extends RealType<T>, V extends RealType<V>
 	@Override
 	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		final T inType = input.iterator().next().createVariable();
-		final V outType = output.iterator().next().createVariable();
+		final T inType = input.iterator().next();
+		final V outType = output.iterator().next();
 
-		final double oldMin = inType.getMinValue();
-		final double oldMax = inType.getMaxValue();
-
-		final double newMin = outType.getMinValue();
-		final double newMax = outType.getMaxValue();
-
-		final double factor = ScaleUtils.calculateFactor(oldMin, oldMax,
-				newMin, newMax);
-
-		ops.run(ScalePixel.class, output, input, oldMin, newMin, factor);
+		ops.run(GenericScale.class, output, input, inType.getMinValue(),
+				inType.getMaxValue(), outType.getMinValue(),
+				outType.getMaxValue());
 
 		return output;
 	}

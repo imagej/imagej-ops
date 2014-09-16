@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.scalepixel;
+package net.imagej.ops.scale.pixel;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
@@ -40,12 +40,18 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = ScalePixel.NAME, priority = Priority.HIGH_PRIORITY)
-public class ScalePixelsArrayImgByteType
+/**
+ * TODO: Temporary class to demonstrate flexibility. Will be auto-generated later.
+ * 
+ * @author dietzc
+ * 
+ */
+@Plugin(type = Op.class, name = GenericScale.NAME, priority = Priority.HIGH_PRIORITY)
+public class GenericScaleIterableArrayImgByteType
 		extends
 		AbstractFunction<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>>
 		implements
-		ScalePixel<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>> {
+		GenericScale<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>> {
 
 	@Parameter
 	private double oldMin;

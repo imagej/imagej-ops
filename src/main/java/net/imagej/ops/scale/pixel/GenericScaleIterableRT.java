@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.scalepixel;
+package net.imagej.ops.scale.pixel;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
@@ -39,10 +39,18 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = ScalePixel.NAME)
-public class ScalePixelsIterableRT<T extends RealType<T>, V extends RealType<V>>
+/**
+ * {@link GenericScale} on {@link Iterable}s of {@link RealType}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
+@Plugin(type = Op.class, name = GenericScale.NAME)
+public class GenericScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
 		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
-		ScalePixel<Iterable<T>, Iterable<V>> {
+		GenericScale<Iterable<T>, Iterable<V>> {
 
 	@Parameter
 	private OpService ops;
@@ -51,22 +59,47 @@ public class ScalePixelsIterableRT<T extends RealType<T>, V extends RealType<V>>
 	private double oldMin;
 
 	@Parameter
+	private double oldMax;
+
+	@Parameter
 	private double newMin;
 
 	@Parameter
-	private double factor;
+	private double newMax;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		ScalePixel<T, V> op = (ScalePixel<T, V>) ops.op(ScalePixel.class,
-				output.iterator().next().createVariable().getClass(), input
-						.iterator().next().createVariable().getClass(), oldMin,
-				newMin, factor);
-
-		ops.run(Map.class, output, input, op);
+		ops.run(Map.class, output, input, new ScalePixelRT(oldMin, oldMax,
+				newMin, newMax));
 
 		return output;
+	}
+
+	// Internal helper function
+	private class ScalePixelRT extends AbstractFunction<T, V> {
+
+		private double factor;
+		private double newMin;
+		private double oldMin;
+
+		public ScalePixelRT(final double oldMin, final double oldMax,
+				final double newMin, final double newMax) {
+			this.oldMin = oldMin;
+			this.newMin = newMin;
+			this.factor = calculateFactor(oldMin, oldMax, newMin, newMax);
+		}
+
+		@Override
+		public V compute(final T input, final V output) {
+			output.setReal(((input.getRealDouble() - oldMin) * factor) + newMin);
+			return output;
+		}
+
+		private double calculateFactor(double oldMin, double oldMax,
+				double newMin, double newMax) {
+			return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+		}
+
 	}
 }

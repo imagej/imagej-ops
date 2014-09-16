@@ -36,8 +36,7 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.misc.MinMax;
-import net.imagej.ops.scalepixel.ScalePixel;
-import net.imagej.ops.scalepixel.ScaleUtils;
+import net.imagej.ops.scale.pixel.GenericScale;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
@@ -67,16 +66,10 @@ public class ConvertNormalizeScaleIterableRT<T extends RealType<T>, V extends Re
 
 		final V type = output.iterator().next().createVariable();
 
-		final double oldMin = minMax.get(0).getRealDouble();
-		final double oldMax = minMax.get(1).getRealDouble();
-
-		final double newMin = type.createVariable().getMinValue();
-		final double newMax = type.createVariable().getMaxValue();
-
-		final double factor = ScaleUtils.calculateFactor(oldMin,
-				oldMax, newMin, newMax);
-
-		ops.run(ScalePixel.class, output, input, oldMin, newMin, factor);
+		ops.run(GenericScale.class, output, input, minMax.get(0)
+				.getRealDouble(), minMax.get(1).getRealDouble(), type
+				.createVariable().getMinValue(), type.createVariable()
+				.getMaxValue());
 
 		return output;
 	}
