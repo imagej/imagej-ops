@@ -34,24 +34,28 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.map.Map;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * Applies a {@link ConvertClip} on an {@link Iterable}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ */
 @Plugin(type = Op.class, name = ConvertClip.NAME)
-public class ConvertClipIterableRT<T extends RealType<T>, V extends RealType<V>>
-		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+public class ConvertClipIterable<T, V> extends
+		AbstractFunction<Iterable<T>, Iterable<V>> implements
 		ConvertClip<Iterable<T>, Iterable<V>> {
 
 	@Parameter
 	private OpService ops;
 
 	@Parameter
-	private double outMin;
+	private T outMin;
 
 	@Parameter
-	private double outMax;
+	private V outMax;
 
 	@SuppressWarnings("unchecked")
 	@Override
