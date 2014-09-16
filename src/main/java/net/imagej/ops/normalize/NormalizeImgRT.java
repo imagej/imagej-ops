@@ -42,7 +42,14 @@ import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-// DO we have to do that? Can't we be smarter here?!
+/**
+ * {@link Normalize} an {@link Img} of type {@link RealType} such that minimum /
+ * maximum values are equal to the minimum / maximum of the {@link RealType}
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ */
 @Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) }, priority = Priority.HIGH_PRIORITY)
 public class NormalizeImgRT<T extends RealType<T>> extends
 		AbstractOutputFunction<Img<T>, Img<T>> implements Normalize {
