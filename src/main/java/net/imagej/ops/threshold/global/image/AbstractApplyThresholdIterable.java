@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,38 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.image;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.OpService;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
+ * Abstract superclass of {@link ApplyThresholdIterable} implementations.
+ *
  * @author Martin Horn
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class AutoThreshold<T extends RealType<T>> extends
-		AbstractFunction<Iterable<T>, Iterable<BitType>> implements Threshold {
-
-	@Parameter
-	private ComputeThreshold<Iterable<T>, T> method;
+public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O extends Iterable<BitType>>
+	extends AbstractOutputFunction<I, O> implements
+	ApplyThresholdIterable<T, I, O>
+{
 
 	@Parameter
 	private OpService ops;
 
 	@Override
-	public Iterable<BitType> compute(final Iterable<T> input,
-			final Iterable<BitType> output) {
-
-		ops.run("threshold", output, input,
-				method.compute(input, input.iterator().next().createVariable()));
-
-		return output;
+	protected O safeCompute(final I input, final O output) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops.run(ApplyConstantThreshold.class, output, input,
+				getThreshold(input));
+		return result;
 	}
+
 }

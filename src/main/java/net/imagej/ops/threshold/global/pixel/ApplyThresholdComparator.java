@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,35 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.pixel;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import java.util.Comparator;
+
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.threshold.Threshold;
+import net.imagej.ops.threshold.global.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.integer.ByteType;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Applies a threshold value to the given object using the specified comparator,
+ * producing a {@link BitType} set to 1 iff the object compares above the
+ * threshold.
+ *
+ * @author Curtis Rueden
  */
-public class LocalThresholdTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class ApplyThresholdComparator<T> extends AbstractFunction<T, BitType>
+	implements ApplyThreshold<T, BitType>
+{
 
-	@Test
-	public void test() throws IncompatibleTypeException {
-		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
-		Img<BitType> out =
-			in.factory().imgFactory(new BitType()).create(in, new BitType());
+	@Parameter
+	private T threshold;
 
-		ops.run(Threshold.class, out, in, ops.op(LocalMean.class, out
-			.firstElement(), in.firstElement(), 0d), new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	@Parameter
+	private Comparator<? super T> comparator;
 
-		assertEquals(out.firstElement().get(), true);
+	@Override
+	public BitType compute(final T input, final BitType output) {
+		output.set(comparator.compare(input, threshold) > 0);
+		return output;
 	}
+
 }

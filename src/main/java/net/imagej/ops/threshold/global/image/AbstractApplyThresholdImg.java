@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,26 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.image;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.threshold.global.ApplyThreshold;
+import net.imagej.ops.OpService;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.logic.BitType;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Base interface for "threshold" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
- * </pre>
- * 
- * @author Martin Horn
- * @see ApplyThreshold
+ * Abstract superclass of {@link ApplyThresholdIterable} implementations that
+ * operate on {@link Img} objects.
+ *
+ * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface Threshold extends Op {
+public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
+	AbstractApplyThresholdIterable<T, I, Img<BitType>>
+{
 
-	String NAME = "threshold";
+	@Parameter
+	private OpService ops;
+
+	// -- OutputFunction methods --
+
+	@Override
+	public Img<BitType> createOutput(final I input) {
+		final BitType type = new BitType();
+		try {
+			return input.factory().imgFactory(type).create(input, type);
+		}
+		catch (final IncompatibleTypeException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+	}
 
 }

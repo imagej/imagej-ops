@@ -28,23 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OutputFunction;
+import net.imagej.ops.threshold.Threshold;
 
 /**
- * @author Martin Horn
+ * An algorithm for computing a threshold value that divides an object into two
+ * classes.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @see Threshold
  */
-public abstract class LocalThresholdMethod<T extends RealType<T>> extends
-	AbstractFunction<Pair<T>, BitType>
-{
-
-	public static class Pair<T extends RealType<T>> {
-
-		public Iterable<T> neighborhood;
-		public T pixel;
-	}
+public interface ComputeThreshold<I, O> extends OutputFunction<I, O> {
+	// NB: Marker interface.
 }

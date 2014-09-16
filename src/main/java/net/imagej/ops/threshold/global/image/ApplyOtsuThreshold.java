@@ -28,16 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.image;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.threshold.global.ComputeOtsuThreshold;
+import net.imagej.ops.threshold.global.Otsu;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels.
+ * Computes and applies an otsu threshold to an {@link Img}.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface ComputeThreshold<I, O extends Comparable<O>> extends
-		Function<I, O> {
-	// NB: Marker interface
+@Plugin(type = Op.class, name = Otsu.NAME)
+public class ApplyOtsuThreshold<T extends RealType<T>> extends
+	AbstractApplyThresholdImg<T, Img<T>> implements Otsu
+{
+
+	@Parameter
+	private OpService ops;
+
+	@Override
+	public T getThreshold(final Img<T> input) {
+		@SuppressWarnings("unchecked")
+		final Histogram1d<T> hist = (Histogram1d<T>) ops.histogram(input);
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops.run(ComputeOtsuThreshold.class, hist);
+		return result;
+	}
+
 }

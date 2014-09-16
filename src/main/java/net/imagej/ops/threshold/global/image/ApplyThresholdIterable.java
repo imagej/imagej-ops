@@ -28,26 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.image;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.threshold.global.ApplyThreshold;
 
 /**
- * Base interface for "threshold" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
- * </pre>
- * 
- * @author Martin Horn
- * @see ApplyThreshold
+ * Interface for {@link ApplyThreshold} implementations that operate over an
+ * iteration.
+ *
+ * @author Curtis Rueden
  */
-public interface Threshold extends Op {
+public interface ApplyThresholdIterable<T, I extends Iterable<T>, O> extends
+	ApplyThreshold<I, O>
+{
 
-	String NAME = "threshold";
+	T getThreshold(final I input);
 
 }

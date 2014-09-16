@@ -28,26 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.local;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.threshold.global.ApplyThreshold;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Base interface for "threshold" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
- * </pre>
- * 
  * @author Martin Horn
- * @see ApplyThreshold
  */
-public interface Threshold extends Op {
+public abstract class LocalThresholdMethod<T extends RealType<T>> extends
+	AbstractFunction<Pair<T>, BitType>
+{
 
-	String NAME = "threshold";
+	public static class Pair<T extends RealType<T>> {
 
+		public Iterable<T> neighborhood;
+		public T pixel;
+	}
 }

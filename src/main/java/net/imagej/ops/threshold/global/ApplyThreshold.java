@@ -28,39 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.statistics.Mean;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.Function;
+import net.imagej.ops.threshold.Threshold;
 
 /**
- * @author Martin Horn
+ * An algorithm for applying a threshold value to an object.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @see Threshold
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Override
-	public BitType compute(Pair<T> input, BitType output) {
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
-		}
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-		return output;
-	}
+public interface ApplyThreshold<I, O> extends Function<I, O>, Threshold {
+	// NB: Marker interface.
 }

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,60 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.image;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
-import net.imglib2.algorithm.region.localneighborhood.Shape;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imagej.ops.OpService;
+import net.imagej.ops.threshold.Threshold;
+import net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Applies the given threshold value to every element along the given
+ * {@link Iterable} input.
+ * 
  * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class LocalThreshold<T extends RealType<T>>
-	extends
-	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-	implements Threshold
+@Plugin(type = Op.class, name = Threshold.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class ApplyConstantThreshold<T extends RealType<T>> extends
+	AbstractFunction<Iterable<T>, Iterable<BitType>> implements Threshold
 {
 
 	@Parameter
-	private LocalThresholdMethod<T> method;
+	private T threshold;
 
 	@Parameter
-	private Shape shape;
-
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
+	private OpService ops;
 
 	@Override
-	public RandomAccessibleInterval<BitType>
-		compute(RandomAccessibleInterval<T> input,
-			RandomAccessibleInterval<BitType> output)
+	public Iterable<BitType> compute(final Iterable<T> input,
+		final Iterable<BitType> output)
 	{
-		// TODO: provide threaded implementation and specialized ones for
-		// rectangular neighborhoods (using integral images)
-		RandomAccessibleInterval<T> extInput =
-			Views.interval(Views.extend(input, outOfBounds), input);
-		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
-		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
-		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
-		Pair<T> pair = new Pair<T>();
-		for (final Neighborhood<T> neighborhood : neighborhoods) {
-			pair.neighborhood = neighborhood;
-			pair.pixel = inCursor.next();
-			method.compute(pair, outCursor.next());
-		}
+
+		final Object applyThreshold =
+			ops.op(ApplyThresholdComparable.class, BitType.class, threshold
+				.getClass(), threshold);
+
+		ops.map(output, input, applyThreshold);
+
 		return output;
 	}
+
 }

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,31 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Op;
-import net.imglib2.type.logic.BitType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 /**
- * TODO
- * 
- * @author Martin Horn
+ * Abstract superclass of {@link ComputeThresholdHistogram} implementations.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
-public class ApplyThreshold<T extends Comparable<T>> extends
-	AbstractFunction<T, BitType> implements Threshold
+public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
+	extends AbstractOutputFunction<Histogram1d<T>, T> implements
+	ComputeThresholdHistogram<T>
 {
 
-	@Parameter
-	private T threshold;
+	@Override
+	public T createOutput(final Histogram1d<T> input) {
+		// FIXME: add API to Histogram1d to get the constituent type T
+		final Object type = new UnsignedShortType();
+		return (T) type;
+//		return null;
+	}
+
+	// -- Internal methods --
 
 	@Override
-	public BitType compute(final T input, final BitType output) {
-		output.set(input.compareTo(threshold) > 0);
+	protected T safeCompute(final Histogram1d<T> input, final T output) {
+		final long binPos = computeBin(input);
+
+		// convert bin number to corresponding gray level
+		input.getCenterValue(binPos, output);
 		return output;
 	}
 

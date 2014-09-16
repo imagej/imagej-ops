@@ -28,36 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.OpService;
-import net.imagej.ops.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = ComputeThreshold.class, name = "otsu")
 public class ComputeOtsuThreshold<T extends RealType<T>> extends
-		AbstractFunction<Iterable<T>, T> implements
-		ComputeThreshold<Iterable<T>, T> {
-
-	@Parameter
-	private OpService ops;
+	AbstractComputeThresholdHistogram<T>
+{
 
 	@Override
-	public T compute(Iterable<T> input, T output) {
-
-		// TODO how to handle service == null?
-		@SuppressWarnings("unchecked")
-		Histogram1d<T> hist = (Histogram1d<T>) ops.run(HistogramCreate.class,
-				input);
-
-		final int maxValue = (int) hist.getBinCount() - 1;
+	public long computeBin(final Histogram1d<T> input) {
+		final int maxValue = (int) input.getBinCount() - 1;
 
 		// Otsu's threshold algorithm
 		// C++ code by Jordan Bevik <Jordan.Bevic@qtiworld.com>
@@ -78,7 +65,7 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 		// Initialize values:
 		s = 0;
 		n = 0;
-		Cursor<LongType> cursor = hist.cursor();
+		Cursor<LongType> cursor = input.cursor();
 		for (k = 0; k < L; k++) {
 			final long val = cursor.next().get();
 			s += k * val; // Total histogram intensity
@@ -86,7 +73,7 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 		}
 
 		sk = 0;
-		n1 = hist.firstElement().get(); // The entry for zero intensity
+		n1 = input.firstElement().get(); // The entry for zero intensity
 		BCV = 0;
 		BCVmax = 0;
 		kStar = 0;
@@ -137,11 +124,7 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 		// k
 		// (the algorithm was developed for I-> 1 if I <= k.)
 
-		// TODO: push this logic into the abstract superclass
-		// at this point the threshold is expressed as a bin number. Convert bin
-		// number to corresponding gray level
-		hist.getCenterValue(kStar, output);
-		return output;
+		return kStar;
 	}
 
 }

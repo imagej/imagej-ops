@@ -28,40 +28,61 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.local;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.threshold.Threshold;
+import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
+import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "manual")
-public class Manual<T extends RealType<T>> extends AbstractFunction<Object, T>
-		implements ComputeThreshold<Object, T> {
+@Plugin(type = Op.class, name = Threshold.NAME)
+public class LocalThreshold<T extends RealType<T>>
+	extends
+	AbstractFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Threshold
+{
 
 	@Parameter
-	private T threshold;
+	private LocalThresholdMethod<T> method;
 
+	@Parameter
+	private Shape shape;
 
-	@Override
-	public T getOutput() {
-		return threshold;
-	}
-
-	@Override
-	public void setOutput(T output) {
-		threshold = output;
-	}
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public T compute(Object input, T output) {
-		return threshold;
+	public RandomAccessibleInterval<BitType>
+		compute(RandomAccessibleInterval<T> input,
+			RandomAccessibleInterval<BitType> output)
+	{
+		// TODO: provide threaded implementation and specialized ones for
+		// rectangular neighborhoods (using integral images)
+		RandomAccessibleInterval<T> extInput =
+			Views.interval(Views.extend(input, outOfBounds), input);
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
+		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
+		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
+		Pair<T> pair = new Pair<T>();
+		for (final Neighborhood<T> neighborhood : neighborhoods) {
+			pair.neighborhood = neighborhood;
+			pair.pixel = inCursor.next();
+			method.compute(pair, outCursor.next());
+		}
+		return output;
 	}
-
 }

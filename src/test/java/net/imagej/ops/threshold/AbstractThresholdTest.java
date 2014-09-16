@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,24 +30,63 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.threshold.global.ApplyThreshold;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.RandomAccess;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
+
+import org.junit.Before;
 
 /**
- * Base interface for "threshold" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
- * </pre>
- * 
- * @author Martin Horn
- * @see ApplyThreshold
+ * Tests for threshold ops.
+ *
+ * @author Brian Northan
+ * @author Curtis Rueden
  */
-public interface Threshold extends Op {
+public class AbstractThresholdTest extends AbstractOpTest {
 
-	String NAME = "threshold";
+	private final int xSize = 10;
+	private final int ySize = 10;
+
+	protected Img<UnsignedShortType> in;
+
+	@Before
+	public void initialize() {
+		final long[] dimensions = new long[] { xSize, ySize };
+
+		// create image and output
+		in =
+			new ArrayImgFactory<UnsignedShortType>().create(dimensions,
+				new UnsignedShortType());
+
+		final RandomAccess<UnsignedShortType> ra = in.randomAccess();
+
+		// populate pixel values with a ramp function + a constant
+		for (int x = 0; x < xSize; x++) {
+			for (int y = 0; y < ySize; y++) {
+				ra.setPosition(new int[] { x, y });
+				ra.get().setReal(x + y + 1000);
+			}
+		}
+	}
+
+	public Img<BitType> bitmap() throws IncompatibleTypeException {
+		return in.factory().imgFactory(new BitType()).create(in, new BitType());
+	}
+
+	/** Loops through the output pixels and count the number above zero. */
+	public void assertCount(final Img<BitType> out, final int expected) {
+		long count = 0;
+		for (final BitType b : out) {
+			if (b.getRealFloat() > 0) {
+				count++;
+			}
+		}
+		assertEquals(expected, count);
+	}
 
 }

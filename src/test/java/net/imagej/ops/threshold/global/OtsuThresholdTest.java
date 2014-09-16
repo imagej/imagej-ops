@@ -28,17 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.threshold.AbstractThresholdTest;
+import net.imagej.ops.threshold.global.image.ApplyOtsuThreshold;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.logic.BitType;
+
+import org.junit.Test;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * Tests for Otsu thresholding ops.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Brian Northan
+ * @author Curtis Rueden
  */
-public interface GlobalThresholdMethod<I, T extends Comparable<T>> extends
-		Function<I, T> {
-	// NB: Marker interface
+public class OtsuThresholdTest extends AbstractThresholdTest {
+
+	/** Tests {@link ApplyOtsuThreshold}. */
+	@Test
+	public void testApplyOtsuThreshold() throws IncompatibleTypeException {
+		final Img<BitType> out = bitmap();
+		ops.run(ApplyOtsuThreshold.class, out, in);
+		assertCount(out, 45);
+	}
+
 }

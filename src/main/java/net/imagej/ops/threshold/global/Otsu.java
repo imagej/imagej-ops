@@ -28,26 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.threshold.global.ApplyThreshold;
 
 /**
- * Base interface for "threshold" operations.
+ * Base interface for "otsu" operations, including both otsu threshold
+ * computation (see {@link ComputeThreshold}) and otsu threshold application
+ * (see {@link ApplyThreshold}).
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
+ * @Plugin(type = Op.class, name = Otsu.NAME)
  * </pre>
  * 
  * @author Martin Horn
- * @see ApplyThreshold
  */
-public interface Threshold extends Op {
+public interface Otsu extends Op {
 
-	String NAME = "threshold";
+	String NAME = "otsu";
 
 }

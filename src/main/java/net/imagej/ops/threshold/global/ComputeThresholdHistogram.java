@@ -28,43 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.type.logic.BitType;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * @author Martin Horn
- * @author Christian Dietz (University of Konstanz)
+ * Interface for threshold computation algorithms relying on a histogram.
+ * 
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Threshold.NAME, priority=Priority.HIGH_PRIORITY)
-public class GlobalThreshold<T extends RealType<T>> extends
-		AbstractFunction<Iterable<T>, Iterable<BitType>> implements Threshold {
+public interface ComputeThresholdHistogram<T extends RealType<T>> extends
+	ComputeThreshold<Histogram1d<T>, T>
+{
 
-	// TODO: do we require a ready to go op here or something we need to still
-	// fill..?
-	@Parameter
-	private T  threshold;
+	/** Computes the bin number of the threshold cutoff within the histogram. */
+	long computeBin(Histogram1d<T> input);
 
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public Iterable<BitType> compute(final Iterable<T> input,
-			final Iterable<BitType> output) {
-
-		Object applyThreshold = ops.op(ApplyThreshold.class, BitType.class,
-				threshold.getClass(), threshold);
-
-		ops.run("map", output, input, applyThreshold);
-
-		return output;
-	}
 }

@@ -36,8 +36,7 @@ package net.imagej.ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface OutputFunction<I, O> extends InputOp<I>, OutputOp<O>,
-		Threadable {
+public interface OutputFunction<I, O> extends Function<I, O> {
 
 	/**
 	 * Compute the output of a function, given some input.
