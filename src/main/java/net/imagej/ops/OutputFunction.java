@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * An {@link OutputFunction} is an {@link Function} which is able to create the
+ * An {@link OutputFunction} is a {@link Function} which is able to create the
  * output object itself.
  * 
  * @author Christian Dietz (University of Konstanz)
