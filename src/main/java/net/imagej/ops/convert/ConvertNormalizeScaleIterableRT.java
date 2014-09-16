@@ -43,6 +43,14 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * {@link ConvertNormalizeScale} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
 @Plugin(type = Op.class, name = ConvertNormalizeScale.NAME)
 public class ConvertNormalizeScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
 		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
