@@ -30,22 +30,38 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
+import net.imglib2.type.numeric.RealType;
 
-/**
- * Base interface for "convert" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Convert.NAME)
- * </pre>
- * 
- * @author Martin Horn
- */
-public interface Convert<I, O> extends Function<I, O> {
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	String NAME = "convert";
+@Plugin(type = Op.class, name = ConvertClip.NAME)
+public class ConvertClipIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertClip<Iterable<T>, Iterable<V>> {
 
+	@Parameter
+	private OpService ops;
+
+	@Parameter
+	private double outMin;
+
+	@Parameter
+	private double outMax;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
+
+		ConvertClip<T, V> op = (ConvertClip<T, V>) ops.op(ConvertClip.class,
+				outMin, outMax);
+
+		ops.run(Map.class, output, input, op);
+
+		return output;
+	}
 }

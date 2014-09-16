@@ -30,46 +30,19 @@
 
 package net.imagej.ops.convert;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
-
-	protected double inMin;
-
-	protected double outMin;
-
-	protected double factor = 0;
+@Plugin(type = Op.class, name = ConvertCopy.NAME)
+public class ConvertCopyPixelRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<T, V> implements ConvertCopy<T, V> {
 
 	@Override
-	public O compute(final I input, final O output) {
-		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
+	public V compute(T input, V output) {
+		output.setReal(input.getRealDouble());
 		return output;
-	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		inMin = inType.getMinValue();
-		outMin = outType.getMinValue();
-		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
 	}
 }

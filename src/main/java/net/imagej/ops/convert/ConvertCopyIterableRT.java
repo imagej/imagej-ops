@@ -30,37 +30,33 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.ShortType;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
+import net.imglib2.type.numeric.RealType;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * A test of {@link ConvertII}.
- * 
- * @author Martin Horn
- */
-public class ConvertIITest extends AbstractOpTest {
+@Plugin(type = Op.class, name = ConvertCopy.NAME)
+public class ConvertCopyIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertCopy<Iterable<T>, Iterable<V>> {
 
-	/** The test. */
-	@Test
-	public void test() throws IncompatibleTypeException {
+	@Parameter
+	private OpService ops;
 
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
-				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		ops.run(ConvertCopy.class, res, img);
+		ConvertCopy<T, V> op = (ConvertCopy<T, V>) ops.op(ConvertCopy.class,
+				output.iterator().next().createVariable(), input
+						.iterator().next().createVariable());
 
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+		ops.run(Map.class, output, input, op);
 
+		return output;
 	}
 }

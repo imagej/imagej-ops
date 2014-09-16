@@ -30,39 +30,46 @@
 
 package net.imagej.ops.convert;
 
+import java.util.List;
+
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.OpService;
+import net.imagej.ops.misc.MinMax;
+import net.imagej.ops.scalepixel.ScalePixel;
+import net.imagej.ops.scalepixel.ScaleUtils;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+@Plugin(type = Op.class, name = ConvertNormalizeScale.NAME)
+public class ConvertNormalizeScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertNormalizeScale<Iterable<T>, Iterable<V>> {
 
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(input.getRealDouble());
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
+
+		final List<T> minMax = (List<T>) ops.run(MinMax.class, input);
+
+		final V type = output.iterator().next().createVariable();
+
+		final double oldMin = minMax.get(0).getRealDouble();
+		final double oldMax = minMax.get(1).getRealDouble();
+
+		final double newMin = type.createVariable().getMinValue();
+		final double newMax = type.createVariable().getMaxValue();
+
+		final double factor = ScaleUtils.calculateFactor(oldMin,
+				oldMax, newMin, newMax);
+
+		ops.run(ScalePixel.class, output, input, oldMin, newMin, factor);
+
 		return output;
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		// nothing to do here
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
-
 }

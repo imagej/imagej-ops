@@ -28,39 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.scalepixel;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.ShortType;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * A test of {@link ConvertII}.
- * 
- * @author Martin Horn
- */
-public class ConvertIITest extends AbstractOpTest {
+@Plugin(type = Op.class, name = ScalePixel.NAME)
+public class ScalePixelRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<T, V> implements ScalePixel<T, V> {
 
-	/** The test. */
-	@Test
-	public void test() throws IncompatibleTypeException {
+	@Parameter
+	private double oldMin;
 
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
-				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
+	@Parameter
+	private double newMin;
 
-		ops.run(ConvertCopy.class, res, img);
+	@Parameter
+	private double factor;
 
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
-
+	@Override
+	public V compute(T input, V output) {
+		output.setReal((input.getRealDouble() - oldMin) * factor + newMin);
+		return output;
 	}
 }

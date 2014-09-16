@@ -28,56 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.scalepixel;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+@Plugin(type = Op.class, name = ScalePixel.NAME)
+public class ScalePixelsIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ScalePixel<Iterable<T>, Iterable<V>> {
 
-	private double outMax;
+	@Parameter
+	private OpService ops;
 
-	private double outMin;
+	@Parameter
+	private double oldMin;
 
+	@Parameter
+	private double newMin;
+
+	@Parameter
+	private double factor;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public O compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
+
+		ScalePixel<T, V> op = (ScalePixel<T, V>) ops.op(ScalePixel.class,
+				output.iterator().next().createVariable().getClass(), input
+						.iterator().next().createVariable().getClass(), oldMin,
+				newMin, factor);
+
+		ops.run(Map.class, output, input, op);
+
 		return output;
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
-		outMin = outType.getMinValue();
-
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
-
 }

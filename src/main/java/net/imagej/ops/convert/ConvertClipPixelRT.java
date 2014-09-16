@@ -31,29 +31,32 @@
 package net.imagej.ops.convert;
 
 import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Contingent;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.Op;
 import net.imglib2.type.numeric.RealType;
 
-/**
- * @author Martin Horn
- */
-public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractFunction<I, O> implements Convert<I, O>, Contingent
-{
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	/**
-	 * Allows the convert pix operation to determine some parameters from the
-	 * conrete input and output types.
-	 */
-	public abstract void checkInput(I inType, O outType);
+@Plugin(type = Op.class, name = ConvertClip.NAME)
+public class ConvertClipPixelRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<T, V> implements ConvertClip<T, V> {
 
-	/**
-	 * If the pixels to be converted stem from an {@link IterableInterval} some
-	 * additionally needed parameters (e.g. for normalization) can be calculated
-	 * here (hence, some heavier calculation might take place here). Might never
-	 * be called!
-	 */
-	public abstract void checkInput(IterableInterval<I> in);
+	@Parameter
+	private double outMin;
+	
+	@Parameter
+	private double outMax;
 
+	@Override
+	public V compute(T input, V output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
+		} else if (v < outMin) {
+			output.setReal(outMin);
+		} else {
+			output.setReal(v);
+		}
+		return output;
+	}
 }

@@ -28,41 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.scalepixel;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements
-	Convert<IterableInterval<I>, IterableInterval<O>>
-{
+@Plugin(type = Op.class, name = ScalePixel.NAME, priority = Priority.HIGH_PRIORITY)
+public class ScalePixelsArrayImgByteType
+		extends
+		AbstractFunction<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>>
+		implements
+		ScalePixel<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>> {
 
 	@Parameter
-	private ConvertPix<I, O> pixConvert;
+	private double oldMin;
 
 	@Parameter
-	private OpService ops;
+	private double newMin;
 
-	@SuppressWarnings("unchecked")
+	@Parameter
+	private double factor;
+
 	@Override
-	public IterableInterval<O> compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
-	{
-		pixConvert.checkInput(input.firstElement().createVariable(), output
-			.firstElement().createVariable());
-		pixConvert.checkInput(input);
-		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
+	public ArrayImg<ByteType, ByteArray> compute(
+			final ArrayImg<ByteType, ByteArray> input,
+			final ArrayImg<ByteType, ByteArray> output) {
+
+		byte[] inputContainer = input.update(null).getCurrentStorageArray();
+		byte[] outputContainer = output.update(null).getCurrentStorageArray();
+
+		for (int i = 0; i < inputContainer.length; i++) {
+			outputContainer[i] = (byte) (((inputContainer[i] - oldMin) * factor) + newMin);
+		}
+
+		return output;
 	}
 
 }
