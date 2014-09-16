@@ -68,7 +68,7 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 			sumFunc = (Sum<Iterable<I>, O>) ops.op(Sum.class, output, input);
 		}
 		if (sizeFunc == null) {
-			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);
+			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, LongType.class, input);
 		}
 
 		final O result;
