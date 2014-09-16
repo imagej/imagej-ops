@@ -48,9 +48,6 @@ public class NormalizeRealType<T extends RealType<T>> extends
 	private double oldMin;
 
 	@Parameter
-	private double oldMax;
-
-	@Parameter
 	private double newMin;
 
 	@Parameter
