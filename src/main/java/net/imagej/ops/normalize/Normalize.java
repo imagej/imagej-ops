@@ -42,6 +42,9 @@ import net.imagej.ops.Op;
  * @Plugin(type = Op.class, name = Normalize.NAME,
  *   attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) })
  * </pre>
+ * 
+ * @author Martin Horn
+ * @author Christian Dietz
  */
 public interface Normalize extends Op {
 
