@@ -36,6 +36,14 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
+/**
+ * {@link ConvertCopy} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
 @Plugin(type = Op.class, name = ConvertCopy.NAME)
 public class ConvertCopyPixelRT<T extends RealType<T>, V extends RealType<V>>
 		extends AbstractFunction<T, V> implements ConvertCopy<T, V> {
