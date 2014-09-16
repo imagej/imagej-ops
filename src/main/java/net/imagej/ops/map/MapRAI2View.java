@@ -53,6 +53,6 @@ public class MapRAI2View<A, B extends Type<B>> extends
 	@Override
 	public void run() {
 		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getConverter(), getType()));
+			getFunction(), getType()));
 	}
 }

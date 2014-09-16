@@ -31,7 +31,6 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
-import net.imglib2.converter.Converter;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -65,13 +64,6 @@ public abstract class MapView<A, B, I, O> implements
 	@Override
 	public Function<A, B> getFunction() {
 		return function;
-	}
-
-	/**
-	 * @return a converter based on the given {@link Function}
-	 */
-	public Converter<A, B> getConverter() {
-		return new ConvertWithFunction<A, B>(function);
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class MapRA2View<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getConverter(),
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getFunction(),
 			getType()));
 	}
 }

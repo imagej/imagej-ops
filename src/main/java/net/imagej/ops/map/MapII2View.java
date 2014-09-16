@@ -44,7 +44,7 @@ public class MapII2View<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getConverter(),
+		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getFunction(),
 			getType()));
 	}
 }
