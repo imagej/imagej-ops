@@ -34,14 +34,21 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.map.Map;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * Applies {@link ConvertCopy} to an {@link Iterable}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
 @Plugin(type = Op.class, name = ConvertCopy.NAME)
-public class ConvertCopyIterableRT<T extends RealType<T>, V extends RealType<V>>
-		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+public class ConvertCopyIterableRT<T, V> extends
+		AbstractFunction<Iterable<T>, Iterable<V>> implements
 		ConvertCopy<Iterable<T>, Iterable<V>> {
 
 	@Parameter
@@ -52,8 +59,7 @@ public class ConvertCopyIterableRT<T extends RealType<T>, V extends RealType<V>>
 	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
 		ConvertCopy<T, V> op = (ConvertCopy<T, V>) ops.op(ConvertCopy.class,
-				output.iterator().next().createVariable(), input
-						.iterator().next().createVariable());
+				output.iterator().next(), input.iterator().next());
 
 		ops.run(Map.class, output, input, op);
 
