@@ -37,13 +37,21 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * {@link ConvertClip} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
 @Plugin(type = Op.class, name = ConvertClip.NAME)
 public class ConvertClipPixelRT<T extends RealType<T>, V extends RealType<V>>
 		extends AbstractFunction<T, V> implements ConvertClip<T, V> {
 
 	@Parameter
 	private double outMin;
-	
+
 	@Parameter
 	private double outMax;
 
