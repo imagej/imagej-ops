@@ -30,50 +30,35 @@
 
 package net.imagej.ops.normalize;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.convert.ConvertNormalizeScale;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })
-public class NormalizeII<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<T>> implements
-	Normalize
-{
+// DO we have to do that? Can't we be smarter here?!
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) }, priority = Priority.HIGH_PRIORITY)
+public class NormalizeImgRT<T extends RealType<T>> extends
+		AbstractOutputFunction<Img<T>, Img<T>> implements Normalize {
 
 	@Parameter
 	private OpService ops;
 
 	@Override
-	public IterableInterval<T> compute(IterableInterval<T> input,
-		IterableInterval<T> output)
-	{
-
-		T outType = output.firstElement().createVariable();
-		List<T> minmax = (List<T>) ops.run("minmax", input);
-		double factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue());
-
-		// lookup the pixel-wise normalize function
-		Op normalize =
-			ops.op("normalize", null, Normalize.class, minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue(), factor);
-
-		// run normalize for each pixel
-		ops.run("map", output, input, normalize);
-
-		return output;
+	public Img<T> createOutput(Img<T> input) {
+		return input.factory().create(input,
+				input.firstElement().createVariable());
 	}
 
+	@Override
+	protected Img<T> safeCompute(Img<T> input, Img<T> output) {
+		ops.run(ConvertNormalizeScale.class, output, input);
+		return output;
+	}
 }
