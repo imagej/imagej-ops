@@ -28,54 +28,78 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.scale.pixel;
 
-import java.util.List;
-
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.normalize.NormalizeRealType;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.map.Map;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * {@link GenericScale} on {@link Iterable}s of {@link RealType}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
  */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
-{
+@Plugin(type = Op.class, name = GenericScale.NAME)
+public class GenericScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		GenericScale<Iterable<T>, Iterable<V>> {
 
 	@Parameter
 	private OpService ops;
 
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-	}
+	@Parameter
+	private double oldMin;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
-		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
+	@Parameter
+	private double oldMax;
 
-		inMin = minmax.get(0).getRealDouble();
+	@Parameter
+	private double newMin;
 
-	}
+	@Parameter
+	private double newMax;
 
 	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
+
+		ops.run(Map.class, output, input, new ScalePixelRT(oldMin, oldMax,
+				newMin, newMax));
+
+		return output;
 	}
 
+	// Internal helper function
+	private class ScalePixelRT extends AbstractFunction<T, V> {
+
+		private double factor;
+		private double newMin;
+		private double oldMin;
+
+		public ScalePixelRT(final double oldMin, final double oldMax,
+				final double newMin, final double newMax) {
+			this.oldMin = oldMin;
+			this.newMin = newMin;
+			this.factor = calculateFactor(oldMin, oldMax, newMin, newMax);
+		}
+
+		@Override
+		public V compute(final T input, final V output) {
+			output.setReal(((input.getRealDouble() - oldMin) * factor) + newMin);
+			return output;
+		}
+
+		private double calculateFactor(double oldMin, double oldMax,
+				double newMin, double newMax) {
+			return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+		}
+
+	}
 }

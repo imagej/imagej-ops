@@ -28,48 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn
- */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+@Plugin(type = Op.class, name = CreateImg.NAME)
+public class DefaultCreateImg<V extends NativeType<V>> implements CreateImg {
 
-	protected double inMin;
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<V> output;
 
-	protected double outMin;
+	@Parameter
+	private ImgFactory<V> fac;
 
-	protected double factor = 0;
+	@Parameter
+	private V outType;
 
-	@Override
-	public O compute(final I input, final O output) {
-		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
-		return output;
-	}
+	@Parameter
+	private long[] dims;
 
 	@Override
-	public void checkInput(final I inType, final O outType) {
-		inMin = inType.getMinValue();
-		outMin = outType.getMinValue();
-		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
+	public void run() {
+		output = fac.create(dims, outType.copy());
 	}
 }

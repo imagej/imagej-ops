@@ -28,51 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
-
-import java.util.List;
+package net.imagej.ops.convert;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.map.Map;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })
-public class NormalizeII<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<T>> implements
-	Normalize
-{
+/**
+ * Applies {@link ConvertCopy} to an {@link Iterable}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
+@Plugin(type = Op.class, name = ConvertCopy.NAME)
+public class ConvertCopyIterableRT<T, V> extends
+		AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertCopy<Iterable<T>, Iterable<V>> {
 
 	@Parameter
 	private OpService ops;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IterableInterval<T> compute(IterableInterval<T> input,
-		IterableInterval<T> output)
-	{
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		T outType = output.firstElement().createVariable();
-		List<T> minmax = (List<T>) ops.run("minmax", input);
-		double factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue());
+		ConvertCopy<T, V> op = (ConvertCopy<T, V>) ops.op(ConvertCopy.class,
+				output.iterator().next(), input.iterator().next());
 
-		// lookup the pixel-wise normalize function
-		Op normalize =
-			ops.op(Normalize.class, outType, outType, minmax.get(0).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue(), factor);
-
-		// run normalize for each pixel
-		ops.run("map", output, input, normalize);
+		ops.run(Map.class, output, input, op);
 
 		return output;
 	}
-
 }

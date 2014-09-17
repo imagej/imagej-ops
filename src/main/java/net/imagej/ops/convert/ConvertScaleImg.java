@@ -30,54 +30,42 @@
 
 package net.imagej.ops.convert;
 
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OpService;
+import net.imagej.ops.create.CreateImg;
+import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Applies a {@link ConvertClip} on an {@link Iterable}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
-{
+@Plugin(type = Op.class, name = ConvertClip.NAME, priority = Priority.HIGH_PRIORITY)
+public class ConvertScaleImg<T, V extends NativeType<V>> extends
+		AbstractOutputFunction<Img<T>, Img<V>> implements
+		ConvertScale<Img<T>, Img<V>> {
 
-	private double outMax;
+	@Parameter
+	private OpService ops;
 
-	private double outMin;
+	@Parameter
+	private NativeType<V> outType;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Img<V> createOutput(Img<T> input) {
+		return (Img<V>) ops.run(CreateImg.class, input, outType);
+	}
 
 	@Override
-	public O compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
+	protected Img<V> safeCompute(Img<T> input, Img<V> output) {
+		ops.run(ConvertScaleIterableRT.class, output, input);
 		return output;
 	}
-
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
-		outMin = outType.getMinValue();
-
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
-
 }

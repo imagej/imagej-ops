@@ -28,41 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.commands.convert;
+package net.imagej.ops.scale.pixel;
 
-import net.imagej.ops.OpService;
-import net.imagej.ops.convert.ConvertPix;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * TODO: Temporary class to demonstrate flexibility. Will be auto-generated later.
+ * 
+ * @author dietzc
+ * 
  */
-@Plugin(type = Command.class, menuPath = "Image > Convert")
-public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
-	implements Command
-{
+@Plugin(type = Op.class, name = GenericScale.NAME, priority = Priority.HIGH_PRIORITY)
+public class GenericScaleIterableArrayImgByteType
+		extends
+		AbstractFunction<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>>
+		implements
+		GenericScale<ArrayImg<ByteType, ByteArray>, ArrayImg<ByteType, ByteArray>> {
 
 	@Parameter
-	private ImgPlus<I> in;
+	private double oldMin;
 
 	@Parameter
-	private ConvertPix<I, O> conversionMethod;
-
-	@Parameter(type = ItemIO.BOTH)
-	private ImgPlus<O> out;
+	private double newMin;
 
 	@Parameter
-	private OpService ops;
+	private double factor;
 
 	@Override
-	public void run() {
-		ops.run("convert", out, in, conversionMethod);
+	public ArrayImg<ByteType, ByteArray> compute(
+			final ArrayImg<ByteType, ByteArray> input,
+			final ArrayImg<ByteType, ByteArray> output) {
+
+		byte[] inputContainer = input.update(null).getCurrentStorageArray();
+		byte[] outputContainer = output.update(null).getCurrentStorageArray();
+
+		for (int i = 0; i < inputContainer.length; i++) {
+			outputContainer[i] = (byte) (((inputContainer[i] - oldMin) * factor) + newMin);
+		}
+
+		return output;
 	}
 
 }

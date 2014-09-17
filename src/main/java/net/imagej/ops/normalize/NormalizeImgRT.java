@@ -28,23 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.normalize;
 
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.convert.ConvertNormalizeScale;
+import net.imagej.ops.slicer.Slicewise;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Base interface for "create" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
+ * {@link Normalize} an {@link Img} of type {@link RealType} such that minimum /
+ * maximum values are equal to the minimum / maximum of the {@link RealType}
  * 
- * <pre>
- * @Plugin(type = Op.class, name = Create.NAME)
- * </pre>
+ * @author Christian Dietz (University of Konstanz)
  * 
- * @author Curtis Rueden
+ * @param <T>
  */
-public interface Create extends Op {
+@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(name = "aliases", value = Normalize.ALIASES) }, priority = Priority.HIGH_PRIORITY)
+public class NormalizeImgRT<T extends RealType<T>> extends
+		AbstractOutputFunction<Img<T>, Img<T>> implements Normalize {
 
-	String NAME = "create";
+	@Parameter
+	private OpService ops;
+
+	@Parameter(required = false)
+	private int[] axisIndices;
+
+	@Override
+	public Img<T> createOutput(Img<T> input) {
+		return input.factory().create(input,
+				input.firstElement().createVariable());
+	}
+
+	@Override
+	protected Img<T> safeCompute(Img<T> input, Img<T> output) {
+
+		@SuppressWarnings("unchecked")
+		ConvertNormalizeScale<T, T> normalizeScaleOp = ops.op(
+				ConvertNormalizeScale.class, output, input);
+
+		if (axisIndices != null) {
+			ops.run(Slicewise.class, output, input, normalizeScaleOp,
+					axisIndices);
+		} else {
+			normalizeScaleOp.run();
+		}
+
+		return output;
+	}
 }

@@ -28,42 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.convert;
 
+import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.type.NativeType;
+import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates an image.
+ * {@link ConvertCopy} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
  */
-@Plugin(type = Op.class, name = Create.NAME)
-public class CreateArrayImg<T extends NativeType<T>> implements Create {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ArrayImg<T, ?> image;
-
-	@Parameter
-	private long[] dim;
-
-	@Parameter(required = false)
-	private T type;
+@Plugin(type = Op.class, name = ConvertCopy.NAME)
+public class ConvertCopyPixelRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<T, V> implements ConvertCopy<T, V> {
 
 	@Override
-	public void run() {
-		if (type == null) {
-			// when no type is given, force a DoubleType image
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			final ArrayImg<T, ?> coerced = (ArrayImg) ArrayImgs.doubles(dim);
-			image = coerced;
-		}
-		else image = new ArrayImgFactory<T>().create(dim, type);
+	public V compute(T input, V output) {
+		output.setReal(input.getRealDouble());
+		return output;
 	}
-
 }

@@ -28,32 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.create;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Contingent;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.Op;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
-/**
- * @author Martin Horn
- */
-public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractFunction<I, O> implements Convert<I, O>, Contingent
-{
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	/**
-	 * Allows the convert pix operation to determine some parameters from the
-	 * conrete input and output types.
-	 */
-	public abstract void checkInput(I inType, O outType);
+//TODO type converter long[] -> Dimensions
+@Plugin(type = Op.class, name = CreateImg.NAME)
+public class CreateImgWithDimensions<V extends NativeType<V>> implements
+		CreateImg {
 
-	/**
-	 * If the pixels to be converted stem from an {@link IterableInterval} some
-	 * additionally needed parameters (e.g. for normalization) can be calculated
-	 * here (hence, some heavier calculation might take place here). Might never
-	 * be called!
-	 */
-	public abstract void checkInput(IterableInterval<I> in);
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<V> output;
 
+	@Parameter
+	private ImgFactory<V> fac;
+
+	@Parameter
+	private V outType;
+
+	@Parameter
+	private Dimensions dims;
+
+	@Override
+	public void run() {
+		output = fac.create(dims, outType.copy());
+	}
 }

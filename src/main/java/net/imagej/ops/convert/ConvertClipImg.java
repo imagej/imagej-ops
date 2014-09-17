@@ -30,37 +30,40 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.exception.IncompatibleTypeException;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.ShortType;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A test of {@link ConvertII}.
+ * Applies a {@link ConvertClip} on an {@link Iterable}.
  * 
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
  */
-public class ConvertIITest extends AbstractOpTest {
+@Plugin(type = Op.class, name = ConvertClip.NAME, priority = Priority.HIGH_PRIORITY)
+public class ConvertClipImg<T, V> extends
+		AbstractOutputFunction<Img<T>, Img<V>> implements
+		ConvertClip<Img<T>, Img<V>> {
 
-	/** The test. */
-	@Test
-	public void test() throws IncompatibleTypeException {
+	@Parameter
+	private OpService ops;
 
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
-				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
+	@Parameter
+	private V outType;
 
-		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
+	@SuppressWarnings("unchecked")
+	@Override
+	public Img<V> createOutput(Img<T> input) {
+		return (Img<V>) ops.createImg(input, outType);
+	}
 
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
-
+	@Override
+	protected Img<V> safeCompute(Img<T> input, Img<V> output) {
+		ops.run(ConvertClip.class, output, input);
+		return output;
 	}
 }

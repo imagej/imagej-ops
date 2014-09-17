@@ -30,22 +30,41 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.scale.pixel.GenericScale;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Base interface for "convert" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
+ * {@link ConvertScale} implementation for {@link RealType}s.
  * 
- * <pre>
- * @Plugin(type = Op.class, name = Convert.NAME)
- * </pre>
+ * @author Christian Dietz (University of Konstanz)
  * 
- * @author Martin Horn
+ * @param <T>
+ * @param <V>
  */
-public interface Convert<I, O> extends Function<I, O> {
+@Plugin(type = Op.class, name = ConvertScale.NAME)
+public class ConvertScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertScale<Iterable<T>, Iterable<V>> {
 
-	String NAME = "convert";
+	@Parameter
+	private OpService ops;
 
+	@Override
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
+
+		final T inType = input.iterator().next();
+		final V outType = output.iterator().next();
+
+		ops.run(GenericScale.class, output, input, inType.getMinValue(),
+				inType.getMaxValue(), outType.getMinValue(),
+				outType.getMaxValue());
+
+		return output;
+	}
 }

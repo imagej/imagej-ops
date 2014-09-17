@@ -28,41 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.create;
 
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Base interface for "createimg" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = CreateImg.NAME)
+ * </pre>
+ * 
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Convert.NAME)
-public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements
-	Convert<IterableInterval<I>, IterableInterval<O>>
-{
+public interface CreateImg extends Op {
 
-	@Parameter
-	private ConvertPix<I, O> pixConvert;
-
-	@Parameter
-	private OpService ops;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public IterableInterval<O> compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
-	{
-		pixConvert.checkInput(input.firstElement().createVariable(), output
-			.firstElement().createVariable());
-		pixConvert.checkInput(input);
-		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
-	}
-
+	String NAME = "createimg";
 }

@@ -28,36 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
-
-import static org.junit.Assert.assertEquals;
+package net.imagej.ops.convert;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.integer.ByteType;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.misc.MinMax;
+import net.imagej.ops.scale.pixel.GenericScale;
+import net.imglib2.type.numeric.RealType;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * {@link ConvertNormalizeScale} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
  */
-public class NormalizeTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = ConvertNormalizeScale.NAME)
+public class ConvertNormalizeScaleIterableRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertNormalizeScale<Iterable<T>, Iterable<V>> {
 
-	@Test
-	public void testNormalize() {
+	@Parameter
+	private OpService ops;
 
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		// TODO: weird order of parameters
-		Img<ByteType> out = (Img<ByteType>) ops.run(Normalize.class, in);
+		final List<T> minMax = (List<T>) ops.run(MinMax.class, input);
 
-		List<ByteType> minmax1 = (List<ByteType>) ops.run("minmax", in);
-		List<ByteType> minmax2 = (List<ByteType>) ops.run("minmax", out);
+		final V type = output.iterator().next().createVariable();
 
-		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
+		ops.run(GenericScale.class, output, input, minMax.get(0)
+				.getRealDouble(), minMax.get(1).getRealDouble(), type
+				.createVariable().getMinValue(), type.createVariable()
+				.getMaxValue());
 
+		return output;
 	}
 }

@@ -206,7 +206,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object create(Object... args) {
+	public Object createImg(Object... args) {
 		return run("create", args);
 	}
 

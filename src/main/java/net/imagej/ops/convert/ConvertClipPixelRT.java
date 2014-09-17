@@ -28,55 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.convert;
 
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Op;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })
-public class NormalizeRealType<T extends RealType<T>> extends
-	AbstractFunction<T, T> implements Normalize
-{
+/**
+ * {@link ConvertClip} implementation for {@link RealType}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
+@Plugin(type = Op.class, name = ConvertClip.NAME)
+public class ConvertClipPixelRT<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractFunction<T, V> implements ConvertClip<T, V> {
 
 	@Parameter
-	private double oldMin;
+	private double outMin;
 
 	@Parameter
-	private double newMin;
-
-	@Parameter
-	private double newMax;
-
-	@Parameter
-	private double factor;
+	private double outMax;
 
 	@Override
-	public T compute(T input, T output) {
-		output.setReal(Math.min(newMax, Math.max(newMin,
-			(input.getRealDouble() - oldMin) * factor + newMin)));
+	public V compute(T input, V output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
+		} else if (v < outMin) {
+			output.setReal(outMin);
+		} else {
+			output.setReal(v);
+		}
 		return output;
 	}
-
-	/**
-	 * Determines the factor to map the interval [oldMin, oldMax] to
-	 * [newMin,newMax].
-	 * 
-	 * @param oldMin
-	 * @param oldMax
-	 * @param newMin
-	 * @param newMax
-	 * @return the normalization factor
-	 */
-	public static double normalizationFactor(double oldMin, double oldMax,
-		double newMin, double newMax)
-	{
-		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
-	}
-
 }

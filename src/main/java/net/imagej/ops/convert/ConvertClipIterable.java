@@ -28,36 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.convert;
 
-import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.integer.ByteType;
-
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Applies a {@link ConvertClip} on an {@link Iterable}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  */
-public class NormalizeTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = ConvertClip.NAME)
+public class ConvertClipIterable<T, V> extends
+		AbstractFunction<Iterable<T>, Iterable<V>> implements
+		ConvertClip<Iterable<T>, Iterable<V>> {
 
-	@Test
-	public void testNormalize() {
+	@Parameter
+	private OpService ops;
 
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+	@Parameter
+	private T outMin;
 
-		// TODO: weird order of parameters
-		Img<ByteType> out = (Img<ByteType>) ops.run(Normalize.class, in);
+	@Parameter
+	private V outMax;
 
-		List<ByteType> minmax1 = (List<ByteType>) ops.run("minmax", in);
-		List<ByteType> minmax2 = (List<ByteType>) ops.run("minmax", out);
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<V> compute(final Iterable<T> input, final Iterable<V> output) {
 
-		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
+		ConvertClip<T, V> op = (ConvertClip<T, V>) ops.op(ConvertClip.class,
+				outMin, outMax);
 
+		ops.run(Map.class, output, input, op);
+
+		return output;
 	}
 }
