@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
+import net.imagej.ops.Function;
 
 import org.scijava.plugin.Parameter;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz
  */
 public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
-	AbstractFunction<I, I> implements LoopFunction<I>
+	AbstractStrictFunction<I, I> implements LoopFunction<I>
 {
 
 	/** Function to loop. */

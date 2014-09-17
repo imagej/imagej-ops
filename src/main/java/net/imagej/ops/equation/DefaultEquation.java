@@ -35,7 +35,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -64,7 +64,7 @@ import org.scijava.script.ScriptService;
  */
 @Plugin(type = Op.class, name = Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
-	AbstractFunction<String, IterableInterval<T>> implements Equation<T>
+	AbstractStrictFunction<String, IterableInterval<T>> implements Equation<T>
 {
 
 	@Parameter

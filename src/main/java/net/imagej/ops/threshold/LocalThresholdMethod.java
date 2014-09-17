@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -39,7 +39,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Martin Horn
  */
 public abstract class LocalThresholdMethod<T extends RealType<T>> extends
-	AbstractFunction<Pair<T>, BitType>
+	AbstractStrictFunction<Pair<T>, BitType>
 {
 
 	public static class Pair<T extends RealType<T>> {

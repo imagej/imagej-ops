@@ -30,9 +30,6 @@
 
 package net.imagej.ops;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
  * Abstract superclass for {@link Function} ops.
  * 
@@ -41,34 +38,6 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class AbstractFunction<I, O> implements Function<I, O> {
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- Function methods --
-
-	@Override
-	public I getInput() {
-		return in;
-	}
-
-	@Override
-	public O getOutput() {
-		return out;
-	}
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
 
 	// -- Runnable methods --
 

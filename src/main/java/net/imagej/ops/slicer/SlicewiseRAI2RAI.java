@@ -30,7 +30,7 @@
 
 package net.imagej.ops.slicer;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
@@ -50,10 +50,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class SlicewiseRAI2RAI<I, O>
-		extends
-		AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-		implements
-		Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements
+	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+{
 
 	@Parameter
 	private OpService opService;
