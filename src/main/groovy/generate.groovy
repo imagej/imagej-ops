@@ -59,23 +59,23 @@ class ValueParsingException extends Exception {
 def parseValue(str) {
   Stack<Character> symbols = new Stack<Character>();
   Stack<Object> parsed = new Stack<Object>();
-  
+
   String buffer = "";
   boolean escaped = false;
-  
+
   for (char c :  str.toCharArray()) {
     try {
       // top symbol determines what kind of structure we're
       // currently working on TODO: Speedup?
       char top = symbols.peek();
-      
+
       if (top == '\\') {
         escaped = true;
         symbols.pop();
       } else {
         escaped = false;
       }
-      
+
       if (!escaped) {
         if (top == '{') {
           if (c == ':') {
@@ -96,16 +96,16 @@ def parseValue(str) {
               value = new String(buffer);
               buffer = "";
             }
-            
+
             String key = (String) parsed.pop();
-            
+
             ((Map<Object, Object>)parsed.peek()).put(key.trim(), value);
-            
+
             if (c == '}') {
               // finish up this map.
               symbols.pop();
             }
-            
+
             continue;
           }
         } else if (top == '[') {
@@ -117,14 +117,14 @@ def parseValue(str) {
               value = new String(buffer);
               buffer = "";
             }
-            
+
             ((List<Object>)parsed.peek()).add(value);
-            
+
             if (c == ']') {
               // finish up this map.
               symbols.pop();
             }
-            
+
             continue;
           }
         } else if (top == '"') {
@@ -135,7 +135,7 @@ def parseValue(str) {
             continue;
           }
         }
-      
+
         if (c == '[') {
           symbols.push(c);
           parsed.push(new ArrayList<Object>());
@@ -152,7 +152,7 @@ def parseValue(str) {
           // uses buffer
         }
       }
-      
+
       // no special meaning to this char.
       if (buffer.isEmpty() && c == ' ') {
         // skip leading whitespaces
@@ -175,7 +175,7 @@ def parseValue(str) {
       }
     }
   }
-  
+
   return parsed.pop();
 }
 
@@ -230,11 +230,11 @@ def translate(templateFile, translationsFile) {
       continue;
     }
     pair = new String[2];
-    
+
     int idx = line.indexOf('=');
     pair[0] = line.substring(0, idx);
     pair[1] = line.substring(idx + 1);
-    
+
     if (pair[1].trim().equals('```')) {
       // multi-line value
       builder = new StringBuilder();
@@ -255,7 +255,7 @@ def translate(templateFile, translationsFile) {
     }
 
     //For debugging: System.out.println("<" + pair[0] + ">: " + parseValue(pair[1]).toString());
-    
+
     context.put(pair[0].trim(), parseValue(pair[1]));
   }
   reader.close();
