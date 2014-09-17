@@ -72,7 +72,8 @@ def parseValue(str) {
       if (top == '\\') {
         escaped = true;
         symbols.pop();
-      } else {
+      }
+      else {
         escaped = false;
       }
 
@@ -92,7 +93,8 @@ def parseValue(str) {
             Object value;
             if (buffer.isEmpty()) {
               value = parsed.pop();
-            } else {
+            }
+            else {
               value = new String(buffer);
               buffer = "";
             }
@@ -108,12 +110,14 @@ def parseValue(str) {
 
             continue;
           }
-        } else if (top == '[') {
+        }
+        else if (top == '[') {
           if (c == ',' || c == ']') {
             Object value = null;
             if (buffer.isEmpty()) {
               value = parsed.pop();
-            } else {
+            }
+            else {
               value = new String(buffer);
               buffer = "";
             }
@@ -127,7 +131,8 @@ def parseValue(str) {
 
             continue;
           }
-        } else if (top == '"') {
+        }
+        else if (top == '"') {
           if (c == '"') {
             parsed.push(new String(buffer));
             buffer = "";
@@ -159,16 +164,20 @@ def parseValue(str) {
         continue;
       }
       buffer += c;
-    } catch (EmptyStackException e) {
+    }
+    catch (EmptyStackException e) {
       if (c == ' ' || c == '\t') {
         // skip leading whitespaces and tabs
-      } else if (c == '{') {
+      }
+      else if (c == '{') {
         symbols.push(c);
         parsed.push(new HashMap<Object, Object>());
-      } else if (c == '[') {
+      }
+      else if (c == '[') {
         symbols.push(c);
         parsed.push(new ArrayList<Object>());
-      } else {
+      }
+      else {
         // this is a simple string value, we're done.
         parsed.push(new String(str.trim()));
         break;
