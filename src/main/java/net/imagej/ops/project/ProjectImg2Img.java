@@ -28,68 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.commands.project;
+package net.imagej.ops.project;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.project.Project;
-import net.imagej.ops.statistics.Mean;
 import net.imglib2.img.Img;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.meta.TypedAxis;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.NativeType;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Project")
-public class ProjectCommand<T extends RealType<T>> implements Command {
-
-	@Parameter(type = ItemIO.BOTH)
-	private ImgPlus<T> out;
+/**
+ * Implementation of a {@link Project} for {@link Img} on {@link Img}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * 
+ * @param <T>
+ * @param <V>
+ */
+@Plugin(type = Op.class, name = Project.NAME, priority = Priority.LOW_PRIORITY)
+public class ProjectImg2Img<T, V extends NativeType<V>> extends
+		AbstractOutputFunction<Img<T>, Img<V>> implements
+		Project<Img<T>, Img<V>> {
 
 	@Parameter
-	private ImgPlus<T> in;
+	private Function<Iterable<T>, V> method;
 
-	// TODO: same problem as in the threshold: parameter aggregation ...
 	@Parameter
-	private ProjectMethod<T> method;
+	private int dim;
 
-	// the dimension that will be aggregated
-	@Parameter
-	private TypedAxis axis;
+	@Parameter(required = false)
+	private NativeType<V> outType;
 
 	@Parameter
 	private OpService ops;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		if (out == null) {
-			Img<T> img = in.factory().create(in, in.firstElement().createVariable());
-			out = new ImgPlus<T>(img, in);
-		}
-		int axisIndex = in.dimensionIndex(axis.type());
-		ops.run(Project.class, out, in, method, axisIndex);
-	}
+	public Img<V> createOutput(final Img<T> input) {
+		long[] dims = new long[input.numDimensions() - 1];
 
-	/* -- Wrapper classes to mark certain operations as projection methods --*/
-
-	private class ProjectMean extends AbstractFunction<Iterable<T>, T> implements
-		ProjectMethod<T>
-	{
-
-		private Mean<Iterable<T>, T> mean;
-
-		@Override
-		public T compute(Iterable<T> input, T output) {
-			if (mean == null) {
-				mean = (Mean<Iterable<T>, T>) ops.op(Mean.class, output, input);
+		int k = 0;
+		for (int d = 0; d < dims.length; d++) {
+			if (d != dim) {
+				dims[k++] = input.dimension(d);
 			}
-			return mean.compute(input, output);
 		}
 
+		if (outType != null)
+			return (Img<V>) ops.createImg(input.factory(), outType, dims);
+		else
+			return (Img<V>) ops.createImg(input.factory(),
+					input.firstElement(), dims);
 	}
 
+	@Override
+	protected Img<V> safeCompute(final Img<T> input, final Img<V> output) {
+
+		ops.run(ProjectRAI2II.class, output, input, method, dim);
+
+		return output;
+	}
 }

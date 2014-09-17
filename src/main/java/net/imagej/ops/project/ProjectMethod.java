@@ -28,19 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.commands.project;
+package net.imagej.ops.project;
 
 import net.imagej.ops.Function;
-import net.imglib2.type.numeric.RealType;
 
 /**
- * Interface marking functions that can be used within the
- * {@link ProjectCommand}.
+ * Interface marking functions that will be used as {@link ProjectMethod}s
  * 
  * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
-{
-	// NB: Marker interface.
+public interface ProjectMethod<T, V> extends Function<Iterable<T>, V> {
+	final String NAME = "project-method";
 }

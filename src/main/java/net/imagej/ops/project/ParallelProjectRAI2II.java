@@ -30,23 +30,63 @@
 
 package net.imagej.ops.project;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
-/**
- * Base interface for "project" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Project.NAME)
- * </pre>
- * 
- * @author Christian Dietz
- * @author Martin Horn
- */
-public interface Project<I, O> extends Function<I, O> {
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	public static final String NAME = "project";
+@Plugin(type = Op.class, name = Project.NAME, priority = Priority.LOW_PRIORITY + 1)
+public class ParallelProjectRAI2II<T, V> extends AbstractProjectRAI2II<T, V> {
+
+	@Parameter
+	private OpService opService;
+
+	@Override
+	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
+			final IterableInterval<V> output) {
+		opService.run(Chunker.class, new CursorBasedChunk() {
+
+			@Override
+			public void execute(int startIndex, final int stepSize,
+					final int numSteps) {
+
+				final int dim = getDim();
+				final RandomAccess<T> access = input.randomAccess();
+				final Cursor<V> cursor = output.localizingCursor();
+
+				setToStart(cursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					for (int d = 0; d < input.numDimensions(); d++) {
+						if (d != dim) {
+							access.setPosition(
+									cursor.getIntPosition(d - d > dim ? -1 : 0),
+									d);
+						}
+					}
+
+					getMethod()
+							.compute(
+									new ProjectionDimensionIterable<T>(input
+											.dimension(dim), access, dim),
+									cursor.get());
+
+					cursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, output.size());
+
+		return output;
+	}
 
 }
