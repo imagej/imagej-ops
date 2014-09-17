@@ -69,6 +69,15 @@
 			</roles>
 			<timezone>+1</timezone>
 		</developer>
+		<developer>
+			<id>bnorthan</id>
+			<name>Brian Northan</name>
+			<email>bnorthan@gmail.com</email>
+			<url>www.linkedin.com/pub/brian-northan/6/860/3a7</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<scm>
@@ -262,7 +271,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
 					<organizationName>Board of Regents of the University of
-Wisconsin-Madison and University of Konstanz.</organizationName>
+Wisconsin-Madison, University of Konstanz and Brian Northan.</organizationName>
 				</configuration>
 			</plugin>
 		</plugins>
