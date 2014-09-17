@@ -30,37 +30,79 @@
 
 package net.imagej.ops.convert;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.misc.MinMax;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.ShortType;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A test of {@link ConvertII}.
+ * A test for several convert functions.
  * 
- * @author Martin Horn
+ * @author Christian Dietz
  */
-public class ConvertIITest extends AbstractOpTest {
+@SuppressWarnings("unchecked")
+public class ConvertersTest extends AbstractOpTest {
+
+	private Img<ByteType> in;
+	private double inMin;
+	private double inMax;
+
+	@Before
+	public void initalize() {
+		in = generateByteTestImg(true, new long[] { 10, 10 });
+
+		List<ByteType> minmax = (List<ByteType>) ops.run(MinMax.class, in);
+
+		this.inMin = minmax.get(0).getRealDouble();
+		this.inMax = minmax.get(1).getRealDouble();
+	}
 
 	/** The test. */
 	@Test
-	public void test() throws IncompatibleTypeException {
+	public void testConvertScale() throws IncompatibleTypeException {
 
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
+		Img<ShortType> res = (Img<ShortType>) ops.run(ConvertScale.class, in,
 				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.run(ConvertCopy.class, res, img);
+		List<ShortType> minmax = (List<ShortType>) ops.run(MinMax.class, res);
 
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+		assertEquals((inMax - Byte.MIN_VALUE)
+				/ (Byte.MAX_VALUE - Byte.MIN_VALUE), (minmax.get(1)
+				.getRealDouble() - Short.MIN_VALUE)
+				/ (Short.MAX_VALUE - Short.MIN_VALUE), 0);
+	}
 
+	/** The test. */
+	@Test
+	public void testConvertNormalizeScale() throws IncompatibleTypeException {
+
+		Img<ShortType> res = (Img<ShortType>) ops.run(
+				ConvertNormalizeScale.class, in, new ShortType());
+
+		List<ShortType> minmax = (List<ShortType>) ops.run(MinMax.class, res);
+
+		assertEquals(1.0, minmax.get(1).getRealDouble() / Short.MAX_VALUE, 0.0);
+	}
+
+	/** The test. */
+	@Test
+	public void testCopy() throws IncompatibleTypeException {
+
+		Img<ShortType> res = (Img<ShortType>) ops.run(ConvertCopy.class, in,
+				new ShortType());
+
+		List<ShortType> minmax = (List<ShortType>) ops.run(MinMax.class, res);
+
+		assertEquals(minmax.get(0).getRealDouble(), inMin, 0);
+		assertEquals(minmax.get(1).getRealDouble(), inMax, 0);
 	}
 }
