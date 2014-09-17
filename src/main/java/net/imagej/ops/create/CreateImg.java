@@ -31,39 +31,20 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.type.NativeType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Creates an image.
+ * Base interface for "createimg" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ * 
+ * <pre>
+ * @Plugin(type = Op.class, name = CreateImg.NAME)
+ * </pre>
+ * 
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Create.NAME)
-public class CreateArrayImg<T extends NativeType<T>> implements Create {
+public interface CreateImg extends Op {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private ArrayImg<T, ?> image;
-
-	@Parameter
-	private long[] dim;
-
-	@Parameter(required = false)
-	private T type;
-
-	@Override
-	public void run() {
-		if (type == null) {
-			// when no type is given, force a DoubleType image
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			final ArrayImg<T, ?> coerced = (ArrayImg) ArrayImgs.doubles(dim);
-			image = coerced;
-		}
-		else image = new ArrayImgFactory<T>().create(dim, type);
-	}
-
+	String NAME = "createimg";
 }
