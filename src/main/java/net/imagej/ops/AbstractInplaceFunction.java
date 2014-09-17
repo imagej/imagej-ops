@@ -43,15 +43,10 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- Function methods --
+	// -- InputOp methods --
 
 	@Override
 	public A getInput() {
-		return arg;
-	}
-
-	@Override
-	public A getOutput() {
 		return arg;
 	}
 
@@ -60,10 +55,19 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		arg = input;
 	}
 
+	// -- OutputOp methods --
+
+	@Override
+	public A getOutput() {
+		return arg;
+	}
+
 	@Override
 	public void setOutput(final A output) {
 		arg = output;
 	}
+
+	// -- Function methods --
 
 	@Override
 	public A compute(final A input, final A output) {
