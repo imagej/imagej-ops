@@ -73,6 +73,8 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		return compute(input);
 	}
 
+	// -- Runnable methods --
+
 	@Override
 	public void run() {
 		compute(getInput());

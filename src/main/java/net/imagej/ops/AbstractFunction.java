@@ -70,6 +70,8 @@ public abstract class AbstractFunction<I, O> implements Function<I, O> {
 		out = output;
 	}
 
+	// -- Runnable methods --
+
 	@Override
 	public void run() {
 		setOutput(compute(getInput(), getOutput()));
