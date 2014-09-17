@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.convert.ConvertNormalizeScale;
+import net.imagej.ops.slicer.Slicewise;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
@@ -57,6 +58,9 @@ public class NormalizeImgRT<T extends RealType<T>> extends
 	@Parameter
 	private OpService ops;
 
+	@Parameter(required = false)
+	private int[] axisIndices;
+
 	@Override
 	public Img<T> createOutput(Img<T> input) {
 		return input.factory().create(input,
@@ -65,7 +69,18 @@ public class NormalizeImgRT<T extends RealType<T>> extends
 
 	@Override
 	protected Img<T> safeCompute(Img<T> input, Img<T> output) {
-		ops.run(ConvertNormalizeScale.class, output, input);
+
+		@SuppressWarnings("unchecked")
+		ConvertNormalizeScale<T, T> normalizeScaleOp = ops.op(
+				ConvertNormalizeScale.class, output, input);
+
+		if (axisIndices != null) {
+			ops.run(Slicewise.class, output, input, normalizeScaleOp,
+					axisIndices);
+		} else {
+			normalizeScaleOp.run();
+		}
+
 		return output;
 	}
 }
