@@ -183,8 +183,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convolve" operation on the given arguments. */
 	Object convolve(Object... args);
 
-	/** Executes the "create" operation on the given arguments. */
-	Object create(Object... args);
+	/** Executes the "createImg" operation on the given arguments. */
+	Object createImg(Object... args);
 
 	/** Executes the "crop" operation on the given arguments. */
 	Object crop(Object... args);
@@ -275,5 +275,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "variance" operation on the given arguments. */
 	Object variance(Object... args);
+
+	// -- Deprecated methods --
+
+	/** @deprecated Use {@link #createImg} instead. */
+	@Deprecated
+	Object create(Object... args);
 
 }
