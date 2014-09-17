@@ -201,11 +201,11 @@ def parseValue(str) {
  * variable2 = value4
  * ...
  */
-def translate(templateFile, translationsFile) {
+def translate(templateSubdirectory, templateFile, translationsFile) {
   // initialize the Velocity engine
   engine = new org.apache.velocity.app.VelocityEngine();
   p = new java.util.Properties();
-  p.setProperty("file.resource.loader.path", "$templateDirectory");
+  p.setProperty("file.resource.loader.path", "$templateSubdirectory");
   // tell Velocity to log to stderr rather than to a velocity.log file
   p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
       "org.apache.velocity.runtime.log.SystemLogChute");
@@ -213,7 +213,7 @@ def translate(templateFile, translationsFile) {
 
   // read translation lines
   context = outputFilename = null;
-  reader = new java.io.BufferedReader(new java.io.FileReader("$templateDirectory/$translationsFile"));
+  reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
   for (;;) {
     // read the line
     line = reader.readLine();
@@ -226,6 +226,10 @@ def translate(templateFile, translationsFile) {
 
       // start a new file
       outputFilename = line.substring(1, line.length() - 1);
+      if (!templateDirectory.equals(templateSubdirectory)) {
+        subPath = templateSubdirectory.substring(templateDirectory.length() + 1);
+        outputFilename = "$subPath/$outputFilename";
+      }
       context = new org.apache.velocity.VelocityContext();
       continue;
     }
@@ -273,10 +277,21 @@ def translate(templateFile, translationsFile) {
   processTemplate(engine, context, templateFile, outputFilename);
 }
 
-// translate all templates in the template directory
-for (file in new java.io.File(templateDirectory).listFiles()) {
-  name = file.getName();
-  if (!name.endsWith('.vm')) continue;
-  prefix = name.substring(0, name.lastIndexOf('.'));
-  translate(name, prefix + '.list');
+/* Recursively translates all templates in the given directory. */
+def translateDirectory(templateSubdirectory) {
+  for (file in new java.io.File(templateSubdirectory).listFiles()) {
+    if (file.isDirectory()) {
+      // process subdirectories recursively
+      translateDirectory(file.getPath());
+    }
+    else {
+      // process Velocity template files only
+      name = file.getName();
+      if (!name.endsWith('.vm')) continue;
+      prefix = name.substring(0, name.lastIndexOf('.'));
+      translate(templateSubdirectory, name, prefix + '.list');
+    }
+  }
 }
+
+translateDirectory(templateDirectory);
