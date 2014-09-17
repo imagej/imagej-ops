@@ -385,4 +385,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
+	// -- Deprecated methods --
+
+	@Deprecated
+	@Override
+	public Object create(Object... args) {
+		return run(CreateImg.class, args);
+	}
+
 }

@@ -276,4 +276,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "variance" operation on the given arguments. */
 	Object variance(Object... args);
 
+	// -- Deprecated methods --
+
+	/** @deprecated Use {@link #createImg} instead. */
+	@Deprecated
+	Object create(Object... args);
+
 }
