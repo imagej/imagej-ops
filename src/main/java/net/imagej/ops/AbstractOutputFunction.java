@@ -38,7 +38,8 @@ package net.imagej.ops;
  * @author Curtis Rueden
  */
 public abstract class AbstractOutputFunction<I, O> extends
-		AbstractFunction<I, O> implements OutputFunction<I, O> {
+	AbstractFunction<I, O> implements OutputFunction<I, O>
+{
 
 	@Override
 	public O compute(final I input) {
