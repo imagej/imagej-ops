@@ -42,7 +42,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz
+ * {@link Slicewise} implementation fo {@link RandomAccessibleInterval} input
+ * and {@link RandomAccessibleInterval} output.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = "slicemapper",
