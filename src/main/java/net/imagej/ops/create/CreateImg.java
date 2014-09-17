@@ -33,18 +33,18 @@ package net.imagej.ops.create;
 import net.imagej.ops.Op;
 
 /**
- * Base interface for "create" operations.
+ * Base interface for "createimg" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  * 
  * <pre>
- * @Plugin(type = Op.class, name = Create.NAME)
+ * @Plugin(type = Op.class, name = CreateImg.NAME)
  * </pre>
  * 
  * @author Curtis Rueden
  */
-public interface Create extends Op {
+public interface CreateImg extends Op {
 
-	String NAME = "create";
+	String NAME = "createimg";
 }
