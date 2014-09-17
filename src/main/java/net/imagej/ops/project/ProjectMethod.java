@@ -33,20 +33,11 @@ package net.imagej.ops.project;
 import net.imagej.ops.Function;
 
 /**
- * Base interface for "project" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
+ * Interface marking functions that will be used as {@link ProjectMethod}s
  * 
- * <pre>
- * @Plugin(type = Op.class, name = Project.NAME)
- * </pre>
- * 
- * @author Christian Dietz
  * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface Project<I, O> extends Function<I, O> {
-
-	public static final String NAME = "project";
-
+public interface ProjectMethod<T, V> extends Function<Iterable<T>, V> {
+	final String NAME = "project-method";
 }

@@ -32,11 +32,12 @@ package net.imagej.ops.project;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Op;
-import net.imagej.ops.project.parallel.DefaultProjectP;
 import net.imagej.ops.statistics.Sum;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
+import net.imglib2.meta.Axes;
+import net.imglib2.meta.AxisType;
+import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -48,10 +49,10 @@ public class ProjectTest extends AbstractOpTest {
 	private final int PROJECTION_DIM = 2;
 
 	private Img<ByteType> in;
-	private Img<ByteType> out1;
-	private Img<ByteType> out2;
-	private Op op;
 
+	private ProjectMethod<ByteType, DoubleType> method;
+
+	@SuppressWarnings("unchecked")
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(false, 10, 10, 10);
@@ -63,27 +64,40 @@ public class ProjectTest extends AbstractOpTest {
 			cursor.get().set((byte) 1);
 		}
 
-		out1 = generateByteTestImg(false, 10, 10);
-		out2 = generateByteTestImg(false, 10, 10);
+		Sum op = ops.op(Sum.class, DoubleType.class, Img.class);
 
-		op = ops.op(Sum.class, null, out1);
+		method = (ProjectMethod<ByteType, DoubleType>) ops.op(
+				ProjectMethod.class, DoubleType.class, Img.class, op);
 	}
 
 	@Test
-	public void testProjector() {
-		ops.run(ProjectRAI2II.class, out1, in, op, PROJECTION_DIM);
-		ops.run(DefaultProjectP.class, out2, in, op, PROJECTION_DIM);
+	public void testProjectorImg() {
+		@SuppressWarnings("unchecked")
+		Img<DoubleType> out = (Img<DoubleType>) ops.run(Project.class,
+				Img.class, in, method, PROJECTION_DIM, new DoubleType());
 
-		// test
-		final Cursor<ByteType> out1Cursor = out1.cursor();
-		final Cursor<ByteType> out2Cursor = out2.cursor();
-
+		final Cursor<DoubleType> out1Cursor = out.cursor();
 		while (out1Cursor.hasNext()) {
 			out1Cursor.fwd();
-			out2Cursor.fwd();
+			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM),
+					0);
+		}
+	}
 
-			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM));
-			assertEquals(out2Cursor.get().get(), in.dimension(PROJECTION_DIM));
+	@Test
+	public void testProjectorImgPlus() {
+		ImgPlus<ByteType> inImgPlus = new ImgPlus<ByteType>(in);
+		AxisType axis = inImgPlus.axis(PROJECTION_DIM).type();
+
+		@SuppressWarnings("unchecked")
+		ImgPlus<DoubleType> out = (ImgPlus<DoubleType>) ops.run(Project.class,
+				ImgPlus.class, inImgPlus, method, axis, new DoubleType());
+
+		final Cursor<DoubleType> out1Cursor = out.cursor();
+		while (out1Cursor.hasNext()) {
+			out1Cursor.fwd();
+			assertEquals(out1Cursor.get().get(),
+					inImgPlus.dimension(PROJECTION_DIM), 0);
 		}
 	}
 }

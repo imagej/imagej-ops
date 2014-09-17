@@ -30,23 +30,66 @@
 
 package net.imagej.ops.project;
 
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Function;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imglib2.img.Img;
+import net.imglib2.type.NativeType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Base interface for "project" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
+ * Implementation of a {@link Project} for {@link Img} on {@link Img}.
  * 
- * <pre>
- * @Plugin(type = Op.class, name = Project.NAME)
- * </pre>
+ * @author Christian Dietz (University of Konstanz)
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @param <T>
+ * @param <V>
  */
-public interface Project<I, O> extends Function<I, O> {
+@Plugin(type = Op.class, name = Project.NAME, priority = Priority.LOW_PRIORITY)
+public class ProjectImg2Img<T, V extends NativeType<V>> extends
+		AbstractOutputFunction<Img<T>, Img<V>> implements
+		Project<Img<T>, Img<V>> {
 
-	public static final String NAME = "project";
+	@Parameter
+	private Function<Iterable<T>, V> method;
 
+	@Parameter
+	private int dim;
+
+	@Parameter(required = false)
+	private NativeType<V> outType;
+
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Img<V> createOutput(final Img<T> input) {
+		long[] dims = new long[input.numDimensions() - 1];
+
+		int k = 0;
+		for (int d = 0; d < dims.length; d++) {
+			if (d != dim) {
+				dims[k++] = input.dimension(d);
+			}
+		}
+
+		if (outType != null)
+			return (Img<V>) ops.createImg(input.factory(), outType, dims);
+		else
+			return (Img<V>) ops.createImg(input.factory(),
+					input.firstElement(), dims);
+	}
+
+	@Override
+	protected Img<V> safeCompute(final Img<T> input, final Img<V> output) {
+
+		ops.run(ProjectRAI2II.class, output, input, method, dim);
+
+		return output;
+	}
 }
