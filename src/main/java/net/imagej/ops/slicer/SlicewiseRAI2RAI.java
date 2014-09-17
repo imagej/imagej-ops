@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
@@ -66,7 +67,7 @@ public class SlicewiseRAI2RAI<I, O> extends
 		RandomAccessibleInterval<O> output)
 	{
 
-		opService.run("map", new Hyperslice(opService,
+		opService.run(Map.NAME, new Hyperslice(opService,
 				output, axisIndices), new Hyperslice(opService,
 				input, axisIndices), func);
 
