@@ -31,20 +31,34 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
-/**
- * Base interface for "create" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Create.NAME)
- * </pre>
- * 
- * @author Curtis Rueden
- */
-public interface Create extends Op {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	String NAME = "create";
+//TODO type converter long[] -> Dimensions
+@Plugin(type = Op.class, name = CreateImg.NAME)
+public class CreateImgWithDimensions<V extends NativeType<V>> implements
+		CreateImg {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<V> output;
+
+	@Parameter
+	private ImgFactory<V> fac;
+
+	@Parameter
+	private V outType;
+
+	@Parameter
+	private Dimensions dims;
+
+	@Override
+	public void run() {
+		output = fac.create(dims, outType.copy());
+	}
 }
