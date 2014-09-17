@@ -48,13 +48,12 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Slicewise.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class SlicewiseRAI2RAI<I, O> extends
-	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements
-	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-{
+@Plugin(type = Op.class, name = Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O>
+		extends
+		AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+		implements
+		Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {
 
 	@Parameter
 	private OpService opService;
