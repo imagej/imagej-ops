@@ -31,8 +31,7 @@
 package net.imagej.ops;
 
 /**
- * Abstract superclass for a {@link OutputFunction} which is capable creating an
- * output object.
+ * Abstract superclass for {@link OutputFunction} ops.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
