@@ -43,6 +43,12 @@ import net.imagej.ops.Function;
  *   attrs = { @Attr(name = "aliases", value = Slicewise.ALIASES) })
  * </pre>
  * 
+ * <p>
+ * Allows running {@link Function}s on orthogonal subsets of the <I>. The
+ * subsets can for example be defined by the axes of an image. For each subset
+ * the {@link Function} will be executed.
+ * </p>
+ * 
  * @author Christian Dietz
  * @author Martin Horn
  */

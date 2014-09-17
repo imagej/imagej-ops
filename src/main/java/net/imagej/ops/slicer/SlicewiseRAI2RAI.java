@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.map.Map;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
@@ -41,16 +42,18 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz
+ * {@link Slicewise} implementation fo {@link RandomAccessibleInterval} input
+ * and {@link RandomAccessibleInterval} output.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "slicemapper",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class SlicewiseRAI2RAI<I, O> extends
-	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements
-	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-{
+@Plugin(type = Op.class, name = Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O>
+		extends
+		AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+		implements
+		Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> {
 
 	@Parameter
 	private OpService opService;
@@ -66,9 +69,9 @@ public class SlicewiseRAI2RAI<I, O> extends
 		RandomAccessibleInterval<O> output)
 	{
 
-		opService.run("map", new CroppedIterableInterval(opService, output,
-			axisIndices), new CroppedIterableInterval(opService, input, axisIndices),
-			func);
+		opService.run(Map.NAME, new Hyperslice(opService,
+				output, axisIndices), new Hyperslice(opService,
+				input, axisIndices), func);
 
 		return output;
 	}
