@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.crop;
+package net.imagej.ops.slice;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +37,7 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.CroppedIterableInterval;
+import net.imagej.ops.slicer.Hyperslice;
 import net.imagej.ops.slicer.Slicewise;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
@@ -58,7 +58,7 @@ import org.scijava.Context;
  * @author Christian Dietz
  * @author Brian Northan
  */
-public class CroppedIterableIntervalTest extends AbstractOpTest {
+public class HypersliceTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 
@@ -147,7 +147,7 @@ public class CroppedIterableIntervalTest extends AbstractOpTest {
 		axisIndices[1] = 1;
 		axisIndices[2] = 3;
 
-		final CroppedIterableInterval hyperSlices = new CroppedIterableInterval(
+		final Hyperslice hyperSlices = new Hyperslice(
 				ops, testImage, axisIndices);
 
 		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();

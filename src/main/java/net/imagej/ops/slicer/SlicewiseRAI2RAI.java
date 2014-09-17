@@ -66,9 +66,9 @@ public class SlicewiseRAI2RAI<I, O> extends
 		RandomAccessibleInterval<O> output)
 	{
 
-		opService.run("map", new CroppedIterableInterval(opService, output,
-			axisIndices), new CroppedIterableInterval(opService, input, axisIndices),
-			func);
+		opService.run("map", new Hyperslice(opService,
+				output, axisIndices), new Hyperslice(opService,
+				input, axisIndices), func);
 
 		return output;
 	}
