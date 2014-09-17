@@ -260,7 +260,7 @@
 						<configuration>
 							<properties>
 								<templateDirectory>${basedir}/src/test/templates</templateDirectory>
-								<outputDirectory>${project.build.directory}/template-tests/</outputDirectory>
+								<outputDirectory>${project.build.directory}/generated-test-sources/from-template</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>
@@ -274,6 +274,7 @@
 				<version>1.5</version>
 				<executions>
 					<execution>
+						<id>add-source</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
@@ -281,6 +282,18 @@
 						<configuration>
 							<sources>
 								<source>${project.build.directory}/generated-sources/from-template/</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-test-sources/from-template/</source>
 							</sources>
 						</configuration>
 					</execution>

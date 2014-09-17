@@ -46,7 +46,7 @@ public class TemplateTest {
 	public void testTemplate() throws IOException {
 		final String prefix = ClassUtils.getLocation(getClass()).getFile();
 		final File testFile = new File(prefix
-				+ "/../template-tests/TestTemplate.txt");
+				+ "/../generated-test-sources/from-template/TestTemplate.txt");
 		final FileReader fileReader = new FileReader(testFile);
 		final BufferedReader reader = new BufferedReader(fileReader);
 		try {
