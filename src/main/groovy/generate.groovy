@@ -61,7 +61,6 @@ def parseValue(str) {
   Stack<Object> parsed = new Stack<Object>();
 
   String buffer = "";
-  boolean escaped = false;
 
   for (char c :  str.toCharArray()) {
     try {
@@ -69,15 +68,10 @@ def parseValue(str) {
       // currently working on TODO: Speedup?
       char top = symbols.peek();
 
-      if (top == '\\') {
-        escaped = true;
+      if (top == '\\') { // escaped
         symbols.pop();
       }
       else {
-        escaped = false;
-      }
-
-      if (!escaped) {
         if (top == '{') {
           if (c == ':') {
             // key is complete, push the key to parsed
