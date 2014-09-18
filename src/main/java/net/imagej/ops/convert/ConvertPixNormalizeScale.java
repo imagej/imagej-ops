@@ -34,6 +34,7 @@ import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.normalize.NormalizeRealType;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -44,7 +45,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Convert.NAME)
+@Plugin(type = Op.class, name = Ops.Convert.NAME)
 public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPixScale<I, O>
 {

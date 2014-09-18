@@ -31,23 +31,17 @@
 package net.imagej.ops.equation;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 
 /**
- * Base interface for "equation" operations. These operations compute image
+ * An "equation" operation which computes image
  * values from interval coordinates using an equation.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Equation.NAME)
- * </pre>
  * 
  * @author Curtis Rueden
  */
-public interface Equation<T> extends Function<String, IterableInterval<T>> {
-
-	String NAME = "equation";
-
+public interface Equation<T> extends Ops.Equation, Function<String,
+	IterableInterval<T>>
+{
+	// NB: Marker interface.
 }

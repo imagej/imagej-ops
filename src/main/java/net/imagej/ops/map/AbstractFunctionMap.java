@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 
 import org.scijava.plugin.Parameter;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
  * @param <D> provides {@code <B>}s
  */
 public abstract class AbstractFunctionMap<A, B, C, D> extends
-	AbstractFunction<C, D> implements Map<A, B, Function<A, B>>
+	AbstractStrictFunction<C, D> implements Map<A, B, Function<A, B>>
 {
 
 	/** {@link Function} to be used for mapping. */

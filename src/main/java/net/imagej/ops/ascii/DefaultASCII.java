@@ -34,6 +34,7 @@ import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -48,8 +49,8 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = ASCII.NAME)
-public class DefaultASCII<T extends RealType<T>> implements ASCII {
+@Plugin(type = Op.class, name = Ops.ASCII.NAME)
+public class DefaultASCII<T extends RealType<T>> implements Ops.ASCII {
 
 	private static final String CHARS = " .,-+o*O#";
 

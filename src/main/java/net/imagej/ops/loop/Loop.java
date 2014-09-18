@@ -31,22 +31,14 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "loop" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Loop.NAME)
- * </pre>
+ * A typed "loop" operation.
  * 
  * @author Christian Dietz
  */
-public interface Loop<A> {
-
-	public final static String NAME = "loop";
+public interface Loop<A> extends Ops.Loop {
 
 	/**
 	 * @return the {@link Function} used for looping

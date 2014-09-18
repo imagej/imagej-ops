@@ -31,21 +31,11 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "mean" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Mean.NAME,
- *   attrs = { @Attr(name = "aliases", value = Mean.ALIASES) })
- * </pre>
+ * A typed "mean" function.
  */
-public interface Mean<I, O> extends Function<I, O> {
-
-	String NAME = "mean";
-	String ALIASES = "avg";
-
+public interface Mean<I, O> extends Ops.Mean, Function<I, O> {
+	// NB: Marker interface.
 }

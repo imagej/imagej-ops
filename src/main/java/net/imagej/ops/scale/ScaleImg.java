@@ -31,7 +31,7 @@
 package net.imagej.ops.scale;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.normalize.Normalize;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.FlatIterationOrder;
@@ -52,9 +52,9 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Scale.NAME, attrs = { @Attr(name = "aliases",
-	value = Normalize.ALIASES) })
-public class ScaleImg<T extends RealType<T>> implements Scale {
+@Plugin(type = Op.class, name = Ops.Scale.NAME, attrs = { @Attr(name = "aliases",
+	value = Ops.Scale.ALIASES) })
+public class ScaleImg<T extends RealType<T>> implements Ops.Scale {
 
 	@Parameter
 	private Img<T> in;

@@ -30,17 +30,18 @@
 
 package net.imagej.ops.misc;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Size.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LOW_PRIORITY)
 public class SizeIterableInterval extends
-	AbstractFunction<IterableInterval<?>, LongType> implements
+	AbstractStrictFunction<IterableInterval<?>, LongType> implements
 	Size<IterableInterval<?>>
 {
 

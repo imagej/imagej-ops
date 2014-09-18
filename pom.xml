@@ -69,7 +69,49 @@
 			</roles>
 			<timezone>+1</timezone>
 		</developer>
+		<developer>
+			<id>bnorthan</id>
+			<name>Brian Northan</name>
+			<email>bnorthan@gmail.com</email>
+			<url>www.linkedin.com/pub/brian-northan/6/860/3a7</url>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Jonathan Hale</name>
+			<email>squareys@googlemail.com</email>
+			<url>http://squareys.tumblr.com/</url>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<name>Aparna Pal</name>
+			<email>apal4@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/aparna-pal</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Mark Hiner</name>
+			<email>hiner@wisc.edu</email>
+			<url>http://developer.imagej.net/users/hinerm</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<timezone>-6</timezone>
+		</contributor>
+		<contributor><name>Michael Zinsmaier</name></contributor>
+	</contributors>
 
 	<scm>
 		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
@@ -77,12 +119,10 @@
 		<tag>HEAD</tag>
 		<url>https://github.com/imagej/imagej-ops</url>
 	</scm>
-
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/imagej/imagej-ops/issues</url>
 	</issueManagement>
-
 	<ciManagement>
 		<system>Jenkins</system>
 		<url>http://jenkins.imagej.net/job/ImageJ-OPS/</url>
@@ -211,7 +251,7 @@
 						<configuration>
 							<properties>
 								<templateDirectory>${basedir}/src/main/templates</templateDirectory>
-								<outputDirectory>${project.build.directory}/generated-sources/from-template/net/imagej/ops/generated</outputDirectory>
+								<outputDirectory>${project.build.directory}/generated-sources/from-template</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>
@@ -225,7 +265,7 @@
 						<configuration>
 							<properties>
 								<templateDirectory>${basedir}/src/test/templates</templateDirectory>
-								<outputDirectory>${project.build.directory}/template-tests/</outputDirectory>
+								<outputDirectory>${project.build.directory}/generated-test-sources/from-template</outputDirectory>
 							</properties>
 							<source>${basedir}/src/main/groovy/generate.groovy</source>
 						</configuration>
@@ -239,6 +279,7 @@
 				<version>1.5</version>
 				<executions>
 					<execution>
+						<id>add-source</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
@@ -246,6 +287,18 @@
 						<configuration>
 							<sources>
 								<source>${project.build.directory}/generated-sources/from-template/</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-test-sources/from-template/</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -267,7 +320,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
 					<organizationName>Board of Regents of the University of
-Wisconsin-Madison and University of Konstanz.</organizationName>
+Wisconsin-Madison, University of Konstanz and Brian Northan.</organizationName>
 				</configuration>
 			</plugin>
 		</plugins>

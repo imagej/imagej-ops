@@ -1,6 +1,16 @@
+#**
+
+	Template for generation RealType implementations of arithmetic ops interfaces
+
+	@author Jonathan Hale
+
+*#
+#** set default values *#
+#foreach ($member in $members)#if (!$member.type)$!member.put("type","double")#end#end
+#if (!$authors)#set($authors = ["Barry DeZonia", "Jonathan Hale"])#end
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -27,23 +37,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.arithmetic.real;
 
-package net.imagej.ops.invert;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.${interface};
+
+import net.imglib2.type.numeric.RealType;
+#foreach ($imp in $imports)
+import $imp;
+#end
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 
 /**
- * Base interface for "invert" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Invert.NAME)
- * </pre>
- * 
- * @author Martin Horn
+#foreach ($line in $javadoc.split('\n'))
+ * $line
+#end
+#foreach ($author in $authors)
+ * @author $author
+#end
  */
-public interface Invert {
+@Plugin(type = Op.class, name = ${interface}.NAME)
+public class Real$interface<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStrictFunction<I, O> implements $interface
+{
+#foreach ($member in $members)
+#if (!$member.isEmpty())
+#if (!$member.modifiers.equals("final static"))
+	@Parameter
+#end
+	private #if ($member.modifiers)${member.modifiers} #end${member.type} ${member.name}#if ($member.init)= ${member.init}#end;
+#end
+#end
 
-	String NAME = "invert";
-
+	@Override
+	public O compute(final I input, O output){
+		#if ($compute_body)
+		$compute_body
+		#end
+		#if ($compute_expr)
+		output.setReal(${compute_expr});
+		#end
+		#if (!$omit_return)
+		return output;
+		#end
+	}
 }

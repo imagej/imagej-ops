@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
 import net.imglib2.type.Type;
@@ -45,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Op.class, name = Map.NAME)
+@Plugin(type = Op.class, name = Ops.Map.NAME)
 public class MapRAI2View<A, B extends Type<B>> extends
 	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
@@ -53,6 +54,6 @@ public class MapRAI2View<A, B extends Type<B>> extends
 	@Override
 	public void run() {
 		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getConverter(), getType()));
+			getFunction(), getType()));
 	}
 }

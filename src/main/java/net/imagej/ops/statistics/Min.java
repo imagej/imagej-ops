@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "min" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Min.NAME)
- * </pre>
+ * A typed "min" function.
  * 
  * @author Christian Dietz
  */
-public interface Min<T, V> extends Function<Iterable<T>, V> {
-
-	String NAME = "min";
-
+public interface Min<T, V> extends Ops.Min, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

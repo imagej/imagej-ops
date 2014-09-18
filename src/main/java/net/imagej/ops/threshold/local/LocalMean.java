@@ -57,7 +57,7 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 	@Override
 	public BitType compute(Pair<T> input, BitType output) {
 		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.neighborhood);
 		}
 		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
 		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);

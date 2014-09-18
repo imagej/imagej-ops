@@ -32,6 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -45,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class MapII2II<A, B> extends
 	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent

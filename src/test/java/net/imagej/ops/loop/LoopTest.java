@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.Map;
@@ -52,7 +52,6 @@ public class LoopTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Img<ByteType> out;
-	private Img<ByteType> buffer;
 
 	private int numIterations;
 	private Op functionalOp;
@@ -62,7 +61,6 @@ public class LoopTest extends AbstractOpTest {
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
-		buffer = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
 		numIterations = 10;
 		functionalOp = ops.op(Map.class, out, in, new AddOneFunctional());
@@ -116,7 +114,7 @@ public class LoopTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneFunctional extends AbstractFunction<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
 
 		@Override
 		public ByteType compute(final ByteType input, final ByteType output) {

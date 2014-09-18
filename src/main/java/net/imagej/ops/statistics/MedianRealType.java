@@ -34,16 +34,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Median.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Median.NAME,
+	priority = Priority.LOW_PRIORITY)
 public class MedianRealType<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
+	AbstractStrictFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
 {
 
 	@Override

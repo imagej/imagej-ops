@@ -38,20 +38,17 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
+public abstract class AbstractInplaceFunction<A> extends AbstractFunction<A, A>
+	implements InplaceFunction<A>
+{
 
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- Function methods --
+	// -- InputOp methods --
 
 	@Override
 	public A getInput() {
-		return arg;
-	}
-
-	@Override
-	public A getOutput() {
 		return arg;
 	}
 
@@ -60,10 +57,19 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		arg = input;
 	}
 
+	// -- OutputOp methods --
+
+	@Override
+	public A getOutput() {
+		return arg;
+	}
+
 	@Override
 	public void setOutput(final A output) {
 		arg = output;
 	}
+
+	// -- Function methods --
 
 	@Override
 	public A compute(final A input, final A output) {
@@ -72,6 +78,8 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		}
 		return compute(input);
 	}
+
+	// -- Runnable methods --
 
 	@Override
 	public void run() {
@@ -86,13 +94,6 @@ public abstract class AbstractInplaceFunction<A> implements InplaceFunction<A> {
 		// Individual function implementations can override this assumption if
 		// they have state (such as buffers) that cannot be shared across threads.
 		return this;
-	}
-
-	// -- Converter methods --
-
-	@Override
-	public void convert(final A input, final A output) {
-		compute(input, output);
 	}
 
 }

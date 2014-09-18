@@ -1,22 +1,22 @@
-[arithmetic/real/RealGammaConstant.java]
+[RealGammaConstant.java]
 compute_body=```
 double inputVal = input.getRealDouble();
 if (inputVal <= 0) output.setReal(0); else {
 	output.setReal( Math.exp(this.constant * Math.log(inputVal)) );
 }
 ```
-javadoc=Sets the real component of an output real number to the gamma value of the real component of an input real number. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the gamma value of the real component of an input real number.
 interface=GammaConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealCubeRoot.java]
+[RealCubeRoot.java]
 compute_expr= Math.cbrt(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the cube root of the real component of an input real number.
 interface=CubeRoot
 
 
-[arithmetic/real/RealStep.java]
+[RealStep.java]
 compute_body=```
 if (input.getRealDouble() < 0) output.setZero(); else output.setOne();
 ```
@@ -24,9 +24,12 @@ javadoc=Sets an output real number to 0 if the input real number is less than 0.
 interface=Step
 
 
-[arithmetic/real/RealAddNoise.java]
+[RealAddNoise.java]
 omit_return=true
 compute_body=```
+if (rng == null) {
+	rng = new Random(System.currentTimeMillis());
+}
 int i = 0;
 do {
     double newVal = input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
@@ -37,22 +40,18 @@ do {
     if (i++ > 100) throw new IllegalArgumentException("noise function failing to terminate. probably misconfigured.");
 } while (true);
 ```
-javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise. The noise parameters are specified in the constructor.
+javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise.
 interface=AddNoise
-members=[{name:rangeMin,modifiers:final},{name:rangeMax,modifiers:final},{name:rangeStdDev,modifiers:final},{name:rng,construct:new Random(),modifiers:final,type:Random}]
+members=[{name:rangeMin},{name:rangeMax},{name:rangeStdDev},{name:rng,type:Random}]
 imports=[java.util.Random]
-constructor=```
-this.rng.setSeed(System.currentTimeMillis());
-```
 
-
-[arithmetic/real/RealCsch.java]
+[RealCsch.java]
 compute_expr= 1.0 / Math.sinh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic cosecant of the real component of an input real number.
 interface=Csch
 
 
-[arithmetic/real/RealSincPi.java]
+[RealSincPi.java]
 compute_body=```
 double x = input.getRealDouble();
 double value;
@@ -63,57 +62,57 @@ javadoc=Sets the real component of an output real number to the sinc (pi version
 interface=SincPi
 
 
-[arithmetic/real/RealExpMinusOne.java]
+[RealExpMinusOne.java]
 compute_expr= Math.exp(input.getRealDouble()) - 1
 javadoc=Sets the real component of an output real number to e^x - 1. x is the input argument to the operation.
 interface=ExpMinusOne
 
 
-[arithmetic/real/RealSech.java]
+[RealSech.java]
 compute_expr= 1.0 / Math.cosh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic secant of the real component of an input real number.
 interface=Sech
 
 
-[arithmetic/real/RealArctanh.java]
+[RealArctanh.java]
 compute_body=double xt = input.getRealDouble();output.setReal( 0.5 * Math.log((1 + xt) / (1 - xt)) );
 javadoc=Sets the real component of an output real number to the inverse hyperbolic tangent of the real component of an input real number.
 interface=Arctanh
 
 
-[arithmetic/real/RealOrConstant.java]
+[RealOrConstant.java]
 compute_expr= constant | (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical OR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical OR of the real component of an input real number with a constant value.
 interface=OrConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
-[arithmetic/real/RealLog.java]
+[RealLog.java]
 compute_expr= Math.log(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the natural log of the real component of an input real number.
 interface=Log
 
 
-[arithmetic/real/RealNearestInt.java]
+[RealNearestInt.java]
 compute_expr= Math.rint(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the nearest integral value of the real component of an input real number.
 interface=NearestInt
 
 
-[arithmetic/real/RealConstant.java]
+[RealConstant.java]
 compute_expr=constant
-javadoc=Sets the real component of an output real number to a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to a constant value.
 interface=Constant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealCoth.java]
+[RealCoth.java]
 compute_expr= 1.0 / Math.tanh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic cotangent of the real component of an input real number.
 interface=Coth
 
 
-[arithmetic/real/RealGaussianRandom.java]
+[RealGaussianRandom.java]
 compute_expr= rng.nextGaussian() * Math.abs(input.getRealDouble())
 javadoc=Sets the real component of an output real number to a random value using a gaussian distribution. The input value is considered the standard deviation of the desired distribution and must be positive. The output value has mean value 0.
 interface=GaussianRandom
@@ -121,38 +120,38 @@ members=[{name:rng,init:new Random(),type:Random}]
 imports=[java.util.Random]
 
 
-[arithmetic/real/RealSec.java]
+[RealSec.java]
 compute_expr= 1.0 / Math.cos(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the secant of the real component of an input real number.
 interface=Sec
 
 
-[arithmetic/real/RealUlp.java]
+[RealUlp.java]
 compute_expr= Math.ulp(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the size of the ulp of an input real number. An ulp of a floating point value is the positive distance between an input floating-point value and the floating point value next larger in magnitude. Note that for non-NaN x, ulp(-x) == ulp(x).
 interface=Ulp
 
 
-[arithmetic/real/RealCopy.java]
+[RealCopy.java]
 compute_expr= input.getRealDouble()
 javadoc=Sets the real component of an output real number to the real component of an input real number.
 interface=Copy
 
 
-[arithmetic/real/RealPowerConstant.java]
+[RealPowerConstant.java]
 compute_expr= Math.pow(input.getRealDouble(), constant)
-javadoc=Sets the real component of an output real number to the raising of the real component of an input real number to a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the raising of the real component of an input real number to a constant value.
 interface=PowerConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealRound.java]
+[RealRound.java]
 compute_expr=Math.round(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the rounding of the real component of an input real number.
 interface=Round
 
 
-[arithmetic/real/RealUniformRandom.java]
+[RealUniformRandom.java]
 compute_body=double r = rng.nextDouble();output.setReal( r * input.getRealDouble() );
 javadoc=Sets the real component of an output real number to a random value between 0 and (input real number).
 interface=UniformRandom
@@ -160,7 +159,7 @@ members=[{name:rng,init:new Random(),type:Random}]
 imports=[java.util.Random]
 
 
-[arithmetic/real/RealArccsch.java]
+[RealArccsch.java]
 compute_body=```
 double xt = input.getRealDouble();
 double delta = Math.sqrt(1 + (1 / (xt * xt)));
@@ -170,97 +169,97 @@ javadoc=Sets the real component of an output real number to the inverse hyperbol
 interface=Arccsch
 
 
-[arithmetic/real/RealMinConstant.java]
+[RealMinConstant.java]
 compute_body=```
 double value = input.getRealDouble();
 if (value > constant) output.setReal(value); else output.setReal(constant);
 ```
-javadoc=Sets the real component of an output real number to the real component of an input real number unless it is less then a minimum value. If it is less than the minimum value then it sets the output real component to that minimum value. The minimum value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the real component of an input real number unless it is less then a minimum value. If it is less than the minimum value then it sets the output real component to that minimum value.
 interface=MinConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealCsc.java]
+[RealCsc.java]
 compute_expr= 1.0 / Math.sin(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the cosecant of the real component of an input real number.
 interface=Csc
 
 
-[arithmetic/real/RealAbs.java]
+[RealAbs.java]
 compute_expr=Math.abs(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the absolute value of the real component of an input real number.
 interface=Abs
 
 
-[arithmetic/real/RealXorConstant.java]
+[RealXorConstant.java]
 compute_expr= constant ^ (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical XOR of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical XOR of the real component of an input real number with a constant value.
 interface=XorConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
-[arithmetic/real/RealFloor.java]
+[RealFloor.java]
 compute_expr= Math.floor(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the floor of the real component of an input real number.
 interface=Floor
 
 
-[arithmetic/real/RealSignum.java]
+[RealSignum.java]
 compute_expr= Math.signum(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the signum of the real component of an input real number. It equals -1 if the input number is less than 0, it equals 1 if the input number is greater than 0, and it equals 0 if the input number equals 0.
 interface=Signum
 
 
-[arithmetic/real/RealExp.java]
+[RealExp.java]
 compute_expr= Math.exp(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the exponentiation of the real component of an input real number. (e raised to a power)
 interface=Exp
 
 
-[arithmetic/real/RealSubtractConstant.java]
+[RealSubtractConstant.java]
 compute_expr= input.getRealDouble() - constant
-javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value.
 interface=SubtractConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealNegate.java]
+[RealNegate.java]
 compute_expr= -input.getRealDouble()
 javadoc=Sets the real component of an output real number to the negation of the real component of an input real number.
 interface=Negate
 
 
-[arithmetic/real/RealSin.java]
+[RealSin.java]
 compute_expr= Math.sin(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the sine of the real component of an input real number.
 interface=Sin
 
 
-[arithmetic/real/RealCot.java]
+[RealCot.java]
 compute_expr= 1.0 / Math.tan(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the cotangent of the real component of an input real number.
 interface=Cot
 
 
-[arithmetic/real/RealTan.java]
+[RealTan.java]
 compute_expr= Math.tan(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the tangent of the real component of an input real number.
 interface=Tan
 
 
-[arithmetic/real/RealLog2.java]
+[RealLog2.java]
 compute_expr= Math.log(input.getRealDouble()) / Math.log(2)
 javadoc=Sets the real component of an output real number to the base 2 log of the real component of an input real number.
 interface=Log2
 
 
-[arithmetic/real/RealArccos.java]
+[RealArccos.java]
 compute_expr= Math.acos(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the inverse cosine of the real component of an input real number.
 interface=Arccos
 
 
-[arithmetic/real/RealArccot.java]
+[RealArccot.java]
 compute_body=```
 double value = Math.atan(1.0 / input.getRealDouble());
 if (input.getRealDouble() < 0) value += Math.PI;
@@ -270,20 +269,20 @@ javadoc=Sets the real component of an output real number to the inverse cotangen
 interface=Arccot
 
 
-[arithmetic/real/RealLog10.java]
+[RealLog10.java]
 compute_expr= Math.log10(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the 10-based log of the real component of an input real number.
 interface=Log10
 
 
-[arithmetic/real/RealInvert.java]
+[RealInvert.java]
 compute_expr= specifiedMax - (input.getRealDouble() - specifiedMin)
-javadoc=Sets the real component of an output real number to the inversion of the real component of an input real number about a range. The range is specified in the constructor.
+javadoc=Sets the real component of an output real number to the inversion of the real component of an input real number about a range.
 interface=Invert
 members=[{name:specifiedMin},{name:specifiedMax}]
 
 
-[arithmetic/real/RealDivideConstant.java]
+[RealDivideConstant.java]
 compute_body=```
 if (constant == 0) {
 	output.setReal(dbzVal);
@@ -291,12 +290,12 @@ if (constant == 0) {
 	output.setReal( input.getRealDouble() / constant );
 }
 ```
-javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value. The constant value is specified in the constructor. In the case of division by zero the value is set to a value also specified in the constructor.
+javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value.
 interface=DivideConstant
-members=[{name:constant,modifiers:final},{name:dbzVal,modifiers:final}]
+members=[{name:constant},{name:dbzVal}]
 
 
-[arithmetic/real/RealArcsech.java]
+[RealArcsech.java]
 compute_body=```
 double xt = input.getRealDouble();
 double numer = 1 + Math.sqrt(1 - xt * xt);
@@ -306,13 +305,13 @@ javadoc=Sets the real component of an output real number to the inverse hyperbol
 interface=Arcsech
 
 
-[arithmetic/real/RealArccoth.java]
+[RealArccoth.java]
 compute_body=double xt = input.getRealDouble();output.setReal( 0.5 * Math.log((xt + 1) / (xt - 1)) );
 javadoc=Sets the real component of an output real number to the inverse hyperbolic cotangent of the real component of an input real number.
 interface=Arccoth
 
 
-[arithmetic/real/RealSinc.java]
+[RealSinc.java]
 compute_body=```
 double x = input.getRealDouble();
 double value;
@@ -323,7 +322,7 @@ javadoc=Sets the real component of an output real number to the sinc value of th
 interface=Sinc
 
 
-[arithmetic/real/RealArcsec.java]
+[RealArcsec.java]
 compute_body=```
 double xt = input.getRealDouble();
 if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException("arcsec(x) : x out of range"); else if (xt == -1) output.setReal(Math.PI); else if (xt == 1) output.setReal(0); else {
@@ -336,17 +335,17 @@ if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException("arcsec(x) : x out
 ```
 javadoc=Sets the real component of an output real number to the inverse secant of the real component of an input real number.
 interface=Arcsec
-members=[{name:asin,init:"new RealArcsin<DoubleType, DoubleType>()",modifiers:final,type:"RealArcsin<DoubleType, DoubleType>"},{name:angle,init:new DoubleType(),type:DoubleType},{name:tmp,init:new DoubleType(),type:DoubleType}]
+members=[{name:asin,init:"new RealArcsin<DoubleType, DoubleType>()",modifiers:final static,type:"RealArcsin<DoubleType, DoubleType>"},{name:angle,init:new DoubleType(),type:DoubleType},{name:tmp,init:new DoubleType(),type:DoubleType}]
 imports=[net.imglib2.type.numeric.real.DoubleType]
 
 
-[arithmetic/real/RealCeil.java]
+[RealCeil.java]
 compute_expr=Math.ceil(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the ceiling of the real component of an input real number.
 interface=Ceil
 
 
-[arithmetic/real/RealArcsinh.java]
+[RealArcsinh.java]
 compute_body=```
 double xt = input.getRealDouble();
 double delta = Math.sqrt(xt * xt + 1);
@@ -356,13 +355,13 @@ javadoc=Sets the real component of an output real number to the inverse hyperbol
 interface=Arcsinh
 
 
-[arithmetic/real/RealArctan.java]
+[RealArctan.java]
 compute_expr= Math.atan(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the inverse tangent of the real component of an input real number.
 interface=Arctan
 
 
-[arithmetic/real/RealArccosh.java]
+[RealArccosh.java]
 compute_body=```
 double xt = input.getRealDouble();
 double delta = Math.sqrt(xt * xt - 1);
@@ -373,52 +372,52 @@ javadoc=Sets the real component of an output real number to the inverse hyperbol
 interface=Arccosh
 
 
-[arithmetic/real/RealCosh.java]
+[RealCosh.java]
 compute_expr= Math.cosh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic cosine of the real component of an input real number.
 interface=Cosh
 
 
-[arithmetic/real/RealMaxConstant.java]
+[RealMaxConstant.java]
 compute_body=```
 double value = input.getRealDouble();
 if (value < constant) output.setReal(value); else output.setReal(constant);
 ```
-javadoc=Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value. The maximum value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value.
 interface=MaxConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealReciprocal.java]
+[RealReciprocal.java]
 compute_body=```
 double inputVal = input.getRealDouble();
 if (inputVal == 0) output.setReal(dbzVal); else output.setReal(1.0 / inputVal);
 ```
 javadoc=Sets the real component of an output real number to the reciprocal of the real component of an input real number.
 interface=Reciprocal
-members=[{name:dbzVal,modifiers:final}]
+members=[{name:dbzVal}]
 
 
-[arithmetic/real/RealCos.java]
+[RealCos.java]
 compute_expr= Math.cos(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the cosine of the real component of an input real number.
 interface=Cos
 
 
-[arithmetic/real/RealMultiplyConstant.java]
+[RealMultiplyConstant.java]
 compute_expr= input.getRealDouble() * constant
-javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value.
 interface=MultiplyConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealLogOnePlusX.java]
+[RealLogOnePlusX.java]
 compute_expr= Math.log1p(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the natural logarithm of the sum of the argument and 1. This calculation is more accurate than explicitly calling log(1.0 + x).
 interface=LogOnePlusX
 
 
-[arithmetic/real/RealSqr.java]
+[RealSqr.java]
 compute_body=```
 double value = input.getRealDouble();
 output.setReal(value * value);
@@ -427,13 +426,13 @@ javadoc=Sets the real component of an output real number to the square of the re
 interface=Sqr
 
 
-[arithmetic/real/RealSqrt.java]
+[RealSqrt.java]
 compute_expr= Math.sqrt(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the square root of the real component of an input real number.
 interface=Sqrt
 
 
-[arithmetic/real/RealArccsc.java]
+[RealArccsc.java]
 compute_body=```
 double xt = input.getRealDouble();
 if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException("arccsc(x) : x out of range"); else if (xt == -1) output.setReal(-Math.PI / 2); else if (xt == 1) output.setReal(Math.PI / 2); else {
@@ -448,7 +447,7 @@ members=[{name:acos,init:"new RealArccos<DoubleType, DoubleType>()",modifiers:fi
 imports=[net.imglib2.type.numeric.real.DoubleType]
 
 
-[arithmetic/real/RealZero.java]
+[RealZero.java]
 compute_body=```
 output.setZero();
 ```
@@ -456,33 +455,33 @@ javadoc=Sets the real component of an output real number to zero.
 interface=Zero
 
 
-[arithmetic/real/RealAddConstant.java]
+[RealAddConstant.java]
 compute_expr= input.getRealDouble() + constant
-javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value.
 interface=AddConstant
-members=[{name:constant,modifiers:final}]
+members=[{name:constant}]
 
 
-[arithmetic/real/RealArcsin.java]
+[RealArcsin.java]
 compute_expr= Math.asin(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the inverse sine of the real component of an input real number.
 interface=Arcsin
 
 
-[arithmetic/real/RealSinh.java]
+[RealSinh.java]
 compute_expr= Math.sinh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic sine of the real component of an input real number.
 interface=Sinh
 
 
-[arithmetic/real/RealAndConstant.java]
+[RealAndConstant.java]
 compute_expr= constant & (long) input.getRealDouble()
-javadoc=Sets the real component of an output real number to the logical AND of the real component of an input real number with a constant value. The constant value is specified in the constructor.
+javadoc=Sets the real component of an output real number to the logical AND of the real component of an input real number with a constant value.
 interface=AndConstant
-members=[{name:constant,modifiers:final,type:long}]
+members=[{name:constant,type:long}]
 
 
-[arithmetic/real/RealTanh.java]
+[RealTanh.java]
 compute_expr= Math.tanh(input.getRealDouble())
 javadoc=Sets the real component of an output real number to the hyperbolic tangent of the real component of an input real number.
 interface=Tanh

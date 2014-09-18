@@ -206,8 +206,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object create(Object... args) {
-		return run("create", args);
+	public Object createImg(Object... args) {
+		return run("createImg", args);
 	}
 
 	@Override
@@ -381,6 +381,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	// -- Deprecated methods --
+
+	@Deprecated
+	@Override
+	public Object create(Object... args) {
+		return run("createImg", args);
 	}
 
 }

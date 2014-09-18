@@ -1,4 +1,4 @@
-package net.imagej.ops.generated.arithmetic;
+package net.imagej.ops.arithmetic;
 
 import net.imagej.ops.Op;
 

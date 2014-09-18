@@ -30,6 +30,7 @@
 
 package net.imagej.ops.crop;
 
+import net.imagej.ops.Ops;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
@@ -43,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn
  */
 public abstract class AbstractCropRAI<T, I extends RandomAccessibleInterval<T>>
-	implements Crop
+	implements Ops.Crop
 {
 
 	@Parameter

@@ -32,16 +32,18 @@ package net.imagej.ops.statistics;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StdDeviation.NAME, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Ops.StdDeviation.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
-		AbstractFunction<Iterable<T>, T> implements StdDeviation<T, T> {
+	AbstractStrictFunction<Iterable<T>, T> implements StdDeviation<T, T>
+{
 
 	@Override
 	public T compute(final Iterable<T> input, final T output) {

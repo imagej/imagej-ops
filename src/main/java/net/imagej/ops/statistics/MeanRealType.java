@@ -30,9 +30,10 @@
 
 package net.imagej.ops.statistics;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.misc.Size;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -47,9 +48,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Mean.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Mean.NAME, priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
+	AbstractStrictFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
 {
 
 	@Parameter(required = false)
@@ -65,10 +66,10 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	public O compute(final Iterable<I> input, final O output) {
 
 		if (sumFunc == null) {
-			sumFunc = (Sum<Iterable<I>, O>) ops.op(Sum.class, output, input);
+			sumFunc = (Sum<Iterable<I>, O>) ops.op(Sum.class, LongType.class, input);
 		}
 		if (sizeFunc == null) {
-			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, output, input);
+			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, LongType.class, input);
 		}
 
 		final O result;
@@ -91,4 +92,5 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 
 		return result;
 	}
+
 }

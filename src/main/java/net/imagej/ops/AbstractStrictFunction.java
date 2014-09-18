@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,27 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.generated;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.Add;
+package net.imagej.ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "add", priority = $priority)
-public class AddConstantTo$name implements Add {
+/**
+ * Abstract superclass for strict {@link Function} ops, which require the "out"
+ * parameter to be explicitly specified.
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @author Curtis Rueden
+ * @see AbstractOutputFunction
+ */
+public abstract class AbstractStrictFunction<I, O> extends
+	AbstractFunction<I, O>
+{
 
 	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+	private O out;
 
 	@Parameter
-	private $primitive b;
+	private I in;
+
+	// -- InputOp methods --
 
 	@Override
-	public void run() {
-		a += b;
+	public I getInput() {
+		return in;
+	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- OutputOp methods --
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

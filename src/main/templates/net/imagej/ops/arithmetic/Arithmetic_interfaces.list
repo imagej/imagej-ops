@@ -1,252 +1,252 @@
-[arithmetic/GammaConstant.java]
+[GammaConstant.java]
 interface=GammaConstant
 opname=gammaconstant
 
-[arithmetic/CubeRoot.java]
+[CubeRoot.java]
 interface=CubeRoot
 opname=cuberoot
 
-[arithmetic/Step.java]
+[Step.java]
 interface=Step
 opname=step
 
-[arithmetic/AddNoise.java]
+[AddNoise.java]
 interface=AddNoise
 opname=addnoise
 
-[arithmetic/Csch.java]
+[Csch.java]
 interface=Csch
 opname=csch
 
-[arithmetic/SincPi.java]
+[SincPi.java]
 interface=SincPi
 opname=sincpi
 
-[arithmetic/ExpMinusOne.java]
+[ExpMinusOne.java]
 interface=ExpMinusOne
 opname=expminusone
 
-[arithmetic/Sech.java]
+[Sech.java]
 interface=Sech
 opname=sech
 
-[arithmetic/Arctanh.java]
+[Arctanh.java]
 interface=Arctanh
 opname=arctanh
 
-[arithmetic/OrConstant.java]
+[OrConstant.java]
 interface=OrConstant
 opname=orconstant
 
-[arithmetic/Log.java]
+[Log.java]
 interface=Log
 opname=log
 
-[arithmetic/NearestInt.java]
+[NearestInt.java]
 interface=NearestInt
 opname=nearestint
 
-[arithmetic/Constant.java]
+[Constant.java]
 interface=Constant
 opname=constant
 
-[arithmetic/Coth.java]
+[Coth.java]
 interface=Coth
 opname=coth
 
-[arithmetic/GaussianRandom.java]
+[GaussianRandom.java]
 interface=GaussianRandom
 opname=gaussianrandom
 
-[arithmetic/Sec.java]
+[Sec.java]
 interface=Sec
 opname=sec
 
-[arithmetic/Ulp.java]
+[Ulp.java]
 interface=Ulp
 opname=ulp
 
-[arithmetic/Copy.java]
+[Copy.java]
 interface=Copy
 opname=copy
 
-[arithmetic/PowerConstant.java]
+[PowerConstant.java]
 interface=PowerConstant
 opname=powerconstant
 
-[arithmetic/Round.java]
+[Round.java]
 interface=Round
 opname=round
 
-[arithmetic/UniformRandom.java]
+[UniformRandom.java]
 interface=UniformRandom
 opname=uniformrandom
 
-[arithmetic/Arccsch.java]
+[Arccsch.java]
 interface=Arccsch
 opname=arccsch
 
-[arithmetic/MinConstant.java]
+[MinConstant.java]
 interface=MinConstant
 opname=minconstant
 
-[arithmetic/Csc.java]
+[Csc.java]
 interface=Csc
 opname=csc
 
-[arithmetic/Abs.java]
+[Abs.java]
 interface=Abs
 opname=abs
 
-[arithmetic/XorConstant.java]
+[XorConstant.java]
 interface=XorConstant
 opname=xorconstant
 
-[arithmetic/Floor.java]
+[Floor.java]
 interface=Floor
 opname=floor
 
-[arithmetic/Signum.java]
+[Signum.java]
 interface=Signum
 opname=signum
 
-[arithmetic/Exp.java]
+[Exp.java]
 interface=Exp
 opname=exp
 
-[arithmetic/SubtractConstant.java]
+[SubtractConstant.java]
 interface=SubtractConstant
 opname=subtractconstant
 
-[arithmetic/Negate.java]
+[Negate.java]
 interface=Negate
 opname=negate
 
-[arithmetic/Sin.java]
+[Sin.java]
 interface=Sin
 opname=sin
 
-[arithmetic/Cot.java]
+[Cot.java]
 interface=Cot
 opname=cot
 
-[arithmetic/Tan.java]
+[Tan.java]
 interface=Tan
 opname=tan
 
-[arithmetic/Log2.java]
+[Log2.java]
 interface=Log2
 opname=log2
 
-[arithmetic/Arccos.java]
+[Arccos.java]
 interface=Arccos
 opname=arccos
 
-[arithmetic/Arccot.java]
+[Arccot.java]
 interface=Arccot
 opname=arccot
 
-[arithmetic/Log10.java]
+[Log10.java]
 interface=Log10
 opname=log10
 
-[arithmetic/Invert.java]
+[Invert.java]
 interface=Invert
 opname=invert
 
-[arithmetic/DivideConstant.java]
+[DivideConstant.java]
 interface=DivideConstant
 opname=divideconstant
 
-[arithmetic/Arcsech.java]
+[Arcsech.java]
 interface=Arcsech
 opname=arcsech
 
-[arithmetic/Arccoth.java]
+[Arccoth.java]
 interface=Arccoth
 opname=arccoth
 
-[arithmetic/Sinc.java]
+[Sinc.java]
 interface=Sinc
 opname=sinc
 
-[arithmetic/Arcsec.java]
+[Arcsec.java]
 interface=Arcsec
 opname=arcsec
 
-[arithmetic/Ceil.java]
+[Ceil.java]
 interface=Ceil
 opname=ceil
 
-[arithmetic/Arcsinh.java]
+[Arcsinh.java]
 interface=Arcsinh
 opname=arcsinh
 
-[arithmetic/Arctan.java]
+[Arctan.java]
 interface=Arctan
 opname=arctan
 
-[arithmetic/Arccosh.java]
+[Arccosh.java]
 interface=Arccosh
 opname=arccosh
 
-[arithmetic/Cosh.java]
+[Cosh.java]
 interface=Cosh
 opname=cosh
 
-[arithmetic/MaxConstant.java]
+[MaxConstant.java]
 interface=MaxConstant
 opname=maxconstant
 
-[arithmetic/Reciprocal.java]
+[Reciprocal.java]
 interface=Reciprocal
 opname=reciprocal
 
-[arithmetic/Cos.java]
+[Cos.java]
 interface=Cos
 opname=cos
 
-[arithmetic/MultiplyConstant.java]
+[MultiplyConstant.java]
 interface=MultiplyConstant
 opname=multiplyconstant
 
-[arithmetic/LogOnePlusX.java]
+[LogOnePlusX.java]
 interface=LogOnePlusX
 opname=logoneplusx
 
-[arithmetic/Sqr.java]
+[Sqr.java]
 interface=Sqr
 opname=sqr
 
-[arithmetic/Sqrt.java]
+[Sqrt.java]
 interface=Sqrt
 opname=sqrt
 
-[arithmetic/Arccsc.java]
+[Arccsc.java]
 interface=Arccsc
 opname=arccsc
 
-[arithmetic/Zero.java]
+[Zero.java]
 interface=Zero
 opname=zero
 
-[arithmetic/AddConstant.java]
+[AddConstant.java]
 interface=AddConstant
 opname=addconstant
 
-[arithmetic/Arcsin.java]
+[Arcsin.java]
 interface=Arcsin
 opname=arcsin
 
-[arithmetic/Sinh.java]
+[Sinh.java]
 interface=Sinh
 opname=sinh
 
-[arithmetic/AndConstant.java]
+[AndConstant.java]
 interface=AndConstant
 opname=andconstant
 
-[arithmetic/Tanh.java]
+[Tanh.java]
 interface=Tanh
 opname=tanh
 

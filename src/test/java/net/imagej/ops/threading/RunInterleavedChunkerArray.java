@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.threading;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
@@ -41,7 +41,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "doNothing", priority = Priority.LOW_PRIORITY)
-public class RunInterleavedChunkerArray<A> extends AbstractFunction<A[], A[]> implements Parallel {
+public class RunInterleavedChunkerArray<A> extends
+	AbstractStrictFunction<A[], A[]> implements Parallel
+{
 
 	@Parameter
 	private OpService opService;

@@ -28,25 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.scale;
+package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.NativeType;
 
-/**
- * Base interface for "scale" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Scale.NAME,
- *   attrs = { @Attr(name = "aliases", value = Scale.ALIASES) })
- * </pre>
- * 
- * @author Martin Horn
- */
-public interface Scale extends Op {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	String NAME = "scale";
-	String ALIASES = "resize";
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
+public class CreateEmptyImgPlusCopy<V extends NativeType<V>> implements
+		Ops.CreateImg {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private ImgPlus<V> output;
+
+	@Parameter
+	private ImgPlus<V> input;
+
+	@Override
+	public void run() {
+		output = new ImgPlus<V>(input.factory().create(input,
+				input.firstElement().createVariable()), input);
+	}
 }

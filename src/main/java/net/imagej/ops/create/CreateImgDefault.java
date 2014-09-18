@@ -28,23 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
-/**
- * Base interface for "convolve" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Convolve.NAME)
- * </pre>
- * 
- * @author Martin Horn
- */
-public interface Convolve extends Op {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	String NAME = "convolve";
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
+public class CreateImgDefault<V extends NativeType<V>> implements Ops.CreateImg
+{
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<V> output;
+
+	@Parameter
+	private ImgFactory<V> fac;
+
+	@Parameter
+	private V outType;
+
+	@Parameter
+	private long[] dims;
+
+	@Override
+	public void run() {
+		output = fac.create(dims, outType.copy());
+	}
 }

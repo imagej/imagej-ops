@@ -33,6 +33,7 @@ package net.imagej.ops.map;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.chunker.CursorBasedChunk;
@@ -49,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 5)
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 5)
 public class ParallelMap<A> extends
 	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
 {

@@ -28,46 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
-
-import java.util.Iterator;
+package net.imagej.ops;
 
 import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Static utility class containing built-in op interfaces.
+ * <p>
+ * These interfaces are intended to mark all ops using a particular name,
+ * regardless of the area of functionality. For example, all ops called "add"
+ * would be marked by implementing the {@code Ops.Add} interface, and
+ * annotating them with:
+ * </p>
+	 * <pre>
+	 * @Plugin(type = Op.class, name = Ops.Add.NAME)
+	 * </pre>
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "minmax")
-public class MinMaxRealType<T extends RealType<T>> implements Op {
+public final class Ops {
 
-	@Parameter
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
-
-	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
-
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
-		}
+	private Ops() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($op in $ops)
+
+	/**
+	 * Base interface for "$op.name" operations.
+	 * <p>
+	 * Implementing classes should be annotated with:
+	 * </p>
+	 *
+	 * <pre>
+#if ($op.aliases)
+	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = Ops.${op.iface}.ALIASES) })
+#else
+	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME)
+#end
+	 * </pre>
+	 */
+	public interface $op.iface extends Op {
+		String NAME = "$op.name";
+#if ($op.aliases)
+		String ALIASES = "$op.aliases";
+#end
+	}
+#end
 
 }

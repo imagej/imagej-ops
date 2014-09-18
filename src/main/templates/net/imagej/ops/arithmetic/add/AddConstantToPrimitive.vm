@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,22 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops.arithmetic.add;
 
-/**
- * Base interface for "join" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Join.NAME)
- * </pre>
- * 
- * @author Curtis Rueden
- */
-public interface Join {
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
-	String NAME = "join";
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = Ops.Add.NAME, priority = $priority)
+public class AddConstantTo$name implements Ops.Add {
+
+	@Parameter(type = ItemIO.BOTH)
+	private $primitive a;
+
+	@Parameter
+	private $primitive b;
+
+	@Override
+	public void run() {
+		a += b;
+	}
 
 }

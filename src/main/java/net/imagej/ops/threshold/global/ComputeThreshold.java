@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.global;
 
 import net.imagej.ops.OutputFunction;
-import net.imagej.ops.threshold.Threshold;
 
 /**
  * An algorithm for computing a threshold value that divides an object into two
@@ -39,7 +38,6 @@ import net.imagej.ops.threshold.Threshold;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
- * @see Threshold
  */
 public interface ComputeThreshold<I, O> extends OutputFunction<I, O> {
 	// NB: Marker interface.

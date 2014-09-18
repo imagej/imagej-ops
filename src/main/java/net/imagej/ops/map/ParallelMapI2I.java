@@ -34,6 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.chunker.CursorBasedChunk;
@@ -52,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY + 3)
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
 public class ParallelMapI2I<A, B> extends
 	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel

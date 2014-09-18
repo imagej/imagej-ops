@@ -28,26 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.threshold.global.ApplyThreshold;
+import net.imagej.ops.Ops;
+import net.imglib2.meta.ImgPlus;
+import net.imglib2.type.NativeType;
 
-/**
- * Base interface for "threshold" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Threshold.NAME)
- * </pre>
- * 
- * @author Martin Horn
- * @see ApplyThreshold
- */
-public interface Threshold extends Op {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	String NAME = "threshold";
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
+public class CreateEmptyImgCopy<V extends NativeType<V>> implements
+		Ops.CreateImg {
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private ImgPlus<V> output;
+
+	@Parameter
+	private ImgPlus<V> input;
+
+	@Override
+	public void run() {
+		output = new ImgPlus<V>(input.factory().create(input,
+				input.firstElement().createVariable()), input);
+	}
 }

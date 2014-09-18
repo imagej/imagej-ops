@@ -30,20 +30,13 @@
 
 package net.imagej.ops.statistics;
 
+import net.imagej.ops.Ops;
+
 /**
- * Base interface for "median" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Median.NAME)
- * </pre>
+ * A typed "median" function.
  * 
  * @author Christian Dietz
  */
-public interface Median<T, V> extends Quantile<T, V> {
-
-	String NAME = "median";
-
+public interface Median<T, V> extends Ops.Median, Quantile<T, V> {
+	// NB: Marker interface.
 }

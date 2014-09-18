@@ -35,13 +35,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.BufferFactory;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.BufferFactory;
 import net.imagej.ops.map.Map;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -142,7 +141,7 @@ public class JoinTest extends AbstractOpTest {
 			new ArrayList<Function<Img<ByteType>, Img<ByteType>>>();
 
 		for (int i = 0; i < 5; i++) {
-			functions.add(new AddOneFunctionalImg(ops));
+			functions.add(new AddOneFunctionalImg());
 		}
 
 		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
@@ -175,7 +174,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneFunctional extends AbstractFunction<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
 
 		@Override
 		public ByteType compute(final ByteType input, final ByteType output) {
@@ -186,14 +185,8 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	class AddOneFunctionalImg extends
-		AbstractFunction<Img<ByteType>, Img<ByteType>>
+		AbstractStrictFunction<Img<ByteType>, Img<ByteType>>
 	{
-
-		private OpService ops;
-
-		public AddOneFunctionalImg(final OpService ops) {
-			this.ops = ops;
-		}
 
 		@Override
 		public Img<ByteType> compute(final Img<ByteType> input,

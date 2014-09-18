@@ -30,10 +30,12 @@
 
 package net.imagej.ops.invert;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.arithmetic.Invert;
 import net.imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -45,9 +47,10 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "invert", priority = Priority.NORMAL_PRIORITY + 1)
+@Plugin(type = Op.class, name = Ops.Invert.NAME, priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractFunction<IterableInterval<I>, IterableInterval<O>> implements Invert
+	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
+	Invert
 {
 
 	@Parameter
@@ -70,7 +73,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractFunction<II, OO>
+		extends AbstractStrictFunction<II, OO>
 	{
 
 		@Override
@@ -83,7 +86,7 @@ public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 	}
 
 	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractFunction<II, OO>
+		extends AbstractStrictFunction<II, OO>
 	{
 
 		private final double max;

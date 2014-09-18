@@ -31,7 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 /**
  * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
@@ -39,9 +39,7 @@ import net.imagej.ops.Op;
  * 
  * @author Christian Dietz
  */
-public interface Map<A, B, F extends Function<A, B>> extends Op {
-
-	public static final String NAME = "map";
+public interface Map<A, B, F extends Function<A, B>> extends Ops.Map {
 
 	/**
 	 * @return the {@link Function} used for mapping

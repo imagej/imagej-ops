@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.converter.read.ConvertedRandomAccessible;
 import net.imglib2.type.Type;
@@ -45,14 +46,14 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Op.class, name = Map.NAME)
+@Plugin(type = Op.class, name = Ops.Map.NAME)
 public class MapRA2View<A, B extends Type<B>> extends
 	MapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
 {
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getConverter(),
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getFunction(),
 			getType()));
 	}
 }

@@ -33,7 +33,7 @@ package net.imagej.ops.slicer;
 import java.util.Iterator;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.crop.Crop;
+import net.imagej.ops.Ops;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -53,7 +53,7 @@ import net.imglib2.util.Intervals;
  * 
  * @author Christian Dietz
  */
-public class CroppedIterableInterval extends AbstractInterval implements
+public class Hyperslice extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
 {
 
@@ -74,7 +74,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 	 *            axes which define a plane, cube, hypercube, ...! All other
 	 *            axes will be iterated.
 	 */
-	public CroppedIterableInterval(final OpService opService,
+	public Hyperslice(final OpService opService,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
 	{
 		super(initIntervals(source, axesOfInterest));
@@ -119,7 +119,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new CroppedCursor(source, opService, this, slice);
+		return new HyperSliceCursor(source, opService, this, slice);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 	 * 
 	 * @author Christian Dietz
 	 */
-	private class CroppedCursor extends IntervalIterator implements
+	private class HyperSliceCursor extends IntervalIterator implements
 		Cursor<RandomAccessibleInterval<?>>
 	{
 
@@ -166,7 +166,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 		private final RandomAccessibleInterval<?> src;
 		private final long[] sliceMax;
 
-		public CroppedCursor(final RandomAccessibleInterval<?> src,
+		public HyperSliceCursor(final RandomAccessibleInterval<?> src,
 			final OpService service, final Interval fixedAxes, final Interval slice)
 		{
 			super(fixedAxes);
@@ -178,7 +178,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 			slice.max(sliceMax);
 		}
 
-		private CroppedCursor(final CroppedCursor cursor) {
+		private HyperSliceCursor(final HyperSliceCursor cursor) {
 			super(cursor);
 
 			this.opService = cursor.opService;
@@ -199,7 +199,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 				max[d] += sliceMax[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Crop.class,
+			return (RandomAccessibleInterval<?>) opService.run(Ops.Crop.class,
 				new FinalInterval(tmpPosition, max), null, src);
 		}
 
@@ -221,7 +221,7 @@ public class CroppedIterableInterval extends AbstractInterval implements
 
 		@Override
 		public Cursor<RandomAccessibleInterval<?>> copyCursor() {
-			return new CroppedCursor(this);
+			return new HyperSliceCursor(this);
 		}
 	}
 

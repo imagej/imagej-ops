@@ -361,7 +361,7 @@ public class DefaultOpMatchingService extends
 		if (arg == null) return !item.isRequired();
 		if (item instanceof CommandModuleItem) {
 			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-			final Type type = commandItem.getField().getGenericType();
+			final Type type = commandItem.getGenericType();
 			return canConvert(arg, type);
 		}
 		return canConvert(arg, item.getType());
@@ -391,7 +391,7 @@ public class DefaultOpMatchingService extends
 			Object value;
 			if (item instanceof CommandModuleItem) {
 				final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-				final Type type = commandItem.getField().getGenericType();
+				final Type type = commandItem.getGenericType();
 				value = convert(arg, type);
 			}
 			else value = convert(arg, item.getType());

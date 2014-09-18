@@ -37,6 +37,7 @@ import net.imagej.ops.project.parallel.DefaultProjectP;
 import net.imagej.ops.statistics.Sum;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 
 import org.junit.Before;
@@ -65,7 +66,7 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
-		op = ops.op("sum", null, Sum.class);
+		op = ops.op(Sum.class, RealType.class, out1);
 	}
 
 	@Test

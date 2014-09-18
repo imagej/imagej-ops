@@ -32,6 +32,8 @@ package net.imagej.ops.crop;
 
 import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Crop;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -77,19 +79,19 @@ public class CropTest extends AbstractOpTest {
 			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 18 });
 
 		// check if result is ImgView
-		assertTrue(ops.run(Crop.class, defInterval, null, in) instanceof Img);
+		assertTrue(ops.run(Ops.Crop.class, defInterval, null, in) instanceof Img);
 
 		// check if result is LabelingView
-		assertTrue(ops.run(Crop.class, defInterval, null,
+		assertTrue(ops.run(Ops.Crop.class, defInterval, null,
 			new NativeImgLabeling<String, ByteType>(in)) instanceof Labeling);
 
 		// check if result is ImgPlus
 		assertTrue(ops
-			.run(Crop.class, defInterval, null, new ImgPlus<ByteType>(in)) instanceof ImgPlus);
+			.run(Ops.Crop.class, defInterval, null, new ImgPlus<ByteType>(in)) instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval
 		final Object run =
-			ops.run(Crop.class, smallerInterval, null, Views.interval(in,
+			ops.run(Ops.Crop.class, smallerInterval, null, Views.interval(in,
 				smallerInterval));
 		assertTrue(run instanceof RandomAccessibleInterval && !(run instanceof Img));
 	}
@@ -101,8 +103,8 @@ public class CropTest extends AbstractOpTest {
 
 		// Case 1: fix one dimension
 		Img<ByteType> res =
-			(Img<ByteType>) ops.run(Crop.class, new FinalInterval(new long[] { 0, 0,
-				5 }, new long[] { 19, 19, 5 }), null, in);
+			(Img<ByteType>) ops.run(Ops.Crop.class, new FinalInterval(new long[] { 0,
+				0, 5 }, new long[] { 19, 19, 5 }), null, in);
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
@@ -110,8 +112,8 @@ public class CropTest extends AbstractOpTest {
 
 		// Case B: Fix one dimension and don't start at zero
 		res =
-			(Img<ByteType>) ops.run(Crop.class, new FinalInterval(new long[] { 0, 0,
-				5 }, new long[] { 19, 0, 10 }), null, in);
+			(Img<ByteType>) ops.run(Ops.Crop.class, new FinalInterval(new long[] { 0,
+				0, 5 }, new long[] { 19, 0, 10 }), null, in);
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
@@ -119,8 +121,8 @@ public class CropTest extends AbstractOpTest {
 
 		// Case C: fix two dimensions
 		res =
-			(Img<ByteType>) ops.run(Crop.class, new FinalInterval(new long[] { 0, 0,
-				0 }, new long[] { 0, 15, 0 }), null, in);
+			(Img<ByteType>) ops.run(Ops.Crop.class, new FinalInterval(new long[] { 0,
+				0, 0 }, new long[] { 0, 15, 0 }), null, in);
 
 		assertTrue(res.numDimensions() == 1);
 		assertTrue(res.max(0) == 15);

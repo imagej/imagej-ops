@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -42,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @param <A>
  */
-@Plugin(type = Op.class, name = Map.NAME,
+@Plugin(type = Op.class, name = Ops.Map.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MapI<A> extends AbstractInplaceMap<A, Iterable<A>> {
 

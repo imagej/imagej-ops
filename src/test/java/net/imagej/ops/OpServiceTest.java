@@ -30,17 +30,20 @@
 
 package net.imagej.ops;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
+import org.scijava.InstantiableException;
 import org.scijava.Priority;
 import org.scijava.module.Module;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.plugin.PluginInfo;
 
 /**
  * Tests {@link OpService}.
@@ -189,6 +192,21 @@ public class OpServiceTest extends AbstractOpTest {
 		assertSame(FirstMate.class, op.getClass());
 		op = ops.op("arrr!", Booty.class);
 		assertSame(Captain.class, op.getClass());
+	}
+
+	@Test
+	public void testInstantiation() {
+		int errors = 0;
+		for (final PluginInfo<Op> info : ops.getPlugins()) {
+			try {
+				info.createInstance();
+			}
+			catch (InstantiableException e) {
+				errors++;
+				System.err.println("Could not instantiate " + info.getClassName());
+			}
+		}
+		assertEquals(0, errors);
 	}
 
 	/** A test {@link Op}. */

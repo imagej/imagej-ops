@@ -36,6 +36,7 @@ import java.util.List;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.InplaceFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -45,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Join.NAME)
+@Plugin(type = Op.class, name = Ops.Join.NAME)
 public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
-	implements Join
+	implements Ops.Join
 {
 
 	// list of functions to be joined

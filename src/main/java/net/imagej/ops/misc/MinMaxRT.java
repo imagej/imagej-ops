@@ -28,29 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.misc;
 
-import net.imagej.ops.Function;
-import net.imglib2.converter.Converter;
+import java.util.Iterator;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Converter using an UnaryOperation to convert pixels
- * 
- * @author Christian Dietz (University of Konstanz)
- * @param <A>
- * @param <B>
+ * Calculates the minimum and maximum value of an image.
  */
-//TODO where to move this class?
-public class ConvertWithFunction<A, B> implements Converter<A, B> {
+@Plugin(type = Op.class, name = Ops.MinMax.NAME)
+public class MinMaxRT<T extends RealType<T>> implements MinMax<T> {
 
-	private final Function<A, B> function;
+	@Parameter
+	private Iterable<T> img;
 
-	public ConvertWithFunction(final Function<A, B> op) {
-		this.function = op;
-	}
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
-	public void convert(final A input, final B output) {
-		function.compute(input, output);
+	public void run() {
+		min = img.iterator().next().createVariable();
+		max = min.copy();
+
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
+
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0) min.set(i);
+			if (max.compareTo(i) < 0) max.set(i);
+		}
 	}
+
 }

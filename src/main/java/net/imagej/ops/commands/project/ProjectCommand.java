@@ -30,9 +30,9 @@
 
 package net.imagej.ops.commands.project;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.project.Project;
+import net.imagej.ops.Ops.Project;
 import net.imagej.ops.statistics.Mean;
 import net.imglib2.img.Img;
 import net.imglib2.meta.ImgPlus;
@@ -76,8 +76,8 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	/* -- Wrapper classes to mark certain operations as projection methods --*/
 
-	private class ProjectMean extends AbstractFunction<Iterable<T>, T> implements
-		ProjectMethod<T>
+	private class ProjectMean extends AbstractStrictFunction<Iterable<T>, T>
+		implements ProjectMethod<T>
 	{
 
 		private Mean<Iterable<T>, T> mean;
