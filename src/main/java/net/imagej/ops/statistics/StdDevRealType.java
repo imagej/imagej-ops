@@ -56,8 +56,7 @@ public class StdDevRealType<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (variance == null) {
-			variance = (Variance<T, DoubleType>) ops.op(Variance.class, output,
-					input);
+			variance = ops.op(Variance.class, output, input);
 		}
 		output.set(Math.sqrt(variance.compute(input, output).get()));
 		return output;
