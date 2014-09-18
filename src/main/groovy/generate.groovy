@@ -145,15 +145,15 @@ def parseValue(str) {
       }
 
       // no special meaning to this char.
-      if (buffer.isEmpty() && c == ' ') {
+      if (buffer.isEmpty() && isWhitespace(c)) {
         // skip leading whitespaces
         continue;
       }
       buffer += c;
     }
     catch (EmptyStackException e) {
-      if (c == ' ' || c == '\t') {
-        // skip leading whitespaces and tabs
+      if (isWhitespace(c)) {
+        // skip leading whitespaces
       }
       else if (c == '{') {
         symbols.push(c);
@@ -172,6 +172,10 @@ def parseValue(str) {
   }
 
   return parsed.pop();
+}
+
+def isWhitespace(c) {
+ return c == ' ' || c == '\t' || c == '\n';
 }
 
 /*
