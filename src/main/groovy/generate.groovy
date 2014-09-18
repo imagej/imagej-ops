@@ -65,6 +65,7 @@ def parseValue(str) {
       }
       else {
         if (top == '{') {
+          // parse a map
           if (c == ':') {
             // key is complete, push the key to parsed
             if (!buffer.isEmpty()) {
@@ -97,6 +98,7 @@ def parseValue(str) {
           }
         }
         else if (top == '[') {
+          // parse a list
           if (c == ',' || c == ']') {
             if (buffer.isEmpty()) {
               value = parsed.pop();
