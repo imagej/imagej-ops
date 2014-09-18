@@ -32,8 +32,10 @@ package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imglib2.RandomAccess;
 import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.logic.BitType;
@@ -74,12 +76,24 @@ public class AbstractThresholdTest extends AbstractOpTest {
 		}
 	}
 
-	public Img<BitType> bitmap() throws IncompatibleTypeException {
+	protected Histogram1d<UnsignedShortType> histogram() {
+		return (Histogram1d<UnsignedShortType>) ops.histogram(in);
+	}
+
+	protected void assertThreshold(final Class<? extends Op> opClass,
+		final int expected)
+	{
+		final UnsignedShortType threshold = (UnsignedShortType)
+			ops.run(opClass, histogram());
+		assertEquals(expected, threshold.get());
+	}
+
+	protected Img<BitType> bitmap() throws IncompatibleTypeException {
 		return in.factory().imgFactory(new BitType()).create(in, new BitType());
 	}
 
 	/** Loops through the output pixels and count the number above zero. */
-	public void assertCount(final Img<BitType> out, final int expected) {
+	protected void assertCount(final Img<BitType> out, final int expected) {
 		long count = 0;
 		for (final BitType b : out) {
 			if (b.getRealFloat() > 0) {
