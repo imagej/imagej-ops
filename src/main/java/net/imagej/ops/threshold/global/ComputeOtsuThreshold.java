@@ -30,100 +30,92 @@
 
 package net.imagej.ops.threshold.global;
 
-import net.imglib2.Cursor;
+import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
+import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OpService;
+import net.imglib2.Cursor;
 import net.imglib2.type.numeric.integer.LongType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = ComputeThreshold.class, name = "otsu")
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14).
+
+/**
+ * Implements Otsu's threshold method.
+ * 
+ * @author Barry DeZonia
+ * @author Gabriel Landini
+ */
+@Plugin(type = ComputeThreshold.class, name = "Otsu")
 public class ComputeOtsuThreshold<T extends RealType<T>> extends
 	AbstractComputeThresholdHistogram<T>
 {
 
 	@Override
-	public long computeBin(final Histogram1d<T> input) {
-		final int maxValue = (int) input.getBinCount() - 1;
-
+	public long computeBin(final Histogram1d<T> hist) {
+		long[] histogram = hist.toLongArray();
 		// Otsu's threshold algorithm
 		// C++ code by Jordan Bevik <Jordan.Bevic@qtiworld.com>
 		// ported to ImageJ plugin by G.Landini
-		int k, kStar; // k = the current threshold; kStar = optimal
-		// threshold
-		long n1, n; // N1 = # points with intensity <=k; N = total number
-		// of
+		int k, kStar; // k = the current threshold; kStar = optimal threshold
+		int L = histogram.length; // The total intensity of the image
+		long N1, N; // N1 = # points with intensity <=k; N = total number of
 		// points
-		double BCV, BCVmax; // The current Between Class Variance and
-		// maximum
+		long Sk; // The total intensity for all histogram points <=k
+		long S;
+		double BCV, BCVmax; // The current Between Class Variance and maximum
 		// BCV
-		double num, denom; // temporary bookeeping
-		int sk; // The total intensity for all histogram points <=k
-		int s; // The total intensity of the image
-		final int L = maxValue + 1;
+		double num, denom; // temporary bookkeeping
 
 		// Initialize values:
-		s = 0;
-		n = 0;
-		Cursor<LongType> cursor = input.cursor();
+		S = 0;
+		N = 0;
 		for (k = 0; k < L; k++) {
-			final long val = cursor.next().get();
-			s += k * val; // Total histogram intensity
-			n += val; // Total number of data points
+			S += k * histogram[k]; // Total histogram intensity
+			N += histogram[k]; // Total number of data points
 		}
 
-		sk = 0;
-		n1 = input.firstElement().get(); // The entry for zero intensity
+		Sk = 0;
+		N1 = histogram[0]; // The entry for zero intensity
 		BCV = 0;
 		BCVmax = 0;
 		kStar = 0;
 
 		// Look at each possible threshold value,
-		// calculate the between-class variance, and decide if it's a
-		// max
-		cursor.reset();
-		cursor.fwd();
-		
-		for (k = 1; k < (L - 1); k++) { // No need to check endpoints k =
-			// 0 or k =
+		// calculate the between-class variance, and decide if it's a max
+		for (k = 1; k < L - 1; k++) { // No need to check endpoints k = 0 or k =
 			// L-1
-	
-			final long val = cursor.next().get();
-			sk += k * val;
-			n1 += val;
+			Sk += k * histogram[k];
+			N1 += histogram[k];
 
-			// The float casting here is to avoid compiler warning
-			// about loss of
+			// The float casting here is to avoid compiler warning about loss of
 			// precision and
-			// will prevent overflow in the case of large saturated
-			// images
-			denom = (double) (n1) * (n - n1); // Maximum value of
-			// denom is
-			// (N^2)/4 = approx. 3E10
+			// will prevent overflow in the case of large saturated images
+			denom = (double) (N1) * (N - N1); // Maximum value of denom is
+			// (N^2)/4 =
+			// approx. 3E10
 
 			if (denom != 0) {
-				// Float here is to avoid loss of precision when
-				// dividing
-				num = (((double) n1 / n) * s) - sk; // Maximum
-				// value of
-				// num =
-				// MAX_VALUE*N = approx 8E7
+				// Float here is to avoid loss of precision when dividing
+				num = ((double) N1 / N) * S - Sk; // Maximum value of num =
+				// 255*N =
+				// approx 8E7
 				BCV = (num * num) / denom;
-			} else {
-				BCV = 0;
 			}
+			else BCV = 0;
 
-			if (BCV >= BCVmax) { // Assign the best threshold found
-				// so far
+			if (BCV >= BCVmax) { // Assign the best threshold found so far
 				BCVmax = BCV;
 				kStar = k;
 			}
 		}
-		// kStar += 1; // Use QTI convention that intensity -> 1 if
-		// intensity >=
+		// kStar += 1; // Use QTI convention that intensity -> 1 if intensity >=
 		// k
 		// (the algorithm was developed for I-> 1 if I <= k.)
-
 		return kStar;
 	}
 
