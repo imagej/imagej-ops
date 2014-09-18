@@ -32,6 +32,7 @@ package net.imagej.ops.statistics;
 
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.img.array.ArrayImg;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -126,7 +127,7 @@ public class StatisticsTest extends AbstractOpTest {
 
 		// calculate mean using ops
 		DoubleType mean2 = new DoubleType();
-		mean2 = (DoubleType) ops.run("mean", img);
+		mean2 = (DoubleType) ops.run("mean", DoubleType.class, img);
 
 		// check that the ratio between mean1 and mean2 is 1.0
 		Assert.assertEquals(1.0, mean1 / mean2.getRealFloat(), delta);

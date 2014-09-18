@@ -32,7 +32,7 @@ package net.imagej.ops.statistics.moments;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.misc.Size;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "moment1aboutmean")
 public class Moment1AboutMean<T extends RealType<T>> extends
-	AbstractFunction<Iterable<T>, DoubleType>
+	AbstractStrictFunction<Iterable<T>, DoubleType>
 {
 
 	@Parameter(required = false)

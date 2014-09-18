@@ -30,7 +30,7 @@
 
 package net.imagej.ops.convolve;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imglib2.RandomAccessibleInterval;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Convolve.NAME)
 public class ConvolveFourier<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
-	AbstractFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements Contingent, Convolve
 {
 

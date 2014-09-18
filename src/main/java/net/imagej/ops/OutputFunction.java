@@ -32,7 +32,9 @@ package net.imagej.ops;
 
 /**
  * An {@link OutputFunction} is an {@link Function} which is able to create the
- * output object itself.
+ * output object itself. Hence, the "out" parameter is marked optional (i.e.,
+ * "required = false") and may be omitted, in which case it will be created
+ * based on the given "in" parameter.
  * 
  * @author Christian Dietz (University of Konstanz)
  */

@@ -30,24 +30,61 @@
 
 package net.imagej.ops;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+
 /**
- * Abstract superclass for a {@link OutputFunction} which is capable creating an
- * output object.
+ * Abstract superclass for {@link OutputFunction} ops.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 public abstract class AbstractOutputFunction<I, O> extends
-		AbstractFunction<I, O> implements OutputFunction<I, O> {
+	AbstractFunction<I, O> implements OutputFunction<I, O>
+{
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- OutputFunction methods --
 
 	@Override
 	public O compute(final I input) {
 		return compute(input, createOutput(input));
 	}
 
+	// -- Function methods --
+
 	@Override
 	public O compute(final I input, final O output) {
 		return safeCompute(input, output == null ? createOutput(input) : output);
+	}
+
+	// -- InputOp methods --
+
+	@Override
+	public I getInput() {
+		return in;
+	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- OutputOp methods --
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 	// -- Internal methods --

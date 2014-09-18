@@ -28,27 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.integer.LongType;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Size.NAME, priority = Priority.LOW_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractStrictFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
+/**
+ * Abstract superclass for strict {@link Function} ops, which require the "out"
+ * parameter to be explicitly specified.
+ * 
+ * @author Christian Dietz
+ * @author Martin Horn
+ * @author Curtis Rueden
+ * @see AbstractOutputFunction
+ */
+public abstract class AbstractStrictFunction<I, O> extends
+	AbstractFunction<I, O>
 {
 
+	@Parameter(type = ItemIO.BOTH)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- InputOp methods --
+
 	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
-		output.set(input.size());
-		return output;
+	public I getInput() {
+		return in;
 	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- OutputOp methods --
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
+
 }

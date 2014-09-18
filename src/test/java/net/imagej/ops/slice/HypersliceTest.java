@@ -34,8 +34,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.slicer.Hyperslice;
 import net.imagej.ops.slicer.Slicewise;
@@ -175,7 +175,7 @@ public class HypersliceTest extends AbstractOpTest {
 	}
 
 	class DummyOp extends
-			AbstractFunction<Iterable<ByteType>, Iterable<ByteType>> {
+			AbstractStrictFunction<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
 		public Iterable<ByteType> compute(final Iterable<ByteType> input,

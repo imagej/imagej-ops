@@ -31,9 +31,9 @@
 package net.imagej.ops.map.parallel;
 
 import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapII2II;
 import net.imagej.ops.map.MapII2RAI;
@@ -145,7 +145,7 @@ class AddOneInplace extends AbstractInplaceFunction<ByteType> {
 	}
 }
 
-class AddOneFunctional extends AbstractFunction<ByteType, ByteType> {
+class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
 
 	@Override
 	public ByteType compute(final ByteType input, final ByteType output) {

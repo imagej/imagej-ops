@@ -30,9 +30,9 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
+import net.imagej.ops.Function;
 
 import org.scijava.plugin.Parameter;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz
  */
 public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractFunction<A, C> implements
+	extends AbstractStrictFunction<A, C> implements
 	JoinFunctionAndFunction<A, B, C, F1, F2>
 {
 

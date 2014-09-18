@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imglib2.type.logic.BitType;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Threshold.NAME)
 public class PixThreshold<T extends Comparable<T>> extends
-	AbstractFunction<T, BitType> implements Threshold
+	AbstractStrictFunction<T, BitType> implements Threshold
 {
 
 	@Parameter

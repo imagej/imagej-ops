@@ -32,7 +32,7 @@ package net.imagej.ops.normalize;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imglib2.IterableInterval;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
 	name = "aliases", value = Normalize.ALIASES) })
 public class NormalizeII<T extends RealType<T>> extends
-	AbstractFunction<IterableInterval<T>, IterableInterval<T>> implements
+	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
 	Normalize
 {
 

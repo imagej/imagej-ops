@@ -32,7 +32,7 @@ package net.imagej.ops.project;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
@@ -47,8 +47,8 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Project.NAME, priority = Priority.LOW_PRIORITY)
 public class ProjectRAI2II<T, V> extends
-	AbstractFunction<RandomAccessibleInterval<T>, IterableInterval<V>> implements
-	Contingent, Project
+	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
+	implements Contingent, Project
 {
 
 	@Parameter

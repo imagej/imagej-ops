@@ -30,7 +30,7 @@
 
 package net.imagej.ops.arithmetic.add;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imglib2.type.numeric.NumericType;
 
@@ -40,14 +40,23 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Add.NAME, priority = Priority.LOW_PRIORITY)
 public class AddConstantToNumericType<T extends NumericType<T>> extends
-	AbstractFunction<T, T> implements Add
+	AbstractOutputFunction<T, T> implements Add
 {
 
 	@Parameter
 	private T value;
 
+	// -- OutputFunction methods --
+
 	@Override
-	public T compute(final T input, final T output) {
+	public T createOutput(final T input) {
+		return input.createVariable();
+	}
+
+	// -- Internal methods --
+
+	@Override
+	protected T safeCompute(final T input, final T output) {
 		output.set(input);
 		output.add(value);
 		return output;

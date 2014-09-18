@@ -30,7 +30,7 @@
 
 package net.imagej.ops.statistics;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.RealType;
@@ -42,8 +42,9 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = StdDeviation.NAME, priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
-		AbstractFunction<Iterable<T>, DoubleType> implements
-		StdDeviation<T, DoubleType> {
+	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	StdDeviation<T, DoubleType>
+{
 
 	@Parameter(required = false)
 	private Variance<T, DoubleType> variance;
