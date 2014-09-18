@@ -63,7 +63,7 @@ import org.scijava.script.ScriptService;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Equation.NAME)
+@Plugin(type = Op.class, name = Ops.Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
 	AbstractStrictFunction<String, IterableInterval<T>> implements Equation<T>
 {

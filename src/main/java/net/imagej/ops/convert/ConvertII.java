@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Convert.NAME)
+@Plugin(type = Op.class, name = Ops.Convert.NAME)
 public class ConvertII<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
 	Convert<IterableInterval<I>, IterableInterval<O>>

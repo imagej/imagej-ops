@@ -32,6 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -49,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-@Plugin(type = Op.class, name = Map.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapRAI2III<A, B> extends
 	AbstractFunctionMap<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
 {

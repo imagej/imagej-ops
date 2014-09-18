@@ -31,6 +31,7 @@
 package net.imagej.ops.convert;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -39,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Convert.NAME)
+@Plugin(type = Op.class, name = Ops.Convert.NAME)
 public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPix<I, O>
 {

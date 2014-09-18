@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Chunker.NAME)
+@Plugin(type = Op.class, name = Ops.Chunker.NAME)
 public class DefaultChunker extends AbstractChunker {
 
 	private final int STEP_SIZE = 1;

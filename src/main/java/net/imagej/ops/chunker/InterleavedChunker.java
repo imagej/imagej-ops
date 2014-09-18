@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = Chunker.NAME,
+@Plugin(type = Op.class, name = Ops.Chunker.NAME,
 	priority = Priority.VERY_LOW_PRIORITY)
 public class InterleavedChunker extends AbstractChunker {
 

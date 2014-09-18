@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Loop.NAME)
+@Plugin(type = Op.class, name = Ops.Loop.NAME)
 public class DefaultLoopFunction<A> extends
 	AbstractLoopFunction<Function<A, A>, A>
 {

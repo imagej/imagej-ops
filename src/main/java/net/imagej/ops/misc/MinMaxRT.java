@@ -33,6 +33,7 @@ package net.imagej.ops.misc;
 import java.util.Iterator;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
@@ -42,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Calculates the minimum and maximum value of an image.
  */
-@Plugin(type = Op.class, name = MinMax.NAME)
+@Plugin(type = Op.class, name = Ops.MinMax.NAME)
 public class MinMaxRT<T extends RealType<T>> implements MinMax<T> {
 
 	@Parameter
