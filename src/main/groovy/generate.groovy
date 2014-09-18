@@ -49,16 +49,16 @@ def processTemplate(engine, context, templateFile, outFilename) {
 
 /* Parses a string to a string, list or map. */
 def parseValue(str) {
-  Stack<Character> symbols = new Stack<Character>();
-  Stack<Object> parsed = new Stack<Object>();
+  symbols = new Stack<Character>();
+  parsed = new Stack<Object>();
 
-  String buffer = "";
+  buffer = "";
 
   for (char c :  str.toCharArray()) {
     try {
       // top symbol determines what kind of structure we're
       // currently working on TODO: Speedup?
-      char top = symbols.peek();
+      top = symbols.peek();
 
       if (top == '\\') { // escaped
         symbols.pop();
@@ -76,7 +76,6 @@ def parseValue(str) {
             continue;
           }
           if (c == ',' || c == '}') {
-            Object value;
             if (buffer.isEmpty()) {
               value = parsed.pop();
             }
@@ -85,9 +84,9 @@ def parseValue(str) {
               buffer = "";
             }
 
-            String key = (String) parsed.pop();
+            key = parsed.pop();
 
-            ((Map<Object, Object>)parsed.peek()).put(key.trim(), value);
+            parsed.peek().put(key.trim(), value);
 
             if (c == '}') {
               // finish up this map.
@@ -99,7 +98,6 @@ def parseValue(str) {
         }
         else if (top == '[') {
           if (c == ',' || c == ']') {
-            Object value = null;
             if (buffer.isEmpty()) {
               value = parsed.pop();
             }
@@ -108,7 +106,7 @@ def parseValue(str) {
               buffer = "";
             }
 
-            ((List<Object>)parsed.peek()).add(value);
+            parsed.peek().add(value);
 
             if (c == ']') {
               // finish up this map.
