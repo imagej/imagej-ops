@@ -230,7 +230,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
     }
 
     int idx = line.indexOf('=');
-    key = line.substring(0, idx);
+    key = line.substring(0, idx).trim();
     value = line.substring(idx + 1);
 
     if (value.trim().equals('```')) {
@@ -254,7 +254,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 
     //For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
 
-    context.put(key.trim(), parseValue(value));
+    context.put(key, parseValue(value));
   }
   reader.close();
 
