@@ -47,9 +47,7 @@ def processTemplate(engine, context, templateFile, outFilename) {
   out.close();
 }
 
-/*
- * Parse a string as string, list or map
- */
+/* Parses a string to a string, list or map. */
 def parseValue(str) {
   Stack<Character> symbols = new Stack<Character>();
   Stack<Object> parsed = new Stack<Object>();
