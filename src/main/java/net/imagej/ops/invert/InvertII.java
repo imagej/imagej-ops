@@ -30,7 +30,6 @@
 
 package net.imagej.ops.invert;
 
-import net.imagej.ops.AbstractFunction;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;

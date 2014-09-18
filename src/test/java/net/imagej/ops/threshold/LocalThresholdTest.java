@@ -32,7 +32,6 @@ package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
-import net.imglib2.Pair;
 import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
