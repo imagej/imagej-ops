@@ -2,8 +2,9 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2009 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, Broad Institute of MIT and Harvard, and Max Planck
+ * Institute of Molecular Cell Biology and Genetics.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,24 +28,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.threshold.global.methods;
 
-package net.imagej.ops.threshold;
-
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
+import net.imagej.ops.threshold.global.ComputeThreshold;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Plugin;
+
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14).
+
 /**
- * @author Martin Horn
+ * Implements a mean threshold method by Glasbey.
+ * 
+ * @author Barry DeZonia
+ * @author Gabriel Landini
  */
-public abstract class LocalThresholdMethod<T extends RealType<T>> extends
-	AbstractStrictFunction<Pair<T>, BitType>
-{
+@Plugin(type = ComputeThreshold.class, name = "Mean")
+public class ComputeMeanThreshold<T extends RealType<T>> extends
+		AbstractComputeThresholdHistogram<T> {
 
-	public static class Pair<T extends RealType<T>> {
-
-		public Iterable<T> neighborhood;
-		public T pixel;
+	@Override
+	public long computeBin(final Histogram1d<T> hist) {
+		long[] histogram = hist.toLongArray();
+		// C. A. Glasbey,
+		// "An analysis of histogram-based thresholding algorithms,"
+		// CVGIP: Graphical Models and Image Processing, vol. 55, pp. 532-537,
+		// 1993.
+		//
+		// The threshold is the mean of the greyscale data
+		int threshold = -1;
+		double tot = 0, sum = 0;
+		for (int i = 0; i < histogram.length; i++) {
+			tot += histogram[i];
+			sum += (i * histogram[i]);
+		}
+		threshold = (int) Math.floor(sum / tot);
+		return threshold;
 	}
+
 }

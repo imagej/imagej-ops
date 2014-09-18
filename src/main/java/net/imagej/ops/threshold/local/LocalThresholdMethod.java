@@ -28,27 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.local;
 
-import net.imagej.ops.Op;
-import net.imglib2.histogram.Histogram1d;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = "manualthreshold")
-public class Manual<T extends RealType<T>> extends GlobalThresholdMethod<T> {
+public abstract class LocalThresholdMethod<T extends RealType<T>> extends
+	AbstractStrictFunction<Pair<T>, BitType>
+{
 
-	@Parameter
-	private double threshold;
+	public static class Pair<T extends RealType<T>> {
 
-	@Override
-	protected void getThreshold(Histogram1d<T> histogram, T threshold) {
-		threshold.setReal(this.threshold);
+		public Iterable<T> neighborhood;
+		public T pixel;
 	}
-
 }

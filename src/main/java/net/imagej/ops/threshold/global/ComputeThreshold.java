@@ -28,47 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.OutputFunction;
 
 /**
- * @author Martin Horn
+ * An algorithm for computing a threshold value that divides an object into two
+ * classes.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME)
-public class GlobalThreshold<T extends RealType<T>> extends
-	AbstractStrictFunction<IterableInterval<T>, IterableInterval<BitType>>
-	implements Ops.Threshold
-{
-
-	@Parameter
-	private GlobalThresholdMethod<T> method;
-
-	@Parameter
-	private OpService ops;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public IterableInterval<BitType> compute(final IterableInterval<T> input,
-		final IterableInterval<BitType> output)
-	{
-		final T threshold = (T) ops.run(method, input);
-
-		Op thresholdOp =
-			ops
-				.op(PixThreshold.class, new BitType(), input.firstElement(), threshold);
-
-		ops.run("map", output, input, threshold);
-		return output;
-	}
-
+public interface ComputeThreshold<I, O> extends OutputFunction<I, O> {
+	// NB: Marker interface.
 }

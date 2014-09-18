@@ -28,47 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
+import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 
 /**
- * An algorithm for thresholding an image into two classes of pixels from its
- * histogram.
+ * An algorithm for applying a threshold value to an object.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public abstract class GlobalThresholdMethod<T extends RealType<T>> implements Op {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T threshold;
-
-	@Parameter
-	private IterableInterval<T> img;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		final Histogram1d<T> hist =
-			(Histogram1d<T>) ops.run(Ops.Histogram.class, img, null);
-
-		threshold = img.firstElement().createVariable();
-
-		getThreshold(hist, threshold);
-	}
-
-	/**
-	 * Calculates the threshold index from an unnormalized histogram of data.
-	 * Returns -1 if the threshold index cannot be found.
-	 */
-	protected abstract void getThreshold(Histogram1d<T> histogram, T threshold);
-
+public interface ApplyThreshold<I, O> extends Function<I, O>, Ops.Threshold {
+	// NB: Marker interface.
 }

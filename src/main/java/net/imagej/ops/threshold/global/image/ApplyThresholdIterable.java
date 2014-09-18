@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global.image;
+
+import net.imagej.ops.threshold.global.ApplyThreshold;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
- * 
- * @author Christian Dietz (University of Konstanz)
+ * Interface for {@link ApplyThreshold} implementations that operate over an
+ * iteration.
+ *
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+public interface ApplyThresholdIterable<T, I extends Iterable<T>, O> extends
+	ApplyThreshold<I, O>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	T getThreshold(final I input);
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
 }

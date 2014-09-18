@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global.image;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Applies a threshold to an {@link Img}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+@Plugin(type = Op.class, name = Ops.Threshold.NAME)
+public class ApplyManualThreshold<T extends RealType<T>> extends
+	AbstractApplyThresholdImg<T, Img<T>>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	@Parameter
+	private OpService ops;
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
+	@Parameter
+	private T threshold;
+
+	@Override
+	public T getThreshold(final Img<T> input) {
+		return threshold;
+	}
+
 }

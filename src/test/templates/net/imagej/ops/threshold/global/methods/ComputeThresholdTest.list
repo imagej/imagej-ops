@@ -1,0 +1,63 @@
+[ComputeHuangThresholdTest.java]
+name = Huang
+expected = 1008
+
+[ComputeIntermodesThresholdTest.java]
+name = Intermodes
+expected = 1009
+
+[ComputeIsoDataThresholdTest.java]
+name = IsoData
+expected = 1009
+
+[ComputeLiThresholdTest.java]
+name = Li
+expected = 1008
+
+[ComputeMaxEntropyThresholdTest.java]
+name = MaxEntropy
+expected = 1008
+
+[ComputeMaxLikelihoodThresholdTest.java]
+name = MaxLikelihood
+expected = 1005
+
+[ComputeMeanThresholdTest.java]
+name = Mean
+expected = 1009
+
+[ComputeMinErrorThresholdTest.java]
+name = MinError
+expected = 1008
+
+[ComputeMinimumThresholdTest.java]
+name = Minimum
+expected = 1008
+
+[ComputeMomentsThresholdTest.java]
+name = Moments
+expected = 1009
+
+[ComputeOtsuThresholdTest.java]
+name = Otsu
+expected = 1009
+
+[ComputePercentileThresholdTest.java]
+name = Percentile
+expected = 1008
+
+[ComputeRenyiEntropyThresholdTest.java]
+name = RenyiEntropy
+expected = 1008
+
+[ComputeShanbhagThresholdTest.java]
+name = Shanbhag
+expected = 1008
+
+[ComputeTriangleThresholdTest.java]
+name = Triangle
+expected = 1009
+
+[ComputeYenThresholdTest.java]
+name = Yen
+expected = 1007

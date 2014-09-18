@@ -34,14 +34,12 @@ import java.util.Iterator;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
- * Conforms if the {@link IterableInterval}s have the same IterationOrder.
+ * {@link Map} from {@link Iterable} to {@link Iterable}.
  * 
  * @author Martin Horn
  * @author Christian Dietz
@@ -49,7 +47,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapI2I<A, B> extends
 	AbstractFunctionMap<A, B, Iterable<A>, Iterable<B>>
-
 {
 
 	@Override

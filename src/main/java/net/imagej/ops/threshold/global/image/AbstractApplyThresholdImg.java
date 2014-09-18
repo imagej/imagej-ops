@@ -1,19 +1,19 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,32 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global.image;
+
+import net.imagej.ops.OpService;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.logic.BitType;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
- * 
+ * Abstract superclass of {@link ApplyThresholdIterable} implementations that
+ * operate on {@link Img} objects.
+ *
+ * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
+	AbstractApplyThresholdIterable<T, I, Img<BitType>>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	@Parameter
+	private OpService ops;
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
+	// -- OutputFunction methods --
+
+	@Override
+	public Img<BitType> createOutput(final I input) {
+		final BitType type = new BitType();
+		try {
+			return input.factory().imgFactory(type).create(input, type);
+		}
+		catch (final IncompatibleTypeException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+	}
+
 }

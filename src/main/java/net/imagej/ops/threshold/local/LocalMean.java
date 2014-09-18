@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.local;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.statistics.Mean;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
- * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+@Plugin(type = Op.class)
+public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	@Parameter
+	private double c;
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
+	@Parameter
+	private OpService ops;
+
+	private Mean<Iterable<T>, DoubleType> mean;
+
+	@Override
+	public BitType compute(Pair<T> input, BitType output) {
+		if (mean == null) {
+			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.neighborhood);
+		}
+		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
+		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+		return output;
+	}
 }

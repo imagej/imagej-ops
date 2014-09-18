@@ -28,49 +28,61 @@
  * #L%
  */
 
-package net.imagej.ops.histogram;
+package net.imagej.ops.threshold.local;
 
-import java.util.List;
-
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
+import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
 import net.imagej.ops.Ops;
-import net.imagej.ops.misc.MinMax;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
+import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn, University of Konstanz
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Ops.Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Histogram1d<T> out;
+@Plugin(type = Op.class, name = Ops.Threshold.NAME)
+public class LocalThreshold<T extends RealType<T>>
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Ops.Threshold
+{
 
 	@Parameter
-	private Iterable<T> in;
+	private LocalThresholdMethod<T> method;
+
+	@Parameter
+	private Shape shape;
 
 	@Parameter(required = false)
-	private int numBins = 256;
-
-	@Parameter
-	private OpService ops;
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		final List<T> res = (List<T>) ops.run(MinMax.class, in);
-
-		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
-				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
-
-		out.countData(in);
-
+	public RandomAccessibleInterval<BitType>
+		compute(RandomAccessibleInterval<T> input,
+			RandomAccessibleInterval<BitType> output)
+	{
+		// TODO: provide threaded implementation and specialized ones for
+		// rectangular neighborhoods (using integral images)
+		RandomAccessibleInterval<T> extInput =
+			Views.interval(Views.extend(input, outOfBounds), input);
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
+		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
+		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
+		Pair<T> pair = new Pair<T>();
+		for (final Neighborhood<T> neighborhood : neighborhoods) {
+			pair.neighborhood = neighborhood;
+			pair.pixel = inCursor.next();
+			method.compute(pair, outCursor.next());
+		}
+		return output;
 	}
 }

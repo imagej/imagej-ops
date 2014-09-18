@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global;
+
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Interface for threshold computation algorithms relying on a histogram.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+public interface ComputeThresholdHistogram<T extends RealType<T>> extends
+	ComputeThreshold<Histogram1d<T>, T>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	/** Computes the bin number of the threshold cutoff within the histogram. */
+	long computeBin(Histogram1d<T> input);
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
 }

@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global.methods;
+
+import net.imagej.ops.threshold.AbstractThresholdTest;
+
+import org.junit.Test;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Tests {@link Compute${name}Threshold}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Brian Northan
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+public class Compute${name}ThresholdTest extends AbstractThresholdTest {
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	@Test
+	public void testCompute${name}Threshold() {
+		assertThreshold(Compute${name}Threshold.class, $expected);
+	}
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
 }

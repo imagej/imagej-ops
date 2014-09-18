@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,32 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.threshold.global;
+
+import net.imagej.ops.threshold.AbstractThresholdTest;
+import net.imagej.ops.threshold.global.image.ApplyManualThreshold;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
+
+import org.junit.Test;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Tests {@link ApplyManualThreshold}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
+public class ApplyManualThresholdTest extends AbstractThresholdTest {
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+	@Test
+	public void testApplyThreshold() throws IncompatibleTypeException {
+		final Img<BitType> out = bitmap();
+		final UnsignedShortType threshold = new UnsignedShortType(1009);
+		ops.run(ApplyManualThreshold.class, out, in, threshold);
+		assertCount(out, 45);
+	}
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
 }

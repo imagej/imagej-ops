@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,39 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.global.pixel;
 
+import java.util.Comparator;
+
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.Ops;
+import net.imagej.ops.threshold.global.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * Applies a threshold value to the given object using the specified comparator,
+ * producing a {@link BitType} set to 1 iff the object compares above the
+ * threshold.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, name = Ops.Threshold.NAME)
+public class ApplyThresholdComparator<T> extends AbstractStrictFunction<T, BitType>
+	implements ApplyThreshold<T, BitType>
+{
 
 	@Parameter
-	private double c;
+	private T threshold;
 
 	@Parameter
-	private OpService ops;
-
-	private Mean<Iterable<T>, DoubleType> mean;
+	private Comparator<? super T> comparator;
 
 	@Override
-	public BitType compute(Pair<T> input, BitType output) {
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.neighborhood);
-		}
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+	public BitType compute(final T input, final BitType output) {
+		output.set(comparator.compare(input, threshold) > 0);
 		return output;
 	}
+
 }

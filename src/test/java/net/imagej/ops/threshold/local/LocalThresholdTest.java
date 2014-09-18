@@ -28,31 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.threshold;
+package net.imagej.ops.threshold.local;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
+import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME)
-public class PixThreshold<T extends Comparable<T>> extends
-	AbstractStrictFunction<T, BitType> implements Ops.Threshold
-{
+public class LocalThresholdTest extends AbstractOpTest {
 
-	@Parameter
-	private T threshold;
+	@Test
+	public void test() throws IncompatibleTypeException {
+		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		Img<BitType> out =
+			in.factory().imgFactory(new BitType()).create(in, new BitType());
 
-	@Override
-	public BitType compute(final T input, final BitType output) {
-		output.set(input.compareTo(threshold) > 0);
-		return output;
+		ops.run(Ops.Threshold.class, out, in, ops.op(LocalMean.class, BitType.class, LocalThresholdMethod.Pair.class, 0.0), new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
 	}
-
 }

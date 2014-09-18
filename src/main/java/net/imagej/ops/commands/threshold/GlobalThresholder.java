@@ -33,7 +33,7 @@ package net.imagej.ops.commands.threshold;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.slicer.Slicewise;
-import net.imagej.ops.threshold.GlobalThresholdMethod;
+import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.Axis;
 import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.logic.BitType;
@@ -51,10 +51,10 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Command {
+public class GlobalThresholder<T extends RealType<T>> implements Op {
 
     @Parameter
-    private GlobalThresholdMethod<T> method;
+    private ComputeThreshold<ImgPlus<T>,T> method;
 
     @Parameter
     private OpService ops;
@@ -63,12 +63,11 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
     @Parameter
     private ImgPlus<T> in;
 
-    // needs to be created by the pre-processor!
-    @Parameter(type = ItemIO.BOTH)
+    @Parameter(type = ItemIO.OUTPUT)
     private ImgPlus<BitType> out;
 
     // we need another widget for this!!
-    @Parameter
+    @Parameter(required=false)
     private Axis[] axes;
 
     @Override
@@ -80,4 +79,6 @@ public class GlobalThresholder<T extends RealType<T>> implements Command {
         ops.run(Slicewise.class, out, in, threshold, new int[]{0, 1});
 
     }
+    
+    // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).
 }
