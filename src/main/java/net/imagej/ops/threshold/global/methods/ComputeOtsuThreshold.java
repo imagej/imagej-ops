@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global;
+package net.imagej.ops.threshold.global.methods;
 
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;

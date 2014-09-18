@@ -32,8 +32,8 @@ package net.imagej.ops.threshold.global.image;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.threshold.global.ComputeOtsuThreshold;
 import net.imagej.ops.threshold.global.Otsu;
+import net.imagej.ops.threshold.global.methods.ComputeOtsuThreshold;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
