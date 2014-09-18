@@ -30,7 +30,6 @@
 
 package net.imagej.ops.chunker;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.Cancelable;

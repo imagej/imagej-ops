@@ -32,7 +32,6 @@ package net.imagej.ops.convert;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

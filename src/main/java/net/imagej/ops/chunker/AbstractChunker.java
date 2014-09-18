@@ -30,8 +30,6 @@
 
 package net.imagej.ops.chunker;
 
-import net.imagej.ops.Ops;
-
 import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 

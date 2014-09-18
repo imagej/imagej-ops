@@ -31,7 +31,6 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.InplaceFunction;
-import net.imagej.ops.Ops;
 
 /**
  * Loops over an injected {@link InplaceFunction}. A {@link LoopInplace} applies

@@ -42,7 +42,6 @@ import net.imagej.ops.BufferFactory;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
 import net.imagej.ops.map.Map;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;

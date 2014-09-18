@@ -37,7 +37,6 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
 import net.imagej.ops.slicer.Hyperslice;
 import net.imagej.ops.slicer.Slicewise;
 import net.imglib2.Cursor;
