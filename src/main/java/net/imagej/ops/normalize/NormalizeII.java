@@ -35,6 +35,7 @@ import java.util.List;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,11 +43,11 @@ import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Normalize.ALIASES) })
+@Plugin(type = Op.class, name = Ops.Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Normalize.ALIASES) })
 public class NormalizeII<T extends RealType<T>> extends
 	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
-	Normalize
+	Ops.Normalize
 {
 
 	@Parameter
@@ -66,7 +67,7 @@ public class NormalizeII<T extends RealType<T>> extends
 
 		// lookup the pixel-wise normalize function
 		Op normalize =
-			ops.op(Normalize.class, outType, outType, minmax.get(0).getRealDouble(), outType.getMinValue(), outType
+			ops.op(Ops.Normalize.class, outType, outType, minmax.get(0).getRealDouble(), outType.getMinValue(), outType
 					.getMaxValue(), factor);
 
 		// run normalize for each pixel

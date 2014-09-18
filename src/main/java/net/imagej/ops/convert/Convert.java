@@ -31,21 +31,13 @@
 package net.imagej.ops.convert;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "convert" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Convert.NAME)
- * </pre>
+ * A typed conversion operation.
  * 
  * @author Martin Horn
  */
-public interface Convert<I, O> extends Function<I, O> {
-
-	String NAME = "convert";
-
+public interface Convert<I, O> extends Ops.Convert, Function<I, O> {
+	// NB: Marker interface.
 }

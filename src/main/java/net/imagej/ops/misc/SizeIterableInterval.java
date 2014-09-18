@@ -32,6 +32,7 @@ package net.imagej.ops.misc;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.integer.LongType;
 

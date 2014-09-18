@@ -31,21 +31,13 @@
 package net.imagej.ops.identity;
 
 import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "identity" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Identity.NAME)
- * </pre>
+ * A typed "identity" function.
  * 
  * @author Curtis Rueden
  */
-public interface Identity<A> extends InplaceFunction<A> {
-
-	String NAME = "identity";
-
+public interface Identity<A> extends Ops.Identity, InplaceFunction<A> {
+	// NB: Marker interface.
 }

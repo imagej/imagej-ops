@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Future;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;

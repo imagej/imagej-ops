@@ -33,6 +33,7 @@ package net.imagej.ops.join;
 import net.imagej.ops.Function;
 import net.imagej.ops.InplaceFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
@@ -41,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Join.NAME)
+@Plugin(type = Op.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctionAndInplace<A, B> extends
 	AbstractJoinFunctionAndFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
 {

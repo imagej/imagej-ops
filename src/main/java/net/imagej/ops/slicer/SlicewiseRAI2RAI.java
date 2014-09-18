@@ -34,7 +34,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.map.Map;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class SlicewiseRAI2RAI<I, O>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
@@ -70,7 +70,7 @@ public class SlicewiseRAI2RAI<I, O>
 		RandomAccessibleInterval<O> output)
 	{
 
-		opService.run(Map.NAME, new Hyperslice(opService,
+		opService.run(Ops.Map.class, new Hyperslice(opService,
 				output, axisIndices), new Hyperslice(opService,
 				input, axisIndices), func);
 

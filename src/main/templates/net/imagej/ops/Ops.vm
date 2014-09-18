@@ -28,22 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.invert;
+package net.imagej.ops;
+
+import net.imagej.ops.Op;
 
 /**
- * Base interface for "invert" operations.
+ * Static utility class containing built-in op interfaces.
  * <p>
- * Implementing classes should be annotated with:
+ * These interfaces are intended to mark all ops using a particular name,
+ * regardless of the area of functionality. For example, all ops called "add"
+ * would be marked by implementing the {@code Ops.Add} interface, and
+ * annotating them with:
  * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Invert.NAME)
- * </pre>
- * 
- * @author Martin Horn
+	 * <pre>
+	 * @Plugin(type = Op.class, name = Ops.Add.NAME)
+	 * </pre>
+ *
+ * @author Curtis Rueden
  */
-public interface Invert {
+public final class Ops {
 
-	String NAME = "invert";
+	private Ops() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+
+	/**
+	 * Base interface for "$op.name" operations.
+	 * <p>
+	 * Implementing classes should be annotated with:
+	 * </p>
+	 *
+	 * <pre>
+#if ($op.aliases)
+	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = Ops.${op.iface}.ALIASES) })
+#else
+	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME)
+#end
+	 * </pre>
+	 */
+	public interface $op.iface extends Op {
+		String NAME = "$op.name";
+#if ($op.aliases)
+		String ALIASES = "$op.aliases";
+#end
+	}
+#end
 
 }

@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "quantile" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Quantile.NAME)
- * </pre>
+ * A typed "quantile" function.
  * 
  * @author Christian Dietz
  */
-public interface Quantile<T, V> extends Function<T, V> {
-
-	String NAME = "quantile";
-
+public interface Quantile<T, V> extends Ops.Quantile, Function<T, V> {
+	// NB: Marker interface.
 }

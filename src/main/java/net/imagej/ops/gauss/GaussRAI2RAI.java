@@ -36,6 +36,7 @@ import java.util.concurrent.Executors;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -55,7 +56,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "gauss")
 public class GaussRAI2RAI<T extends RealType<T>> extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Gauss
+	implements Ops.Gauss
 {
 
 	@Parameter

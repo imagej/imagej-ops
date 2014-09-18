@@ -33,6 +33,7 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -43,10 +44,10 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Threshold.NAME)
+@Plugin(type = Op.class, name = Ops.Threshold.NAME)
 public class GlobalThreshold<T extends RealType<T>> extends
 	AbstractStrictFunction<IterableInterval<T>, IterableInterval<BitType>>
-	implements Threshold
+	implements Ops.Threshold
 {
 
 	@Parameter

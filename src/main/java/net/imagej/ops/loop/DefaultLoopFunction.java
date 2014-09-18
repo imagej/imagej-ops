@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.join.DefaultJoinFunctions;
 
 import org.scijava.plugin.Plugin;

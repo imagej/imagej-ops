@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "variance" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Variance.NAME)
- * </pre>
+ * A typed "variance" function.
  * 
  * @author Christian Dietz
  */
-public interface Variance<T, V> extends Function<Iterable<T>, V> {
-
-	String NAME = "variance";
-
+public interface Variance<T, V> extends Ops.Variance, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "max" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Max.NAME)
- * </pre>
+ * A typed "max" function.
  * 
  * @author Christian Dietz
  */
-public interface Max<T, V> extends Function<Iterable<T>, V> {
-
-	String NAME = "max";
-
+public interface Max<T, V> extends Ops.Max, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }
