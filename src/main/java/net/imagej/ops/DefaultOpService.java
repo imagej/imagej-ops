@@ -207,7 +207,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object createImg(Object... args) {
-		return run(Ops.CreateImg.class, args);
+		return run("createImg", args);
 	}
 
 	@Override
@@ -388,7 +388,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Deprecated
 	@Override
 	public Object create(Object... args) {
-		return run(Ops.CreateImg.class, args);
+		return run("createImg", args);
 	}
 
 }
