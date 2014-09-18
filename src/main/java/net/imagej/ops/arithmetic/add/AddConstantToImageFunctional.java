@@ -32,6 +32,7 @@ package net.imagej.ops.arithmetic.add;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -42,10 +43,11 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Add.NAME, priority = Priority.VERY_LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Add.NAME,
+	priority = Priority.VERY_LOW_PRIORITY)
 public class AddConstantToImageFunctional<T extends NumericType<T>> extends
 	AbstractStrictFunction<IterableInterval<T>, RandomAccessibleInterval<T>>
-	implements Add
+	implements Ops.Add
 {
 
 	@Parameter

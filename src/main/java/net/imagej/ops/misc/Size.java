@@ -31,22 +31,14 @@
 package net.imagej.ops.misc;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * Base interface for "size" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Size.NAME)
- * </pre>
+ * A typed "size" function.
  * 
  * @author Christian Dietz
  */
-public interface Size<I> extends Function<I, LongType> {
-
-	String NAME = "size";
-
+public interface Size<I> extends Ops.Size, Function<I, LongType> {
+	// NB: Marker interface.
 }

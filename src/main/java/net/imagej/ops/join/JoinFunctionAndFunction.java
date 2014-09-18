@@ -31,6 +31,7 @@
 package net.imagej.ops.join;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
  * A join operation which joins two {@link Function}s. The resulting function
@@ -41,7 +42,7 @@ import net.imagej.ops.Function;
  * @author Curtis Rueden
  */
 public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends Function<A, C>, Join
+	extends Function<A, C>, Ops.Join
 {
 
 	/**

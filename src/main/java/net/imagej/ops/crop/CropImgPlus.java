@@ -32,6 +32,7 @@ package net.imagej.ops.crop;
 
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.ImgView;
@@ -48,8 +49,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Crop.NAME, attrs = { @Attr(name = "aliases",
-	value = Crop.ALIASES) }, priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Op.class, name = Ops.Crop.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Crop.ALIASES) },
+	priority = Priority.LOW_PRIORITY + 1)
 public class CropImgPlus<T extends Type<T>> extends
 	AbstractCropRAI<T, ImgPlus<T>>
 {

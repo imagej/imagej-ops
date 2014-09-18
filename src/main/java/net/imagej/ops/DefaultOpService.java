@@ -36,8 +36,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.imagej.ops.create.CreateImg;
-
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
@@ -209,7 +207,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object createImg(Object... args) {
-		return run(CreateImg.class, args);
+		return run(Ops.CreateImg.class, args);
 	}
 
 	@Override
@@ -390,7 +388,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Deprecated
 	@Override
 	public Object create(Object... args) {
-		return run(CreateImg.class, args);
+		return run(Ops.CreateImg.class, args);
 	}
 
 }

@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "stddev" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = StdDeviation.NAME)
- * </pre>
+ * A typed "stddev" function.
  * 
  * @author Christian Dietz
  */
-public interface StdDeviation<T, V> extends Function<Iterable<T>, V> {
-
-	String NAME = "stddev";
-
+public interface StdDeviation<T, V> extends Ops.StdDeviation, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

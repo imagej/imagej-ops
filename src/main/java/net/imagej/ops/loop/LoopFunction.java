@@ -31,6 +31,7 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
  * Loops over an injected {@link Function}. A {@link LoopFunction} applies a

@@ -31,21 +31,13 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "sum" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Sum.NAME)
- * </pre>
+ * A typed "sum" function.
  * 
  * @author Christian Dietz
  */
-public interface Sum<I, O> extends Function<I, O> {
-
-	String NAME = "sum";
-
+public interface Sum<I, O> extends Ops.Sum, Function<I, O> {
+	// NB: Marker interface.
 }

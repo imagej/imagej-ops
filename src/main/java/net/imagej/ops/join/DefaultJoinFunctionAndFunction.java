@@ -32,6 +32,7 @@ package net.imagej.ops.join;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
@@ -40,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Join.NAME)
+@Plugin(type = Op.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctionAndFunction<A, B, C> extends
 	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
 {

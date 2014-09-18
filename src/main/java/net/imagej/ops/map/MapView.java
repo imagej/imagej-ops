@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;

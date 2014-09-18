@@ -31,16 +31,17 @@
 package net.imagej.ops.lookup;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link Lookup} implementations.
+ * Abstract superclass of "lookup" implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractLookup implements Lookup {
+public abstract class AbstractLookup implements Ops.Lookup {
 
 	@Parameter
 	protected String name;

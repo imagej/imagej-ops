@@ -31,25 +31,17 @@
 package net.imagej.ops.chunker;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.Cancelable;
 
 /**
- * Base interface for "chunker" operations. These operations execute code across
+ * A "chunker" operation which executes code across
  * chunks of data using multiple threads.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Chunker.NAME)
- * </pre>
  * 
  * @author Christian Dietz
  */
-public interface Chunker extends Op, Cancelable {
-
-	String NAME = "chunker";
+public interface Chunker extends Ops.Chunker, Cancelable {
 
 	/** Sets the {@link Chunk} for which will be multithreaded. */
 	void setChunk(final Chunk executor);

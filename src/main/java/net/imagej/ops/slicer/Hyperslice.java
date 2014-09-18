@@ -33,7 +33,7 @@ package net.imagej.ops.slicer;
 import java.util.Iterator;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.crop.Crop;
+import net.imagej.ops.Ops;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -199,7 +199,7 @@ public class Hyperslice extends AbstractInterval implements
 				max[d] += sliceMax[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Crop.class,
+			return (RandomAccessibleInterval<?>) opService.run(Ops.Crop.class,
 				new FinalInterval(tmpPosition, max), null, src);
 		}
 

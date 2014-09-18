@@ -31,6 +31,7 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -41,8 +42,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 //TODO type converter long[] -> Dimensions
-@Plugin(type = Op.class, name = CreateImg.NAME)
-public class CreateImgNativeType<V extends NativeType<V>> implements CreateImg {
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
+public class CreateImgNativeType<V extends NativeType<V>> implements
+	Ops.CreateImg
+{
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<V> output;

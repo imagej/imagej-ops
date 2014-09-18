@@ -34,6 +34,7 @@ import java.util.List;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.misc.MinMax;
 import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
@@ -47,8 +48,8 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn, University of Konstanz
  */
-@Plugin(type = Op.class, name = Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements Histogram {
+@Plugin(type = Op.class, name = Ops.Histogram.NAME)
+public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
 
 	@Parameter
 	private IterableInterval<T> in;

@@ -32,7 +32,7 @@ package net.imagej.ops.commands.project;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.project.Project;
+import net.imagej.ops.Ops.Project;
 import net.imagej.ops.statistics.Mean;
 import net.imglib2.img.Img;
 import net.imglib2.meta.ImgPlus;

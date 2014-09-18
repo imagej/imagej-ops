@@ -37,10 +37,10 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.chunker.CursorBasedChunk;
-import net.imagej.ops.project.Project;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -50,11 +50,11 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Project.NAME,
+@Plugin(type = Op.class, name = Ops.Project.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class DefaultProjectP<T, V> extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
-	implements Contingent, Parallel, Project
+	implements Contingent, Parallel, Ops.Project
 {
 
 	@Parameter

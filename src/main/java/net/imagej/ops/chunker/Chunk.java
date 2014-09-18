@@ -30,6 +30,7 @@
 
 package net.imagej.ops.chunker;
 
+import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 
 /**

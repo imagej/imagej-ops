@@ -31,6 +31,7 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.NativeType;
 
@@ -38,9 +39,9 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = CreateImg.NAME)
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
 public class CreateEmptyImgPlusCopy<V extends NativeType<V>> implements
-		CreateImg {
+		Ops.CreateImg {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgPlus<V> output;

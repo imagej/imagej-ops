@@ -32,18 +32,19 @@ package net.imagej.ops.lookup;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link Lookup} op.
+ * Default implementation of the "lookup" op.
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Lookup.NAME,
-	attrs = { @Attr(name = "aliases", value = Lookup.ALIASES) })
+@Plugin(type = Op.class, name = Ops.Lookup.NAME,
+	attrs = { @Attr(name = "aliases", value = Ops.Lookup.ALIASES) })
 public class DefaultLookup extends AbstractLookup {
 
 	@Parameter

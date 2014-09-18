@@ -1,19 +1,13 @@
 package net.imagej.ops.misc;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "minmax" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = MinMax.NAME)
- * </pre>
+ * A typed "minmax" operation.
  * 
  * @author Christian Dietz
  */
-public interface MinMax<T> extends Op {
-	String NAME = "minmax";
+public interface MinMax<T> extends Ops.MinMax {
+	// NB: Marker interface.
 }

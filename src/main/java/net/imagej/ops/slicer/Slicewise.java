@@ -31,18 +31,10 @@
 package net.imagej.ops.slicer;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
 /**
- * Base interface for "slicewise" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- * 
- * <pre>
- * @Plugin(type = Op.class, name = Slicewise.NAME,
- *   attrs = { @Attr(name = "aliases", value = Slicewise.ALIASES) })
- * </pre>
- * 
+ * A typed "slicewise" function.
  * <p>
  * Allows running {@link Function}s on orthogonal subsets of the <I>. The
  * subsets can for example be defined by the axes of an image. For each subset
@@ -52,8 +44,6 @@ import net.imagej.ops.Function;
  * @author Christian Dietz
  * @author Martin Horn
  */
-public interface Slicewise<I, O> extends Function<I, O> {
-
+public interface Slicewise<I, O> extends Ops.Slicewise, Function<I, O> {
 	// NB: Marker interface.
-	public static final String NAME = "slicewise";
 }

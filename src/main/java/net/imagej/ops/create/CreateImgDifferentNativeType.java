@@ -2,6 +2,7 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
@@ -10,9 +11,10 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = CreateImg.NAME)
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
 public class CreateImgDifferentNativeType<T extends NativeType<T>, V extends NativeType<V>>
-		implements CreateImg {
+	implements Ops.CreateImg
+{
 
 	@Parameter
 	private OpService ops;
@@ -33,7 +35,7 @@ public class CreateImgDifferentNativeType<T extends NativeType<T>, V extends Nat
 		try {
 			long[] dims = new long[input.numDimensions()];
 			input.dimensions(dims);
-			output = (Img<V>) ops.run(CreateImg.class, input.factory()
+			output = (Img<V>) ops.run(Ops.CreateImg.class, input.factory()
 					.imgFactory(type), type.copy(), dims);
 		} catch (IncompatibleTypeException e) {
 			throw new RuntimeException(e);
