@@ -86,7 +86,7 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// create an output
 		Img<ShortType> out =
-			new ArrayImgFactory<ShortType>().create(size, new ShortType());;
+			new ArrayImgFactory<ShortType>().create(size, new ShortType());
 
 		// create a kernel with a small sphere in the center
 		Img<ShortType> kernel =

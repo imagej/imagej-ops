@@ -52,7 +52,6 @@ public class LoopTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Img<ByteType> out;
-	private Img<ByteType> buffer;
 
 	private int numIterations;
 	private Op functionalOp;
@@ -62,7 +61,6 @@ public class LoopTest extends AbstractOpTest {
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
-		buffer = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
 		numIterations = 10;
 		functionalOp = ops.op(Map.class, out, in, new AddOneFunctional());
