@@ -47,12 +47,6 @@ def processTemplate(engine, context, templateFile, outFilename) {
   out.close();
 }
 
-class ValueParsingException extends Exception {
-  public ValueParsingException(String msg) {
-    super(msg)
-  }
-}
-
 /*
  * Parse a string as string, list or map
  */
