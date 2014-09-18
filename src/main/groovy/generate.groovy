@@ -27,151 +27,152 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 templateDirectory = project.properties['templateDirectory']
 outputDirectory = project.properties['outputDirectory']
 
 /* Processes a template using Apache Velocity. */
 def processTemplate(engine, context, templateFile, outFilename) {
-  if (outFilename == null) return; // nothing to do
+	if (outFilename == null) return; // nothing to do
 
-  // create output directory if it does not already exist
-  outFile = new java.io.File(outputDirectory, outFilename);
-  if (outFile.getParentFile() != null) outFile.getParentFile().mkdirs();
+	// create output directory if it does not already exist
+	outFile = new java.io.File(outputDirectory, outFilename);
+	if (outFile.getParentFile() != null) outFile.getParentFile().mkdirs();
 
-  // apply the template and write out the result
-  t = engine.getTemplate(templateFile);
-  writer = new StringWriter();
-  t.merge(context, writer);
-  out = new PrintWriter(outFile, "UTF-8");
-  out.print(writer.toString());
-  out.close();
+	// apply the template and write out the result
+	t = engine.getTemplate(templateFile);
+	writer = new StringWriter();
+	t.merge(context, writer);
+	out = new PrintWriter(outFile, "UTF-8");
+	out.print(writer.toString());
+	out.close();
 }
 
 /* Parses a string to a string, list or map. */
 def parseValue(str) {
-  symbols = new Stack<Character>();
-  parsed = new Stack<Object>();
+	symbols = new Stack<Character>();
+	parsed = new Stack<Object>();
 
-  buffer = "";
+	buffer = "";
 
-  for (char c :  str.toCharArray()) {
-    try {
-      // top symbol determines what kind of structure we're
-      // currently working on TODO: Speedup?
-      top = symbols.peek();
+	for (char c : str.toCharArray()) {
+		try {
+			// top symbol determines what kind of structure we're
+			// currently working on TODO: Speedup?
+			top = symbols.peek();
 
-      if (top == '\\') { // escaped
-        symbols.pop();
-      }
-      else {
-        if (top == '{') {
-          // parse a map
-          if (c == ':') {
-            // key is complete, push the key to parsed
-            if (!buffer.isEmpty()) {
-              parsed.push(new String(buffer));
-              buffer = "";
-            } // else
-                // buffer has probably already been pushed, therefore
-                // must have been enclosen in '"'
-            continue;
-          }
-          if (c == ',' || c == '}') {
-            if (buffer.isEmpty()) {
-              value = parsed.pop();
-            }
-            else {
-              value = new String(buffer);
-              buffer = "";
-            }
+			if (top == '\\') { // escaped
+				symbols.pop();
+			}
+			else {
+				if (top == '{') {
+					// parse a map
+					if (c == ':') {
+						// key is complete, push the key to parsed
+						if (!buffer.isEmpty()) {
+							parsed.push(new String(buffer));
+							buffer = "";
+						} // else
+								// buffer has probably already been pushed, therefore
+								// must have been enclosen in '"'
+						continue;
+					}
+					if (c == ',' || c == '}') {
+						if (buffer.isEmpty()) {
+							value = parsed.pop();
+						}
+						else {
+							value = new String(buffer);
+							buffer = "";
+						}
 
-            key = parsed.pop();
+						key = parsed.pop();
 
-            parsed.peek().put(key.trim(), value);
+						parsed.peek().put(key.trim(), value);
 
-            if (c == '}') {
-              // finish up this map.
-              symbols.pop();
-            }
+						if (c == '}') {
+							// finish up this map.
+							symbols.pop();
+						}
 
-            continue;
-          }
-        }
-        else if (top == '[') {
-          // parse a list
-          if (c == ',' || c == ']') {
-            if (buffer.isEmpty()) {
-              value = parsed.pop();
-            }
-            else {
-              value = new String(buffer);
-              buffer = "";
-            }
+						continue;
+					}
+				}
+				else if (top == '[') {
+					// parse a list
+					if (c == ',' || c == ']') {
+						if (buffer.isEmpty()) {
+							value = parsed.pop();
+						}
+						else {
+							value = new String(buffer);
+							buffer = "";
+						}
 
-            parsed.peek().add(value);
+						parsed.peek().add(value);
 
-            if (c == ']') {
-              // finish up this map.
-              symbols.pop();
-            }
+						if (c == ']') {
+							// finish up this map.
+							symbols.pop();
+						}
 
-            continue;
-          }
-        }
-        else if (top == '"') {
-          if (c == '"') {
-            parsed.push(new String(buffer));
-            buffer = "";
-            symbols.pop();
-            continue;
-          }
-        }
+						continue;
+					}
+				}
+				else if (top == '"') {
+					if (c == '"') {
+						parsed.push(new String(buffer));
+						buffer = "";
+						symbols.pop();
+						continue;
+					}
+				}
 
-        if (c == '[') {
-          symbols.push(c);
-          parsed.push(new ArrayList<Object>());
-          continue;
-        }
-        if (c == '{') {
-          symbols.push(c);
-          parsed.push(new HashMap<Object, Object>());
-          continue;
-        }
-        if (c == '"') {
-          symbols.push(c);
-          continue;
-          // uses buffer
-        }
-      }
+				if (c == '[') {
+					symbols.push(c);
+					parsed.push(new ArrayList<Object>());
+					continue;
+				}
+				if (c == '{') {
+					symbols.push(c);
+					parsed.push(new HashMap<Object, Object>());
+					continue;
+				}
+				if (c == '"') {
+					symbols.push(c);
+					continue;
+					// uses buffer
+				}
+			}
 
-      // no special meaning to this char.
-      if (buffer.isEmpty() && isWhitespace(c)) {
-        // skip leading whitespaces
-        continue;
-      }
-      buffer += c;
-    }
-    catch (EmptyStackException e) {
-      if (isWhitespace(c)) {
-        // skip leading whitespaces
-      }
-      else if (c == '{') {
-        symbols.push(c);
-        parsed.push(new HashMap<Object, Object>());
-      }
-      else if (c == '[') {
-        symbols.push(c);
-        parsed.push(new ArrayList<Object>());
-      }
-      else {
-        // this is a simple string value, we're done.
-        parsed.push(new String(str.trim()));
-        break;
-      }
-    }
-  }
+			// no special meaning to this char.
+			if (buffer.isEmpty() && isWhitespace(c)) {
+				// skip leading whitespaces
+				continue;
+			}
+			buffer += c;
+		}
+		catch (EmptyStackException e) {
+			if (isWhitespace(c)) {
+				// skip leading whitespaces
+			}
+			else if (c == '{') {
+				symbols.push(c);
+				parsed.push(new HashMap<Object, Object>());
+			}
+			else if (c == '[') {
+				symbols.push(c);
+				parsed.push(new ArrayList<Object>());
+			}
+			else {
+				// this is a simple string value, we're done.
+				parsed.push(new String(str.trim()));
+				break;
+			}
+		}
+	}
 
-  return parsed.pop();
+	return parsed.pop();
 }
 
 def isWhitespace(c) {
@@ -192,101 +193,101 @@ def isWhitespace(c) {
  * ...
  */
 def translate(templateSubdirectory, templateFile, translationsFile) {
-  // initialize the Velocity engine
-  engine = new org.apache.velocity.app.VelocityEngine();
-  p = new java.util.Properties();
-  p.setProperty("file.resource.loader.path", "$templateSubdirectory");
-  // tell Velocity to log to stderr rather than to a velocity.log file
-  p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
-      "org.apache.velocity.runtime.log.SystemLogChute");
-  engine.init(p);
+	// initialize the Velocity engine
+	engine = new org.apache.velocity.app.VelocityEngine();
+	p = new java.util.Properties();
+	p.setProperty("file.resource.loader.path", "$templateSubdirectory");
+	// tell Velocity to log to stderr rather than to a velocity.log file
+	p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
+			"org.apache.velocity.runtime.log.SystemLogChute");
+	engine.init(p);
 
-  // read translation lines
-  context = outputFilename = null;
-  reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
-  for (;;) {
-    // read the line
-    line = reader.readLine();
+	// read translation lines
+	context = outputFilename = null;
+	reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
+	for (;;) {
+		// read the line
+		line = reader.readLine();
 
-    if (line == null) break;
-    // check if the line starts a new section
-    if (line.startsWith("[") && line.endsWith("]")) {
-      // write out the previous file
-      processTemplate(engine, context, templateFile, outputFilename);
+		if (line == null) break;
+		// check if the line starts a new section
+		if (line.startsWith("[") && line.endsWith("]")) {
+			// write out the previous file
+			processTemplate(engine, context, templateFile, outputFilename);
 
-      // start a new file
-      outputFilename = line.substring(1, line.length() - 1);
-      if (!templateDirectory.equals(templateSubdirectory)) {
-        subPath = templateSubdirectory.substring(templateDirectory.length() + 1);
-        outputFilename = "$subPath/$outputFilename";
-      }
-      context = new org.apache.velocity.VelocityContext();
-      continue;
-    }
+			// start a new file
+			outputFilename = line.substring(1, line.length() - 1);
+			if (!templateDirectory.equals(templateSubdirectory)) {
+				subPath = templateSubdirectory.substring(templateDirectory.length() + 1);
+				outputFilename = "$subPath/$outputFilename";
+			}
+			context = new org.apache.velocity.VelocityContext();
+			continue;
+		}
 
-    // ignore blank lines
-    if (line.trim().isEmpty()) continue;
+		// ignore blank lines
+		if (line.trim().isEmpty()) continue;
 
-    // parse key/value pair lines separate by equals
-    if (!line.contains('=')) {
-      print("[WARNING] $translationsFile: Ignoring spurious line: $line");
-      continue;
-    }
+		// parse key/value pair lines separate by equals
+		if (!line.contains('=')) {
+			print("[WARNING] $translationsFile: Ignoring spurious line: $line");
+			continue;
+		}
 
-    int idx = line.indexOf('=');
-    key = line.substring(0, idx).trim();
-    value = line.substring(idx + 1);
+		int idx = line.indexOf('=');
+		key = line.substring(0, idx).trim();
+		value = line.substring(idx + 1);
 
-    if (value.trim().equals('```')) {
-      // multi-line value
-      builder = new StringBuilder();
-      for (;;) {
-        line = reader.readLine();
-        if (line == null) {
-          throw new RuntimeException("Unfinished value: " + builder.toString());
-        }
-        if (line.equals('```')) {
-          break;
-        }
-        if (builder.length() > 0) {
-          builder.append("\n");
-        }
-        builder.append(line);
-      }
-      value = builder.toString();
-    }
+		if (value.trim().equals('```')) {
+			// multi-line value
+			builder = new StringBuilder();
+			for (;;) {
+				line = reader.readLine();
+				if (line == null) {
+					throw new RuntimeException("Unfinished value: " + builder.toString());
+				}
+				if (line.equals('```')) {
+					break;
+				}
+				if (builder.length() > 0) {
+					builder.append("\n");
+				}
+				builder.append(line);
+			}
+			value = builder.toString();
+		}
 
-    //For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
+		//For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
 
-    context.put(key, parseValue(value));
-  }
-  reader.close();
+		context.put(key, parseValue(value));
+	}
+	reader.close();
 
-  // process the template
-  processTemplate(engine, context, templateFile, outputFilename);
+	// process the template
+	processTemplate(engine, context, templateFile, outputFilename);
 }
 
 /* Recursively translates all templates in the given directory. */
 def translateDirectory(templateSubdirectory) {
-  for (file in new java.io.File(templateSubdirectory).listFiles()) {
-    if (file.isDirectory()) {
-      // process subdirectories recursively
-      translateDirectory(file.getPath());
-    }
-    else {
-      // process Velocity template files only
-      name = file.getName();
-      if (!name.endsWith('.vm')) continue;
-      prefix = name.substring(0, name.lastIndexOf('.'));
-      translate(templateSubdirectory, name, prefix + '.list');
-    }
-  }
+	for (file in new java.io.File(templateSubdirectory).listFiles()) {
+		if (file.isDirectory()) {
+			// process subdirectories recursively
+			translateDirectory(file.getPath());
+		}
+		else {
+			// process Velocity template files only
+			name = file.getName();
+			if (!name.endsWith('.vm')) continue;
+			prefix = name.substring(0, name.lastIndexOf('.'));
+			translate(templateSubdirectory, name, prefix + '.list');
+		}
+	}
 }
 
 try {
-  translateDirectory(templateDirectory);
+	translateDirectory(templateDirectory);
 }
 catch (Throwable t) {
-  t.printStackTrace(System.err);
-  throw t;
+	t.printStackTrace(System.err);
+	throw t;
 }
