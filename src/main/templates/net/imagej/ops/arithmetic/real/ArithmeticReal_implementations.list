@@ -27,6 +27,9 @@ interface=Step
 [RealAddNoise.java]
 omit_return=true
 compute_body=```
+if (rng == null) {
+	rng = new Random(System.currentTimeMillis());
+}
 int i = 0;
 do {
     double newVal = input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
@@ -39,12 +42,8 @@ do {
 ```
 javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with an amount of Gaussian noise. The noise parameters are specified in the constructor.
 interface=AddNoise
-members=[{name:rangeMin},{name:rangeMax},{name:rangeStdDev},{name:rng,construct:new Random(),type:Random}]
+members=[{name:rangeMin},{name:rangeMax},{name:rangeStdDev},{name:rng,type:Random}]
 imports=[java.util.Random]
-constructor=```
-this.rng.setSeed(System.currentTimeMillis());
-```
-
 
 [RealCsch.java]
 compute_expr= 1.0 / Math.sinh(input.getRealDouble())
