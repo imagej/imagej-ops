@@ -228,13 +228,12 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
       print("[WARNING] $translationsFile: Ignoring spurious line: $line");
       continue;
     }
-    pair = new String[2];
 
     int idx = line.indexOf('=');
-    pair[0] = line.substring(0, idx);
-    pair[1] = line.substring(idx + 1);
+    key = line.substring(0, idx);
+    value = line.substring(idx + 1);
 
-    if (pair[1].trim().equals('```')) {
+    if (value.trim().equals('```')) {
       // multi-line value
       builder = new StringBuilder();
       for (;;) {
@@ -250,12 +249,12 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
         }
         builder.append(line);
       }
-      pair[1] = builder.toString();
+      value = builder.toString();
     }
 
-    //For debugging: System.out.println("<" + pair[0] + ">: " + parseValue(pair[1]).toString());
+    //For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
 
-    context.put(pair[0].trim(), parseValue(pair[1]));
+    context.put(key.trim(), parseValue(value));
   }
   reader.close();
 
