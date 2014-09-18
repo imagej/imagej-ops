@@ -288,4 +288,10 @@ def translateDirectory(templateSubdirectory) {
   }
 }
 
-translateDirectory(templateDirectory);
+try {
+  translateDirectory(templateDirectory);
+}
+catch (Throwable t) {
+  t.printStackTrace(System.err);
+  throw t;
+}
