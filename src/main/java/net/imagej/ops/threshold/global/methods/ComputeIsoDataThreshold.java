@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "IsoData")
+@Plugin(type = ComputeThreshold.class, name = IsoData.NAME)
 public class ComputeIsoDataThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

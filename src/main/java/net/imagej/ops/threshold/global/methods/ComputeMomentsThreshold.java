@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "Moments")
+@Plugin(type = ComputeThreshold.class, name = Moments.NAME)
 public class ComputeMomentsThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
