@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "Minimum")
+@Plugin(type = ComputeThreshold.class, name = Minimum.NAME)
 public class ComputeMinimumThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

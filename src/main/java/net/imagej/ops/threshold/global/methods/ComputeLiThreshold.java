@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "Li")
+@Plugin(type = ComputeThreshold.class, name = Li.NAME)
 public class ComputeLiThreshold<T extends RealType<T>> extends
 	AbstractComputeThresholdHistogram<T>
 {

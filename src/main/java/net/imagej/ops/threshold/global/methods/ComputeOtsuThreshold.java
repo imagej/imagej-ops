@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "Otsu")
+@Plugin(type = ComputeThreshold.class, name = Otsu.NAME)
 public class ComputeOtsuThreshold<T extends RealType<T>> extends
 	AbstractComputeThresholdHistogram<T>
 {
