@@ -37,7 +37,6 @@ import java.util.List;
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.command.CommandInfo;
-import org.scijava.command.CommandModuleItem;
 import org.scijava.command.CommandService;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
@@ -359,23 +358,11 @@ public class DefaultOpMatchingService extends
 
 	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
 		if (arg == null) return !item.isRequired();
-		if (item instanceof CommandModuleItem) {
-			final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-			final Type type = commandItem.getGenericType();
-			return canConvert(arg, type);
-		}
-		return canConvert(arg, item.getType());
+		final Type type = item.getGenericType();
+		return canConvert(arg, type);
 	}
 
 	private boolean canConvert(final Object o, final Type type) {
-		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
-			// NB: Class argument for matching, to help differentiate op signatures.
-			return true;
-		}
-		return convertService.supports(o, type);
-	}
-
-	private boolean canConvert(final Object o, final Class<?> type) {
 		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
 			// NB: Class argument for matching, to help differentiate op signatures.
 			return true;
@@ -388,13 +375,8 @@ public class DefaultOpMatchingService extends
 		final ModuleItem<?> item)
 	{
 		if (arg != null) {
-			Object value;
-			if (item instanceof CommandModuleItem) {
-				final CommandModuleItem<?> commandItem = (CommandModuleItem<?>) item;
-				final Type type = commandItem.getGenericType();
-				value = convert(arg, type);
-			}
-			else value = convert(arg, item.getType());
+			final Type type = item.getGenericType();
+			final Object value = convert(arg, type);
 			module.setInput(item.getName(), value);
 		}
 		module.setResolved(item.getName(), true);
@@ -404,14 +386,6 @@ public class DefaultOpMatchingService extends
 		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
 			// NB: Class argument for matching; fill with null.
 			return null;
-		}
-		return convertService.convert(o, type);
-	}
-
-	private Object convert(final Object o, final Class<?> type) {
-		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
-			// NB: Class argument for matching; fill with null.
-			return true;
 		}
 		return convertService.convert(o, type);
 	}
