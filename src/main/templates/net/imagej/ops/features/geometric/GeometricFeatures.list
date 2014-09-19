@@ -1,0 +1,12 @@
+[GeometricFeatures.java]
+ops = ```
+[
+  {name: area, iface: Area},
+  {name: centerofgravity, iface: CenterOfGravity},
+  {name: circularity, iface: Circularity},
+  {name: eccentricity, iface: Eccentricity},
+  {name: feretsangle, iface: FeretsAngle},
+  {name: feretsdiameter, iface: FeretsDiameter},
+  {name: perimeter, iface: Perimeter}
+]
+```
