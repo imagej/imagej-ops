@@ -1,0 +1,30 @@
+[HaralickFeatures.java]
+ops = ```
+[
+  {name: coocmatrix, iface: CooccurenceMatrix},
+  {name: haralickasm, iface: HaralickASM},
+  {name: haralickclusterpromenence, iface: HaralickClusterPromenence},
+  {name: haralickclustershade, iface: HaralickClusterShade},
+  {name: haralickconstrast, iface: HaralickContrast},
+  {name: haralickcorrelation, iface: HaralickCorrelation},
+  {name: haralickdifferenceentropy, iface: HaralickDifferenceEntropy},
+  {name: haralickdifferencevariance, iface: HaralickDifferenceVariance},
+  {name: haralickentropy, iface: HaralickEntropy},
+  {name: haralickvariance, iface: HaralickVariance},
+  {name: haralickicm1, iface: HaralickICM1},
+  {name: haralickicm2, iface: HaralickICM2},
+  {name: haralickifdm, iface: HaralickIFDM},
+  {name: haralicksumaverage, iface: HaralickSumAverage},
+  {name: haralicksumentropy, iface: HaralickSumEntropy},
+  {name: haralickcoochxy, iface: HaralickCoocHXY},
+  {name: haralickcoocmeanx, iface: HaralickCoocMeanX},
+  {name: haralkickcoocmeany, iface: HaralickCoocMeanY},
+  {name: haralickcoocpx, iface: HaralickCoocPX},
+  {name: haralkickcoocpxminusy, iface: HaralickCoocPXMinusY},
+  {name: haralickcoocpxplusy, iface: HaralickCoocPXPlusY},
+  {name: haralickcoocpy, iface: HaralickCoocPY},
+  {name: haralickcoocstdx, iface: HaralickCoocStdX},
+  {name: haralkickcoocstdy, iface: HaralickCoocStdY},
+  {name: haralkicksumvariance, iface: HaralickSumVariance}
+]
+```
