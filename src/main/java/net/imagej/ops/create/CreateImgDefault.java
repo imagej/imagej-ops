@@ -32,26 +32,15 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Ops.CreateImg.NAME)
-public class CreateImgDefault<V extends NativeType<V>> implements Ops.CreateImg
+public class CreateImgDefault<V extends Type<V>> extends AbstractCreateImg<V>
+	implements Ops.CreateImg
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<V> output;
-
-	@Parameter
-	private ImgFactory<V> fac;
-
-	@Parameter
-	private V outType;
 
 	@Parameter
 	private long[] dims;
