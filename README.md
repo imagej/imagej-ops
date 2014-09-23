@@ -2,7 +2,10 @@ ImageJ OPS
 ==========
 
 ImageJ OPS is an extensible Java framework for algorithms, particularly image
-processing algorithms.
+processing algorithms. OPS seeks to be a unifying library for scientific image
+processing. See the
+[Motivation](https://github.com/imagej/imagej-ops/wiki/Motivation) page for
+details.
 
 Getting started
 ---------------
