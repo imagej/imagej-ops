@@ -10,6 +10,7 @@ ops = ```
   {name: crop,        iface: Crop,           aliases: "slice"},
   {name: equation,    iface: Equation},
   {name: fft,    	  iface: Fft},
+  {name: fftsize,     iface: FftSize},
   {name: gauss,       iface: Gauss,          aliases: "smooth"},
   {name: histogram,   iface: Histogram},
   {name: identity,    iface: Identity},
