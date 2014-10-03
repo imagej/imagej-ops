@@ -30,15 +30,25 @@
 
 package net.imagej.ops.conditions;
 
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.AbstractOutputFunction;
 
-public abstract class AbstractCondition<T> extends AbstractFunction<T, Boolean>
-	implements Condition<T>
+public abstract class AbstractCondition<T> extends
+	AbstractOutputFunction<T, Boolean> implements Condition<T>
 {
 
 	@Override
-	public Boolean compute(final T input, final Boolean output) {
+	public Boolean createOutput(final T input) {
+		// NB: We must perform the actual computation here,
+		// because Boolean objects are immutable. So we cannot
+		// just "pre-allocate" it and fill it in later.
 		return isTrue(input);
+	}
+
+	@Override
+	protected Boolean safeCompute(final T input, final Boolean output) {
+		// NB: No need to do anything here, because the actual
+		// computation was already done by the "createOutput" method.
+		return output;
 	}
 
 }
