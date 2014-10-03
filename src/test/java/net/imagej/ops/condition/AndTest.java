@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,43 +28,33 @@
  * #L%
  */
 
-package net.imglib2.ops.condition;
+package net.imagej.ops.condition;
 
-/**
- * A {@link Condition} that combines two other Conditions in an XOR fashion.
- * The Condition is true if exactly one of the child conditions is true and
- * false otherwise.
- * 
- * @author Barry DeZonia
- * @deprecated Use net.imagej.ops instead.
- */
-@Deprecated
-public class XorCondition<T> implements Condition<T> {
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
 
-	// -- instance variables --
-	
-	private final Condition<T> cond1;
-	private final Condition<T> cond2;
+import org.junit.Test;
 
-	// -- constructor --
-	
-	public XorCondition(Condition<T> cond1, Condition<T> cond2) {
-		this.cond1 = cond1;
-		this.cond2 = cond2;
+public class AndTest extends AbstractOpTest {
+
+	@Test
+	public void testAnd() {
+		final Condition<?> c1 =
+			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			(Condition<?>) ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+
+		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
+		assertSame(result, true);
+
+		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
+		assertSame(result2, false);
+
+		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
+		assertSame(result3, false);
+
+		final Boolean result4 =
+			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
+		assertSame(result4, false);
 	}
-	
-	// -- Condition methods --
-	
-	@Override
-	public boolean isTrue(T point) {
-		boolean one = cond1.isTrue(point)^cond2.isTrue(point);
-		boolean two = cond2.isTrue(point);
-		return (one && !two) || (!one && two);
-	}
-	
-	@Override
-	public XorCondition<T> copy() {
-		return new XorCondition<T>(cond1.copy(), cond2.copy());
-	}
-
 }
