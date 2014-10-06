@@ -1,7 +1,6 @@
 [HaralickOps.java]
 ops = ```
 [
-  {name: coocmatrix, iface: CooccurenceMatrix},
   {name: haralickasm, iface: ASM},
   {name: haralickclusterpromenence, iface: ClusterPromenence},
   {name: haralickclustershade, iface: ClusterShade},
