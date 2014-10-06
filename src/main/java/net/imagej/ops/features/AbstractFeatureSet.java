@@ -80,12 +80,15 @@ public abstract class AbstractFeatureSet<I> extends
 		output.clear();
 
 		if (func == null) {
+			init();
 			func = fs.compileFeatureSet(visible, invisible,
 					(Class<? extends I>) input.getClass());
 		}
 
 		return func.compute(input);
 	}
+
+	protected abstract void init();
 
 	public List<FeatureResult> createOutput(I input) {
 		return new ArrayList<FeatureResult>();
