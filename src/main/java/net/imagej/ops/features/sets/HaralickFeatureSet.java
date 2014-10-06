@@ -51,8 +51,6 @@ import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumEntropyFeatu
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumVarianceFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickVarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Min;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
