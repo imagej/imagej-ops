@@ -30,6 +30,7 @@
 
 package net.imagej.ops.features.sets;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.Feature;
 import net.imagej.ops.features.FeatureSet;
@@ -51,6 +52,7 @@ import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumEntropyFeatu
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumVarianceFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickVarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.IterableInterval;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -63,7 +65,8 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
-public class HaralickFeatureSet<I> extends AbstractFeatureSet<I> {
+public class HaralickFeatureSet<T> extends
+		AbstractFeatureSet<IterableInterval<T>> implements Contingent {
 
 	@Parameter
 	private double nrGrayLevels = 8;
@@ -121,5 +124,16 @@ public class HaralickFeatureSet<I> extends AbstractFeatureSet<I> {
 		addInvisible(CooccurrenceMatrix.class, getInput().getClass(),
 				nrGrayLevels, distance, orientation, MinFeature.class,
 				MaxFeature.class);
+	}
+
+	@Override
+	public boolean conforms() {
+
+		int count = 0;
+		for (int d = 0; d < getInput().numDimensions(); d++) {
+			count += getInput().dimension(d) > 1 ? 1 : 0;
+		}
+
+		return count == 2;
 	}
 }
