@@ -73,4 +73,11 @@ public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
 		out.countData(in);
 
 	}
+
+	/**
+	 * @return {@link Histogram1d} after run() was called.
+	 */
+	public Histogram1d<T> getHistogram() {
+		return out;
+	}
 }
