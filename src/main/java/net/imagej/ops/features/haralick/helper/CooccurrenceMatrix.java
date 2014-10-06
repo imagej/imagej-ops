@@ -42,6 +42,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

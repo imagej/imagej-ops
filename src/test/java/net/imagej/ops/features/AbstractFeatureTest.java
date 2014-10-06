@@ -7,6 +7,7 @@ import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
@@ -31,6 +32,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 */
 	protected static final double SMALL_DELTA = 1e-07;
 
+
 	/**
 	 * Medium small number, used for assertEquals with very little error margin.
 	 */
@@ -45,6 +47,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * Seed
 	 */
 	protected static final long SEED = 1234567890L;
+
 
 	/**
 	 * Some random images
@@ -93,7 +96,10 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * images of various types.
 	 * 
 	 * @author Daniel Seebacher, University of Konstanz.
+<<<<<<< HEAD
 	 * @author Andreas Graumann, University of Konstanz
+=======
+>>>>>>> update set of haralick features and ops
 	 */
 	class ImageGenerator {
 

@@ -96,4 +96,5 @@ public class CoocHXY implements OutputOp<double[]> {
     public void setOutput(double[] output) {
         this.output = output;
     }
+
 }
