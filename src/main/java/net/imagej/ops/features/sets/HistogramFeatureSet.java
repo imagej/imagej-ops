@@ -52,9 +52,9 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 		}
 
 		op.run();
-		op.getOutput().countData(input);
+		op.getHistogram().countData(input);
 
-		final Iterator<LongType> it = op.getOutput().iterator();
+		final Iterator<LongType> it = op.getHistogram().iterator();
 
 		for (int i = 0; i < numBins; i++) {
 			final int idx = i;
