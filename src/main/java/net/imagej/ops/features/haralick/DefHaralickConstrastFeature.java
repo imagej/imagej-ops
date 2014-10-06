@@ -9,7 +9,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick2D: Contrast")
+@Plugin(type = Op.class, label = "Haralick 2D: Contrast")
 public class DefHaralickConstrastFeature implements HaralickContrastFeature {
 
 	@Parameter
