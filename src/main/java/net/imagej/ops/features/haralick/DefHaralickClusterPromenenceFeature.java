@@ -11,7 +11,7 @@ import org.scijava.plugin.Plugin;
 
 // cluster promenence (from cellcognition)
 // https://github.com/CellCognition/cecog/blob/master/csrc/include/cecog/features.hxx#L479
-@Plugin(type = Op.class, label = "Haralick2D: Cluster Promenence")
+@Plugin(type = Op.class, label = "Haralick 2D: Cluster Promenence")
 public class DefHaralickClusterPromenenceFeature implements
 		HaralickClusterPromenenceFeature {
 

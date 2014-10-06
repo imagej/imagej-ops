@@ -11,7 +11,7 @@ import org.scijava.plugin.Plugin;
 
 // cluster shade (from cellcognition)
 // https://github.com/CellCognition/cecog/blob/master/csrc/include/cecog/features.hxx#L495
-@Plugin(type = Op.class, label = "Haralick2D: Clustershade")
+@Plugin(type = Op.class, label = "Haralick 2D: Clustershade")
 public class DefHaralickClusterShadeFeature implements
 		HaralickClusterShadeFeature {
 
