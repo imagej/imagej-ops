@@ -81,7 +81,7 @@ public abstract class AbstractFeatureSet<I> extends
 
 		if (func == null) {
 			init();
-			func = fs.compileFeatureSet(visible, invisible,
+			func = fs.compile(visible, invisible,
 					(Class<? extends I>) input.getClass());
 		}
 

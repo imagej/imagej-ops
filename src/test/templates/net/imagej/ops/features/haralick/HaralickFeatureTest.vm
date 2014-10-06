@@ -75,7 +75,7 @@ public class HaralickFeatureTest extends AbstractFeatureTest {
 		feature.add(new FeatureInfo(HaralickFeatures.Haralick${op.iface}Feature.class));
 			
 		OutputFunction<Img, List<FeatureResult>> compiled = fs
-				.compileFeatureSet(feature, helpers, Img.class);
+				.compile(feature, helpers, Img.class);
 
 		assertEquals(${op.empty}, compiled.compute(empty).iterator().next().getValue(),
 				SMALL_DELTA);
