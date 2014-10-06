@@ -35,7 +35,7 @@ import java.util.List;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.misc.MinMax;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.MinMax;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
