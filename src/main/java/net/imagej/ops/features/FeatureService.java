@@ -77,4 +77,28 @@ public interface FeatureService<I> extends Service {
 	OutputFunction<I, List<FeatureResult>> compileFeatureSet(
 			final Set<FeatureInfo> visible, Set<OpInfo> invisible,
 			final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, List<FeatureResult>> compile(final FeatureInfo feature,
+			final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, List<FeatureResult>> compile(final FeatureInfo feature,
+			Set<OpInfo> invisible, final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, List<FeatureResult>> compile(
+			final Set<FeatureInfo> visible, final Class<? extends I> inputType);
 }
