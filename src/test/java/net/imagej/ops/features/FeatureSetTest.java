@@ -14,7 +14,7 @@ public class FeatureSetTest extends AbstractFeatureTest {
 	public void testHaralickFeatureSet() {
 
 		@SuppressWarnings("unchecked")
-		HaralickFeatureSet<Img<UnsignedByteType>> op = ops.op(
+		HaralickFeatureSet<UnsignedByteType> op = ops.op(
 				HaralickFeatureSet.class, random, 8, 1, "HORIZONTAL");
 
 		for (final FeatureResult result : op.compute(random)) {
