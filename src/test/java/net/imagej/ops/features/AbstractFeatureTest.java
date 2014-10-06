@@ -47,7 +47,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> empty;
 	protected Img<UnsignedByteType> constant;
 	protected Img<UnsignedByteType> random;
-	
+
 	protected FeatureService<Img> fs;
 
 	@SuppressWarnings("unchecked")
