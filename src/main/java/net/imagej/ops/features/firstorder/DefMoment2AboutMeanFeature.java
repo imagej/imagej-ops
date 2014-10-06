@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,55 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.moments;
+package net.imagej.ops.features.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment2AboutMeanFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Moment2AboutMean;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "moment1aboutmean")
-public class Moment1AboutMean<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Parameter(required = false)
-	private Size<Iterable<T>> size;
+/**
+ * Generic implementation of {@link Moment2AboutMean}. Use
+ * {@link FeatureService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Moment2AboutMean.NAME, label = Moment2AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefMoment2AboutMeanFeature implements Moment2AboutMeanFeature {
 
 	@Parameter
-	private OpService ops;
+	private Iterable<? extends RealType<?>> irt;
+
+	@Parameter
+	private MeanFeature mean;
+
+	@Parameter
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
-		}
-		if (size == null) {
-			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
-		}
+	public void run() {
+		final double meanVal = mean.getFeatureValue();
 
-		final double mean = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
 		double res = 0.0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - mean;
-			res += val;
+		for (final RealType<?> t : irt) {
+			final double val = t.getRealDouble() - meanVal;
+			res += val * val;
 		}
-		output.set(res / area);
-		return output;
+
+		out = res / area.getFeatureValue();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

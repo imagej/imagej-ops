@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,16 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MeanIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "max" function.
+ * Calculate {@link Mean} of {@link Iterable} of {@link RealType}.
  * 
  * @author Christian Dietz
  */
-public interface Max<T, V> extends Ops.Max, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
+public class DefaultMeanIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MeanIRT, MeanFeature {
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double sum = 0;
+		double count = 0;
+
+		for (final RealType<?> val : getInput()) {
+			sum += val.getRealDouble();
+			++count;
+		}
+
+		output.setReal((count == 0) ? 0 : sum / count);
+
+		return output;
+	}
+
+	@Override
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
+
 }

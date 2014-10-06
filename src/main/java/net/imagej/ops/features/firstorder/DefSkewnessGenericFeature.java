@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,47 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
-
-import java.util.Iterator;
+package net.imagej.ops.features.firstorder;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment3AboutMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SkewnessFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Skewness;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Generic implementation of {@link Skewness}. Use {@link FeatureService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Ops.MinMax.NAME)
-public class MinMaxRT<T extends RealType<T>> implements MinMax<T> {
+@Plugin(type = Op.class, label = Skewness.LABEL, name = Skewness.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefSkewnessGenericFeature implements SkewnessFeature {
 
 	@Parameter
-	private Iterable<T> img;
+	private Moment3AboutMeanFeature moment3;
+
+	@Parameter
+	private StdDeviationFeature stdDev;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private double out;
 
 	@Override
 	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
+		final double moment3 = this.moment3.getFeatureValue();
+		final double std = this.stdDev.getFeatureValue();
 
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+		out = Double.NaN;
+		if (std != 0) {
+			out = ((moment3) / (std * std * std));
 		}
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 
 }

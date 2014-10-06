@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,14 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.KurtosisFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment4AboutMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Kurtosis;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "mean" function.
+ * Generic implementation of {@link Kurtosis}. Use {@link FeatureService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public interface Mean<I, O> extends Ops.Mean, Function<I, O> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefKurtosisFeature implements KurtosisFeature {
+
+	@Parameter
+	private StdDeviationFeature stddev;
+
+	@Parameter
+	private Moment4AboutMeanFeature moment4;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
+
+	@Override
+	public void run() {
+		out = Double.NaN;
+
+		final double std = stddev.getFeatureValue();
+		final double moment4 = this.moment4.getFeatureValue();
+
+		if (std != 0) {
+			out = ((moment4) / (std * std * std * std));
+		}
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
 }

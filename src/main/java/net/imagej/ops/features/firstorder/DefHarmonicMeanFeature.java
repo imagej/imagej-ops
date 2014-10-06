@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,16 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.HarmonicMean;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "sum" function.
+ * Generic implementation of {@link HarmonicMean}. Use {@link FeatureService} to
+ * compile this {@link Op}.
  * 
  * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public interface Sum<I, O> extends Ops.Sum, Function<I, O> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, label = HarmonicMean.LABEL, name = HarmonicMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefHarmonicMeanFeature implements HarmonicMeanFeature {
+
+	@Parameter(type = ItemIO.INPUT)
+	private SumOfInversesFeature inverseSum;
+
+	@Parameter(type = ItemIO.INPUT)
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
+
+	@Override
+	public void run() {
+		out = 0;
+
+		if (inverseSum.getFeatureValue() != 0) {
+			out += area.getFeatureValue();
+			out /= inverseSum.getFeatureValue();
+		}
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
 }

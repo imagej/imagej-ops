@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,34 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfInverses;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LAST_PRIORITY)
-public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
-{
+/**
+ * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ * 
+ */
+@Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumOfInversesIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumOfInversesIRT, SumOfInversesFeature {
 
 	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
-		final Iterator<?> iterator = input.iterator();
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
 
-		long numElements = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			numElements++;
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double res = 0.0;
+		for (final RealType<?> type : input) {
+			res += (1.0d / type.getRealDouble());
 		}
-
-		output.set(numElements);
+		output.setReal(res);
 		return output;
+
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
 	}
 }

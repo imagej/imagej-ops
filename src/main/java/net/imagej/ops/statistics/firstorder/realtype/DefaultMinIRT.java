@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,38 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Min;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Variance.NAME, priority = Priority.LOW_PRIORITY)
-public class VarianceRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Moment2AboutMean<T> moment2;
-
-	@Parameter
-	private OpService ops;
+/**
+ * Calculate {@link Min} of {@link Iterable} of {@link RealType}.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMinIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MinIRT, MinFeature {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (moment2 == null) {
-			moment2 =
-				(Moment2AboutMean<T>) ops.op(Moment2AboutMean.class, output, input);
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	protected RealType<?> safeCompute(
+			final Iterable<? extends RealType<?>> input,
+			final RealType<?> output) {
+
+		double min = Double.POSITIVE_INFINITY;
+
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp < min) {
+				min = tmp;
+			}
 		}
-		return moment2.compute(input, output);
+
+		output.setReal(min);
+		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
 	}
 }
