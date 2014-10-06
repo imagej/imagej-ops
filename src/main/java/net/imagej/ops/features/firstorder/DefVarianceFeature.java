@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
@@ -28,16 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment2AboutMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Variance;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "stddev" function.
+ * Generic implementation of {@link Variance}. Use {@link FeatureService} to
+ * compile this {@link Op}.
  * 
  * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public interface StdDeviation<T, V> extends Ops.StdDeviation, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, label = Variance.LABEL, name = Variance.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefVarianceFeature implements VarianceFeature {
+
+	@Parameter
+	private Moment2AboutMeanFeature moment2;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
+
+	@Override
+	public void run() {
+		out = moment2.getFeatureValue();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
+
 }

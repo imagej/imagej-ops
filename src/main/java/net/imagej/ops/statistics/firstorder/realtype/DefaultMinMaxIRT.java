@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
@@ -28,26 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import java.util.Iterator;
+
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.MinMax;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Sum.NAME, priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractStrictFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
-{
+/**
+ * Calculates the minimum and maximum value of an {@link Iterable} of type
+ * {@link RealType}
+ * 
+ * @author Martin Horn
+ */
+@Plugin(type = MinMax.class, name = MinMax.NAME)
+public class DefaultMinMaxIRT<T extends RealType<T>> implements MinMax {
+
+	@Parameter(type = ItemIO.INPUT)
+	private Iterable<T> img;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
-	public V compute(final Iterable<T> input, final V output) {
-		for (final T t : input) {
-			output.setReal(output.getRealDouble() + t.getRealDouble());
+	public void run() {
+		min = img.iterator().next().createVariable();
+		max = min.copy();
+
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
+
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0)
+				min.set(i);
+			if (max.compareTo(i) < 0)
+				max.set(i);
 		}
-		return output;
 	}
 }

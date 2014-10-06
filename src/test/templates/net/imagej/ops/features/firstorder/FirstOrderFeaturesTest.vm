@@ -28,17 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+import java.util.HashSet;
+
+import net.imagej.ops.features.FeatureResult;
+import net.imagej.ops.OutputFunction;
+import net.imagej.ops.features.AbstractFeatureTest;
+import net.imagej.ops.features.Feature;
+import net.imagej.ops.features.FeatureInfo;
+import net.imagej.ops.features.OpInfo;
+import net.imglib2.img.Img;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures;
+
+
+import org.junit.Test;
+
 
 /**
- * A typed "size" function.
+ * Testing implementations of {@link FirstOrderFeatures}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface Size<I> extends Ops.Size, Function<I, LongType> {
-	// NB: Marker interface.
+public class FirstOrderFeaturesTest extends AbstractFeatureTest {
+
+	private HashSet<OpInfo> helpers;
+
+	{
+		this.helpers = new HashSet<OpInfo>();
+	}
+
+
+#foreach ($op in $ops)
+
+	/**
+	 * Testing {@link Feature} implementation of {@link ${op.iface}}
+	 */
+	@Test
+	public void ${op.iface}FeatureTest() {
+
+		final HashSet<FeatureInfo> feature = new HashSet<FeatureInfo>();
+		feature.add(new FeatureInfo(FirstOrderFeatures.${op.iface}Feature.class));
+			
+		OutputFunction<Img, List<FeatureResult>> compiled = fs
+				.compileFeatureSet(feature, helpers, Img.class);
+
+		assertEquals(${op.empty}, compiled.compute(empty).iterator().next().getValue(),
+				SMALL_DELTA);
+
+		assertEquals(${op.random}, compiled.compute(random).iterator().next().getValue(),
+				SMALL_DELTA);
+
+		assertEquals(${op.constant}, compiled.compute(constant).iterator().next().getValue(),
+				SMALL_DELTA);
+		
+	}
+#end
+
 }

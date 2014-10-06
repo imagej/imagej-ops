@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,39 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.HarmonicMean;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.StdDeviation.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements StdDeviation<T, T>
-{
+/**
+ * Generic implementation of {@link HarmonicMean}. Use {@link FeatureService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, label = HarmonicMean.LABEL, name = HarmonicMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefHarmonicMeanFeature implements HarmonicMeanFeature {
+
+	@Parameter(type = ItemIO.INPUT)
+	private SumOfInversesFeature inverseSum;
+
+	@Parameter(type = ItemIO.INPUT)
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public void run() {
+		out = 0;
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+		if (inverseSum.getFeatureValue() != 0) {
+			out += area.getFeatureValue();
+			out /= inverseSum.getFeatureValue();
 		}
+	}
 
-		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
-		return output;
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

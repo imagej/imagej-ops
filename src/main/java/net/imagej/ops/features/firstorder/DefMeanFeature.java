@@ -1,6 +1,8 @@
+package net.imagej.ops.features.firstorder;
+
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
@@ -28,15 +30,41 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
 
-import net.imagej.ops.Ops;
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "median" function.
+ * Generic implementation of {@link MeanDouble}.
  * 
  * @author Christian Dietz
  */
-public interface Median<T, V> extends Ops.Median, Quantile<T, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefMeanFeature implements MeanFeature {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
+
+	@Parameter(type = ItemIO.INPUT)
+	private SumFeature sum;
+
+	@Parameter(type = ItemIO.INPUT)
+	private AreaFeature numElements;
+
+	@Override
+	public void run() {
+		out = sum.getFeatureValue() / numElements.getFeatureValue();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
 }

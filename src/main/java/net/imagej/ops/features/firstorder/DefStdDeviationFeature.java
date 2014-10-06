@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
@@ -28,16 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Skewness;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.StdDeviation;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "max" function.
+ * Generic implementation of {@link Skewness}. Use {@link FeatureService} to
+ * compile this {@link Op}.
  * 
  * @author Christian Dietz
+ * @author Andreas Graumann
  */
-public interface Max<T, V> extends Ops.Max, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, label = StdDeviation.LABEL, name = StdDeviation.NAME, priority = Priority.HIGH_PRIORITY)
+public class DefStdDeviationFeature implements StdDeviationFeature {
+
+	@Parameter
+	private VarianceFeature variance;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
+
+	@Override
+	public void run() {
+		out = Math.sqrt(variance.getFeatureValue());
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
 }

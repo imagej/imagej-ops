@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,28 +28,55 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.GeometricMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.GeometricMean;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LOW_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractStrictFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
-{
+/**
+ * Generic implementation of {@link GeometricMean}. Use {@link FeatureService}
+ * to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefGeometricMeanFeature implements GeometricMeanFeature {
+
+	@Parameter
+	private SumOfLogsFeature logSum;
+
+	@Parameter
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
-		output.set(input.size());
-		return output;
+	public void run() {
+
+		final double area = this.area.getFeatureValue();
+
+		if (area != 0) {
+			out = Math.exp(logSum.getFeatureValue() / area);
+		} else {
+			out = 0;
+		}
 	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
+
 }

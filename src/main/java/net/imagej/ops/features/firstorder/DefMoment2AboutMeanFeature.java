@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,47 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
-
-import java.util.Iterator;
+package net.imagej.ops.features.firstorder;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment2AboutMeanFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Moment2AboutMean;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Generic implementation of {@link Moment2AboutMean}. Use
+ * {@link FeatureService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Ops.MinMax.NAME)
-public class MinMaxRT<T extends RealType<T>> implements MinMax<T> {
+@Plugin(type = Op.class, name = Moment2AboutMean.NAME, label = Moment2AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefMoment2AboutMeanFeature implements Moment2AboutMeanFeature {
 
 	@Parameter
-	private Iterable<T> img;
+	private Iterable<? extends RealType<?>> irt;
+
+	@Parameter
+	private MeanFeature mean;
+
+	@Parameter
+	private AreaFeature area;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private double out;
 
 	@Override
 	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
+		final double meanVal = mean.getFeatureValue();
 
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
-
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+		double res = 0.0;
+		for (final RealType<?> t : irt) {
+			final double val = t.getRealDouble() - meanVal;
+			res += val * val;
 		}
+
+		out = res / area.getFeatureValue();
 	}
 
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
 }

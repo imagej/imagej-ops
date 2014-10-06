@@ -1,9 +1,12 @@
+package net.imagej.ops.statistics.firstorder.realtype;
+
 /*
+
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,38 +31,46 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Sum;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Variance.NAME, priority = Priority.LOW_PRIORITY)
-public class VarianceRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Moment2AboutMean<T> moment2;
-
-	@Parameter
-	private OpService ops;
+/**
+ * Calculate {@link Sum} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumIRT, SumFeature {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (moment2 == null) {
-			moment2 =
-				(Moment2AboutMean<T>) ops.op(Moment2AboutMean.class, output, input);
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> input) {
+		return new DoubleType();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+		output.setReal(0);
+		for (final RealType<?> d : input) {
+			output.setReal(output.getRealDouble() + d.getRealDouble());
 		}
-		return moment2.compute(input, output);
+
+		return output;
 	}
 }

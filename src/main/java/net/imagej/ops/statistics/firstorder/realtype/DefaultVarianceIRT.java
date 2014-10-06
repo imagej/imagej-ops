@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
@@ -28,69 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.misc.Size;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.VarianceIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Variance;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Computes the mean of values for the input {@link Iterable}.
+ * Calculate {@link Variance} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Ops.Mean.NAME, priority = Priority.LOW_PRIORITY)
-public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
-{
-
-	@Parameter(required = false)
-	private Sum<Iterable<I>, O> sumFunc;
-
-	@Parameter(required = false)
-	private Size<Iterable<I>> sizeFunc;
-
-	@Parameter
-	private OpService ops;
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
+public class DefaultVarianceIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements VarianceIRT, VarianceFeature {
 
 	@Override
-	public O compute(final Iterable<I> input, final O output) {
-
-		if (sumFunc == null) {
-			sumFunc = (Sum<Iterable<I>, O>) ops.op(Sum.class, LongType.class, input);
-		}
-		if (sizeFunc == null) {
-			sizeFunc = (Size<Iterable<I>>) ops.op(Size.class, LongType.class, input);
-		}
-
-		final O result;
-		if (output == null) {
-			// HACK: Need to cast through Object to satisfy javac.
-			final Object o = new DoubleType();
-			@SuppressWarnings("unchecked")
-			final O newOutput = (O) o;
-			result = newOutput;
-		}
-		else result = output;
-
-		final LongType size = sizeFunc.compute(input, new LongType());
-		final O sum = sumFunc.compute(input, result.createVariable());
-
-		// TODO: Better way to go LongType -> O without going through double?
-		double mean = sum.getRealDouble() / size.getRealDouble();
-
-		result.setReal(mean);
-
-		return result;
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
 	}
 
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		for (final RealType<?> next : input) {
+			final double px = next.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
+		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
 }

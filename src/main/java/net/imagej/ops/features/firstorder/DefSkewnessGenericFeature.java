@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,41 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment3AboutMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SkewnessFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Skewness;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Variance.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
-{
+/**
+ * Generic implementation of {@link Skewness}. Use {@link FeatureService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, label = Skewness.LABEL, name = Skewness.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefSkewnessGenericFeature implements SkewnessFeature {
+
+	@Parameter
+	private Moment3AboutMeanFeature moment3;
+
+	@Parameter
+	private StdDeviationFeature stdDev;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void run() {
+		final double moment3 = this.moment3.getFeatureValue();
+		final double std = this.stdDev.getFeatureValue();
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+		out = Double.NaN;
+		if (std != 0) {
+			out = ((moment3) / (std * std * std));
 		}
-
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
-		return output;
 	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
+	}
+
 }

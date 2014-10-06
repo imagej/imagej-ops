@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,36 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.KurtosisFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment4AboutMeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Kurtosis;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Min.NAME, priority = Priority.LOW_PRIORITY)
-public class MinRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Min<T, T>
-{
+/**
+ * Generic implementation of {@link Kurtosis}. Use {@link FeatureService} to
+ * compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefKurtosisFeature implements KurtosisFeature {
+
+	@Parameter
+	private StdDeviationFeature stddev;
+
+	@Parameter
+	private Moment4AboutMeanFeature moment4;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public void run() {
+		out = Double.NaN;
 
-		final Iterator<T> it = input.iterator();
-		T min = it.next().copy();
+		final double std = stddev.getFeatureValue();
+		final double moment4 = this.moment4.getFeatureValue();
 
-		while (it.hasNext()) {
-			final T next = it.next();
-			if (min.compareTo(next) > 0) {
-				min.set(next);
-			}
+		if (std != 0) {
+			out = ((moment4) / (std * std * std * std));
 		}
-		output.set(min);
-		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,46 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.moments;
+package net.imagej.ops.features.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment1AboutMeanFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Moment1AboutMean;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "moment1aboutmean")
-public class Moment2AboutMean<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType>
-{
-	@Parameter
-	private Mean<Iterable<T>, DoubleType> mean;
+/**
+ * Generic implementation of {@link Moment1AboutMean}. Use
+ * {@link FeatureService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Moment1AboutMean.NAME, label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefMoment1AboutMeanFeature implements Moment1AboutMeanFeature {
 
 	@Parameter
-	private Size<Iterable<T>> size;
+	private Iterable<? extends RealType<?>> irt;
+
+	@Parameter
+	private MeanFeature mean;
+
+	@Parameter
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-
-		final double meanVal = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
+	public void run() {
+		final double tmpMean = mean.getFeatureValue();
 
 		double res = 0.0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - meanVal;
-			res += val * val;
+		for (final RealType<?> val : irt) {
+			res += val.getRealDouble() - tmpMean;
 		}
 
-		output.setReal(res / area);
-		return output;
+		out = res;
+		out = res / area.getFeatureValue();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

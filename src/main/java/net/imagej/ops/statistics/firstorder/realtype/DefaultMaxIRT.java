@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,34 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LAST_PRIORITY)
-public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
-{
+/**
+ * Calculate {@link Max} of {@link Iterable} of {@link RealType}.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Max.NAME, label = Max.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMaxIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MaxIRT, MaxFeature {
 
 	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
-		final Iterator<?> iterator = input.iterator();
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
 
-		long numElements = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			numElements++;
+		double max = -Double.MAX_VALUE;
+
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp > max) {
+				max = tmp;
+			}
 		}
 
-		output.set(numElements);
+		output.setReal(max);
 		return output;
 	}
+
+	@Override
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
+
 }

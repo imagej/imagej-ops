@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,55 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.moments;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfInverses;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "moment1aboutmean")
-public class Moment1AboutMean<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Parameter(required = false)
-	private Size<Iterable<T>> size;
-
-	@Parameter
-	private OpService ops;
+/**
+ * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ * 
+ */
+@Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumOfInversesIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumOfInversesIRT, SumOfInversesFeature {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
-		}
-		if (size == null) {
-			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
-		}
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
 
-		final double mean = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
 		double res = 0.0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - mean;
-			res += val;
+		for (final RealType<?> type : input) {
+			res += (1.0d / type.getRealDouble());
 		}
-		output.set(res / area);
+		output.setReal(res);
 		return output;
+
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
 	}
 }

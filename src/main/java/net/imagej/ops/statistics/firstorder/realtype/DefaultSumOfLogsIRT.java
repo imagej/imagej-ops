@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,35 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfLogsIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfInverses;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfLogs;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
-public class MaxRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Max<T, T>
-{
+/**
+ * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = SumOfLogs.NAME, label = SumOfLogs.LABEL)
+public class DefaultSumOfLogsIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumOfLogsIRT, SumOfLogsFeature {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
 
-		final Iterator<T> it = input.iterator();
-		T max = it.next().copy();
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
 
-		while (it.hasNext()) {
-			final T next = it.next();
-			if (max.compareTo(next) < 0) {
-				max.set(next);
-			}
+		double result = 0.0;
+		for (final RealType<?> type : input) {
+			result += Math.log(type.getRealDouble());
 		}
-		output.set(max);
+		output.setReal(result);
 		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
 	}
 }
