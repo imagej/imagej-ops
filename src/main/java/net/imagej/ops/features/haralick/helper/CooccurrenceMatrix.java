@@ -91,6 +91,20 @@ public class CooccurrenceMatrix implements Op {
 	@Override
 	public void run() {
 
+		int dimX = -1;
+		int dimY = -1;
+
+		for (int d = 0; d < ii.numDimensions(); d++) {
+			if (ii.dimension(d) > 1) {
+				if (dimX == -1) {
+					dimX = d;
+				} else {
+					dimY = d;
+					break;
+				}
+			}
+		}
+
 		final MatrixOrientation orientation = MatrixOrientation
 				.valueOf(this.orientation);
 
@@ -102,8 +116,8 @@ public class CooccurrenceMatrix implements Op {
 
 		final double localMax = max.getFeatureValue();
 
-		final int[][] pixels = new int[(int) ii.dimension(0)][(int) ii
-				.dimension(1)];
+		final int[][] pixels = new int[(int) ii.dimension(dimX)][(int) ii
+				.dimension(dimY)];
 
 		for (int i = 0; i < pixels.length; i++) {
 			Arrays.fill(pixels[i], Integer.MAX_VALUE);
@@ -111,8 +125,8 @@ public class CooccurrenceMatrix implements Op {
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			pixels[cursor.getIntPosition(1) - (int) ii.min(1)][cursor
-					.getIntPosition(0) - (int) ii.min(0)] = (int) (((cursor
+			pixels[cursor.getIntPosition(dimY) - (int) ii.min(dimY)][cursor
+					.getIntPosition(dimX) - (int) ii.min(dimX)] = (int) (((cursor
 					.get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGreyLevels - 1));
 		}
 
