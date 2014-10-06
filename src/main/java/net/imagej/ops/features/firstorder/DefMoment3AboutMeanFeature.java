@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,26 +28,58 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.firstorder;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment3AboutMeanFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Moment3AboutMean;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Sum.NAME, priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractStrictFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
-{
+/**
+ * Generic implementation of {@link Moment3AboutMean}. Use
+ * {@link FeatureService} to compile this {@link Op}.
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Moment3AboutMean.NAME, label = Moment3AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefMoment3AboutMeanFeature implements Moment3AboutMeanFeature {
+
+	@Parameter
+	private Iterable<RealType<?>> irt;
+
+	@Parameter
+	private MeanFeature mean;
+
+	@Parameter
+	private AreaFeature area;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double out;
 
 	@Override
-	public V compute(final Iterable<T> input, final V output) {
-		for (final T t : input) {
-			output.setReal(output.getRealDouble() + t.getRealDouble());
+	public void run() {
+		final double meanVal = mean.getFeatureValue();
+
+		double res = 0.0;
+		for (final RealType<?> t : irt) {
+			final double val = t.getRealDouble() - meanVal;
+			res += val * val * val;
 		}
-		return output;
+
+		out = res / area.getFeatureValue();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return out;
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,49 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MedianFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MedianIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Median;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Median.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class MedianRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
-{
-
-	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
-		final ArrayList<Double> statistics = new ArrayList<Double>();
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			statistics.add(it.next().getRealDouble());
-		}
-
-		output.setReal(select(statistics, 0, statistics.size() - 1, statistics
-			.size() / 2));
-
-		return output;
-	}
+/**
+ * Calculate {@link Median} of {@link Iterable} of {@link RealType}.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMedianIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MedianIRT, MedianFeature {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
 	 * element, k = n - 1.
 	 */
 	private double select(final ArrayList<Double> array, int left, int right,
-		final int k)
-	{
+			final int k) {
 
 		while (true) {
 
@@ -136,4 +125,30 @@ public class MedianRealType<T extends RealType<T>> extends
 		array.set(a, array.get(b));
 		array.set(b, temp);
 	}
+
+	@Override
+	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		final ArrayList<Double> statistics = new ArrayList<Double>();
+
+		for (final RealType<?> type : input) {
+			statistics.add(type.getRealDouble());
+		}
+
+		output.setReal(select(statistics, 0, statistics.size() - 1,
+				statistics.size() / 2));
+		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
+
 }

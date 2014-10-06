@@ -1,6 +1,9 @@
+package net.imagej.ops.statistics.firstorder.realtype;
+
 /*
+
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,41 +31,46 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
-
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Sum;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Variance.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
-{
+/**
+ * Calculate {@link Sum} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumIRT, SumFeature {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> input) {
+		return new DoubleType();
+	}
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
 
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+		output.setReal(0);
+		for (final RealType<?> d : input) {
+			output.setReal(output.getRealDouble() + d.getRealDouble());
 		}
 
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
 		return output;
 	}
 }

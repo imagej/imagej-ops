@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,28 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.VarianceIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Variance;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LOW_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractStrictFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
-{
+/**
+ * Calculate {@link Variance} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ */
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
+public class DefaultVarianceIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements VarianceIRT, VarianceFeature {
 
 	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
-		output.set(input.size());
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		for (final RealType<?> next : input) {
+			final double px = next.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
 		return output;
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
 	}
 }

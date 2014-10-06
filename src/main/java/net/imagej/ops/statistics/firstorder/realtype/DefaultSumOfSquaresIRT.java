@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,38 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfSquaresIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfSquares;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.StdDeviation.NAME, priority = Priority.LOW_PRIORITY)
-public class StdDevRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	StdDeviation<T, DoubleType>
-{
-
-	@Parameter(required = false)
-	private Variance<T, DoubleType> variance;
-
-	@Parameter
-	private OpService ops;
+/**
+ * Calculate {@link SumOfSquares} on {@link Iterable} of {@link RealType}
+ * 
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ * 
+ */
+@Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
+public class DefaultSumOfSquaresIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements SumOfSquaresIRT, SumOfSquaresFeature {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-		if (variance == null) {
-			variance = ops.op(Variance.class, output, input);
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double result = 0;
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			result += (tmp * tmp);
 		}
-		output.set(Math.sqrt(variance.compute(input, output).get()));
+
+		output.setReal(result);
 		return output;
 	}
 
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
 }

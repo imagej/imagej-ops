@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,16 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "quantile" function.
+ * Calculate {@link Max} of {@link Iterable} of {@link RealType}.
  * 
  * @author Christian Dietz
  */
-public interface Quantile<T, V> extends Ops.Quantile, Function<T, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, name = Max.NAME, label = Max.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMaxIRT extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MaxIRT, MaxFeature {
+
+	@Override
+	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
+			RealType<?> output) {
+
+		double max = -Double.MAX_VALUE;
+
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp > max) {
+				max = tmp;
+			}
+		}
+
+		output.setReal(max);
+		return output;
+	}
+
+	@Override
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
+	}
+
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
+
 }
