@@ -54,7 +54,6 @@ public class CoocPXMinusY implements OutputOp<double[]> {
 
 		final double[][] matrix = cooc.getOutput();
 		final int nrGrayLevels = matrix.length;
-		
 		final double[] pxminusy = new double[nrGrayLevels];
 		for (int k = 0; k < nrGrayLevels; k++) {
 			for (int i = 0; i < nrGrayLevels; i++) {

@@ -39,60 +39,61 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class)
 public class CoocHXY implements OutputOp<double[]> {
 
-	private static final double EPSILON = 0.00000001f;
+    private static final double EPSILON = 0.00000001f;
 
-	@Parameter
-	private CooccurrenceMatrix cooc;
+    @Parameter
+    private CooccurrenceMatrix cooc;
 
-	@Parameter
-	private CoocPX coocPX;
+    @Parameter
+    private CoocPX coocPX;
 
-	@Parameter
-	private CoocPY coocPY;
+    @Parameter
+    private CoocPY coocPY;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double[] output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private double[] output;
 
-	@Override
-	public void run() {
-		double hx = 0.0d;
-		double hy = 0.0d;
-		double hxy1 = 0.0d;
-		double hxy2 = 0.0d;
+    @Override
+    public void run() {
+        double hx = 0.0d;
+        double hy = 0.0d;
+        double hxy1 = 0.0d;
+        double hxy2 = 0.0d;
 
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
-		final double[] px = coocPX.getOutput();
-		final double[] py = coocPY.getOutput();
+        final double[][] matrix = cooc.getOutput();
+        final int nrGrayLevels = matrix.length;
 
-		for (int i = 0; i < px.length; i++) {
-			hx += px[i] * Math.log(px[i] + EPSILON);
-		}
-		hx = -hx;
+        final double[] px = coocPX.getOutput();
+        final double[] py = coocPY.getOutput();
 
-		for (int j = 0; j < py.length; j++) {
-			hy += py[j] * Math.log(py[j] + EPSILON);
-		}
-		hy = -hy;
-		for (int i = 0; i < nrGrayLevels; i++) {
-			for (int j = 0; j < nrGrayLevels; j++) {
-				hxy1 += matrix[i][j] * Math.log(px[i] * py[j] + EPSILON);
-				hxy2 += px[i] * py[j] * Math.log(px[i] * py[j] + EPSILON);
-			}
-		}
-		hxy1 = -hxy1;
-		hxy2 = -hxy2;
+        for (int i = 0; i < px.length; i++) {
+            hx += px[i] * Math.log(px[i] + EPSILON);
+        }
+        hx = -hx;
 
-		output = new double[] { hx, hy, hxy1, hxy2 };
-	}
+        for (int j = 0; j < py.length; j++) {
+            hy += py[j] * Math.log(py[j] + EPSILON);
+        }
+        hy = -hy;
+        for (int i = 0; i < nrGrayLevels; i++) {
+            for (int j = 0; j < nrGrayLevels; j++) {
+                hxy1 += matrix[i][j] * Math.log(px[i] * py[j] + EPSILON);
+                hxy2 += px[i] * py[j] * Math.log(px[i] * py[j] + EPSILON);
+            }
+        }
+        hxy1 = -hxy1;
+        hxy2 = -hxy2;
 
-	@Override
-	public double[] getOutput() {
-		return output;
-	}
+        output = new double[] { hx, hy, hxy1, hxy2 };
+    }
 
-	@Override
-	public void setOutput(double[] output) {
-		this.output = output;
-	}
+    @Override
+    public double[] getOutput() {
+        return output;
+    }
+
+    @Override
+    public void setOutput(double[] output) {
+        this.output = output;
+    }
 }

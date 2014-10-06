@@ -32,12 +32,14 @@ package net.imagej.ops.features.haralick;
 
 import static org.junit.Assert.assertEquals;
 
+
 import java.util.HashSet;
 
 import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.OutputFunction;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.features.Feature;
+
 import net.imagej.ops.features.OpInfo;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;

@@ -78,7 +78,6 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		rotatedEllipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
 		
 
-			
 		fs = context.getService(FeatureService.class);
 	}
 

@@ -55,6 +55,7 @@ import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.IterableInterval;
 
 import org.scijava.ItemIO;
+
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -67,50 +68,50 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Texture Features (Haralick)")
 public class HaralickFeatureSet<T> extends
-		AbstractFeatureSet<IterableInterval<T>> implements Contingent {
+        AbstractFeatureSet<IterableInterval<T>> implements Contingent {
 
-	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "The dimensionality of the co-occurrence matrix.", min = "1", max = "2147483647", stepSize = "1")
-	private Double nrGrayLevels = 8d;
+    @Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "The dimensionality of the co-occurrence matrix.", min = "1", max = "2147483647", stepSize = "1")
+    private Double nrGrayLevels = 8d;
 
-	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed.", min = "1", max = "2147483647", stepSize = "1")
-	private Double distance = 1d;
+    @Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed.", min = "1", max = "2147483647", stepSize = "1")
+    private Double distance = 1d;
 
-	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "The orientation of the co-occurrence matrix.", choices = {
-			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
-	private String orientation = "HORIZONTAL";
+    @Parameter(type = ItemIO.INPUT, label = "Orientation", description = "The orientation of the co-occurrence matrix.", choices = {
+            "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
+    private String orientation = "HORIZONTAL";
 
-	@Override
-	protected void init() {
-		addVisible(ASMFeature.class);
-		addVisible(ClusterPromenenceFeature.class);
-		addVisible(ClusterShadeFeature.class);
-		addVisible(ContrastFeature.class);
-		addVisible(CorrelationFeature.class);
-		addVisible(DifferenceVarianceFeature.class);
-		addVisible(DifferenceEntropyFeature.class);
-		addVisible(EntropyFeature.class);
-		addVisible(ICM1Feature.class);
-		addVisible(ICM2Feature.class);
-		addVisible(IFDMFeature.class);
-		addVisible(SumAverageFeature.class);
-		addVisible(SumEntropyFeature.class);
-		addVisible(SumVarianceFeature.class);
-		addVisible(VarianceFeature.class);
+    @Override
+    protected void init() {
+        addVisible(ASMFeature.class);
+        addVisible(ClusterPromenenceFeature.class);
+        addVisible(ClusterShadeFeature.class);
+        addVisible(ContrastFeature.class);
+        addVisible(CorrelationFeature.class);
+        addVisible(DifferenceVarianceFeature.class);
+        addVisible(DifferenceEntropyFeature.class);
+        addVisible(EntropyFeature.class);
+        addVisible(ICM1Feature.class);
+        addVisible(ICM2Feature.class);
+        addVisible(IFDMFeature.class);
+        addVisible(SumAverageFeature.class);
+        addVisible(SumEntropyFeature.class);
+        addVisible(SumVarianceFeature.class);
+        addVisible(VarianceFeature.class);
 
-		// add cooc parameters
-		addInvisible(CooccurrenceMatrix.class, getInput().getClass(),
-				nrGrayLevels, distance, orientation, MinFeature.class,
-				MaxFeature.class);
-	}
+        // add cooc parameters
+        addInvisible(CooccurrenceMatrix.class, getInput().getClass(),
+                nrGrayLevels, distance, orientation, MinFeature.class,
+                MaxFeature.class);
+    }
 
-	@Override
-	public boolean conforms() {
+    @Override
+    public boolean conforms() {
 
-		int count = 0;
-		for (int d = 0; d < getInput().numDimensions(); d++) {
-			count += getInput().dimension(d) > 1 ? 1 : 0;
-		}
+        int count = 0;
+        for (int d = 0; d < getInput().numDimensions(); d++) {
+            count += getInput().dimension(d) > 1 ? 1 : 0;
+        }
 
-		return count == 2;
-	}
+        return count == 2;
+    }
 }
