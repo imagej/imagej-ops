@@ -53,8 +53,9 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing all kinds of first order statistics.
- * 
- * 
+ *  
+ * TODO: Add generic PercentileFeature 
+ *  
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
  */
