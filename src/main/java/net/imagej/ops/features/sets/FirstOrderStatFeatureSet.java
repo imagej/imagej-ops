@@ -53,9 +53,9 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing all kinds of first order statistics.
- *  
- * TODO: Add generic PercentileFeature 
- *  
+ * 
+ * TODO: Add generic PercentileFeature
+ * 
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
  */
@@ -65,8 +65,7 @@ public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
 	// @Parameter
 	// private double[] percentiles = new double[] { 50 };
 
-	public FirstOrderStatFeatureSet() {
-		super();
+	protected void init() {
 
 		addVisible(MaxFeature.class);
 		addVisible(MinFeature.class);

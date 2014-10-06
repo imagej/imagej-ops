@@ -33,6 +33,8 @@ package net.imagej.ops.features.sets;
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.Feature;
 import net.imagej.ops.features.FeatureSet;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickASMFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickClusterPromenenceFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickClusterShadeFeature;
@@ -49,6 +51,8 @@ import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumEntropyFeatu
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumVarianceFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.HaralickVarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Min;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -72,30 +76,6 @@ public class HaralickFeatureSet<I> extends AbstractFeatureSet<I> {
 	@Parameter
 	private String orientation = "HORIZONTAL";
 
-	public HaralickFeatureSet() {
-		super();
-
-		addVisible(HaralickASMFeature.class);
-		addVisible(HaralickClusterPromenenceFeature.class);
-		addVisible(HaralickClusterShadeFeature.class);
-		addVisible(HaralickContrastFeature.class);
-		addVisible(HaralickCorrelationFeature.class);
-		addVisible(HaralickDifferenceVarianceFeature.class);
-		addVisible(HaralickDifferenceEntropyFeature.class);
-		addVisible(HaralickEntropyFeature.class);
-		addVisible(HaralickICM1Feature.class);
-		addVisible(HaralickICM2Feature.class);
-		addVisible(HaralickIFDMFeature.class);
-		addVisible(HaralickSumAverageFeature.class);
-		addVisible(HaralickSumEntropyFeature.class);
-		addVisible(HaralickSumVarianceFeature.class);
-		addVisible(HaralickVarianceFeature.class);
-
-		// add cooc parameters
-		addInvisible(CooccurrenceMatrix.class, nrGrayLevels, distance,
-				orientation);
-	}
-
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
@@ -118,5 +98,30 @@ public class HaralickFeatureSet<I> extends AbstractFeatureSet<I> {
 
 	public void setNrGrayLevels(double nrGrayLevels) {
 		this.nrGrayLevels = nrGrayLevels;
+	}
+
+	@Override
+	protected void init() {
+
+		addVisible(HaralickASMFeature.class);
+		addVisible(HaralickClusterPromenenceFeature.class);
+		addVisible(HaralickClusterShadeFeature.class);
+		addVisible(HaralickContrastFeature.class);
+		addVisible(HaralickCorrelationFeature.class);
+		addVisible(HaralickDifferenceVarianceFeature.class);
+		addVisible(HaralickDifferenceEntropyFeature.class);
+		addVisible(HaralickEntropyFeature.class);
+		addVisible(HaralickICM1Feature.class);
+		addVisible(HaralickICM2Feature.class);
+		addVisible(HaralickIFDMFeature.class);
+		addVisible(HaralickSumAverageFeature.class);
+		addVisible(HaralickSumEntropyFeature.class);
+		addVisible(HaralickSumVarianceFeature.class);
+		addVisible(HaralickVarianceFeature.class);
+
+		// add cooc parameters
+		addInvisible(CooccurrenceMatrix.class, getInput().getClass(),
+				nrGrayLevels, distance, orientation, MinFeature.class,
+				MaxFeature.class);
 	}
 }
