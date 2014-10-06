@@ -54,7 +54,6 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link FeatureSet} containing all kinds of first order statistics.
  * 
- * TODO: Add generic PercentileFeature
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
@@ -62,24 +61,24 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = FeatureSet.class, label = "First Order Statistics")
 public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
 
-	protected void init() {
-		addVisible(MaxFeature.class);
-		addVisible(MinFeature.class);
-		addVisible(MeanFeature.class);
-		addVisible(MedianFeature.class);
-		addVisible(StdDeviationFeature.class);
-		addVisible(SumFeature.class);
-		addVisible(VarianceFeature.class);
-		addVisible(GeometricMeanFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(Moment1AboutMeanFeature.class);
-		addVisible(Moment3AboutMeanFeature.class);
-		addVisible(Moment4AboutMeanFeature.class);
-		addVisible(HarmonicMeanFeature.class);
-		addVisible(SkewnessFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(SumOfInversesFeature.class);
-		addVisible(SumOfLogsFeature.class);
-		addVisible(SumOfSquaresFeature.class);
-	}
+    protected void init() {
+        addVisible(MaxFeature.class);
+        addVisible(MinFeature.class);
+        addVisible(MeanFeature.class);
+        addVisible(MedianFeature.class);
+        addVisible(StdDeviationFeature.class);
+        addVisible(SumFeature.class);
+        addVisible(VarianceFeature.class);
+        addVisible(GeometricMeanFeature.class);
+        addVisible(KurtosisFeature.class);
+        addVisible(Moment1AboutMeanFeature.class);
+        addVisible(Moment3AboutMeanFeature.class);
+        addVisible(Moment4AboutMeanFeature.class);
+        addVisible(HarmonicMeanFeature.class);
+        addVisible(SkewnessFeature.class);
+        addVisible(KurtosisFeature.class);
+        addVisible(SumOfInversesFeature.class);
+        addVisible(SumOfLogsFeature.class);
+        addVisible(SumOfSquaresFeature.class);
+    }
 }
