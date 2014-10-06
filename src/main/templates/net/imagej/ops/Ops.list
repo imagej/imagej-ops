@@ -17,20 +17,11 @@ ops = ```
   {name: lookup,      iface: Lookup,         aliases: "op"},
   {name: loop,        iface: Loop},
   {name: map,         iface: Map},
-  {name: max,         iface: Max},
-  {name: mean,        iface: Mean,           aliases: "avg"},
-  {name: median,      iface: Median},
-  {name: min,         iface: Min},
-  {name: minmax,      iface: MinMax},
   {name: normalize,   iface: Normalize,      aliases: "norm"},
   {name: project,     iface: Project},
   {name: quantile,    iface: Quantile},
   {name: scale,       iface: Scale,          aliases: "resize"},
-  {name: size,        iface: Size},
   {name: slicewise,   iface: Slicewise},
-  {name: stddev,      iface: StdDeviation},
-  {name: sum,         iface: Sum},
-  {name: threshold,   iface: Threshold},
-  {name: variance,    iface: Variance}
+  {name: threshold,   iface: Threshold}
 ]
 ```
