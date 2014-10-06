@@ -79,7 +79,7 @@ public class DefaultFeatureService<I> extends AbstractService implements
 	private OpMatchingService matcher;
 
 	@Override
-	public OutputFunction<I, List<FeatureResult>> compileFeatureSet(
+	public OutputFunction<I, List<FeatureResult>> compile(
 			final Set<FeatureInfo> visible, final Set<OpInfo> invisible,
 			Class<? extends I> input) {
 		try {
@@ -120,23 +120,24 @@ public class DefaultFeatureService<I> extends AbstractService implements
 	}
 
 	@Override
-	public OutputFunction<I, List<FeatureResult>> compile(FeatureInfo featureInfo,
-			Class<? extends I> inputType) {
+	public OutputFunction<I, List<FeatureResult>> compile(
+			FeatureInfo featureInfo, Class<? extends I> inputType) {
 		return compile(featureInfo, new HashSet<OpInfo>(), inputType);
 	}
 
 	@Override
-	public OutputFunction<I, List<FeatureResult>> compile(FeatureInfo featureInfo,
-			Set<OpInfo> invisible, Class<? extends I> inputType) {
+	public OutputFunction<I, List<FeatureResult>> compile(
+			FeatureInfo featureInfo, Set<OpInfo> invisible,
+			Class<? extends I> inputType) {
 		final HashSet<FeatureInfo> visible = new HashSet<FeatureInfo>();
 		visible.add(featureInfo);
-		return compileFeatureSet(visible, invisible, inputType);
+		return compile(visible, invisible, inputType);
 	}
 
 	@Override
 	public OutputFunction<I, List<FeatureResult>> compile(
 			Set<FeatureInfo> visible, Class<? extends I> inputType) {
-		return compileFeatureSet(visible, new HashSet<OpInfo>(), inputType);
+		return compile(visible, new HashSet<OpInfo>(), inputType);
 	}
 
 	// INTERNAL

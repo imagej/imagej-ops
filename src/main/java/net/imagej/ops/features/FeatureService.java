@@ -74,7 +74,7 @@ public interface FeatureService<I> extends Service {
 	 * @return {@link OutputFunction} which can be used to calculate features
 	 *         for objects of type <I>.
 	 */
-	OutputFunction<I, List<FeatureResult>> compileFeatureSet(
+	OutputFunction<I, List<FeatureResult>> compile(
 			final Set<FeatureInfo> visible, Set<OpInfo> invisible,
 			final Class<? extends I> inputType);
 
