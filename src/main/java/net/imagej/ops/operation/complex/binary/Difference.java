@@ -27,34 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
-package net.imagej.ops.conditions;
-
-import static org.junit.Assert.assertSame; 
-import net.imagej.ops.AbstractOpTest;
-
-import org.junit.Test;
-
-public class AndTest extends AbstractOpTest {
-
-	@Test
-	public void testAnd() {
-		final Condition<?> c1 =
-			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			(Condition<?>) ops.op(FunctionLesserCondition.class, Double.class, 6.0);
-
-		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
-
-		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
-		assertSame(result2, false);
-
-		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
-		assertSame(result3, false);
-
-		final Boolean result4 =
-			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
-		assertSame(result4, false);
-	}
+ 
+package net.imagej.ops.operation.complex.binary;
+ 
+import net.imagej.ops.Op;
+ 
+/**
+ * Base interface for "difference" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = Difference.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
+ */
+public interface Difference extends Op {
+ 
+    String NAME = "difference";
+ 
 }
