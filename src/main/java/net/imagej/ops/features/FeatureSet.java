@@ -49,5 +49,5 @@ import net.imagej.ops.OutputFunction;
  * @author Christian Dietz (University of Konstanz)
  */
 public interface FeatureSet<I> extends OutputFunction<I, List<FeatureResult>> {
-	// Marker
+	//NB: Marker Interface
 }

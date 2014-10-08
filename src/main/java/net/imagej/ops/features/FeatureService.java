@@ -51,9 +51,6 @@ import org.scijava.service.Service;
  * 
  * @author Christian Dietz (University of Konstanz)
  * 
- *         TODO:More convenience methods, e.g. (input: Feature, Output:
- *         FeatureResult)
- * 
  * @param <I>
  */
 public interface FeatureService<I> extends Service {
