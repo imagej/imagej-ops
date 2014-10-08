@@ -140,8 +140,48 @@ public class DefaultFeatureService<I> extends AbstractService implements
 		return compile(visible, new HashSet<OpInfo>(), inputType);
 	}
 
-	// INTERNAL
+	@Override
+	public OutputFunction<I, FeatureResult> compile(
+			Class<? extends Feature> feature, Class<? extends I> inputType) {
 
+		return compile(feature, new HashSet<OpInfo>(), inputType);
+	}
+
+	@Override
+	public OutputFunction<I, FeatureResult> compile(
+			Class<? extends Feature> feature, Set<OpInfo> invisible,
+			Class<? extends I> inputType) {
+		final OutputFunction<I, List<FeatureResult>> op = compile(
+				new FeatureInfo(feature), invisible, inputType);
+
+		return new AbstractOutputFunction<I, FeatureResult>() {
+
+			@Override
+			public FeatureResult createOutput(I input) {
+				return new DefaultFeatureResult();
+			}
+
+			@Override
+			protected FeatureResult safeCompute(I input, FeatureResult output) {
+				FeatureResult res = op.compute(input).get(0);
+				output.setValue(res.getValue());
+				output.setName(res.getName());
+				return output;
+			}
+		};
+	}
+
+	@Override
+	public OutputFunction<I, FeatureResult> compile(
+			Class<? extends Feature> feature, OpInfo invisible,
+			Class<? extends I> inputType) {
+		HashSet<OpInfo> set = new HashSet<OpInfo>();
+		set.add(invisible);
+		return compile(feature, set, inputType);
+
+	}
+
+	// INTERNAL
 	private CachedModule resolveModule(final OpInfo op,
 			final Set<OpInfo> helpers, final Source<I> inputSource,
 			final Map<Integer, CachedModule> modulePool) throws ModuleException {
