@@ -51,6 +51,9 @@ import org.scijava.service.Service;
  * 
  * @author Christian Dietz (University of Konstanz)
  * 
+ *         TODO:More convenience methods, e.g. (input: Feature, Output:
+ *         FeatureResult)
+ * 
  * @param <I>
  */
 public interface FeatureService<I> extends Service {
@@ -101,4 +104,32 @@ public interface FeatureService<I> extends Service {
 	 */
 	OutputFunction<I, List<FeatureResult>> compile(
 			final Set<FeatureInfo> visible, final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, FeatureResult> compile(
+			final Class<? extends Feature> feature,
+			final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, FeatureResult> compile(
+			final Class<? extends Feature> feature, Set<OpInfo> helpers,
+			final Class<? extends I> inputType);
+
+	/**
+	 * Simple convenience method.
+	 * 
+	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
+	 */
+	OutputFunction<I, FeatureResult> compile(
+			final Class<? extends Feature> feature, OpInfo helper,
+			final Class<? extends I> inputType);
+
 }
