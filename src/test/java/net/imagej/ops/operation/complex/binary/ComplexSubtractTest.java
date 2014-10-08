@@ -28,33 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.operation.complex.binary;
 
-import static org.junit.Assert.assertSame; 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imagej.ops.condition.BooleanCondition;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
 
 import org.junit.Test;
 
-public class AndTest extends AbstractOpTest {
+public class ComplexSubtractTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
-		final Condition<?> c1 =
-			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			(Condition<?>) ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+	public <T> void testSubtract() {
 
-		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
+		IntType a = new IntType(2);
 
-		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
-		assertSame(result2, false);
+		IntType b = new IntType(3);
 
-		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
-		assertSame(result3, false);
+		IntType c = new IntType(-1);
 
-		final Boolean result4 =
-			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
-		assertSame(result4, false);
+		IntType test = (IntType) ops.run(ComplexSubtract.class, a, a, b);
+
+		assertEquals(c, test);
+
 	}
 }
