@@ -30,7 +30,7 @@
 
 package net.imagej.ops.condition;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 import net.imagej.ops.Op;
 
