@@ -421,19 +421,12 @@ public class DefaultFeatureService<I> extends AbstractService implements
 
 				module.run();
 
-				output.add(new FeatureResult() {
+				final DefaultFeatureResult result = new DefaultFeatureResult(
+						module.getInfo().getLabel(),
+						((Feature) module.getDelegateObject())
+								.getFeatureValue());
 
-					@Override
-					public double getValue() {
-						return ((Feature) module.getDelegateObject())
-								.getFeatureValue();
-					}
-
-					@Override
-					public String getName() {
-						return module.getInfo().getLabel();
-					}
-				});
+				output.add(result);
 			}
 
 			return output;

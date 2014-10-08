@@ -7,6 +7,7 @@ import java.util.List;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.features.DefaultFeatureResult;
 import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.histogram.HistogramCreate;
@@ -57,20 +58,7 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 		final Iterator<LongType> it = op.getHistogram().iterator();
 
 		for (int i = 0; i < numBins; i++) {
-			final int idx = i;
-
-			output.add(new FeatureResult() {
-
-				@Override
-				public double getValue() {
-					return (double) it.next().get();
-				}
-
-				@Override
-				public String getName() {
-					return "Histogram [" + idx + "]";
-				}
-			});
+			output.add(new DefaultFeatureResult("Histogram [" + i + "]", (double) it.next().get()));
 		}
 
 		return output;

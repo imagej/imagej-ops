@@ -43,7 +43,23 @@ public interface FeatureResult {
 	double getValue();
 
 	/**
-	 * @return name of the {@link Feature}
+	 * @return name of {@link Feature}
 	 */
 	String getName();
+
+	/**
+	 * set the calculated value
+	 * 
+	 * @param value
+	 *            of {@link Feature}
+	 */
+	void setValue(double value);
+
+	/**
+	 * set the name of the calculated {@link Feature}
+	 * 
+	 * @param name
+	 *            of {@link Feature}
+	 */
+	void setName(String name);
 }
