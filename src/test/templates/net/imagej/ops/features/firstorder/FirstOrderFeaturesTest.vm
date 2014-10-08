@@ -32,15 +32,10 @@ package net.imagej.ops.features.firstorder;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-import java.util.HashSet;
-
 import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.OutputFunction;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.features.Feature;
-import net.imagej.ops.features.FeatureInfo;
-import net.imagej.ops.features.OpInfo;
 import net.imglib2.img.Img;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures;
 
@@ -55,13 +50,6 @@ import org.junit.Test;
  */
 public class FirstOrderFeaturesTest extends AbstractFeatureTest {
 
-	private HashSet<OpInfo> helpers;
-
-	{
-		this.helpers = new HashSet<OpInfo>();
-	}
-
-
 #foreach ($op in $ops)
 
 	/**
@@ -69,20 +57,17 @@ public class FirstOrderFeaturesTest extends AbstractFeatureTest {
 	 */
 	@Test
 	public void ${op.iface}FeatureTest() {
-
-		final HashSet<FeatureInfo> feature = new HashSet<FeatureInfo>();
-		feature.add(new FeatureInfo(FirstOrderFeatures.${op.iface}Feature.class));
 			
-		OutputFunction<Img, List<FeatureResult>> compiled = fs
-				.compile(feature, helpers, Img.class);
+		OutputFunction<Img, FeatureResult> compiled = fs
+				.compile(FirstOrderFeatures.${op.iface}Feature.class, Img.class);
 
-		assertEquals(${op.empty}, compiled.compute(empty).iterator().next().getValue(),
+		assertEquals(${op.empty}, compiled.compute(empty).getValue(),
 				SMALL_DELTA);
 
-		assertEquals(${op.random}, compiled.compute(random).iterator().next().getValue(),
+		assertEquals(${op.random}, compiled.compute(random).getValue(),
 				SMALL_DELTA);
 
-		assertEquals(${op.constant}, compiled.compute(constant).iterator().next().getValue(),
+		assertEquals(${op.constant}, compiled.compute(constant).getValue(),
 				SMALL_DELTA);
 		
 	}
