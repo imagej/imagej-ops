@@ -30,16 +30,22 @@
  
 package net.imagej.ops.operation.complex.binary;
  
-import net.imagej.ops.AbstractFunction;
-import net.imglib2.type.numeric.NumericType;
+import net.imagej.ops.Op;
  
-public abstract class ComplexBinaryOperation<T> extends AbstractFunction<T, T>
-    implements BinaryOperation<T>
-{
+/**
+ * Base interface for "difference" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = Difference.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
+ */
+public interface Difference extends Op {
  
-    @Override
-    public T compute(final T input, final T output) {
-        return input;
-    }
+    String NAME = "difference";
  
 }

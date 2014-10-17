@@ -30,16 +30,17 @@
  
 package net.imagej.ops.operation.complex.binary;
  
-import net.imagej.ops.AbstractFunction;
+import net.imagej.ops.Function;
 import net.imglib2.type.numeric.NumericType;
  
-public abstract class ComplexBinaryOperation<T> extends AbstractFunction<T, T>
-    implements BinaryOperation<T>
-{
+/**
+ * An interface that can be tested for truth or falsity for a given input.
+ *
+ * @author Barry DeZonia
+ * @author Aparna Pal
+ */
+public interface BinaryOperation<T> extends Function<T, T> {
  
-    @Override
-    public T compute(final T input, final T output) {
-        return input;
-    }
+    T compute(T val);
  
 }
