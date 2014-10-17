@@ -1,10 +1,26 @@
 package net.imagej.ops.operation.complex.binary;
-
-public class ComplexAvg {
-	public O compute(I1 z1, I2 z2, O output) {
-		double x = (z1.getRealDouble() + z2.getRealDouble()) / 2;
-		double y = (z1.getImaginaryDouble() + z2.getImaginaryDouble()) / 2;
-		output.setComplexNumber(x, y);
-		return output;
-	}
+ 
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.Add;
+import net.imagej.ops.condition.AbstractCondition;
+import net.imagej.ops.condition.And;
+import net.imglib2.type.numeric.NumericType;
+ 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+ 
+public class ComplexAvg<T extends NumericType<T>> extends ComplexBinaryOperation<T> implements Add {
+ 
+    @Parameter
+    T input;
+     
+    @Override
+    public T compute(T val) {
+     
+    val.add(input);
+    val.mul(.5);
+     
+    return val;
+    }
+ 
 }

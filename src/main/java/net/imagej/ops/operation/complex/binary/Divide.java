@@ -30,16 +30,22 @@
  
 package net.imagej.ops.operation.complex.binary;
  
-import net.imagej.ops.AbstractFunction;
-import net.imglib2.type.numeric.NumericType;
+import net.imagej.ops.Op;
  
-public abstract class ComplexBinaryOperation<T> extends AbstractFunction<T, T>
-    implements BinaryOperation<T>
-{
+/**
+ * Base interface for "divide" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = Divide.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
+ */
+public interface Divide extends Op {
  
-    @Override
-    public T compute(final T input, final T output) {
-        return input;
-    }
+    String NAME = "divide";
  
 }

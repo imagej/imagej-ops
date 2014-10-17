@@ -9,16 +9,20 @@ import net.imglib2.type.numeric.NumericType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
  
-public class ComplexAdd<T extends NumericType<T>> extends ComplexBinaryOperation<T> implements Add {
+public class ComplexPower<T extends NumericType<T>> extends ComplexBinaryOperation<T> implements Add {
  
     @Parameter
-    T input;
+    private int power;
      
     @Override
     public T compute(T val) {
-        val.add(input);
-         
-        return val;
+     
+    for(int i = 0; i < power; i++)
+    {
+        val.mul(val);
+    }
+     
+    return val;
     }
  
 }
