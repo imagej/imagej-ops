@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>2.51</version>
+		<version>3.2</version>
 		<relativePath />
 	</parent>
 
 	<artifactId>imagej-ops</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.6.0-SNAPSHOT</version>
 
 	<name>ImageJ Operations</name>
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
@@ -130,17 +130,16 @@
 		<url>http://jenkins.imagej.net/job/ImageJ-OPS/</url>
 	</ciManagement>
 
-	<properties>
-		<!-- NB: JUnit >= 4.11 needed for JUnit-Benchmarks -->
-		<junit.version>4.11</junit.version>
-	</properties>
-
 	<repositories>
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<imglib2.version>2.0.2</imglib2.version>
+	</properties>
 
 	<dependencies>
 		<!-- ImageJ dependencies -->
@@ -156,15 +155,15 @@
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-algorithms</artifactId>
+			<artifactId>imglib2-algorithm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-algorithm-fft</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-realtransform</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-meta</artifactId>
 		</dependency>
 
 		<!-- SciJava dependencies -->

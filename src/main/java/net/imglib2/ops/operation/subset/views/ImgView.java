@@ -32,7 +32,6 @@ package net.imglib2.ops.operation.subset.views;
 
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -111,9 +110,4 @@ public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInte
 		return ii.localizingCursor();
 	}
 
-	@Override
-	public boolean equalIterationOrder( IterableRealInterval< ? > f )
-	{
-		return iterationOrder().equals( f.iterationOrder() );
-	}
 }
