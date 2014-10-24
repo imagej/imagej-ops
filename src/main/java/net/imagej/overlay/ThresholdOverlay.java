@@ -33,10 +33,6 @@ package net.imagej.overlay;
 
 import net.imagej.Dataset;
 import net.imagej.event.DatasetRestructuredEvent;
-import net.imagej.overlay.AbstractOverlay;
-import net.imagej.overlay.Overlay;
-import net.imagej.overlay.Overlay.ArrowStyle;
-import net.imagej.overlay.Overlay.LineStyle;
 import net.imglib2.meta.AxisType;
 import net.imglib2.meta.CalibratedAxis;
 import net.imglib2.meta.ImgPlus;

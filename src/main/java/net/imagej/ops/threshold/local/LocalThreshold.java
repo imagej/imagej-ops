@@ -32,8 +32,8 @@ package net.imagej.ops.threshold.local;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
 import net.imagej.ops.Ops;
+import net.imagej.ops.threshold.local.LocalThresholdMethod.Pair;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.localneighborhood.Neighborhood;

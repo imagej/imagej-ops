@@ -31,6 +31,8 @@
 
 package net.imagej.ops.threshold.global;
 
+import net.imagej.threshold.ThresholdMethod;
+
 // Ported from Antti Niemisto's HistThresh Matlab toolbox
 //   Relicensed BSD 2-12-13
 
