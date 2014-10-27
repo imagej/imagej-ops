@@ -10,7 +10,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
  
 public class ComplexDifference<T extends NumericType<T>> extends
-        ComplexBinaryOperation<T> implements Add {
+        ComplexBinaryOperation<T> implements Difference {
  
     @Parameter
     T input;
