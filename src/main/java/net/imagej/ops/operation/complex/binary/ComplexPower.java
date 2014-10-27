@@ -9,7 +9,7 @@ import net.imglib2.type.numeric.NumericType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
  
-public class ComplexPower<T extends NumericType<T>> extends ComplexBinaryOperation<T> implements Add {
+public class ComplexPower<T extends NumericType<T>> extends ComplexBinaryOperation<T> implements Exponent {
  
     @Parameter
     private int power;
