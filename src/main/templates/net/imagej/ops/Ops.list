@@ -22,6 +22,7 @@ ops = ```
   {name: quantile,    iface: Quantile},
   {name: scale,       iface: Scale,          aliases: "resize"},
   {name: slicewise,   iface: Slicewise},
-  {name: threshold,   iface: Threshold}
+  {name: threshold,   iface: Threshold},
+  {name: moorecontourextraction,   iface: MooreContourExtraction}
 ]
 ```
