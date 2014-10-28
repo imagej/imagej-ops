@@ -79,6 +79,7 @@
 			</roles>
 		</developer>
 		<developer>
+			<id>Squareys</id>
 			<name>Jonathan Hale</name>
 			<email>squareys@googlemail.com</email>
 			<url>http://squareys.tumblr.com/</url>
@@ -90,6 +91,7 @@
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
+			<id>apal4</id>
 			<name>Aparna Pal</name>
 			<email>apal4@wisc.edu</email>
 			<url>http://loci.wisc.edu/people/aparna-pal</url>
