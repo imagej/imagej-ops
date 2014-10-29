@@ -31,6 +31,9 @@
 package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Random;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imglib2.RandomAccess;
@@ -60,6 +63,8 @@ public class AbstractThresholdTest extends AbstractOpTest {
 	public void initialize() {
 		final long[] dimensions = new long[] { xSize, ySize };
 
+		final Random r = new Random(0xdeadbeef);
+
 		// create image and output
 		in =
 			new ArrayImgFactory<UnsignedShortType>().create(dimensions,
@@ -71,7 +76,7 @@ public class AbstractThresholdTest extends AbstractOpTest {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
 				ra.setPosition(new int[] { x, y });
-				ra.get().setReal(x + y + 1000);
+				ra.get().setReal(r.nextInt(65535));
 			}
 		}
 	}
