@@ -62,10 +62,8 @@ public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInte
 	 * View on {@link Img} which is defined by a given Interval, but still is an
 	 * {@link Img}.
 	 * 
-	 * @param RandomAccessibleInterval
-	 *            Source interval for the view
-	 * @param ImgFactory
-	 *            <T> Factory to create img
+	 * @param in Source interval for the view
+	 * @param fac <T> Factory to create img
 	 */
 	public ImgView( final RandomAccessibleInterval< T > in, ImgFactory< T > fac )
 	{
