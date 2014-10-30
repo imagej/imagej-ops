@@ -46,7 +46,7 @@ import net.imglib2.view.Views;
  * 
  * @author Tobias Pietzsch
  * @author Christian Dietz (University of Konstanz)
- * @deprecated Use net.imagej.ops instead.
+ * @deprecated Use {@link net.imglib2.img.ImgView} instead.
  */
 @Deprecated
 public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInterval< T > implements Img< T >
