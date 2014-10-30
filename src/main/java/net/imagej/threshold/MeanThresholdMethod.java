@@ -2,18 +2,19 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2009 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, Broad Institute of MIT and Harvard, and Max Planck
+ * Institute of Molecular Cell Biology and Genetics.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,54 +29,46 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global.image;
+package net.imagej.threshold;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapI2I;
-import net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.histogram.Histogram1d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14).
+
 /**
- * Applies the given threshold value to every element along the given
- * {@link Iterable} input.
+ * Implements a mean threshold method by Glasbey.
  * 
- * @author Martin Horn
- * @author Christian Dietz (University of Konstanz)
+ * @author Barry DeZonia
+ * @author Gabriel Landini
+ * @deprecated Use {@link net.imagej.ops.threshold} instead.
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME,
-	priority = Priority.HIGH_PRIORITY)
-public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, Iterable<BitType>> implements
-	Ops.Threshold
-{
-
-	@Parameter
-	private T threshold;
-
-	@Parameter
-	private OpService ops;
+@Deprecated
+@Plugin(type = ThresholdMethod.class, name = "Mean")
+public class MeanThresholdMethod extends AbstractThresholdMethod {
 
 	@Override
-	public Iterable<BitType> compute(final Iterable<T> input,
-		final Iterable<BitType> output)
-	{
+	public long getThreshold(Histogram1d<?> hist) {
+		long[] histogram = hist.toLongArray();
+		// C. A. Glasbey, "An analysis of histogram-based thresholding algorithms,"
+		// CVGIP: Graphical Models and Image Processing, vol. 55, pp. 532-537, 1993.
+		//
+		// The threshold is the mean of the greyscale data
+		int threshold = -1;
+		double tot = 0, sum = 0;
+		for (int i = 0; i < histogram.length; i++) {
+			tot += histogram[i];
+			sum += (i * histogram[i]);
+		}
+		threshold = (int) Math.floor(sum / tot);
+		return threshold;
+	}
 
-		final Object applyThreshold =
-			ops.op(ApplyThresholdComparable.class, BitType.class, threshold
-				.getClass(), threshold);
-
-		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
-		ops.run(MapI2I.class, output, input, applyThreshold);
-
-		return output;
+	@Override
+	public String getMessage() {
+		return null;
 	}
 
 }

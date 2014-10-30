@@ -29,9 +29,7 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global;
-
-import net.imagej.threshold.ThresholdMethod;
+package net.imagej.threshold;
 
 // Ported from Antti Niemisto's HistThresh Matlab toolbox
 //   Relicensed BSD 2-12-13
@@ -41,8 +39,10 @@ import net.imagej.threshold.ThresholdMethod;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @deprecated Use {@link net.imagej.ops.threshold} instead.
  */
-public class ThresholdUtils {
+@Deprecated
+public class Utils {
 
 	public static boolean bimodalTest(double[] y) {
 		int len = y.length;
@@ -51,8 +51,7 @@ public class ThresholdUtils {
 		for (int k = 1; k < len - 1; k++) {
 			if (y[k - 1] < y[k] && y[k + 1] < y[k]) {
 				modes++;
-				if (modes > 2)
-					return false;
+				if (modes > 2) return false;
 			}
 		}
 		return (modes == 2);

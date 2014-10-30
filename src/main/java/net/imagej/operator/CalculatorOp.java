@@ -2,18 +2,19 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2009 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, Broad Institute of MIT and Harvard, and Max Planck
+ * Institute of Molecular Cell Biology and Genetics.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,54 +29,34 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global.image;
+package net.imagej.operator;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapI2I;
-import net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ImageJPlugin;
+import net.imglib2.ops.operation.real.binary.RealBinaryOperation;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.plugin.RichPlugin;
+import org.scijava.plugin.SingletonPlugin;
 
 /**
- * Applies the given threshold value to every element along the given
- * {@link Iterable} input.
+ * {@code CalculatorOp} is a plugin that extends the Image Calculator command.
+ * <p>
+ * Image Calculator operations discoverable at runtime must implement this
+ * interface and be annotated with @{@link Plugin} with attribute
+ * {@link Plugin#type()} = {@link CalculatorOp}.class. While it possible to
+ * create an operation merely by implementing this interface, it is encouraged
+ * to instead extend {@link AbstractCalculatorOp}, for convenience.
+ * </p>
  * 
- * @author Martin Horn
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @see Plugin
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME,
-	priority = Priority.HIGH_PRIORITY)
-public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, Iterable<BitType>> implements
-	Ops.Threshold
+@Deprecated
+public interface CalculatorOp<I1 extends RealType<I1>, I2 extends RealType<I2>>
+	extends RealBinaryOperation<I1, I2, DoubleType>, ImageJPlugin, RichPlugin,
+	SingletonPlugin
 {
-
-	@Parameter
-	private T threshold;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public Iterable<BitType> compute(final Iterable<T> input,
-		final Iterable<BitType> output)
-	{
-
-		final Object applyThreshold =
-			ops.op(ApplyThresholdComparable.class, BitType.class, threshold
-				.getClass(), threshold);
-
-		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
-		ops.run(MapI2I.class, output, input, applyThreshold);
-
-		return output;
-	}
-
+	// NB: No implementation needed.
 }

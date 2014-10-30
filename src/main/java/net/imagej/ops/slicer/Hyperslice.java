@@ -40,7 +40,6 @@ import net.imglib2.FinalInterval;
 import net.imglib2.FlatIterationOrder;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.Sampler;
 import net.imglib2.img.Img;
@@ -140,11 +139,6 @@ public class Hyperslice extends AbstractInterval implements
 	@Override
 	public Object iterationOrder() {
 		return new FlatIterationOrder(this);
-	}
-
-	@Override
-	public boolean equalIterationOrder(final IterableRealInterval<?> f) {
-		return iterationOrder().equals(f);
 	}
 
 	@Override

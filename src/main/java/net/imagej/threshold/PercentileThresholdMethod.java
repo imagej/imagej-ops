@@ -29,80 +29,68 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global;
+package net.imagej.threshold;
 
-import net.imagej.threshold.ThresholdMethod;
+import net.imglib2.histogram.Histogram1d;
 
-// Ported from Antti Niemisto's HistThresh Matlab toolbox
-//   Relicensed BSD 2-12-13
+import org.scijava.plugin.Plugin;
+
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14).
 
 /**
- * Utility methods used by the various {@link ThresholdMethod}s.
+ * Implements a percentile threshold method by Doyle.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @deprecated Use {@link net.imagej.ops.threshold} instead.
  */
-public class ThresholdUtils {
+@Deprecated
+@Plugin(type = ThresholdMethod.class, name = "Percentile")
+public class PercentileThresholdMethod extends AbstractThresholdMethod {
 
-	public static boolean bimodalTest(double[] y) {
-		int len = y.length;
-		int modes = 0;
+	@Override
+	public long getThreshold(Histogram1d<?> hist) {
+		long[] histogram = hist.toLongArray();
+		// W. Doyle,"Operation useful for similarity-invariant pattern recognition,"
+		// Journal of the Association for Computing Machinery, vol. 9,pp. 259-267,
+		// 1962.
+		// ported to ImageJ plugin by G.Landini from Antti Niemisto's Matlab code
+		// (relicensed BSD 2-12-13)
+		// Original Matlab code Copyright (C) 2004 Antti Niemisto
+		// See http://www.cs.tut.fi/~ant/histthresh/ for an excellent slide
+		// presentation and the original Matlab code.
 
-		for (int k = 1; k < len - 1; k++) {
-			if (y[k - 1] < y[k] && y[k + 1] < y[k]) {
-				modes++;
-				if (modes > 2)
-					return false;
+		int threshold = -1;
+		double ptile = 0.5; // default fraction of foreground pixels
+		double[] avec = new double[histogram.length];
+
+		for (int i = 0; i < histogram.length; i++)
+			avec[i] = 0.0;
+
+		double total = partialSum(histogram, histogram.length - 1);
+		double temp = 1.0;
+		for (int i = 0; i < histogram.length; i++) {
+			avec[i] = Math.abs((partialSum(histogram, i) / total) - ptile);
+			// IJ.log("Ptile["+i+"]:"+ avec[i]);
+			if (avec[i] < temp) {
+				temp = avec[i];
+				threshold = i;
 			}
 		}
-		return (modes == 2);
+		return threshold;
 	}
 
-	/**
-	 * The partial sum A from C. A. Glasbey, "An analysis of histogram-based
-	 * thresholding algorithms," CVGIP: Graphical Models and Image Processing,
-	 * vol. 55, pp. 532-537, 1993.
-	 */
-	public static double A(long[] y, int j) {
+	@Override
+	public String getMessage() {
+		return null;
+	}
+
+	private double partialSum(long[] y, int j) {
 		double x = 0;
 		for (int i = 0; i <= j; i++)
 			x += y[i];
 		return x;
 	}
 
-	/**
-	 * The partial sum B from C. A. Glasbey, "An analysis of histogram-based
-	 * thresholding algorithms," CVGIP: Graphical Models and Image Processing,
-	 * vol. 55, pp. 532-537, 1993.
-	 */
-	public static double B(long[] y, int j) {
-		double x = 0;
-		for (int i = 0; i <= j; i++)
-			x += y[i] * i;
-		return x;
-	}
-
-	/**
-	 * The partial sum C from C. A. Glasbey, "An analysis of histogram-based
-	 * thresholding algorithms," CVGIP: Graphical Models and Image Processing,
-	 * vol. 55, pp. 532-537, 1993.
-	 */
-	public static double C(long[] y, int j) {
-		double x = 0;
-		for (int i = 0; i <= j; i++)
-			x += y[i] * i * i;
-		return x;
-	}
-
-	/**
-	 * The partial sum D from C. A. Glasbey, "An analysis of histogram-based
-	 * thresholding algorithms," CVGIP: Graphical Models and Image Processing,
-	 * vol. 55, pp. 532-537, 1993.
-	 */
-	public static double D(long[] y, int j) {
-		double x = 0;
-		for (int i = 0; i <= j; i++)
-			x += y[i] * i * i * i;
-		return x;
-	}
 }

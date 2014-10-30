@@ -2,8 +2,9 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2009 - 2014 Board of Regents of the University of
+ * Wisconsin-Madison, Broad Institute of MIT and Harvard, and Max Planck
+ * Institute of Molecular Cell Biology and Genetics.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,12 +29,9 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.global.methods;
+package net.imagej.threshold;
 
-import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
-import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
@@ -45,26 +43,24 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
+ * @deprecated Use {@link net.imagej.ops.threshold} instead.
  */
-@Plugin(type = ComputeThreshold.class, name = Otsu.NAME)
-public class ComputeOtsuThreshold<T extends RealType<T>> extends
-	AbstractComputeThresholdHistogram<T>
-{
+@Deprecated
+@Plugin(type = ThresholdMethod.class, name = "Otsu")
+public class OtsuThresholdMethod extends AbstractThresholdMethod {
 
 	@Override
-	public long computeBin(final Histogram1d<T> hist) {
+	public long getThreshold(Histogram1d<?> hist) {
 		long[] histogram = hist.toLongArray();
 		// Otsu's threshold algorithm
 		// C++ code by Jordan Bevik <Jordan.Bevic@qtiworld.com>
 		// ported to ImageJ plugin by G.Landini
 		int k, kStar; // k = the current threshold; kStar = optimal threshold
 		int L = histogram.length; // The total intensity of the image
-		long N1, N; // N1 = # points with intensity <=k; N = total number of
-		// points
+		long N1, N; // N1 = # points with intensity <=k; N = total number of points
 		long Sk; // The total intensity for all histogram points <=k
 		long S;
-		double BCV, BCVmax; // The current Between Class Variance and maximum
-		// BCV
+		double BCV, BCVmax; // The current Between Class Variance and maximum BCV
 		double num, denom; // temporary bookkeeping
 
 		// Initialize values:
@@ -83,23 +79,20 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 
 		// Look at each possible threshold value,
 		// calculate the between-class variance, and decide if it's a max
-		for (k = 1; k < L - 1; k++) { // No need to check endpoints k = 0 or k =
-			// L-1
+		for (k = 1; k < L - 1; k++) { // No need to check endpoints k = 0 or k = L-1
 			Sk += k * histogram[k];
 			N1 += histogram[k];
 
 			// The float casting here is to avoid compiler warning about loss of
 			// precision and
 			// will prevent overflow in the case of large saturated images
-			denom = (double) (N1) * (N - N1); // Maximum value of denom is
-			// (N^2)/4 =
-			// approx. 3E10
+			denom = (double) (N1) * (N - N1); // Maximum value of denom is (N^2)/4 =
+																				// approx. 3E10
 
 			if (denom != 0) {
 				// Float here is to avoid loss of precision when dividing
-				num = ((double) N1 / N) * S - Sk; // Maximum value of num =
-				// 255*N =
-				// approx 8E7
+				num = ((double) N1 / N) * S - Sk; // Maximum value of num = 255*N =
+																					// approx 8E7
 				BCV = (num * num) / denom;
 			}
 			else BCV = 0;
@@ -109,10 +102,14 @@ public class ComputeOtsuThreshold<T extends RealType<T>> extends
 				kStar = k;
 			}
 		}
-		// kStar += 1; // Use QTI convention that intensity -> 1 if intensity >=
-		// k
+		// kStar += 1; // Use QTI convention that intensity -> 1 if intensity >= k
 		// (the algorithm was developed for I-> 1 if I <= k.)
 		return kStar;
+	}
+
+	@Override
+	public String getMessage() {
+		return null;
 	}
 
 }
