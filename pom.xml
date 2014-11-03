@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>3.2</version>
+		<version>3.3</version>
 		<relativePath />
 	</parent>
 
@@ -136,10 +136,6 @@
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
-
-	<properties>
-		<imglib2.version>2.0.2</imglib2.version>
-	</properties>
 
 	<dependencies>
 		<!-- ImageJ dependencies -->
