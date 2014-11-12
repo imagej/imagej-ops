@@ -1,5 +1,5 @@
 /*
- * #%L 
+ * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
@@ -27,25 +27,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
+ 
 package net.imagej.ops.operation.complex.binary;
-
+ 
 import net.imagej.ops.Op;
-
+ 
 /**
- * Base interface for "average" operations.
+ * Base interface for "substract" operations.
  * <p>
  * Implementing classes should be annotated with:
  * </p>
  *
  * <pre>
- * @Plugin(type = Op.class, name = Average.NAME)
+ * @Plugin(type = Op.class, name = Substract.NAME)
  * </pre>
  *
  * @author Aparna Pal
  */
-public interface Average extends Op {
-
-	String NAME = "average";
-
+public interface Subtract extends Op {
+ 
+    String NAME = "substract";
+ 
 }

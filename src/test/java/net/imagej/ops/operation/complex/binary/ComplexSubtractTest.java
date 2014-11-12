@@ -27,19 +27,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
- 
+
 package net.imagej.ops.operation.complex.binary;
- 
-import net.imagej.ops.AbstractFunction;
-import net.imglib2.type.numeric.NumericType;
- 
-public abstract class ComplexBinaryOperation<T> extends AbstractFunction<T, T>
-    implements BinaryOperation<T>
-{
- 
-    @Override
-    public T compute(final T input, final T output) {
-        return input;
-    }
- 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imagej.ops.condition.BooleanCondition;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+
+import org.junit.Test;
+
+public class ComplexSubtractTest extends AbstractOpTest {
+
+	@Test
+	public <T> void testSubtract() {
+
+		IntType a = new IntType(2);
+
+		IntType b = new IntType(3);
+
+		IntType c = new IntType(-1);
+
+		IntType test = (IntType) ops.run(ComplexSubtract.class, a, a, b);
+
+		assertEquals(c, test);
+
+	}
 }

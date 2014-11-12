@@ -36,28 +36,31 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
 import net.imagej.ops.condition.BooleanCondition;
+import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
 
 import org.junit.Test;
 
 public class ComplexAverageTest extends AbstractOpTest {
 
 	@Test
-	public void testAverage() 
+	public <T> void testAverage() 
 	{
-		final Boolean result = (Boolean) ops.run(BooleanCondition.class);
-		assertSame(result, true);
-
-		final Boolean result1 = (Boolean) ops.run(BooleanCondition.class, false);
-		assertSame(result1, false);
-		/*
-		final Integer a = 7;
-		 ops.run(ComplexAvg.class, 7.0);
 		
-		assertSame(AddConstantToNumericType.class, op.getClass());
-
-		op.run();
-		assertEquals((byte) 51, a.get());
-		*/
+		
+			IntType a = new IntType(10);
+			IntType b = new IntType(2);
+			
+			IntType c = new IntType(6);
+			
+			IntType test = (IntType) ops.run(ComplexAverage.class,a,a,b);
+			
+			
+			
+			assertEquals(c, test);
+			
+			
+	
 	}
 }

@@ -27,20 +27,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
- 
+
 package net.imagej.ops.operation.complex.binary;
- 
-import net.imagej.ops.Function;
-import net.imglib2.type.numeric.NumericType;
- 
-/**
- * An interface that can be tested for truth or falsity for a given input.
- *
- * @author Barry DeZonia
- * @author Aparna Pal
- */
-public interface BinaryOperation<T> extends Function<T, T> {
- 
-    T compute(T val);
- 
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imagej.ops.condition.BooleanCondition;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+
+import org.junit.Test;
+
+public class ComplexPowerTest extends AbstractOpTest {
+
+	@Test
+	public <T> void testPower() {
+
+		IntType a = new IntType(3);
+
+		int val = 3;
+
+		IntType c = new IntType(27);
+
+		IntType test = (IntType) ops.run(ComplexPower.class, a, a, val);
+
+		assertEquals(c, test);
+
+	}
 }

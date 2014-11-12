@@ -1,5 +1,5 @@
 /*
- * #%L 
+ * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
@@ -30,22 +30,40 @@
 
 package net.imagej.ops.operation.complex.binary;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame; 
+import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imagej.ops.condition.BooleanCondition;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
 
-/**
- * Base interface for "average" operations.
- * <p>
- * Implementing classes should be annotated with:
- * </p>
- *
- * <pre>
- * @Plugin(type = Op.class, name = Average.NAME)
- * </pre>
- *
- * @author Aparna Pal
- */
-public interface Average extends Op {
+import org.junit.Test;
 
-	String NAME = "average";
+public class ComplexDifferenceTest extends AbstractOpTest {
 
+	@Test
+	public <T> void testDifference() 
+	{
+		
+		
+			IntType a = new IntType(10);
+			IntType a1 = new IntType(10);
+			IntType b = new IntType(2);
+			IntType b1 = new IntType(2);
+			
+			IntType c = new IntType(8);
+			
+			IntType test = (IntType) ops.run(ComplexDifference.class,a,a,b);
+			
+			
+			
+			assertEquals(c, test);
+			
+			IntType test2 = (IntType) ops.run(ComplexDifference.class,b1,b1,a1);
+			assertEquals(c, test2);
+	
+	}
 }
