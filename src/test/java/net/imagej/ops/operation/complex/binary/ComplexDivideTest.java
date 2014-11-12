@@ -42,19 +42,21 @@ import net.imglib2.type.numeric.integer.IntType;
 
 import org.junit.Test;
 
-public class ComplexAverageTest extends AbstractOpTest {
+public class ComplexDivideTest extends AbstractOpTest {
 
 	@Test
-	public <T> void testAverage() 
+	public <T> void testDivide() 
 	{
 		
 		
-			IntType a = new IntType(10);
+			IntType a = new IntType(5);
+			
 			IntType b = new IntType(2);
 			
-			IntType c = new IntType(6);
 			
-			IntType test = (IntType) ops.run(ComplexAverage.class,a,a,b);
+			IntType c = new IntType(10);
+			
+			IntType test = (IntType) ops.run(ComplexMult.class,a,a,b);
 			
 			
 			
