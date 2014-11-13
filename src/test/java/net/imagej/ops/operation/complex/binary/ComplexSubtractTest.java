@@ -42,18 +42,18 @@ import net.imglib2.type.numeric.integer.IntType;
 
 import org.junit.Test;
 
-public class ComplexPowerTest extends AbstractOpTest {
+public class ComplexSubtractTest extends AbstractOpTest {
 
 	@Test
-	public <T> void testPower() {
+	public <T> void testSubtract() {
 
-		IntType a = new IntType(3);
+		IntType a = new IntType(2);
 
-		int val = 3;
+		IntType b = new IntType(3);
 
-		IntType c = new IntType(27);
+		IntType c = new IntType(-1);
 
-		IntType test = (IntType) ops.run(ComplexPower.class, a, a, val);
+		IntType test = (IntType) ops.run(ComplexSubtract.class, a, a, b);
 
 		assertEquals(c, test);
 

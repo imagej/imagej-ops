@@ -27,11 +27,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
- 
+
 package net.imagej.ops.operation.complex.binary;
- 
+
 import net.imagej.ops.Op;
- 
+
 /**
  * Base interface for "average" operations.
  * <p>
@@ -45,7 +45,7 @@ import net.imagej.ops.Op;
  * @author Aparna Pal
  */
 public interface Average extends Op {
- 
-    String NAME = "average";
- 
+
+	String NAME = "average";
+
 }

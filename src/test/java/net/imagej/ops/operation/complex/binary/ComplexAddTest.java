@@ -31,29 +31,22 @@
 package net.imagej.ops.operation.complex.binary;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
-import net.imagej.ops.condition.BooleanCondition;
-import net.imglib2.type.numeric.IntegerType;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
 
 import org.junit.Test;
 
-public class ComplexPowerTest extends AbstractOpTest {
+public class ComplexAddTest extends AbstractOpTest {
 
 	@Test
-	public <T> void testPower() {
+	public <T> void testAdd() {
 
-		IntType a = new IntType(3);
+		IntType a = new IntType(4);
+		IntType b = new IntType(2);
 
-		int val = 3;
+		IntType c = new IntType(6);
 
-		IntType c = new IntType(27);
-
-		IntType test = (IntType) ops.run(ComplexPower.class, a, a, val);
+		IntType test = (IntType) ops.run(ComplexAdd.class, a, a, b);
 
 		assertEquals(c, test);
 
