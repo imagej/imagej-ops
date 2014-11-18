@@ -1,0 +1,6 @@
+[GeometricIntervalOps.java]
+ops = ```
+[
+{name: bounding-box, iface: BoundingBox}
+]
+```
