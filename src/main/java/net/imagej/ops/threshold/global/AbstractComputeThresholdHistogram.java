@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.global;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 /**
  * Abstract superclass of {@link ComputeThresholdHistogram} implementations.
@@ -47,10 +46,7 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 
 	@Override
 	public T createOutput(final Histogram1d<T> input) {
-		// FIXME: add API to Histogram1d to get the constituent type T
-		final Object type = new UnsignedShortType();
-		return (T) type;
-//		return null;
+		return input.firstDataValue().createVariable();
 	}
 
 	// -- Internal methods --
