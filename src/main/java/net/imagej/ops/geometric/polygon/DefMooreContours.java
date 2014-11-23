@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.geometric.polygon;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.MooreContoursPolygon;
 import net.imglib2.Cursor;
@@ -66,7 +67,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = MooreContoursPolygon.NAME)
-public class DefMooreContours implements MooreContoursPolygon {
+public class DefMooreContours implements MooreContoursPolygon, Contingent {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Polygon output;
@@ -280,6 +281,16 @@ public class DefMooreContours implements MooreContoursPolygon {
 	@Override
 	public void setOutput(Polygon output) {
 		this.output = output;
+	}
+
+	@Override
+	public boolean conforms() {
+
+		if (input.numDimensions() != 2) {
+			return false;
+		}
+
+		return true;
 	}
 
 }
