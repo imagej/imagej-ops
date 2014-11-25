@@ -1,5 +1,5 @@
 /*
- * #%L
+ * #%L 
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
@@ -30,25 +30,22 @@
 
 package net.imagej.ops.operation.complex.binary;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.type.numeric.integer.IntType;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+/**
+ * Base interface for "add" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = Average.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
+ */
+public interface Add extends Op {
 
-public class ComplexAddTest<T> extends AbstractOpTest {
+	String NAME = "add";
 
-	@Test
-	public void testAdd() {
-
-		IntType a = new IntType(4);
-		IntType b = new IntType(2);
-
-		IntType c = new IntType(6);
-
-		IntType test = (IntType) ops.run(ComplexAdd.class, a, b);
-
-		assertEquals(c, test);
-
-	}
 }

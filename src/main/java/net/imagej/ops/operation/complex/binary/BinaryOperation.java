@@ -9,10 +9,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ * this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -30,25 +30,17 @@
 
 package net.imagej.ops.operation.complex.binary;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.type.numeric.integer.IntType;
+import net.imagej.ops.Function;
+import net.imglib2.type.numeric.NumericType;
 
-import org.junit.Test;
+/**
+ * An interface that can be tested for truth or falsity for a given input.
+ *
+ * @author Barry DeZonia
+ * @author Aparna Pal
+ */
+public interface BinaryOperation<T> extends Function<T, T> {
 
-public class ComplexAddTest<T> extends AbstractOpTest {
+ T compute(T val);
 
-	@Test
-	public void testAdd() {
-
-		IntType a = new IntType(4);
-		IntType b = new IntType(2);
-
-		IntType c = new IntType(6);
-
-		IntType test = (IntType) ops.run(ComplexAdd.class, a, b);
-
-		assertEquals(c, test);
-
-	}
 }

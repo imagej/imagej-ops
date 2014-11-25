@@ -9,8 +9,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Average.NAME, priority = Priority.LOW_PRIORITY)
-public class ComplexSubtract<T extends NumericType<T>> extends
-		AbstractFunction<T, T> implements Subtract {
+public class ComplexSubtract<T extends NumericType<T>>  implements Subtract {
 
 	@Parameter
 	T value;
@@ -21,5 +20,7 @@ public class ComplexSubtract<T extends NumericType<T>> extends
 		output.sub(value);
 		return output;
 	}
+
+
 
 }
