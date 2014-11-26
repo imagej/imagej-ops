@@ -46,6 +46,6 @@ import net.imagej.ops.Op;
  */
 public interface Subtract extends Op {
  
-    String NAME = "substract";
+    String NAME = "subtract";
  
 }
