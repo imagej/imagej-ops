@@ -5,6 +5,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.geometric.GeometricOps.BoundingBox;
 import net.imagej.ops.geometric.GeometricOps.ConvexHull;
 import net.imagej.ops.geometric.GeometricOps.MooreContours;
+import net.imagej.ops.geometric.polygon.GeometricPolygonOps.BoundingBoxPolygon;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.MooreContoursPolygon;
 import net.imagej.ops.geometric.polygon.Polygon;
 import net.imglib2.RealPoint;
@@ -79,7 +80,7 @@ public class GeometricPolygonTest extends AbstractOpTest {
 		p.add(new RealPoint(50, 30));
 		p.add(new RealPoint(70, 50));
 
-		Polygon boundingBox = (Polygon) ops.run(BoundingBox.class, p);
+		Polygon boundingBox = (Polygon) ops.run(BoundingBoxPolygon.class, p);
 
 		// five points because the first and last one are equal
 		assertEquals("Polygon Size", 5, boundingBox.size());
@@ -91,8 +92,6 @@ public class GeometricPolygonTest extends AbstractOpTest {
 		boolean containsTopLeft = false;
 
 		for (RealPoint rp : boundingBox.getPoints()) {
-			System.out.println(rp);
-
 			if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 30) {
 				containsBottomLeft = true;
 			}
