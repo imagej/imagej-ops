@@ -1,6 +1,6 @@
 package net.imagej.ops.operation.complex.binary;
 
-import net.imagej.ops.AbstractFunction;  
+import net.imagej.ops.AbstractFunction;   
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
@@ -23,5 +23,4 @@ public class ComplexAdd<T extends NumericType<T>> extends
 		return arg;
 	}
 
-		
-	}
+}

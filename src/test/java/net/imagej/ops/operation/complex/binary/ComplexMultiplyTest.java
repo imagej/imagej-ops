@@ -9,10 +9,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
+ *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,17 +27,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.operation.complex.binary;
 
-import net.imagej.ops.AbstractFunction;
-import net.imglib2.type.numeric.NumericType;
+import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertSame; 
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
 
-public abstract class ComplexBinaryOperation<T> extends AbstractFunction<T, T>
-		implements BinaryOperation<T> {
+import org.junit.Test;
 
-	@Override
-	public T compute(final T input, final T output) {
-		return input;
+public class ComplexMultiplyTest extends AbstractOpTest {
+
+	@Test
+	public <T> void testDivide() 
+	{
+		
+		
+			IntType a = new IntType(5);
+			
+			IntType b = new IntType(2);
+			
+			
+			IntType c = new IntType(10);
+			
+			IntType test = (IntType) ops.run(ComplexMultiply.class,a,b);
+			
+			
+			
+			assertEquals(c, test);
+			
+			
+	
 	}
-
 }

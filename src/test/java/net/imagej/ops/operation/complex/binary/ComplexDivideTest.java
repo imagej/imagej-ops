@@ -30,12 +30,11 @@
 
 package net.imagej.ops.operation.complex.binary;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals; 
 import static org.junit.Assert.assertSame; 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
-import net.imagej.ops.condition.BooleanCondition;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
@@ -49,14 +48,14 @@ public class ComplexDivideTest extends AbstractOpTest {
 	{
 		
 		
-			IntType a = new IntType(5);
+			IntType a = new IntType(10);
 			
 			IntType b = new IntType(2);
 			
 			
-			IntType c = new IntType(10);
+			IntType c = new IntType(5);
 			
-			IntType test = (IntType) ops.run(ComplexMult.class,a,a,b);
+			IntType test = (IntType) ops.run(ComplexDivide.class,a,b);
 			
 			
 			
