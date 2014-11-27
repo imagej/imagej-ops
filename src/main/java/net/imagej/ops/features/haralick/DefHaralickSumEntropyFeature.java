@@ -64,10 +64,10 @@ public class DefHaralickSumEntropyFeature implements HaralickSumEntropyFeature {
 	@Override
 	public void run() {
 		final double[] pxplusy = coocPXPlusY.getOutput();
-		final int numGrayLevels = matrix.getNrGreyLevels();
+		final int nrGrayLevels = matrix.getOutput().length;
 
 		output = 0;
-		for (int i = 2; i <= 2 * numGrayLevels; i++) {
+		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
 			output += pxplusy[i] * Math.log(pxplusy[i] + EPSILON);
 		}
 

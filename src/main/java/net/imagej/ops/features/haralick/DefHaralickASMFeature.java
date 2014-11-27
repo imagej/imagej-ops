@@ -19,9 +19,9 @@ public class DefHaralickASMFeature implements HaralickASMFeature {
 
 	@Override
 	public void run() {
-		final int nrGrayLevels = cooc.getNrGreyLevels();
-		final double[][] matrix = cooc.getMatrix();
-
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
+		
 		output = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {

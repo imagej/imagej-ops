@@ -70,8 +70,8 @@ public class DefHaralickCorrelationFeature implements
 	@Override
 	public void run() {
 
-		final double[][] matrix = cooc.getMatrix();
-		final int nrGrayLevels = cooc.getNrGreyLevels();
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 		final double meanx = coocMeanX.getOutput();
 		final double meany = coocMeanY.getOutput();
 		final double stdx = coocStdX.getOutput();

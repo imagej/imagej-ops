@@ -60,8 +60,8 @@ public class CoocHXY implements OutputOp<double[]> {
 		double hxy1 = 0.0d;
 		double hxy2 = 0.0d;
 
-		final int nrGrayLevels = cooc.getNrGreyLevels();
-		final double[][] matrix = cooc.getMatrix();
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 		final double[] px = coocPX.getOutput();
 		final double[] py = coocPY.getOutput();
 

@@ -33,12 +33,14 @@ package net.imagej.ops.features.haralick.helper;
 import java.util.Arrays;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.OutputOp;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -48,9 +50,10 @@ import org.scijava.plugin.Plugin;
  * {@link HaralickFeature}
  * 
  * @author Stephan Sellien, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = Op.class)
-public class CooccurrenceMatrix implements Op {
+public class CooccurrenceMatrix implements OutputOp<double[][]> {
 
 	public static enum MatrixOrientation {
 		DIAGONAL(1, -1), ANTIDIAGONAL(1, 1), HORIZONTAL(1, 0), VERTICAL(0, 1);
@@ -85,8 +88,8 @@ public class CooccurrenceMatrix implements Op {
 	@Parameter
 	private MaxFeature max;
 
-	// actual matrix
-	private double[][] m_matrix = null;
+	@Parameter(type = ItemIO.OUTPUT)
+	private double[][] output;
 
 	@Override
 	public void run() {
@@ -108,7 +111,7 @@ public class CooccurrenceMatrix implements Op {
 		final MatrixOrientation orientation = MatrixOrientation
 				.valueOf(this.orientation);
 
-		m_matrix = new double[nrGreyLevels][nrGreyLevels];
+		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
 		final Cursor<? extends RealType<?>> cursor = ii.cursor();
 
@@ -150,14 +153,14 @@ public class CooccurrenceMatrix implements Op {
 				if (sx >= 0 && sy >= 0 && sy < pixels.length
 						&& sx < pixels[sy].length
 						&& pixels[sy][sx] != Integer.MAX_VALUE) {
-					m_matrix[pixels[y][x]][pixels[sy][sx]]++;
+					matrix[pixels[y][x]][pixels[sy][sx]]++;
 					nrPairs++;
 				}
 				// third pixel in interval
 				if (tx >= 0 && ty >= 0 && ty < pixels.length
 						&& tx < pixels[ty].length
 						&& pixels[ty][tx] != Integer.MAX_VALUE) {
-					m_matrix[pixels[y][x]][pixels[ty][tx]]++;
+					matrix[pixels[y][x]][pixels[ty][tx]]++;
 					nrPairs++;
 				}
 			}
@@ -165,26 +168,23 @@ public class CooccurrenceMatrix implements Op {
 
 		if (nrPairs > 0) {
 			double divisor = 1.0 / nrPairs;
-			for (int row = 0; row < m_matrix.length; row++) {
-				for (int col = 0; col < m_matrix[row].length; col++) {
-					m_matrix[row][col] *= divisor;
+			for (int row = 0; row < matrix.length; row++) {
+				for (int col = 0; col < matrix[row].length; col++) {
+					matrix[row][col] *= divisor;
 				}
 			}
 		}
+
+		output = matrix;
 	}
 
-	/**
-	 * Constructor creates co-occurrence matrix with given size (e.g. number of
-	 * gray levels).
-	 * 
-	 * @param size
-	 */
-
-	public int getNrGreyLevels() {
-		return m_matrix.length;
+	@Override
+	public double[][] getOutput() {
+		return output;
 	}
 
-	public double[][] getMatrix() {
-		return m_matrix;
+	@Override
+	public void setOutput(double[][] output) {
+		this.output = output;
 	}
 }
