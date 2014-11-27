@@ -67,7 +67,7 @@ public class DefHaralickSumVarianceFeature implements
 	@Override
 	public void run() {
 		final double[] pxplusy = coocPXPlusY.getOutput();
-		final int nrGrayLevels = matrix.getNrGreyLevels();
+		final int nrGrayLevels = matrix.getOutput().length;
 		final double average = sumAverage.getFeatureValue();
 
 		output = 0;

@@ -65,7 +65,7 @@ public class DefHaralickDifferenceEntropyFeature implements HaralickDifferenceEn
 	@Override
 	public void run() {
 		final double[] pxminusy = coocPXMinusY.getOutput();
-		final int nrGrayLevels = matrix.getNrGreyLevels();
+		final int nrGrayLevels = matrix.getOutput().length;
 
 		output = 0;
 		for (int k = 0; k <= nrGrayLevels - 1; k++) {

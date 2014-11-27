@@ -63,10 +63,10 @@ public class DefHaralickSumAverageFeature implements HaralickSumAverageFeature {
 	public void run() {
 
 		final double[] pxplusy = coocPXPlusY.getOutput();
-		final int numGrayLevels = matrix.getNrGreyLevels();
+		final int nrGrayLevels = matrix.getOutput().length;
 
 		output = 0;
-		for (int i = 2; i <= 2 * numGrayLevels; i++) {
+		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
 			output += i * pxplusy[i];
 		}
 
