@@ -47,10 +47,11 @@ public class CoocPXPlusY implements OutputOp<double[]> {
 
 	@Override
 	public void run() {
-		final int nrGrayLevels = cooc.getNrGreyLevels();
+		
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 
 		final double[] pxplusy = new double[2 * nrGrayLevels + 1];
-		final double[][] matrix = cooc.getMatrix();
 
 		for (int k = 2; k <= 2 * nrGrayLevels; k++) {
 			for (int i = 0; i < nrGrayLevels; i++) {

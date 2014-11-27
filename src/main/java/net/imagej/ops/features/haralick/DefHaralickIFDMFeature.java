@@ -57,11 +57,10 @@ public class DefHaralickIFDMFeature implements HaralickIFDMFeature {
 
 	@Override
 	public void run() {
-
 		output = 0;
 
-		final int nrGrayLevels = cooc.getNrGreyLevels();
-		final double[][] matrix = cooc.getMatrix();
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {

@@ -23,7 +23,7 @@ public class DefHaralickConstrastFeature implements HaralickContrastFeature {
 	
 	@Override
 	public void run() {
-		final int nrGrayLevels = matrix.getNrGreyLevels();
+		final int nrGrayLevels = matrix.getOutput().length;
 		final double[] pxminusxy = coocPXMinusY.getOutput();
 
 		output = 0;

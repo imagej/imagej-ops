@@ -31,8 +31,8 @@ public class DefHaralickClusterPromenenceFeature implements
 
 	@Override
 	public void run() {
-		final int nrGrayLevels = cooc.getNrGreyLevels();
-		final double[][] matrix = cooc.getMatrix();
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 		final double stdx = coocStdX.getOutput();
 
 		output = 0;
