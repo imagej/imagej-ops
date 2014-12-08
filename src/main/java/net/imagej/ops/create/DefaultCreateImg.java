@@ -38,7 +38,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Ops.CreateImg.NAME)
-public class CreateImgDefault<V extends Type<V>> extends AbstractCreateImg<V>
+public class DefaultCreateImg<V extends Type<V>> extends AbstractCreateImg<V>
 	implements Ops.CreateImg
 {
 
