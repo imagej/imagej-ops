@@ -69,8 +69,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @param type The {@link Class} of the operation to execute. If multiple
 	 *          {@link Op}s share this type (e.g., the type is an interface which
 	 *          multiple {@link Op}s implement), then the best {@link Op}
-	 *          implementation to use will be selected automatically from the
-	 *          type and arguments.
+	 *          implementation to use will be selected automatically from the type
+	 *          and arguments.
 	 * @param args The operation's arguments.
 	 * @return The result of the execution. If the {@link Op} has no outputs, this
 	 *         will return {@code null}. If exactly one output, it will be
@@ -198,6 +198,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "gauss" operation on the given arguments. */
 	Object gauss(Object... args);
 
+	/** Executes the "gausskernel" operation on the given arguments. */
+	Object gaussKernel(Object... args);
+
 	/** Executes the "histogram" operation on the given arguments. */
 	Object histogram(Object... args);
 
@@ -209,6 +212,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	Object join(Object... args);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	Object logKernel(Object... args);
 
 	/** Executes the "lookup" operation on the given arguments. */
 	Object lookup(Object... args);

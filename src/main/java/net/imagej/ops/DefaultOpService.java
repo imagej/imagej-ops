@@ -63,7 +63,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Parameter
 	private CommandService commandService;
-	
+
 	@Parameter
 	private OpMatchingService matcher;
 
@@ -207,7 +207,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object createImg(Object... args) {
-		return run("createImg", args);
+		return run("createimg", args);
 	}
 
 	@Override
@@ -231,6 +231,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object gaussKernel(Object... args) {
+		return run("gausskernel", args);
+	}
+
+	@Override
 	public Object histogram(Object... args) {
 		return run("histogram", args);
 	}
@@ -248,6 +253,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object join(Object... args) {
 		return run("join", args);
+	}
+
+	@Override
+	public Object logKernel(Object... args) {
+		return run("logkernel", args);
 	}
 
 	@Override
