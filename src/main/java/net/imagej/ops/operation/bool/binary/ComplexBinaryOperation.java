@@ -5,6 +5,6 @@ import net.imglib2.type.logic.BitType;
 
 
 
-public interface ComplexBinaryOperation extends BinaryOperation<BitType, BitType, BitType>{ 
-
+public interface ComplexBinaryOperation extends BinaryOperation{ 
+	 BitType compute(BitType input1);
 }

@@ -8,8 +8,20 @@ public abstract class BooleanOperation implements ComplexBinaryOperation {
 	
 
 	@Override
-	public BinaryOperation<BitType, BitType, BitType> copy() {
+	public Object compute(Object input1, Object input2, Object output) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-}
+	@Override
+	public BinaryOperation copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	
+	}
+
+
