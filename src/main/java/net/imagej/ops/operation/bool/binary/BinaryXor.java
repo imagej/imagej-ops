@@ -46,16 +46,15 @@ import net.imglib2.type.logic.BitType;
  * @deprecated Use net.imagej.ops instead.
  */
 
-@Plugin(type = Op.class, name = "and_not")
-public class BinaryAndNot extends BooleanOperation {
+@Plugin(type = Op.class, name = "xor")
+public class BinaryXor extends BooleanOperation {
 
 	@Parameter
 	BitType input2;
 	
 	@Override
 	public BitType compute(BitType input1) {
-		boolean value = input1.get() && !input2.get();
-		input1.set(value);
+		input1.xor(input2);
 		return input1;
 	}
 

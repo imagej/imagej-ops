@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -8,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,32 +30,22 @@
 
 package net.imagej.ops.operation.bool.binary;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
-import net.imglib2.ops.operation.BinaryOperation; 
-import net.imglib2.type.logic.BitType;
 
 /**
- * Sets a BitType output to the result of ANDing a first BitType value with the
- * NOT of a second BitType number.
- * 
- * @author Barry DeZonia
- * @deprecated Use net.imagej.ops instead.
+ * Base interface for "and-not" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = AndNot.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
  */
+public interface AndNot extends Op {
 
-@Plugin(type = Op.class, name = "and_not")
-public class BinaryAndNot extends BooleanOperation {
-
-	@Parameter
-	BitType input2;
-	
-	@Override
-	public BitType compute(BitType input1) {
-		boolean value = input1.get() && !input2.get();
-		input1.set(value);
-		return input1;
-	}
+	String NAME = "and_not";
 
 }
