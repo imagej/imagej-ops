@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,23 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.operation.bool.binary;
 
-import static org.junit.Assert.assertSame; 
+
+import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BitType;
 
 import org.junit.Test;
 
-public class FunctionGreaterTest extends AbstractOpTest {
+public class AndNotTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionGreater() {
-		final Boolean result =
-			(Boolean) ops.run(FunctionGreaterCondition.class, 5.0, 3.0);
-		assertSame(result, true);
+	public void testAndNot() {
 
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionGreaterCondition.class, 5.0, 6.0);
-		assertSame(result2, false);
+		BitType bit = new BitType(true);
+		BitType bit2 = new BitType(false);
+		
+		BitType result = ops.run(BinaryAndNot.class, bit, bit2);
+		assertSame(result, bit);
+		
+		
+		BitType result2 = ops.run(BinaryAndNot.class, bit, bit);
+		assertSame(result2, bit2);
+
+
 	}
 }
