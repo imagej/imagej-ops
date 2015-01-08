@@ -34,13 +34,12 @@ public class CentralMomentsHelper
 				/ momentsHelper.getOutput().getMoment00();
 		final double centerY = momentsHelper.getOutput().getMoment01()
 				/ momentsHelper.getOutput().getMoment00();
-		
-		
-		output.setCentralMoment00(momentsHelper.getOutput().getMoment00());
-		output.setCentralMoment01(0);
-		output.setCentralMoment10(0);
-		output.setCentralMoment11(momentsHelper.getOutput().getMoment11() - centerX * momentsHelper.getOutput().getMoment01());
 
+		output.setCentralMoment00(momentsHelper.getOutput().getMoment00());
+		output.setCentralMoment10(0);
+		output.setCentralMoment01(0);
+		output.setCentralMoment11(momentsHelper.getOutput().getMoment11()
+				- centerX * momentsHelper.getOutput().getMoment01());
 
 		final Cursor<? extends RealType<?>> it = input.localizingCursor();
 		while (it.hasNext()) {
@@ -48,16 +47,16 @@ public class CentralMomentsHelper
 			final double x = it.getIntPosition(0) - centerX;
 			final double y = it.getIntPosition(1) - centerY;
 			final double val = it.get().getRealDouble();
-			
+
 			output.addToCentralMoment20(x, y, val);
 			output.addToCentralMoment02(x, y, val);
 			output.addToCentralMoment21(x, y, val);
 			output.addToCentralMoment12(x, y, val);
 			output.addToCentralMoment30(x, y, val);
 			output.addToCentralMoment03(x, y, val);
-			
+
 		}
-		
+
 		return output;
 	}
 
