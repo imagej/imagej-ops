@@ -5,30 +5,14 @@ public class CentralMomentResults {
 	private double centralMoment00;
 	private double centralMoment01;
 	private double centralMoment10;
-	private double centralMoment11;
 
+	private double centralMoment11;
 	private double centralMoment20;
 	private double centralMoment02;
 	private double centralMoment21;
 	private double centralMoment12;
 	private double centralMoment30;
 	private double centralMoment03;
-
-	public void setCentralMoment00(double moment00) {
-		this.centralMoment00 = moment00;
-	}
-
-	public void setCentralMoment01(double moment01) {
-		this.centralMoment01 = moment01;
-	}
-
-	public void setCentralMoment10(double moment10) {
-		this.centralMoment10 = moment10;
-	}
-
-	public void setCentralMoment11(double moment11) {
-		this.centralMoment11 = moment11;
-	}
 
 	public void addToCentralMoment20(double x, double y, double val) {
 		centralMoment20 += val * Math.pow(x, 2) * Math.pow(y, 0);
@@ -94,4 +78,19 @@ public class CentralMomentResults {
 		return centralMoment03;
 	}
 
+	public void setCentralMoment00(double centralMoment00) {
+		this.centralMoment00 = centralMoment00;
+	}
+
+	public void setCentralMoment01(double centralMoment01) {
+		this.centralMoment01 = centralMoment01;
+	}
+
+	public void setCentralMoment10(double centralMoment10) {
+		this.centralMoment10 = centralMoment10;
+	}
+
+	public void setCentralMoment11(double moment11) {
+		this.centralMoment11 = moment11;
+	}
 }
