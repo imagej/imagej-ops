@@ -30,9 +30,9 @@
 
 package net.imglib2.ops.operation.metadata.unary;
 
+import net.imagej.axis.CalibratedAxis;
+import net.imagej.space.CalibratedSpace;
 import net.imglib2.Interval;
-import net.imglib2.meta.CalibratedAxis;
-import net.imglib2.meta.CalibratedSpace;
 import net.imglib2.ops.operation.UnaryOperation;
 
 /**

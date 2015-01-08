@@ -1,7 +1,7 @@
 package net.imagej.ops.slicer;
 
-import net.imglib2.meta.AxisType;
-import net.imglib2.meta.TypedSpace;
+import net.imagej.axis.AxisType;
+import net.imagej.space.TypedSpace;
 
 public class SlicewiseUtils {
 

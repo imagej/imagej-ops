@@ -30,12 +30,12 @@
 
 package net.imagej.ops.commands.threshold;
 
+import net.imagej.ImgPlus;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.slicer.Slicewise;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.Axis;
-import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 

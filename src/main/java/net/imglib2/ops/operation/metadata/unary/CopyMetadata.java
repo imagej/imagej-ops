@@ -30,7 +30,7 @@
 
 package net.imglib2.ops.operation.metadata.unary;
 
-import net.imglib2.meta.ImgPlusMetadata;
+import net.imagej.ImgPlusMetadata;
 import net.imglib2.ops.operation.UnaryOperation;
 
 /**

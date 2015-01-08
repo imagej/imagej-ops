@@ -30,9 +30,9 @@
 
 package net.imagej.ops.commands.convert;
 
+import net.imagej.ImgPlus;
 import net.imagej.ops.OpService;
 import net.imagej.ops.convert.ConvertPix;
-import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;

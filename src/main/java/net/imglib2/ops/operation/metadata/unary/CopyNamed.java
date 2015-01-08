@@ -30,8 +30,9 @@
 
 package net.imglib2.ops.operation.metadata.unary;
 
-import net.imglib2.meta.Named;
 import net.imglib2.ops.operation.UnaryOperation;
+
+import org.scijava.Named;
 
 /**
  * @author Christian Dietz (University of Konstanz)

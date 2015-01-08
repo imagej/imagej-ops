@@ -30,13 +30,14 @@
 
 package net.imagej.ops;
 
+import net.imagej.ImageMetadata;
+import net.imagej.ImgPlusMetadata;
+import net.imagej.Sourced;
+import net.imagej.axis.CalibratedAxis;
+import net.imagej.space.CalibratedSpace;
 import net.imglib2.Interval;
-import net.imglib2.meta.CalibratedAxis;
-import net.imglib2.meta.CalibratedSpace;
-import net.imglib2.meta.ImageMetadata;
-import net.imglib2.meta.ImgPlusMetadata;
-import net.imglib2.meta.Named;
-import net.imglib2.meta.Sourced;
+
+import org.scijava.Named;
 
 /**
  * Utility class that allows to copy Metadata. It is the responsibility of the

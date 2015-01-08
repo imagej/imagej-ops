@@ -29,9 +29,9 @@
  */
 package net.imglib2.ops.operation.randomaccessibleinterval.unary;
 
+import net.imagej.space.CalibratedSpace;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.meta.CalibratedSpace;
 import net.imglib2.ops.operation.UnaryOperation;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;

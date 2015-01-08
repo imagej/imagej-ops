@@ -30,13 +30,13 @@
 
 package net.imagej.ops.crop;
 
+import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.ImgView;
-import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;

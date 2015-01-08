@@ -30,10 +30,10 @@
 
 package net.imglib2.ops.operation.subset.views;
 
+import net.imagej.ImgPlus;
+import net.imagej.ImgPlusMetadata;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.meta.ImgPlusMetadata;
 import net.imglib2.type.Type;
 
 /**

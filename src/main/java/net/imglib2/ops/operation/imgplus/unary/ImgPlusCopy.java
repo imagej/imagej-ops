@@ -30,7 +30,7 @@
 
 package net.imglib2.ops.operation.imgplus.unary;
 
-import net.imglib2.meta.ImgPlus;
+import net.imagej.ImgPlus;
 import net.imglib2.ops.operation.UnaryOperation;
 import net.imglib2.ops.operation.img.unary.ImgCopyOperation;
 import net.imglib2.ops.operation.metadata.unary.CopyMetadata;

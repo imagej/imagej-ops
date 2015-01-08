@@ -31,6 +31,7 @@
 package net.imagej.ops.crop;
 
 import static org.junit.Assert.assertTrue;
+import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Crop;
@@ -41,7 +42,6 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.labeling.Labeling;
 import net.imglib2.labeling.NativeImgLabeling;
-import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.view.Views;
 

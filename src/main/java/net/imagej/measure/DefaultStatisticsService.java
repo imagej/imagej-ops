@@ -33,7 +33,6 @@ package net.imagej.measure;
 
 import net.imagej.Dataset;
 import net.imglib2.img.Img;
-import net.imglib2.meta.IntervalUtils;
 import net.imglib2.ops.function.Function;
 import net.imglib2.ops.function.real.RealAlphaTrimmedMeanFunction;
 import net.imglib2.ops.function.real.RealArithmeticMeanFunction;
@@ -65,6 +64,7 @@ import net.imglib2.ops.pointset.HyperVolumePointSet;
 import net.imglib2.ops.pointset.PointSet;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Intervals;
 
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
@@ -433,7 +433,7 @@ public class DefaultStatisticsService extends AbstractService implements
 
 	@Override
 	public PointSet allOf(final Dataset ds) {
-		return new HyperVolumePointSet(IntervalUtils.getDims(ds));
+		return new HyperVolumePointSet(Intervals.dimensionsAsLongArray(ds));
 	}
 
 	// -- private helpers --

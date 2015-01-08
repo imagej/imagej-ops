@@ -30,9 +30,9 @@
 
 package net.imagej.ops.create;
 
+import net.imagej.ImgPlus;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.meta.ImgPlus;
 import net.imglib2.type.NativeType;
 
 import org.scijava.ItemIO;

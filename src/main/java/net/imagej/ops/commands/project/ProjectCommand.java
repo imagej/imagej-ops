@@ -30,13 +30,13 @@
 
 package net.imagej.ops.commands.project;
 
+import net.imagej.ImgPlus;
+import net.imagej.axis.TypedAxis;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Project;
 import net.imagej.ops.statistics.Mean;
 import net.imglib2.img.Img;
-import net.imglib2.meta.ImgPlus;
-import net.imglib2.meta.TypedAxis;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
