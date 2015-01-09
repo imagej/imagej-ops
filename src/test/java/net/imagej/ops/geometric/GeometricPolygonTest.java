@@ -3,8 +3,10 @@ package net.imagej.ops.geometric;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.geometric.GeometricOps.BoundingBox;
+import net.imagej.ops.geometric.GeometricOps.CenterOfGravity;
 import net.imagej.ops.geometric.GeometricOps.ConvexHull;
 import net.imagej.ops.geometric.GeometricOps.MooreContours;
+import net.imagej.ops.geometric.GeometricOps.SmallestEnclosingRectangle;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.BoundingBoxPolygon;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.MooreContoursPolygon;
 import net.imagej.ops.geometric.polygon.Polygon;
@@ -159,5 +161,94 @@ public class GeometricPolygonTest extends AbstractOpTest {
 		assertEquals("Extrema BottomRight", true, containsBottomRight);
 		assertEquals("Extrema TopRight", true, containsTopRight);
 		assertEquals("Extrema TopLeft", true, containsTopLeft);
+	}
+	
+	
+	/**
+	 * Test the {@link CenterOfGravity} Op.
+	 */
+	@Test
+	public void testCenterOfGravity() {
+		
+		
+		// create polygon and add some values
+		Polygon p = new Polygon();
+		p.add(new RealPoint(0, 0));
+		p.add(new RealPoint(10, 0));
+		p.add(new RealPoint(10, 10));
+		p.add(new RealPoint(0, 10));
+
+		RealPoint centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class, p);
+
+		// five points because the first and last one are equal
+		assertEquals("Center of Gravity X", 5d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+		assertEquals("Center of Gravity Y", 5d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+		
+		
+		// create polygon and add some values
+		p = new Polygon();
+		p.add(new RealPoint(0, 0));
+		p.add(new RealPoint(50, 0));
+		p.add(new RealPoint(50, 50));
+		p.add(new RealPoint(0, 50));
+
+		centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class, p);
+
+		// five points because the first and last one are equal
+		assertEquals("Center of Gravity X", 25d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+		assertEquals("Center of Gravity Y", 25d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+	}
+	
+	/**
+	 * Test the {@link SmallestEnclosingRectangle} Op.
+	 */
+	@Test
+	public void testSmallestEnclosingRectangle() {
+		
+		Polygon p = new Polygon();
+
+		// add 4 extrema
+		p.add(new RealPoint(0, 0));
+		p.add(new RealPoint(10, 0));
+		p.add(new RealPoint(10, 10));
+		p.add(new RealPoint(0, 10));
+
+		// add noise
+		for (int i = 0; i < 100; i++) {
+			p.add(new RealPoint(Math.random() * 10, Math.random() * 10));
+		}
+
+
+		Polygon ser = (Polygon) ops.run(SmallestEnclosingRectangle.class, p);
+		
+		
+		// five points because the first and last one are equal
+		assertEquals("Polygon Size", 5, ser.size());
+
+		// and now check that it only contains the four corner points
+		boolean containsBottomLeft = false;
+		boolean containsBottomRight = false;
+		boolean containsTopRight = false;
+		boolean containsTopLeft = false;
+		for (RealPoint rp : ser.getPoints()) {
+			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 0) {
+				containsBottomLeft = true;
+			}
+			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 0) {
+				containsBottomRight = true;
+			}
+			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 10) {
+				containsTopRight = true;
+			}
+			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 10) {
+				containsTopLeft = true;
+			}
+		}
+
+		assertEquals("Extrema BottomLeft", true, containsBottomLeft);
+		assertEquals("Extrema BottomRight", true, containsBottomRight);
+		assertEquals("Extrema TopRight", true, containsTopRight);
+		assertEquals("Extrema TopLeft", true, containsTopLeft);
+
 	}
 }
