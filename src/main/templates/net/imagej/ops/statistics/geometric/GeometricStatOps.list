@@ -2,15 +2,19 @@
 ops = ```
 [
   {name: area, iface: Area},
-  {name: centerofgravity, iface: CenterOfGravity},
   {name: circularity, iface: Circularity},
-  {name: convexhull, iface: ConvexHull},
   {name: eccentricity, iface: Eccentricity},
   {name: feret, iface: Feret},
-  {name: feretresult, iface: FeretResult},
   {name: feretsangle, iface: FeretsAngle},
   {name: feretsdiameter, iface: FeretsDiameter},
   {name: perimeter, iface: Perimeter},
-  {name: smallestenclosingrectangle, iface: SmallestEnclosingRectangle}
+  {name: majoraxis, iface: MajorAxis},
+  {name: minoraxis, iface: MinorAxis},
+  {name: elongation, iface: Elongation},
+  {name: rectangularity, iface: Rectangularity},
+  {name: roundness, iface: Roundness},
+  {name: solidity, iface: Solidity},
+  {name: convexity, iface: Convexity},
+  {name: rugosity, iface: Rugosity}
 ]
 ```
