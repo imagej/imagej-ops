@@ -462,7 +462,7 @@ public class DefaultFeatureService<I> extends AbstractService implements
 				module.run();
 
 				final DefaultFeatureResult result = new DefaultFeatureResult(
-						module.getInfo().getLabel(),
+						module.getInfo().getName(),
 						((Feature) module.getDelegateObject())
 								.getFeatureValue());
 
