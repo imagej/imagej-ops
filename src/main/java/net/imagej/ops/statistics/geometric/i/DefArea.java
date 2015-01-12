@@ -9,12 +9,13 @@ import net.imagej.ops.statistics.geometric.GeometricStatOps.Area;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Daniel Seebacher (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Area.NAME, label = Area.NAME)
+@Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority=Priority.VERY_LOW_PRIORITY)
 public class DefArea extends AbstractOutputFunction<Iterable<?>, RealType<?>>
 		implements AreaFeature {
 
@@ -42,5 +43,4 @@ public class DefArea extends AbstractOutputFunction<Iterable<?>, RealType<?>>
 		output.setReal(sum);
 		return output;
 	}
-
 }

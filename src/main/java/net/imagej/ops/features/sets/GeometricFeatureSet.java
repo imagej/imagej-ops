@@ -32,16 +32,22 @@ package net.imagej.ops.features.sets;
 
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
+import net.imagej.ops.features.geometric.DefRoundness;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.EccentricityFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.ElongationFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsAngleFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsDiameterFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.PerimeterFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RectangularityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RugosityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
+import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
@@ -80,6 +86,8 @@ public class GeometricFeatureSet extends AbstractFeatureSet<Polygon> {
 
 		addInvisible(PolygonFeretProvider.class, getInput());
 
+		addInvisible(MinorMajorAxisProvider.class, getInput());
+
 		// add features
 		addVisible(AreaFeature.class);
 		addVisible(PerimeterFeature.class);
@@ -89,18 +97,17 @@ public class GeometricFeatureSet extends AbstractFeatureSet<Polygon> {
 		addVisible(ConvexityFeature.class);
 		addVisible(SolidityFeature.class);
 		addVisible(RugosityFeature.class);
+		addVisible(ElongationFeature.class);
+		addVisible(MajorAxisFeature.class);
+		addVisible(MinorAxisFeature.class);
+		addVisible(EccentricityFeature.class);
 		addVisible(RoundnessFeature.class);
-
-		// TODO: use moments to calculate ellipse (see EllipseFitter.java) from
-		// ImageJ
-		// addVisible(MajorAxisFeature.class);
-		// addVisible(MinorAxisFeature.class);
-		// addVisible(EccentricityFeature.class);
-		// addVisible(ElongationFeature.class);
-		// addVisible(DefRoundness.class);
-
+		
 		addVisible(FeretsDiameterFeature.class);
 		addVisible(FeretsAngleFeature.class);
+
+		
+
 	}
 
 }

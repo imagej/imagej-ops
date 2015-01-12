@@ -11,8 +11,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link ElongationFeature}. Use {@link FeatureService} to
- * compile this {@link Op}.
+ * Generic implementation of {@link ElongationFeature}. Use
+ * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
@@ -20,10 +20,10 @@ import org.scijava.plugin.Plugin;
 public class DefElongation implements ElongationFeature {
 
 	@Parameter(type = ItemIO.INPUT)
-	private MajorAxisFeature majorAxis;
+	private MinorAxisFeature minorAxis;
 
 	@Parameter(type = ItemIO.INPUT)
-	private MinorAxisFeature minorAxis;
+	private MajorAxisFeature majorAxis;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double out;
@@ -35,6 +35,6 @@ public class DefElongation implements ElongationFeature {
 
 	@Override
 	public void run() {
-		out = 1d - (minorAxis.getFeatureValue() / majorAxis.getFeatureValue());
+		out = 1 - (minorAxis.getFeatureValue() / majorAxis.getFeatureValue());
 	}
 }
