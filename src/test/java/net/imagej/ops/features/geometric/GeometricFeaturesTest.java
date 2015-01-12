@@ -11,8 +11,11 @@ import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.EccentricityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsAngleFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsDiameterFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.PerimeterFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
@@ -40,6 +43,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 
 		// create a polygon
 		Polygon p = new Polygon();
+
 		p.add(new RealPoint(444, 183));
 		p.add(new RealPoint(445, 183));
 		p.add(new RealPoint(445, 184));
@@ -734,13 +738,24 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	}
 
 	/**
-	 * Test the {@link SolidityFeature} Op.
+	 * Test the {@link MinorAxisFeature} Op.
 	 */
 	@Test
-	public void testSolidity() {
+	public void testMinorAxis() {
 		// value taken from imagej
-		assertEquals(SolidityFeature.NAME, 0.759437569,
-				results.get(SolidityFeature.NAME),
+		assertEquals(MinorAxisFeature.NAME, 166.288157325,
+				results.get(MinorAxisFeature.NAME),
+				AbstractFeatureTest.SMALL_DELTA);
+	}
+
+	/**
+	 * Test the {@link MajorAxisFeature} Op.
+	 */
+	@Test
+	public void testMajorAxis() {
+		// value taken from imagej
+		assertEquals(MajorAxisFeature.NAME, 186.305898754,
+				results.get(MajorAxisFeature.NAME),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -774,4 +789,35 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 				+ results.get(FeretsAngleFeature.NAME) + "]", isEquals);
 	}
 
+	/**
+	 * Test the {@link EccentricityFeature} Op.
+	 */
+	@Test
+	public void testEccentricity() {
+		assertEquals(EccentricityFeature.NAME, 1.120379838,
+				results.get(EccentricityFeature.NAME),
+				AbstractFeatureTest.SMALL_DELTA);
+
+	}
+
+	/**
+	 * Test the {@link EccentricityFeature} Op.
+	 */
+	@Test
+	public void testRoundness() {
+		assertEquals(RoundnessFeature.NAME, 0.892554441,
+				results.get(RoundnessFeature.NAME),
+				AbstractFeatureTest.SMALL_DELTA);
+	}
+
+	/**
+	 * Test the {@link SolidityFeature} Op.
+	 */
+	@Test
+	public void testSolidity() {
+		// value taken from imagej
+		assertEquals(SolidityFeature.NAME, 0.759437569,
+				results.get(SolidityFeature.NAME),
+				AbstractFeatureTest.SMALL_DELTA);
+	}
 }

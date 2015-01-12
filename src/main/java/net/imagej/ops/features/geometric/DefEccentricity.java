@@ -35,6 +35,6 @@ public class DefEccentricity implements EccentricityFeature {
 
 	@Override
 	public void run() {
-		out = minorAxis.getFeatureValue() / majorAxis.getFeatureValue();
+		out = majorAxis.getFeatureValue() / minorAxis.getFeatureValue();
 	}
 }

@@ -2,10 +2,10 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -21,7 +21,7 @@ import org.scijava.plugin.Plugin;
 public class DefRoundness implements RoundnessFeature {
 
 	@Parameter(type = ItemIO.INPUT)
-	private PolygonAreaProvider area;
+	private AreaFeature area;
 
 	@Parameter(type = ItemIO.INPUT)
 	private MajorAxisFeature majorAxis;
@@ -36,10 +36,7 @@ public class DefRoundness implements RoundnessFeature {
 
 	@Override
 	public void run() {
-		out = 4
-				* Math.PI
-				* (area.getFeatureValue() / Math.pow(
-						majorAxis.getFeatureValue(), 2));
+		out = 4 * (area.getFeatureValue() / (Math.PI * Math.pow(
+				majorAxis.getFeatureValue(), 2)));
 	}
-
 }
