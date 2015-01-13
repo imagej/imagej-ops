@@ -8,6 +8,7 @@ ops = ```
   {name: convolve,    iface: Convolve},
   {name: createimg,   iface: CreateImg},
   {name: crop,        iface: Crop,           aliases: "slice"},
+  {name: divide,      iface: Divide},
   {name: equation,    iface: Equation},
   {name: gauss,       iface: Gauss,          aliases: "smooth"},
   {name: histogram,   iface: Histogram},
@@ -22,6 +23,7 @@ ops = ```
   {name: median,      iface: Median},
   {name: min,         iface: Min},
   {name: minmax,      iface: MinMax},
+  {name: multiply,    iface: Multiply},
   {name: normalize,   iface: Normalize,      aliases: "norm"},
   {name: project,     iface: Project},
   {name: quantile,    iface: Quantile},
@@ -29,6 +31,7 @@ ops = ```
   {name: size,        iface: Size},
   {name: slicewise,   iface: Slicewise},
   {name: stddev,      iface: StdDeviation},
+  {name: subtract,    iface: Subtract},
   {name: sum,         iface: Sum},
   {name: threshold,   iface: Threshold},
   {name: variance,    iface: Variance}
