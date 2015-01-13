@@ -50,47 +50,55 @@ public class ZernikeFeatureTest extends AbstractFeatureTest {
 	/**
 	 * Testing
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
-	public void testZernikeMoments() {
-		
+	public void testZernikeMomentsEllipse() {
+
 		// test on ellipse
-		List<FeatureResult> res = (List<FeatureResult>) ops.op(
-				ZernikeFeatureSet.class, ellipse, true, true, 1, 3).compute(
-				ellipse);
+		List<FeatureResult> res = ops.op(ZernikeFeatureSet.class, ellipse,
+				true, true, 1, 3).compute(ellipse);
 
 		double[] matlabResultsEllipse = { 0.009, 45.0, 0.5737, 180.0, 0.1155,
 				179.905, 0.0158, 200.5937, 0.0065, 224.9683 };
 
-		for(int i = 0; i < res.size(); i++) {
-			assertEquals(res.get(i).getName(), matlabResultsEllipse[i], res.get(i).getValue(), BIG_DELTA);
+		for (int i = 0; i < res.size(); i++) {
+			assertEquals(res.get(i).getName(), matlabResultsEllipse[i], res
+					.get(i).getValue(), BIG_DELTA);
 		}
-		res.clear();
-		
+	}
+
+	/**
+	 * Testing
+	 */
+	@Test
+	public void testZernikeMomentsRotatedEllipse() {
 		// test on rotated ellipse
-		res = (List<FeatureResult>) ops.op(
-				ZernikeFeatureSet.class, rotatedEllipse, true, true, 1, 3).compute(
-				rotatedEllipse);
+		List<FeatureResult> res = ops.op(ZernikeFeatureSet.class,
+				rotatedEllipse, true, true, 1, 3).compute(rotatedEllipse);
 
-		double[] matlabResultsRotated = { 0.009, 43.9237, 0.5735, 180.0, 0.1155,
-				0.0985, 0.016, 247.7494, 0.0065, 45.267 };
+		double[] matlabResultsRotated = { 0.009, 43.9237, 0.5735, 180.0,
+				0.1155, 0.0985, 0.016, 247.7494, 0.0065, 45.267 };
 
-		for(int i = 0; i < res.size(); i++) {
-			assertEquals(res.get(i).getName(), matlabResultsRotated[i], res.get(i).getValue(), BIG_DELTA);
+		for (int i = 0; i < res.size(); i++) {
+			assertEquals(res.get(i).getName(), matlabResultsRotated[i], res
+					.get(i).getValue(), BIG_DELTA);
 		}
-		
-		res.clear();
-		
+	}
+
+	/**
+	 * Testing
+	 */
+	@Test
+	public void testZernikeMomentsConstant() {
 		// test on image with constant filling
-		res = (List<FeatureResult>) ops.op(
-				ZernikeFeatureSet.class, constant, true, true, 1, 3).compute(
-						constant);
+		List<FeatureResult> res = ops.op(ZernikeFeatureSet.class, constant,
+				true, true, 1, 3).compute(constant);
 
-		double[] matlabResultsConstant = { 0.0, 180.0, 0.002, 0.0, 0.0,
-				0.0, 0.0, 0.0, 0.0, 0.0 };
+		double[] matlabResultsConstant = { 0.0, 180.0, 0.002, 0.0, 0.0, 0.0,
+				0.0, 0.0, 0.0, 0.0 };
 
-		for(int i = 0; i < res.size(); i++) {
-			assertEquals(res.get(i).getName(), matlabResultsConstant[i], res.get(i).getValue(), BIG_DELTA);
+		for (int i = 0; i < res.size(); i++) {
+			assertEquals(res.get(i).getName(), matlabResultsConstant[i], res
+					.get(i).getValue(), BIG_DELTA);
 		}
 	}
 
