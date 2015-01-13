@@ -182,172 +182,172 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object add(final Object... args) {
-		return run("add", args);
+		return run(Ops.Add.NAME, args);
 	}
 
 	@Override
 	public Object ascii(Object... args) {
-		return run("ascii", args);
+		return run(Ops.ASCII.NAME, args);
 	}
 
 	@Override
 	public Object chunker(Object... args) {
-		return run("chunker", args);
+		return run(Ops.Chunker.NAME, args);
 	}
 
 	@Override
 	public Object convert(Object... args) {
-		return run("convert", args);
+		return run(Ops.Convert.NAME, args);
 	}
 
 	@Override
 	public Object convolve(Object... args) {
-		return run("convolve", args);
+		return run(Ops.Convolve.NAME, args);
 	}
 
 	@Override
 	public Object createimg(Object... args) {
-		return run("createimg", args);
+		return run(Ops.CreateImg.NAME, args);
 	}
 
 	@Override
 	public Object crop(Object... args) {
-		return run("crop", args);
+		return run(Ops.Crop.NAME, args);
 	}
 
 	@Override
 	public Object divide(Object... args) {
-		return run("divide", args);
+		return run(Ops.Divide.NAME, args);
 	}
 
 	@Override
 	public Object equation(Object... args) {
-		return run("equation", args);
+		return run(Ops.Equation.NAME, args);
 	}
 
 	@Override
 	public Object gauss(Object... args) {
-		return run("gauss", args);
+		return run(Ops.Gauss.NAME, args);
 	}
 
 	@Override
 	public Object histogram(Object... args) {
-		return run("histogram", args);
+		return run(Ops.Histogram.NAME, args);
 	}
 
 	@Override
 	public Object identity(Object... args) {
-		return run("identity", args);
+		return run(Ops.Identity.NAME, args);
 	}
 
 	@Override
 	public Object invert(Object... args) {
-		return run("invert", args);
+		return run(Ops.Invert.NAME, args);
 	}
 
 	@Override
 	public Object join(Object... args) {
-		return run("join", args);
+		return run(Ops.Join.NAME, args);
 	}
 
 	@Override
 	public Object lookup(Object... args) {
-		return run("lookup", args);
+		return run(Ops.Lookup.NAME, args);
 	}
 
 	@Override
 	public Object loop(Object... args) {
-		return run("loop", args);
+		return run(Ops.Loop.NAME, args);
 	}
 
 	@Override
 	public Object map(Object... args) {
-		return run("map", args);
+		return run(Ops.Map.NAME, args);
 	}
 
 	@Override
 	public Object max(Object... args) {
-		return run("max", args);
+		return run(Ops.Max.NAME, args);
 	}
 
 	@Override
 	public Object mean(Object... args) {
-		return run("mean", args);
+		return run(Ops.Mean.NAME, args);
 	}
 
 	@Override
 	public Object median(Object... args) {
-		return run("median", args);
+		return run(Ops.Median.NAME, args);
 	}
 
 	@Override
 	public Object min(Object... args) {
-		return run("min", args);
+		return run(Ops.Min.NAME, args);
 	}
 
 	@Override
 	public Object minmax(Object... args) {
-		return run("minmax", args);
+		return run(Ops.MinMax.NAME, args);
 	}
 
 	@Override
 	public Object multiply(Object... args) {
-		return run("multiply", args);
+		return run(Ops.Multiply.NAME, args);
 	}
 
 	@Override
 	public Object normalize(Object... args) {
-		return run("normalize", args);
+		return run(Ops.Normalize.NAME, args);
 	}
 
 	@Override
 	public Object project(Object... args) {
-		return run("project", args);
+		return run(Ops.Project.NAME, args);
 	}
 
 	@Override
 	public Object quantile(Object... args) {
-		return run("quantile", args);
+		return run(Ops.Quantile.NAME, args);
 	}
 
 	@Override
 	public Object scale(Object... args) {
-		return run("scale", args);
+		return run(Ops.Scale.NAME, args);
 	}
 
 	@Override
 	public Object size(Object... args) {
-		return run("size", args);
+		return run(Ops.Size.NAME, args);
 	}
 
 	@Override
 	public Object slicewise(Object... args) {
-		return run("slicewise", args);
+		return run(Ops.Slicewise.NAME, args);
 	}
 
 	@Override
 	public Object stddev(Object... args) {
-		return run("stddev", args);
+		return run(Ops.StdDeviation.NAME, args);
 	}
 
 	@Override
 	public Object subtract(Object... args) {
-		return run("subtract", args);
+		return run(Ops.Subtract.NAME, args);
 	}
 
 	@Override
 	public Object sum(Object... args) {
-		return run("sum", args);
+		return run(Ops.Sum.NAME, args);
 	}
 
 	@Override
 	public Object threshold(Object... args) {
-		return run("threshold", args);
+		return run(Ops.Threshold.NAME, args);
 	}
 
 	@Override
 	public Object variance(Object... args) {
-		return run("variance", args);
+		return run(Ops.Variance.NAME, args);
 	}
 
 	// -- SingletonService methods --
