@@ -55,9 +55,11 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Moment Features")
-public class ZernikeFeatureSet<T extends RealType<T>> extends
-		AbstractOutputFunction<IterableInterval<T>, List<FeatureResult>>
-		implements FeatureSet<IterableInterval<T>>, Contingent {
+public class ZernikeFeatureSet
+		extends
+		AbstractOutputFunction<IterableInterval<? extends RealType<?>>, List<FeatureResult>>
+		implements FeatureSet<IterableInterval<? extends RealType<?>>>,
+		Contingent {
 
 	@Parameter
 	private OpService ops;
@@ -77,12 +79,14 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 	private ZernikeComputer m_op;
 
 	@Override
-	public List<FeatureResult> createOutput(IterableInterval<T> input) {
+	public List<FeatureResult> createOutput(
+			IterableInterval<? extends RealType<?>> input) {
 		return new ArrayList<FeatureResult>();
 	}
 
 	@Override
-	protected List<FeatureResult> safeCompute(IterableInterval<T> input,
+	protected List<FeatureResult> safeCompute(
+			IterableInterval<? extends RealType<?>> input,
 			List<FeatureResult> output) {
 		output.clear();
 
