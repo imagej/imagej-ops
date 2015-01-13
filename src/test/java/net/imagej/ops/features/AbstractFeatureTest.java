@@ -1,22 +1,35 @@
 package net.imagej.ops.features;
 
+import ij.gui.EllipseRoi;
+
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.BitArray;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.display.imagej.ImageJFunctions;
+import net.imglib2.ops.operation.subset.views.ImgView;
+import net.imglib2.roi.EllipseRegionOfInterest;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.scijava.Context;
 
 /**
  * @author Daniel Seebacher (University of Konstanz)
+ * @author Andreas Graumann (University of Konstanz)
  */
 public class AbstractFeatureTest extends AbstractOpTest {
 
@@ -47,7 +60,10 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> empty;
 	protected Img<UnsignedByteType> constant;
 	protected Img<UnsignedByteType> random;
+	protected Img<UnsignedByteType> ellipse;
+	protected Img<UnsignedByteType> rotatedEllipse;
 
+	@SuppressWarnings("rawtypes")
 	protected FeatureService<Img> fs;
 
 	@SuppressWarnings("unchecked")
@@ -55,9 +71,22 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	public void setup() {
 		ImageGenerator dataGenerator = new ImageGenerator(SEED);
 		long[] dim = new long[] { 100, 100 };
+		
 		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
 		constant = dataGenerator.getConstantUnsignedByteImg(dim, 15);
 		random = dataGenerator.getRandomUnsignedByteImg(dim);
+		
+		double[] offset = new double[] {0.0,0.0};
+		double[] radii = new double[] {20,40};
+		ellipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
+		
+		// translate and rotate ellipse
+		offset = new double[]{10.0,-10.0};
+		radii = new double[] {40,20};
+		rotatedEllipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
+		
+
+			
 		fs = context.getService(FeatureService.class);
 	}
 
@@ -73,6 +102,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * images of various types.
 	 * 
 	 * @author Daniel Seebacher, University of Konstanz.
+	 * @author Andreas Graumann, University of Konstanz
 	 */
 	class ImageGenerator {
 
@@ -150,6 +180,40 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			}
 
 			return (Img<UnsignedByteType>) img;
+		}
+		
+		/**
+		 * 
+		 * @param dim
+		 * @param radii
+		 * @return an {@link Img} of {@link BitType} filled with a ellipse
+		 */
+		public Img<UnsignedByteType> getEllipsedBitImage(long[] dim, double[] radii, double[] offset) {
+
+			// create empty bittype image with desired dimensions
+			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(dim);
+
+			// create ellipse
+			EllipseRegionOfInterest ellipse = new EllipseRegionOfInterest();
+			ellipse.setRadii(radii);
+
+			// set origin in the center of image
+			double[] origin = new double[dim.length];
+			for (int i = 0; i < dim.length; i++)
+				origin[i] = dim[i] / 2;
+			ellipse.setOrigin(origin);
+			
+			// get iterable intervall and cursor of ellipse
+			IterableInterval<UnsignedByteType> ii = ellipse.getIterableIntervalOverROI(img);
+			Cursor<UnsignedByteType> cursor = ii.cursor();
+
+			// fill image with ellipse
+			while (cursor.hasNext()) {
+				cursor.next();
+				cursor.get().set(255);
+			}
+
+			return (Img<UnsignedByteType>)img;
 		}
 	}
 
