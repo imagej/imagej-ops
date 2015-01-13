@@ -183,8 +183,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convolve" operation on the given arguments. */
 	Object convolve(Object... args);
 
-	/** Executes the "createImg" operation on the given arguments. */
-	Object createImg(Object... args);
+	/** Executes the "createimg" operation on the given arguments. */
+	Object createimg(Object... args);
 
 	/** Executes the "crop" operation on the given arguments. */
 	Object crop(Object... args);
@@ -240,9 +240,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "normalize" operation on the given arguments. */
 	Object normalize(Object... args);
 
-	/** Executes the "otsu" operation on the given arguments. */
-	Object otsu(Object... args);
-
 	/** Executes the "project" operation on the given arguments. */
 	Object project(Object... args);
 
@@ -254,9 +251,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "size" operation on the given arguments. */
 	Object size(Object... args);
-
-	/** Executes the "slicemapper" operation on the given arguments. */
-	Object slicemapper(Object... args);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	Object slicewise(Object... args);
@@ -278,7 +272,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	// -- Deprecated methods --
 
-	/** @deprecated Use {@link #createImg} instead. */
+	/** @deprecated Use {@link #createimg} instead. */
 	@Deprecated
 	Object create(Object... args);
 
