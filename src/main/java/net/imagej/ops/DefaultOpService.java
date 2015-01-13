@@ -301,11 +301,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object otsu(Object... args) {
-		return run("otsu", args);
-	}
-
-	@Override
 	public Object project(Object... args) {
 		return run("project", args);
 	}
@@ -323,11 +318,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object size(Object... args) {
 		return run("size", args);
-	}
-
-	@Override
-	public Object slicemapper(Object... args) {
-		return run("slicemapper", args);
 	}
 
 	@Override
