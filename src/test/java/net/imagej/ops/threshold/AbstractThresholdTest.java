@@ -31,13 +31,16 @@
 package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Random;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imglib2.RandomAccess;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 
@@ -60,10 +63,10 @@ public class AbstractThresholdTest extends AbstractOpTest {
 	public void initialize() {
 		final long[] dimensions = new long[] { xSize, ySize };
 
+		final Random r = new Random(0xdeadbeef);
+
 		// create image and output
-		in =
-			new ArrayImgFactory<UnsignedShortType>().create(dimensions,
-				new UnsignedShortType());
+		in = ArrayImgs.unsignedShorts(dimensions);
 
 		final RandomAccess<UnsignedShortType> ra = in.randomAccess();
 
@@ -71,7 +74,7 @@ public class AbstractThresholdTest extends AbstractOpTest {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
 				ra.setPosition(new int[] { x, y });
-				ra.get().setReal(x + y + 1000);
+				ra.get().setReal(r.nextInt(65535));
 			}
 		}
 	}

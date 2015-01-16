@@ -37,7 +37,6 @@ import java.util.List;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.Sampler;
 
 /**
@@ -79,12 +78,6 @@ public class NewIterableInterval<T> extends AbstractInterval implements Iterable
 	{
 		// TODO maybe support. For now, for simplicity, don't support
 		return this; // iteration order is only compatible with ourselves
-	}
-
-	@Override
-	public boolean equalIterationOrder( final IterableRealInterval< ? > f )
-	{
-		return iterationOrder().equals( f.iterationOrder() );
 	}
 
 	@Override

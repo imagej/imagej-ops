@@ -35,7 +35,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -65,7 +65,7 @@ import org.scijava.script.ScriptService;
  */
 @Plugin(type = Op.class, name = Ops.Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
-	AbstractStrictFunction<String, IterableInterval<T>> implements Equation<T>
+	AbstractOutputFunction<String, IterableInterval<T>> implements Equation<T>
 {
 
 	@Parameter
@@ -74,20 +74,23 @@ public class DefaultEquation<T extends RealType<T>> extends
 	@Parameter
 	private LogService log;
 
-	@Override
-	public IterableInterval<T> compute(final String input,
-		final IterableInterval<T> output)
-	{
-		final IterableInterval<T> image;
-		if (output == null) {
-			// produce a 256x256 float64 array-backed image by default
-			@SuppressWarnings({ "rawtypes", "unchecked" })
-			final IterableInterval<T> newImage =
-				(IterableInterval) ArrayImgs.doubles(256, 256);
-			image = newImage;
-		}
-		else image = output;
+	// -- OutputFunction methods --
 
+	@Override
+	public IterableInterval<T> createOutput(String input) {
+		// produce a 256x256 float64 array-backed image by default
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final IterableInterval<T> newImage =
+			(IterableInterval) ArrayImgs.doubles(256, 256);
+		return newImage;
+	}
+
+	// -- Internal methods --
+
+	@Override
+	protected IterableInterval<T> safeCompute(String input,
+		IterableInterval<T> output)
+	{
 		final String equation = input + ";";
 
 		// evaluate the equation using Javascript!
@@ -95,8 +98,8 @@ public class DefaultEquation<T extends RealType<T>> extends
 		final ScriptEngine engine = js.getScriptEngine();
 		final Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
 
-		final Cursor<T> c = image.localizingCursor();
-		final long[] pos = new long[image.numDimensions()];
+		final Cursor<T> c = output.localizingCursor();
+		final long[] pos = new long[output.numDimensions()];
 		bindings.put("p", pos);
 
 		try {
@@ -112,7 +115,7 @@ public class DefaultEquation<T extends RealType<T>> extends
 		catch (final ScriptException exc) {
 			log.error(exc);
 		}
-		return image;
+		return output;
 	}
 
 }

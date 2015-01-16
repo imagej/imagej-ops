@@ -30,7 +30,6 @@
 
 package net.imglib2.ops.pointset;
 
-import net.imglib2.IterableRealInterval;
 import net.imglib2.Positionable;
 import net.imglib2.RealPositionable;
 
@@ -72,11 +71,6 @@ public abstract class AbstractPointSet implements PointSet {
 	@Override
 	public Object iterationOrder() {
 		return new Object(); // default to unknown order
-	}
-
-	@Override
-	public boolean equalIterationOrder(IterableRealInterval<?> f) {
-		return false;
 	}
 
 	@Override
