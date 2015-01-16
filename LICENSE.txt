@@ -1,5 +1,5 @@
-Copyright (c) 2014, Board of Regents of the University of
-Wisconsin-Madison and University of Konstanz.
+Copyright (c) 2014 - 2015, Board of Regents of the University of
+Wisconsin-Madison, University of Konstanz and Brian Northan.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
