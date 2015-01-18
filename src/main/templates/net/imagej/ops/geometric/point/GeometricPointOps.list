@@ -1,0 +1,6 @@
+[GeometricPointOps.java]
+ops = ```
+[
+{name: center-of-gravity, iface: CenterOfGravity}
+]
+```

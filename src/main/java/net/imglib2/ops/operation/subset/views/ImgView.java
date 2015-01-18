@@ -32,7 +32,6 @@ package net.imglib2.ops.operation.subset.views;
 
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -47,7 +46,7 @@ import net.imglib2.view.Views;
  * 
  * @author Tobias Pietzsch
  * @author Christian Dietz (University of Konstanz)
- * @deprecated Use net.imagej.ops instead.
+ * @deprecated Use {@link net.imglib2.img.ImgView} instead.
  */
 @Deprecated
 public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInterval< T > implements Img< T >
@@ -63,10 +62,8 @@ public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInte
 	 * View on {@link Img} which is defined by a given Interval, but still is an
 	 * {@link Img}.
 	 * 
-	 * @param RandomAccessibleInterval
-	 *            Source interval for the view
-	 * @param ImgFactory
-	 *            <T> Factory to create img
+	 * @param in Source interval for the view
+	 * @param fac <T> Factory to create img
 	 */
 	public ImgView( final RandomAccessibleInterval< T > in, ImgFactory< T > fac )
 	{
@@ -111,9 +108,4 @@ public class ImgView< T extends Type< T > > extends IterableRandomAccessibleInte
 		return ii.localizingCursor();
 	}
 
-	@Override
-	public boolean equalIterationOrder( IterableRealInterval< ? > f )
-	{
-		return iterationOrder().equals( f.iterationOrder() );
-	}
 }

@@ -37,7 +37,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * Really small number, used for assertEquals with floating or double
 	 * values.
 	 */
-	protected final double SMALL_DELTA = 1e-07;
+	protected static final double SMALL_DELTA = 1e-07;
 
 	/**
 	 * Medium small number, used for assertEquals with very little error margin.
@@ -52,7 +52,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	/**
 	 * Seed
 	 */
-	private static final long SEED = 1234567890L;
+	protected static final long SEED = 1234567890L;
 
 	/**
 	 * Some random images
