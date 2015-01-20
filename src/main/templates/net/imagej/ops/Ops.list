@@ -14,7 +14,7 @@ ops = ```
   {name: gauss,       iface: Gauss,          aliases: "smooth"},
   {name: histogram,   iface: Histogram},
   {name: identity,    iface: Identity},
-  {name: ifft,        iface: Ifft},
+  {name: ifft,        iface: IFFT},
   {name: invert,      iface: Invert},
   {name: join,        iface: Join},
   {name: lookup,      iface: Lookup,         aliases: "op"},

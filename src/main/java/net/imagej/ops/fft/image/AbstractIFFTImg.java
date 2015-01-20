@@ -1,7 +1,7 @@
 
 package net.imagej.ops.fft.image;
 
-import net.imagej.ops.Ops.Ifft;
+import net.imagej.ops.Ops.IFFT;
 import net.imagej.ops.fft.AbstractIFFTIterable;
 import net.imglib2.img.Img;
 
@@ -11,7 +11,7 @@ import net.imglib2.img.Img;
  * @author Brian Northan
  */
 public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
-	extends AbstractIFFTIterable<C, T, I, O> implements Ifft
+	extends AbstractIFFTIterable<C, T, I, O> implements IFFT
 {
 
 }
