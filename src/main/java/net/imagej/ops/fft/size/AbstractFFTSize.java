@@ -43,18 +43,18 @@ import net.imagej.ops.Ops.FFTSize;
 abstract public class AbstractFFTSize implements FFTSize {
 
 	@Parameter
-	long[] inputSize;
+	protected long[] inputSize;
 
 	@Parameter(type = ItemIO.BOTH)
-	long[] paddedSize;
+	protected long[] paddedSize;
 
 	@Parameter(type = ItemIO.BOTH)
-	long[] fftSize;
+	protected long[] fftSize;
 
 	@Parameter
-	Boolean forward;
+	protected Boolean forward;
 
 	@Parameter
-	Boolean fast;
+	protected Boolean fast;
 
 }
