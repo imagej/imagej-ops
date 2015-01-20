@@ -2,7 +2,7 @@ package net.imagej.ops.features.moments.centralmoments;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment20Feature;
+import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment21Feature;
 import net.imagej.ops.features.moments.helper.CentralMomentsHelper;
 
 import org.scijava.ItemIO;
@@ -10,13 +10,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link CentralMoment20Feature}. Use
+ * Generic implementation of {@link CentralMoment21Feature}. Use
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = CentralMoment20Feature.NAME)
-public class DefCentralMoment20 implements CentralMoment20Feature {
+@Plugin(type = Op.class, name = CentralMoment21Feature.NAME)
+public class DefaultCentralMoment21Feature implements CentralMoment21Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private CentralMomentsHelper centralMomentsHelper;
@@ -31,7 +31,7 @@ public class DefCentralMoment20 implements CentralMoment20Feature {
 
 	@Override
 	public void run() {
-		out = centralMomentsHelper.getOutput().getCentralMoment20();
+		out = centralMomentsHelper.getOutput().getCentralMoment21();
 	}
 
 }

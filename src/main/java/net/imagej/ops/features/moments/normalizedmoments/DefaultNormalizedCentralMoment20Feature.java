@@ -2,7 +2,7 @@ package net.imagej.ops.features.moments.normalizedmoments;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment30Feature;
+import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment20Feature;
 import net.imagej.ops.features.moments.helper.CentralMomentsHelper;
 
 import org.scijava.ItemIO;
@@ -10,14 +10,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link NormalizedCentralMoment30Feature}. Use
+ * Generic implementation of {@link NormalizedCentralMoment20Feature}. Use
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = NormalizedCentralMoment30Feature.NAME)
-public class DefNormalizedCentralMoment30 implements
-		NormalizedCentralMoment30Feature {
+@Plugin(type = Op.class, name = NormalizedCentralMoment20Feature.NAME)
+public class DefaultNormalizedCentralMoment20Feature implements
+NormalizedCentralMoment20Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private CentralMomentsHelper momentsHelper;
@@ -32,8 +32,8 @@ public class DefNormalizedCentralMoment30 implements
 
 	@Override
 	public void run() {
-		out = momentsHelper.getOutput().getCentralMoment30()
+		out = momentsHelper.getOutput().getCentralMoment20()
 				/ Math.pow(momentsHelper.getOutput().getCentralMoment00(),
-						1 + ((3 + 0) / 2));
+						1 + ((2 + 0) / 2));
 	}
 }

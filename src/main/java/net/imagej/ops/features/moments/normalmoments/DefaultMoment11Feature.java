@@ -2,7 +2,7 @@ package net.imagej.ops.features.moments.normalmoments;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.moments.ImageMomentFeatures.Moment01Feature;
+import net.imagej.ops.features.moments.ImageMomentFeatures.Moment11Feature;
 import net.imagej.ops.features.moments.helper.NormalMomentsHelper;
 
 import org.scijava.ItemIO;
@@ -10,14 +10,15 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Moment01Feature}. Use {@link FeatureService}
+ * Generic implementation of {@link Moment11Feature}. Use {@link FeatureService}
  * to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Moment01Feature.NAME)
-public class DefMoment01 implements Moment01Feature {
+@Plugin(type = Op.class, name = Moment11Feature.NAME)
+public class DefaultMoment11Feature implements Moment11Feature {
 
+	
 	@Parameter(type = ItemIO.INPUT)
 	private NormalMomentsHelper momentsHelper;
 
@@ -31,7 +32,7 @@ public class DefMoment01 implements Moment01Feature {
 
 	@Override
 	public void run() {
-		out = momentsHelper.getOutput().getMoment01();
+		out = momentsHelper.getOutput().getMoment11();
 	}
 
 }
