@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.RealType;
  * 
  * Inverse fft that operates on an RAI and wraps FFTMethods.
  * 
- * @author bnorthan
+ * @author Brian Northan
  *
  * @param <C>
  * @param <T>

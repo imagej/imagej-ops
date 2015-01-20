@@ -55,7 +55,7 @@ import net.imglib2.algorithm.fft2.FFTMethods;
  * 
  * Forward FFT that operates on an RAI and wraps FFTMethods.
  * 
- * @author bnorthan
+ * @author Brian Northan
  * 
  * @param <T>
  * @param <C>

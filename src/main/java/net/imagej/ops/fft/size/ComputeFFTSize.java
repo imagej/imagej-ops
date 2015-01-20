@@ -11,7 +11,7 @@ import net.imglib2.algorithm.fft2.FFTMethods;
 /**
  * Op to calculate JTransform FFT sizes.
  * 
- * @author bnorthan
+ * @author Brian Northan
  */
 @Plugin(type = FFTSize.class, name = FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {

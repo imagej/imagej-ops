@@ -38,7 +38,7 @@ import net.imagej.ops.Ops.FFTSize;
 /**
  * Op to calculate FFT sizes.
  * 
- * @author bnorthan
+ * @author Brian Northan
  */
 abstract public class AbstractFFTSize implements FFTSize {
 

@@ -49,7 +49,7 @@ import org.junit.Test;
  * 4. Calculate the statistic by calling the op. 
  * 5. Assert that the two values are the same.
  * 
- * @author bnorthan
+ * @author Brian Northan
  */
 public class StatisticsTest extends AbstractOpTest {
 

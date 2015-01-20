@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.complex.ComplexFloatType;
 /**
  * Inverse FFT op implemented by wrapping FFTMethods.
  * 
- * @author bnorthan
+ * @author Brian Northan
  * 
  * @param <T>
  * @param <I>

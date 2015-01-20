@@ -23,7 +23,7 @@ import net.imglib2.view.Views;
 /**
  * Test FFT implementations
  * 
- * @author bnorthan
+ * @author Brian Northan
  */
 public class FFTTest extends AbstractOpBenchmark {
 

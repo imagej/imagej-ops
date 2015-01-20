@@ -45,7 +45,7 @@ import net.imagej.ops.fft.size.ComputeFFTSize;
 /**
  * Forward FFT that operates on Img
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <T>
  * @param <I>
  */
