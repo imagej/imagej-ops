@@ -32,7 +32,7 @@ package net.imagej.ops.fft.image;
 
 import org.scijava.plugin.Parameter;
 
-import net.imagej.ops.Ops.Fft;
+import net.imagej.ops.Ops.FFT;
 import net.imagej.ops.fft.AbstractFFTIterable;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -40,12 +40,12 @@ import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 
 /**
- * Abstract superclass for forward fft implementations that operate on Img<T>.
+ * Abstract superclass for forward FFT implementations that operate on Img<T>.
  * 
  * @author Brian Northan
  */
 public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
-		extends AbstractFFTIterable<T, C, I, O> implements Fft {
+		extends AbstractFFTIterable<T, C, I, O> implements FFT {
 
 	/**
 	 * size of border to apply in each dimension
@@ -54,10 +54,10 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	long[] borderSize = null;
 
 	/**
-	 * set to true to compute the fft as fast as possible. The input will be
-	 * extended to the next fast fft size. If false the input will be computed
+	 * set to true to compute the FFT as fast as possible. The input will be
+	 * extended to the next fast FFT size. If false the input will be computed
 	 * using the original input dimensions (if possible) If the input dimensions
-	 * are not supported by the underlying fft implementation the input will be
+	 * are not supported by the underlying FFT implementation the input will be
 	 * extended to the nearest size that is supported.
 	 */
 	@Parameter(required = false)
@@ -74,8 +74,8 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 
 	/**
 	 * create the output based on the input. If fast=true the size is determined
-	 * such that the underlying fft implementation will run as fast as possible.
-	 * If fast=false the size is determined such that the underlying fft
+	 * such that the underlying FFT implementation will run as fast as possible.
+	 * If fast=false the size is determined such that the underlying FFT
 	 * implementation will use the smallest amount of memory possible.
 	 */
 	@Override
@@ -92,29 +92,29 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 		}
 
 		if (fast) {
-			computeFftFastSize(inputSize);
+			computeFFTFastSize(inputSize);
 		} else {
-			computeFftSmallSize(inputSize);
+			computeFFTSmallSize(inputSize);
 		}
 
-		return createFftImg(input.factory(), fftSize);
+		return createFFTImg(input.factory(), fftSize);
 
 	}
 
 	/**
-	 * returns fastest fft size possible for the input size
+	 * returns fastest FFT size possible for the input size
 	 * 
 	 * @param inputSize
 	 * @return
 	 */
-	protected abstract void computeFftFastSize(long[] inputSize);
+	protected abstract void computeFFTFastSize(long[] inputSize);
 
 	/**
-	 * returns smallest fft size possible for the input size
+	 * returns smallest FFT size possible for the input size
 	 * 
 	 * @param inputSize
 	 */
-	protected abstract void computeFftSmallSize(long[] inputSize);
+	protected abstract void computeFFTSmallSize(long[] inputSize);
 
 	/**
 	 * creates the output Img
@@ -123,6 +123,6 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * @param size
 	 * @return
 	 */
-	protected abstract O createFftImg(ImgFactory<T> factory, long[] size);
+	protected abstract O createFFTImg(ImgFactory<T> factory, long[] size);
 
 }

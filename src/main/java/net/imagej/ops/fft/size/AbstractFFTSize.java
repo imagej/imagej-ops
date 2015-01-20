@@ -33,14 +33,14 @@ package net.imagej.ops.fft.size;
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
-import net.imagej.ops.Ops.FftSize;
+import net.imagej.ops.Ops.FFTSize;
 
 /**
- * Op to calculate fft sizes
+ * Op to calculate FFT sizes.
  * 
  * @author bnorthan
  */
-abstract public class AbstractFFTSize implements FftSize {
+abstract public class AbstractFFTSize implements FFTSize {
 
 	@Parameter
 	long[] inputSize;

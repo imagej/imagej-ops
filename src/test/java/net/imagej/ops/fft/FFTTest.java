@@ -21,7 +21,7 @@ import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
 
 /**
- * Test fft implementations
+ * Test FFT implementations
  * 
  * @author bnorthan
  */
@@ -55,10 +55,10 @@ public class FFTTest extends AbstractOpBenchmark {
 	}
 
 	/**
-	 * test the fast fft
+	 * test the fast FFT
 	 */
 	@Test
-	public void testFastFft3dOp() {
+	public void testFastFFT3DOp() {
 
 		for (int i = 115; i < 135; i++) {
 
@@ -69,7 +69,7 @@ public class FFTTest extends AbstractOpBenchmark {
 			long[] fastDimensions = new long[3];
 			long[] fftDimensions = new long[3];
 
-			// compute the dimensions that will result in the fastest fft time
+			// compute the dimensions that will result in the fastest FFT time
 			ops.run(ComputeFFTSize.class, originalDimensions, fastDimensions,
 					fftDimensions, true, true);
 
@@ -85,15 +85,15 @@ public class FFTTest extends AbstractOpBenchmark {
 					new FloatType(), fastDimensions);
 			placeSphereInCenter(inFast);
 
-			// call fft passing false for "fast" (in order to pass the optional
+			// call FFT passing false for "fast" (in order to pass the optional
 			// parameter we have to pass null for the
 			// output parameter).
 			Img<ComplexFloatType> fft1 = (Img<ComplexFloatType>) ops.run("fft",
 					null, inOriginal, null, false);
 
-			// call fft passing true for "fast" (in order to pass the optional
+			// call FFT passing true for "fast" (in order to pass the optional
 			// parameter we have to pass null for the
-			// output parameter). The fft op will pad the input to the fast
+			// output parameter). The FFT op will pad the input to the fast
 			// size.
 			Img<ComplexFloatType> fft2 = (Img<ComplexFloatType>) ops.run("fft",
 					null, inOriginal, null, true);
@@ -121,14 +121,14 @@ public class FFTTest extends AbstractOpBenchmark {
 					CreateImgDefault.class, new ArrayImgFactory<FloatType>(),
 					new FloatType(), fastDimensions);
 
-			// invert the "small" fft
+			// invert the "small" FFT
 			ops.run("ifft", inverseOriginalSmall, fft1);
 
-			// invert the "fast" fft. The inverse will should be the original
+			// invert the "fast" FFT. The inverse will should be the original
 			// size.
 			ops.run("ifft", inverseOriginalFast, fft2);
 
-			// invert the "fast" fft that was acheived by explicitly using an
+			// invert the "fast" FFT that was acheived by explicitly using an
 			// image
 			// that had "fast" dimensions. The inverse will be the fast size
 			// this

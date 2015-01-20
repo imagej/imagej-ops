@@ -33,7 +33,7 @@ package net.imagej.ops.fft.image;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops.Fft;
+import net.imagej.ops.Ops.FFT;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -49,12 +49,12 @@ import net.imagej.ops.fft.size.ComputeFFTSize;
  * @param <T>
  * @param <I>
  */
-@Plugin(type = Fft.class, name = Fft.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = FFT.class, name = FFT.NAME, priority = Priority.HIGH_PRIORITY)
 public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>> {
 
 	@Override
-	protected void computeFftFastSize(long[] inputSize) {
+	protected void computeFFTFastSize(long[] inputSize) {
 
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
@@ -65,7 +65,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	protected void computeFftSmallSize(long[] inputSize) {
+	protected void computeFFTSmallSize(long[] inputSize) {
 
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
@@ -76,7 +76,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	protected Img<ComplexFloatType> createFftImg(ImgFactory<T> factory,
+	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory,
 			long[] size) {
 
 		try {

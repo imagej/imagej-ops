@@ -3,17 +3,17 @@ package net.imagej.ops.fft.size;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops.FftSize;
+import net.imagej.ops.Ops.FFTSize;
 import net.imglib2.FinalDimensions;
 
 import net.imglib2.algorithm.fft2.FFTMethods;
 
 /**
- * Op to calculate JTransform fft sizes
+ * Op to calculate JTransform FFT sizes.
  * 
  * @author bnorthan
  */
-@Plugin(type = FftSize.class, name = FftSize.NAME)
+@Plugin(type = FFTSize.class, name = FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {
 
 	public void run() {
