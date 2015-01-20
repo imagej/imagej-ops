@@ -226,6 +226,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object fft(Object... args) {
+		return run("fft", args);
+	}
+
+	@Override
 	public Object gauss(Object... args) {
 		return run("gauss", args);
 	}
@@ -238,6 +243,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object identity(Object... args) {
 		return run("identity", args);
+	}
+
+	@Override
+	public Object ifft(Object... args) {
+		return run("ifft", args);
 	}
 
 	@Override

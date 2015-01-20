@@ -195,6 +195,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "equation" operation on the given arguments. */
 	Object equation(Object... args);
 
+	/** Executes the "fft" operation on the given arguments. */
+	Object fft(Object... args);
+
 	/** Executes the "gauss" operation on the given arguments. */
 	Object gauss(Object... args);
 
@@ -203,6 +206,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "identity" operation on the given arguments. */
 	Object identity(Object... args);
+
+	/** Executes the "ifft" operation on the given arguments. */
+	Object ifft(Object... args);
 
 	/** Executes the "invert" operation on the given arguments. */
 	Object invert(Object... args);
