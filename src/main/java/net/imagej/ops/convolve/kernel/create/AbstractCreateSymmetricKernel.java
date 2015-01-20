@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,36 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.create;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
+package net.imagej.ops.convolve.kernel.create;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
-public class CreateImgDefault<V extends NativeType<V>> implements Ops.CreateImg
-{
+import net.imagej.ops.OpService;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
+
+/**
+ * Abstract convenience op for generating a symmetric kernel
+ * 
+ * @author bnorthan
+ * @param <T>
+ */
+public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {
+
+	@Parameter(required = false)
+	Type<T> outType;
+
+	@Parameter(required = false)
+	ImgFactory<T> fac;
+
+	@Parameter
+	OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private Img<V> output;
+	protected Img<T> output;
 
 	@Parameter
-	private ImgFactory<V> fac;
+	int numDimensions;
 
 	@Parameter
-	private V outType;
+	double sigma;
 
-	@Parameter
-	private long[] dims;
+	@Parameter(required = false)
+	double[] calibration;
 
-	@Override
-	public void run() {
-		output = fac.create(dims, outType.copy());
-	}
+	abstract public void run();
 }
