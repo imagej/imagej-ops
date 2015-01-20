@@ -40,7 +40,7 @@ import net.imagej.ops.Ops.FFTSize;
  * 
  * @author Brian Northan
  */
-abstract public class AbstractFFTSize implements FFTSize {
+public abstract class AbstractFFTSize implements FFTSize {
 
 	@Parameter
 	protected long[] inputSize;
