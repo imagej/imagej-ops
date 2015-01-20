@@ -67,7 +67,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = MooreContoursPolygon.NAME)
-public class DefMooreContours implements MooreContoursPolygon, Contingent {
+public class DefaultMooreContoursOp implements MooreContoursPolygon, Contingent {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Polygon output;

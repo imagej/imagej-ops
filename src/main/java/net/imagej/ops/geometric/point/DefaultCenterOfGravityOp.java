@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = CenterOfGravityPoint.NAME)
-public class DefCenterOfGravity implements CenterOfGravityPoint {
+public class DefaultCenterOfGravityOp implements CenterOfGravityPoint {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private RealPoint output;

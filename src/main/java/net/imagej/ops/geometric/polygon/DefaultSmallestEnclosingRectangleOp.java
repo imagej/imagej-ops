@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = SmallestEnclosingRectanglePolygon.NAME)
-public class DefSmallestEnclosingRectangle implements
+public class DefaultSmallestEnclosingRectangleOp implements
 		SmallestEnclosingRectanglePolygon {
 
 	@Parameter(type = ItemIO.OUTPUT)

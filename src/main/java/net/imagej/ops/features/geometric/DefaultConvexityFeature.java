@@ -3,7 +3,6 @@ package net.imagej.ops.features.geometric;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
-import net.imagej.ops.features.geometric.GeometricFeatures.RugosityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
 
@@ -17,8 +16,8 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = RugosityFeature.NAME)
-public class DefRugosity implements RugosityFeature {
+@Plugin(type = Op.class, name = ConvexityFeature.NAME)
+public class DefaultConvexityFeature implements ConvexityFeature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private PolygonPerimeterProvider perimter;
@@ -36,8 +35,8 @@ public class DefRugosity implements RugosityFeature {
 
 	@Override
 	public void run() {
-		out = perimter.getFeatureValue()
-				/ convexHullPerimeter.getFeatureValue();
+		out = convexHullPerimeter.getFeatureValue()
+				/ perimter.getFeatureValue();
 	}
 
 }

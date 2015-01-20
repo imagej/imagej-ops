@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority=Priority.FIRST_PRIORITY)
-public class DefArea extends
+public class DefaultAreaFeature extends
 		AbstractOutputFunction<IterableInterval<?>, RealType<?>> implements
 		AreaFeature {
 

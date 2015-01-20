@@ -27,13 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric.interval;
+package net.imagej.ops.geometric.polygon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.geometric.interval.GeometricIntervalOps.BoundingBoxInterval;
-import net.imagej.ops.geometric.polygon.Polygon;
-import net.imglib2.FinalInterval;
-import net.imglib2.Interval;
+import net.imagej.ops.geometric.polygon.GeometricPolygonOps.BoundingBoxPolygon;
 import net.imglib2.RealPoint;
 
 import org.scijava.ItemIO;
@@ -46,48 +46,53 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = BoundingBoxInterval.NAME)
-public class DefBoundingBox implements BoundingBoxInterval {
+@Plugin(type = Op.class, name = BoundingBoxPolygon.NAME)
+public class DefaultBoundingBoxOp implements BoundingBoxPolygon {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private Interval output;
+	private Polygon output;
 
 	@Parameter(type = ItemIO.INPUT)
 	private Polygon input;
 
 	@Override
 	public void run() {
-		long min_x = Long.MAX_VALUE;
-		long max_x = Long.MIN_VALUE;
-		long min_y = Long.MAX_VALUE;
-		long max_y = Long.MIN_VALUE;
+		double min_x = Double.POSITIVE_INFINITY;
+		double max_x = Double.NEGATIVE_INFINITY;
+		double min_y = Double.POSITIVE_INFINITY;
+		double max_y = Double.NEGATIVE_INFINITY;
 
-		for (RealPoint point : input.getPoints()) {
-			if (point.getDoublePosition(0) < min_x) {
-				min_x = (long) point.getDoublePosition(0);
+		for (RealPoint RealPoint : input.getPoints()) {
+			if (RealPoint.getDoublePosition(0) < min_x) {
+				min_x = RealPoint.getDoublePosition(0);
 			}
-			if (point.getDoublePosition(0) > max_x) {
-				max_x = (long) point.getDoublePosition(0);
+			if (RealPoint.getDoublePosition(0) > max_x) {
+				max_x = RealPoint.getDoublePosition(0);
 			}
-			if (point.getDoublePosition(1) < min_y) {
-				min_y = (long) point.getDoublePosition(1);
+			if (RealPoint.getDoublePosition(1) < min_y) {
+				min_y = RealPoint.getDoublePosition(1);
 			}
-			if (point.getDoublePosition(1) > max_y) {
-				max_y = (long) point.getDoublePosition(1);
+			if (RealPoint.getDoublePosition(1) > max_y) {
+				max_y = RealPoint.getDoublePosition(1);
 			}
 		}
 
-		output = new FinalInterval(new long[] { min_x, min_y }, new long[] {
-				max_x, max_y });
+		List<RealPoint> bounds = new ArrayList<RealPoint>();
+		bounds.add(new RealPoint(min_x, min_y));
+		bounds.add(new RealPoint(min_x, max_y));
+		bounds.add(new RealPoint(max_x, max_y));
+		bounds.add(new RealPoint(max_x, min_y));
+		output = new Polygon(bounds);
 	}
 
 	@Override
-	public Interval getOutput() {
+	public Polygon getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(Interval output) {
+	public void setOutput(Polygon output) {
 		this.output = output;
 	}
+
 }

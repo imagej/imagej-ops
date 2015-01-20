@@ -18,7 +18,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefArea extends AbstractOutputFunction<Polygon, RealType<?>>
+public class DefaultAreaFeature extends AbstractOutputFunction<Polygon, RealType<?>>
 		implements AreaFeature {
 
 	@Override

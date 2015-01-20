@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 * @author Daniel Seebacher, University of Konstanz.
 */
 @Plugin(type = Op.class, name = ConvexHullPolygon.NAME)
-public class DefConvexHull implements ConvexHullPolygon {
+public class DefaultConvexHullOp implements ConvexHullPolygon {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Polygon output;

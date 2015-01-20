@@ -17,7 +17,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = FeretsDiameterFeature.NAME)
-public class DefFeretDiameter implements FeretsDiameterFeature {
+public class DefaultFeretDiameterFeature implements FeretsDiameterFeature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private PolygonFeretProvider feretResult;
