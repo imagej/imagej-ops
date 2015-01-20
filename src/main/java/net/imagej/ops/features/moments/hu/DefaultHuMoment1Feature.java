@@ -17,7 +17,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = HuMoment1Feature.NAME)
-public class DefHuMoment1 implements HuMoment1Feature {
+public class DefaultHuMoment1Feature implements HuMoment1Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private NormalizedCentralMoment02Feature n02;

@@ -2,7 +2,7 @@ package net.imagej.ops.features.moments.hu;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment6Feature;
+import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment7Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment02Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment03Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment11Feature;
@@ -16,13 +16,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link HuMoment6Feature}. Use
+ * Generic implementation of {@link HuMoment7Feature}. Use
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = HuMoment6Feature.NAME)
-public class DefHuMoment6 implements HuMoment6Feature {
+@Plugin(type = Op.class, name = HuMoment7Feature.NAME)
+public class DefaultHuMoment7Feature implements HuMoment7Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private NormalizedCentralMoment02Feature n02;
@@ -55,11 +55,14 @@ public class DefHuMoment6 implements HuMoment6Feature {
 
 	@Override
 	public void run() {
-		out = (n20.getFeatureValue() - n02.getFeatureValue())
-				* (Math.pow(n30.getFeatureValue() + n12.getFeatureValue(), 2) - Math
-						.pow(n21.getFeatureValue() + n03.getFeatureValue(), 2))
-				+ 4 * n11.getFeatureValue()
+		out = (3 * n21.getFeatureValue() - n03.getFeatureValue())
 				* (n30.getFeatureValue() + n12.getFeatureValue())
-				* (n21.getFeatureValue() + n03.getFeatureValue());
+				* (Math.pow(n30.getFeatureValue() + n12.getFeatureValue(), 2) - 3 * Math
+						.pow(n21.getFeatureValue() + n03.getFeatureValue(), 2))
+				- (n30.getFeatureValue() - 3 * n12.getFeatureValue())
+				* (n21.getFeatureValue() + n03.getFeatureValue())
+				* (3 * Math.pow(n30.getFeatureValue() + n12.getFeatureValue(),
+						2) - Math.pow(
+						n21.getFeatureValue() + n03.getFeatureValue(), 2));
 	}
 }

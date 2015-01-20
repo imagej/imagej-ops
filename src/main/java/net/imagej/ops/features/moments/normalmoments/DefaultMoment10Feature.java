@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Moment10Feature.NAME)
-public class DefMoment10 implements Moment10Feature {
+public class DefaultMoment10Feature implements Moment10Feature {
 
 	
 	@Parameter(type = ItemIO.INPUT)

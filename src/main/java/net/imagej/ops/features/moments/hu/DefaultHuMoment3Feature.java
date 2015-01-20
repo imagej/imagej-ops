@@ -2,7 +2,7 @@ package net.imagej.ops.features.moments.hu;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment4Feature;
+import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment3Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment03Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment12Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment21Feature;
@@ -13,13 +13,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link HuMoment4Feature}. Use
+ * Generic implementation of {@link HuMoment3Feature}. Use
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = HuMoment4Feature.NAME)
-public class DefHuMoment4 implements HuMoment4Feature {
+@Plugin(type = Op.class, name = HuMoment3Feature.NAME)
+public class DefaultHuMoment3Feature implements HuMoment3Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private NormalizedCentralMoment30Feature n30;
@@ -43,6 +43,7 @@ public class DefHuMoment4 implements HuMoment4Feature {
 
 	@Override
 	public void run() {
-		out = Math.pow(n30.getFeatureValue() + n12.getFeatureValue(), 2) + Math.pow(n21.getFeatureValue() + n03.getFeatureValue(), 2);
+		out = Math.pow(n30.getFeatureValue() - 3 * n12.getFeatureValue(), 2)
+				+ Math.pow(3 * n21.getFeatureValue() - n03.getFeatureValue(), 2);
 	}
 }

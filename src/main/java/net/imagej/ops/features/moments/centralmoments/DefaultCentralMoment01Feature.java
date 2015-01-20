@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = CentralMoment01Feature.NAME)
-public class DefCentralMoment01 implements CentralMoment01Feature {
+public class DefaultCentralMoment01Feature implements CentralMoment01Feature {
 
 	@Parameter(type = ItemIO.INPUT)
 	private CentralMomentsHelper centralMomentsHelper;
