@@ -34,14 +34,14 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * Creates a default image. If outType is not passed it is set to a default of
- * FloatType. If fac is not passed in it is set to a default of
+ * DoubleType. If fac is not passed in it is set to a default of
  * PlanarImgFactory.
  * 
  * @author bnorthan
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Ops.CreateImg.NAME)
 public class DefaultCreateImg<V extends Type<V>> extends
-	AbstractCreateImg<V, FloatType, PlanarImgFactory<FloatType>> implements
+	AbstractCreateImg<V, DoubleType, PlanarImgFactory<DoubleType>> implements
 	Ops.CreateImg
 {
 
@@ -58,8 +58,8 @@ public class DefaultCreateImg<V extends Type<V>> extends
 
 	public void run() {
 
-		createOutputImg(dims, fac, outType, new PlanarImgFactory<FloatType>(),
-			new FloatType());
+		createOutputImg(dims, fac, outType, new PlanarImgFactory<DoubleType>(),
+			new DoubleType());
 
 	}
 }
