@@ -1,20 +1,20 @@
 [HaralickFeatures.java]
 ops = ```
 [
-  {name: haralickasm, iface: HaralickASM},
-  {name: haralickclusterpromenence, iface: HaralickClusterPromenence},
-  {name: haralickclustershade, iface: HaralickClusterShade},
-  {name: haralickconstrast, iface: HaralickContrast},
-  {name: haralickcorrelation, iface: HaralickCorrelation},
-  {name: haralickdifferenceentropy, iface: HaralickDifferenceEntropy},
-  {name: haralickdifferencevariance, iface: HaralickDifferenceVariance},
-  {name: haralickentropy, iface: HaralickEntropy},
-  {name: haralickvariance, iface: HaralickVariance},
-  {name: haralickicm1, iface: HaralickICM1},
-  {name: haralickicm2, iface: HaralickICM2},
-  {name: haralickifdm, iface: HaralickIFDM},
-  {name: haralicksumaverage, iface: HaralickSumAverage},
-  {name: haralicksumentropy, iface: HaralickSumEntropy},
-  {name: haralkicksumvariance, iface: HaralickSumVariance}
+  {name: haralickasm, iface: ASM},
+  {name: haralickclusterpromenence, iface: ClusterPromenence},
+  {name: haralickclustershade, iface: ClusterShade},
+  {name: haralickconstrast, iface: Contrast},
+  {name: haralickcorrelation, iface: Correlation},
+  {name: haralickdifferenceentropy, iface: DifferenceEntropy},
+  {name: haralickdifferencevariance, iface: DifferenceVariance},
+  {name: haralickentropy, iface: Entropy},
+  {name: haralickvariance, iface: Variance},
+  {name: haralickicm1, iface: ICM1},
+  {name: haralickicm2, iface: ICM2},
+  {name: haralickifdm, iface: IFDM},
+  {name: haralicksumaverage, iface: SumAverage},
+  {name: haralicksumentropy, iface: SumEntropy},
+  {name: haralkicksumvariance, iface: SumVariance}
 ]
 ```

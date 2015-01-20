@@ -36,21 +36,21 @@ import net.imagej.ops.features.Feature;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickASMFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickClusterPromenenceFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickClusterShadeFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickContrastFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickCorrelationFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickDifferenceEntropyFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickDifferenceVarianceFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickEntropyFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickICM1Feature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickICM2Feature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickIFDMFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumAverageFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumEntropyFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickSumVarianceFeature;
-import net.imagej.ops.features.haralick.HaralickFeatures.HaralickVarianceFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ASMFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ClusterPromenenceFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ClusterShadeFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ContrastFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.CorrelationFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.DifferenceEntropyFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.DifferenceVarianceFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.EntropyFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ICM1Feature;
+import net.imagej.ops.features.haralick.HaralickFeatures.ICM2Feature;
+import net.imagej.ops.features.haralick.HaralickFeatures.IFDMFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.SumAverageFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.SumEntropyFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.SumVarianceFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures.VarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.IterableInterval;
 
@@ -104,21 +104,21 @@ public class HaralickFeatureSet<T> extends
 	@Override
 	protected void init() {
 
-		addVisible(HaralickASMFeature.class);
-		addVisible(HaralickClusterPromenenceFeature.class);
-		addVisible(HaralickClusterShadeFeature.class);
-		addVisible(HaralickContrastFeature.class);
-		addVisible(HaralickCorrelationFeature.class);
-		addVisible(HaralickDifferenceVarianceFeature.class);
-		addVisible(HaralickDifferenceEntropyFeature.class);
-		addVisible(HaralickEntropyFeature.class);
-		addVisible(HaralickICM1Feature.class);
-		addVisible(HaralickICM2Feature.class);
-		addVisible(HaralickIFDMFeature.class);
-		addVisible(HaralickSumAverageFeature.class);
-		addVisible(HaralickSumEntropyFeature.class);
-		addVisible(HaralickSumVarianceFeature.class);
-		addVisible(HaralickVarianceFeature.class);
+		addVisible(ASMFeature.class);
+		addVisible(ClusterPromenenceFeature.class);
+		addVisible(ClusterShadeFeature.class);
+		addVisible(ContrastFeature.class);
+		addVisible(CorrelationFeature.class);
+		addVisible(DifferenceVarianceFeature.class);
+		addVisible(DifferenceEntropyFeature.class);
+		addVisible(EntropyFeature.class);
+		addVisible(ICM1Feature.class);
+		addVisible(ICM2Feature.class);
+		addVisible(IFDMFeature.class);
+		addVisible(SumAverageFeature.class);
+		addVisible(SumEntropyFeature.class);
+		addVisible(SumVarianceFeature.class);
+		addVisible(VarianceFeature.class);
 
 		// add cooc parameters
 		addInvisible(CooccurrenceMatrix.class, getInput().getClass(),

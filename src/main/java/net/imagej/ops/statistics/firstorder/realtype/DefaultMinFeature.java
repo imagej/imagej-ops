@@ -1,6 +1,6 @@
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * ImageJ OPS: a framework for reusable algorithms.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
@@ -28,61 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.features.haralick;
+package net.imagej.ops.statistics.firstorder.realtype;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.HashSet;
-
-import net.imagej.ops.features.FeatureResult;
-import net.imagej.ops.OutputFunction;
-import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.features.Feature;
-import net.imagej.ops.features.OpInfo;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
-import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
-import net.imglib2.img.Img;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Min;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Testing implementations of {@link HaralickFeatures}
+ * Calculate {@link Min} of {@link Iterable} of {@link RealType}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Christian Dietz
  */
-public class HaralickFeatureTest extends AbstractFeatureTest {
+@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMinFeature extends
+		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
+		implements MinIRT, MinFeature {
 
-	private HashSet<OpInfo> helpers;
-
-	{
-		this.helpers = new HashSet<OpInfo>();
-		helpers.add(new OpInfo(CooccurrenceMatrix.class, Img.class, 8, 1,
-				"HORIZONTAL", MinFeature.class, MaxFeature.class));
+	@Override
+	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
+		return new DoubleType();
 	}
 
+	@Override
+	protected RealType<?> safeCompute(
+			final Iterable<? extends RealType<?>> input,
+			final RealType<?> output) {
 
-#foreach ($op in $ops)
+		double min = Double.POSITIVE_INFINITY;
 
-	/**
-	 * Testing {@link Feature} implementation of {@link ${op.iface}}
-	 */
-	@Test
-	public void Haralick${op.iface}FeatureTest() {
-			
-		OutputFunction<Img, FeatureResult> compiled = fs
-				.compile(HaralickFeatures.${op.iface}Feature.class, helpers, Img.class);
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp < min) {
+				min = tmp;
+			}
+		}
 
-		assertEquals(${op.empty}, compiled.compute(empty).getValue(),
-				SMALL_DELTA);
-
-		assertEquals(${op.random}, compiled.compute(random).getValue(),
-				SMALL_DELTA);
-
-		assertEquals(${op.constant}, compiled.compute(constant).getValue(),
-				SMALL_DELTA);
-		
+		output.setReal(min);
+		return output;
 	}
-#end
 
+	@Override
+	public double getFeatureValue() {
+		return getOutput().getRealDouble();
+	}
 }
