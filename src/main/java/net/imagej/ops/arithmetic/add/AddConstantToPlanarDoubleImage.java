@@ -30,6 +30,7 @@
 
 package net.imagej.ops.arithmetic.add;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -41,7 +42,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Ops.Add.NAME)
-public class AddConstantToPlanarDoubleImage implements Ops.Add {
+public class AddConstantToPlanarDoubleImage implements Ops.Add, Contingent {
 
 	@Parameter(type = ItemIO.BOTH)
 	private PlanarImg<DoubleType, DoubleArray> image;
@@ -61,6 +62,14 @@ public class AddConstantToPlanarDoubleImage implements Ops.Add {
 				plane[i] += value;
 			}
 		}
+	}
+
+	@Override
+	public boolean conforms() {
+		// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
+		// The warning is expected, because the image parameter is assigned via
+		// reflection and hence might not match the declared generic types.
+		return image.firstElement() instanceof DoubleType;
 	}
 
 }
