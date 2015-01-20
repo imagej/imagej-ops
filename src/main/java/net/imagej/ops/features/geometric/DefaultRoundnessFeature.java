@@ -2,25 +2,25 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.FeatureService;
-import net.imagej.ops.features.geometric.GeometricFeatures.ElongationFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
-import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
+import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link ElongationFeature}. Use
+ * Generic implementation of {@link RoundnessFeature}. Use
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = ElongationFeature.NAME)
-public class DefElongation implements ElongationFeature {
+@Plugin(type = Op.class, name = RoundnessFeature.NAME)
+public class DefaultRoundnessFeature implements RoundnessFeature {
 
 	@Parameter(type = ItemIO.INPUT)
-	private MinorAxisFeature minorAxis;
+	private AreaFeature area;
 
 	@Parameter(type = ItemIO.INPUT)
 	private MajorAxisFeature majorAxis;
@@ -35,6 +35,7 @@ public class DefElongation implements ElongationFeature {
 
 	@Override
 	public void run() {
-		out = 1 - (minorAxis.getFeatureValue() / majorAxis.getFeatureValue());
+		out = 4 * (area.getFeatureValue() / (Math.PI * Math.pow(
+				majorAxis.getFeatureValue(), 2)));
 	}
 }
