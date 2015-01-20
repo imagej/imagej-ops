@@ -216,6 +216,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object deconvolve(Object... args) {
+		return run(Ops.Deconvolve.NAME, args);
+	}
+
+	@Override
 	public Object divide(Object... args) {
 		return run(Ops.Divide.NAME, args);
 	}

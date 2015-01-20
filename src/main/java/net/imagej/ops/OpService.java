@@ -189,6 +189,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "crop" operation on the given arguments. */
 	Object crop(Object... args);
 
+	/** Executes the "deconvolve" operation on the given arguments. */
+	Object deconvolve(Object... args);
+
 	/** Executes the "divide" operation on the given arguments. */
 	Object divide(Object... args);
 
