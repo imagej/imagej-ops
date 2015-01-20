@@ -8,6 +8,7 @@ ops = ```
   {name: convolve,    iface: Convolve},
   {name: createimg,   iface: CreateImg},
   {name: crop,        iface: Crop,           aliases: "slice"},
+  {name: deconvolve,  iface: Deconvolve},
   {name: divide,      iface: Divide},
   {name: equation,    iface: Equation},
   {name: fft,         iface: FFT},

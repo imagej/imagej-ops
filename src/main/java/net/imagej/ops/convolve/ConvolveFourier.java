@@ -40,6 +40,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.util.Intervals;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * Convolves an image by transforming the kernel and the image into fourier
  * space, multiplying them and transforming the result back.
  */
-@Plugin(type = Op.class, name = Ops.Convolve.NAME)
+@Plugin(type = Op.class, name = Ops.Convolve.NAME, priority=Priority.LOW_PRIORITY)
 public class ConvolveFourier<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
