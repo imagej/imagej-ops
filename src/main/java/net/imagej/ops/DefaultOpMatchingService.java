@@ -170,31 +170,30 @@ public class DefaultOpMatchingService extends
 	public Module match(final ModuleInfo info, final Object... args) {
 		if (!info.isValid()) return null; // skip invalid modules
 
-		// check the number of args, padding optional args with null as needed
-		int inputCount = 0, requiredCount = 0;
+		// classify the inputs
+		int riCount = 0; // required inputs of type ItemIO.INPUT
+		int rbCount = 0; // required inputs of type ItemIO.BOTH
+		int oiCount = 0; // optional inputs of type ItemIO.INPUT
+		int obCount = 0; // optional inputs of type ItemIO.BOTH
 		for (final ModuleItem<?> item : info.inputs()) {
-			inputCount++;
-			if (item.isRequired()) requiredCount++;
+			final boolean required = item.isRequired();
+			final boolean both = item.isOutput();
+			if (required && !both) riCount++;
+			if (required && both) rbCount++;
+			if (!required && !both) oiCount++;
+			if (!required && both) obCount++;
 		}
+
+		// check that the given argument count is in range
+		final int requiredCount = riCount + rbCount;
+		final int optionalCount = oiCount + obCount;
+		final int inputCount = requiredCount + optionalCount;
 		if (args.length > inputCount) return null; // too many arguments
 		if (args.length < requiredCount) return null; // too few arguments
 
+		// pad unspecified optional arguments with null, as needed
 		if (args.length != inputCount) {
-			// pad optional parameters with null (from right to left)
-			final int argsToPad = inputCount - args.length;
-			final int optionalCount = inputCount - requiredCount;
-			final int optionalsToFill = optionalCount - argsToPad;
-			final Object[] paddedArgs = new Object[inputCount];
-			int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-			for (final ModuleItem<?> item : info.inputs()) {
-				if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
-					// skip this optional parameter (pad with null)
-					paddedIndex++;
-					continue;
-				}
-				paddedArgs[paddedIndex++] = args[argIndex++];
-			}
-			return match(info, paddedArgs);
+			return match(info, padArgs(info, inputCount, oiCount, obCount, args));
 		}
 
 		// check that each parameter is compatible with its argument
@@ -330,6 +329,52 @@ public class DefaultOpMatchingService extends
 	}
 
 	// -- Helper methods --
+
+	/**
+	 * Pads unspecified optional parameters with null.
+	 * <ul>
+	 * <li>Optional parameters are padded from right to left.</li>
+	 * <li>BOTH parameters are padded first, followed by INPUT parameters.</li>
+	 * </ul>
+	 */
+	private Object[] padArgs(final ModuleInfo info, final int inputCount,
+		final int oiCount, final int obCount, final Object... args)
+	{
+		final Object[] paddedArgs = new Object[inputCount];
+		final int argsToPad = inputCount - args.length;
+
+		// compute number of optional parameters to fill
+		final int obToFill = Math.min(obCount, argsToPad);
+		final int oiToFill = Math.max(argsToPad - obToFill, 0);
+		final int obMinIndex = obCount - obToFill;
+		final int oiMinIndex = oiCount - oiToFill;
+
+		// fill in the padded argument list
+		int argIndex = 0, paddedIndex = 0;
+		int oiIndex = 0, obIndex = 0;
+		for (final ModuleItem<?> item : info.inputs()) {
+			// fill the parameter as appropriate
+			if (fillParam(item, oiIndex, oiMinIndex, obIndex, obMinIndex)) {
+				paddedArgs[paddedIndex] = args[argIndex++];
+			}
+
+			// increment indices
+			paddedIndex++;
+			if (!item.isRequired()) {
+				if (item.isOutput()) obIndex++;
+				else oiIndex++;
+			}
+		}
+		return paddedArgs;
+	}
+
+	private boolean fillParam(final ModuleItem<?> item, final int oiIndex,
+		final int oiToFill, final int obIndex, final int obToFill)
+	{
+		if (item.isRequired()) return true; // must fill required parameter
+		if (item.isOutput()) return obIndex < obToFill;
+		return oiIndex < oiToFill;
+	}
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
