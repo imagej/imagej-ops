@@ -105,99 +105,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		}
 	}
 
-	/** Tests matching with a mix of BOTH and IN optional parameters. */
-	@Test
-	public void testMixedOptionalParams() {
-		Module m;
-
-		try {
-			m = optionalMixedParams("abcdefghijklm");
-			fail("Expected IllegalArgumentException for 13 args");
-		}
-		catch (final IllegalArgumentException exc) {
-			// NB: Expected.
-		}
-
-		// no defaults
-		m = optionalMixedParams("abcdefghijkl");
-		assertMixedValues(m,
-			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l");
-
-		// defaults: bothOpt3
-		m = optionalMixedParams("abcdefghijk");
-		assertMixedValues(m,
-			"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "bo3");
-
-		// defaults: bothOpt3, bothOpt2
-		m = optionalMixedParams("abcdefghij");
-		assertMixedValues(m,
-			"a", "b", "c", "d", "e", "f", "g", "bo2", "h", "i", "j", "bo3");
-
-		// defaults: bothOpt3, bothOpt2, bothOpt1
-		m = optionalMixedParams("abcdefghi");
-		assertMixedValues(m,
-			"a", "b", "c", "bo1", "d", "e", "f", "bo2", "g", "h", "i", "bo3");
-
-		// defaults: bothOpt3, bothOpt2, bothOpt1, inOpt3
-		m = optionalMixedParams("abcdefgh");
-		assertMixedValues(m,
-			"a", "b", "c", "bo1", "d", "e", "f", "bo2", "g", "io3", "h", "bo3");
-
-		// defaults: bothOpt3, bothOpt2, bothOpt1, inOpt3, inOpt2
-		m = optionalMixedParams("abcdefg");
-		assertMixedValues(m,
-			"a", "b", "c", "bo1", "d", "io2", "e", "bo2", "f", "io3", "g", "bo3");
-
-		// defaults: bothOpt3, bothOpt2, bothOpt1, inOpt3, inOpt2, inOpt1
-		m = optionalMixedParams("abcdef");
-		assertMixedValues(m,
-			"a", "io1", "b", "bo1", "c", "io2", "d", "bo2", "e", "io3", "f", "bo3");
-
-		try {
-			m = optionalMixedParams("abcde");
-			fail("Expected IllegalArgumentException for 5 args");
-		}
-		catch (final IllegalArgumentException exc) {
-			// NB: Expected.
-		}
-	}
-
 	// -- Helper methods --
-
-	private Module optionalMixedParams(final String s) {
-		final Object[] params = s.split("(?!^)");
-		return matcher.findModule(null, OptionalMixedParams.class, params);
-	}
-
-	private void assertMixedValues(final Module m,
-		final String i1, final String io1, final String b1, final String bo1,
-		final String i2, final String io2, final String b2, final String bo2,
-		final String i3, final String io3, final String b3, final String bo3)
-	{
-		assertEquals(i1, m.getInput("in1"));
-		assertEquals(io1, m.getInput("inOpt1"));
-		assertEquals(b1, m.getInput("both1"));
-		assertEquals(b1, m.getOutput("both1"));
-		assertEquals(bo1, m.getInput("bothOpt1"));
-		assertEquals(bo1, m.getOutput("bothOpt1"));
-		assertEquals("o1", m.getOutput("out1"));
-
-		assertEquals(i2, m.getInput("in2"));
-		assertEquals(io2, m.getInput("inOpt2"));
-		assertEquals(b2, m.getInput("both2"));
-		assertEquals(b2, m.getOutput("both2"));
-		assertEquals(bo2, m.getInput("bothOpt2"));
-		assertEquals(bo2, m.getOutput("bothOpt2"));
-		assertEquals("o2", m.getOutput("out2"));
-
-		assertEquals(i3, m.getInput("in3"));
-		assertEquals(io3, m.getInput("inOpt3"));
-		assertEquals(b3, m.getInput("both3"));
-		assertEquals(b3, m.getOutput("both3"));
-		assertEquals(bo3, m.getInput("bothOpt3"));
-		assertEquals(bo3, m.getOutput("bothOpt3"));
-		assertEquals("o3", m.getOutput("out3"));
-	}
 
 	private void assertValues(final Module m, final int a, final int b,
 		final int c, final int d, final int e, final int f, final int result)
@@ -246,47 +154,6 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		private int f = -6;
 		@Parameter(type = ItemIO.OUTPUT)
 		private int result = -7;
-
-		@Override
-		public void run() {
-			// NB: No action needed.
-		}
-
-	}
-
-	@Plugin(type = Op.class)
-	public static class OptionalMixedParams implements Op {
-
-		@Parameter
-		private String in1 = "i1";
-		@Parameter(required = false)
-		private String inOpt1 = "io1";
-		@Parameter(type = ItemIO.BOTH)
-		private String both1 = "b1";
-		@Parameter(type = ItemIO.BOTH, required = false)
-		private String bothOpt1 = "bo1";
-		@Parameter(type = ItemIO.OUTPUT)
-		private String out1 = "o1";
-		@Parameter
-		private String in2 = "i2";
-		@Parameter(required = false)
-		private String inOpt2 = "io2";
-		@Parameter(type = ItemIO.BOTH)
-		private String both2 = "b2";
-		@Parameter(type = ItemIO.BOTH, required = false)
-		private String bothOpt2 = "bo2";
-		@Parameter(type = ItemIO.OUTPUT)
-		private String out2 = "o2";
-		@Parameter
-		private String in3 = "i3";
-		@Parameter(required = false)
-		private String inOpt3 = "io3";
-		@Parameter(type = ItemIO.BOTH)
-		private String both3 = "b3";
-		@Parameter(type = ItemIO.BOTH, required = false)
-		private String bothOpt3 = "bo3";
-		@Parameter(type = ItemIO.OUTPUT)
-		private String out3 = "o3";
 
 		@Override
 		public void run() {
