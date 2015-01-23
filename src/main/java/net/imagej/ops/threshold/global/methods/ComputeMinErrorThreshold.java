@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.global.methods;
 
 import net.imagej.ops.ThresholdOps;
