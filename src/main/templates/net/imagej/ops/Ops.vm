@@ -40,9 +40,9 @@ import net.imagej.ops.Op;
  * would be marked by implementing the {@code Ops.Add} interface, and
  * annotating them with:
  * </p>
-	 * <pre>
-	 * @Plugin(type = Op.class, name = Ops.Add.NAME)
-	 * </pre>
+ * <pre>
+ * @Plugin(type = Op.class, name = Ops.Add.NAME)
+ * </pre>
  *
  * @author Curtis Rueden
  */
