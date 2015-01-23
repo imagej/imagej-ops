@@ -32,6 +32,7 @@ package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
@@ -45,6 +46,7 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 import org.junit.Before;
+import org.scijava.util.ListUtils;
 
 /**
  * Tests for threshold ops.
@@ -86,8 +88,9 @@ public class AbstractThresholdTest extends AbstractOpTest {
 	protected void assertThreshold(final Class<? extends Op> opClass,
 		final int expected)
 	{
-		final UnsignedShortType threshold = (UnsignedShortType)
-			ops.run(opClass, histogram());
+		Object result = ops.run(opClass, histogram());
+		if (result instanceof List) result = ListUtils.first((List<?>) result);
+		final UnsignedShortType threshold = (UnsignedShortType) result;
 		assertEquals(expected, threshold.get());
 	}
 

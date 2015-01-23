@@ -37,6 +37,8 @@ import net.imagej.ops.threshold.global.ThresholdUtils;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 // This plugin code ported from the original MatLab code of the max likelihood
@@ -55,6 +57,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 
 	private static final int MAX_ATTEMPTS = 10000;
 
+	@Parameter(type = ItemIO.OUTPUT)
 	private String errMessage;
 
 	@Override
