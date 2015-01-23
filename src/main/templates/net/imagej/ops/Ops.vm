@@ -41,7 +41,7 @@ import net.imagej.ops.Op;
 #end
  * <p>
  * These interfaces are intended to mark all ops using a particular name,
- * regardless of the area of functionality. For example, all ops called
+ * regardless of their exact functionality. For example, all ops called
  * "${ops.get(0).name}" would be marked by implementing the
  * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
  * </p>
