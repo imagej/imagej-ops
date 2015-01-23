@@ -1,7 +1,5 @@
 package net.imagej.ops.features;
 
-import ij.gui.EllipseRoi;
-
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
@@ -12,17 +10,11 @@ import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.img.basictypeaccess.array.BitArray;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.ops.operation.subset.views.ImgView;
 import net.imglib2.roi.EllipseRegionOfInterest;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.scijava.Context;

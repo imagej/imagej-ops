@@ -292,32 +292,32 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object max(Object... args) {
-		return run(Ops.Max.NAME, args);
+		return run("max", args);
 	}
 
 	@Override
 	public Object mean(Object... args) {
-		return run(Ops.Mean.NAME, args);
+		return run("mean", args);
 	}
 
 	@Override
 	public Object median(Object... args) {
-		return run(Ops.Median.NAME, args);
+		return run("median", args);
 	}
 
 	@Override
 	public Object min(Object... args) {
-		return run(Ops.Min.NAME, args);
+		return run("min", args);
 	}
 
 	@Override
 	public Object minmax(Object... args) {
-		return run(Ops.MinMax.NAME, args);
+		return run("minmax", args);
 	}
 
 	@Override
 	public Object multiply(Object... args) {
-		return run(Ops.Multiply.NAME, args);
+		return run("multiply", args);
 	}
 
 	@Override
@@ -342,7 +342,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object size(Object... args) {
-		return run(Ops.Size.NAME, args);
+		return run("size", args);
 	}
 
 	@Override
@@ -352,17 +352,17 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object stddev(Object... args) {
-		return run(Ops.StdDeviation.NAME, args);
+		return run("stddev", args);
 	}
 
 	@Override
 	public Object subtract(Object... args) {
-		return run(Ops.Subtract.NAME, args);
+		return run("subtrat", args);
 	}
 
 	@Override
 	public Object sum(Object... args) {
-		return run(Ops.Sum.NAME, args);
+		return run("sum", args);
 	}
 
 	@Override
@@ -372,7 +372,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object variance(Object... args) {
-		return run(Ops.Variance.NAME, args);
+		return run("variance", args);
 	}
 
 	// -- SingletonService methods --
