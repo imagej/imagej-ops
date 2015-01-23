@@ -58,7 +58,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 	private static final int MAX_ATTEMPTS = 10000;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private String errMessage;
+	private String errMsg;
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {
@@ -137,7 +137,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		int attempts = 0;
 		while (true) {
 			if (attempts++ > MAX_ATTEMPTS) {
-				errMessage = "Max likelihood method not converging after "
+				errMsg = "Max likelihood method not converging after "
 						+ MAX_ATTEMPTS + " attempts.";
 				return -1;
 			}
@@ -197,7 +197,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		// zero.
 		double sqterm = w1 * w1 - w0 * w2;
 		if (sqterm < 0) {
-			errMessage = "Max likelihood threshold would be imaginary";
+			errMsg = "Max likelihood threshold would be imaginary";
 			return -1;
 		}
 
