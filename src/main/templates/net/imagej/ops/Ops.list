@@ -1,4 +1,6 @@
 [Ops.java]
+className = Ops
+authors = [Curtis Rueden]
 ops = ```
 [
   {name: add,         iface: Add},
