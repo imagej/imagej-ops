@@ -118,3 +118,28 @@ ops = ```
   {name: zero,             iface: Zero}
 ]
 ```
+
+[ThresholdOps.java]
+className = ThresholdOps
+namespace = threshold
+authors = [Curtis Rueden]
+ops = ```
+[
+  {name: huang,         iface: Huang},
+  {name: intermodes,    iface: Intermodes},
+  {name: isodata,       iface: IsoData},
+  {name: li,            iface: Li},
+  {name: maxEntropy,    iface: MaxEntropy},
+  {name: maxlikelihood, iface: MaxLikelihood},
+  {name: mean,          iface: Mean},
+  {name: minerror,      iface: MinError},
+  {name: minimum,       iface: Minimum},
+  {name: moments,       iface: Moments},
+  {name: otsu,          iface: Otsu},
+  {name: percentile,    iface: Percentile},
+  {name: renyientropy,  iface: RenyiEntropy},
+  {name: shanbhag,      iface: Shanbhag},
+  {name: triangle,      iface: Triangle},
+  {name: yen,           iface: Yen}
+]
+```
