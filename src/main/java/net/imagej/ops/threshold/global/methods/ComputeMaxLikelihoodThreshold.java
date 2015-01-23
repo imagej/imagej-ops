@@ -27,8 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imagej.ops.threshold.global.ThresholdUtils;
@@ -47,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  */
-@Plugin(type = ComputeThreshold.class, name = MaxLikelihood.NAME)
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.MaxLikelihood.NAME)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
