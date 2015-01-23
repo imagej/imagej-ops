@@ -41,6 +41,7 @@ import javassist.CtClass;
 import javassist.CtNewMethod;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
@@ -75,7 +76,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'add' op */
 	@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
-	public static class AddOp extends ArithmeticOp {
+	public static class AddOp extends ArithmeticOp implements Ops.Add {
 
 		@Override
 		public void run() {
@@ -85,7 +86,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'subtract' op */
 	@Plugin(type = Op.class, name = "subtract", priority = Priority.HIGH_PRIORITY)
-	public static class SubtractOp extends ArithmeticOp {
+	public static class SubtractOp extends ArithmeticOp implements Ops.Subtract {
 
 		@Override
 		public void run() {
@@ -95,7 +96,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'multiply' op */
 	@Plugin(type = Op.class, name = "multiply", priority = Priority.HIGH_PRIORITY)
-	public static class MultiplyOp extends ArithmeticOp {
+	public static class MultiplyOp extends ArithmeticOp implements Ops.Multiply {
 
 		@Override
 		public void run() {
@@ -105,7 +106,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'divide' op */
 	@Plugin(type = Op.class, name = "divide", priority = Priority.HIGH_PRIORITY)
-	public static class DivideOp extends ArithmeticOp {
+	public static class DivideOp extends ArithmeticOp implements Ops.Divide {
 
 		@Override
 		public void run() {
