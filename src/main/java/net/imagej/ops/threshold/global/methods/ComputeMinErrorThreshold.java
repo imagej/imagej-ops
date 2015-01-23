@@ -75,7 +75,7 @@ public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		// presentation and the original Matlab code.
 
 		// Initial estimate for the threshold is found with the MEAN algorithm.
-		int threshold = (int) new ComputeMeanThreshold().computeBin(hist);
+		int threshold = (int) new ComputeMeanThreshold<T>().computeBin(hist);
 		int Tprev = -2;
 		double mu, nu, p, q, sigma2, tau2, w0, w1, w2, sqterm, temp;
 		// int counter=1;

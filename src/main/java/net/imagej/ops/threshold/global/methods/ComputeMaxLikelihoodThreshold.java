@@ -97,7 +97,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 
 		// % The initial estimate for the threshold is found with the MINIMUM
 		// % algorithm.
-		ComputeMinimumThreshold method = new ComputeMinimumThreshold();
+		final ComputeMinimumThreshold<T> method = new ComputeMinimumThreshold<T>();
 		int T = (int) method.computeBin(hist);
 
 		double eps = 0.0000001;
