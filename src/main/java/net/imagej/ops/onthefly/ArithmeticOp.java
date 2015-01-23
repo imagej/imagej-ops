@@ -75,42 +75,42 @@ import org.scijava.plugin.Plugin;
 public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'add' op */
-	@Plugin(type = Op.class, name = "add", priority = Priority.HIGH_PRIORITY)
+	@Plugin(type = Op.class, name = Ops.Add.NAME, priority = Priority.HIGH_PRIORITY)
 	public static class AddOp extends ArithmeticOp implements Ops.Add {
 
 		@Override
 		public void run() {
-			run("add", "+");
+			run(Ops.Add.NAME, "+");
 		}
 	}
 
 	/** The 'subtract' op */
-	@Plugin(type = Op.class, name = "subtract", priority = Priority.HIGH_PRIORITY)
+	@Plugin(type = Op.class, name = Ops.Subtract.NAME, priority = Priority.HIGH_PRIORITY)
 	public static class SubtractOp extends ArithmeticOp implements Ops.Subtract {
 
 		@Override
 		public void run() {
-			run("subtract", "-");
+			run(Ops.Subtract.NAME, "-");
 		}
 	}
 
 	/** The 'multiply' op */
-	@Plugin(type = Op.class, name = "multiply", priority = Priority.HIGH_PRIORITY)
+	@Plugin(type = Op.class, name = Ops.Multiply.NAME, priority = Priority.HIGH_PRIORITY)
 	public static class MultiplyOp extends ArithmeticOp implements Ops.Multiply {
 
 		@Override
 		public void run() {
-			run("multiply", "*");
+			run(Ops.Multiply.NAME, "*");
 		}
 	}
 
 	/** The 'divide' op */
-	@Plugin(type = Op.class, name = "divide", priority = Priority.HIGH_PRIORITY)
+	@Plugin(type = Op.class, name = Ops.Divide.NAME, priority = Priority.HIGH_PRIORITY)
 	public static class DivideOp extends ArithmeticOp implements Ops.Divide {
 
 		@Override
 		public void run() {
-			run("divide", "/");
+			run(Ops.Divide.NAME, "/");
 		}
 	}
 
@@ -229,7 +229,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	@Override
 	public boolean conforms() {
-		return findMyOp("add", "+", result, a, b) != null;
+		return findMyOp(Ops.Add.NAME, "+", result, a, b) != null;
 	}
 
 	private static boolean dimensionsMatch(final Img<?> aImg, final Img<?> bImg) {

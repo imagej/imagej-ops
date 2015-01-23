@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.imagej.ops.AbstractOptimizer;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Optimizer;
@@ -67,10 +68,10 @@ public class JavassistOptimizer extends AbstractOptimizer {
 	{
 		// TODO: need to match by class
 		arithmeticOps = new HashMap<String, String>();
-		arithmeticOps.put("add", "+");
-		arithmeticOps.put("subtract", "-");
-		arithmeticOps.put("multiply", "*");
-		arithmeticOps.put("divide", "/");
+		arithmeticOps.put(Ops.Add.NAME, "+");
+		arithmeticOps.put(Ops.Subtract.NAME, "-");
+		arithmeticOps.put(Ops.Multiply.NAME, "*");
+		arithmeticOps.put(Ops.Divide.NAME, "/");
 	}
 
 	@Override
