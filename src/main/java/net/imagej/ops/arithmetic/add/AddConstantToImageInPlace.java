@@ -30,8 +30,8 @@
 
 package net.imagej.ops.arithmetic.add;
 
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.type.numeric.NumericType;
 
@@ -39,9 +39,9 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Add.NAME)
+@Plugin(type = Op.class, name = MathOps.Add.NAME)
 public class AddConstantToImageInPlace<T extends NumericType<T>> implements
-	Ops.Add
+	MathOps.Add
 {
 
 	@Parameter(type = ItemIO.BOTH)

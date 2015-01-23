@@ -40,8 +40,8 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtNewMethod;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
@@ -75,42 +75,42 @@ import org.scijava.plugin.Plugin;
 public abstract class ArithmeticOp implements Op, Contingent {
 
 	/** The 'add' op */
-	@Plugin(type = Op.class, name = Ops.Add.NAME, priority = Priority.HIGH_PRIORITY)
-	public static class AddOp extends ArithmeticOp implements Ops.Add {
+	@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY)
+	public static class AddOp extends ArithmeticOp implements MathOps.Add {
 
 		@Override
 		public void run() {
-			run(Ops.Add.NAME, "+");
+			run(MathOps.Add.NAME, "+");
 		}
 	}
 
 	/** The 'subtract' op */
-	@Plugin(type = Op.class, name = Ops.Subtract.NAME, priority = Priority.HIGH_PRIORITY)
-	public static class SubtractOp extends ArithmeticOp implements Ops.Subtract {
+	@Plugin(type = Op.class, name = MathOps.Subtract.NAME, priority = Priority.HIGH_PRIORITY)
+	public static class SubtractOp extends ArithmeticOp implements MathOps.Subtract {
 
 		@Override
 		public void run() {
-			run(Ops.Subtract.NAME, "-");
+			run(MathOps.Subtract.NAME, "-");
 		}
 	}
 
 	/** The 'multiply' op */
-	@Plugin(type = Op.class, name = Ops.Multiply.NAME, priority = Priority.HIGH_PRIORITY)
-	public static class MultiplyOp extends ArithmeticOp implements Ops.Multiply {
+	@Plugin(type = Op.class, name = MathOps.Multiply.NAME, priority = Priority.HIGH_PRIORITY)
+	public static class MultiplyOp extends ArithmeticOp implements MathOps.Multiply {
 
 		@Override
 		public void run() {
-			run(Ops.Multiply.NAME, "*");
+			run(MathOps.Multiply.NAME, "*");
 		}
 	}
 
 	/** The 'divide' op */
-	@Plugin(type = Op.class, name = Ops.Divide.NAME, priority = Priority.HIGH_PRIORITY)
-	public static class DivideOp extends ArithmeticOp implements Ops.Divide {
+	@Plugin(type = Op.class, name = MathOps.Divide.NAME, priority = Priority.HIGH_PRIORITY)
+	public static class DivideOp extends ArithmeticOp implements MathOps.Divide {
 
 		@Override
 		public void run() {
-			run(Ops.Divide.NAME, "/");
+			run(MathOps.Divide.NAME, "/");
 		}
 	}
 
@@ -229,7 +229,7 @@ public abstract class ArithmeticOp implements Op, Contingent {
 
 	@Override
 	public boolean conforms() {
-		return findMyOp(Ops.Add.NAME, "+", result, a, b) != null;
+		return findMyOp(MathOps.Add.NAME, "+", result, a, b) != null;
 	}
 
 	private static boolean dimensionsMatch(final Img<?> aImg, final Img<?> bImg) {

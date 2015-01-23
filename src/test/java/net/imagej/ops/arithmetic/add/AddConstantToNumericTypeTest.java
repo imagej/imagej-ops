@@ -33,7 +33,7 @@ package net.imagej.ops.arithmetic.add;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -56,7 +56,7 @@ public class AddConstantToNumericTypeTest extends AbstractOpTest {
 	public void testAdd() {
 		final ByteType a = new ByteType((byte) 17);
 		final ByteType b = new ByteType((byte) 34);
-		final Op op = ops.op(Ops.Add.class, a, a, b);
+		final Op op = ops.op(MathOps.Add.class, a, a, b);
 		assertSame(AddConstantToNumericType.class, op.getClass());
 
 		op.run();

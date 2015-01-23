@@ -32,7 +32,7 @@ package net.imagej.ops.onthefly;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.onthefly.ArithmeticOp.AddOp;
 import net.imagej.ops.onthefly.ArithmeticOp.DivideOp;
@@ -168,7 +168,7 @@ public class OnTheFlyTest extends AbstractOpTest {
 		final Object result = generateByteTestImg(false, 256, 256);
 		final Object a = generateByteTestImg(false, 256, 256);
 		final Object b = generateByteTestImg(false, 256, 256);
-		final Op op = ops.op(Ops.Add.class, result, a, b);
+		final Op op = ops.op(MathOps.Add.class, result, a, b);
 		assertTrue("Not a subclass of " + ArithmeticOp.class + ": " + op.getClass(), op instanceof ArithmeticOp);
 		assertTrue("Not optimized: " + op.getClass(), op.getClass() != AddOp.class);
 	}
