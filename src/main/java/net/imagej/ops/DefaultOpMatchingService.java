@@ -82,7 +82,7 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public Module findModule(final String name, final Class<? extends Op> type,
+	public <OP extends Op> Module findModule(final String name, final Class<OP> type,
 		final Object... args)
 	{
 		final String label = type == null ? name : type.getName();
@@ -110,8 +110,8 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public List<ModuleInfo> findCandidates(final String name,
-		final Class<? extends Op> type)
+	public <OP extends Op> List<ModuleInfo> findCandidates(final String name,
+		final Class<OP> type)
 	{
 		final List<CommandInfo> ops = getOps();
 		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
@@ -305,15 +305,15 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public boolean isCandidate(final CommandInfo info,
-		final Class<? extends Op> type)
+	public <OP extends Op> boolean isCandidate(final CommandInfo info,
+		final Class<OP> type)
 	{
 		return isCandidate(info, null, type);
 	}
 
 	@Override
-	public boolean isCandidate(final CommandInfo info, final String name,
-		final Class<? extends Op> type)
+	public <OP extends Op> boolean isCandidate(final CommandInfo info,
+		final String name, final Class<OP> type)
 	{
 		if (!nameMatches(info, name)) return false;
 

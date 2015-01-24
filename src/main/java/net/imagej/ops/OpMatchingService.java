@@ -67,7 +67,7 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public Module findModule(String name, Class<? extends Op> type,
+	public <OP extends Op> Module findModule(String name, Class<OP> type,
 		Object... args);
 
 	/**
@@ -77,7 +77,7 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 * @param type Required type of the op, or null to match all types.
 	 * @return The list of candidates as {@link ModuleInfo} metadata.
 	 */
-	List<ModuleInfo> findCandidates(String name, Class<? extends Op> type);
+	<OP extends Op> List<ModuleInfo> findCandidates(String name, Class<OP> type);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
@@ -133,8 +133,9 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 
 	boolean isCandidate(CommandInfo info, String name);
 
-	boolean isCandidate(CommandInfo info, Class<? extends Op> type);
+	<OP extends Op> boolean isCandidate(CommandInfo info, Class<OP> type);
 
-	boolean isCandidate(CommandInfo info, String name, Class<? extends Op> type);
+	<OP extends Op> boolean isCandidate(CommandInfo info, String name,
+		Class<OP> type);
 
 }
