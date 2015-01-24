@@ -123,6 +123,14 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 */
 	String getOpString(ModuleInfo info);
 
+	/**
+	 * Analyzes the given list of candidates and module matches.
+	 * 
+	 * @return an explanation for why a single op could not be selected.
+	 */
+	String analyze(String label, List<ModuleInfo> candidates,
+		List<Module> matches, Object... args);
+
 	boolean isCandidate(CommandInfo info, String name);
 
 	boolean isCandidate(CommandInfo info, Class<? extends Op> type);

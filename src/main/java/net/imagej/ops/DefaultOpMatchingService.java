@@ -105,29 +105,8 @@ public class DefaultOpMatchingService extends
 			return optimize(matches.get(0));
 		}
 
-		final StringBuilder sb = new StringBuilder();
-
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + label + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
-			for (final Module module : matches) {
-				sb.append("\t" + getOpString(module.getInfo()) + "\n");
-			}
-		}
-
-		// fail, with information about the template and candidates
-		sb.append("Template:\n");
-		sb.append("\t" + getOpString(label, args) + "\n");
-		sb.append("Candidates:\n");
-		for (final ModuleInfo info : candidates) {
-			sb.append("\t" + getOpString(info) + "\n");
-		}
-		throw new IllegalArgumentException(sb.toString());
+		final String analysis = analyze(label, candidates, matches, args);
+		throw new IllegalArgumentException(analysis);
 	}
 
 	@Override
@@ -287,6 +266,36 @@ public class DefaultOpMatchingService extends
 		sb.append("(" + paramString(info.outputs()) + ")");
 		sb.append(" = " + info.getDelegateClassName());
 		sb.append("(" + paramString(info.inputs()) + ")");
+		return sb.toString();
+	}
+
+	@Override
+	public String analyze(final String label,
+		final List<ModuleInfo> candidates, final List<Module> matches,
+		final Object... args)
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		if (matches.isEmpty()) {
+			// no matches
+			sb.append("No matching '" + label + "' op\n");
+		}
+		else {
+			// multiple matches
+			final double priority = matches.get(0).getInfo().getPriority();
+			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
+			for (final Module module : matches) {
+				sb.append("\t" + getOpString(module.getInfo()) + "\n");
+			}
+		}
+
+		// fail, with information about the template and candidates
+		sb.append("Template:\n");
+		sb.append("\t" + getOpString(label, args) + "\n");
+		sb.append("Candidates:\n");
+		for (final ModuleInfo info : candidates) {
+			sb.append("\t" + getOpString(info) + "\n");
+		}
 		return sb.toString();
 	}
 
