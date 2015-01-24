@@ -194,34 +194,6 @@ public class DefaultOpMatchingService extends
 		return match(candidate, paddedArgs);
 	}
 
-	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
-		final Object[] args)
-	{
-		// check that each parameter is compatible with its argument
-		int i = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(candidate, arg, item)) return null;
-		}
-
-		// create module and assign the inputs
-		final Module module = createModule(candidate.getInfo(), args);
-		candidate.setModule(module);
-
-		// make sure the op itself is happy with these arguments
-		final Object op = module.getDelegateObject();
-		if (op instanceof Contingent) {
-			final Contingent c = (Contingent) op;
-			if (!c.conforms()) {
-				candidate.setStatus(StatusCode.DOES_NOT_CONFORM);
-				return null;
-			}
-		}
-
-		// found a match!
-		return module;
-	}
-
 	@Override
 	public Module assignInputs(final Module module, final Object... args) {
 		int i = 0;
@@ -352,6 +324,34 @@ public class DefaultOpMatchingService extends
 	}
 
 	// -- Helper methods --
+
+	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
+		final Object[] args)
+	{
+		// check that each parameter is compatible with its argument
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			final Object arg = args[i++];
+			if (!canAssign(candidate, arg, item)) return null;
+		}
+
+		// create module and assign the inputs
+		final Module module = createModule(candidate.getInfo(), args);
+		candidate.setModule(module);
+
+		// make sure the op itself is happy with these arguments
+		final Object op = module.getDelegateObject();
+		if (op instanceof Contingent) {
+			final Contingent c = (Contingent) op;
+			if (!c.conforms()) {
+				candidate.setStatus(StatusCode.DOES_NOT_CONFORM);
+				return null;
+			}
+		}
+
+		// found a match!
+		return module;
+	}
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
