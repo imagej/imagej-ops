@@ -99,4 +99,40 @@ public class OpCandidate<OP extends Op> {
 		return message;
 	}
 
+	public String getStatus() {
+		final StatusCode statusCode = getStatusCode();
+		if (statusCode == null) return null;
+
+		final StringBuilder sb = new StringBuilder();
+		switch (statusCode) {
+			case MATCH:
+				sb.append("MATCH");
+				break;
+			case INVALID_MODULE:
+				sb.append("Invalid module: " + info.getDelegateClassName());
+				break;
+			case TOO_MANY_ARGS:
+				sb.append("Too many arguments");
+				break;
+			case TOO_FEW_ARGS:
+				sb.append("Not enough arguments");
+				break;
+			case REQUIRED_ARG_IS_NULL:
+				sb.append("Missing required argument");
+				break;
+			case CANNOT_CONVERT:
+				sb.append("Inconvertible type");
+				break;
+			case DOES_NOT_CONFORM:
+				sb.append("Contingent constraints violated");
+				break;
+			default:
+				return getStatusMessage();
+		}
+		final String msg = getStatusMessage();
+		if (msg != null) sb.append(": " + msg);
+
+		return sb.toString();
+	}
+
 }
