@@ -147,7 +147,11 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
-		if (!candidate.getInfo().isValid()) return null; // skip invalid modules
+		if (!candidate.getInfo().isValid()) {
+			// skip invalid modules
+			candidate.setStatus(StatusCode.INVALID_MODULE);
+			return null;
+		}
 
 		// check the number of args, padding optional args with null as needed
 		int inputCount = 0, requiredCount = 0;
@@ -160,8 +164,18 @@ public class DefaultOpMatchingService extends
 			// correct number of arguments
 			return match(candidate, args);
 		}
-		if (args.length > inputCount) return null; // too many arguments
-		if (args.length < requiredCount) return null; // too few arguments
+		if (args.length > inputCount) {
+			// too many arguments
+			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
+				args.length + " > " + inputCount);
+			return null;
+		}
+		if (args.length < requiredCount) {
+			// too few arguments
+			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
+				args.length + " < " + requiredCount);
+			return null;
+		}
 
 		// pad optional parameters with null (from right to left)
 		final int argsToPad = inputCount - args.length;
@@ -187,7 +201,7 @@ public class DefaultOpMatchingService extends
 		int i = 0;
 		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
 			final Object arg = args[i++];
-			if (!canAssign(arg, item)) return null;
+			if (!canAssign(candidate, arg, item)) return null;
 		}
 
 		// create module and assign the inputs
@@ -198,7 +212,10 @@ public class DefaultOpMatchingService extends
 		final Object op = module.getDelegateObject();
 		if (op instanceof Contingent) {
 			final Contingent c = (Contingent) op;
-			if (!c.conforms()) return null;
+			if (!c.conforms()) {
+				candidate.setStatus(StatusCode.DOES_NOT_CONFORM);
+				return null;
+			}
 		}
 
 		// found a match!
@@ -361,10 +378,25 @@ public class DefaultOpMatchingService extends
 		return assignInputs(module, args);
 	}
 
-	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
-		if (arg == null) return !item.isRequired();
+	private boolean canAssign(final OpCandidate<?> candidate, final Object arg,
+		final ModuleItem<?> item)
+	{
+		if (arg == null) {
+			if (item.isRequired()) {
+				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL);
+				return false;
+			}
+			return true;
+		}
+
 		final Type type = item.getGenericType();
-		return canConvert(arg, type);
+		if (!canConvert(arg, type)) {
+			candidate.setStatus(StatusCode.CANNOT_CONVERT,
+				"cannot coerce " + arg.getClass().getName() + " to " + type);
+			return false;
+		}
+
+		return true;
 	}
 
 	private boolean canConvert(final Object o, final Type type) {
