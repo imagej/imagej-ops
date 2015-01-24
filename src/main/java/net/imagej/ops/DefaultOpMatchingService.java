@@ -293,6 +293,8 @@ public class DefaultOpMatchingService extends
 		for (final OpCandidate<OP> candidate : candidates) {
 			final ModuleInfo info = candidate.getInfo();
 			sb.append("\t" + getOpString(info) + "\n");
+			final String status = candidate.getStatus();
+			if (status != null) sb.append("\t\t" + status + "\n");
 		}
 		return sb.toString();
 	}
