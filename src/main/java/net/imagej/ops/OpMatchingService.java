@@ -40,7 +40,7 @@ import org.scijava.module.ModuleInfo;
 import org.scijava.plugin.SingletonService;
 
 /**
- * Interface for services that find {@link Op}s which match a template.
+ * Interface for services that find {@link Op}s which match an {@link OpRef}.
  * 
  * @author Curtis Rueden
  */
