@@ -62,11 +62,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = FeatureSet.class, label = "First Order Statistics")
 public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
 
-	// @Parameter
-	// private double[] percentiles = new double[] { 50 };
-
 	protected void init() {
-
 		addVisible(MaxFeature.class);
 		addVisible(MinFeature.class);
 		addVisible(MeanFeature.class);
@@ -85,18 +81,5 @@ public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
 		addVisible(SumOfInversesFeature.class);
 		addVisible(SumOfLogsFeature.class);
 		addVisible(SumOfSquaresFeature.class);
-
-		// add all percentiles
-		// for (final double p : percentiles) {
-		// addVisible(PercentileFeature.class, p);
-		// }
 	}
-
-	// public double[] getPercentiles() {
-	// return percentiles;
-	// }
-	//
-	// public void setPercentiles(double[] percentiles) {
-	// this.percentiles = percentiles;
-	// }
 }

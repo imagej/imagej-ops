@@ -54,6 +54,7 @@ import net.imagej.ops.features.haralick.HaralickFeatures.VarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.IterableInterval;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -64,46 +65,22 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <I>
  */
-@Plugin(type = FeatureSet.class, label = "Haralick Features")
+@Plugin(type = FeatureSet.class, label = "Texture Features (Haralick)")
 public class HaralickFeatureSet<T> extends
 		AbstractFeatureSet<IterableInterval<T>> implements Contingent {
 
-	@Parameter
-	private double nrGrayLevels = 8;
+	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "The dimensionality of the co-occurrence matrix.", min = "1", max = "2147483647", stepSize = "1")
+	private Double nrGrayLevels = 8d;
 
-	@Parameter
-	private double distance = 1;
+	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed.", min = "1", max = "2147483647", stepSize = "1")
+	private Double distance = 1d;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "The orientation of the co-occurrence matrix.", choices = {
+			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
-
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
-
-	public double getDistance() {
-		return distance;
-	}
-
-	public void setOrientation(String orientation) {
-		this.orientation = orientation;
-	}
-
-	public String getOrientation() {
-		return orientation;
-	}
-
-	public double getNrGrayLevels() {
-		return nrGrayLevels;
-	}
-
-	public void setNrGrayLevels(double nrGrayLevels) {
-		this.nrGrayLevels = nrGrayLevels;
-	}
 
 	@Override
 	protected void init() {
-
 		addVisible(ASMFeature.class);
 		addVisible(ClusterPromenenceFeature.class);
 		addVisible(ClusterShadeFeature.class);
