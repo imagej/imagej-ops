@@ -107,14 +107,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return matcher.findModule(name, null, args);
+		return matcher.findModule(new OpRef<Op>(name, args));
 	}
 
 	@Override
 	public <OP extends Op> Module module(final Class<OP> type,
 		final Object... args)
 	{
-		return matcher.findModule(null, type, args);
+		return matcher.findModule(new OpRef<OP>(type, args));
 	}
 
 	@Override

@@ -55,20 +55,13 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 * Finds and initializes the best module matching the given op name and/or
 	 * type + arguments.
 	 * 
-	 * @param name The name of the operation, or null to match all names.
-	 * @param type The required type of the operation, or null to match all types.
-	 *          If multiple {@link Op}s share this type (e.g., the type is an
-	 *          interface which multiple {@link Op}s implement), then the best
-	 *          {@link Op} implementation to use will be selected automatically
-	 *          from the type and arguments.
-	 * @param args The operation's input arguments.
+	 * @param ref The op reference describing the op to match.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public <OP extends Op> Module findModule(String name, Class<OP> type,
-		Object... args);
+	public <OP extends Op> Module findModule(OpRef<OP> ref);
 
 	/**
 	 * Builds a list of candidate ops which match the given name and class.

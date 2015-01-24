@@ -82,30 +82,27 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public <OP extends Op> Module findModule(final String name, final Class<OP> type,
-		final Object... args)
-	{
-		final String label = type == null ? name : type.getName();
-
+	public <OP extends Op> Module findModule(final OpRef<OP> ref) {
 		// find candidates with matching name & type
-		final List<ModuleInfo> candidates = findCandidates(name, type);
+		final List<ModuleInfo> candidates = findCandidates(ref.getName(), ref.getType());
 		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + label + "' ops");
+			throw new IllegalArgumentException("No candidate '" + ref.getLabel() + "' ops");
 		}
 
 		// narrow down candidates to the exact matches
-		final List<Module> matches = findMatches(candidates, args);
+		final List<Module> matches = findMatches(candidates, ref.getArgs());
 
 		if (matches.size() == 1) {
 			// a single match: return it
 			if (log.isDebug()) {
-				log.debug("Selected '" + label + "' op: " +
+				log.debug("Selected '" + ref.getLabel() + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
 			return optimize(matches.get(0));
 		}
 
-		final String analysis = analyze(label, candidates, matches, args);
+		final String analysis =
+			analyze(ref.getLabel(), candidates, matches, ref.getArgs());
 		throw new IllegalArgumentException(analysis);
 	}
 
