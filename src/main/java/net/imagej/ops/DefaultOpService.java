@@ -146,17 +146,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public String help(final String name) {
-		return help(matcher.findCandidates(name, null));
+		return help(matcher.findCandidates(new OpRef<Op>(name)));
 	}
 
 	@Override
 	public <OP extends Op> String help(final Class<OP> type) {
-		return help(matcher.findCandidates(null, type));
+		return help(matcher.findCandidates(new OpRef<OP>(type)));
 	}
 
 	@Override
 	public String help(final Op op) {
 		return help(Collections.singleton(info(op)));
+	}
+
+	// TODO: Convert help methods into a proper op.
+	private <OP extends Op> String help(List<OpCandidate<OP>> candidates) {
+		final ArrayList<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+			for (final OpCandidate<OP> candidate : candidates) {
+				infos.add(candidate.getInfo());
+			}
+		return help(infos);
 	}
 
 	private String help(final Collection<? extends ModuleInfo> infos) {

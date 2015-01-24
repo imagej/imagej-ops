@@ -34,6 +34,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.OpCandidate.StatusCode;
+
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.command.CommandInfo;
@@ -84,13 +86,13 @@ public class DefaultOpMatchingService extends
 	@Override
 	public <OP extends Op> Module findModule(final OpRef<OP> ref) {
 		// find candidates with matching name & type
-		final List<ModuleInfo> candidates = findCandidates(ref.getName(), ref.getType());
+		final List<OpCandidate<OP>> candidates = findCandidates(ref);
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + ref.getLabel() + "' ops");
 		}
 
 		// narrow down candidates to the exact matches
-		final List<Module> matches = findMatches(candidates, ref.getArgs());
+		final List<Module> matches = findMatches(candidates);
 
 		if (matches.size() == 1) {
 			// a single match: return it
@@ -101,32 +103,33 @@ public class DefaultOpMatchingService extends
 			return optimize(matches.get(0));
 		}
 
-		final String analysis =
-			analyze(ref.getLabel(), candidates, matches, ref.getArgs());
+		final String analysis = analyze(candidates, matches);
 		throw new IllegalArgumentException(analysis);
 	}
 
 	@Override
-	public <OP extends Op> List<ModuleInfo> findCandidates(final String name,
-		final Class<OP> type)
+	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
+		final OpRef<OP> ref)
 	{
-		final List<CommandInfo> ops = getOps();
-		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
-
-		for (final CommandInfo info : ops) {
-			if (isCandidate(info, name, type)) candidates.add(info);
+		final ArrayList<OpCandidate<OP>> candidates =
+			new ArrayList<OpCandidate<OP>>();
+		for (final CommandInfo info : getOps()) {
+			if (isCandidate(info, ref)) {
+				candidates.add(new OpCandidate<OP>(ref, info));
+			}
 		}
 		return candidates;
 	}
 
 	@Override
-	public List<Module> findMatches(final List<? extends ModuleInfo> ops,
-		final Object... args)
+	public <OP extends Op> List<Module> findMatches(
+		final List<OpCandidate<OP>> candidates)
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
 
 		double priority = Double.NaN;
-		for (final ModuleInfo info : ops) {
+		for (final OpCandidate<?> candidate : candidates) {
+			final ModuleInfo info = candidate.getInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
 				// NB: Lower priority was reached; stop looking for any more matches.
@@ -134,7 +137,7 @@ public class DefaultOpMatchingService extends
 			}
 			priority = p;
 
-			final Module module = match(info, args);
+			final Module module = match(candidate);
 
 			if (module != null) matches.add(module);
 		}
@@ -143,45 +146,53 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public Module match(final ModuleInfo info, final Object... args) {
-		if (!info.isValid()) return null; // skip invalid modules
+	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
+		if (!candidate.getInfo().isValid()) return null; // skip invalid modules
 
 		// check the number of args, padding optional args with null as needed
 		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : info.inputs()) {
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
 			inputCount++;
 			if (item.isRequired()) requiredCount++;
+		}
+		final Object[] args = candidate.getRef().getArgs();
+		if (args.length == inputCount) {
+			// correct number of arguments
+			return match(candidate, args);
 		}
 		if (args.length > inputCount) return null; // too many arguments
 		if (args.length < requiredCount) return null; // too few arguments
 
-		if (args.length != inputCount) {
-			// pad optional parameters with null (from right to left)
-			final int argsToPad = inputCount - args.length;
-			final int optionalCount = inputCount - requiredCount;
-			final int optionalsToFill = optionalCount - argsToPad;
-			final Object[] paddedArgs = new Object[inputCount];
-			int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-			for (final ModuleItem<?> item : info.inputs()) {
-				if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
-					// skip this optional parameter (pad with null)
-					paddedIndex++;
-					continue;
-				}
-				paddedArgs[paddedIndex++] = args[argIndex++];
+		// pad optional parameters with null (from right to left)
+		final int argsToPad = inputCount - args.length;
+		final int optionalCount = inputCount - requiredCount;
+		final int optionalsToFill = optionalCount - argsToPad;
+		final Object[] paddedArgs = new Object[inputCount];
+		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
+				// skip this optional parameter (pad with null)
+				paddedIndex++;
+				continue;
 			}
-			return match(info, paddedArgs);
+			paddedArgs[paddedIndex++] = args[argIndex++];
 		}
+		return match(candidate, paddedArgs);
+	}
 
+	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
+		final Object[] args)
+	{
 		// check that each parameter is compatible with its argument
 		int i = 0;
-		for (final ModuleItem<?> item : info.inputs()) {
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
 			final Object arg = args[i++];
 			if (!canAssign(arg, item)) return null;
 		}
 
 		// create module and assign the inputs
-		final Module module = createModule(info, args);
+		final Module module = createModule(candidate.getInfo(), args);
+		candidate.setModule(module);
 
 		// make sure the op itself is happy with these arguments
 		final Object op = module.getDelegateObject();
@@ -267,20 +278,20 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public String analyze(final String label,
-		final List<ModuleInfo> candidates, final List<Module> matches,
-		final Object... args)
+	public <OP extends Op> String analyze(
+		final List<OpCandidate<OP>> candidates, final List<Module> matches)
 	{
 		final StringBuilder sb = new StringBuilder();
 
+		final OpRef<OP> ref = candidates.get(0).getRef();
 		if (matches.isEmpty()) {
 			// no matches
-			sb.append("No matching '" + label + "' op\n");
+			sb.append("No matching '" + ref.getLabel() + "' op\n");
 		}
 		else {
 			// multiple matches
 			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
+			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " + priority + ":\n");
 			for (final Module module : matches) {
 				sb.append("\t" + getOpString(module.getInfo()) + "\n");
 			}
@@ -288,31 +299,20 @@ public class DefaultOpMatchingService extends
 
 		// fail, with information about the template and candidates
 		sb.append("Template:\n");
-		sb.append("\t" + getOpString(label, args) + "\n");
+		sb.append("\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
 		sb.append("Candidates:\n");
-		for (final ModuleInfo info : candidates) {
+		for (final OpCandidate<OP> candidate : candidates) {
+			final ModuleInfo info = candidate.getInfo();
 			sb.append("\t" + getOpString(info) + "\n");
 		}
 		return sb.toString();
 	}
 
 	@Override
-	public boolean isCandidate(final CommandInfo info, final String name) {
-		return isCandidate(info, name, null);
-	}
-
-	@Override
 	public <OP extends Op> boolean isCandidate(final CommandInfo info,
-		final Class<OP> type)
+		final OpRef<OP> ref)
 	{
-		return isCandidate(info, null, type);
-	}
-
-	@Override
-	public <OP extends Op> boolean isCandidate(final CommandInfo info,
-		final String name, final Class<OP> type)
-	{
-		if (!nameMatches(info, name)) return false;
+		if (!nameMatches(info, ref.getName())) return false;
 
 		// the name matches; now check the class
 		final Class<?> opClass;
@@ -323,9 +323,8 @@ public class DefaultOpMatchingService extends
 			log.error("Invalid op: " + info.getClassName());
 			return false;
 		}
-		if (type != null && !type.isAssignableFrom(opClass)) return false;
 
-		return true;
+		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
 	}
 
 	// -- PTService methods --

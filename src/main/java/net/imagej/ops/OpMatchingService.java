@@ -64,22 +64,20 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	public <OP extends Op> Module findModule(OpRef<OP> ref);
 
 	/**
-	 * Builds a list of candidate ops which match the given name and class.
+	 * Builds a list of candidate ops which might match the given op reference.
 	 * 
-	 * @param name The op's name, or null to match all names.
-	 * @param type Required type of the op, or null to match all types.
-	 * @return The list of candidates as {@link ModuleInfo} metadata.
+	 * @param ref The op reference describing the op to match.
+	 * @return The list of candidate operations.
 	 */
-	<OP extends Op> List<ModuleInfo> findCandidates(String name, Class<OP> type);
+	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpRef<OP> ref);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
 	 * 
-	 * @param ops The list of ops to scan for matches.
-	 * @param args The op's input arguments.
+	 * @param candidates The list of op candidates to scan for matches.
 	 * @return The list of matching ops as {@link Module} instances.
 	 */
-	List<Module> findMatches(List<? extends ModuleInfo> ops, Object... args);
+	<OP extends Op> List<Module> findMatches(List<OpCandidate<OP>> candidates);
 
 	/**
 	 * Attempts to match the given arguments to the {@link Op} described by the
@@ -88,7 +86,7 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 * @return A populated {@link Module} instance for the matching {@link Op}, or
 	 *         null if the arguments do not match the {@link Op}.
 	 */
-	Module match(ModuleInfo info, Object... args);
+	<OP extends Op> Module match(OpCandidate<OP> candidate);
 
 	/**
 	 * Optimizes the performance of the given {@link Module} using all available
@@ -116,19 +114,10 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 */
 	String getOpString(ModuleInfo info);
 
-	/**
-	 * Analyzes the given list of candidates and module matches.
-	 * 
-	 * @return an explanation for why a single op could not be selected.
-	 */
-	String analyze(String label, List<ModuleInfo> candidates,
-		List<Module> matches, Object... args);
+	/** Analyzes the given list of candidates and module matches. */
+	<OP extends Op> String analyze(
+		final List<OpCandidate<OP>> candidates, final List<Module> matches);
 
-	boolean isCandidate(CommandInfo info, String name);
-
-	<OP extends Op> boolean isCandidate(CommandInfo info, Class<OP> type);
-
-	<OP extends Op> boolean isCandidate(CommandInfo info, String name,
-		Class<OP> type);
+	<OP extends Op> boolean isCandidate(CommandInfo info, OpRef<OP> ref);
 
 }
