@@ -79,7 +79,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object run(final Class<? extends Op> type, final Object... args) {
+	public <OP extends Op> Object run(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
 		return run(module);
 	}
@@ -111,7 +111,9 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Module module(final Class<? extends Op> type, final Object... args) {
+	public <OP extends Op> Module module(final Class<OP> type,
+		final Object... args)
+	{
 		return matcher.findModule(null, type, args);
 	}
 
@@ -148,7 +150,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public String help(final Class<? extends Op> type) {
+	public <OP extends Op> String help(final Class<OP> type) {
 		return help(matcher.findCandidates(null, type));
 	}
 
