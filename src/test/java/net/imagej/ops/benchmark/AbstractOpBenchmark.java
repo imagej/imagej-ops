@@ -30,14 +30,23 @@
 
 package net.imagej.ops.benchmark;
 
+import static org.junit.Assume.assumeTrue;
 import net.imagej.ops.AbstractOpTest;
 
+import org.junit.Before;
 import org.scijava.module.Module;
 
 /**
  * @author Christian Dietz
  */
 public class AbstractOpBenchmark extends AbstractOpTest {
+
+	private boolean benchmarkTestsEnabled = "enabled".equals(System.getProperty("imagej.ops.benchmark.tests"));
+
+	@Before
+	public void skipBenchmarksByDefault() {
+		assumeTrue(benchmarkTestsEnabled);
+	}
 
 	public long bestOf(final Runnable runnable, final int n) {
 		long best = Long.MAX_VALUE;
