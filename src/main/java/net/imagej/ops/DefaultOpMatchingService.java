@@ -349,11 +349,7 @@ public class DefaultOpMatchingService extends
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		int i = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(candidate, arg, item)) return null;
-		}
+		if (!typesMatch(candidate, args)) return null;
 
 		// create module and assign the inputs
 		final Module module = createModule(candidate.getInfo(), args);
@@ -371,6 +367,21 @@ public class DefaultOpMatchingService extends
 
 		// found a match!
 		return module;
+	}
+
+	/**
+	 * Checks that each parameter is type-compatible with its corresponding
+	 * argument.
+	 */
+	private <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate,
+		final Object[] args)
+	{
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			final Object arg = args[i++];
+			if (!canAssign(candidate, arg, item)) return false;
+		}
+		return true;
 	}
 
 	/** Helper method of {@link #isCandidate}. */
