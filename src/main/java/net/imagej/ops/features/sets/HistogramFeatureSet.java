@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.features.DefaultFeatureResult;
 import net.imagej.ops.features.FeatureResult;
@@ -24,7 +23,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <T>
  */
-@Plugin(type = Op.class, label = "Histogram Features")
+@Plugin(type = FeatureSet.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
 		AbstractOutputFunction<Iterable<T>, List<FeatureResult>> implements
 		FeatureSet<Iterable<T>> {
