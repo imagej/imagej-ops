@@ -55,7 +55,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	public void testFindModule() {
 		final DoubleType value = new DoubleType(123.456);
 
-		final Module moduleByName = matcher.findModule("nan", null, value);
+		final Module moduleByName = matcher.findModule(new OpRef<Op>("nan", value));
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -63,7 +63,8 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		assertTrue(Double.isNaN(value.get()));
 
 		value.set(987.654);
-		final Module moduleByType = matcher.findModule(null, NaNOp.class, value);
+		final Module moduleByType =
+			matcher.findModule(new OpRef<NaNOp>(NaNOp.class, value));
 		assertSame(value, moduleByType.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -77,27 +78,27 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		Module m;
 
 		try {
-			m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6, 7);
+			m = optionalParamsModule(1, 2, 3, 4, 5, 6, 7);
 			fail("Expected IllegalArgumentException for 7 args");
 		}
 		catch (final IllegalArgumentException exc) {
 			// NB: Expected.
 		}
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5, 6);
+		m = optionalParamsModule(1, 2, 3, 4, 5, 6);
 		assertValues(m, 1, 2, 3, 4, 5, 6, -7);
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4, 5);
+		m = optionalParamsModule(1, 2, 3, 4, 5);
 		assertValues(m, 1, 2, 3, 4, -5, 5, -7);
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3, 4);
+		m = optionalParamsModule(1, 2, 3, 4);
 		assertValues(m, 1, 2, 3, -4, -5, 4, -7);
 
-		m = matcher.findModule(null, OptionalParams.class, 1, 2, 3);
+		m = optionalParamsModule(1, 2, 3);
 		assertValues(m, 1, -2, 2, -4, -5, 3, -7);
 
 		try {
-			m = matcher.findModule(null, OptionalParams.class, 1, 2);
+			m = optionalParamsModule(1, 2);
 			fail("Expected IllegalArgumentException for 2 args");
 		}
 		catch (final IllegalArgumentException exc) {
@@ -106,6 +107,11 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	}
 
 	// -- Helper methods --
+
+	private Module optionalParamsModule(Object... args) {
+		return matcher.findModule(
+			new OpRef<OptionalParams>(OptionalParams.class, args));
+	}
 
 	private void assertValues(final Module m, final int a, final int b,
 		final int c, final int d, final int e, final int f, final int result)

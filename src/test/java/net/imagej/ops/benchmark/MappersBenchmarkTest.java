@@ -79,35 +79,32 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestMapper() {
-		ops.module(new MapII2RAI<ByteType, ByteType>(), out, in,
-			addConstant).run();
+		ops.run(new MapII2RAI<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestMapperII() {
-		ops.module(new MapII2II<ByteType, ByteType>(), out, in,
-			addConstant).run();
+		ops.run(new MapII2II<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapper() {
-		ops.module(new ParallelMapI2R<ByteType, ByteType>(), out, in,
-			addConstant).run();
+		ops.run(new ParallelMapI2R<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
-		ops.module(new ParallelMapI2I<ByteType, ByteType>(), out, in,
-			addConstant, out).run();
+		ops.run(new ParallelMapI2I<ByteType, ByteType>(),
+			out, in, addConstant, out);
 	}
 
 	@Test
 	public void pixelWiseTestMapperInplace() {
-		ops.module(new MapI<ByteType>(), in, addConstantInplace).run();
+		ops.run(new MapI<ByteType>(), in, addConstantInplace);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapperInplace() {
-		ops.module(new ParallelMap<ByteType>(), in.copy(), addConstantInplace).run();
+		ops.run(new ParallelMap<ByteType>(), in.copy(), addConstantInplace);
 	}
 }

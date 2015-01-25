@@ -75,46 +75,46 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTestIterableIntervalMapperP() {
-		ops.module(ParallelMapI2I.class, out, in, ops.op(
-			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10))).run();
+		ops.run(ParallelMapI2I.class, out, in, ops.op(
+			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTestDefaultMapperP() {
-		ops.module(ParallelMapI2R.class, out, in, ops.op(
-			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10))).run();
+		ops.run(ParallelMapI2R.class, out, in, ops.op(
+			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTtestAddConstantToImage() {
-		ops.module(new AddConstantToImageFunctional<ByteType>(), out, in,
-			new ByteType((byte) 10)).run();
+		ops.run(new AddConstantToImageFunctional<ByteType>(), out, in,
+			new ByteType((byte) 10));
 	}
 
 	@Test
 	public void inTestDefaultInplaceMapperP() {
-		ops.module(ParallelMap.class, in, ops.op(
-			AddConstantInplace.class, NumericType.class, new ByteType((byte) 10))).run();
+		ops.run(ParallelMap.class, in, ops.op(
+			AddConstantInplace.class, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void inTestJavaAssist() {
-		ops.module(new ArithmeticOp.AddOp(), in, in, new ByteType((byte) 10)).run();
+		ops.run(new ArithmeticOp.AddOp(), in, in, new ByteType((byte) 10));
 	}
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.module(new AddConstantToImageInPlace<ByteType>(), in, new ByteType(
-			(byte) 10)).run();
+		ops.run(new AddConstantToImageInPlace<ByteType>(), in, new ByteType(
+			(byte) 10));
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImage() {
-		ops.module(new AddConstantToArrayByteImage(), in, (byte) 10).run();
+		ops.run(new AddConstantToArrayByteImage(), in, (byte) 10);
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImageP() {
-		ops.module(new AddConstantToArrayByteImageP(), in, (byte) 10).run();
+		ops.run(new AddConstantToArrayByteImageP(), in, (byte) 10);
 	}
 }

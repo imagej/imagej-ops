@@ -65,25 +65,25 @@ public class ChunkerBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void run100MbTest() {
 		generateByteTestImgs(10240);
-		ops.module(RunDefaultChunker.class, out, in).run();
+		ops.run(RunDefaultChunker.class, out, in);
 	}
 
 	@Test
 	public void run100MbInterleaved() {
 		generateByteTestImgs(10240);
-		ops.module(RunInterleavedChunker.class, out, in).run();
+		ops.run(RunInterleavedChunker.class, out, in);
 	}
 
 	@Test
 	public void run1MbTest() {
 		generateByteTestImgs(1024);
-		ops.module(RunDefaultChunker.class, out, in).run();
+		ops.run(RunDefaultChunker.class, out, in);
 	}
 
 	@Test
 	public void run1MbInterleaved() {
 		generateByteTestImgs(1024);
-		ops.module(RunInterleavedChunker.class, out, in).run();
+		ops.run(RunInterleavedChunker.class, out, in);
 	}
 
 	//with arrays
@@ -91,25 +91,25 @@ public class ChunkerBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void run100MbArrayTest() {
 		generateByteArrays(10240);
-		ops.module(RunDefaultChunkerArray.class, out2, in2).run();
+		ops.run(RunDefaultChunkerArray.class, out2, in2);
 	}
 
 	@Test
 	public void run100MbArrayInterleavedTest() {
 		generateByteArrays(10240);
-		ops.module(RunInterleavedChunkerArray.class, out2, in2).run();
+		ops.run(RunInterleavedChunkerArray.class, out2, in2);
 	}
 
 	@Test
 	public void run1MbArrayTest() {
 		generateByteArrays(1024);
-		ops.module(RunDefaultChunkerArray.class, out2, in2).run();
+		ops.run(RunDefaultChunkerArray.class, out2, in2);
 	}
 
 	@Test
 	public void run1MbArrayInterleavedTest() {
 		generateByteArrays(1024);
-		ops.module(RunInterleavedChunkerArray.class, out2, in2).run();
+		ops.run(RunInterleavedChunkerArray.class, out2, in2);
 	}
 
 	private void generateByteTestImgs(int size) {

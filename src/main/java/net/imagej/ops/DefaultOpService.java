@@ -79,7 +79,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object run(final Class<? extends Op> type, final Object... args) {
+	public <OP extends Op> Object run(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
 		return run(module);
 	}
@@ -107,12 +107,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return matcher.findModule(name, null, args);
+		return matcher.findModule(new OpRef<Op>(name, args));
 	}
 
 	@Override
-	public Module module(final Class<? extends Op> type, final Object... args) {
-		return matcher.findModule(null, type, args);
+	public <OP extends Op> Module module(final Class<OP> type,
+		final Object... args)
+	{
+		return matcher.findModule(new OpRef<OP>(type, args));
 	}
 
 	@Override
@@ -144,17 +146,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public String help(final String name) {
-		return help(matcher.findCandidates(name, null));
+		return help(matcher.findCandidates(new OpRef<Op>(name)));
 	}
 
 	@Override
-	public String help(final Class<? extends Op> type) {
-		return help(matcher.findCandidates(null, type));
+	public <OP extends Op> String help(final Class<OP> type) {
+		return help(matcher.findCandidates(new OpRef<OP>(type)));
 	}
 
 	@Override
 	public String help(final Op op) {
 		return help(Collections.singleton(info(op)));
+	}
+
+	// TODO: Convert help methods into a proper op.
+	private <OP extends Op> String help(List<OpCandidate<OP>> candidates) {
+		final ArrayList<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+			for (final OpCandidate<OP> candidate : candidates) {
+				infos.add(candidate.getInfo());
+			}
+		return help(infos);
 	}
 
 	private String help(final Collection<? extends ModuleInfo> infos) {

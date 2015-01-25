@@ -77,7 +77,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
-	Object run(Class<? extends Op> type, Object... args);
+	<OP extends Op> Object run(Class<OP> type, Object... args);
 
 	/**
 	 * Executes the given {@link Op} with the specified arguments.
@@ -139,7 +139,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
-	Module module(Class<? extends Op> type, Object... args);
+	<OP extends Op> Module module(Class<OP> type, Object... args);
 
 	/**
 	 * Wraps the given {@link Op} as a {@link Module}, populating its inputs.
@@ -161,7 +161,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	String help(String name);
 
 	/** Gets documentation for the operations of the given type. */
-	String help(Class<? extends Op> type);
+	<OP extends Op> String help(Class<OP> type);
 
 	/** Gets documentation for the given {@link Op}. */
 	String help(Op op);

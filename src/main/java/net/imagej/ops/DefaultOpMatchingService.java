@@ -34,6 +34,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.OpCandidate.StatusCode;
+
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.command.CommandInfo;
@@ -50,7 +52,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
 /**
- * Default service for finding {@link Op}s which match a template.
+ * Default service for finding {@link Op}s which match a request.
  * 
  * @author Curtis Rueden
  */
@@ -82,75 +84,53 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public Module findModule(final String name, final Class<? extends Op> type,
-		final Object... args)
-	{
-		final String label = type == null ? name : type.getName();
-
+	public <OP extends Op> Module findModule(final OpRef<OP> ref) {
 		// find candidates with matching name & type
-		final List<ModuleInfo> candidates = findCandidates(name, type);
+		final List<OpCandidate<OP>> candidates = findCandidates(ref);
 		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + label + "' ops");
+			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
+				"' ops");
 		}
 
 		// narrow down candidates to the exact matches
-		final List<Module> matches = findMatches(candidates, args);
+		final List<Module> matches = findMatches(candidates);
 
 		if (matches.size() == 1) {
 			// a single match: return it
 			if (log.isDebug()) {
-				log.debug("Selected '" + label + "' op: " +
+				log.debug("Selected '" + ref.getLabel() + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
 			return optimize(matches.get(0));
 		}
 
-		final StringBuilder sb = new StringBuilder();
-
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + label + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + label + "' ops of priority " + priority + ":\n");
-			for (final Module module : matches) {
-				sb.append("\t" + getOpString(module.getInfo()) + "\n");
-			}
-		}
-
-		// fail, with information about the template and candidates
-		sb.append("Template:\n");
-		sb.append("\t" + getOpString(label, args) + "\n");
-		sb.append("Candidates:\n");
-		for (final ModuleInfo info : candidates) {
-			sb.append("\t" + getOpString(info) + "\n");
-		}
-		throw new IllegalArgumentException(sb.toString());
+		final String analysis = analyze(candidates, matches);
+		throw new IllegalArgumentException(analysis);
 	}
 
 	@Override
-	public List<ModuleInfo> findCandidates(final String name,
-		final Class<? extends Op> type)
+	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
+		final OpRef<OP> ref)
 	{
-		final List<CommandInfo> ops = getOps();
-		final ArrayList<ModuleInfo> candidates = new ArrayList<ModuleInfo>();
-
-		for (final CommandInfo info : ops) {
-			if (isCandidate(info, name, type)) candidates.add(info);
+		final ArrayList<OpCandidate<OP>> candidates =
+			new ArrayList<OpCandidate<OP>>();
+		for (final CommandInfo info : getOps()) {
+			if (isCandidate(info, ref)) {
+				candidates.add(new OpCandidate<OP>(ref, info));
+			}
 		}
 		return candidates;
 	}
 
 	@Override
-	public List<Module> findMatches(final List<? extends ModuleInfo> ops,
-		final Object... args)
+	public <OP extends Op> List<Module> findMatches(
+		final List<OpCandidate<OP>> candidates)
 	{
 		final ArrayList<Module> matches = new ArrayList<Module>();
 
 		double priority = Double.NaN;
-		for (final ModuleInfo info : ops) {
+		for (final OpCandidate<?> candidate : candidates) {
+			final ModuleInfo info = candidate.getInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
 				// NB: Lower priority was reached; stop looking for any more matches.
@@ -158,7 +138,7 @@ public class DefaultOpMatchingService extends
 			}
 			priority = p;
 
-			final Module module = match(info, args);
+			final Module module = match(candidate);
 
 			if (module != null) matches.add(module);
 		}
@@ -167,55 +147,52 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
-	public Module match(final ModuleInfo info, final Object... args) {
-		if (!info.isValid()) return null; // skip invalid modules
+	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
+		if (!candidate.getInfo().isValid()) {
+			// skip invalid modules
+			candidate.setStatus(StatusCode.INVALID_MODULE);
+			return null;
+		}
 
 		// check the number of args, padding optional args with null as needed
 		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : info.inputs()) {
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
 			inputCount++;
 			if (item.isRequired()) requiredCount++;
 		}
-		if (args.length > inputCount) return null; // too many arguments
-		if (args.length < requiredCount) return null; // too few arguments
+		final Object[] args = candidate.getRef().getArgs();
+		if (args.length == inputCount) {
+			// correct number of arguments
+			return match(candidate, args);
+		}
+		if (args.length > inputCount) {
+			// too many arguments
+			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
+				args.length + " > " + inputCount);
+			return null;
+		}
+		if (args.length < requiredCount) {
+			// too few arguments
+			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
+				args.length + " < " + requiredCount);
+			return null;
+		}
 
-		if (args.length != inputCount) {
-			// pad optional parameters with null (from right to left)
-			final int argsToPad = inputCount - args.length;
-			final int optionalCount = inputCount - requiredCount;
-			final int optionalsToFill = optionalCount - argsToPad;
-			final Object[] paddedArgs = new Object[inputCount];
-			int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-			for (final ModuleItem<?> item : info.inputs()) {
-				if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
-					// skip this optional parameter (pad with null)
-					paddedIndex++;
-					continue;
-				}
-				paddedArgs[paddedIndex++] = args[argIndex++];
+		// pad optional parameters with null (from right to left)
+		final int argsToPad = inputCount - args.length;
+		final int optionalCount = inputCount - requiredCount;
+		final int optionalsToFill = optionalCount - argsToPad;
+		final Object[] paddedArgs = new Object[inputCount];
+		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
+				// skip this optional parameter (pad with null)
+				paddedIndex++;
+				continue;
 			}
-			return match(info, paddedArgs);
+			paddedArgs[paddedIndex++] = args[argIndex++];
 		}
-
-		// check that each parameter is compatible with its argument
-		int i = 0;
-		for (final ModuleItem<?> item : info.inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(arg, item)) return null;
-		}
-
-		// create module and assign the inputs
-		final Module module = createModule(info, args);
-
-		// make sure the op itself is happy with these arguments
-		final Object op = module.getDelegateObject();
-		if (op instanceof Contingent) {
-			final Contingent c = (Contingent) op;
-			if (!c.conforms()) return null;
-		}
-
-		// found a match!
-		return module;
+		return match(candidate, paddedArgs);
 	}
 
 	@Override
@@ -263,17 +240,26 @@ public class DefaultOpMatchingService extends
 		return module;
 	}
 
-	@Override
-	public String getOpString(final String name, final Object... args) {
+	/**
+	 * Gets a string describing the given op request.
+	 * 
+	 * @param name The op's name.
+	 * @param args The op's input arguments.
+	 * @return A string describing the op request.
+	 */
+	private String getOpString(final String name, final Object... args) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(name + "(");
+		sb.append(name + "(\n\t\t");
 		boolean first = true;
 		for (final Object arg : args) {
 			if (first) first = false;
-			else sb.append(", ");
-			if (arg != null) sb.append(arg.getClass().getName() + " ");
-			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
-			else sb.append(arg);
+			else sb.append(",\n\t\t");
+			if (arg == null) sb.append("null");
+			else if (arg instanceof Class) {
+				// NB: Class instance used to mark argument type.
+				sb.append(((Class<?>) arg).getSimpleName());
+			}
+			else sb.append(arg.getClass().getSimpleName());
 		}
 		sb.append(")");
 		return sb.toString();
@@ -281,32 +267,61 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public String getOpString(final ModuleInfo info) {
+		return getOpString(info, null);
+	}
+
+	@Override
+	public <OP extends Op> String analyze(
+		final List<OpCandidate<OP>> candidates, final List<Module> matches)
+	{
 		final StringBuilder sb = new StringBuilder();
-		if (!info.isValid()) sb.append("{!INVALID!} ");
-		sb.append("[" + info.getPriority() + "] ");
-		sb.append("(" + paramString(info.outputs()) + ")");
-		sb.append(" = " + info.getDelegateClassName());
-		sb.append("(" + paramString(info.inputs()) + ")");
+
+		final OpRef<OP> ref = candidates.get(0).getRef();
+		if (matches.isEmpty()) {
+			// no matches
+			sb.append("No matching '" + ref.getLabel() + "' op\n");
+		}
+		else {
+			// multiple matches
+			final double priority = matches.get(0).getInfo().getPriority();
+			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
+				priority + ":\n");
+			int count = 0;
+			for (final Module module : matches) {
+				sb.append(++count + ". ");
+				sb.append(getOpString(module.getInfo()) + "\n");
+			}
+		}
+
+		// fail, with information about the request and candidates
+		sb.append("\n");
+		sb.append("Request:\n");
+		sb.append("-\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
+		sb.append("\n");
+		sb.append("Candidates:\n");
+		int count = 0;
+		for (final OpCandidate<OP> candidate : candidates) {
+			final ModuleInfo info = candidate.getInfo();
+			sb.append(++count + ". ");
+			sb.append("\t" + getOpString(info, candidate.getStatusItem()) + "\n");
+			final String status = candidate.getStatus();
+			if (status != null) sb.append("\t" + status + "\n");
+			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
+				// show argument values when a contingent op rejects them
+				for (final ModuleItem<?> item : info.inputs()) {
+					final Object value = item.getValue(candidate.getModule());
+					sb.append("\t\t" + item.getName() + " = " + value + "\n");
+				}
+			}
+		}
 		return sb.toString();
 	}
 
 	@Override
-	public boolean isCandidate(final CommandInfo info, final String name) {
-		return isCandidate(info, name, null);
-	}
-
-	@Override
-	public boolean isCandidate(final CommandInfo info,
-		final Class<? extends Op> type)
+	public <OP extends Op> boolean isCandidate(final CommandInfo info,
+		final OpRef<OP> ref)
 	{
-		return isCandidate(info, null, type);
-	}
-
-	@Override
-	public boolean isCandidate(final CommandInfo info, final String name,
-		final Class<? extends Op> type)
-	{
-		if (!nameMatches(info, name)) return false;
+		if (!nameMatches(info, ref.getName())) return false;
 
 		// the name matches; now check the class
 		final Class<?> opClass;
@@ -317,9 +332,8 @@ public class DefaultOpMatchingService extends
 			log.error("Invalid op: " + info.getClassName());
 			return false;
 		}
-		if (type != null && !type.isAssignableFrom(opClass)) return false;
 
-		return true;
+		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
 	}
 
 	// -- PTService methods --
@@ -330,6 +344,34 @@ public class DefaultOpMatchingService extends
 	}
 
 	// -- Helper methods --
+
+	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
+		final Object[] args)
+	{
+		// check that each parameter is compatible with its argument
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			final Object arg = args[i++];
+			if (!canAssign(candidate, arg, item)) return null;
+		}
+
+		// create module and assign the inputs
+		final Module module = createModule(candidate.getInfo(), args);
+		candidate.setModule(module);
+
+		// make sure the op itself is happy with these arguments
+		final Object op = module.getDelegateObject();
+		if (op instanceof Contingent) {
+			final Contingent c = (Contingent) op;
+			if (!c.conforms()) {
+				candidate.setStatus(StatusCode.DOES_NOT_CONFORM);
+				return null;
+			}
+		}
+
+		// found a match!
+		return module;
+	}
 
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
@@ -356,10 +398,25 @@ public class DefaultOpMatchingService extends
 		return assignInputs(module, args);
 	}
 
-	private boolean canAssign(final Object arg, final ModuleItem<?> item) {
-		if (arg == null) return !item.isRequired();
+	private boolean canAssign(final OpCandidate<?> candidate, final Object arg,
+		final ModuleItem<?> item)
+	{
+		if (arg == null) {
+			if (item.isRequired()) {
+				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL, null, item);
+				return false;
+			}
+			return true;
+		}
+
 		final Type type = item.getGenericType();
-		return canConvert(arg, type);
+		if (!canConvert(arg, type)) {
+			candidate.setStatus(StatusCode.CANNOT_CONVERT,
+				arg.getClass().getName() + " => " + type, item);
+			return false;
+		}
+
+		return true;
 	}
 
 	private boolean canConvert(final Object o, final Type type) {
@@ -390,21 +447,30 @@ public class DefaultOpMatchingService extends
 		return convertService.convert(o, type);
 	}
 
-	private String paramString(final Iterable<ModuleItem<?>> items) {
+	private String getOpString(final ModuleInfo info, final ModuleItem<?> item) {
+		final StringBuilder sb = new StringBuilder();
+		final String outputString = paramString(info.outputs(), null).trim();
+		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
+		sb.append(info.getDelegateClassName());
+		sb.append("(" + paramString(info.inputs(), item) + ")");
+		return sb.toString();
+	}
+
+	private String paramString(final Iterable<ModuleItem<?>> items,
+		final ModuleItem<?> special)
+	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (final ModuleItem<?> item : items) {
 			if (first) first = false;
-			else sb.append(", ");
-			sb.append(getTypeName(item.getGenericType()) + " " + item.getName());
+			else sb.append(",");
+			sb.append("\n");
+			if (item == special) sb.append("==>"); // highlight special item
+			sb.append("\t\t");
+			sb.append(item.getType().getSimpleName() + " " + item.getName());
 			if (!item.isRequired()) sb.append("?");
 		}
 		return sb.toString();
-	}
-
-	private String getTypeName(final Type type) {
-		if (type instanceof Class) return ((Class<?>) type).getName();
-		return type.toString();
 	}
 
 }
