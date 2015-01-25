@@ -31,6 +31,12 @@
 templateDirectory = project.properties['templateDirectory']
 outputDirectory = project.properties['outputDirectory']
 
+/* Gets the last modified timestap for the given file. */
+def timestamp(dir, file) {
+	if (file == null) return Long.MAX_VALUE;
+	return new java.io.File(dir, file).lastModified();
+}
+
 /* Processes a template using Apache Velocity. */
 def processTemplate(engine, context, templateFile, outFilename) {
 	if (outFilename == null) return; // nothing to do
@@ -205,6 +211,12 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	// read translation lines
 	context = outputFilename = null;
 	reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
+
+	// avoid rewriting unchanged code to avoid recompilation
+	def mtime = java.lang.Math.max(
+		timestamp(templateSubdirectory, translationsFile),
+		timestamp(templateSubdirectory, templateFile));
+
 	for (;;) {
 		// read the line
 		line = reader.readLine();
@@ -213,7 +225,9 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		// check if the line starts a new section
 		if (line.startsWith("[") && line.endsWith("]")) {
 			// write out the previous file
-			processTemplate(engine, context, templateFile, outputFilename);
+			if (mtime >= timestamp(outputDirectory, outputFilename)) {
+				processTemplate(engine, context, templateFile, outputFilename);
+			}
 
 			// start a new file
 			outputFilename = line.substring(1, line.length() - 1);
@@ -264,7 +278,9 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	reader.close();
 
 	// process the template
-	processTemplate(engine, context, templateFile, outputFilename);
+	if (mtime >= timestamp(outputDirectory, outputFilename)) {
+		processTemplate(engine, context, templateFile, outputFilename);
+	}
 }
 
 /* Recursively translates all templates in the given directory. */

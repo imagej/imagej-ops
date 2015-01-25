@@ -31,6 +31,8 @@
 package net.imagej.ops.equation;
 
 import javax.script.Bindings;
+import javax.script.Compilable;
+import javax.script.CompiledScript;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
@@ -101,6 +103,29 @@ public class DefaultEquation<T extends RealType<T>> extends
 		final Cursor<T> c = output.localizingCursor();
 		final long[] pos = new long[output.numDimensions()];
 		bindings.put("p", pos);
+		bindings.put("c", c);
+
+		if (engine instanceof Compilable) try {
+			final String script =
+				"importClass(Packages.java.lang.Double);\n" +
+				"while (c.hasNext()) {\n" +
+				"  c.fwd();\n" +
+				"  c.localize(p);\n" +
+				"  o = " + equation + ";\n" +
+				"  try {\n" +
+				"    c.get().setReal(o);\n" +
+				"  } catch(e) {" +
+				"    c.get().setReal(Double.NaN);\n" +
+				"  }\n" +
+				"}";
+			final Compilable compiler = (Compilable) engine;
+			final CompiledScript compiled = compiler.compile(script);
+			compiled.eval(bindings);
+			return output;
+		} catch (ScriptException e) {
+			log.warn(e);
+			// fallthru
+		}
 
 		try {
 			while (c.hasNext()) {
