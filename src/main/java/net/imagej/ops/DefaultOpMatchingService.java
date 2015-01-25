@@ -406,7 +406,7 @@ public class DefaultOpMatchingService extends
 	{
 		if (arg == null) {
 			if (item.isRequired()) {
-				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL);
+				candidate.setStatus(StatusCode.REQUIRED_ARG_IS_NULL, null, item);
 				return false;
 			}
 			return true;
@@ -415,7 +415,7 @@ public class DefaultOpMatchingService extends
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
 			candidate.setStatus(StatusCode.CANNOT_CONVERT,
-				arg.getClass().getName() + " => " + type + " " + item.getName());
+				arg.getClass().getName() + " => " + type + " " + item.getName(), item);
 			return false;
 		}
 

@@ -32,6 +32,7 @@ package net.imagej.ops;
 
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
+import org.scijava.module.ModuleItem;
 
 /**
  * Container class for a possible operation match between an {@link OpRef} and a
@@ -60,6 +61,7 @@ public class OpCandidate<OP extends Op> {
 	private Module module;
 	private StatusCode code;
 	private String message;
+	private ModuleItem<?> item;
 
 	public OpCandidate(final OpRef<OP> ref, final ModuleInfo info) {
 		this.ref = ref;
@@ -88,13 +90,21 @@ public class OpCandidate<OP extends Op> {
 
 	/** Sets the status of the matching attempt. */
 	public void setStatus(final StatusCode code) {
-		setStatus(code, null);
+		setStatus(code, null, null);
 	}
 
 	/** Sets the status of the matching attempt. */
 	public void setStatus(final StatusCode code, final String message) {
+		setStatus(code, message, null);
+	}
+
+	/** Sets the status of the matching. */
+	public void setStatus(final StatusCode code, final String message,
+		final ModuleItem<?> item)
+	{
 		this.code = code;
 		this.message = message;
+		this.item = item;
 	}
 
 	/** Gets the matching status code. */
@@ -105,6 +115,14 @@ public class OpCandidate<OP extends Op> {
 	/** Gets a message elaborating on the matching status, if any. */
 	public String getStatusMessage() {
 		return message;
+	}
+
+	/**
+	 * Gets the status item related to the matching status, if any. Typically, if
+	 * set, this is the parameter for which matching failed.
+	 */
+	public ModuleItem<?> getStatusItem() {
+		return item;
 	}
 
 	/** Gets a descriptive status message in human readable form. */
