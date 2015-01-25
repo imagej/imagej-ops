@@ -239,8 +239,14 @@ public class DefaultOpMatchingService extends
 		return module;
 	}
 
-	@Override
-	public String getOpString(final String name, final Object... args) {
+	/**
+	 * Gets a string describing the given op request.
+	 * 
+	 * @param name The op's name.
+	 * @param args The op's input arguments.
+	 * @return A string describing the op request.
+	 */
+	private String getOpString(final String name, final Object... args) {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(name + "(");
 		boolean first = true;

@@ -98,15 +98,6 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	Module assignInputs(Module module, Object... args);
 
 	/**
-	 * Gets a string describing the given op template.
-	 * 
-	 * @param name The op's name.
-	 * @param args The op's input arguments.
-	 * @return A string describing the op template.
-	 */
-	String getOpString(String name, Object... args);
-
-	/**
 	 * Gets a string describing the given op.
 	 * 
 	 * @param info The {@link ModuleInfo} metadata which describes the op.
