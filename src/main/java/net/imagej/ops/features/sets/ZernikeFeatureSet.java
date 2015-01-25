@@ -70,11 +70,11 @@ public class ZernikeFeatureSet
 	@Parameter(label = "Compute Phase")
 	private boolean computePhase;
 
-	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1", initializer = "2")
-	private int orderMin;
+	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1")
+	private int orderMin = 2;
 
-	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1", initializer = "6")
-	private int orderMax;
+	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1")
+	private int orderMax = 6;
 
 	private ZernikeComputer m_op;
 
