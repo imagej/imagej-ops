@@ -154,6 +154,13 @@ public class DefaultOpMatchingService extends
 	}
 
 	@Override
+	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
+		if (!valid(candidate)) return false;
+		final Object[] args = paddedArgs(candidate);
+		return args == null ? false : typesMatch(candidate, args);
+	}
+
+	@Override
 	public Module assignInputs(final Module module, final Object... args) {
 		int i = 0;
 		for (final ModuleItem<?> item : module.getInfo().inputs()) {

@@ -89,6 +89,12 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	<OP extends Op> Module match(OpCandidate<OP> candidate);
 
 	/**
+	 * Checks that each parameter is type-compatible with its corresponding
+	 * argument.
+	 */
+	<OP extends Op> boolean typesMatch(OpCandidate<OP> candidate);
+
+	/**
 	 * Optimizes the performance of the given {@link Module} using all available
 	 * {@link Optimizer}s.
 	 */
