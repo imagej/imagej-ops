@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
 /**
- * Default service for finding {@link Op}s which match a template.
+ * Default service for finding {@link Op}s which match a request.
  * 
  * @author Curtis Rueden
  */
@@ -286,8 +286,8 @@ public class DefaultOpMatchingService extends
 			}
 		}
 
-		// fail, with information about the template and candidates
-		sb.append("Template:\n");
+		// fail, with information about the request and candidates
+		sb.append("Request:\n");
 		sb.append("\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
 		sb.append("Candidates:\n");
 		for (final OpCandidate<OP> candidate : candidates) {
