@@ -25,230 +25,231 @@ import org.junit.Test;
  */
 public class GeometricPolygonTest extends AbstractOpTest {
 
-	/**
-	 * Test the {@link MooreContours} Op.
-	 */
-	@Test
-	public void testMooreContourOp() {
+    /**
+     * Test the {@link MooreContours} Op.
+     */
+    @Test
+    public void testMooreContourOp() {
 
-		// create an image
-		Img<BitType> img1 = ArrayImgs.bits(100, 100);
-		HyperSphereCursor<BitType> hyperSphereCursor = new HyperSphereCursor<BitType>(
-				img1, new long[] { 50, 50 }, 20);
-		while (hyperSphereCursor.hasNext()) {
-			hyperSphereCursor.next().set(true);
-		}
+        // create an image
+        Img<BitType> img1 = ArrayImgs.bits(100, 100);
+        HyperSphereCursor<BitType> hyperSphereCursor = new HyperSphereCursor<BitType>(
+                img1, new long[] { 50, 50 }, 20);
+        while (hyperSphereCursor.hasNext()) {
+            hyperSphereCursor.next().set(true);
+        }
 
-		Polygon contours = (Polygon) ops.run(MooreContoursPolygon.class, img1,
-				true, true);
+        Polygon contours = (Polygon) ops.run(MooreContoursPolygon.class, img1,
+                true, true);
 
-		// our polygon must at least contain the four extrema (top, left,
-		// bottom, right)
-		boolean containsTop = false;
-		boolean containsLeft = false;
-		boolean containsBottom = false;
-		boolean containsRight = false;
-		for (RealPoint rp : contours.getPoints()) {
-			if (rp.getDoublePosition(0) == 50 && rp.getDoublePosition(1) == 70) {
-				containsTop = true;
-			}
-			if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 50) {
-				containsLeft = true;
-			}
-			if (rp.getDoublePosition(0) == 50 && rp.getDoublePosition(1) == 30) {
-				containsBottom = true;
-			}
-			if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 50) {
-				containsRight = true;
-			}
-		}
+        // our polygon must at least contain the four extrema (top, left,
+        // bottom, right)
+        boolean containsTop = false;
+        boolean containsLeft = false;
+        boolean containsBottom = false;
+        boolean containsRight = false;
+        for (RealPoint rp : contours.getPoints()) {
+            if (rp.getDoublePosition(0) == 50 && rp.getDoublePosition(1) == 70) {
+                containsTop = true;
+            }
+            if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 50) {
+                containsLeft = true;
+            }
+            if (rp.getDoublePosition(0) == 50 && rp.getDoublePosition(1) == 30) {
+                containsBottom = true;
+            }
+            if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 50) {
+                containsRight = true;
+            }
+        }
 
-		assertEquals("Extrema Top", true, containsTop);
-		assertEquals("Extrema Left", true, containsLeft);
-		assertEquals("Extrema Bottom", true, containsBottom);
-		assertEquals("Extrema Right", true, containsRight);
-	}
+        assertEquals("Extrema Top", true, containsTop);
+        assertEquals("Extrema Left", true, containsLeft);
+        assertEquals("Extrema Bottom", true, containsBottom);
+        assertEquals("Extrema Right", true, containsRight);
+    }
 
-	/**
-	 * Test the {@link BoundingBox} Op.
-	 */
-	@Test
-	public void testBoundingBox() {
-		Polygon p = new Polygon();
+    /**
+     * Test the {@link BoundingBox} Op.
+     */
+    @Test
+    public void testBoundingBox() {
+        Polygon p = new Polygon();
 
-		// add four points (diamond like shape)
-		p.add(new RealPoint(50, 70));
-		p.add(new RealPoint(30, 50));
-		p.add(new RealPoint(50, 30));
-		p.add(new RealPoint(70, 50));
+        // add four points (diamond like shape)
+        p.add(new RealPoint(50.0d, 70.0d));
+        p.add(new RealPoint(30.0d, 50.0d));
+        p.add(new RealPoint(50.0d, 30.0d));
+        p.add(new RealPoint(70.0d, 50.0d));
 
-		Polygon boundingBox = (Polygon) ops.run(BoundingBoxPolygon.class, p);
+        Polygon boundingBox = (Polygon) ops.run(BoundingBoxPolygon.class, p);
 
-		// five points because the first and last one are equal
-		assertEquals("Polygon Size", 5, boundingBox.size());
+        // five points because the first and last one are equal
+        assertEquals("Polygon Size", 5, boundingBox.size());
 
-		// and now check that it only contains the four corner points
-		boolean containsBottomLeft = false;
-		boolean containsBottomRight = false;
-		boolean containsTopRight = false;
-		boolean containsTopLeft = false;
+        // and now check that it only contains the four corner points
+        boolean containsBottomLeft = false;
+        boolean containsBottomRight = false;
+        boolean containsTopRight = false;
+        boolean containsTopLeft = false;
 
-		for (RealPoint rp : boundingBox.getPoints()) {
-			if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 30) {
-				containsBottomLeft = true;
-			}
-			if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 30) {
-				containsBottomRight = true;
-			}
-			if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 70) {
-				containsTopRight = true;
-			}
-			if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 70) {
-				containsTopLeft = true;
-			}
-		}
+        for (RealPoint rp : boundingBox.getPoints()) {
+            if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 30) {
+                containsBottomLeft = true;
+            }
+            if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 30) {
+                containsBottomRight = true;
+            }
+            if (rp.getDoublePosition(0) == 70 && rp.getDoublePosition(1) == 70) {
+                containsTopRight = true;
+            }
+            if (rp.getDoublePosition(0) == 30 && rp.getDoublePosition(1) == 70) {
+                containsTopLeft = true;
+            }
+        }
 
-		assertEquals("Extrema BottomLeft", true, containsBottomLeft);
-		assertEquals("Extrema BottomRight", true, containsBottomRight);
-		assertEquals("Extrema TopRight", true, containsTopRight);
-		assertEquals("Extrema TopLeft", true, containsTopLeft);
-	}
+        assertEquals("Extrema BottomLeft", true, containsBottomLeft);
+        assertEquals("Extrema BottomRight", true, containsBottomRight);
+        assertEquals("Extrema TopRight", true, containsTopRight);
+        assertEquals("Extrema TopLeft", true, containsTopLeft);
+    }
 
-	/**
-	 * Test the {@link ConvexHull} Op.
-	 */
-	@Test
-	public void testConvexHull() {
-		Polygon p = new Polygon();
+    /**
+     * Test the {@link ConvexHull} Op.
+     */
+    @Test
+    public void testConvexHull() {
+        Polygon p = new Polygon();
 
-		// add 4 extrema
-		p.add(new RealPoint(0, 0));
-		p.add(new RealPoint(10, 0));
-		p.add(new RealPoint(10, 10));
-		p.add(new RealPoint(0, 10));
+        // add 4 extrema
+        p.add(new RealPoint(0.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 10.0d));
+        p.add(new RealPoint(0.0d, 10.0d));
 
-		// add noise
-		for (int i = 0; i < 100; i++) {
-			p.add(new RealPoint(Math.random() * 10, Math.random() * 10));
-		}
+        // add noise
+        for (int i = 0; i < 100; i++) {
+            p.add(new RealPoint(new double[] { Math.random() * 10,
+                    Math.random() * 10 }));
+        }
 
-		Polygon convexHull = (Polygon) ops.run(ConvexHull.class, p);
+        Polygon convexHull = (Polygon) ops.run(ConvexHull.class, p);
 
-		// five points because the first and last one are equal
-		assertEquals("Polygon Size", 5, convexHull.size());
+        // five points because the first and last one are equal
+        assertEquals("Polygon Size", 5, convexHull.size());
 
-		// and now check that it only contains the four corner points
-		boolean containsBottomLeft = false;
-		boolean containsBottomRight = false;
-		boolean containsTopRight = false;
-		boolean containsTopLeft = false;
-		for (RealPoint rp : convexHull.getPoints()) {
-			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 0) {
-				containsBottomLeft = true;
-			}
-			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 0) {
-				containsBottomRight = true;
-			}
-			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 10) {
-				containsTopRight = true;
-			}
-			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 10) {
-				containsTopLeft = true;
-			}
-		}
+        // and now check that it only contains the four corner points
+        boolean containsBottomLeft = false;
+        boolean containsBottomRight = false;
+        boolean containsTopRight = false;
+        boolean containsTopLeft = false;
+        for (RealPoint rp : convexHull.getPoints()) {
+            if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 0) {
+                containsBottomLeft = true;
+            }
+            if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 0) {
+                containsBottomRight = true;
+            }
+            if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 10) {
+                containsTopRight = true;
+            }
+            if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 10) {
+                containsTopLeft = true;
+            }
+        }
 
-		assertEquals("Extrema BottomLeft", true, containsBottomLeft);
-		assertEquals("Extrema BottomRight", true, containsBottomRight);
-		assertEquals("Extrema TopRight", true, containsTopRight);
-		assertEquals("Extrema TopLeft", true, containsTopLeft);
-	}
-	
-	
-	/**
-	 * Test the {@link CenterOfGravity} Op.
-	 */
-	@Test
-	public void testCenterOfGravity() {
-		
-		
-		// create polygon and add some values
-		Polygon p = new Polygon();
-		p.add(new RealPoint(0, 0));
-		p.add(new RealPoint(10, 0));
-		p.add(new RealPoint(10, 10));
-		p.add(new RealPoint(0, 10));
+        assertEquals("Extrema BottomLeft", true, containsBottomLeft);
+        assertEquals("Extrema BottomRight", true, containsBottomRight);
+        assertEquals("Extrema TopRight", true, containsTopRight);
+        assertEquals("Extrema TopLeft", true, containsTopLeft);
+    }
 
-		RealPoint centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class, p);
+    /**
+     * Test the {@link CenterOfGravity} Op.
+     */
+    @Test
+    public void testCenterOfGravity() {
 
-		// five points because the first and last one are equal
-		assertEquals("Center of Gravity X", 5d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
-		assertEquals("Center of Gravity Y", 5d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
-		
-		
-		// create polygon and add some values
-		p = new Polygon();
-		p.add(new RealPoint(0, 0));
-		p.add(new RealPoint(50, 0));
-		p.add(new RealPoint(50, 50));
-		p.add(new RealPoint(0, 50));
+        // create polygon and add some values
+        Polygon p = new Polygon();
+        p.add(new RealPoint(0.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 10.0d));
+        p.add(new RealPoint(0.0d, 10.0d));
 
-		centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class, p);
+        RealPoint centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class,
+                p);
 
-		// five points because the first and last one are equal
-		assertEquals("Center of Gravity X", 25d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
-		assertEquals("Center of Gravity Y", 25d, centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
-	}
-	
-	/**
-	 * Test the {@link SmallestEnclosingRectangle} Op.
-	 */
-	@Test
-	public void testSmallestEnclosingRectangle() {
-		
-		Polygon p = new Polygon();
+        // five points because the first and last one are equal
+        assertEquals("Center of Gravity X", 5d,
+                centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+        assertEquals("Center of Gravity Y", 5d,
+                centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
 
-		// add 4 extrema
-		p.add(new RealPoint(0, 0));
-		p.add(new RealPoint(10, 0));
-		p.add(new RealPoint(10, 10));
-		p.add(new RealPoint(0, 10));
+        // create polygon and add some values
+        p = new Polygon();
+        p.add(new RealPoint(0.0d, 0.0d));
+        p.add(new RealPoint(50.0d, 0.0d));
+        p.add(new RealPoint(50.0d, 50.0d));
+        p.add(new RealPoint(0.0d, 50.0d));
 
-		// add noise
-		for (int i = 0; i < 100; i++) {
-			p.add(new RealPoint(Math.random() * 10, Math.random() * 10));
-		}
+        centerOfGravity = (RealPoint) ops.run(CenterOfGravity.class, p);
 
+        // five points because the first and last one are equal
+        assertEquals("Center of Gravity X", 25d,
+                centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+        assertEquals("Center of Gravity Y", 25d,
+                centerOfGravity.getDoublePosition(0), Double.MIN_VALUE);
+    }
 
-		Polygon ser = (Polygon) ops.run(SmallestEnclosingRectangle.class, p);
-		
-		
-		// five points because the first and last one are equal
-		assertEquals("Polygon Size", 5, ser.size());
+    /**
+     * Test the {@link SmallestEnclosingRectangle} Op.
+     */
+    @Test
+    public void testSmallestEnclosingRectangle() {
 
-		// and now check that it only contains the four corner points
-		boolean containsBottomLeft = false;
-		boolean containsBottomRight = false;
-		boolean containsTopRight = false;
-		boolean containsTopLeft = false;
-		for (RealPoint rp : ser.getPoints()) {
-			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 0) {
-				containsBottomLeft = true;
-			}
-			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 0) {
-				containsBottomRight = true;
-			}
-			if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 10) {
-				containsTopRight = true;
-			}
-			if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 10) {
-				containsTopLeft = true;
-			}
-		}
+        Polygon p = new Polygon();
 
-		assertEquals("Extrema BottomLeft", true, containsBottomLeft);
-		assertEquals("Extrema BottomRight", true, containsBottomRight);
-		assertEquals("Extrema TopRight", true, containsTopRight);
-		assertEquals("Extrema TopLeft", true, containsTopLeft);
+        // add 4 extrema
+        p.add(new RealPoint(0.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 0.0d));
+        p.add(new RealPoint(10.0d, 10.0d));
+        p.add(new RealPoint(0.0d, 10.0d));
 
-	}
+        // add noise
+        for (int i = 0; i < 100; i++) {
+            p.add(new RealPoint(Math.random() * 10, Math.random() * 10));
+        }
+
+        Polygon ser = (Polygon) ops.run(SmallestEnclosingRectangle.class, p);
+
+        // five points because the first and last one are equal
+        assertEquals("Polygon Size", 5, ser.size());
+
+        // and now check that it only contains the four corner points
+        boolean containsBottomLeft = false;
+        boolean containsBottomRight = false;
+        boolean containsTopRight = false;
+        boolean containsTopLeft = false;
+        for (RealPoint rp : ser.getPoints()) {
+            if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 0) {
+                containsBottomLeft = true;
+            }
+            if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 0) {
+                containsBottomRight = true;
+            }
+            if (rp.getDoublePosition(0) == 10 && rp.getDoublePosition(1) == 10) {
+                containsTopRight = true;
+            }
+            if (rp.getDoublePosition(0) == 0 && rp.getDoublePosition(1) == 10) {
+                containsTopLeft = true;
+            }
+        }
+
+        assertEquals("Extrema BottomLeft", true, containsBottomLeft);
+        assertEquals("Extrema BottomRight", true, containsBottomRight);
+        assertEquals("Extrema TopRight", true, containsTopRight);
+        assertEquals("Extrema TopLeft", true, containsTopLeft);
+
+    }
 }
