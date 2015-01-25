@@ -31,6 +31,12 @@
 templateDirectory = project.properties['templateDirectory']
 outputDirectory = project.properties['outputDirectory']
 
+/* Gets the last modified timestap for the given file. */
+def timestamp(dir, file) {
+	if (file == null) return Long.MAX_VALUE;
+	return new java.io.File(dir, file).lastModified();
+}
+
 /* Processes a template using Apache Velocity. */
 def processTemplate(engine, context, templateFile, outFilename) {
 	if (outFilename == null) return; // nothing to do
@@ -208,8 +214,8 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 
 	// avoid rewriting unchanged code to avoid recompilation
 	def mtime = java.lang.Math.max(
-		new java.io.File(templateSubdirectory, translationsFile).lastModified(),
-		new java.io.File(templateSubdirectory, templateFile).lastModified());
+		timestamp(templateSubdirectory, translationsFile),
+		timestamp(templateSubdirectory, templateFile));
 
 	for (;;) {
 		// read the line
@@ -219,7 +225,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		// check if the line starts a new section
 		if (line.startsWith("[") && line.endsWith("]")) {
 			// write out the previous file
-			if (outputFilename != null && mtime >= new java.io.File(outputDirectory, outputFilename).lastModified()) {
+			if (mtime >= timestamp(outputDirectory, outputFilename)) {
 				processTemplate(engine, context, templateFile, outputFilename);
 			}
 
@@ -272,7 +278,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	reader.close();
 
 	// process the template
-	if (outputFilename != null && mtime >= new java.io.File(outputDirectory, outputFilename).lastModified()) {
+	if (mtime >= timestamp(outputDirectory, outputFilename)) {
 		processTemplate(engine, context, templateFile, outputFilename);
 	}
 }
