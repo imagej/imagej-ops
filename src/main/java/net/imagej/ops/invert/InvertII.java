@@ -32,10 +32,10 @@ package net.imagej.ops.invert;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.arithmetic.Invert;
 import net.imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Invert.NAME, priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
-	Invert
+	MathOps.Invert
 {
 
 	@Parameter

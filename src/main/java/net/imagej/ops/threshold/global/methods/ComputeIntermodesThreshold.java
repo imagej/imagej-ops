@@ -30,12 +30,15 @@
 
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imagej.ops.threshold.global.ThresholdUtils;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 // NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
@@ -47,10 +50,11 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = Intermodes.NAME)
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.Intermodes.NAME)
 public class ComputeIntermodesThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
+	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;
 
 	@Override

@@ -216,10 +216,10 @@ javadoc=Sets the real component of an output real number to the exponentiation o
 interface=Exp
 
 
-[RealSubtractConstant.java]
+[RealSubtract.java]
 compute_expr= input.getRealDouble() - constant
 javadoc=Sets the real component of an output real number to the subtraction from the real component of an input real number a constant value.
-interface=SubtractConstant
+interface=Subtract
 members=[{name:constant}]
 
 
@@ -282,7 +282,7 @@ interface=Invert
 members=[{name:specifiedMin},{name:specifiedMax}]
 
 
-[RealDivideConstant.java]
+[RealDivide.java]
 compute_body=```
 if (constant == 0) {
 	output.setReal(dbzVal);
@@ -291,7 +291,7 @@ if (constant == 0) {
 }
 ```
 javadoc=Sets the real component of an output real number to the division of the real component of an input real number by a constant value.
-interface=DivideConstant
+interface=Divide
 members=[{name:constant},{name:dbzVal}]
 
 
@@ -404,10 +404,10 @@ javadoc=Sets the real component of an output real number to the cosine of the re
 interface=Cos
 
 
-[RealMultiplyConstant.java]
+[RealMultiply.java]
 compute_expr= input.getRealDouble() * constant
 javadoc=Sets the real component of an output real number to the multiplication of the real component of an input real number with a constant value.
-interface=MultiplyConstant
+interface=Multiply
 members=[{name:constant}]
 
 
@@ -455,10 +455,10 @@ javadoc=Sets the real component of an output real number to zero.
 interface=Zero
 
 
-[RealAddConstant.java]
+[RealAdd.java]
 compute_expr= input.getRealDouble() + constant
 javadoc=Sets the real component of an output real number to the addition of the real component of an input real number with a constant value.
-interface=AddConstant
+interface=Add
 members=[{name:constant}]
 
 

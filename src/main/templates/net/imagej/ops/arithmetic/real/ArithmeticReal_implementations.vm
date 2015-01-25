@@ -12,7 +12,7 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,8 @@
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.arithmetic.${interface};
 
 import net.imglib2.type.numeric.RealType;
 #foreach ($imp in $imports)
@@ -60,9 +60,9 @@ import org.scijava.plugin.Plugin;
  * @author $author
 #end
  */
-@Plugin(type = Op.class, name = ${interface}.NAME)
+@Plugin(type = Op.class, name = MathOps.${interface}.NAME)
 public class Real$interface<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements $interface
+	extends AbstractStrictFunction<I, O> implements MathOps.$interface
 {
 #foreach ($member in $members)
 #if (!$member.isEmpty())

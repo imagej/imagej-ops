@@ -2,7 +2,7 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -28,17 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.MathOps;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Add.NAME, priority = $priority)
-public class AddConstantTo$name implements Ops.Add {
+@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = $priority)
+public class AddConstantTo$name implements MathOps.Add {
 
 	@Parameter(type = ItemIO.BOTH)
 	private $primitive a;

@@ -1,5 +1,0 @@
-package net.imagej.ops.arithmetic;
-
-public interface $interface {
-	public void add($opType a, $opType b, $resultType c);
-}

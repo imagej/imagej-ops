@@ -27,14 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imagej.ops.threshold.global.ThresholdUtils;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 // This plugin code ported from the original MatLab code of the max likelihood
@@ -47,13 +51,14 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  */
-@Plugin(type = ComputeThreshold.class, name = MaxLikelihood.NAME)
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.MaxLikelihood.NAME)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
 	private static final int MAX_ATTEMPTS = 10000;
 
-	private String errMessage;
+	@Parameter(type = ItemIO.OUTPUT)
+	private String errMsg;
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {
@@ -92,7 +97,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 
 		// % The initial estimate for the threshold is found with the MINIMUM
 		// % algorithm.
-		ComputeMinimumThreshold method = new ComputeMinimumThreshold();
+		final ComputeMinimumThreshold<T> method = new ComputeMinimumThreshold<T>();
 		int T = (int) method.computeBin(hist);
 
 		double eps = 0.0000001;
@@ -132,7 +137,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		int attempts = 0;
 		while (true) {
 			if (attempts++ > MAX_ATTEMPTS) {
-				errMessage = "Max likelihood method not converging after "
+				errMsg = "Max likelihood method not converging after "
 						+ MAX_ATTEMPTS + " attempts.";
 				return -1;
 			}
@@ -192,7 +197,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		// zero.
 		double sqterm = w1 * w1 - w0 * w2;
 		if (sqterm < 0) {
-			errMessage = "Max likelihood threshold would be imaginary";
+			errMsg = "Max likelihood threshold would be imaginary";
 			return -1;
 		}
 

@@ -27,14 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imagej.ops.threshold.global.ThresholdUtils;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 // NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
@@ -47,10 +51,11 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "MinError(I)")
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.MinError.NAME)
 public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
+	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;
 
 	@Override
@@ -70,7 +75,7 @@ public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		// presentation and the original Matlab code.
 
 		// Initial estimate for the threshold is found with the MEAN algorithm.
-		int threshold = (int) new ComputeMeanThreshold().computeBin(hist);
+		int threshold = (int) new ComputeMeanThreshold<T>().computeBin(hist);
 		int Tprev = -2;
 		double mu, nu, p, q, sigma2, tau2, w0, w1, w2, sqterm, temp;
 		// int counter=1;

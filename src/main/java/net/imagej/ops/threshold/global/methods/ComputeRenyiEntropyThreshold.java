@@ -27,8 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.histogram.Histogram1d;
@@ -45,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = RenyiEntropy.NAME)
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.RenyiEntropy.NAME)
 public class ComputeRenyiEntropyThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

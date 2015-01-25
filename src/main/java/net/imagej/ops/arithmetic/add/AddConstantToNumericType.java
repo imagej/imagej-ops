@@ -31,17 +31,17 @@
 package net.imagej.ops.arithmetic.add;
 
 import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Add.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.LOW_PRIORITY)
 public class AddConstantToNumericType<T extends NumericType<T>> extends
-	AbstractOutputFunction<T, T> implements Ops.Add
+	AbstractOutputFunction<T, T> implements MathOps.Add
 {
 
 	@Parameter

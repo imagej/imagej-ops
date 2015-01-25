@@ -193,7 +193,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object add(final Object... args) {
-		return run(Ops.Add.NAME, args);
+		return run(MathOps.Add.NAME, args);
 	}
 
 	@Override
@@ -233,7 +233,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object divide(Object... args) {
-		return run(Ops.Divide.NAME, args);
+		return run(MathOps.Divide.NAME, args);
 	}
 
 	@Override
@@ -328,7 +328,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object multiply(Object... args) {
-		return run(Ops.Multiply.NAME, args);
+		return run(MathOps.Multiply.NAME, args);
 	}
 
 	@Override
@@ -368,7 +368,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object subtract(Object... args) {
-		return run(Ops.Subtract.NAME, args);
+		return run(MathOps.Subtract.NAME, args);
 	}
 
 	@Override

@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,22 +33,29 @@ package net.imagej.ops;
 import net.imagej.ops.Op;
 
 /**
- * Static utility class containing built-in op interfaces.
+ * Static utility class containing built-in op interfaces of the
+#if ($namespace)
+ * $namespace namespace.
+#else
+ * global namespace.
+#end
  * <p>
  * These interfaces are intended to mark all ops using a particular name,
- * regardless of the area of functionality. For example, all ops called "add"
- * would be marked by implementing the {@code Ops.Add} interface, and
- * annotating them with:
+ * regardless of their exact functionality. For example, all ops called
+ * "${ops.get(0).name}" would be marked by implementing the
+ * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
  * </p>
-	 * <pre>
-	 * @Plugin(type = Op.class, name = Ops.Add.NAME)
-	 * </pre>
+ * <pre>
+ * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
+ * </pre>
  *
- * @author Curtis Rueden
+#foreach ($author in $authors)
+ * @author $author
+#end
  */
-public final class Ops {
+public final class $className {
 
-	private Ops() {
+	private $className() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
@@ -61,15 +68,19 @@ public final class Ops {
 	 *
 	 * <pre>
 #if ($op.aliases)
-	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = Ops.${op.iface}.ALIASES) })
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
 #else
-	 * @Plugin(type = Op.class, name = Ops.${op.iface}.NAME)
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME)
 #end
 	 * </pre>
 	 */
 	public interface $op.iface extends Op {
+#if ($namespace)
+		String NAME = "${namespace}.$op.name";
+#else
 		String NAME = "$op.name";
+#end
 #if ($op.aliases)
 		String ALIASES = "$op.aliases";
 #end
