@@ -344,6 +344,7 @@ public class DefaultOpMatchingService extends
 		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
 	}
 
+	/** Helper method of {@link #match(OpCandidate)}. */
 	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
 		final Object[] args)
 	{
@@ -372,6 +373,7 @@ public class DefaultOpMatchingService extends
 		return module;
 	}
 
+	/** Helper method of {@link #isCandidate}. */
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
 
@@ -390,13 +392,14 @@ public class DefaultOpMatchingService extends
 		return false;
 	}
 
-	/** Helper method of {@link #match}. */
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
 	private Module createModule(final ModuleInfo info, final Object... args) {
 		final Module module = moduleService.createModule(info);
 		context.inject(module.getDelegateObject());
 		return assignInputs(module, args);
 	}
 
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
 	private boolean canAssign(final OpCandidate<?> candidate, final Object arg,
 		final ModuleItem<?> item)
 	{
@@ -418,6 +421,7 @@ public class DefaultOpMatchingService extends
 		return true;
 	}
 
+	/** Helper method of {@link #canAssign}. */
 	private boolean canConvert(final Object o, final Type type) {
 		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
 			// NB: Class argument for matching, to help differentiate op signatures.
@@ -438,6 +442,7 @@ public class DefaultOpMatchingService extends
 		module.setResolved(item.getName(), true);
 	}
 
+	/** Helper method of {@link #assign}. */
 	private Object convert(final Object o, final Type type) {
 		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
 			// NB: Class argument for matching; fill with null.
@@ -455,6 +460,7 @@ public class DefaultOpMatchingService extends
 		return sb.toString();
 	}
 
+	/** Helper method of {@link #getOpString(ModuleInfo, ModuleItem)}. */
 	private String paramString(final Iterable<ModuleItem<?>> items,
 		final ModuleItem<?> special)
 	{
