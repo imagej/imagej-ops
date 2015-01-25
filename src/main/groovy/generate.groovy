@@ -205,6 +205,12 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	// read translation lines
 	context = outputFilename = null;
 	reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
+
+	// avoid rewriting unchanged code to avoid recompilation
+	def mtime = java.lang.Math.max(
+		new java.io.File(templateSubdirectory, translationsFile).lastModified(),
+		new java.io.File(templateSubdirectory, templateFile).lastModified());
+
 	for (;;) {
 		// read the line
 		line = reader.readLine();
@@ -213,7 +219,9 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		// check if the line starts a new section
 		if (line.startsWith("[") && line.endsWith("]")) {
 			// write out the previous file
-			processTemplate(engine, context, templateFile, outputFilename);
+			if (outputFilename != null && mtime >= new java.io.File(outputDirectory, outputFilename).lastModified()) {
+				processTemplate(engine, context, templateFile, outputFilename);
+			}
 
 			// start a new file
 			outputFilename = line.substring(1, line.length() - 1);
@@ -264,7 +272,9 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	reader.close();
 
 	// process the template
-	processTemplate(engine, context, templateFile, outputFilename);
+	if (outputFilename != null && mtime >= new java.io.File(outputDirectory, outputFilename).lastModified()) {
+		processTemplate(engine, context, templateFile, outputFilename);
+	}
 }
 
 /* Recursively translates all templates in the given directory. */
