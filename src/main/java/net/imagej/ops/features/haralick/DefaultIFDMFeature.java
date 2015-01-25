@@ -41,31 +41,31 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: IFDM")
+@Plugin(type = Op.class, name = IFDMFeature.NAME)
 public class DefaultIFDMFeature implements IFDMFeature {
 
-	@Parameter
-	private CooccurrenceMatrix cooc;
+    @Parameter
+    private CooccurrenceMatrix cooc;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private double output;
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public double getFeatureValue() {
+        return output;
+    }
 
-	@Override
-	public void run() {
-		output = 0;
+    @Override
+    public void run() {
+        output = 0;
 
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
+        final double[][] matrix = cooc.getOutput();
+        final int nrGrayLevels = matrix.length;
 
-		for (int i = 0; i < nrGrayLevels; i++) {
-			for (int j = 0; j < nrGrayLevels; j++) {
-				output += 1.0 / (1 + (i - j) * (i - j)) * matrix[i][j];
-			}
-		}
-	}
+        for (int i = 0; i < nrGrayLevels; i++) {
+            for (int j = 0; j < nrGrayLevels; j++) {
+                output += 1.0 / (1 + (i - j) * (i - j)) * matrix[i][j];
+            }
+        }
+    }
 }

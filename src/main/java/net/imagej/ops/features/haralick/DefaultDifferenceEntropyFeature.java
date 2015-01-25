@@ -42,7 +42,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Difference Entropy")
+@Plugin(type = Op.class, name = DifferenceEntropyFeature.NAME)
 public class DefaultDifferenceEntropyFeature implements DifferenceEntropyFeature {
 
 	// Avoid log 0

@@ -41,7 +41,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Entropy")
+@Plugin(type = Op.class, name = EntropyFeature.NAME)
 public class DefaultEntropyFeature implements EntropyFeature {
 
 	private static final double EPSILON = 0.00000001f;

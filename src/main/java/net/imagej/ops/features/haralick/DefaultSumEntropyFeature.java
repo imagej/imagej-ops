@@ -42,7 +42,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Sum Entropy")
+@Plugin(type = Op.class, name = DefaultSumEntropyFeature.NAME)
 public class DefaultSumEntropyFeature implements SumEntropyFeature {
 
 	private static final double EPSILON = 0.00000001f;

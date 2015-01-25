@@ -11,36 +11,35 @@ import org.scijava.plugin.Plugin;
 
 // cluster shade (from cellcognition)
 // https://github.com/CellCognition/cecog/blob/master/csrc/include/cecog/features.hxx#L495
-@Plugin(type = Op.class, label = "Haralick 2D: Clustershade")
-public class DefaultClusterShadeFeature implements
-		ClusterShadeFeature {
+@Plugin(type = Op.class, name = ClusterShadeFeature.NAME)
+public class DefaultClusterShadeFeature implements ClusterShadeFeature {
 
-	@Parameter
-	private CooccurrenceMatrix cooc;
+    @Parameter
+    private CooccurrenceMatrix cooc;
 
-	@Parameter
-	private CoocStdX coocStdX;
+    @Parameter
+    private CoocStdX coocStdX;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private double output;
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public double getFeatureValue() {
+        return output;
+    }
 
-	@Override
-	public void run() {
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
-		final double stdx = coocStdX.getOutput();
+    @Override
+    public void run() {
+        final double[][] matrix = cooc.getOutput();
+        final int nrGrayLevels = matrix.length;
+        final double stdx = coocStdX.getOutput();
 
-		output = 0;
-		for (int j = 0; j < nrGrayLevels; j++) {
-			output += Math.pow(2 * j - 2 * stdx, 3) * matrix[j][j];
-			for (int i = j + 1; i < nrGrayLevels; i++) {
-				output += 2 * Math.pow((i + j - 2 * stdx), 3) * matrix[i][j];
-			}
-		}
-	}
+        output = 0;
+        for (int j = 0; j < nrGrayLevels; j++) {
+            output += Math.pow(2 * j - 2 * stdx, 3) * matrix[j][j];
+            for (int i = j + 1; i < nrGrayLevels; i++) {
+                output += 2 * Math.pow((i + j - 2 * stdx), 3) * matrix[i][j];
+            }
+        }
+    }
 }

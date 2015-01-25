@@ -42,7 +42,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: ICM2")
+@Plugin(type = Op.class, name = ICM2Feature.NAME)
 public class DefaultICM2Feature implements ICM2Feature {
 
 	@Parameter

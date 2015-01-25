@@ -45,54 +45,53 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Correlation")
-public class DefaultCorrelationFeature implements
-		CorrelationFeature {
+@Plugin(type = Op.class, name = DefaultCorrelationFeature.NAME)
+public class DefaultCorrelationFeature implements CorrelationFeature {
 
-	@Parameter
-	private CooccurrenceMatrix cooc;
+    @Parameter
+    private CooccurrenceMatrix cooc;
 
-	@Parameter
-	private CoocMeanX coocMeanX;
+    @Parameter
+    private CoocMeanX coocMeanX;
 
-	@Parameter
-	private CoocMeanY coocMeanY;
+    @Parameter
+    private CoocMeanY coocMeanY;
 
-	@Parameter
-	private CoocStdX coocStdX;
+    @Parameter
+    private CoocStdX coocStdX;
 
-	@Parameter
-	private CoocStdY coocStdY;
+    @Parameter
+    private CoocStdY coocStdY;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private double output;
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
 
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
-		final double meanx = coocMeanX.getOutput();
-		final double meany = coocMeanY.getOutput();
-		final double stdx = coocStdX.getOutput();
-		final double stdy = coocStdY.getOutput();
+        final double[][] matrix = cooc.getOutput();
+        final int nrGrayLevels = matrix.length;
+        final double meanx = coocMeanX.getOutput();
+        final double meany = coocMeanY.getOutput();
+        final double stdx = coocStdX.getOutput();
+        final double stdy = coocStdY.getOutput();
 
-		output = 0;
-		for (int i = 0; i < nrGrayLevels; i++) {
-			for (int j = 0; j < nrGrayLevels; j++) {
-				output += ((i - meanx) * (j - meany)) * matrix[i][j]
-						/ (stdx * stdy);
-			}
-		}
+        output = 0;
+        for (int i = 0; i < nrGrayLevels; i++) {
+            for (int j = 0; j < nrGrayLevels; j++) {
+                output += ((i - meanx) * (j - meany)) * matrix[i][j]
+                        / (stdx * stdy);
+            }
+        }
 
-		// if NaN
-		if (Double.isNaN(output)) {
-			output = 0;
-		}
-	}
+        // if NaN
+        if (Double.isNaN(output)) {
+            output = 0;
+        }
+    }
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public double getFeatureValue() {
+        return output;
+    }
 }

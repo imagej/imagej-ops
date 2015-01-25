@@ -41,7 +41,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Difference Variance")
+@Plugin(type = Op.class, name = DifferenceVarianceFeature.NAME)
 public class DefaultDifferenceVarianceFeature implements
 		DifferenceVarianceFeature {
 

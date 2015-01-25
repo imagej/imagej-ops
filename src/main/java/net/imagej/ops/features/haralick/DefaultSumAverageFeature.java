@@ -42,7 +42,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Sum Average")
+@Plugin(type = Op.class, name = SumAverageFeature.NAME)
 public class DefaultSumAverageFeature implements SumAverageFeature {
 
 	@Parameter

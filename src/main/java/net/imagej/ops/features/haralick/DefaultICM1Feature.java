@@ -42,28 +42,28 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: ICM1")
+@Plugin(type = Op.class, name = ICM1Feature.NAME)
 public class DefaultICM1Feature implements ICM1Feature {
 
-	@Parameter
-	private EntropyFeature entropy;
+    @Parameter
+    private EntropyFeature entropy;
 
-	@Parameter
-	private CoocHXY coocHXY;
+    @Parameter
+    private CoocHXY coocHXY;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private double output;
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public double getFeatureValue() {
+        return output;
+    }
 
-	@Override
-	public void run() {
-		final double[] coochxy = coocHXY.getOutput();
-		output = (entropy.getFeatureValue() - coochxy[2])
-				/ Math.max(coochxy[0], coochxy[1]);
-	}
+    @Override
+    public void run() {
+        final double[] coochxy = coocHXY.getOutput();
+        output = (entropy.getFeatureValue() - coochxy[2])
+                / Math.max(coochxy[0], coochxy[1]);
+    }
 
 }
