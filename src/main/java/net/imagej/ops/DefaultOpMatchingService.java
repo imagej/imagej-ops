@@ -88,7 +88,8 @@ public class DefaultOpMatchingService extends
 		// find candidates with matching name & type
 		final List<OpCandidate<OP>> candidates = findCandidates(ref);
 		if (candidates.isEmpty()) {
-			throw new IllegalArgumentException("No candidate '" + ref.getLabel() + "' ops");
+			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
+				"' ops");
 		}
 
 		// narrow down candidates to the exact matches
@@ -283,7 +284,8 @@ public class DefaultOpMatchingService extends
 		else {
 			// multiple matches
 			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " + priority + ":\n");
+			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
+				priority + ":\n");
 			int count = 0;
 			for (final Module module : matches) {
 				sb.append(++count + ". ");
