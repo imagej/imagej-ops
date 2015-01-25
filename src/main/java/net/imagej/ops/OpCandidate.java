@@ -124,7 +124,7 @@ public class OpCandidate<OP extends Op> {
 				sb.append("Inconvertible type");
 				break;
 			case DOES_NOT_CONFORM:
-				sb.append("Contingent constraints violated");
+				sb.append("Inputs do not conform to op rules");
 				break;
 			default:
 				return getStatusMessage();

@@ -248,14 +248,17 @@ public class DefaultOpMatchingService extends
 	 */
 	private String getOpString(final String name, final Object... args) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(name + "(");
+		sb.append(name + "(\n\t\t");
 		boolean first = true;
 		for (final Object arg : args) {
 			if (first) first = false;
-			else sb.append(", ");
-			if (arg != null) sb.append(arg.getClass().getName() + " ");
-			if (arg instanceof Class) sb.append(((Class<?>) arg).getName());
-			else sb.append(arg);
+			else sb.append(",\n\t\t");
+			if (arg == null) sb.append("null");
+			else if (arg instanceof Class) {
+				// NB: Class instance used to mark argument type.
+				sb.append(((Class<?>) arg).getSimpleName());
+			}
+			else sb.append(arg.getClass().getSimpleName());
 		}
 		sb.append(")");
 		return sb.toString();
@@ -264,11 +267,10 @@ public class DefaultOpMatchingService extends
 	@Override
 	public String getOpString(final ModuleInfo info) {
 		final StringBuilder sb = new StringBuilder();
-		if (!info.isValid()) sb.append("{!INVALID!} ");
-		sb.append("[" + info.getPriority() + "] ");
-		sb.append("(" + paramString(info.outputs()) + ")");
-		sb.append(" = " + info.getDelegateClassName());
-		sb.append("(" + paramString(info.inputs()) + ")");
+		final String outputString = paramString(info.outputs());
+		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
+		sb.append(info.getDelegateClassName());
+		sb.append("(\n\t\t" + paramString(info.inputs()) + ")");
 		return sb.toString();
 	}
 
@@ -287,20 +289,26 @@ public class DefaultOpMatchingService extends
 			// multiple matches
 			final double priority = matches.get(0).getInfo().getPriority();
 			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " + priority + ":\n");
+			int count = 0;
 			for (final Module module : matches) {
-				sb.append("\t" + getOpString(module.getInfo()) + "\n");
+				sb.append(++count + ". ");
+				sb.append(getOpString(module.getInfo()) + "\n");
 			}
 		}
 
 		// fail, with information about the request and candidates
+		sb.append("\n");
 		sb.append("Request:\n");
-		sb.append("\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
+		sb.append("-\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
+		sb.append("\n");
 		sb.append("Candidates:\n");
+		int count = 0;
 		for (final OpCandidate<OP> candidate : candidates) {
 			final ModuleInfo info = candidate.getInfo();
+			sb.append(++count + ". ");
 			sb.append("\t" + getOpString(info) + "\n");
 			final String status = candidate.getStatus();
-			if (status != null) sb.append("\t\t" + status + "\n");
+			if (status != null) sb.append("\t" + status + "\n");
 		}
 		return sb.toString();
 	}
@@ -400,7 +408,7 @@ public class DefaultOpMatchingService extends
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
 			candidate.setStatus(StatusCode.CANNOT_CONVERT,
-				"cannot coerce " + arg.getClass().getName() + " to " + type);
+				arg.getClass().getName() + " => " + type + " " + item.getName());
 			return false;
 		}
 
@@ -440,16 +448,11 @@ public class DefaultOpMatchingService extends
 		boolean first = true;
 		for (final ModuleItem<?> item : items) {
 			if (first) first = false;
-			else sb.append(", ");
-			sb.append(getTypeName(item.getGenericType()) + " " + item.getName());
+			else sb.append(",\n\t\t");
+			sb.append(item.getType().getSimpleName() + " " + item.getName());
 			if (!item.isRequired()) sb.append("?");
 		}
 		return sb.toString();
-	}
-
-	private String getTypeName(final Type type) {
-		if (type instanceof Class) return ((Class<?>) type).getName();
-		return type.toString();
 	}
 
 }
