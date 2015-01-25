@@ -1,0 +1,20 @@
+[HaralickFeatureTest.java]
+ops = ```
+[
+  {iface: ASM,                 empty: 1.0,         random: 0.0201346699, constant: 1.0},
+  {iface: ClusterPromenence,   empty: 0.0,         random: 369.1571031787, constant: 0.0},
+  {iface: ClusterShade,        empty: 0.0,         random: 56.8141540828, constant: 0.0},
+  {iface: Contrast,            empty: 0.0,         random: 8.2726262626, constant: 0.0},
+  {iface: Correlation,         empty: 0.0,         random: -0.0123827841, constant: 0.0},
+  {iface: DifferenceEntropy,   empty: -0.00000001, random: 1.8476756085, constant: -0.00000001},
+  {iface: DifferenceVariance,  empty: 0.0,         random: 2.95770352654046E-016, constant: 0.0},
+  {iface: Entropy,             empty: 0.0,         random: 3.9295886956, constant: 0.0},
+  {iface: ICM1,                empty: 0.0,         random: -0.0008158104, constant: 0.0},
+  {iface: ICM2,                empty: 0.0,         random: 0.0565857962, constant: 0.0},
+  {iface: IFDM,                empty: 1.0,         random: 0.3288476115, constant: 1.0},
+  {iface: SumAverage,          empty: 2.0,         random: 8.0443434343, constant: 2.0},
+  {iface: SumEntropy,          empty: -0.00000001, random: 2.4348598585, constant: -0.00000001},
+  {iface: SumVariance,         empty: 0.0,         random: 8.0702558821, constant: 0.0},
+  {iface: Variance,            empty: 0.0,           random: 4.0857205362, constant: 0.0}
+]
+```

@@ -1,0 +1,29 @@
+[HaralickOps.java]
+ops = ```
+[
+  {name: haralickasm, iface: ASM},
+  {name: haralickclusterpromenence, iface: ClusterPromenence},
+  {name: haralickclustershade, iface: ClusterShade},
+  {name: haralickconstrast, iface: Contrast},
+  {name: haralickcorrelation, iface: Correlation},
+  {name: haralickdifferenceentropy, iface: DifferenceEntropy},
+  {name: haralickdifferencevariance, iface: DifferenceVariance},
+  {name: haralickentropy, iface: Entropy},
+  {name: haralickvariance, iface: Variance},
+  {name: haralickicm1, iface: ICM1},
+  {name: haralickicm2, iface: ICM2},
+  {name: haralickifdm, iface: IFDM},
+  {name: haralicksumaverage, iface: SumAverage},
+  {name: haralicksumentropy, iface: SumEntropy},
+  {name: haralickcoochxy, iface: CoocHXY},
+  {name: haralickcoocmeanx, iface: CoocMeanX},
+  {name: haralickcoocmeany, iface: CoocMeanY},
+  {name: haralickcoocpx, iface: CoocPX},
+  {name: haralickcoocpxminusy, iface: CoocPXMinusY},
+  {name: haralickcoocpxplusy, iface: CoocPXPlusY},
+  {name: haralickcoocpy, iface: CoocPY},
+  {name: haralickcoocstdx, iface: CoocStdX},
+  {name: haralickcoocstdy, iface: CoocStdY},
+  {name: haralicksumvariance, iface: SumVariance}
+]
+```

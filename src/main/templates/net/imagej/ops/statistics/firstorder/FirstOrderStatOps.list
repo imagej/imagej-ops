@@ -1,0 +1,26 @@
+[FirstOrderStatOps.java]
+ops = ```
+[
+  {name: max,         iface: Max},
+  {name: mean,        iface: Mean,           aliases: "avg"},
+  {name: median,      iface: Median},
+  {name: min,         iface: Min},
+  {name: quantile,    iface: Quantile},
+  {name: stddev,      iface: StdDeviation},
+  {name: sum,         iface: Sum},
+  {name: variance,    iface: Variance},
+  {name: geometricmean, iface: GeometricMean},
+  {name: harmonicmean, iface: HarmonicMean},
+  {name: kurtosis, iface: Kurtosis},
+  {name: moment1aboutmean, iface: Moment1AboutMean},
+  {name: moment2aboutmean, iface: Moment2AboutMean},
+  {name: moment3aboutmean, iface: Moment3AboutMean},
+  {name: moment4aboutmean, iface: Moment4AboutMean},
+  {name: percentile, iface: Percentile},
+  {name: skewness, iface: Skewness},
+  {name: sumofinverses, iface: SumOfInverses},
+  {name: sumoflogs, iface: SumOfLogs},
+  {name: minmax, iface: MinMax},
+  {name: sumofsquares, iface: SumOfSquares}
+]
+```
