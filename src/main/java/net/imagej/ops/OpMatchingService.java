@@ -109,6 +109,4 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	<OP extends Op> String analyze(
 		final List<OpCandidate<OP>> candidates, final List<Module> matches);
 
-	<OP extends Op> boolean isCandidate(CommandInfo info, OpRef<OP> ref);
-
 }

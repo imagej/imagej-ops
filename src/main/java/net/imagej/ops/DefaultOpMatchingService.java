@@ -317,8 +317,16 @@ public class DefaultOpMatchingService extends
 		return sb.toString();
 	}
 
+	// -- PTService methods --
+
 	@Override
-	public <OP extends Op> boolean isCandidate(final CommandInfo info,
+	public Class<Optimizer> getPluginType() {
+		return Optimizer.class;
+	}
+
+	// -- Helper methods --
+
+	private <OP extends Op> boolean isCandidate(final CommandInfo info,
 		final OpRef<OP> ref)
 	{
 		if (!nameMatches(info, ref.getName())) return false;
@@ -335,15 +343,6 @@ public class DefaultOpMatchingService extends
 
 		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
 	}
-
-	// -- PTService methods --
-
-	@Override
-	public Class<Optimizer> getPluginType() {
-		return Optimizer.class;
-	}
-
-	// -- Helper methods --
 
 	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
 		final Object[] args)
