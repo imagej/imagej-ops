@@ -207,6 +207,7 @@ public class DefaultOpMatchingService extends
 
 	// -- Helper methods --
 
+	/** Helper method of {@link #findCandidates}. */
 	private <OP extends Op> boolean isCandidate(final CommandInfo info,
 		final OpRef<OP> ref)
 	{
