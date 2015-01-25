@@ -266,12 +266,7 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public String getOpString(final ModuleInfo info) {
-		final StringBuilder sb = new StringBuilder();
-		final String outputString = paramString(info.outputs());
-		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
-		sb.append(info.getDelegateClassName());
-		sb.append("(\n\t\t" + paramString(info.inputs()) + ")");
-		return sb.toString();
+		return getOpString(info, null);
 	}
 
 	@Override
@@ -306,7 +301,7 @@ public class DefaultOpMatchingService extends
 		for (final OpCandidate<OP> candidate : candidates) {
 			final ModuleInfo info = candidate.getInfo();
 			sb.append(++count + ". ");
-			sb.append("\t" + getOpString(info) + "\n");
+			sb.append("\t" + getOpString(info, candidate.getStatusItem()) + "\n");
 			final String status = candidate.getStatus();
 			if (status != null) sb.append("\t" + status + "\n");
 			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
@@ -415,7 +410,7 @@ public class DefaultOpMatchingService extends
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
 			candidate.setStatus(StatusCode.CANNOT_CONVERT,
-				arg.getClass().getName() + " => " + type + " " + item.getName(), item);
+				arg.getClass().getName() + " => " + type, item);
 			return false;
 		}
 
@@ -450,12 +445,26 @@ public class DefaultOpMatchingService extends
 		return convertService.convert(o, type);
 	}
 
-	private String paramString(final Iterable<ModuleItem<?>> items) {
+	private String getOpString(final ModuleInfo info, final ModuleItem<?> item) {
+		final StringBuilder sb = new StringBuilder();
+		final String outputString = paramString(info.outputs(), null).trim();
+		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
+		sb.append(info.getDelegateClassName());
+		sb.append("(" + paramString(info.inputs(), item) + ")");
+		return sb.toString();
+	}
+
+	private String paramString(final Iterable<ModuleItem<?>> items,
+		final ModuleItem<?> special)
+	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (final ModuleItem<?> item : items) {
 			if (first) first = false;
-			else sb.append(",\n\t\t");
+			else sb.append(",");
+			sb.append("\n");
+			if (item == special) sb.append("==>"); // highlight special item
+			sb.append("\t\t");
 			sb.append(item.getType().getSimpleName() + " " + item.getName());
 			if (!item.isRequired()) sb.append("?");
 		}
