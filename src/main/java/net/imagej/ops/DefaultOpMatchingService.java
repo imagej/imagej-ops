@@ -309,6 +309,13 @@ public class DefaultOpMatchingService extends
 			sb.append("\t" + getOpString(info) + "\n");
 			final String status = candidate.getStatus();
 			if (status != null) sb.append("\t" + status + "\n");
+			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
+				// show argument values when a contingent op rejects them
+				for (final ModuleItem<?> item : info.inputs()) {
+					final Object value = item.getValue(candidate.getModule());
+					sb.append("\t\t" + item.getName() + " = " + value + "\n");
+				}
+			}
 		}
 		return sb.toString();
 	}
