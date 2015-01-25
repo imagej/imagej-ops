@@ -148,11 +148,7 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
-		if (!candidate.getInfo().isValid()) {
-			// skip invalid modules
-			candidate.setStatus(StatusCode.INVALID_MODULE);
-			return null;
-		}
+		if (!valid(candidate)) return null;
 
 		// check the number of args, padding optional args with null as needed
 		int inputCount = 0, requiredCount = 0;
@@ -265,6 +261,13 @@ public class DefaultOpMatchingService extends
 		}
 
 		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
+	}
+
+	/** Verifies that the given candidate's module is valid. */
+	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
+		if (candidate.getInfo().isValid()) return true;
+		candidate.setStatus(StatusCode.INVALID_MODULE);
+		return false;
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */
