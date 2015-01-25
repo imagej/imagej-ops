@@ -54,8 +54,8 @@ public class OpCandidate<OP extends Op> {
 		OTHER
 	}
 
-	private OpRef<OP> ref;
-	private ModuleInfo info;
+	private final OpRef<OP> ref;
+	private final ModuleInfo info;
 
 	private Module module;
 	private StatusCode code;
@@ -66,39 +66,48 @@ public class OpCandidate<OP extends Op> {
 		this.info = info;
 	}
 
+	/** Gets the op reference describing the desired match. */
 	public OpRef<OP> getRef() {
 		return ref;
 	}
 
+	/** Gets the module info describing the op to match against. */
 	public ModuleInfo getInfo() {
 		return info;
 	}
 
+	/** Sets the module instance associated with the attempted match. */
 	public void setModule(final Module module) {
 		this.module = module;
 	}
 
+	/** Gets the module instance associated with the attempted match. */
 	public Module getModule() {
 		return module;
 	}
 
-	public void setStatus(StatusCode code) {
+	/** Sets the status of the matching attempt. */
+	public void setStatus(final StatusCode code) {
 		setStatus(code, null);
 	}
 
-	public void setStatus(StatusCode code, final String message) {
+	/** Sets the status of the matching attempt. */
+	public void setStatus(final StatusCode code, final String message) {
 		this.code = code;
 		this.message = message;
 	}
 
+	/** Gets the matching status code. */
 	public StatusCode getStatusCode() {
 		return code;
 	}
 
+	/** Gets a message elaborating on the matching status, if any. */
 	public String getStatusMessage() {
 		return message;
 	}
 
+	/** Gets a descriptive status message in human readable form. */
 	public String getStatus() {
 		final StatusCode statusCode = getStatusCode();
 		if (statusCode == null) return null;
