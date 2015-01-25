@@ -104,7 +104,7 @@ public class DefaultOpMatchingService extends
 			return optimize(matches.get(0));
 		}
 
-		final String analysis = analyze(candidates, matches);
+		final String analysis = OpUtils.matchInfo(candidates, matches);
 		throw new IllegalArgumentException(analysis);
 	}
 
@@ -234,87 +234,10 @@ public class DefaultOpMatchingService extends
 		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
 		for (int i = 0; i < optimizers.size(); i++) {
 			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
-			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
+			sb.append("\t\t" + OpUtils.opString(optimal.get(i).getInfo()) + "\n");
 		}
 		log.warn(sb.toString());
 		return module;
-	}
-
-	/**
-	 * Gets a string describing the given op request.
-	 * 
-	 * @param name The op's name.
-	 * @param args The op's input arguments.
-	 * @return A string describing the op request.
-	 */
-	private String getOpString(final String name, final Object... args) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(name + "(\n\t\t");
-		boolean first = true;
-		for (final Object arg : args) {
-			if (first) first = false;
-			else sb.append(",\n\t\t");
-			if (arg == null) sb.append("null");
-			else if (arg instanceof Class) {
-				// NB: Class instance used to mark argument type.
-				sb.append(((Class<?>) arg).getSimpleName());
-			}
-			else sb.append(arg.getClass().getSimpleName());
-		}
-		sb.append(")");
-		return sb.toString();
-	}
-
-	@Override
-	public String getOpString(final ModuleInfo info) {
-		return getOpString(info, null);
-	}
-
-	@Override
-	public <OP extends Op> String analyze(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches)
-	{
-		final StringBuilder sb = new StringBuilder();
-
-		final OpRef<OP> ref = candidates.get(0).getRef();
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + ref.getLabel() + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
-				priority + ":\n");
-			int count = 0;
-			for (final Module module : matches) {
-				sb.append(++count + ". ");
-				sb.append(getOpString(module.getInfo()) + "\n");
-			}
-		}
-
-		// fail, with information about the request and candidates
-		sb.append("\n");
-		sb.append("Request:\n");
-		sb.append("-\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
-		sb.append("\n");
-		sb.append("Candidates:\n");
-		int count = 0;
-		for (final OpCandidate<OP> candidate : candidates) {
-			final ModuleInfo info = candidate.getInfo();
-			sb.append(++count + ". ");
-			sb.append("\t" + getOpString(info, candidate.getStatusItem()) + "\n");
-			final String status = candidate.getStatus();
-			if (status != null) sb.append("\t" + status + "\n");
-			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
-				// show argument values when a contingent op rejects them
-				for (final ModuleItem<?> item : info.inputs()) {
-					final Object value = item.getValue(candidate.getModule());
-					sb.append("\t\t" + item.getName() + " = " + value + "\n");
-				}
-			}
-		}
-		return sb.toString();
 	}
 
 	// -- PTService methods --
@@ -460,33 +383,6 @@ public class DefaultOpMatchingService extends
 			return null;
 		}
 		return convertService.convert(o, type);
-	}
-
-	private String getOpString(final ModuleInfo info, final ModuleItem<?> item) {
-		final StringBuilder sb = new StringBuilder();
-		final String outputString = paramString(info.outputs(), null).trim();
-		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
-		sb.append(info.getDelegateClassName());
-		sb.append("(" + paramString(info.inputs(), item) + ")");
-		return sb.toString();
-	}
-
-	/** Helper method of {@link #getOpString(ModuleInfo, ModuleItem)}. */
-	private String paramString(final Iterable<ModuleItem<?>> items,
-		final ModuleItem<?> special)
-	{
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (final ModuleItem<?> item : items) {
-			if (first) first = false;
-			else sb.append(",");
-			sb.append("\n");
-			if (item == special) sb.append("==>"); // highlight special item
-			sb.append("\t\t");
-			sb.append(item.getType().getSimpleName() + " " + item.getName());
-			if (!item.isRequired()) sb.append("?");
-		}
-		return sb.toString();
 	}
 
 }

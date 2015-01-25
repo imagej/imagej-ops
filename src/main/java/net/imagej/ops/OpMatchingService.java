@@ -97,16 +97,4 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
 
-	/**
-	 * Gets a string describing the given op.
-	 * 
-	 * @param info The {@link ModuleInfo} metadata which describes the op.
-	 * @return A string describing the op.
-	 */
-	String getOpString(ModuleInfo info);
-
-	/** Analyzes the given list of candidates and module matches. */
-	<OP extends Op> String analyze(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches);
-
 }
