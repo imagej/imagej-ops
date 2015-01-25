@@ -36,6 +36,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.KurtosisFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment4AboutMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Kurtosis;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -50,31 +51,41 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultKurtosisFeature implements KurtosisFeature {
+public class DefaultKurtosisFeature<O extends RealType<O>> implements
+		KurtosisFeature<O> {
 
 	@Parameter
-	private StdDeviationFeature stddev;
+	private StdDeviationFeature<O> stddev;
 
 	@Parameter
-	private Moment4AboutMeanFeature moment4;
+	private Moment4AboutMeanFeature<O> moment4;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		out = Double.NaN;
+		if (out == null) {
+			out = stddev.getOutput().copy();
+		} else {
+			out.set(stddev.getOutput());
+		}
 
-		final double std = stddev.getFeatureValue();
-		final double moment4 = this.moment4.getFeatureValue();
+		final double std = stddev.getOutput().getRealDouble();
+		final double moment4 = this.moment4.getOutput().getRealDouble();
 
 		if (std != 0) {
-			out = ((moment4) / (std * std * std * std));
+			out.setReal((moment4) / (std * std * std * std));
 		}
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 }

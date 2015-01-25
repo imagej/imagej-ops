@@ -36,6 +36,7 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.DifferenceVarianceFeature;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -43,25 +44,24 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Difference Variance")
 public class DefaultDifferenceVarianceFeature implements
-		DifferenceVarianceFeature {
+		DifferenceVarianceFeature<DoubleType> {
 
 	@Parameter
 	private CoocPXMinusY coocPXMinusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
-		output = 0;
+
+		if (out == null)
+			out = new DoubleType();
 
 		final double[] pxminusy = coocPXMinusY.getOutput();
 		double sum = 0.0d;
+
+		double output = 0;
 		for (int k = 0; k < pxminusy.length; k++) {
 			sum += k * pxminusy[k];
 		}
@@ -69,5 +69,17 @@ public class DefaultDifferenceVarianceFeature implements
 		for (int k = 0; k < pxminusy.length; k++) {
 			output += (k - sum) * pxminusy[k];
 		}
+		
+		out.setReal(output);
+	}
+
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(DoubleType output) {
+		out = output;
 	}
 }

@@ -30,8 +30,9 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.features.Feature;
+import net.imagej.ops.OutputOp;
 import net.imagej.ops.statistics.haralick.HaralickOps;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * Static utility class containing built-in ops interfaces.
@@ -55,9 +56,9 @@ public final class HaralickFeatures {
 #foreach ($op in $ops)
 
 	/**
-	 * Interface marking implementations of {@link HaralickOps.${op.iface}} as {@link Feature}
+	 * Interface marking implementations of {@link HaralickOps.${op.iface}} as {@link OutputOp}
 	 */
-	public interface ${op.iface}Feature extends Feature, HaralickOps.${op.iface} {
+	public interface ${op.iface}Feature<T extends RealType<T>> extends OutputOp<T>, HaralickOps.${op.iface} {
 		// NB: Marker interface
 	}
 #end

@@ -58,7 +58,7 @@ public final class FirstOrderStatIRTOps {
 	/**
 	 * Interface marking implementations of {@link FirstOrderStatOps.${op.iface}} working on {@link Iterable}s of {@link RealType}.
 	 */
-	public interface ${op.iface}IRT extends OutputFunction<Iterable<? extends RealType<?>>, RealType<?>>, FirstOrderStatOps.${op.iface} {
+	public interface ${op.iface}IRT<I extends RealType<I>, O extends RealType<O>> extends OutputFunction<Iterable<I>, O>, FirstOrderStatOps.${op.iface} {
 		// NB: Marker interface
 	}
 #end

@@ -45,22 +45,21 @@ import org.scijava.plugin.Plugin;
  * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
- * @author Andreas Graumann
  * 
  */
 @Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultSumOfInversesFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements SumOfInversesIRT, SumOfInversesFeature {
+public class DefaultSumOfInversesFeature<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractOutputFunction<Iterable<T>, V> implements
+		SumOfInversesIRT<T, V>, SumOfInversesFeature<V> {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public V createOutput(final Iterable<T> in) {
+		return (V) new DoubleType();
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected V safeCompute(final Iterable<T> input, final V output) {
 
 		double res = 0.0;
 		for (final RealType<?> type : input) {
@@ -69,10 +68,5 @@ public class DefaultSumOfInversesFeature extends
 		output.setReal(res);
 		return output;
 
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

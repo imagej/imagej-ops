@@ -29,15 +29,17 @@
  */
 package net.imagej.ops.features;
 
+import net.imagej.ops.OpRef;
+
 /**
- * {@link OpInfo} restricted to {@link Feature}s
+ * {@link OpRef} restricted to {@link Feature}s
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public class FeatureInfo extends OpInfo {
+public class FeatureInfo extends OpRef {
 
 	/**
-	 * Default Constructor. See {@link OpInfo}.
+	 * Default Constructor. See {@link OpRef}.
 	 * 
 	 * @param feature
 	 *            {@link Feature} which will be created by

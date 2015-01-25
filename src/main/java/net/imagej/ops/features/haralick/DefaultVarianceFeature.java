@@ -36,28 +36,37 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.VarianceFeature;
 import net.imagej.ops.features.haralick.helper.CoocStdX;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Variance")
-public class DefaultVarianceFeature implements VarianceFeature {
+public class DefaultVarianceFeature implements VarianceFeature<DoubleType> {
 
 	@Parameter
 	private CoocStdX coocStdX;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
-		output = coocStdX.getOutput() * coocStdX.getOutput();
+		if (out == null)
+			out = new DoubleType();
+
+		out.setReal(coocStdX.getOutput().get() * coocStdX.getOutput().get());
+	}
+
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(DoubleType output) {
+		out = output;
 	}
 
 }

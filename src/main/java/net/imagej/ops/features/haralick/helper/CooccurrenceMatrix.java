@@ -83,10 +83,10 @@ public class CooccurrenceMatrix implements OutputOp<double[][]> {
 	private String orientation;
 
 	@Parameter
-	private MinFeature min;
+	private MinFeature<? extends RealType<?>> min;
 
 	@Parameter
-	private MaxFeature max;
+	private MaxFeature<? extends RealType<?>> max;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double[][] output;
@@ -115,9 +115,8 @@ public class CooccurrenceMatrix implements OutputOp<double[][]> {
 
 		final Cursor<? extends RealType<?>> cursor = ii.cursor();
 
-		final double localMin = min.getFeatureValue();
-
-		final double localMax = max.getFeatureValue();
+		final double localMin = min.getOutput().getRealDouble();
+		final double localMax = max.getOutput().getRealDouble();
 
 		final int[][] pixels = new int[(int) ii.dimension(dimX)][(int) ii
 				.dimension(dimY)];

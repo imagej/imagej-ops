@@ -36,6 +36,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment3AboutMeanFea
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SkewnessFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Skewness;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -50,31 +51,42 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Skewness.LABEL, name = Skewness.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSkewnessFeature implements SkewnessFeature {
+public class DefaultSkewnessFeature<T extends RealType<T>, O extends RealType<O>>
+		implements SkewnessFeature<O> {
 
 	@Parameter
-	private Moment3AboutMeanFeature moment3;
+	private Moment3AboutMeanFeature<O> moment3;
 
 	@Parameter
-	private StdDeviationFeature stdDev;
+	private StdDeviationFeature<O> stdDev;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		final double moment3 = this.moment3.getFeatureValue();
-		final double std = this.stdDev.getFeatureValue();
 
-		out = Double.NaN;
+		if (out == null)
+			out = moment3.getOutput().createVariable();
+
+		final double moment3 = this.moment3.getOutput().getRealDouble();
+		final double std = this.stdDev.getOutput().getRealDouble();
+
 		if (std != 0) {
-			out = ((moment3) / (std * std * std));
+			out.setReal((moment3) / (std * std * std));
+		} else {
+			out.setReal(Double.NaN);
 		}
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 
 }

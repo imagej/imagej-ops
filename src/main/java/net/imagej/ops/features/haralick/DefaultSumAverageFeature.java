@@ -37,13 +37,14 @@ import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.SumAverageFeature;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Sum Average")
-public class DefaultSumAverageFeature implements SumAverageFeature {
+public class DefaultSumAverageFeature implements SumAverageFeature<DoubleType> {
 
 	@Parameter
 	private CoocPXPlusY coocPXPlusY;
@@ -52,24 +53,34 @@ public class DefaultSumAverageFeature implements SumAverageFeature {
 	private CooccurrenceMatrix matrix;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
 
+		if (out == null) {
+			out = new DoubleType();
+		}
+
 		final double[] pxplusy = coocPXPlusY.getOutput();
 		final int nrGrayLevels = matrix.getOutput().length;
 
-		output = 0;
+		double output = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
 			output += i * pxplusy[i];
 		}
 
+		out.set(output);
+
 	}
 
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(DoubleType output) {
+		out = output;
+	}
 }

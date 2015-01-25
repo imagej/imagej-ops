@@ -48,18 +48,18 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = SumOfLogs.NAME, label = SumOfLogs.LABEL)
-public class DefaultSumOfLogsFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements SumOfLogsIRT, SumOfLogsFeature {
+public class DefaultSumOfLogsFeature<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractOutputFunction<Iterable<T>, V> implements
+		SumOfLogsIRT<T, V>, SumOfLogsFeature<V> {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public V createOutput(Iterable<T> in) {
+		return (V) new DoubleType();
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected V safeCompute(Iterable<T> input, V output) {
 
 		double result = 0.0;
 		for (final RealType<?> type : input) {
@@ -67,10 +67,5 @@ public class DefaultSumOfLogsFeature extends
 		}
 		output.setReal(result);
 		return output;
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

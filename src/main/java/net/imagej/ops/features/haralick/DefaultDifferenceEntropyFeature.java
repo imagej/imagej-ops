@@ -37,13 +37,15 @@ import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.DifferenceEntropyFeature;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Difference Entropy")
-public class DefaultDifferenceEntropyFeature implements DifferenceEntropyFeature {
+public class DefaultDifferenceEntropyFeature implements
+		DifferenceEntropyFeature<DoubleType> {
 
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
@@ -55,24 +57,33 @@ public class DefaultDifferenceEntropyFeature implements DifferenceEntropyFeature
 	private CoocPXMinusY coocPXMinusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
+
+		if (out == null)
+			out = new DoubleType();
+
 		final double[] pxminusy = coocPXMinusY.getOutput();
 		final int nrGrayLevels = matrix.getOutput().length;
 
-		output = 0;
+		double output = 0;
 		for (int k = 0; k <= nrGrayLevels - 1; k++) {
 			output += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
 		}
 
 		output = -output;
+	}
+
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(DoubleType output) {
+		out = output;
 	}
 
 }

@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.OutputFunction;
 
 import org.scijava.service.Service;
@@ -75,7 +76,7 @@ public interface FeatureService<I> extends Service {
 	 *         for objects of type <I>.
 	 */
 	OutputFunction<I, List<FeatureResult>> compile(
-			final Set<FeatureInfo> visible, Set<OpInfo> invisible,
+			final Set<FeatureInfo> visible, Set<OpRef> invisible,
 			final Class<? extends I> inputType);
 
 	/**
@@ -92,7 +93,7 @@ public interface FeatureService<I> extends Service {
 	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
 	 */
 	OutputFunction<I, List<FeatureResult>> compile(final FeatureInfo feature,
-			Set<OpInfo> invisible, final Class<? extends I> inputType);
+			Set<OpRef> invisible, final Class<? extends I> inputType);
 
 	/**
 	 * Simple convenience method.
@@ -117,7 +118,7 @@ public interface FeatureService<I> extends Service {
 	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
 	 */
 	OutputFunction<I, FeatureResult> compile(
-			final Class<? extends Feature> feature, Set<OpInfo> helpers,
+			final Class<? extends Feature> feature, Set<OpRef> helpers,
 			final Class<? extends I> inputType);
 
 	/**
@@ -126,7 +127,7 @@ public interface FeatureService<I> extends Service {
 	 * see {@link FeatureService}{@link #compileFeatureSet(Set, Set, Class)}
 	 */
 	OutputFunction<I, FeatureResult> compile(
-			final Class<? extends Feature> feature, OpInfo helper,
+			final Class<? extends Feature> feature, OpRef helper,
 			final Class<? extends I> inputType);
 
 }

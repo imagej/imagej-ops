@@ -49,23 +49,17 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultSumFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements SumIRT, SumFeature {
+public class DefaultSumFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements SumIRT<I, O>,
+		SumFeature<O> {
 
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> input) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> input) {
+		return (O) new DoubleType();
 	}
 
 	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
-	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 		output.setReal(0);
 		for (final RealType<?> d : input) {
 			output.setReal(output.getRealDouble() + d.getRealDouble());

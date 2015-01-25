@@ -48,38 +48,48 @@ import org.scijava.plugin.Plugin;
  * {@link FeatureService} to compile this {@link Op}.
  * 
  * @author Christian Dietz
- * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = Moment1AboutMean.NAME, label = Moment1AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultMoment1AboutMeanFeature implements Moment1AboutMeanFeature {
+public class DefaultMoment1AboutMeanFeature<T extends RealType<T>, O extends RealType<O>>
+		implements Moment1AboutMeanFeature<O> {
 
 	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+	private Iterable<T> irt;
 
 	@Parameter
-	private MeanFeature mean;
+	private MeanFeature<O> mean;
 
 	@Parameter
-	private AreaFeature area;
+	private AreaFeature<O> area;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		final double tmpMean = mean.getFeatureValue();
+
+		if (out == null) {
+			out = mean.getOutput().createVariable();
+		}
+
+		final double tmpMean = mean.getOutput().getRealDouble();
 
 		double res = 0.0;
-		for (final RealType<?> val : irt) {
+		for (final T val : irt) {
 			res += val.getRealDouble() - tmpMean;
 		}
 
-		out = res;
-		out = res / area.getFeatureValue();
+		out.setReal(res);
+		out.div(area.getOutput());
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 }

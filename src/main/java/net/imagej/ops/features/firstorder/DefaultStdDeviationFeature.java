@@ -36,6 +36,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Skewness;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.StdDeviation;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -50,21 +51,30 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = StdDeviation.LABEL, name = StdDeviation.NAME, priority = Priority.HIGH_PRIORITY)
-public class DefaultStdDeviationFeature implements StdDeviationFeature {
+public class DefaultStdDeviationFeature<T extends RealType<T>, O extends RealType<O>>
+		implements StdDeviationFeature<O> {
 
 	@Parameter
-	private VarianceFeature variance;
+	private VarianceFeature<O> variance;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		out = Math.sqrt(variance.getFeatureValue());
+		if(out == null)
+			out = variance.getOutput().createVariable();
+		
+		out.setReal(Math.sqrt(variance.getOutput().getRealDouble()));
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 }

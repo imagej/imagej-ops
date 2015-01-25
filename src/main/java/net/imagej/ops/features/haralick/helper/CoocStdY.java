@@ -31,12 +31,13 @@ package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class CoocStdY implements OutputOp<Double> {
+public class CoocStdY implements OutputOp<DoubleType> {
 	// for symmetric cooccurence matrices stdx = stdy
 	@Parameter
 	private CoocStdX coocStdX;
@@ -47,12 +48,12 @@ public class CoocStdY implements OutputOp<Double> {
 	}
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return coocStdX.getOutput();
 	}
 
 	@Override
-	public void setOutput(Double output) {
+	public void setOutput(DoubleType output) {
 		coocStdX.setOutput(output);
 	}
 }

@@ -35,6 +35,7 @@ import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment2AboutMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Variance;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -49,22 +50,28 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Variance.LABEL, name = Variance.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultVarianceFeature implements VarianceFeature {
+public class DefaultVarianceFeature<T extends RealType<T>, O extends RealType<O>>
+		implements VarianceFeature<O> {
 
 	@Parameter
-	private Moment2AboutMeanFeature moment2;
+	private Moment2AboutMeanFeature<O> moment2;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		out = moment2.getFeatureValue();
+		out = moment2.getOutput();
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 
 }

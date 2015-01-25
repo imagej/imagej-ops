@@ -46,13 +46,12 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class DefaultMeanFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MeanIRT, MeanFeature {
+public class DefaultMeanFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		MeanIRT<I, O>, MeanFeature<O> {
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
 		double sum = 0;
 		double count = 0;
@@ -67,14 +66,10 @@ public class DefaultMeanFeature extends
 		return output;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
+	public O createOutput(Iterable<I> in) {
+		return (O) new DoubleType();
 	}
 
 }

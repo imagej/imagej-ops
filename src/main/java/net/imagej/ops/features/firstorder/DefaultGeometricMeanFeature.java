@@ -37,6 +37,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.GeometricMean;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -51,32 +52,42 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultGeometricMeanFeature implements GeometricMeanFeature {
+public class DefaultGeometricMeanFeature implements
+		GeometricMeanFeature<DoubleType> {
 
 	@Parameter
-	private SumOfLogsFeature logSum;
+	private SumOfLogsFeature<DoubleType> logSum;
 
 	@Parameter
-	private AreaFeature area;
+	private AreaFeature<DoubleType> area;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private DoubleType out;
 
 	@Override
 	public void run() {
 
-		final double area = this.area.getFeatureValue();
+		if (out == null) {
+			out = new DoubleType();
+		}
+		final double area = this.area.getOutput().get();
 
 		if (area != 0) {
-			out = Math.exp(logSum.getFeatureValue() / area);
+			out.setReal(Math.exp(logSum.getOutput().get() / area));
 		} else {
-			out = 0;
+			out.setReal(0);
 		}
 	}
 
 	@Override
-	public double getFeatureValue() {
-		return out;
+	public DoubleType getOutput() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	@Override
+	public void setOutput(DoubleType output) {
+		// TODO Auto-generated method stub
+
+	}
 }

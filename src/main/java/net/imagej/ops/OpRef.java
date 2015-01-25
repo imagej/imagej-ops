@@ -27,12 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.features;
+package net.imagej.ops;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.features.FeatureService;
 
 /**
- * An {@link OpInfo} holds all information required by the
+ * An {@link OpRef} holds all information required by the
  * {@link FeatureService} to create an {@link Op}. This means the {@link Class}
  * of the {@link Op} and all parameters which can't be auto-guessed by the
  * {@link FeatureService}.
@@ -40,7 +40,7 @@ import net.imagej.ops.Op;
  * @author Christian Dietz (University of Konstanz)
  * 
  */
-public class OpInfo {
+public class OpRef {
 
 	/*
 	 * The Op to be created in the FeatureService
@@ -59,7 +59,7 @@ public class OpInfo {
 	 *            additional parameters which can't be auto-guessed by
 	 *            {@link FeatureService}
 	 */
-	public OpInfo(Class<? extends Op> op, Object... parameters) {
+	public OpRef(Class<? extends Op> op, Object... parameters) {
 		this.op = op;
 		this.parameters = parameters;
 	}
@@ -74,11 +74,11 @@ public class OpInfo {
 	}
 
 	/**
-	 * {@link Op} to be created
+	 * Type of the {@link Op}
 	 * 
 	 * @return
 	 */
-	public Class<? extends Op> getDelegateClass() {
+	public Class<? extends Op> getType() {
 		return op;
 	}
 

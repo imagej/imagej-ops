@@ -36,6 +36,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.HarmonicMean;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -50,29 +51,35 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = HarmonicMean.LABEL, name = HarmonicMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultHarmonicMeanFeature implements HarmonicMeanFeature {
+public class DefaultHarmonicMeanFeature<V extends RealType<V>> implements
+		HarmonicMeanFeature<V> {
 
 	@Parameter(type = ItemIO.INPUT)
-	private SumOfInversesFeature inverseSum;
+	private SumOfInversesFeature<V> inverseSum;
 
 	@Parameter(type = ItemIO.INPUT)
-	private AreaFeature area;
+	private AreaFeature<V> area;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private V out;
 
 	@Override
 	public void run() {
-		out = 0;
-
-		if (inverseSum.getFeatureValue() != 0) {
-			out += area.getFeatureValue();
-			out /= inverseSum.getFeatureValue();
+		out = area.getOutput().copy();
+		if (inverseSum.getOutput().getRealDouble() != 0) {
+			out.div(inverseSum.getOutput());
+		} else {
+			out.setReal(0);
 		}
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public V getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(V output) {
+		out = output;
 	}
 }

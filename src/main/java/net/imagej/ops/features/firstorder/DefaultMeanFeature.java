@@ -35,6 +35,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -47,24 +48,31 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, label = Mean.LABEL, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultMeanFeature implements MeanFeature {
+public class DefaultMeanFeature<I extends RealType<I>, O extends RealType<O>>
+		implements MeanFeature<O> {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Parameter(type = ItemIO.INPUT)
-	private SumFeature sum;
+	private SumFeature<O> sum;
 
 	@Parameter(type = ItemIO.INPUT)
-	private AreaFeature numElements;
+	private AreaFeature<O> numElements;
 
 	@Override
 	public void run() {
-		out = sum.getFeatureValue() / numElements.getFeatureValue();
+		out = sum.getOutput().copy();
+		out.div(numElements.getOutput());
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		this.out = output;
 	}
 }

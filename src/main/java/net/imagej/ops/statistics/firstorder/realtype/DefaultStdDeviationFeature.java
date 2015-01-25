@@ -41,18 +41,18 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviation.LABEL, priority = Priority.LOW_PRIORITY + 1)
-public class DefaultStdDeviationFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements StdDeviation, StdDeviationFeature {
+public class DefaultStdDeviationFeature<T extends RealType<T>, V extends RealType<V>>
+		extends AbstractOutputFunction<Iterable<T>, V> implements StdDeviation,
+		StdDeviationFeature<V> {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public V createOutput(Iterable<T> in) {
+		return (V) new DoubleType();
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected V safeCompute(Iterable<T> input, V output) {
 
 		double sum = 0;
 		double sumSqr = 0;
@@ -67,10 +67,5 @@ public class DefaultStdDeviationFeature extends
 
 		output.setReal((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
 		return output;
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

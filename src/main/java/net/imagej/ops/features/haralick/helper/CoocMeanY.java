@@ -31,19 +31,20 @@ package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class CoocMeanY implements OutputOp<Double> {
+public class CoocMeanY implements OutputOp<DoubleType> {
 
 	// for symmetric cooccurence matrices stdx = stdy
 	@Parameter
 	private CoocMeanX coocMeanX;
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return coocMeanX.getOutput();
 	}
 
@@ -53,7 +54,7 @@ public class CoocMeanY implements OutputOp<Double> {
 	}
 
 	@Override
-	public void setOutput(Double coocMeanX) {
+	public void setOutput(DoubleType coocMeanX) {
 		this.coocMeanX.setOutput(coocMeanX);
 	}
 

@@ -47,19 +47,18 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMinFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MinIRT, MinFeature {
+public class DefaultMinFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements MinIRT<I, O>,
+		MinFeature<O> {
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+		return (O) new DoubleType();
 	}
 
 	@Override
-	protected RealType<?> safeCompute(
-			final Iterable<? extends RealType<?>> input,
-			final RealType<?> output) {
+	protected O safeCompute(final Iterable<I> input, final O output) {
 
 		double min = Double.POSITIVE_INFINITY;
 
@@ -72,10 +71,5 @@ public class DefaultMinFeature extends
 
 		output.setReal(min);
 		return output;
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

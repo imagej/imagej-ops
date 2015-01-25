@@ -50,9 +50,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMedianFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MedianIRT, MedianFeature {
+public class DefaultMedianFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		MedianIRT<I, O>, MedianFeature<O> {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
@@ -126,14 +126,14 @@ public class DefaultMedianFeature extends
 		array.set(b, temp);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+		return (O) new DoubleType();
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
@@ -145,10 +145,4 @@ public class DefaultMedianFeature extends
 				statistics.size() / 2));
 		return output;
 	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
 }

@@ -47,13 +47,12 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Max.NAME, label = Max.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMaxFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MaxIRT, MaxFeature {
+public class DefaultMaxFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements MaxIRT<I, O>,
+		MaxFeature<O> {
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
 		double max = -Double.MAX_VALUE;
 
@@ -68,14 +67,9 @@ public class DefaultMaxFeature extends
 		return output;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+		return (O) new DoubleType();
 	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
 }

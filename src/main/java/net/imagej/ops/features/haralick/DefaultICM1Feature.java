@@ -37,33 +37,43 @@ import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.EntropyFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.ICM1Feature;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: ICM1")
-public class DefaultICM1Feature implements ICM1Feature {
+public class DefaultICM1Feature implements ICM1Feature<DoubleType> {
 
 	@Parameter
-	private EntropyFeature entropy;
+	private EntropyFeature<DoubleType> entropy;
 
 	@Parameter
 	private CoocHXY coocHXY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
+
+		if (out == null)
+			out = new DoubleType();
+
 		final double[] coochxy = coocHXY.getOutput();
-		output = (entropy.getFeatureValue() - coochxy[2])
-				/ Math.max(coochxy[0], coochxy[1]);
+		out.setReal((entropy.getOutput().get() - coochxy[2])
+				/ Math.max(coochxy[0], coochxy[1]));
+	}
+
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(final DoubleType output) {
+		out = output;
 	}
 
 }

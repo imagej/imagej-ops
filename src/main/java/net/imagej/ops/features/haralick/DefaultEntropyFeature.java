@@ -36,13 +36,14 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.EntropyFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, label = "Haralick 2D: Entropy")
-public class DefaultEntropyFeature implements EntropyFeature {
+public class DefaultEntropyFeature implements EntropyFeature<DoubleType> {
 
 	private static final double EPSILON = 0.00000001f;
 
@@ -50,28 +51,34 @@ public class DefaultEntropyFeature implements EntropyFeature {
 	private CooccurrenceMatrix cooc;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
-
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+	private DoubleType out;
 
 	@Override
 	public void run() {
 
-		output = 0;
-		
+		if (out == null)
+			out = new DoubleType();
+
 		final double[][] matrix = cooc.getOutput();
 		final int nrGrayLevels = matrix.length;
-		
+
+		double output = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {
-				output += matrix[i][j]
-						* Math.log(matrix[i][j] + EPSILON);
+				output += matrix[i][j] * Math.log(matrix[i][j] + EPSILON);
 			}
 		}
 
 		output = -output;
+	}
+
+	@Override
+	public DoubleType getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(DoubleType output) {
+		out = output;
 	}
 }

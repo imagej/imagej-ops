@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.OutputFunction;
+import net.imglib2.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * A {@link FeatureSet} describes {@link Set}s of {@link Feature}s which have
@@ -48,6 +50,7 @@ import net.imagej.ops.OutputFunction;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface FeatureSet<I> extends OutputFunction<I, List<FeatureResult>> {
-	//NB: Marker Interface
+public interface FeatureSet<I, O> extends
+		OutputFunction<I, List<Pair<String, DoubleType>>> {
+	// NB: Marker Interface
 }
