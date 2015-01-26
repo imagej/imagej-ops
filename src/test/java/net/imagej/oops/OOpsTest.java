@@ -30,81 +30,65 @@
 
 package net.imagej.oops;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import static org.junit.Assert.assertEquals;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.scijava.Context;
+import org.scijava.script.ScriptService;
+
 /**
- * An {@link Expression} representing an {@link Op}.
+ * Tests for the optimized {@link Op}s.
  *
  * @author Johannes Schindelin
  */
-public class OpExpression implements Expression {
+public class OOpsTest {
 
-	private final OpService op;
-	private final String identifier;
-	private final String[] variableNames;
-	private final List<Expression> args;
-	private final Object[] evaluated;
+	private OpService op;
 
-	public OpExpression(final OpService op, final String identifier,
-		final List<Expression> args)
-	{
-		this.op = op;
-		this.identifier = identifier;
-		this.args = args;
-		evaluated = new Object[args.size()];
-
-		if (evaluated.length == 0) {
-			variableNames = new String[0];
-		}
-		else {
-			final Set<String> names = new LinkedHashSet<String>();
-			for (final Expression expr : args) {
-				for (final String name : expr.getVariableNames()) {
-					names.add(name);
-				}
-			}
-			variableNames = names.toArray(new String[names.size()]);
-		}
+	@Before
+	public void setup() {
+		op =
+			new Context(OpService.class, ScriptService.class)
+				.getService(OpService.class);
 	}
 
-	@Override
-	public String[] getVariableNames() {
-		return variableNames;
+	@Test
+	public void testSimpleArithmetic() {
+		assertEquals(3.0, OOps.eval(op, "X+Y", 1, 2));
+		assertEquals(7.0, OOps.eval(op, "a+b*c", 1, 2, 3));
 	}
 
-	@Override
-	public void bind(final Map<String, Object> args) {
-		for (final Expression expr : this.args) {
-			expr.bind(args);
-		}
+	@Test
+	public void testImageArithmetic() {
+
+		final long[] dims = new long[] { 78, 23 };
+		final Object blank = op.createimg(DoubleType.class, dims);
+
+		// fill in the image with a sinusoid using a formula
+		final String formula = "10 * (Math.cos(0.3*p[0]) + Math.sin(0.3*p[1]))";
+		final Object sinusoid = op.equation(blank, formula);
+
+		// add a constant value to an image
+		op.add(sinusoid, 13.0);
+
+		// generate a gradient image using a formula
+		final Object gradient =
+			op.equation(op.createimg(DoubleType.class, dims), "2+p[0]+p[1]");
+
+		// add the two images
+		final Object composite = op.createimg(DoubleType.class, dims);
+		op.add(composite, sinusoid, gradient);
+
+		final Object added = OOps.eval(op, "a+b", gradient, sinusoid);
+
+		assertEquals(op.ascii(added), op.ascii(composite));
+
+		// dump the image to the console
+		// System.out.println(op.ascii(composite));
 	}
 
-	@Override
-	public Object eval() {
-		for (int i = 0; i < evaluated.length; i++) {
-			evaluated[i] = args.get(i).eval();
-		}
-		return op.run(identifier, evaluated);
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(identifier).append('(');
-		String separator = "";
-		for (final Expression expr : args) {
-			builder.append(separator).append(expr);
-			separator = ", ";
-		}
-		builder.append(')');
-		return builder.toString();
-	}
 }
