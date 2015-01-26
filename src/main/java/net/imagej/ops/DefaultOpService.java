@@ -175,7 +175,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 		final StringBuilder sb = new StringBuilder("Available operations:");
 		for (final ModuleInfo info : infos) {
-			sb.append("\n\t" + matcher.getOpString(info));
+			sb.append("\n\t" + OpUtils.opString(info));
 		}
 
 		if (infos.size() == 1) {

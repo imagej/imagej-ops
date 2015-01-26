@@ -89,6 +89,12 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	<OP extends Op> Module match(OpCandidate<OP> candidate);
 
 	/**
+	 * Checks that each parameter is type-compatible with its corresponding
+	 * argument.
+	 */
+	<OP extends Op> boolean typesMatch(OpCandidate<OP> candidate);
+
+	/**
 	 * Optimizes the performance of the given {@link Module} using all available
 	 * {@link Optimizer}s.
 	 */
@@ -96,19 +102,5 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
-
-	/**
-	 * Gets a string describing the given op.
-	 * 
-	 * @param info The {@link ModuleInfo} metadata which describes the op.
-	 * @return A string describing the op.
-	 */
-	String getOpString(ModuleInfo info);
-
-	/** Analyzes the given list of candidates and module matches. */
-	<OP extends Op> String analyze(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches);
-
-	<OP extends Op> boolean isCandidate(CommandInfo info, OpRef<OP> ref);
 
 }

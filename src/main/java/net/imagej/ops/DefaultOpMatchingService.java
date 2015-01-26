@@ -104,7 +104,7 @@ public class DefaultOpMatchingService extends
 			return optimize(matches.get(0));
 		}
 
-		final String analysis = analyze(candidates, matches);
+		final String analysis = OpUtils.matchInfo(candidates, matches);
 		throw new IllegalArgumentException(analysis);
 	}
 
@@ -148,51 +148,16 @@ public class DefaultOpMatchingService extends
 
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
-		if (!candidate.getInfo().isValid()) {
-			// skip invalid modules
-			candidate.setStatus(StatusCode.INVALID_MODULE);
-			return null;
-		}
+		if (!valid(candidate)) return null;
+		final Object[] args = paddedArgs(candidate);
+		return args == null ? null : match(candidate, args);
+	}
 
-		// check the number of args, padding optional args with null as needed
-		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			inputCount++;
-			if (item.isRequired()) requiredCount++;
-		}
-		final Object[] args = candidate.getRef().getArgs();
-		if (args.length == inputCount) {
-			// correct number of arguments
-			return match(candidate, args);
-		}
-		if (args.length > inputCount) {
-			// too many arguments
-			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
-				args.length + " > " + inputCount);
-			return null;
-		}
-		if (args.length < requiredCount) {
-			// too few arguments
-			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
-				args.length + " < " + requiredCount);
-			return null;
-		}
-
-		// pad optional parameters with null (from right to left)
-		final int argsToPad = inputCount - args.length;
-		final int optionalCount = inputCount - requiredCount;
-		final int optionalsToFill = optionalCount - argsToPad;
-		final Object[] paddedArgs = new Object[inputCount];
-		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
-				// skip this optional parameter (pad with null)
-				paddedIndex++;
-				continue;
-			}
-			paddedArgs[paddedIndex++] = args[argIndex++];
-		}
-		return match(candidate, paddedArgs);
+	@Override
+	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
+		if (!valid(candidate)) return false;
+		final Object[] args = paddedArgs(candidate);
+		return args == null ? false : typesMatch(candidate, args);
 	}
 
 	@Override
@@ -234,91 +199,23 @@ public class DefaultOpMatchingService extends
 		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
 		for (int i = 0; i < optimizers.size(); i++) {
 			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
-			sb.append("\t\t" + getOpString(optimal.get(i).getInfo()) + "\n");
+			sb.append("\t\t" + OpUtils.opString(optimal.get(i).getInfo()) + "\n");
 		}
 		log.warn(sb.toString());
 		return module;
 	}
 
-	/**
-	 * Gets a string describing the given op request.
-	 * 
-	 * @param name The op's name.
-	 * @param args The op's input arguments.
-	 * @return A string describing the op request.
-	 */
-	private String getOpString(final String name, final Object... args) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(name + "(\n\t\t");
-		boolean first = true;
-		for (final Object arg : args) {
-			if (first) first = false;
-			else sb.append(",\n\t\t");
-			if (arg == null) sb.append("null");
-			else if (arg instanceof Class) {
-				// NB: Class instance used to mark argument type.
-				sb.append(((Class<?>) arg).getSimpleName());
-			}
-			else sb.append(arg.getClass().getSimpleName());
-		}
-		sb.append(")");
-		return sb.toString();
-	}
+	// -- PTService methods --
 
 	@Override
-	public String getOpString(final ModuleInfo info) {
-		return getOpString(info, null);
+	public Class<Optimizer> getPluginType() {
+		return Optimizer.class;
 	}
 
-	@Override
-	public <OP extends Op> String analyze(
-		final List<OpCandidate<OP>> candidates, final List<Module> matches)
-	{
-		final StringBuilder sb = new StringBuilder();
+	// -- Helper methods --
 
-		final OpRef<OP> ref = candidates.get(0).getRef();
-		if (matches.isEmpty()) {
-			// no matches
-			sb.append("No matching '" + ref.getLabel() + "' op\n");
-		}
-		else {
-			// multiple matches
-			final double priority = matches.get(0).getInfo().getPriority();
-			sb.append("Multiple '" + ref.getLabel() + "' ops of priority " +
-				priority + ":\n");
-			int count = 0;
-			for (final Module module : matches) {
-				sb.append(++count + ". ");
-				sb.append(getOpString(module.getInfo()) + "\n");
-			}
-		}
-
-		// fail, with information about the request and candidates
-		sb.append("\n");
-		sb.append("Request:\n");
-		sb.append("-\t" + getOpString(ref.getLabel(), ref.getArgs()) + "\n");
-		sb.append("\n");
-		sb.append("Candidates:\n");
-		int count = 0;
-		for (final OpCandidate<OP> candidate : candidates) {
-			final ModuleInfo info = candidate.getInfo();
-			sb.append(++count + ". ");
-			sb.append("\t" + getOpString(info, candidate.getStatusItem()) + "\n");
-			final String status = candidate.getStatus();
-			if (status != null) sb.append("\t" + status + "\n");
-			if (candidate.getStatusCode() == StatusCode.DOES_NOT_CONFORM) {
-				// show argument values when a contingent op rejects them
-				for (final ModuleItem<?> item : info.inputs()) {
-					final Object value = item.getValue(candidate.getModule());
-					sb.append("\t\t" + item.getName() + " = " + value + "\n");
-				}
-			}
-		}
-		return sb.toString();
-	}
-
-	@Override
-	public <OP extends Op> boolean isCandidate(final CommandInfo info,
+	/** Helper method of {@link #findCandidates}. */
+	private <OP extends Op> boolean isCandidate(final CommandInfo info,
 		final OpRef<OP> ref)
 	{
 		if (!nameMatches(info, ref.getName())) return false;
@@ -336,24 +233,61 @@ public class DefaultOpMatchingService extends
 		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
 	}
 
-	// -- PTService methods --
-
-	@Override
-	public Class<Optimizer> getPluginType() {
-		return Optimizer.class;
+	/** Verifies that the given candidate's module is valid. */
+	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
+		if (candidate.getInfo().isValid()) return true;
+		candidate.setStatus(StatusCode.INVALID_MODULE);
+		return false;
 	}
 
-	// -- Helper methods --
+	/** Checks the number of args, padding optional args with null as needed. */
+	private <OP extends Op> Object[] paddedArgs(final OpCandidate<OP> candidate) {
+		int inputCount = 0, requiredCount = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			inputCount++;
+			if (item.isRequired()) requiredCount++;
+		}
+		final Object[] args = candidate.getRef().getArgs();
+		if (args.length == inputCount) {
+			// correct number of arguments
+			return args;
+		}
+		if (args.length > inputCount) {
+			// too many arguments
+			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
+				args.length + " > " + inputCount);
+			return null;
+		}
+		if (args.length < requiredCount) {
+			// too few arguments
+			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
+				args.length + " < " + requiredCount);
+			return null;
+		}
 
+		// pad optional parameters with null (from right to left)
+		final int argsToPad = inputCount - args.length;
+		final int optionalCount = inputCount - requiredCount;
+		final int optionalsToFill = optionalCount - argsToPad;
+		final Object[] paddedArgs = new Object[inputCount];
+		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
+				// skip this optional parameter (pad with null)
+				paddedIndex++;
+				continue;
+			}
+			paddedArgs[paddedIndex++] = args[argIndex++];
+		}
+		return paddedArgs;
+	}
+
+	/** Helper method of {@link #match(OpCandidate)}. */
 	private <OP extends Op> Module match(final OpCandidate<OP> candidate,
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		int i = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(candidate, arg, item)) return null;
-		}
+		if (!typesMatch(candidate, args)) return null;
 
 		// create module and assign the inputs
 		final Module module = createModule(candidate.getInfo(), args);
@@ -373,6 +307,22 @@ public class DefaultOpMatchingService extends
 		return module;
 	}
 
+	/**
+	 * Checks that each parameter is type-compatible with its corresponding
+	 * argument.
+	 */
+	private <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate,
+		final Object[] args)
+	{
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			final Object arg = args[i++];
+			if (!canAssign(candidate, arg, item)) return false;
+		}
+		return true;
+	}
+
+	/** Helper method of {@link #isCandidate}. */
 	private boolean nameMatches(final ModuleInfo info, final String name) {
 		if (name == null || name.equals(info.getName())) return true;
 
@@ -391,13 +341,14 @@ public class DefaultOpMatchingService extends
 		return false;
 	}
 
-	/** Helper method of {@link #match}. */
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
 	private Module createModule(final ModuleInfo info, final Object... args) {
 		final Module module = moduleService.createModule(info);
 		context.inject(module.getDelegateObject());
 		return assignInputs(module, args);
 	}
 
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
 	private boolean canAssign(final OpCandidate<?> candidate, final Object arg,
 		final ModuleItem<?> item)
 	{
@@ -419,12 +370,13 @@ public class DefaultOpMatchingService extends
 		return true;
 	}
 
-	private boolean canConvert(final Object o, final Type type) {
-		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
+	/** Helper method of {@link #canAssign}. */
+	private boolean canConvert(final Object arg, final Type type) {
+		if (isMatchingClass(arg, type)) {
 			// NB: Class argument for matching, to help differentiate op signatures.
 			return true;
 		}
-		return convertService.supports(o, type);
+		return convertService.supports(arg, type);
 	}
 
 	/** Helper method of {@link #assignInputs}. */
@@ -439,38 +391,18 @@ public class DefaultOpMatchingService extends
 		module.setResolved(item.getName(), true);
 	}
 
-	private Object convert(final Object o, final Type type) {
-		if (o instanceof Class && convertService.supports((Class<?>) o, type)) {
+	/** Helper method of {@link #assign}. */
+	private Object convert(final Object arg, final Type type) {
+		if (isMatchingClass(arg, type)) {
 			// NB: Class argument for matching; fill with null.
 			return null;
 		}
-		return convertService.convert(o, type);
+		return convertService.convert(arg, type);
 	}
 
-	private String getOpString(final ModuleInfo info, final ModuleItem<?> item) {
-		final StringBuilder sb = new StringBuilder();
-		final String outputString = paramString(info.outputs(), null).trim();
-		if (!outputString.isEmpty()) sb.append("(" + outputString + ") =\n\t");
-		sb.append(info.getDelegateClassName());
-		sb.append("(" + paramString(info.inputs(), item) + ")");
-		return sb.toString();
+	/** Determines whether the argument is a matching class instance. */
+	private boolean isMatchingClass(final Object arg, final Type type) {
+		return arg instanceof Class &&
+			convertService.supports((Class<?>) arg, type);
 	}
-
-	private String paramString(final Iterable<ModuleItem<?>> items,
-		final ModuleItem<?> special)
-	{
-		final StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for (final ModuleItem<?> item : items) {
-			if (first) first = false;
-			else sb.append(",");
-			sb.append("\n");
-			if (item == special) sb.append("==>"); // highlight special item
-			sb.append("\t\t");
-			sb.append(item.getType().getSimpleName() + " " + item.getName());
-			if (!item.isRequired()) sb.append("?");
-		}
-		return sb.toString();
-	}
-
 }

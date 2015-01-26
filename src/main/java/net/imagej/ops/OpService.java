@@ -168,6 +168,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	// -- Operation shortcuts --
 
+	public @interface BuiltIn {
+		// NB: Marker interface.
+	}
+
 	/** Executes the "add" operation on the given arguments. */
 	Object add(Object... args);
 
