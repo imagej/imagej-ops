@@ -1,10 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -17,7 +17,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = ConvexityFeature.NAME)
-public class DefaultConvexityFeature implements ConvexityFeature {
+public class DefaultConvexityFeature implements ConvexityFeature<DoubleType> {
 
 	@Parameter(type = ItemIO.INPUT)
 	private PolygonPerimeterProvider perimter;
@@ -26,17 +26,29 @@ public class DefaultConvexityFeature implements ConvexityFeature {
 	private PolygonConvexHullPerimeterProvider convexHullPerimeter;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
 
 	@Override
 	public void run() {
-		out = convexHullPerimeter.getFeatureValue()
-				/ perimter.getFeatureValue();
+        if (out == null) {
+            out = new DoubleType();
+        }
+        
+		out.setReal(convexHullPerimeter.getOutput().getRealDouble()
+				/ perimter.getOutput().getRealDouble() );
 	}
+
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 
 }

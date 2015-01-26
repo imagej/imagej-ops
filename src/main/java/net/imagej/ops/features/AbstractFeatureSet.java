@@ -31,13 +31,21 @@ package net.imagej.ops.features;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Computer;
 import net.imagej.ops.Op;
-import net.imagej.ops.OutputFunction;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.OpService;
+import net.imagej.ops.functionbuilder.ComputerBuilder;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginService;
 
 /**
  * @author Christian Dietz (University of Konstanz)
@@ -45,10 +53,17 @@ import org.scijava.plugin.Parameter;
  * @param <I>
  */
 public abstract class AbstractFeatureSet<I> extends
-		AbstractOutputFunction<I, List<FeatureResult>> implements FeatureSet<I> {
+		AbstractOutputFunction<I, List<Pair<String, DoubleType>>> implements
+		FeatureSet<I, Pair<String, DoubleType>> {
 
 	@Parameter
-	private FeatureService<I> fs;
+	private PluginService ps;
+
+	@Parameter
+	private OpService ops;
+
+	@Parameter
+	private ComputerBuilder fs;
 
 	/* internal stuff */
 
@@ -56,42 +71,50 @@ public abstract class AbstractFeatureSet<I> extends
 	 * Set containing all visible features, i.e. features will will be available
 	 * as FeatureResults
 	 */
-	private HashSet<FeatureInfo> visible;
+	private HashSet<OpRef> visible;
 
 	/*
 	 * Set containing all invisible features, i.e. features which are required
 	 * by visible features.
 	 */
-	private HashSet<OpInfo> invisible;
+	private HashSet<OpRef> invisible;
 
 	/*
 	 * function representing the compiled feature set
 	 */
-	private OutputFunction<I, List<FeatureResult>> func;
+	private Computer<I, List<DoubleType>> func;
 
 	public AbstractFeatureSet() {
-		this.visible = new HashSet<FeatureInfo>();
-		this.invisible = new HashSet<OpInfo>();
+		this.visible = new HashSet<OpRef>();
+		this.invisible = new HashSet<OpRef>();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected List<FeatureResult> safeCompute(final I input,
-			final List<FeatureResult> output) {
+	protected List<Pair<String, DoubleType>> safeCompute(final I input,
+			final List<Pair<String, DoubleType>> output) {
 		output.clear();
 
 		if (func == null) {
 			init();
-			func = fs.compile(visible, invisible,
-					(Class<? extends I>) input.getClass());
+			func = fs.build(visible, DoubleType.class,
+					(Class<I>) input.getClass(),
+					invisible.toArray(new OpRef[invisible.size()]));
+		}
+		final List<Pair<String, DoubleType>> namedList = new ArrayList<Pair<String, DoubleType>>();
+
+		Iterator<OpRef> it = visible.iterator();
+		for (final DoubleType type : func.compute(input)) {
+			// TODO: we may want to use
+			namedList.add(new ValuePair<String, DoubleType>(it.next().getType()
+					.getSimpleName(), type));
 		}
 
-		return func.compute(input);
+		return namedList;
 	}
 
 	protected abstract void init();
 
-	public List<FeatureResult> createOutput(I input) {
-		return new ArrayList<FeatureResult>();
+	public List<Pair<String, DoubleType>> createOutput(I input) {
+		return new ArrayList<Pair<String, DoubleType>>();
 	};
 
 	/**
@@ -102,7 +125,7 @@ public abstract class AbstractFeatureSet<I> extends
 	 * @param parameters
 	 */
 	protected void addInvisible(Class<? extends Op> op, Object... parameters) {
-		invisible.add(new OpInfo(op, parameters));
+		invisible.add(new OpRef(op, parameters));
 	}
 
 	/**
@@ -113,7 +136,7 @@ public abstract class AbstractFeatureSet<I> extends
 	 * @param op
 	 * @param parameters
 	 */
-	protected void addVisible(Class<? extends Feature> op, Object... parameters) {
-		visible.add(new FeatureInfo(op, parameters));
+	protected void addVisible(Class<? extends Op> op, Object... parameters) {
+		visible.add(new OpRef(op, parameters));
 	}
 }

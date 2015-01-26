@@ -2,6 +2,7 @@ package net.imagej.ops.statistics.geometric.polygon;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.geometric.polygon.Polygon;
 import net.imagej.ops.statistics.geometric.GeometricStatOps.Area;
@@ -18,38 +19,32 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultAreaFeature extends AbstractOutputFunction<Polygon, RealType<?>>
-		implements AreaFeature {
+public class DefaultAreaFeature<I extends Polygon, O extends RealType<O>>
+        extends AbstractOutputFunction<Polygon, O> implements AreaFeature<O> {
 
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
+    @Override
+    public O createOutput(Polygon input) {
+        return OpUtils.<O> cast(new DoubleType());
+    }
 
-	@Override
-	public RealType<?> createOutput(Polygon input) {
-		return new DoubleType();
-	}
+    @Override
+    protected O safeCompute(Polygon input, O output) {
+        double sum = 0;
+        for (int i = 0; i < input.size() - 1; i++) {
 
-	@Override
-	protected RealType<?> safeCompute(Polygon input, RealType<?> output) {
+            RealPoint p0 = input.getPoint(i);
+            RealPoint p1 = input.getPoint(i + 1);
 
-		double sum = 0;
-		for (int i = 0; i < input.size() - 1; i++) {
+            double p0_x = p0.getDoublePosition(0);
+            double p0_y = p0.getDoublePosition(1);
+            double p1_x = p1.getDoublePosition(0);
+            double p1_y = p1.getDoublePosition(1);
 
-			RealPoint p0 = input.getPoint(i);
-			RealPoint p1 = input.getPoint(i + 1);
+            sum += p0_x * p1_y - p0_y * p1_x;
+        }
 
-			double p0_x = p0.getDoublePosition(0);
-			double p0_y = p0.getDoublePosition(1);
-			double p1_x = p1.getDoublePosition(0);
-			double p1_y = p1.getDoublePosition(1);
-
-			sum += p0_x * p1_y - p0_y * p1_x;
-		}
-
-		output.setReal(Math.abs(sum) / 2d);
-		return output;
-	}
+        output.setReal(Math.abs(sum) / 2d);
+        return output;
+    }
 
 }

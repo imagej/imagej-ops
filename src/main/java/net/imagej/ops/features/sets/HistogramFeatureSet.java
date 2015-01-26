@@ -5,15 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.features.DefaultFeatureResult;
-
-
-import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.histogram.HistogramCreate;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -25,10 +25,10 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <T>
  */
-@Plugin(type = FeatureSet.class, label = "Histogram Features")
+@Plugin(type = Op.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
-        AbstractOutputFunction<Iterable<T>, List<FeatureResult>> implements
-        FeatureSet<Iterable<T>> {
+        AbstractOutputFunction<Iterable<T>, List<Pair<String, DoubleType>>>
+        implements FeatureSet<Iterable<T>, Pair<String, DoubleType>> {
 
     @Parameter
     private OpService ops;
@@ -39,14 +39,14 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
     private HistogramCreate<T> op;
 
     @Override
-    public List<FeatureResult> createOutput(Iterable<T> input) {
-        return new ArrayList<FeatureResult>(numBins);
+    public List<Pair<String, DoubleType>> createOutput(Iterable<T> input) {
+        return new ArrayList<Pair<String, DoubleType>>(numBins);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected List<FeatureResult> safeCompute(Iterable<T> input,
-            final List<FeatureResult> output) {
+    protected List<Pair<String, DoubleType>> safeCompute(Iterable<T> input,
+            List<Pair<String, DoubleType>> output) {
         output.clear();
 
         if (op == null) {
@@ -59,10 +59,11 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
         final Iterator<LongType> it = op.getHistogram().iterator();
 
         for (int i = 0; i < numBins; i++) {
-            output.add(new DefaultFeatureResult("Histogram [" + i + "]",
-                    (double) it.next().get()));
+            output.add(new ValuePair<String, DoubleType>("Histogram [" + i
+                    + "]", new DoubleType(it.next().get())));
         }
 
         return output;
     }
+
 }

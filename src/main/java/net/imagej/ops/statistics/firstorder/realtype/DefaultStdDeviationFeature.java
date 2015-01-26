@@ -2,8 +2,8 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,6 +32,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.StdDeviation;
 import net.imglib2.type.numeric.RealType;
@@ -41,18 +42,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviation.LABEL, priority = Priority.LOW_PRIORITY + 1)
-public class DefaultStdDeviationFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements StdDeviation, StdDeviationFeature {
+public class DefaultStdDeviationFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements StdDeviation,
+		StdDeviationFeature<O> {
 
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
 		double sum = 0;
 		double sumSqr = 0;
@@ -67,10 +67,5 @@ public class DefaultStdDeviationFeature extends
 
 		output.setReal((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
 		return output;
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

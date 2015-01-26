@@ -31,7 +31,8 @@
 package net.imagej.ops.features.firstorder;
 
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps;
-import net.imagej.ops.features.Feature;
+import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * Static utility class containing built-in ops interfaces.
@@ -55,9 +56,9 @@ public final class FirstOrderFeatures {
 #foreach ($op in $ops)
 
 	/**
-	 * Interface marking implementations of {@link FirstOrderStatOps.${op.iface}} as {@link Feature}
+	 * Interface marking implementations of {@link FirstOrderStatOps.${op.iface}} as {@link OutputOp}
 	 */
-	public interface ${op.iface}Feature extends Feature, FirstOrderStatOps.${op.iface} {
+	public interface ${op.iface}Feature<T extends RealType<T>> extends OutputOp<T>, FirstOrderStatOps.${op.iface} {
 		// NB: Marker interface
 	}
 #end

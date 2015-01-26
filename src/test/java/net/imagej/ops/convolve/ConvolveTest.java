@@ -31,20 +31,15 @@
 package net.imagej.ops.convolve;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.ShortType;
-import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
 

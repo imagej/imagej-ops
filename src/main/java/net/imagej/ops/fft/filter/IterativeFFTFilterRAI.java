@@ -30,8 +30,6 @@
 
 package net.imagej.ops.fft.filter;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.OpService;
 import net.imagej.ops.convolve.ConvolveFFTRAI;
 import net.imglib2.Cursor;
@@ -46,6 +44,8 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI

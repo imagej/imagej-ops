@@ -31,13 +31,14 @@ package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class CoocStdX implements OutputOp<Double> {
+public class CoocStdX implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocPX coocPX;
@@ -46,31 +47,35 @@ public class CoocStdX implements OutputOp<Double> {
 	private CoocMeanX coocMeanX;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+	private DoubleType out;
 
 	@Override
 	public void run() {
-		double res = 0;
 
-		final double meanx = coocMeanX.getOutput();
+		if (out == null) {
+			out = new DoubleType();
+		}
+
+		final double meanx = coocMeanX.getOutput().get();
 		final double[] px = coocPX.getOutput();
 
+		double res = 0;
 		for (int i = 0; i < px.length; i++) {
 			res += (i - meanx) * (i - meanx) * px[i];
 		}
 
 		res = Math.sqrt(res);
 
-		output = res;
+		out.set(res);
 	}
 
 	@Override
-	public Double getOutput() {
-		return output;
+	public DoubleType getOutput() {
+		return out;
 	}
 
 	@Override
-	public void setOutput(Double output) {
-		this.output = output;
+	public void setOutput(DoubleType output) {
+		this.out = output;
 	}
 }

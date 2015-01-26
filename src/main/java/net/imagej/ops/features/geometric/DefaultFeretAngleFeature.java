@@ -1,10 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsAngleFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretProvider;
 import net.imglib2.RealPoint;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -17,39 +17,47 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = FeretsAngleFeature.NAME)
-public class DefaultFeretAngleFeature implements FeretsAngleFeature {
+public class DefaultFeretAngleFeature implements FeretsAngleFeature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonFeretProvider feretResult;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonFeretProvider feretResult;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
+        
+        RealPoint p1 = feretResult.getOutput().getA();
+        RealPoint p2 = feretResult.getOutput().getB();
 
-	@Override
-	public void run() {
+        if (p1.getDoublePosition(0) == p2.getDoublePosition(0)) {
+            out.setReal(90);
+        }
 
-		RealPoint p1 = feretResult.getOutput().getA();
-		RealPoint p2 = feretResult.getOutput().getB();
+        // tan alpha = opposite leg / adjacent leg
+        // angle in radiants = atan(alpha)
+        // angle in degree = atan(alpha) * (180/pi)
+        final double opLeg = p2.getDoublePosition(1) - p1.getDoublePosition(1);
+        final double adjLeg = p2.getDoublePosition(0) - p1.getDoublePosition(0);
+        double degree = Math.atan((opLeg / adjLeg)) * (180.0 / Math.PI);
+        if (adjLeg < 0) {
+            degree = 180 - degree;
+        }
 
-		if (p1.getDoublePosition(0) == p2.getDoublePosition(0)) {
-			out = (90);
-		}
+        out.setReal(Math.abs(degree));
+    }
 
-		// tan alpha = opposite leg / adjacent leg
-		// angle in radiants = atan(alpha)
-		// angle in degree = atan(alpha) * (180/pi)
-		final double opLeg = p2.getDoublePosition(1) - p1.getDoublePosition(1);
-		final double adjLeg = p2.getDoublePosition(0) - p1.getDoublePosition(0);
-		double degree = Math.atan((opLeg / adjLeg)) * (180.0 / Math.PI);
-		if (adjLeg < 0) {
-			degree = 180 - degree;
-		}
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
 
-		out = Math.abs(degree);
-	}
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 }

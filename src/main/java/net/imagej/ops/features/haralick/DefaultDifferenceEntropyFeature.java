@@ -37,42 +37,54 @@ import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.DifferenceEntropyFeature;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = DifferenceEntropyFeature.NAME)
-public class DefaultDifferenceEntropyFeature implements DifferenceEntropyFeature {
+@Plugin(type = Op.class, label = "Haralick 2D: Difference Entropy")
+public class DefaultDifferenceEntropyFeature implements
+        DifferenceEntropyFeature<DoubleType> {
 
-	// Avoid log 0
-	private static final double EPSILON = 0.00000001f;
+    // Avoid log 0
+    private static final double EPSILON = 0.00000001f;
 
-	@Parameter
-	private CooccurrenceMatrix matrix;
+    @Parameter
+    private CooccurrenceMatrix matrix;
 
-	@Parameter
-	private CoocPXMinusY coocPXMinusY;
+    @Parameter
+    private CoocPXMinusY coocPXMinusY;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public void run() {
 
-	@Override
-	public void run() {
-		final double[] pxminusy = coocPXMinusY.getOutput();
-		final int nrGrayLevels = matrix.getOutput().length;
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-		output = 0;
-		for (int k = 0; k <= nrGrayLevels - 1; k++) {
-			output += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
-		}
+        final double[] pxminusy = coocPXMinusY.getOutput();
+        final int nrGrayLevels = matrix.getOutput().length;
 
-		output = -output;
-	}
+        double output = 0;
+        for (int k = 0; k <= nrGrayLevels - 1; k++) {
+            output += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
+        }
+
+        out.setReal(-output);
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        out = output;
+    }
 
 }

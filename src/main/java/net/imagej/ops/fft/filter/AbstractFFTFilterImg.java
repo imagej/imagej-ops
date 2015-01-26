@@ -30,8 +30,6 @@
 
 package net.imagej.ops.fft.filter;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.OpService;
 import net.imglib2.Interval;
@@ -45,6 +43,8 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Util;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for FFT based filters that operate on Img.

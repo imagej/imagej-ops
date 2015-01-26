@@ -32,7 +32,6 @@ package net.imagej.ops.features.sets;
 
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
-import net.imagej.ops.features.geometric.DefaultRoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
@@ -105,9 +104,6 @@ public class GeometricFeatureSet extends AbstractFeatureSet<Polygon> {
 		
 		addVisible(FeretsDiameterFeature.class);
 		addVisible(FeretsAngleFeature.class);
-
-		
-
 	}
 
 }

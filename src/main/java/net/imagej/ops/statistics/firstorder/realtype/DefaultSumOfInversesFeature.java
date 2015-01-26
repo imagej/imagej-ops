@@ -32,6 +32,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.SumOfInverses;
@@ -45,22 +46,20 @@ import org.scijava.plugin.Plugin;
  * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
- * @author Andreas Graumann
  * 
  */
 @Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultSumOfInversesFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements SumOfInversesIRT, SumOfInversesFeature {
+public class DefaultSumOfInversesFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		SumOfInversesIRT<I, O>, SumOfInversesFeature<O> {
 
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(final Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(final Iterable<I> input, final O output) {
 
 		double res = 0.0;
 		for (final RealType<?> type : input) {
@@ -69,10 +68,5 @@ public class DefaultSumOfInversesFeature extends
 		output.setReal(res);
 		return output;
 
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

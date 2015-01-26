@@ -1,13 +1,13 @@
 package net.imagej.ops.features.moments.helper;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.moments.NormalMomentsResult;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "NormalMomentsHelper")
 public class NormalMomentsHelper

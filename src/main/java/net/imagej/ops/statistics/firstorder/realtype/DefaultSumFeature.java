@@ -33,6 +33,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Sum;
@@ -49,28 +50,22 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultSumFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements SumIRT, SumFeature {
+public class DefaultSumFeature<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements SumIRT<I, O>,
+        SumFeature<O> {
 
-	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> input) {
-		return new DoubleType();
-	}
+    @Override
+    public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
+    }
 
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
+    @Override
+    protected O safeCompute(Iterable<I> input, O output) {
+        output.setReal(0);
+        for (final RealType<?> d : input) {
+            output.setReal(output.getRealDouble() + d.getRealDouble());
+        }
 
-	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
-		output.setReal(0);
-		for (final RealType<?> d : input) {
-			output.setReal(output.getRealDouble() + d.getRealDouble());
-		}
-
-		return output;
-	}
+        return output;
+    }
 }

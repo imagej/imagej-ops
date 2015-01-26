@@ -32,6 +32,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
@@ -47,35 +48,28 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Max.NAME, label = Max.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMaxFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MaxIRT, MaxFeature {
+public class DefaultMaxFeature<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements MaxIRT<I, O>,
+        MaxFeature<O> {
 
-	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+    @Override
+    protected O safeCompute(Iterable<I> input, O output) {
 
-		double max = -Double.MAX_VALUE;
+        double max = -Double.MAX_VALUE;
 
-		for (final RealType<?> val : input) {
-			final double tmp = val.getRealDouble();
-			if (tmp > max) {
-				max = tmp;
-			}
-		}
+        for (final RealType<?> val : input) {
+            final double tmp = val.getRealDouble();
+            if (tmp > max) {
+                max = tmp;
+            }
+        }
 
-		output.setReal(max);
-		return output;
-	}
+        output.setReal(max);
+        return output;
+    }
 
-	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
+    @Override
+    public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
+    }
 }

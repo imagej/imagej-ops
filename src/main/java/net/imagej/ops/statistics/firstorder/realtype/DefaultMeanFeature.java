@@ -32,6 +32,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MeanIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Mean;
@@ -46,35 +47,28 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class DefaultMeanFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MeanIRT, MeanFeature {
+public class DefaultMeanFeature<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements
+        MeanIRT<I, O>, MeanFeature<O> {
 
-	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+    @Override
+    protected O safeCompute(Iterable<I> input, O output) {
 
-		double sum = 0;
-		double count = 0;
+        double sum = 0;
+        double count = 0;
 
-		for (final RealType<?> val : getInput()) {
-			sum += val.getRealDouble();
-			++count;
-		}
+        for (final RealType<?> val : getInput()) {
+            sum += val.getRealDouble();
+            ++count;
+        }
 
-		output.setReal((count == 0) ? 0 : sum / count);
+        output.setReal((count == 0) ? 0 : sum / count);
 
-		return output;
-	}
+        return output;
+    }
 
-	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
+    @Override
+    public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
+    }
 }

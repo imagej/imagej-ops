@@ -5,9 +5,9 @@ import java.util.Random;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
+import net.imagej.ops.functionbuilder.ComputerBuilder;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
 import net.imglib2.img.array.ArrayImg;
@@ -30,8 +30,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * Really small number, used for assertEquals with floating or double
 	 * values.
 	 */
-	protected static final double SMALL_DELTA = 1e-07;
-
+    protected static final double SMALL_DELTA = 1e-07;
 
 	/**
 	 * Medium small number, used for assertEquals with very little error margin.
@@ -48,7 +47,6 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 */
 	protected static final long SEED = 1234567890L;
 
-
 	/**
 	 * Some random images
 	 */
@@ -58,36 +56,33 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> ellipse;
 	protected Img<UnsignedByteType> rotatedEllipse;
 
-	@SuppressWarnings("rawtypes")
-	protected FeatureService<Img> fs;
+	protected ComputerBuilder fs;
 
-	@SuppressWarnings("unchecked")
 	@Before
 	public void setup() {
 		ImageGenerator dataGenerator = new ImageGenerator(SEED);
 		long[] dim = new long[] { 100, 100 };
-		
+
 		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
 		constant = dataGenerator.getConstantUnsignedByteImg(dim, 15);
 		random = dataGenerator.getRandomUnsignedByteImg(dim);
-		
-		double[] offset = new double[] {0.0,0.0};
-		double[] radii = new double[] {20,40};
-		ellipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
-		
-		// translate and rotate ellipse
-		offset = new double[]{10.0,-10.0};
-		radii = new double[] {40,20};
-		rotatedEllipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
-		
 
-		fs = context.getService(FeatureService.class);
+		double[] offset = new double[] { 0.0, 0.0 };
+		double[] radii = new double[] { 20, 40 };
+		ellipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
+
+		// translate and rotate ellipse
+		offset = new double[] { 10.0, -10.0 };
+		radii = new double[] { 40, 20 };
+		rotatedEllipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
+
+		fs = context.getService(ComputerBuilder.class);
 	}
 
 	@Override
 	protected Context createContext() {
 		return new Context(OpService.class, OpMatchingService.class,
-				FeatureService.class);
+				ComputerBuilder.class);
 	}
 
 	/**
@@ -96,10 +91,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	 * images of various types.
 	 * 
 	 * @author Daniel Seebacher, University of Konstanz.
-<<<<<<< HEAD
 	 * @author Andreas Graumann, University of Konstanz
-=======
->>>>>>> update set of haralick features and ops
 	 */
 	class ImageGenerator {
 
@@ -178,17 +170,19 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 			return (Img<UnsignedByteType>) img;
 		}
-		
+
 		/**
 		 * 
 		 * @param dim
 		 * @param radii
 		 * @return an {@link Img} of {@link BitType} filled with a ellipse
 		 */
-		public Img<UnsignedByteType> getEllipsedBitImage(long[] dim, double[] radii, double[] offset) {
+		public Img<UnsignedByteType> getEllipsedBitImage(long[] dim,
+				double[] radii, double[] offset) {
 
 			// create empty bittype image with desired dimensions
-			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(dim);
+			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs
+					.unsignedBytes(dim);
 
 			// create ellipse
 			EllipseRegionOfInterest ellipse = new EllipseRegionOfInterest();
@@ -199,9 +193,10 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			for (int i = 0; i < dim.length; i++)
 				origin[i] = dim[i] / 2;
 			ellipse.setOrigin(origin);
-			
+
 			// get iterable intervall and cursor of ellipse
-			IterableInterval<UnsignedByteType> ii = ellipse.getIterableIntervalOverROI(img);
+			IterableInterval<UnsignedByteType> ii = ellipse
+					.getIterableIntervalOverROI(img);
 			Cursor<UnsignedByteType> cursor = ii.cursor();
 
 			// fill image with ellipse
@@ -210,7 +205,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 				cursor.get().set(255);
 			}
 
-			return (Img<UnsignedByteType>)img;
+			return (Img<UnsignedByteType>) img;
 		}
 	}
 

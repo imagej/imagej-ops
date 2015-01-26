@@ -1,11 +1,11 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RugosityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -18,26 +18,36 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = RugosityFeature.NAME)
-public class DefaultRugosityFeature implements RugosityFeature {
+public class DefaultRugosityFeature implements
+        RugosityFeature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonPerimeterProvider perimter;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonPerimeterProvider perimter;
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonConvexHullPerimeterProvider convexHullPerimeter;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonConvexHullPerimeterProvider convexHullPerimeter;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-	@Override
-	public void run() {
-		out = perimter.getFeatureValue()
-				/ convexHullPerimeter.getFeatureValue();
-	}
+        out.setReal(perimter.getOutput().getRealDouble()
+                / convexHullPerimeter.getOutput().getRealDouble() );
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 
 }

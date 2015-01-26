@@ -30,9 +30,6 @@
 
 package net.imagej.ops.benchmark;
 
-import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
-import com.carrotsearch.junitbenchmarks.BenchmarkRule;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapI;
 import net.imagej.ops.map.MapII2II;
@@ -48,6 +45,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+
+import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
+import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:

@@ -31,7 +31,6 @@
 package net.imagej.ops.features.firstorder;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment2AboutMeanFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
@@ -50,36 +49,47 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Moment2AboutMean.NAME, label = Moment2AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultMoment2AboutMeanFeature implements Moment2AboutMeanFeature {
+@Plugin(type = Op.class, description="Calculates the M", name = Moment2AboutMean.NAME, label = Moment2AboutMean.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultMoment2AboutMeanFeature<T extends RealType<T>, O extends RealType<O>>
+		implements Moment2AboutMeanFeature<O> {
 
 	@Parameter
-	private Iterable<? extends RealType<?>> irt;
+	private Iterable<T> irt;
 
 	@Parameter
-	private MeanFeature mean;
+	private MeanFeature<O> mean;
 
 	@Parameter
-	private AreaFeature area;
+	private AreaFeature<O> area;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private O out;
 
 	@Override
 	public void run() {
-		final double meanVal = mean.getFeatureValue();
+
+		if (out == null) {
+			out = mean.getOutput().createVariable();
+		}
+
+		final double meanVal = mean.getOutput().getRealDouble();
 
 		double res = 0.0;
-		for (final RealType<?> t : irt) {
+		for (final T t : irt) {
 			final double val = t.getRealDouble() - meanVal;
 			res += val * val;
 		}
 
-		out = res / area.getFeatureValue();
+		out.setReal(res / area.getOutput().getRealDouble());
 	}
 
 	@Override
-	public double getFeatureValue() {
+	public O getOutput() {
 		return out;
+	}
+
+	@Override
+	public void setOutput(O output) {
+		out = output;
 	}
 }

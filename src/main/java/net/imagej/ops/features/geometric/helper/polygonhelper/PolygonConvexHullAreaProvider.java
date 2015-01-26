@@ -2,7 +2,7 @@ package net.imagej.ops.features.geometric.helper.polygonhelper;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.features.Feature;
+import net.imagej.ops.OutputOp;
 import net.imagej.ops.statistics.geometric.GeometricStatOps.Area;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -11,10 +11,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "PolygonConvexHullAreaProvider")
-public class PolygonConvexHullAreaProvider implements Feature {
+public class PolygonConvexHullAreaProvider implements OutputOp<DoubleType> {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+	private DoubleType out;
 
 	@Parameter(type = ItemIO.INPUT)
 	private PolygonConvexHullProvider in;
@@ -24,13 +24,22 @@ public class PolygonConvexHullAreaProvider implements Feature {
 
 	@Override
 	public void run() {
-		out = ((DoubleType) ops.run(Area.class, in.getOutput()))
-				.getRealDouble();
+	    if(out == null){
+	        out = new DoubleType();
+	    }
+	    
+		out.setReal(((DoubleType) ops.run(Area.class, in.getOutput()))
+				.getRealDouble());
 	}
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 
 }

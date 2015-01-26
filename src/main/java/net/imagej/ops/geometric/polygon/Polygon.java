@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.geometric.polygon;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 

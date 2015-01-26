@@ -30,14 +30,14 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract convenience op for generating a symmetric kernel

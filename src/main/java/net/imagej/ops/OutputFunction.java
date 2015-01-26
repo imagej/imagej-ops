@@ -38,17 +38,7 @@ package net.imagej.ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface OutputFunction<I, O> extends Function<I, O> {
-
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
-	O compute(I input);
+public interface OutputFunction<I, O> extends Function<I, O>, Computer<I, O> {
 
 	/**
 	 * @return create an output object of type O, given some input. The output

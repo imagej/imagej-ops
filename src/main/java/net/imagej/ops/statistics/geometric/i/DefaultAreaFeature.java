@@ -4,10 +4,11 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.statistics.geometric.GeometricStatOps.Area;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -15,32 +16,27 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Daniel Seebacher (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority=Priority.VERY_LOW_PRIORITY)
-public class DefaultAreaFeature extends AbstractOutputFunction<Iterable<?>, RealType<?>>
-		implements AreaFeature {
+@Plugin(type = Op.class, name = Area.NAME, label = Area.NAME, priority = Priority.VERY_LOW_PRIORITY)
+public class DefaultAreaFeature<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements
+        AreaFeature<O> {
 
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
+    @Override
+    public O createOutput(Iterable<I> input) {
+        return OpUtils.<O> cast(new DoubleType());
+    }
 
-	@Override
-	public RealType<?> createOutput(Iterable<?> input) {
-		return new LongType();
-	}
+    @Override
+    protected O safeCompute(Iterable<I> input, O output) {
+        double sum = 0;
 
-	@Override
-	protected RealType<?> safeCompute(Iterable<?> input, RealType<?> output) {
+        Iterator<?> iterator = input.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++sum;
+        }
 
-		long sum = 0;
-
-		Iterator<?> iterator = input.iterator();
-		while (iterator.hasNext()) {
-			iterator.next();
-			++sum;
-		}
-
-		output.setReal(sum);
-		return output;
-	}
+        output.setReal(sum);
+        return output;
+    }
 }

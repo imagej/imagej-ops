@@ -1,10 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.RectangularityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaProvider;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -17,25 +17,36 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = RectangularityFeature.NAME)
-public class DefaultRectangularityFeature implements RectangularityFeature {
+public class DefaultRectangularityFeature implements
+        RectangularityFeature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonAreaProvider area;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonAreaProvider area;
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonSmallestEnclosingRectangleAreaProvider serArea;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonSmallestEnclosingRectangleAreaProvider serArea;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-	@Override
-	public void run() {
-		out = area.getFeatureValue() / serArea.getFeatureValue();
-	}
+        out.setReal(area.getOutput().getRealDouble()
+                / serArea.getOutput().getRealDouble());
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 
 }

@@ -32,6 +32,7 @@ package net.imagej.ops.statistics.firstorder.realtype;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Min;
@@ -47,19 +48,17 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMinFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MinIRT, MinFeature {
+public class DefaultMinFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements MinIRT<I, O>,
+		MinFeature<O> {
 
 	@Override
-	public RealType<?> createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
 	}
 
 	@Override
-	protected RealType<?> safeCompute(
-			final Iterable<? extends RealType<?>> input,
-			final RealType<?> output) {
+	protected O safeCompute(final Iterable<I> input, final O output) {
 
 		double min = Double.POSITIVE_INFINITY;
 
@@ -72,10 +71,5 @@ public class DefaultMinFeature extends
 
 		output.setReal(min);
 		return output;
-	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
 	}
 }

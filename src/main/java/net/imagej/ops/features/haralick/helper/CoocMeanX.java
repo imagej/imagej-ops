@@ -31,37 +31,43 @@ package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class CoocMeanX implements OutputOp<Double> {
+public class CoocMeanX implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocPX coocPX;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double meanX = 0;
+	private DoubleType meanX;
 
 	@Override
 	public void run() {
+
+		if (meanX == null)
+			meanX = new DoubleType();
+
 		double res = 0;
 		final double[] px = coocPX.getOutput();
 		for (int i = 0; i < px.length; i++) {
 			res += i * px[i];
 		}
-		meanX = res;
+
+		meanX.setReal(res);
 	}
 
 	@Override
-	public Double getOutput() {
+	public DoubleType getOutput() {
 		return meanX;
 	}
 
 	@Override
-	public void setOutput(final Double meanX) {
+	public void setOutput(final DoubleType meanX) {
 		this.meanX = meanX;
 	}
 

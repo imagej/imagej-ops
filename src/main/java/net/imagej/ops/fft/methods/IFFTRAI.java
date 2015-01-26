@@ -33,14 +33,14 @@ package net.imagej.ops.fft.methods;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Ops.IFFT;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * 

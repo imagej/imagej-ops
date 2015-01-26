@@ -31,11 +31,13 @@
 package net.imagej.ops.features.firstorder;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.KurtosisFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment4AboutMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Kurtosis;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -50,31 +52,42 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann
  */
 @Plugin(type = Op.class, label = Kurtosis.LABEL, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultKurtosisFeature implements KurtosisFeature {
+public class DefaultKurtosisFeature<O extends RealType<O>> implements
+        KurtosisFeature<O> {
 
-	@Parameter
-	private StdDeviationFeature stddev;
+    @Parameter
+    private StdDeviationFeature<O> stddev;
 
-	@Parameter
-	private Moment4AboutMeanFeature moment4;
+    @Parameter
+    private Moment4AboutMeanFeature<O> moment4;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private O out;
 
-	@Override
-	public void run() {
-		out = Double.NaN;
+    @Override
+    public void run() {
+        if (out == null) {
+            out = OpUtils.<O> cast(new DoubleType());
+        }
 
-		final double std = stddev.getFeatureValue();
-		final double moment4 = this.moment4.getFeatureValue();
+        out.setReal(Double.NaN);
 
-		if (std != 0) {
-			out = ((moment4) / (std * std * std * std));
-		}
-	}
+        final double std = stddev.getOutput().getRealDouble();
+        final double moment4 = this.moment4.getOutput().getRealDouble();
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+        if (std != 0) {
+            out.setReal((moment4) / (std * std * std * std));
+        }
+
+    }
+
+    @Override
+    public O getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(O output) {
+        out = output;
+    }
 }

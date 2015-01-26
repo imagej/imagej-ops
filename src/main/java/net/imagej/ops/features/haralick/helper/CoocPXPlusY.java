@@ -39,40 +39,40 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class)
 public class CoocPXPlusY implements OutputOp<double[]> {
 
-    @Parameter
-    private CooccurrenceMatrix cooc;
+	@Parameter
+	private CooccurrenceMatrix cooc;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private double[] output;
+	@Parameter(type = ItemIO.OUTPUT)
+	private double[] output;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
+		
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
 
-        final double[][] matrix = cooc.getOutput();
-        final int nrGrayLevels = matrix.length;
+		final double[] pxplusy = new double[2 * nrGrayLevels + 1];
 
-        final double[] pxplusy = new double[2 * nrGrayLevels + 1];
+		for (int k = 2; k <= 2 * nrGrayLevels; k++) {
+			for (int i = 0; i < nrGrayLevels; i++) {
+				for (int j = 0; j < nrGrayLevels; j++) {
+					if ((i + 1) + (j + 1) == k) {
+						pxplusy[k] += matrix[i][j];
+					}
+				}
+			}
+		}
+		output = pxplusy;
+	}
 
-        for (int k = 2; k <= 2 * nrGrayLevels; k++) {
-            for (int i = 0; i < nrGrayLevels; i++) {
-                for (int j = 0; j < nrGrayLevels; j++) {
-                    if ((i + 1) + (j + 1) == k) {
-                        pxplusy[k] += matrix[i][j];
-                    }
-                }
-            }
-        }
-        output = pxplusy;
-    }
+	@Override
+	public double[] getOutput() {
+		return output;
+	}
 
-    @Override
-    public double[] getOutput() {
-        return output;
-    }
-
-    @Override
-    public void setOutput(double[] output) {
-        this.output = output;
-    }
+	@Override
+	public void setOutput(double[] output) {
+		this.output = output;
+	}
 
 }

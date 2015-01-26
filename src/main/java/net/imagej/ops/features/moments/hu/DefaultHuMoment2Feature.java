@@ -1,11 +1,11 @@
 package net.imagej.ops.features.moments.hu;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment2Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment02Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment11Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment20Feature;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -18,28 +18,38 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = HuMoment2Feature.NAME)
-public class DefaultHuMoment2Feature implements HuMoment2Feature {
+public class DefaultHuMoment2Feature implements HuMoment2Feature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private NormalizedCentralMoment11Feature n11;
+    @Parameter(type = ItemIO.INPUT)
+    private NormalizedCentralMoment11Feature<DoubleType> n11;
 
-	@Parameter(type = ItemIO.INPUT)
-	private NormalizedCentralMoment02Feature n02;
+    @Parameter(type = ItemIO.INPUT)
+    private NormalizedCentralMoment02Feature<DoubleType> n02;
 
-	@Parameter(type = ItemIO.INPUT)
-	private NormalizedCentralMoment20Feature n20;
+    @Parameter(type = ItemIO.INPUT)
+    private NormalizedCentralMoment20Feature<DoubleType> n20;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-	@Override
-	public void run() {
-		out = Math.pow(n20.getFeatureValue() - n02.getFeatureValue(), 2) - 4
-				* (Math.pow(n11.getFeatureValue(), 2));
-	}
+        out.setReal(Math.pow(n20.getOutput().getRealDouble()
+                - n02.getOutput().getRealDouble(), 2)
+                - 4 * (Math.pow(n11.getOutput().getRealDouble(), 2)));
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 }

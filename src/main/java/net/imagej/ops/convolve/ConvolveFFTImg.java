@@ -30,9 +30,6 @@
 
 package net.imagej.ops.convolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -43,6 +40,9 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Convolve op for (@link Img) 

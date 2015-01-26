@@ -36,42 +36,50 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.EntropyFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = EntropyFeature.NAME)
-public class DefaultEntropyFeature implements EntropyFeature {
+@Plugin(type = Op.class, label = "Haralick 2D: Entropy")
+public class DefaultEntropyFeature implements EntropyFeature<DoubleType> {
 
-	private static final double EPSILON = 0.00000001f;
+    private static final double EPSILON = 0.00000001f;
 
-	@Parameter
-	private CooccurrenceMatrix cooc;
+    @Parameter
+    private CooccurrenceMatrix cooc;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double output;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return output;
-	}
+    @Override
+    public void run() {
 
-	@Override
-	public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-		output = 0;
-		
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
-		
-		for (int i = 0; i < nrGrayLevels; i++) {
-			for (int j = 0; j < nrGrayLevels; j++) {
-				output += matrix[i][j]
-						* Math.log(matrix[i][j] + EPSILON);
-			}
-		}
+        final double[][] matrix = cooc.getOutput();
+        final int nrGrayLevels = matrix.length;
 
-		output = -output;
-	}
+        double output = 0;
+        for (int i = 0; i < nrGrayLevels; i++) {
+            for (int j = 0; j < nrGrayLevels; j++) {
+                output += matrix[i][j] * Math.log(matrix[i][j] + EPSILON);
+            }
+        }
+
+        out.setReal(-output);
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        out = output;
+    }
 }

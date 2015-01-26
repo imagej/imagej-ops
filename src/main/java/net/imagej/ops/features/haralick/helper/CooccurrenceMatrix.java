@@ -34,7 +34,6 @@ import java.util.Arrays;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imglib2.Cursor;
@@ -42,7 +41,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
-
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -57,139 +55,135 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class)
 public class CooccurrenceMatrix implements OutputOp<double[][]> {
 
-    public static enum MatrixOrientation {
-        DIAGONAL(1, -1), ANTIDIAGONAL(1, 1), HORIZONTAL(1, 0), VERTICAL(0, 1);
+	public static enum MatrixOrientation {
+		DIAGONAL(1, -1), ANTIDIAGONAL(1, 1), HORIZONTAL(1, 0), VERTICAL(0, 1);
 
-        public final int dx;
+		public final int dx;
 
-        public final int dy;
+		public final int dy;
 
-        private MatrixOrientation(int dx, int dy) {
-            this.dx = dx;
-            this.dy = dy;
-        }
-    }
+		private MatrixOrientation(int dx, int dy) {
+			this.dx = dx;
+			this.dy = dy;
+		}
+	}
 
-    @Parameter
-    private IterableInterval<? extends RealType<?>> ii;
+	@Parameter
+	private IterableInterval<? extends RealType<?>> ii;
 
-    @Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
-    private int nrGreyLevels;
+	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
+	private int nrGreyLevels;
 
-    @Parameter(label = "Distance", min = "0", max = "128", stepSize = "1", initializer = "1")
-    private int distance;
+	@Parameter(label = "Distance", min = "0", max = "128", stepSize = "1", initializer = "1")
+	private int distance;
 
-    // TODO use enum
-    @Parameter(label = "Matrix Orientation", choices = { "DIAGONAL",
-            "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
-    private String orientation;
+	// TODO use enum
+	@Parameter(label = "Matrix Orientation", choices = { "DIAGONAL",
+			"ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
+	private String orientation;
 
-    @Parameter
-    private MinFeature min;
+	@Parameter
+	private MinFeature<? extends RealType<?>> min;
 
-    @Parameter
-    private MaxFeature max;
+	@Parameter
+	private MaxFeature<? extends RealType<?>> max;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private double[][] output;
+	@Parameter(type = ItemIO.OUTPUT)
+	private double[][] output;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
 
-        int dimX = -1;
-        int dimY = -1;
+		int dimX = -1;
+		int dimY = -1;
 
-        for (int d = 0; d < ii.numDimensions(); d++) {
-            if (ii.dimension(d) > 1) {
-                if (dimX == -1) {
-                    dimX = d;
-                } else {
-                    dimY = d;
-                    break;
-                }
-            }
-        }
+		for (int d = 0; d < ii.numDimensions(); d++) {
+			if (ii.dimension(d) > 1) {
+				if (dimX == -1) {
+					dimX = d;
+				} else {
+					dimY = d;
+					break;
+				}
+			}
+		}
 
-        final MatrixOrientation orientation = MatrixOrientation
-                .valueOf(this.orientation);
+		final MatrixOrientation orientation = MatrixOrientation
+				.valueOf(this.orientation);
 
-        double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
+		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
-        final Cursor<? extends RealType<?>> cursor = ii.cursor();
+		final Cursor<? extends RealType<?>> cursor = ii.cursor();
 
-        final double localMin = min.getFeatureValue();
+		final double localMin = min.getOutput().getRealDouble();
+		final double localMax = max.getOutput().getRealDouble();
 
-        final double localMax = max.getFeatureValue();
+		final int[][] pixels = new int[(int) ii.dimension(dimX)][(int) ii
+				.dimension(dimY)];
 
-        final int[][] pixels = new int[(int) ii.dimension(dimX)][(int) ii
-                .dimension(dimY)];
+		for (int i = 0; i < pixels.length; i++) {
+			Arrays.fill(pixels[i], Integer.MAX_VALUE);
+		}
 
-        for (int i = 0; i < pixels.length; i++) {
-            Arrays.fill(pixels[i], Integer.MAX_VALUE);
-        }
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			pixels[cursor.getIntPosition(dimY) - (int) ii.min(dimY)][cursor
+					.getIntPosition(dimX) - (int) ii.min(dimX)] = (int) (((cursor
+					.get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGreyLevels - 1));
+		}
 
-        while (cursor.hasNext()) {
-            cursor.fwd();
+		int nrPairs = 0;
 
-            pixels[cursor.getIntPosition(dimY) - (int) ii.min(dimY)][cursor
-                    .getIntPosition(dimX) - (int) ii.min(dimX)] = (int) (((cursor
-                    .get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGreyLevels - 1));
-        }
+		for (int y = 0; y < pixels.length; y++) {
+			for (int x = 0; x < pixels[y].length; x++) {
+				// ignore pixels not in mask
+				if (pixels[y][x] == Integer.MAX_VALUE) {
+					continue;
+				}
 
-        int nrPairs = 0;
+				// // get second pixel
+				final int sx = x + orientation.dx * distance;
+				final int sy = y + orientation.dy * distance;
+				// get third pixel
+				final int tx = x - orientation.dx * distance;
+				final int ty = y - orientation.dy * distance;
 
-        for (int y = 0; y < pixels.length; y++) {
-            for (int x = 0; x < pixels[y].length; x++) {
-                // ignore pixels not in mask
-                if (pixels[y][x] == Integer.MAX_VALUE) {
-                    continue;
-                }
+				// second pixel in interval and mask
+				if (sx >= 0 && sy >= 0 && sy < pixels.length
+						&& sx < pixels[sy].length
+						&& pixels[sy][sx] != Integer.MAX_VALUE) {
+					matrix[pixels[y][x]][pixels[sy][sx]]++;
+					nrPairs++;
+				}
+				// third pixel in interval
+				if (tx >= 0 && ty >= 0 && ty < pixels.length
+						&& tx < pixels[ty].length
+						&& pixels[ty][tx] != Integer.MAX_VALUE) {
+					matrix[pixels[y][x]][pixels[ty][tx]]++;
+					nrPairs++;
+				}
+			}
+		}
 
-                // // get second pixel
-                final int sx = x + orientation.dx * distance;
-                final int sy = y + orientation.dy * distance;
-                // get third pixel
-                final int tx = x - orientation.dx * distance;
-                final int ty = y - orientation.dy * distance;
+		if (nrPairs > 0) {
+			double divisor = 1.0 / nrPairs;
+			for (int row = 0; row < matrix.length; row++) {
+				for (int col = 0; col < matrix[row].length; col++) {
+					matrix[row][col] *= divisor;
+				}
+			}
+		}
 
-                // second pixel in interval and mask
-                if (sx >= 0 && sy >= 0 && sy < pixels.length
-                        && sx < pixels[sy].length
-                        && pixels[sy][sx] != Integer.MAX_VALUE) {
-                    matrix[pixels[y][x]][pixels[sy][sx]]++;
+		output = matrix;
+	}
 
-                    nrPairs++;
-                }
-                // third pixel in interval
-                if (tx >= 0 && ty >= 0 && ty < pixels.length
-                        && tx < pixels[ty].length
-                        && pixels[ty][tx] != Integer.MAX_VALUE) {
-                    matrix[pixels[y][x]][pixels[ty][tx]]++;
+	@Override
+	public double[][] getOutput() {
+		return output;
+	}
 
-                    nrPairs++;
-                }
-            }
-        }
-
-        if (nrPairs > 0) {
-            double divisor = 1.0 / nrPairs;
-            for (int row = 0; row < matrix.length; row++) {
-                for (int col = 0; col < matrix[row].length; col++) {
-                    matrix[row][col] *= divisor;
-                }
-            }
-        }
-
-        output = matrix;
-    }
-
-    @Override
-    public double[][] getOutput() {
-        return output;
-    }
-
-    @Override
-    public void setOutput(double[][] output) {
-        this.output = output;
-    }
+	@Override
+	public void setOutput(double[][] output) {
+		this.output = output;
+	}
 }

@@ -35,14 +35,14 @@ import java.util.List;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
-import net.imagej.ops.features.DefaultFeatureResult;
-import net.imagej.ops.features.Feature;
-import net.imagej.ops.features.FeatureResult;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.zernike.ZernikeComputer;
 import net.imagej.ops.features.zernike.ZernikeMoment;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,87 +56,89 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Moment Features")
 public class ZernikeFeatureSet
-		extends
-		AbstractOutputFunction<IterableInterval<? extends RealType<?>>, List<FeatureResult>>
-		implements FeatureSet<IterableInterval<? extends RealType<?>>>,
-		Contingent {
+        extends
+        AbstractOutputFunction<IterableInterval<? extends RealType<?>>, List<Pair<String, DoubleType>>>
+        implements
+        FeatureSet<IterableInterval<? extends RealType<?>>, Pair<String, DoubleType>>,
+        Contingent {
 
-	@Parameter
-	private OpService ops;
+    @Parameter
+    private OpService ops;
 
-	@Parameter(label = "Compute Magnitude")
-	private boolean computeMagnitude;
+    @Parameter(label = "Compute Magnitude")
+    private boolean computeMagnitude;
 
-	@Parameter(label = "Compute Phase")
-	private boolean computePhase;
+    @Parameter(label = "Compute Phase")
+    private boolean computePhase;
 
-	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1")
-	private int orderMin = 2;
+    @Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1", initializer = "2")
+    private int orderMin;
 
-	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1")
-	private int orderMax = 6;
+    @Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1", initializer = "6")
+    private int orderMax;
 
-	private ZernikeComputer m_op;
+    private ZernikeComputer m_op;
 
-	@Override
-	public List<FeatureResult> createOutput(
-			IterableInterval<? extends RealType<?>> input) {
-		return new ArrayList<FeatureResult>();
-	}
+    @Override
+    public List<Pair<String, DoubleType>> createOutput(
+            IterableInterval<? extends RealType<?>> input) {
+        return new ArrayList<Pair<String, DoubleType>>();
+    }
 
-	@Override
-	protected List<FeatureResult> safeCompute(
-			IterableInterval<? extends RealType<?>> input,
-			List<FeatureResult> output) {
-		output.clear();
+    @Override
+    public boolean conforms() {
+        // something to compute?
+        if (!computeMagnitude && !computePhase) {
+            return false;
+        }
 
-		// get ZernikeComputer
-		if (m_op == null) {
-			try {
-				m_op = ops.op(ZernikeComputer.class, input, orderMin, orderMax);
-			} catch (Exception e) {
-				throw new IllegalStateException(
-						"Can not find suitable op! Error message: "
-								+ e.getMessage());
-			}
-		}
+        // dimension must be 2
+        if (!(getInput().numDimensions() == 2)) {
+            return false;
+        }
 
-		// run zernike computer
-		m_op.run();
+        return true;
+    }
 
-		for (ZernikeMoment moment : m_op.getAllZernikeMoments()) {
-			if (computeMagnitude) {
-				DefaultFeatureResult result = new DefaultFeatureResult();
-				result.setName("Zernike Magnitude of order " + moment.getN()
-						+ " and repitition " + moment.getM());
-				result.setValue(moment.getMagnitude());
-				output.add(result);
-			}
-			if (computePhase) {
-				DefaultFeatureResult result = new DefaultFeatureResult();
-				result.setName("Zernike Phase of order " + moment.getN()
-						+ " and repitition " + moment.getM());
-				result.setValue(moment.getPhase());
-				output.add(result);
-			}
-		}
+    @Override
+    protected List<Pair<String, DoubleType>> safeCompute(
+            IterableInterval<? extends RealType<?>> input,
+            List<Pair<String, DoubleType>> output) {
+        output.clear();
 
-		return output;
-	}
+        // get ZernikeComputer
+        if (m_op == null) {
+            try {
+                m_op = ops.op(ZernikeComputer.class, input, orderMin, orderMax);
+            } catch (Exception e) {
+                throw new IllegalStateException(
+                        "Can not find suitable op! Error message: "
+                                + e.getMessage());
+            }
+        }
 
-	@Override
-	public boolean conforms() {
-		// something to compute?
-		if (!computeMagnitude && !computePhase) {
-			return false;
-		}
+        // run zernike computer
+        m_op.run();
 
-		// dimension must be 2
-		if (!(getInput().numDimensions() == 2)) {
-			return false;
-		}
+        for (ZernikeMoment moment : m_op.getAllZernikeMoments()) {
+            if (computeMagnitude) {
+                String featureName = "Zernike Magnitude of order "
+                        + moment.getN() + " and repitition " + moment.getM();
+                DoubleType featureValue = new DoubleType(moment.getMagnitude());
+                output.add(new ValuePair<String, DoubleType>(featureName,
+                        featureValue));
+            }
+            if (computePhase) {
 
-		return true;
-	}
+                String featureName = "Zernike Phase of order " + moment.getN()
+                        + " and repitition " + moment.getM();
+                DoubleType featureValue = new DoubleType(moment.getPhase());
 
+                output.add(new ValuePair<String, DoubleType>(featureName,
+                        featureValue));
+            }
+        }
+
+        return output;
+    }
 }

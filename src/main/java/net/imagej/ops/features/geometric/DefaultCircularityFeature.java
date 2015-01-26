@@ -1,10 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -17,28 +17,38 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = CircularityFeature.NAME)
-public class DefaultCircularityFeature implements CircularityFeature {
+public class DefaultCircularityFeature implements
+        CircularityFeature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonAreaProvider area;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonAreaProvider area;
 
-	@Parameter(type = ItemIO.INPUT)
-	private PolygonPerimeterProvider perimter;
+    @Parameter(type = ItemIO.INPUT)
+    private PolygonPerimeterProvider perimter;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
+        
+        out.setReal(4
+                * Math.PI
+                * (area.getOutput().getRealDouble() / Math.pow(
+                        perimter.getOutput().getRealDouble(), 2)));
+    }
 
-	@Override
-	public void run() {
-		out = 4
-				* Math.PI
-				* (area.getFeatureValue() / Math.pow(
-						perimter.getFeatureValue(), 2));
-	}
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 
 }

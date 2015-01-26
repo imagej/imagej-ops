@@ -44,48 +44,48 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = FeatureSet.class, label = "Image Moment Features")
-public class ImageMomentsFeatureSet extends
-		AbstractFeatureSet<IterableInterval<? extends RealType<?>>> {
+public class ImageMomentsFeatureSet<I extends RealType<I>> extends
+        AbstractFeatureSet<IterableInterval<I>> {
 
-	@Override
-	protected void init() {
+    @Override
+    protected void init() {
 
-		// add helper
-		addInvisible(NormalMomentsHelper.class, getInput());
-		addInvisible(CentralMomentsHelper.class, getInput());
+        // add helper
+        addInvisible(NormalMomentsHelper.class, getInput());
+        addInvisible(CentralMomentsHelper.class, getInput());
 
-		// add features
-		addVisible(Moment00Feature.class);
-		addVisible(Moment01Feature.class);
-		addVisible(Moment10Feature.class);
-		addVisible(Moment11Feature.class);
+        // add features
+        addVisible(Moment00Feature.class);
+        addVisible(Moment01Feature.class);
+        addVisible(Moment10Feature.class);
+        addVisible(Moment11Feature.class);
 
-		addVisible(CentralMoment00Feature.class);
-		addVisible(CentralMoment01Feature.class);
-		addVisible(CentralMoment10Feature.class);
-		addVisible(CentralMoment11Feature.class);
-		addVisible(CentralMoment20Feature.class);
-		addVisible(CentralMoment02Feature.class);
-		addVisible(CentralMoment21Feature.class);
-		addVisible(CentralMoment12Feature.class);
-		addVisible(CentralMoment30Feature.class);
-		addVisible(CentralMoment03Feature.class);
-		
-		addVisible(NormalizedCentralMoment02Feature.class);
-		addVisible(NormalizedCentralMoment03Feature.class);
-		addVisible(NormalizedCentralMoment11Feature.class);
-		addVisible(NormalizedCentralMoment12Feature.class);
-		addVisible(NormalizedCentralMoment20Feature.class);
-		addVisible(NormalizedCentralMoment21Feature.class);
-		addVisible(NormalizedCentralMoment30Feature.class);
+        addVisible(CentralMoment00Feature.class);
+        addVisible(CentralMoment01Feature.class);
+        addVisible(CentralMoment10Feature.class);
+        addVisible(CentralMoment11Feature.class);
+        addVisible(CentralMoment20Feature.class);
+        addVisible(CentralMoment02Feature.class);
+        addVisible(CentralMoment21Feature.class);
+        addVisible(CentralMoment12Feature.class);
+        addVisible(CentralMoment30Feature.class);
+        addVisible(CentralMoment03Feature.class);
 
-		addVisible(HuMoment1Feature.class);
-		addVisible(HuMoment2Feature.class);
-		addVisible(HuMoment3Feature.class);
-		addVisible(HuMoment4Feature.class);
-		addVisible(HuMoment5Feature.class);
-		addVisible(HuMoment6Feature.class);
-		addVisible(HuMoment7Feature.class);
-	}
+        addVisible(NormalizedCentralMoment02Feature.class);
+        addVisible(NormalizedCentralMoment03Feature.class);
+        addVisible(NormalizedCentralMoment11Feature.class);
+        addVisible(NormalizedCentralMoment12Feature.class);
+        addVisible(NormalizedCentralMoment20Feature.class);
+        addVisible(NormalizedCentralMoment21Feature.class);
+        addVisible(NormalizedCentralMoment30Feature.class);
+
+        addVisible(HuMoment1Feature.class);
+        addVisible(HuMoment2Feature.class);
+        addVisible(HuMoment3Feature.class);
+        addVisible(HuMoment4Feature.class);
+        addVisible(HuMoment5Feature.class);
+        addVisible(HuMoment6Feature.class);
+        addVisible(HuMoment7Feature.class);
+    }
 
 }

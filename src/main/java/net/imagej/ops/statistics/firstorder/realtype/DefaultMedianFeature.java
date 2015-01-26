@@ -2,8 +2,8 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@ import java.util.List;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MedianFeature;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MedianIRT;
 import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Median;
@@ -50,9 +51,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMedianFeature extends
-		AbstractOutputFunction<Iterable<? extends RealType<?>>, RealType<?>>
-		implements MedianIRT, MedianFeature {
+public class DefaultMedianFeature<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		MedianIRT<I, O>, MedianFeature<O> {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest
@@ -127,13 +128,12 @@ public class DefaultMedianFeature extends
 	}
 
 	@Override
-	public DoubleType createOutput(Iterable<? extends RealType<?>> in) {
-		return new DoubleType();
+	public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
 	}
 
 	@Override
-	protected RealType<?> safeCompute(Iterable<? extends RealType<?>> input,
-			RealType<?> output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
@@ -145,10 +145,4 @@ public class DefaultMedianFeature extends
 				statistics.size() / 2));
 		return output;
 	}
-
-	@Override
-	public double getFeatureValue() {
-		return getOutput().getRealDouble();
-	}
-
 }

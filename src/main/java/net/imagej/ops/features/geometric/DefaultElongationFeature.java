@@ -1,10 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.FeatureService;
 import net.imagej.ops.features.geometric.GeometricFeatures.ElongationFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -17,24 +17,34 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Op.class, name = ElongationFeature.NAME)
-public class DefaultElongationFeature implements ElongationFeature {
+public class DefaultElongationFeature implements ElongationFeature<DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT)
-	private MinorAxisFeature minorAxis;
+    @Parameter(type = ItemIO.INPUT)
+    private MinorAxisFeature<DoubleType> minorAxis;
 
-	@Parameter(type = ItemIO.INPUT)
-	private MajorAxisFeature majorAxis;
+    @Parameter(type = ItemIO.INPUT)
+    private MajorAxisFeature<DoubleType> majorAxis;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private double out;
+    @Parameter(type = ItemIO.OUTPUT)
+    private DoubleType out;
 
-	@Override
-	public double getFeatureValue() {
-		return out;
-	}
+    @Override
+    public void run() {
+        if (out == null) {
+            out = new DoubleType();
+        }
 
-	@Override
-	public void run() {
-		out = 1 - (minorAxis.getFeatureValue() / majorAxis.getFeatureValue());
-	}
+        out.setReal(1 - (minorAxis.getOutput().getRealDouble() / majorAxis
+                .getOutput().getRealDouble()));
+    }
+
+    @Override
+    public DoubleType getOutput() {
+        return out;
+    }
+
+    @Override
+    public void setOutput(DoubleType output) {
+        this.out = output;
+    }
 }

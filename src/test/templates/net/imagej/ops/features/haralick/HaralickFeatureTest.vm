@@ -32,21 +32,16 @@ package net.imagej.ops.features.haralick;
 
 import static org.junit.Assert.assertEquals;
 
-
-import java.util.List;
 import java.util.HashSet;
 
-import net.imagej.ops.features.FeatureResult;
-import net.imagej.ops.OutputFunction;
+import net.imagej.ops.Computer;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imagej.ops.features.Feature;
-
-import net.imagej.ops.features.FeatureInfo;
-import net.imagej.ops.features.OpInfo;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 
@@ -57,13 +52,13 @@ import org.junit.Test;
  */
 public class HaralickFeatureTest extends AbstractFeatureTest {
 
-	private HashSet<OpInfo> helpers;
+    private HashSet<OpRef> helpers;
 
-	{
-		this.helpers = new HashSet<OpInfo>();
-		helpers.add(new OpInfo(CooccurrenceMatrix.class, Img.class, 8, 1,
-				"HORIZONTAL", MinFeature.class, MaxFeature.class));
-	}
+    {
+        this.helpers = new HashSet<OpRef>();
+        helpers.add(new OpRef(CooccurrenceMatrix.class, Img.class, 8, 1,
+                "HORIZONTAL", MinFeature.class, MaxFeature.class));
+    }
 
 
 #foreach ($op in $ops)
@@ -71,19 +66,22 @@ public class HaralickFeatureTest extends AbstractFeatureTest {
 	/**
 	 * Testing {@link Feature} implementation of {@link ${op.iface}}
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void Haralick${op.iface}FeatureTest() {
 			
-		OutputFunction<Img, FeatureResult> compiled = fs
-				.compile(HaralickFeatures.${op.iface}Feature.class, helpers, Img.class);
+		Computer<Img, DoubleType> compiled = fs.build(new OpRef(
+                HaralickFeatures.${op.iface}Feature.class), DoubleType.class,
+                Img.class, helpers.toArray(new OpRef[helpers.size()]));
+				
 
-		assertEquals(${op.empty}, compiled.compute(empty).getValue(),
+		assertEquals(${op.empty}, compiled.compute(empty).getRealDouble(),
 				SMALL_DELTA);
 
-		assertEquals(${op.random}, compiled.compute(random).getValue(),
+		assertEquals(${op.random}, compiled.compute(random).getRealDouble(),
 				SMALL_DELTA);
 
-		assertEquals(${op.constant}, compiled.compute(constant).getValue(),
+		assertEquals(${op.constant}, compiled.compute(constant).getRealDouble(),
 				SMALL_DELTA);
 		
 	}
