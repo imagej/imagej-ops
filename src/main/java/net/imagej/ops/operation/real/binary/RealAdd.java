@@ -30,6 +30,8 @@
 
 package net.imagej.ops.operation.real.binary;
 
+import net.imglib2.ops.operation.BinaryOperation;
+import net.imglib2.ops.operation.real.binary.RealBinaryOperation;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -40,20 +42,18 @@ import net.imglib2.type.numeric.RealType;
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
-public final class RealAdd<
-		I1 extends RealType<I1>,
-		I2 extends RealType<I2>,
-		O extends RealType<O>>
-	implements RealBinaryOperation<I1, I2, O>
+public class RealAdd implements ComplexBinaryOp
 {
+
 	@Override
-	public O compute(I1 x1, I2 x2, O output) {
-		output.setReal(x1.getRealDouble() + x2.getRealDouble());
-		return output;
+	public Object compute(Object input1, Object input2, Object output) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public RealAdd<I1,I2,O> copy() {
-		return new RealAdd<I1,I2,O>();
+	public BinaryOperation copy() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

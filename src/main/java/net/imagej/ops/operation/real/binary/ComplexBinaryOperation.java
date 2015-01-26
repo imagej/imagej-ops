@@ -30,7 +30,7 @@
 
 package net.imagej.ops.operation.real.binary;
 
-import net.imglib2.ops.operation.BinaryOperation;
+import net.imglib2.ops.operation.BinaryOperation; 
 import net.imglib2.type.numeric.ComplexType;
 
 /**
