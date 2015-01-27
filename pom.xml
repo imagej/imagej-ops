@@ -221,6 +221,7 @@
 									</pluginExecutionFilter>
 									<action>
 										<execute>
+											<runOnConfiguration>true</runOnConfiguration>
 											<runOnIncremental>false</runOnIncremental>
 										</execute>
 									</action>
