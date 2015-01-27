@@ -172,7 +172,7 @@ def parseValue(str) {
 			}
 			else {
 				// this is a simple string value, we're done.
-				parsed.push(new String(str.trim()));
+				parsed.push(str.trim());
 				break;
 			}
 		}
