@@ -79,7 +79,13 @@ public final class $className {
 	public interface $op.iface extends Op {
 		String NAME = "$!{prefix}$op.name";
 #if ($op.aliases)
-		String ALIASES = "$op.aliases";
+		String ALIASES = "##
+#set ($first = true)
+#foreach ($alias in $op.aliases)
+#if ($first)#set ($first = false)#else, #end
+$!prefix$alias##
+#end
+";
 #end
 	}
 #end
