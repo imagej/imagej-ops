@@ -148,8 +148,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		for (int i = 0; i < maxIterations; i++) {
 			performIteration();
 			createReblurred();
-			
-			System.out.println("iterations: "+i);
 		}
 
 	}
