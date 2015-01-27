@@ -30,7 +30,7 @@
 
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AbstractFeatureSet;
+import net.imagej.ops.features.GenericFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
@@ -66,26 +66,26 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = FeatureSet.class, label = "Geometric Features")
-public class GeometricFeatureSet extends AbstractFeatureSet<Polygon> {
+public class GeometricFeatureSet extends GenericFeatureSet<Polygon> {
 
 	@Override
 	protected void init() {
 
 		// add helper
-		addInvisible(PolygonAreaProvider.class, getInput());
-		addInvisible(PolygonPerimeterProvider.class, getInput());
+		addHelperOp(PolygonAreaProvider.class, getInput());
+		addHelperOp(PolygonPerimeterProvider.class, getInput());
 
-		addInvisible(PolygonConvexHullProvider.class, getInput());
+		addHelperOp(PolygonConvexHullProvider.class, getInput());
 		addInvisible(PolygonConvexHullAreaProvider.class);
 		addInvisible(PolygonConvexHullPerimeterProvider.class);
 
-		addInvisible(PolygonSmallestEnclosingRectangleProvider.class,
+		addHelperOp(PolygonSmallestEnclosingRectangleProvider.class,
 				getInput());
 		addInvisible(PolygonSmallestEnclosingRectangleAreaProvider.class);
 
-		addInvisible(PolygonFeretProvider.class, getInput());
+		addHelperOp(PolygonFeretProvider.class, getInput());
 
-		addInvisible(MinorMajorAxisProvider.class, getInput());
+		addHelperOp(MinorMajorAxisProvider.class, getInput());
 
 		// add features
 		addVisible(AreaFeature.class);

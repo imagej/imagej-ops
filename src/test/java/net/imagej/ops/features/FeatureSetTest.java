@@ -1,7 +1,9 @@
 package net.imagej.ops.features;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.features.sets.FirstOrderStatFeatureSet;
 import net.imagej.ops.features.sets.HaralickFeatureSet;
 import net.imglib2.img.Img;
@@ -13,39 +15,37 @@ import org.junit.Test;
 
 public class FeatureSetTest extends AbstractFeatureTest {
 
-    @Test
-    public void testHaralickFeatureSet() {
+	// TODO here we should have a dummy featureset with which we can test
+	// whether the lazy calculation of features works or not.
+	@Test
+	public void testHaralickFeatureSet() {
 
-        @SuppressWarnings("unchecked")
-        HaralickFeatureSet<UnsignedByteType> op = ops.op(
-                HaralickFeatureSet.class, random, 8, 1, "HORIZONTAL");
+		@SuppressWarnings("unchecked")
+		HaralickFeatureSet<UnsignedByteType> op = ops.op(
+				HaralickFeatureSet.class, random, 8, 1, "HORIZONTAL");
 
-        eval(op.compute(random));
-        eval(op.compute(constant));
-        eval(op.compute(empty));
-    }
+		eval(op.compute(random));
+		eval(op.compute(constant));
+		eval(op.compute(empty));
+	}
 
-    @Test
-    public void testFirstOrderStatistics() {
+	@Test
+	public void testFirstOrderStatistics() {
 
-        @SuppressWarnings("unchecked")
-        FirstOrderStatFeatureSet<Img<UnsignedByteType>> op = ops.op(
-                FirstOrderStatFeatureSet.class, random, new double[] { 50, 60,
-                        70 });
+		@SuppressWarnings("unchecked")
+		FirstOrderStatFeatureSet<Img<UnsignedByteType>> op = ops.op(
+				FirstOrderStatFeatureSet.class, random);
 
-        eval(op.compute(random));
-        eval(op.compute(constant));
-        eval(op.compute(empty));
-    }
+		eval(op.compute(random));
+		eval(op.compute(constant));
+		eval(op.compute(empty));
+	}
 
-    private void eval(List<Pair<String, DoubleType>> list) {
-        for (final Pair<String, DoubleType> result : list) {
-            print(result);
-        }
-    }
-
-    private void print(Pair<String, DoubleType> result) {
-        System.out.println(result.getA() + " " + result.getB());
-    }
-
+	private void eval(Map<Class<? extends Op>, DoubleType> map) {
+		for (final Entry<Class<? extends Op>, DoubleType> result : map
+				.entrySet()) {
+			System.out.println(result.getKey().getSimpleName() + " "
+					+ result.getValue().get());
+		}
+	}
 }

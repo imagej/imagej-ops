@@ -3,6 +3,7 @@ package net.imagej.ops.features.sets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
@@ -27,43 +28,43 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
-        AbstractOutputFunction<Iterable<T>, List<Pair<String, DoubleType>>>
-        implements FeatureSet<Iterable<T>, Pair<String, DoubleType>> {
+		AbstractOutputFunction<Iterable<T>, Map<Class<? extends Op>, DoubleType>>
+		implements FeatureSet<Iterable<T>, DoubleType> {
 
-    @Parameter
-    private OpService ops;
+	@Parameter
+	private OpService ops;
 
-    @Parameter
-    private int numBins = 256;
+	@Parameter
+	private int numBins = 256;
 
-    private HistogramCreate<T> op;
+	private HistogramCreate<T> op;
 
-    @Override
-    public List<Pair<String, DoubleType>> createOutput(Iterable<T> input) {
-        return new ArrayList<Pair<String, DoubleType>>(numBins);
-    }
+	@Override
+	public List<Pair<String, DoubleType>> createOutput(Iterable<T> input) {
+		return new ArrayList<Pair<String, DoubleType>>(numBins);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected List<Pair<String, DoubleType>> safeCompute(Iterable<T> input,
-            List<Pair<String, DoubleType>> output) {
-        output.clear();
+	@SuppressWarnings("unchecked")
+	@Override
+	protected List<Pair<String, DoubleType>> safeCompute(Iterable<T> input,
+			List<Pair<String, DoubleType>> output) {
+		output.clear();
 
-        if (op == null) {
-            op = ops.op(HistogramCreate.class, input, numBins);
-        }
+		if (op == null) {
+			op = ops.op(HistogramCreate.class, input, numBins);
+		}
 
-        op.run();
-        op.getHistogram().countData(input);
+		op.run();
+		op.getHistogram().countData(input);
 
-        final Iterator<LongType> it = op.getHistogram().iterator();
+		final Iterator<LongType> it = op.getHistogram().iterator();
 
-        for (int i = 0; i < numBins; i++) {
-            output.add(new ValuePair<String, DoubleType>("Histogram [" + i
-                    + "]", new DoubleType(it.next().get())));
-        }
+		for (int i = 0; i < numBins; i++) {
+			output.add(new ValuePair<String, DoubleType>("Histogram [" + i
+					+ "]", new DoubleType(it.next().get())));
+		}
 
-        return output;
-    }
+		return output;
+	}
 
 }

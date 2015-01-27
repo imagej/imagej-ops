@@ -29,7 +29,8 @@
  */
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AbstractFeatureSet;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.GenericFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.GeometricMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature;
@@ -48,6 +49,7 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeatur
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -60,43 +62,32 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "First Order Statistics")
-public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
+public class FirstOrderStatFeatureSet<I> extends
+		GenericFeatureSet<I, DoubleType> {
 
 	// @Parameter
 	// private double[] percentiles = new double[] { 50 };
 
-	protected void init() {
+	public FirstOrderStatFeatureSet() {
+		super(new DoubleType());
 
-		addVisible(MaxFeature.class);
-		addVisible(MinFeature.class);
-		addVisible(MeanFeature.class);
-		addVisible(MedianFeature.class);
-		addVisible(StdDeviationFeature.class);
-		addVisible(SumFeature.class);
-		addVisible(VarianceFeature.class);
-		addVisible(GeometricMeanFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(Moment1AboutMeanFeature.class);
-		addVisible(Moment3AboutMeanFeature.class);
-		addVisible(Moment4AboutMeanFeature.class);
-		addVisible(HarmonicMeanFeature.class);
-		addVisible(SkewnessFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(SumOfInversesFeature.class);
-		addVisible(SumOfLogsFeature.class);
-		addVisible(SumOfSquaresFeature.class);
-
-		// add all percentiles
-		// for (final double p : percentiles) {
-		// addVisible(PercentileFeature.class, p);
-		// }
+		addOp(new OpRef(MaxFeature.class), true);
+		addOp(MinFeature.class);
+		addOp(MeanFeature.class);
+		addOp(MedianFeature.class);
+		addOp(StdDeviationFeature.class);
+		addOp(SumFeature.class);
+		addOp(VarianceFeature.class);
+		addOp(GeometricMeanFeature.class);
+		addOp(KurtosisFeature.class);
+		addOp(Moment1AboutMeanFeature.class);
+		addOp(Moment3AboutMeanFeature.class);
+		addOp(Moment4AboutMeanFeature.class);
+		addOp(HarmonicMeanFeature.class);
+		addOp(SkewnessFeature.class);
+		addOp(KurtosisFeature.class);
+		addOp(SumOfInversesFeature.class);
+		addOp(SumOfLogsFeature.class);
+		addOp(SumOfSquaresFeature.class);
 	}
-
-	// public double[] getPercentiles() {
-	// return percentiles;
-	// }
-	//
-	// public void setPercentiles(double[] percentiles) {
-	// this.percentiles = percentiles;
-	// }
 }

@@ -29,12 +29,11 @@
  */
 package net.imagej.ops.features;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OutputFunction;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
 /**
  * A {@link FeatureSet} describes {@link Set}s of {@link Feature}s which have
@@ -50,7 +49,6 @@ import net.imglib2.util.Pair;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface FeatureSet<I, O> extends
-        OutputFunction<I, List<Pair<String, DoubleType>>> {
-    // NB: Marker Interface
+public interface FeatureSet<I, O> extends OutputFunction<I, Map<Class<? extends Op>, O>> {
+	// NB: Marker Interface
 }

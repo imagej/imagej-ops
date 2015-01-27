@@ -1,6 +1,6 @@
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AbstractFeatureSet;
+import net.imagej.ops.features.GenericFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment00Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment01Feature;
@@ -45,14 +45,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Image Moment Features")
 public class ImageMomentsFeatureSet<I extends RealType<I>> extends
-        AbstractFeatureSet<IterableInterval<I>> {
+        GenericFeatureSet<IterableInterval<I>> {
 
     @Override
     protected void init() {
 
         // add helper
-        addInvisible(NormalMomentsHelper.class, getInput());
-        addInvisible(CentralMomentsHelper.class, getInput());
+        addHelperOp(NormalMomentsHelper.class, getInput());
+        addHelperOp(CentralMomentsHelper.class, getInput());
 
         // add features
         addVisible(Moment00Feature.class);

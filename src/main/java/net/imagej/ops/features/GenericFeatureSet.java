@@ -29,20 +29,16 @@
  */
 package net.imagej.ops.features;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Computer;
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
-import net.imagej.ops.functionbuilder.ComputerBuilder;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
+import net.imagej.ops.functionbuilder.ModuleBuilderService;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.PluginService;
@@ -52,9 +48,9 @@ import org.scijava.plugin.PluginService;
  * 
  * @param <I>
  */
-public abstract class AbstractFeatureSet<I> extends
-		AbstractOutputFunction<I, List<Pair<String, DoubleType>>> implements
-		FeatureSet<I, Pair<String, DoubleType>> {
+public class GenericFeatureSet<I, O> extends
+		AbstractOutputFunction<I, Map<Class<? extends Op>, O>> implements
+		FeatureSet<I, O> {
 
 	@Parameter
 	private PluginService ps;
@@ -63,7 +59,7 @@ public abstract class AbstractFeatureSet<I> extends
 	private OpService ops;
 
 	@Parameter
-	private ComputerBuilder fs;
+	private ModuleBuilderService fb;
 
 	/* internal stuff */
 
@@ -77,58 +73,44 @@ public abstract class AbstractFeatureSet<I> extends
 	 * Set containing all invisible features, i.e. features which are required
 	 * by visible features.
 	 */
-	private HashSet<OpRef> invisible;
+	private HashSet<OpRef> opPool;
 
 	/*
 	 * function representing the compiled feature set
 	 */
-	private Computer<I, List<DoubleType>> func;
+	private Function<I, Map<Class<? extends Op>, O>> func;
 
-	public AbstractFeatureSet() {
+	/*
+	 * Defines the output type of the ops added as visible
+	 */
+	private final O outType;
+
+	public GenericFeatureSet(final O outType) {
+		this.outType = outType;
 		this.visible = new HashSet<OpRef>();
-		this.invisible = new HashSet<OpRef>();
+		this.opPool = new HashSet<OpRef>();
 	}
 
-	protected List<Pair<String, DoubleType>> safeCompute(final I input,
-			final List<Pair<String, DoubleType>> output) {
+	protected Map<Class<? extends Op>, O> safeCompute(final I input,
+			final Map<Class<? extends Op>, O> output) {
 		output.clear();
 
 		if (func == null) {
-			init();
-			func = fs.build(visible, DoubleType.class,
-					(Class<I>) input.getClass(),
-					invisible.toArray(new OpRef[invisible.size()]));
-		}
-		final List<Pair<String, DoubleType>> namedList = new ArrayList<Pair<String, DoubleType>>();
-
-		Iterator<OpRef> it = visible.iterator();
-		for (final DoubleType type : func.compute(input)) {
-			// TODO: we may want to use
-			namedList.add(new ValuePair<String, DoubleType>(it.next().getType()
-					.getSimpleName(), type));
+			func = fb.build(visible, outType, input,
+					opPool.toArray(new OpRef[opPool.size()]));
 		}
 
-		return namedList;
+		return func.compute(input, output);
 	}
 
-	protected abstract void init();
-
-	public List<Pair<String, DoubleType>> createOutput(I input) {
-		return new ArrayList<Pair<String, DoubleType>>();
+	@Override
+	public Map<Class<? extends Op>, O> createOutput(I input) {
+		return new HashMap<Class<? extends Op>, O>();
 	};
 
 	/**
-	 * Add a visible feature, this means a feature which will be available as a
-	 * {@link FeatureResult}
+	 * TODO docu
 	 * 
-	 * @param op
-	 * @param parameters
-	 */
-	protected void addInvisible(Class<? extends Op> op, Object... parameters) {
-		invisible.add(new OpRef(op, parameters));
-	}
-
-	/**
 	 * Add an invisible feature, this means a feature which will not be
 	 * available as a {@link FeatureResult}, but is required by some visible
 	 * {@link Feature}
@@ -136,7 +118,10 @@ public abstract class AbstractFeatureSet<I> extends
 	 * @param op
 	 * @param parameters
 	 */
-	protected void addVisible(Class<? extends Op> op, Object... parameters) {
-		visible.add(new OpRef(op, parameters));
+	public void addOp(final OpRef ref, boolean visibleAsOutput) {
+		opPool.add(ref);
+
+		if (visibleAsOutput)
+			visible.add(ref);
 	}
 }

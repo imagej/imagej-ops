@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.imagej.ops.Computer;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
 
 import org.scijava.convert.ConvertService;
+import org.scijava.module.MethodCallException;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleException;
 import org.scijava.module.ModuleInfo;
@@ -26,8 +26,8 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
-public class DefaultComputerBuilder extends AbstractService implements
-		ComputerBuilder {
+public class DefaultModuleBuilderService extends AbstractService implements
+		ModuleBuilderService {
 
 	@Parameter
 	private OpService ops;
@@ -39,18 +39,15 @@ public class DefaultComputerBuilder extends AbstractService implements
 	private OpMatchingService matcher;
 
 	@Override
-	public <I, O> Computer<I, O> build(final OpRef opType,
-			final Class<O> outputType, final Class<I> inputType,
-			OpRef... opPool) {
+	public <I, O> ModuleSet<I> build(final OpRef opType, final O outputType,
+			final I inputType, OpRef... opPool) {
 		final HashSet<OpRef> types = new HashSet<OpRef>(1);
 		types.add(opType);
-
-		return new BuiltComputer<I, O>(build(types, outputType, inputType,
-				opPool));
+		return build(types, outputType, inputType, opPool);
 	}
 
 	/* Create one update listener */
-	private InputUpdateListener createUpdateListener(final CachedModule module,
+	private InputUpdateListener createUpdateListener(final Module module,
 			final ModuleItem<?> item) {
 		return new InputUpdateListener() {
 
@@ -72,11 +69,11 @@ public class DefaultComputerBuilder extends AbstractService implements
 		};
 	}
 
-	private void postProcess(final Map<Integer, CachedModule> modulePool,
+	private void postProcess(final Map<OpRef, ? extends Module> modulePool,
 			final SourceOp<?> inputSource) {
 
-		for (final Entry<Integer, CachedModule> entry : modulePool.entrySet()) {
-			final CachedModule module = entry.getValue();
+		for (final Entry<OpRef, ? extends Module> entry : modulePool.entrySet()) {
+			final Module module = entry.getValue();
 
 			for (final ModuleItem<?> item : module.getInfo().inputs()) {
 				final Class<?> type = item.getType();
@@ -106,10 +103,10 @@ public class DefaultComputerBuilder extends AbstractService implements
 	// INTERNAL
 	private <I> CachedModule resolveModule(final OpRef op,
 			final Set<OpRef> helpers, final SourceOp<I> inputSource,
-			final Map<Integer, CachedModule> modulePool) throws ModuleException {
+			final Map<OpRef, CachedModule> modulePool) throws ModuleException {
 
-		if (modulePool.containsKey(op.hashCode())) {
-			return modulePool.get(op.hashCode());
+		if (modulePool.containsKey(op)) {
+			return modulePool.get(op);
 		}
 
 		// see if there are any candidates in the set of helpers or features
@@ -161,7 +158,7 @@ public class DefaultComputerBuilder extends AbstractService implements
 
 	private <I> CachedModule checkIfAvailable(final OpRef parent,
 			final ModuleInfo candidate,
-			final Map<Integer, CachedModule> existingModules,
+			final Map<OpRef, CachedModule> existingModules,
 			final SourceOp<I> inputSource, final Set<OpRef> helpers,
 			final Object[] param) {
 
@@ -169,7 +166,7 @@ public class DefaultComputerBuilder extends AbstractService implements
 
 		final List<CachedModule> dependencies = new ArrayList<CachedModule>();
 
-		final HashMap<Integer, CachedModule> tmpCompiledModules = new HashMap<Integer, CachedModule>(
+		final HashMap<OpRef, CachedModule> tmpCompiledModules = new HashMap<OpRef, CachedModule>(
 				existingModules);
 
 		int i = -1;
@@ -238,10 +235,10 @@ public class DefaultComputerBuilder extends AbstractService implements
 		}
 
 		// we build our "tree"
-		tmpCompiledModules.put(new OpRef(parent.getType()).hashCode(), module);
+		tmpCompiledModules.put(new OpRef(parent.getType()), module);
 
 		// we know that only additional modules are in local map
-		for (final Entry<Integer, CachedModule> entry : tmpCompiledModules
+		for (final Entry<OpRef, CachedModule> entry : tmpCompiledModules
 				.entrySet()) {
 			existingModules.put(entry.getKey(), entry.getValue());
 		}
@@ -250,10 +247,12 @@ public class DefaultComputerBuilder extends AbstractService implements
 	}
 
 	@Override
-	public <I, O> Computer<I, List<O>> build(final Set<OpRef> opTypes,
-			final Class<O> outType, final Class<I> inputType,
-			final OpRef... opPool) {
-		final SourceOp<I> inputSource = new SourceOp<I>(inputType);
+	public <I, O> ModuleSet<I> build(final Set<OpRef> opTypes, final O outType,
+			final I inputType, final OpRef... opPool) {
+
+		@SuppressWarnings("unchecked")
+		final SourceOp<I> inputSource = new SourceOp<I>(
+				(Class<? extends I>) inputType.getClass());
 
 		final OpRef[] opTypesAsRef = new OpRef[opTypes.size()];
 
@@ -262,7 +261,7 @@ public class DefaultComputerBuilder extends AbstractService implements
 			opTypesAsRef[i++] = op;
 		}
 
-		final Map<Integer, CachedModule> modulePool = new HashMap<Integer, CachedModule>();
+		final Map<OpRef, CachedModule> modulePool = new HashMap<OpRef, CachedModule>();
 
 		final Set<OpRef> allOps = new HashSet<OpRef>();
 		allOps.addAll(Arrays.asList(opTypesAsRef));
@@ -272,25 +271,158 @@ public class DefaultComputerBuilder extends AbstractService implements
 			try {
 				if (null == resolveModule(ref, allOps, inputSource, modulePool)) {
 					throw new IllegalArgumentException(
-							"Can't compile set of FeatureInfos!" + " Reason:"
+							"Can't compile set of OpRefs!" + " Reason:"
 									+ ref.getType().getSimpleName()
-									+ " can't be instantiated!");
+									+ " can't be auto-resolved!");
 				}
 
 			} catch (ModuleException e) {
 				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 
 		postProcess(modulePool, inputSource);
 
-		final CachedModule[] outputOps = new CachedModule[opTypesAsRef.length];
-		i = 0;
-		for (final OpRef ref : opTypesAsRef) {
-			outputOps[i++] = (CachedModule) modulePool.get(ref.hashCode());
+		return new ModuleSet<I>(inputSource, modulePool);
+	}
+
+	private class CachedModule implements Module {
+		private ArrayList<CachedModule> successors = new ArrayList<CachedModule>();
+		private ArrayList<CachedModule> predeccessors = new ArrayList<CachedModule>();
+		private final Map<ModuleItem<?>, Set<InputUpdateListener>> outputReceivers = new HashMap<ModuleItem<?>, Set<InputUpdateListener>>();
+		private final Module module;
+
+		public CachedModule(final Module module) {
+			this.module = module;
 		}
 
-		return new OutputComputer<I, List<O>>(inputSource, new ListOutputOp<O>(
-				outputOps));
+		boolean dirty = true;
+
+		@Override
+		public void run() {
+			if (dirty) {
+				runPredeccessors();
+				module.run();
+				for (final Entry<ModuleItem<?>, Set<InputUpdateListener>> entry : outputReceivers
+						.entrySet()) {
+					// update the listeners if there are any
+					for (final InputUpdateListener listener : entry.getValue()) {
+						listener.update(module.getOutput(entry.getKey()
+								.getName()));
+					}
+				}
+				dirty = false;
+			}
+		}
+
+		void markDirty() {
+			dirty = true;
+			notifySuccessors();
+		}
+
+		private void notifySuccessors() {
+			for (final CachedModule op : successors) {
+				op.markDirty();
+			}
+		}
+
+		private void runPredeccessors() {
+			for (final CachedModule module : predeccessors) {
+				module.run();
+			}
+		}
+
+		public void addSuccessor(final CachedModule op) {
+			successors.add(op);
+		}
+
+		public void addPredecessor(final CachedModule op) {
+			predeccessors.add(op);
+		}
+
+		@Override
+		public void preview() {
+			module.preview();
+		}
+
+		@Override
+		public void cancel() {
+			module.cancel();
+		}
+
+		@Override
+		public void initialize() throws MethodCallException {
+			module.initialize();
+		}
+
+		@Override
+		public ModuleInfo getInfo() {
+			return module.getInfo();
+		}
+
+		@Override
+		public Object getDelegateObject() {
+			return module.getDelegateObject();
+		}
+
+		@Override
+		public Object getInput(final String name) {
+			return module.getInput(name);
+		}
+
+		@Override
+		public Object getOutput(final String name) {
+			return module.getOutput(name);
+		}
+
+		@Override
+		public Map<String, Object> getInputs() {
+			return module.getInputs();
+		}
+
+		@Override
+		public Map<String, Object> getOutputs() {
+			return module.getOutputs();
+		}
+
+		@Override
+		public void setInput(final String name, final Object value) {
+			markDirty();
+			module.setInput(name, value);
+		}
+
+		@Override
+		public void setOutput(final String name, final Object value) {
+			module.setOutput(name, value);
+		}
+
+		@Override
+		public void setInputs(final Map<String, Object> inputs) {
+			for (final Entry<String, Object> entry : inputs.entrySet()) {
+				setInput(entry.getKey(), entry.getValue());
+			}
+		}
+
+		@Override
+		public void setOutputs(final Map<String, Object> outputs) {
+			module.setOutputs(outputs);
+		}
+
+		@Override
+		public boolean isResolved(final String name) {
+			return module.isResolved(name);
+		}
+
+		@Override
+		public void setResolved(final String name, final boolean resolved) {
+			module.setResolved(name, resolved);
+		}
+
+		@Override
+		public String toString() {
+			return module.getInfo().getName();
+		}
 	}
+
 }
