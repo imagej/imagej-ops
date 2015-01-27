@@ -69,9 +69,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	@Parameter 
 	protected int maxIterations;
 	
-	/**
-	 * 
-	 */
 	@Parameter
 	protected Interval imgConvolutionInterval;
 	
