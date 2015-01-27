@@ -79,8 +79,8 @@ def parseValue(str) {
 							parsed.push(new String(buffer));
 							buffer = "";
 						} // else
-								// buffer has probably already been pushed, therefore
-								// must have been enclosen in '"'
+								// buffer has probably already been pushed,
+								// therefore must have been enclosed in '"'
 						continue;
 					}
 					if (c == ',' || c == '}') {
