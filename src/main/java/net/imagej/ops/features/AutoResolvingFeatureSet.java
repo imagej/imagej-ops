@@ -29,11 +29,17 @@
  */
 package net.imagej.ops.features;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.imagej.ops.OpRef;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.functionbuilder.OutputOpBuilderService;
+import net.imagej.ops.functionbuilder.OutputOpRef;
+import net.imagej.ops.functionbuilder.UpdatableOutputOpSet;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -41,38 +47,67 @@ import org.scijava.plugin.Parameter;
  * 
  * @param <I>
  */
-public abstract class AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
+public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
 
 	@Parameter
-	private I input;
+	private OutputOpBuilderService oobs;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Map<? extends OpRef, O> output;
+	/* internal stuff */
 
-	@Override
-	public I getInput() {
-		return input;
+	/*
+	 * Set containing all visible features, i.e. features will will be available
+	 * as FeatureResults
+	 */
+	private HashSet<OutputOpRef<O>> outputOps;
+
+	/*
+	 * Set containing all invisible features, i.e. features which are required
+	 * by visible features.
+	 */
+	private HashSet<OpRef> pool;
+
+	/*
+	 * function representing the compiled feature set
+	 */
+	private UpdatableOutputOpSet<I, O> moduleSet;
+
+	/*
+	 * Defines the output type of the ops added as visible
+	 */
+	private final O outType;
+
+	public AutoResolvingFeatureSet(final O outType) {
+		this.outType = outType;
+		this.outputOps = new HashSet<OutputOpRef<O>>();
+		this.pool = new HashSet<OpRef>();
+	}
+
+	public void addOutputOp(final OutputOpRef<O> ref) {
+		outputOps.add(ref);
+		addHiddenOp(ref);
+	}
+
+	public void addHiddenOp(final OpRef ref) {
+		pool.add(ref);
 	}
 
 	@Override
-	public void setInput(I input) {
-		this.input = input;
-	}
+	public void run() {
 
-	@Override
-	public Map<? extends OpRef, O> getOutput() {
-		return output;
-	}
+		if (moduleSet == null) {
+			moduleSet = oobs.build(outputOps, outType, getInput(),
+					pool.toArray(new OpRef[pool.size()]));
+		}
 
-	@Override
-	public void setOutput(Map<? extends OpRef, O> output) {
-		this.output = output;
-	}
+		moduleSet.setInput(getInput());
+		moduleSet.run();
 
-	@Override
-	public Map<? extends OpRef, O> compute(final I random) {
-		setInput(random);
-		run();
-		return getOutput();
+		final Map<OutputOpRef<O>, O> output = new HashMap<OutputOpRef<O>, O>();
+		for (final Entry<OutputOpRef<O>, OutputOp<O>> entry : moduleSet.get()
+				.entrySet()) {
+			output.put(entry.getKey(), entry.getValue().getOutput());
+		}
+
+		setOutput(output);
 	}
 }

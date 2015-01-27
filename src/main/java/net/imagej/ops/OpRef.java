@@ -74,21 +74,7 @@ public class OpRef {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        OpRef other = (OpRef) obj;
-        if (op == null) {
-            if (other.op != null)
-                return false;
-        } else if (!op.equals(other.op))
-            return false;
-        if (!Arrays.equals(parameters, other.parameters))
-            return false;
-        return true;
+        return hashCode() == obj.hashCode();
     }
 
     /**

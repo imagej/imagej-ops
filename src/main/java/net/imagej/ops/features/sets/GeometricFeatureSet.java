@@ -30,7 +30,8 @@
 
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.GenericFeatureSet;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
@@ -46,16 +47,18 @@ import net.imagej.ops.features.geometric.GeometricFeatures.RectangularityFeature
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RugosityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleOp;
+import net.imagej.ops.functionbuilder.OutputOpRef;
 import net.imagej.ops.geometric.polygon.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -66,44 +69,51 @@ import org.scijava.plugin.Plugin;
  * 
  */
 @Plugin(type = FeatureSet.class, label = "Geometric Features")
-public class GeometricFeatureSet extends GenericFeatureSet<Polygon> {
+public class GeometricFeatureSet extends
+		AutoResolvingFeatureSet<Polygon, DoubleType> {
 
-	@Override
-	protected void init() {
+	public GeometricFeatureSet() {
+		super(new DoubleType());
 
 		// add helper
-		addHelperOp(PolygonAreaProvider.class, getInput());
-		addHelperOp(PolygonPerimeterProvider.class, getInput());
-
-		addHelperOp(PolygonConvexHullProvider.class, getInput());
-		addInvisible(PolygonConvexHullAreaProvider.class);
-		addInvisible(PolygonConvexHullPerimeterProvider.class);
-
-		addHelperOp(PolygonSmallestEnclosingRectangleProvider.class,
-				getInput());
-		addInvisible(PolygonSmallestEnclosingRectangleAreaProvider.class);
-
-		addHelperOp(PolygonFeretProvider.class, getInput());
-
-		addHelperOp(MinorMajorAxisProvider.class, getInput());
+		addHiddenOp(new OpRef(PolygonAreaOp.class));
+		addHiddenOp(new OpRef(PolygonPerimeterOp.class));
+		addHiddenOp(new OpRef(PolygonConvexHullOp.class));
+		addHiddenOp(new OpRef(PolygonConvexHullAreaOp.class));
+		addHiddenOp(new OpRef(PolygonConvexHullPerimeterOp.class));
+		addHiddenOp(new OpRef(PolygonSmallestEnclosingRectangleOp.class));
+		addHiddenOp(new OpRef(PolygonSmallestEnclosingRectangleAreaOp.class));
+		addHiddenOp(new OpRef(PolygonFeretOp.class));
+		addHiddenOp(new OpRef(MinorMajorAxisOp.class));
 
 		// add features
-		addVisible(AreaFeature.class);
-		addVisible(PerimeterFeature.class);
-
-		addVisible(CircularityFeature.class);
-		addVisible(RectangularityFeature.class);
-		addVisible(ConvexityFeature.class);
-		addVisible(SolidityFeature.class);
-		addVisible(RugosityFeature.class);
-		addVisible(ElongationFeature.class);
-		addVisible(MajorAxisFeature.class);
-		addVisible(MinorAxisFeature.class);
-		addVisible(EccentricityFeature.class);
-		addVisible(RoundnessFeature.class);
-		
-		addVisible(FeretsDiameterFeature.class);
-		addVisible(FeretsAngleFeature.class);
+		addOutputOp(new OutputOpRef<DoubleType>(AreaFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(PerimeterFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CircularityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(RectangularityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ConvexityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(SolidityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(RugosityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ElongationFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(MajorAxisFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(MinorAxisFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(EccentricityFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(RoundnessFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(FeretsDiameterFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(FeretsAngleFeature.class,
+				DoubleType.class));
 	}
-
 }

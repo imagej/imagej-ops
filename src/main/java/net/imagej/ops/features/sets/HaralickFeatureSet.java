@@ -31,7 +31,8 @@
 package net.imagej.ops.features.sets;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.features.GenericFeatureSet;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
@@ -51,6 +52,7 @@ import net.imagej.ops.features.haralick.HaralickFeatures.SumEntropyFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.SumVarianceFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures.VarianceFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imagej.ops.functionbuilder.OutputOpRef;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -66,7 +68,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
 public class HaralickFeatureSet<T> extends
-		GenericFeatureSet<IterableInterval<T>, DoubleType> implements
+		AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 		Contingent {
 
 	@Parameter
@@ -77,6 +79,46 @@ public class HaralickFeatureSet<T> extends
 
 	@Parameter
 	private String orientation = "HORIZONTAL";
+
+	public HaralickFeatureSet() {
+		super(new DoubleType());
+
+		addOutputOp(new OutputOpRef<DoubleType>(ASMFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ClusterPromenenceFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ClusterShadeFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ContrastFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CorrelationFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				DifferenceVarianceFeature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(DifferenceEntropyFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(EntropyFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ICM1Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(ICM2Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(IFDMFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(SumAverageFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(SumEntropyFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(SumVarianceFeature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(VarianceFeature.class,
+				DoubleType.class));
+
+		// add cooc parameters
+		addHiddenOp(new OpRef(CooccurrenceMatrix.class, getInput().getClass(),
+				nrGrayLevels, distance, orientation, MinFeature.class,
+				MaxFeature.class));
+	}
 
 	public void setDistance(double distance) {
 		this.distance = distance;
@@ -103,31 +145,6 @@ public class HaralickFeatureSet<T> extends
 	}
 
 	@Override
-	protected void init() {
-
-		addOp(ASMFeature.class);
-		addOp(ClusterPromenenceFeature.class);
-		addOp(ClusterShadeFeature.class);
-		addOp(ContrastFeature.class);
-		addOp(CorrelationFeature.class);
-		addOp(DifferenceVarianceFeature.class);
-		addOp(DifferenceEntropyFeature.class);
-		addOp(EntropyFeature.class);
-		addOp(ICM1Feature.class);
-		addOp(ICM2Feature.class);
-		addOp(IFDMFeature.class);
-		addOp(SumAverageFeature.class);
-		addOp(SumEntropyFeature.class);
-		addOp(SumVarianceFeature.class);
-		addOp(VarianceFeature.class);
-
-		// add cooc parameters
-		addHelperOp(CooccurrenceMatrix.class, getInput().getClass(),
-				nrGrayLevels, distance, orientation, MinFeature.class,
-				MaxFeature.class);
-	}
-
-	@Override
 	public boolean conforms() {
 
 		int count = 0;
@@ -136,10 +153,5 @@ public class HaralickFeatureSet<T> extends
 		}
 
 		return count == 2;
-	}
-
-	@Override
-	protected DoubleType getOutputType() {
-		return new DoubleType();
 	}
 }

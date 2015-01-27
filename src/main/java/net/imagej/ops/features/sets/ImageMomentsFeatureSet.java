@@ -1,6 +1,7 @@
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.GenericFeatureSet;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment00Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment01Feature;
@@ -32,8 +33,9 @@ import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMome
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment30Feature;
 import net.imagej.ops.features.moments.helper.CentralMomentsHelper;
 import net.imagej.ops.features.moments.helper.NormalMomentsHelper;
-import net.imglib2.IterableInterval;
+import net.imagej.ops.functionbuilder.OutputOpRef;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -45,47 +47,73 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Image Moment Features")
 public class ImageMomentsFeatureSet<I extends RealType<I>> extends
-        GenericFeatureSet<IterableInterval<I>> {
+		AutoResolvingFeatureSet<I, DoubleType> {
 
-    @Override
-    protected void init() {
+	public ImageMomentsFeatureSet() {
+		super(new DoubleType());
+		// add helper
+		addHiddenOp(new OpRef(NormalMomentsHelper.class));
+		addHiddenOp(new OpRef(CentralMomentsHelper.class));
 
-        // add helper
-        addHelperOp(NormalMomentsHelper.class, getInput());
-        addHelperOp(CentralMomentsHelper.class, getInput());
+		// add features
+		addOutputOp(new OutputOpRef<DoubleType>(Moment00Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(Moment01Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(Moment10Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(Moment11Feature.class,
+				DoubleType.class));
 
-        // add features
-        addVisible(Moment00Feature.class);
-        addVisible(Moment01Feature.class);
-        addVisible(Moment10Feature.class);
-        addVisible(Moment11Feature.class);
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment00Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment01Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment10Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment11Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment20Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment02Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment21Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment12Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment30Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(CentralMoment03Feature.class,
+				DoubleType.class));
 
-        addVisible(CentralMoment00Feature.class);
-        addVisible(CentralMoment01Feature.class);
-        addVisible(CentralMoment10Feature.class);
-        addVisible(CentralMoment11Feature.class);
-        addVisible(CentralMoment20Feature.class);
-        addVisible(CentralMoment02Feature.class);
-        addVisible(CentralMoment21Feature.class);
-        addVisible(CentralMoment12Feature.class);
-        addVisible(CentralMoment30Feature.class);
-        addVisible(CentralMoment03Feature.class);
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment02Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment03Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment11Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment12Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment20Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment21Feature.class, DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(
+				NormalizedCentralMoment30Feature.class, DoubleType.class));
 
-        addVisible(NormalizedCentralMoment02Feature.class);
-        addVisible(NormalizedCentralMoment03Feature.class);
-        addVisible(NormalizedCentralMoment11Feature.class);
-        addVisible(NormalizedCentralMoment12Feature.class);
-        addVisible(NormalizedCentralMoment20Feature.class);
-        addVisible(NormalizedCentralMoment21Feature.class);
-        addVisible(NormalizedCentralMoment30Feature.class);
-
-        addVisible(HuMoment1Feature.class);
-        addVisible(HuMoment2Feature.class);
-        addVisible(HuMoment3Feature.class);
-        addVisible(HuMoment4Feature.class);
-        addVisible(HuMoment5Feature.class);
-        addVisible(HuMoment6Feature.class);
-        addVisible(HuMoment7Feature.class);
-    }
-
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment1Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment2Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment3Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment4Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment5Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment6Feature.class,
+				DoubleType.class));
+		addOutputOp(new OutputOpRef<DoubleType>(HuMoment7Feature.class,
+				DoubleType.class));
+	}
 }

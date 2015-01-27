@@ -26,8 +26,8 @@ import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 @Plugin(type = Service.class)
-public class DefaultModuleBuilderService extends AbstractService implements
-		ModuleBuilderService {
+public class DefaultOutputOpBuilderService extends AbstractService implements
+		OutputOpBuilderService {
 
 	@Parameter
 	private OpService ops;
@@ -39,9 +39,9 @@ public class DefaultModuleBuilderService extends AbstractService implements
 	private OpMatchingService matcher;
 
 	@Override
-	public <I, O> ModuleSet<I> build(final OpRef opType, final O outputType,
-			final I inputType, OpRef... opPool) {
-		final HashSet<OpRef> types = new HashSet<OpRef>(1);
+	public <I, O> UpdatableOutputOpSet<I, O> build(final OutputOpRef<O> opType,
+			final O outputType, final I inputType, OpRef... opPool) {
+		final HashSet<OutputOpRef<O>> types = new HashSet<OutputOpRef<O>>(1);
 		types.add(opType);
 		return build(types, outputType, inputType, opPool);
 	}
@@ -247,27 +247,20 @@ public class DefaultModuleBuilderService extends AbstractService implements
 	}
 
 	@Override
-	public <I, O> ModuleSet<I> build(final Set<OpRef> opTypes, final O outType,
-			final I inputType, final OpRef... opPool) {
+	public <I, O> UpdatableOutputOpSet<I, O> build(final Set<OutputOpRef<O>> opTypes,
+			final O outType, final I inputType, final OpRef... opPool) {
 
 		@SuppressWarnings("unchecked")
 		final SourceOp<I> inputSource = new SourceOp<I>(
 				(Class<? extends I>) inputType.getClass());
 
-		final OpRef[] opTypesAsRef = new OpRef[opTypes.size()];
-
-		int i = 0;
-		for (final OpRef op : opTypes) {
-			opTypesAsRef[i++] = op;
-		}
-
 		final Map<OpRef, CachedModule> modulePool = new HashMap<OpRef, CachedModule>();
 
 		final Set<OpRef> allOps = new HashSet<OpRef>();
-		allOps.addAll(Arrays.asList(opTypesAsRef));
+		allOps.addAll(opTypes);
 		allOps.addAll(Arrays.asList(opPool));
 
-		for (final OpRef ref : opTypesAsRef) {
+		for (final OpRef ref : opTypes) {
 			try {
 				if (null == resolveModule(ref, allOps, inputSource, modulePool)) {
 					throw new IllegalArgumentException(
@@ -284,7 +277,7 @@ public class DefaultModuleBuilderService extends AbstractService implements
 
 		postProcess(modulePool, inputSource);
 
-		return new ModuleSet<I>(inputSource, modulePool);
+		return new UpdatableOutputOpSet<I, O>(inputSource, modulePool, opTypes);
 	}
 
 	private class CachedModule implements Module {

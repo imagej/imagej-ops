@@ -5,7 +5,7 @@ import java.util.Random;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpService;
-import net.imagej.ops.functionbuilder.ModuleBuilderService;
+import net.imagej.ops.functionbuilder.OutputOpBuilderService;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
@@ -56,7 +56,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> ellipse;
 	protected Img<UnsignedByteType> rotatedEllipse;
 
-	protected ModuleBuilderService fs;
+	protected OutputOpBuilderService fs;
 
 	@Before
 	public void setup() {
@@ -76,13 +76,13 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		radii = new double[] { 40, 20 };
 		rotatedEllipse = dataGenerator.getEllipsedBitImage(dim, radii, offset);
 
-		fs = context.getService(ModuleBuilderService.class);
+		fs = context.getService(OutputOpBuilderService.class);
 	}
 
 	@Override
 	protected Context createContext() {
 		return new Context(OpService.class, OpMatchingService.class,
-				ModuleBuilderService.class);
+				OutputOpBuilderService.class);
 	}
 
 	/**
