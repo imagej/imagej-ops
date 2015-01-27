@@ -1,0 +1,32 @@
+# Generated binary arithmetic ops with primitive types.
+#
+# Many of Java's binary numeric operators only work on ints and longs.
+# And still more of them purport to work on bytes and shorts, but
+# ultimately return int for the result. So rather than generate the
+# entire cross-product of types-plus-operators, we do only those that
+# are both valid and consistent regarding the return type.
+
+[PrimitiveMath.java]
+types = ```
+[
+	[name: "Integer", primitive: "int",    code: "i", priority: 0.4],
+	[name: "Long",    primitive: "long",   code: "l", priority: 0.3],
+	[name: "Float",   primitive: "float",  code: "f", priority: 0.2],
+	[name: "Double",  primitive: "double", code: "d", priority: 0.1]
+]
+```
+ops = ```
+[
+	[name: "Add",                operator: "+",           unary: false, aliases: true,  codes: "ilfd", verbs: "adds (+)"],
+	[name: "Subtract",           operator: "-",           unary: false, aliases: true,  codes: "ilfd", verbs: "subtracts (-)"],
+	[name: "Multiply",           operator: "*",           unary: false, aliases: true,  codes: "ilfd", verbs: "multiplies (*)"],
+	[name: "Divide",             operator: "/",           unary: false, aliases: true,  codes: "ilfd", verbs: "divides (*)"],
+	[name: "Remainder",          operator: "%",           unary: false, aliases: true,  codes: "ilfd", verbs: "computes the remainder (%) of"],
+	[name: "And",                operator: "&",           unary: false, aliases: false, codes: "il",   verbs: "computes the bitwise AND (&) of"],
+	[name: "Or",                 operator: "|",           unary: false, aliases: false, codes: "il",   verbs: "computes the bitwise OR (|) of"],
+	[name: "Xor",                operator: "^",           unary: false, aliases: false, codes: "il",   verbs: "computes the bitwise XOR (^) of"],
+	[name: "LeftShift",          operator: "<<",          unary: false, aliases: true,  codes: "il",   verbs: "computes the signed left shift (<<) of"],
+	[name: "RightShift",         operator: ">>",          unary: false, aliases: true,  codes: "il",   verbs: "computes the signed right shift (>>) of"],
+	[name: "UnsignedRightShift", operator: ">>>",         unary: false, aliases: true,  codes: "il",   verbs: "computes the unsigned right shift (>>>) of"]
+]
+```

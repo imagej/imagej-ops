@@ -28,27 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.MathOps;
 
 import org.scijava.ItemIO;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = $priority)
-public class AddConstantTo$name implements MathOps.Add {
+/**
+ * Generated arithmetic ops with primitive types.
+ *
+ * @author Curtis Rueden
+ */
+public final class PrimitiveMath {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+	private PrimitiveMath() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#if ($op.codes.contains($type.code))
+#set ($iface = "MathOps.$op.name")
+
+	/** Op that $op.verbs two $type.primitive values. */
+	@Plugin(type = Op.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
+	public static class $type.name$op.name implements $iface {
+		@Parameter(type = ItemIO.OUTPUT)
+		private $type.primitive result;
+
+		@Parameter
+		private $type.primitive a;
+
+		@Parameter
+		private $type.primitive b;
+
+		@Override
+		public void run() {
+			result = a $op.operator b;
+		}
+	}
+#end
+#end
+#end
 
 }
