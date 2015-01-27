@@ -29,62 +29,81 @@
  */
 package net.imagej.ops;
 
+import java.util.Arrays;
 
 /**
- * An {@link OpRef} holds all information required by the
- * {@link FeatureService} to create an {@link Op}. This means the {@link Class}
- * of the {@link Op} and all parameters which can't be auto-guessed by the
- * {@link FeatureService}.
+ * An {@link OpRef} holds all information required by the {@link FeatureService}
+ * to create an {@link Op}. This means the {@link Class} of the {@link Op} and
+ * all parameters which can't be auto-guessed by the {@link FeatureService}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * 
  */
 public class OpRef {
 
-	/*
-	 * The Op to be created in the FeatureService
-	 */
-	private Class<? extends Op> op;
+    /*
+     * The Op to be created in the FeatureService
+     */
+    private Class<? extends Op> op;
 
-	/*
-	 * Additional Parameters
-	 */
-	private Object[] parameters;
+    /*
+     * Additional Parameters
+     */
+    private Object[] parameters;
 
-	/**
-	 * @param op
-	 *            class of {@link Op}
-	 * @param parameters
-	 *            additional parameters which can't be auto-guessed by
-	 *            {@link FeatureService}
-	 */
-	public OpRef(Class<? extends Op> op, Object... parameters) {
-		this.op = op;
-		this.parameters = parameters;
-	}
+    /**
+     * @param op
+     *            class of {@link Op}
+     * @param parameters
+     *            additional parameters which can't be auto-guessed by
+     *            {@link FeatureService}
+     */
+    public OpRef(Class<? extends Op> op, Object... parameters) {
+        this.op = op;
+        this.parameters = parameters;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 31;
-		for (Object o : parameters) {
-			hash = hash + o.hashCode() * 31;
-		}
-		return (hash = op.hashCode() * 31 + hash);
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((op == null) ? 0 : op.hashCode());
+        result = prime * result + Arrays.hashCode(parameters);
+        return result;
+    }
 
-	/**
-	 * Type of the {@link Op}
-	 * 
-	 * @return
-	 */
-	public Class<? extends Op> getType() {
-		return op;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        OpRef other = (OpRef) obj;
+        if (op == null) {
+            if (other.op != null)
+                return false;
+        } else if (!op.equals(other.op))
+            return false;
+        if (!Arrays.equals(parameters, other.parameters))
+            return false;
+        return true;
+    }
 
-	/**
-	 * @return additional parameters required by {@link Op}
-	 */
-	public Object[] getParameters() {
-		return parameters;
-	}
+    /**
+     * Type of the {@link Op}
+     * 
+     * @return
+     */
+    public Class<? extends Op> getType() {
+        return op;
+    }
+
+    /**
+     * @return additional parameters required by {@link Op}
+     */
+    public Object[] getParameters() {
+        return parameters;
+    }
 }

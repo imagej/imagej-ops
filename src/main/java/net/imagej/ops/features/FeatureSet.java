@@ -32,8 +32,11 @@ package net.imagej.ops.features;
 import java.util.Map;
 import java.util.Set;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.Computer;
+import net.imagej.ops.InputOp;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.OutputFunction;
+import net.imagej.ops.OutputOp;
 
 /**
  * A {@link FeatureSet} describes {@link Set}s of {@link Feature}s which have
@@ -49,6 +52,6 @@ import net.imagej.ops.OutputFunction;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface FeatureSet<I, O> extends OutputFunction<I, Map<Class<? extends Op>, O>> {
-	// NB: Marker Interface
+public interface FeatureSet<I, O> extends InputOp<I>,
+		OutputOp<Map<? extends OpRef, O>>, Computer<I, Map<? extends OpRef, O>> {
 }

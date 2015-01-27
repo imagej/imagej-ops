@@ -35,6 +35,7 @@ import java.util.List;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
+import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.zernike.ZernikeComputer;
 import net.imagej.ops.features.zernike.ZernikeMoment;
@@ -55,12 +56,8 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Moment Features")
-public class ZernikeFeatureSet
-        extends
-        AbstractOutputFunction<IterableInterval<? extends RealType<?>>, List<Pair<String, DoubleType>>>
-        implements
-        FeatureSet<IterableInterval<? extends RealType<?>>, Pair<String, DoubleType>>,
-        Contingent {
+public class ZernikeFeatureSet<T extends RealType<T>> extends
+        AbstractFeatureSet<IterableInterval<T>> implements Contingent {
 
     @Parameter
     private OpService ops;
@@ -80,12 +77,6 @@ public class ZernikeFeatureSet
     private ZernikeComputer m_op;
 
     @Override
-    public List<Pair<String, DoubleType>> createOutput(
-            IterableInterval<? extends RealType<?>> input) {
-        return new ArrayList<Pair<String, DoubleType>>();
-    }
-
-    @Override
     public boolean conforms() {
         // something to compute?
         if (!computeMagnitude && !computePhase) {
@@ -102,8 +93,7 @@ public class ZernikeFeatureSet
 
     @Override
     protected List<Pair<String, DoubleType>> safeCompute(
-            IterableInterval<? extends RealType<?>> input,
-            List<Pair<String, DoubleType>> output) {
+            IterableInterval<T> input, List<Pair<String, DoubleType>> output) {
         output.clear();
 
         // get ZernikeComputer
@@ -140,5 +130,11 @@ public class ZernikeFeatureSet
         }
 
         return output;
+    }
+
+    @Override
+    protected void init() {
+        // TODO Auto-generated method stub
+
     }
 }

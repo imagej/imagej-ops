@@ -1,20 +1,16 @@
 package net.imagej.ops.features.sets;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
+import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.histogram.HistogramCreate;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -28,8 +24,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
-		AbstractOutputFunction<Iterable<T>, Map<Class<? extends Op>, DoubleType>>
-		implements FeatureSet<Iterable<T>, DoubleType> {
+		AbstractFeatureSet<Iterable<T>, LongType[]> implements
+		FeatureSet<Iterable<T>, LongType[]> {
 
 	@Parameter
 	private OpService ops;
@@ -39,32 +35,24 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 
 	private HistogramCreate<T> op;
 
-	@Override
-	public List<Pair<String, DoubleType>> createOutput(Iterable<T> input) {
-		return new ArrayList<Pair<String, DoubleType>>(numBins);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
-	protected List<Pair<String, DoubleType>> safeCompute(Iterable<T> input,
-			List<Pair<String, DoubleType>> output) {
-		output.clear();
+	public void run() {
 
 		if (op == null) {
-			op = ops.op(HistogramCreate.class, input, numBins);
+			op = ops.op(HistogramCreate.class, getInput(), numBins);
 		}
 
 		op.run();
-		op.getHistogram().countData(input);
+		op.getHistogram().countData(getInput());
 
-		final Iterator<LongType> it = op.getHistogram().iterator();
-
-		for (int i = 0; i < numBins; i++) {
-			output.add(new ValuePair<String, DoubleType>("Histogram [" + i
-					+ "]", new DoubleType(it.next().get())));
+		final Map<OpRef, LongType[]> output = new HashMap<OpRef, LongType[]>();
+		final LongType[] res = new LongType[256];
+		int i = 0;
+		for (LongType type : op.getHistogram()) {
+			res[i++] = type;
 		}
 
-		return output;
+		output.put(new OpRef(HistogramCreate.class, 256), res);
 	}
-
 }

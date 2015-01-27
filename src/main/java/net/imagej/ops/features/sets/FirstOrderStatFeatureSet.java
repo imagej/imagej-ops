@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.OpRef;
-import net.imagej.ops.features.GenericFeatureSet;
+import net.imagej.ops.features.AutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
+import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.GeometricMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.KurtosisFeature;
@@ -39,16 +39,12 @@ import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MedianFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment1AboutMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment3AboutMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.Moment4AboutMeanFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SkewnessFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.functionbuilder.OutputOpRef;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Moment1AboutMean;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Variance;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -56,38 +52,51 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link FeatureSet} containing all kinds of first order statistics.
  * 
- * TODO: Add generic PercentileFeature
- * 
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "First Order Statistics")
 public class FirstOrderStatFeatureSet<I> extends
-		GenericFeatureSet<I, DoubleType> {
-
-	// @Parameter
-	// private double[] percentiles = new double[] { 50 };
+		AutoResolvingFeatureSet<I, DoubleType> {
 
 	public FirstOrderStatFeatureSet() {
 		super(new DoubleType());
 
-		addOp(new OpRef(MaxFeature.class), true);
-		addOp(MinFeature.class);
-		addOp(MeanFeature.class);
-		addOp(MedianFeature.class);
-		addOp(StdDeviationFeature.class);
-		addOp(SumFeature.class);
-		addOp(VarianceFeature.class);
-		addOp(GeometricMeanFeature.class);
-		addOp(KurtosisFeature.class);
-		addOp(Moment1AboutMeanFeature.class);
-		addOp(Moment3AboutMeanFeature.class);
-		addOp(Moment4AboutMeanFeature.class);
-		addOp(HarmonicMeanFeature.class);
-		addOp(SkewnessFeature.class);
-		addOp(KurtosisFeature.class);
-		addOp(SumOfInversesFeature.class);
-		addOp(SumOfLogsFeature.class);
-		addOp(SumOfSquaresFeature.class);
+		addOutputOp(new OutputOpRef<DoubleType>(MeanFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(SumFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(KurtosisFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(Moment1AboutMean.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(Moment3AboutMeanFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(Moment4AboutMeanFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(HarmonicMeanFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(GeometricMeanFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(Variance.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(MedianFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(MinFeature.class,
+				DoubleType.class));
+
+		addOutputOp(new OutputOpRef<DoubleType>(MaxFeature.class,
+				DoubleType.class));
+
 	}
 }
