@@ -2,8 +2,8 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -20,10 +20,10 @@ import org.scijava.plugin.Plugin;
 public class DefaultConvexityFeature implements ConvexityFeature<DoubleType> {
 
 	@Parameter(type = ItemIO.INPUT)
-	private PolygonPerimeterProvider perimter;
+	private PolygonPerimeterOp perimter;
 
 	@Parameter(type = ItemIO.INPUT)
-	private PolygonConvexHullPerimeterProvider convexHullPerimeter;
+	private PolygonConvexHullPerimeterOp convexHullPerimeter;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private DoubleType out;

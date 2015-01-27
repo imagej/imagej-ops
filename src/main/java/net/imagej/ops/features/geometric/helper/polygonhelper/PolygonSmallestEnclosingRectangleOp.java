@@ -11,7 +11,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "SmallestEnclosingRectangleProvider")
-public class PolygonSmallestEnclosingRectangleProvider implements OutputOp<Polygon> {
+public class PolygonSmallestEnclosingRectangleOp implements OutputOp<Polygon> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Polygon out;

@@ -17,7 +17,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "MinorMajorAxisProvider")
-public class MinorMajorAxisProvider implements OutputOp<Pair<Double, Double>> {
+public class MinorMajorAxisOp implements OutputOp<Pair<Double, Double>> {
 
 	@Parameter(type = ItemIO.INPUT)
 	private Polygon input;

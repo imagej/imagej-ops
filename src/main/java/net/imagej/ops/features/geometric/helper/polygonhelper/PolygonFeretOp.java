@@ -13,7 +13,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "PolygonFeretProvider")
-public class PolygonFeretProvider implements OutputOp<Pair<RealPoint, RealPoint>> {
+public class PolygonFeretOp implements OutputOp<Pair<RealPoint, RealPoint>> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Pair<RealPoint, RealPoint> output;

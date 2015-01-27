@@ -2,8 +2,8 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -20,10 +20,10 @@ import org.scijava.plugin.Plugin;
 public class DefaultSolidityFeature implements SolidityFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonAreaProvider area;
+    private PolygonAreaOp area;
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonConvexHullAreaProvider convexHullArea;
+    private PolygonConvexHullAreaOp convexHullArea;
 
     @Parameter(type = ItemIO.OUTPUT)
     private DoubleType out;

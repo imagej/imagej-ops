@@ -11,13 +11,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "PolygonConvexHullPerimeterProvider")
-public class PolygonConvexHullPerimeterProvider implements OutputOp<DoubleType> {
+public class PolygonConvexHullPerimeterOp implements OutputOp<DoubleType> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private DoubleType out;
 
 	@Parameter(type = ItemIO.INPUT)
-	private PolygonConvexHullProvider in;
+	private PolygonConvexHullOp in;
 
 	@Parameter(type = ItemIO.INPUT)
 	private OpService ops;

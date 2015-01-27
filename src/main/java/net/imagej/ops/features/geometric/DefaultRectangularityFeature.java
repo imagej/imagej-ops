@@ -2,8 +2,8 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.geometric.GeometricFeatures.RectangularityFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaProvider;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaOp;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -21,10 +21,10 @@ public class DefaultRectangularityFeature implements
         RectangularityFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonAreaProvider area;
+    private PolygonAreaOp area;
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonSmallestEnclosingRectangleAreaProvider serArea;
+    private PolygonSmallestEnclosingRectangleAreaOp serArea;
 
     @Parameter(type = ItemIO.OUTPUT)
     private DoubleType out;

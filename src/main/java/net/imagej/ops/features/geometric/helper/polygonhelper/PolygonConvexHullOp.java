@@ -11,7 +11,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "PolygonConvexHullProvider")
-public class PolygonConvexHullProvider implements OutputOp<Polygon> {
+public class PolygonConvexHullOp implements OutputOp<Polygon> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Polygon out;

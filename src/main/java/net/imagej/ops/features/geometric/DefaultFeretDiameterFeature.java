@@ -2,7 +2,7 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsDiameterFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretOp;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -21,7 +21,7 @@ public class DefaultFeretDiameterFeature implements
         FeretsDiameterFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonFeretProvider feretResult;
+    private PolygonFeretOp feretResult;
 
     @Parameter(type = ItemIO.OUTPUT)
     private DoubleType out;

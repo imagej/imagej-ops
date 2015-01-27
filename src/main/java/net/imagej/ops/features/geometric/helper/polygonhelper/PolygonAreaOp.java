@@ -12,7 +12,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "PolygonAreaProvider")
-public class PolygonAreaProvider implements OutputOp<DoubleType> {
+public class PolygonAreaOp implements OutputOp<DoubleType> {
 
     @Parameter(type = ItemIO.OUTPUT)
     private DoubleType out;

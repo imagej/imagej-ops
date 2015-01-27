@@ -2,7 +2,7 @@ package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
-import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisProvider;
+import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultMajorAxisFeature implements MajorAxisFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private MinorMajorAxisProvider axisProvider;
+    private MinorMajorAxisOp axisProvider;
 
     @Parameter(type = ItemIO.OUTPUT)
     private DoubleType out;
