@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.MathOps;
@@ -37,18 +37,51 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = $priority)
-public class AddConstantTo$name implements MathOps.Add {
+public class DefaultMathOps {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
+#foreach ($type in $types)
+#foreach ($op in $binaryops)
+#if (!${op.nofloat} || ($type.name != "Double" && $type.name != "Float"))
+	@Plugin(type = Op.class, name = MathOps.${op.name}.NAME, priority = ${type.priority})
+	public static class ${op.name}ConstantTo${type.name} implements MathOps.${op.name} {
 
-	@Parameter
-	private $primitive b;
+		@Parameter(type = ItemIO.BOTH)
+		private ${type.primitive} a;
 
-	@Override
-	public void run() {
-		a += b;
+		@Parameter
+		private ${type.primitive} b;
+
+		@Override
+		public void run() {
+#if (${op.operator})
+			a ${op.operator}= b;
+#else
+			a = (${type.primitive}) ${op.func}(a, b);
+#end
+		}
+
 	}
 
+#end
+#end
+#foreach ($op in $unaryops)
+	@Plugin(type = Op.class, name = MathOps.${op.name}.NAME, priority = ${type.priority})
+	public static class ${op.name}ConstantTo${type.name} implements MathOps.${op.name} {
+
+		@Parameter(type = ItemIO.BOTH)
+		private ${type.primitive} a;
+
+		@Override
+		public void run() {
+#if (${op.operator})
+			a = (${type.primitive}) ${op.operator}a;
+#else
+			a = (${type.primitive}) ${op.func}(a);
+#end
+		}
+
+	}
+
+#end
+#end
 }
