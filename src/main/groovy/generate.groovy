@@ -79,8 +79,8 @@ def parseValue(str) {
 							parsed.push(new String(buffer));
 							buffer = "";
 						} // else
-								// buffer has probably already been pushed, therefore
-								// must have been enclosen in '"'
+								// buffer has probably already been pushed,
+								// therefore must have been enclosed in '"'
 						continue;
 					}
 					if (c == ',' || c == '}') {
@@ -213,7 +213,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	reader = new java.io.BufferedReader(new java.io.FileReader("$templateSubdirectory/$translationsFile"));
 
 	// avoid rewriting unchanged code to avoid recompilation
-	def mtime = java.lang.Math.max(
+	mtime = java.lang.Math.max(
 		timestamp(templateSubdirectory, translationsFile),
 		timestamp(templateSubdirectory, templateFile));
 

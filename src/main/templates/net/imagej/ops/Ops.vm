@@ -35,6 +35,7 @@ import net.imagej.ops.Op;
 /**
  * Static utility class containing built-in op interfaces of the
 #if ($namespace)
+#set ($prefix = "${namespace}.")
  * $namespace namespace.
 #else
  * global namespace.
@@ -76,13 +77,15 @@ public final class $className {
 	 * </pre>
 	 */
 	public interface $op.iface extends Op {
-#if ($namespace)
-		String NAME = "${namespace}.$op.name";
-#else
-		String NAME = "$op.name";
-#end
+		String NAME = "$!{prefix}$op.name";
 #if ($op.aliases)
-		String ALIASES = "$op.aliases";
+		String ALIASES = "##
+#set ($first = true)
+#foreach ($alias in $op.aliases)
+#if ($first)#set ($first = false)#else, #end
+$!prefix$alias##
+#end
+";
 #end
 	}
 #end
