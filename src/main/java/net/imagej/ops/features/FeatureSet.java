@@ -32,6 +32,7 @@ package net.imagej.ops.features;
 import java.util.List;
 import java.util.Set;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OutputFunction;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -53,4 +54,11 @@ import net.imglib2.util.Pair;
 public interface FeatureSet<I, O> extends
         OutputFunction<I, List<Pair<String, DoubleType>>> {
     // NB: Marker Interface
+
+    /**
+     * @return Returns a {@link Set} of all {@link Op} which can be added to
+     *         this {@link FeatureSet}
+     */
+    // public Set<Class<? extends Op>> getPossibleFeatures();
+
 }

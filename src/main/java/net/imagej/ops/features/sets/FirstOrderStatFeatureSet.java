@@ -29,6 +29,10 @@
  */
 package net.imagej.ops.features.sets;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.imagej.ops.Op;
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.GeometricMeanFeature;
@@ -62,41 +66,45 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = FeatureSet.class, label = "First Order Statistics")
 public class FirstOrderStatFeatureSet<I> extends AbstractFeatureSet<I> {
 
-	// @Parameter
-	// private double[] percentiles = new double[] { 50 };
+    public Set<Class<? extends Op>> getPossibleFeatures() {
+        Set<Class<? extends Op>> features = new HashSet<Class<? extends Op>>();
 
-	protected void init() {
+        features.add(MaxFeature.class);
+        features.add(MinFeature.class);
+        features.add(MeanFeature.class);
+        features.add(MedianFeature.class);
+        features.add(StdDeviationFeature.class);
+        features.add(SumFeature.class);
+        features.add(VarianceFeature.class);
+        features.add(GeometricMeanFeature.class);
+        features.add(KurtosisFeature.class);
+        features.add(Moment1AboutMeanFeature.class);
+        features.add(Moment3AboutMeanFeature.class);
+        features.add(Moment4AboutMeanFeature.class);
+        features.add(HarmonicMeanFeature.class);
+        features.add(SkewnessFeature.class);
+        features.add(KurtosisFeature.class);
+        features.add(SumOfInversesFeature.class);
+        features.add(SumOfLogsFeature.class);
+        features.add(SumOfSquaresFeature.class);
 
-		addVisible(MaxFeature.class);
-		addVisible(MinFeature.class);
-		addVisible(MeanFeature.class);
-		addVisible(MedianFeature.class);
-		addVisible(StdDeviationFeature.class);
-		addVisible(SumFeature.class);
-		addVisible(VarianceFeature.class);
-		addVisible(GeometricMeanFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(Moment1AboutMeanFeature.class);
-		addVisible(Moment3AboutMeanFeature.class);
-		addVisible(Moment4AboutMeanFeature.class);
-		addVisible(HarmonicMeanFeature.class);
-		addVisible(SkewnessFeature.class);
-		addVisible(KurtosisFeature.class);
-		addVisible(SumOfInversesFeature.class);
-		addVisible(SumOfLogsFeature.class);
-		addVisible(SumOfSquaresFeature.class);
+        return features;
+    }
 
-		// add all percentiles
-		// for (final double p : percentiles) {
-		// addVisible(PercentileFeature.class, p);
-		// }
-	}
+    // @Parameter
+    // private double[] percentiles = new double[] { 50 };
 
-	// public double[] getPercentiles() {
-	// return percentiles;
-	// }
-	//
-	// public void setPercentiles(double[] percentiles) {
-	// this.percentiles = percentiles;
-	// }
+    protected void init() {
+        for (Class<? extends Op> feature : getPossibleFeatures()) {
+            addVisible(feature);
+        }
+    }
+
+    // public double[] getPercentiles() {
+    // return percentiles;
+    // }
+    //
+    // public void setPercentiles(double[] percentiles) {
+    // this.percentiles = percentiles;
+    // }
 }

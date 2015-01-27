@@ -7,8 +7,10 @@ import java.util.List;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.histogram.HistogramCreate;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -27,8 +29,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
-        AbstractOutputFunction<Iterable<T>, List<Pair<String, DoubleType>>>
-        implements FeatureSet<Iterable<T>, Pair<String, DoubleType>> {
+        AbstractFeatureSet<Iterable<T>> {
 
     @Parameter
     private OpService ops;
@@ -64,6 +65,12 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
         }
 
         return output;
+    }
+
+    @Override
+    protected void init() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

@@ -2,14 +2,18 @@ package net.imagej.ops.features;
 
 import java.util.List;
 
+import net.imagej.ops.Op;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.sets.FirstOrderStatFeatureSet;
 import net.imagej.ops.features.sets.HaralickFeatureSet;
+import net.imagej.ops.features.sets.HistogramFeatureSet;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatOps.Max;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
 import org.junit.Test;
+import org.scijava.plugin.PluginInfo;
+import org.scijava.plugin.PluginService;
 
 public class FeatureSetTest extends AbstractFeatureTest {
 
@@ -20,32 +24,33 @@ public class FeatureSetTest extends AbstractFeatureTest {
         HaralickFeatureSet<UnsignedByteType> op = ops.op(
                 HaralickFeatureSet.class, random, 8, 1, "HORIZONTAL");
 
-        eval(op.compute(random));
-        eval(op.compute(constant));
-        eval(op.compute(empty));
+        op.compute(random);
+        op.compute(constant);
+        op.compute(empty);
     }
 
     @Test
     public void testFirstOrderStatistics() {
-
         @SuppressWarnings("unchecked")
         FirstOrderStatFeatureSet<Img<UnsignedByteType>> op = ops.op(
                 FirstOrderStatFeatureSet.class, random, new double[] { 50, 60,
                         70 });
 
-        eval(op.compute(random));
-        eval(op.compute(constant));
-        eval(op.compute(empty));
+        op.compute(random);
+        op.compute(constant);
+        op.compute(empty);
     }
 
-    private void eval(List<Pair<String, DoubleType>> list) {
-        for (final Pair<String, DoubleType> result : list) {
-            print(result);
-        }
-    }
+    @Test
+    public void testHistogramFeatureSet() {
 
-    private void print(Pair<String, DoubleType> result) {
-        System.out.println(result.getA() + " " + result.getB());
+        @SuppressWarnings("unchecked")
+        HistogramFeatureSet<UnsignedByteType> op = ops.op(
+                HistogramFeatureSet.class, Img.class, 256);
+
+        op.compute(random).size();
+        op.compute(constant);
+        op.compute(empty);
     }
 
 }
