@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.RealType;
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
-public class RealAdd implements ComplexBinaryOp
+public class RealAdd extends ComplexBinaryOperation
 {
 
 	@Override
@@ -51,9 +51,5 @@ public class RealAdd implements ComplexBinaryOp
 		return null;
 	}
 
-	@Override
-	public BinaryOperation copy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }

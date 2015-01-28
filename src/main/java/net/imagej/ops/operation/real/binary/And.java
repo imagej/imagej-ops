@@ -1,5 +1,5 @@
 /*
- * #%L 
+ * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,22 +30,22 @@
 
 package net.imagej.ops.operation.real.binary;
 
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.Op;
 
 /**
- * A real operation that sets the real component of an output to the logical
- * AND of the real components of two inputs. Care must be taken to pass
- * integral real types to this method.
- * 
- * @author Barry DeZonia
+ * Base interface for "and" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = And.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
  */
+public interface And extends Op {
 
-public class RealAnd extends ComplexBinaryOperation 
-{
-	
-	@Override
-	public Object compute(Object input1, Object input2, Object output) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	String NAME = "and";
+
 }
