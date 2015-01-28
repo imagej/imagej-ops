@@ -67,7 +67,11 @@ public final class PrimitiveMath {
 
 		@Override
 		public void run() {
+#if ($op.operator)
 			result = a $op.operator b;
+#else
+			result = ${op.function}(a, b);
+#end
 		}
 	}
 #end

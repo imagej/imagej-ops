@@ -27,6 +27,9 @@ ops = ```
 	[name: "Xor",                operator: "^",           unary: false, aliases: false, codes: "il",   verbs: "computes the bitwise XOR (^) of"],
 	[name: "LeftShift",          operator: "<<",          unary: false, aliases: true,  codes: "il",   verbs: "computes the signed left shift (<<) of"],
 	[name: "RightShift",         operator: ">>",          unary: false, aliases: true,  codes: "il",   verbs: "computes the signed right shift (>>) of"],
-	[name: "UnsignedRightShift", operator: ">>>",         unary: false, aliases: true,  codes: "il",   verbs: "computes the unsigned right shift (>>>) of"]
+	[name: "UnsignedRightShift", operator: ">>>",         unary: false, aliases: true,  codes: "il",   verbs: "computes the unsigned right shift (>>>) of"],
+	[name: "MaxConstant",        function: "Math.max",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the maximum of"],
+	[name: "MinConstant",        function: "Math.min",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the minimum of"],
+	[name: "PowerConstant",      function: "Math.pow",    unary: false, aliases: false, codes:    "d", verbs: "exponentiate"]
 ]
 ```
