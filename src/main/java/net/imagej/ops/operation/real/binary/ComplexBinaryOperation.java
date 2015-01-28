@@ -1,5 +1,5 @@
 /*
- * #%L
+ * #%L  
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
@@ -30,21 +30,26 @@
 
 package net.imagej.ops.operation.real.binary;
 
-import net.imglib2.ops.operation.BinaryOperation; 
-import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.ops.operation.BinaryOperation;
+import net.imglib2.ops.operation.real.binary.RealBinaryOperation;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * A {@link BinaryOperation} between {@link ComplexType}s.
+ * A real operation that sets the real component of an output to the addition of
+ * the real components of two inputs.
  * 
  * @author Barry DeZonia
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
-public interface ComplexBinaryOperation<
-		I1 extends ComplexType<I1>,
-		I2 extends ComplexType<I2>,
-		O extends ComplexType<O>>
-	extends BinaryOperation<I1,I2,O>
+public abstract class ComplexBinaryOperation implements ComplexBinaryOp
 {
-	// no methods: this interface is type constraining and nothing else
+
+
+
+	@Override
+	public BinaryOperation copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

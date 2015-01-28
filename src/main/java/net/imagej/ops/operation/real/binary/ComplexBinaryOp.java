@@ -1,6 +1,6 @@
 package net.imagej.ops.operation.real.binary;
 
-import net.imglib2.ops.operation.real.binary.RealBinaryOperation;
+import net.imglib2.ops.operation.real.binary.RealBinaryOperation; 
 import net.imglib2.type.numeric.RealType;
 
 public interface ComplexBinaryOp < I1 extends RealType<I1>,

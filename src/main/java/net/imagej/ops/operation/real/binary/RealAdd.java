@@ -1,5 +1,5 @@
 /*
- * #%L 
+ * #%L  
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 Board of Regents of the University of
