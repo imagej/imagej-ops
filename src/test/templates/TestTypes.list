@@ -1,0 +1,45 @@
+[TestTypes.txt]
+
+# pattern matches for each supported type
+bool1     = true
+bool2     = false
+double1   = 3.4
+double2   = 0.1e234
+float1    = 4.3e21f
+float2    = 765f
+int1      = 12345
+int2      = -98765
+long1     = 0L
+long2     = 987654321123456789L
+string01  = "John Q. Public"
+string02  = "Dwayne \"The Rock\" Johnson"
+string03  = "\"\"\"\\\"\\\\\"\\\\\\\\\\\""
+sbool1    = "true"
+sbool2    = "false"
+sdouble1  = "3.4"
+sdouble2  = "0.1e234"
+sfloat1   = "4.3e21f"
+sfloat2   = "765f"
+sint1     = "12345"
+sint2     = "-98765"
+slong1    = "0L"
+slong2    = "987654321123456789L"
+slist     = "['not', 'a', 'list']"
+smap      = "[just: 'a', simple: 'string']"
+
+# list element type can vary
+list = [false, true, 1.0, 2f, 3, 5L, "8", "[thirt: 'een']", "[21, 34]"]
+
+# map value type can vary
+map = ```
+[
+	s1: 'Hello, world!',
+	s2: 'x23',
+	yes: true,
+	no: false,
+	pi: 3.149,
+	e: 2.71828182846f,
+	notList: "['also', 'not', 'a', 'list']",
+	notMap: "[also: 'only', a: 'string']"
+]
+```

@@ -1,0 +1,80 @@
+java.lang.Boolean	$bool1.getClass().getName()
+true	$bool1
+java.lang.Boolean	$bool2.getClass().getName()
+false	$bool2
+java.math.BigDecimal	$double1.getClass().getName()
+3.4	$double1
+java.math.BigDecimal	$double2.getClass().getName()
+1E+233	$double2
+java.lang.Float	$float1.getClass().getName()
+4.3E21	$float1
+java.lang.Float	$float2.getClass().getName()
+765.0	$float2
+java.lang.Integer	$int1.getClass().getName()
+12345	$int1
+java.lang.Integer	$int2.getClass().getName()
+-98765	$int2
+java.lang.Long	$long1.getClass().getName()
+0	$long1
+java.lang.Long	$long2.getClass().getName()
+987654321123456789	$long2
+java.lang.String	$string01.getClass().getName()
+John Q. Public	$string01
+java.lang.String	$string02.getClass().getName()
+Dwayne "The Rock" Johnson	$string02
+java.lang.String	$string03.getClass().getName()
+"""\"\\"\\\\\"	$string03
+java.lang.String	$sbool1.getClass().getName()
+true	$sbool1
+java.lang.String	$sbool2.getClass().getName()
+false	$sbool2
+java.lang.String	$sdouble1.getClass().getName()
+3.4	$sdouble1
+java.lang.String	$sdouble2.getClass().getName()
+0.1e234	$sdouble2
+java.lang.String	$sfloat1.getClass().getName()
+4.3e21f	$sfloat1
+java.lang.String	$sfloat2.getClass().getName()
+765f	$sfloat2
+java.lang.String	$sint1.getClass().getName()
+12345	$sint1
+java.lang.String	$sint2.getClass().getName()
+-98765	$sint2
+java.lang.String	$slong1.getClass().getName()
+0L	$slong1
+java.lang.String	$slong2.getClass().getName()
+987654321123456789L	$slong2
+false	$list[0]
+java.lang.Boolean	$list[0].getClass().getName()
+true	$list[1]
+java.lang.Boolean	$list[1].getClass().getName()
+1.0	$list[2]
+java.math.BigDecimal	$list[2].getClass().getName()
+2.0	$list[3]
+java.lang.Float	$list[3].getClass().getName()
+3	$list[4]
+java.lang.Integer	$list[4].getClass().getName()
+5	$list[5]
+java.lang.Long	$list[5].getClass().getName()
+8	$list[6]
+java.lang.String	$list[6].getClass().getName()
+[thirt: 'een']	$list[7]
+java.lang.String	$list[7].getClass().getName()
+[21, 34]	$list[8]
+java.lang.String	$list[8].getClass().getName()
+Hello, world!	$map.s1
+java.lang.String	$map.s1.getClass().getName()
+x23	$map.s2
+java.lang.String	$map.s2.getClass().getName()
+true	$map.yes
+java.lang.Boolean	$map.yes.getClass().getName()
+false	$map.no
+java.lang.Boolean	$map.no.getClass().getName()
+3.149	$map.pi
+java.math.BigDecimal	$map.pi.getClass().getName()
+2.7182817	$map.e
+java.lang.Float	$map.e.getClass().getName()
+['also', 'not', 'a', 'list']	$map.notList
+java.lang.String	$map.notList.getClass().getName()
+[also: 'only', a: 'string']	$map.notMap
+java.lang.String	$map.notMap.getClass().getName()
