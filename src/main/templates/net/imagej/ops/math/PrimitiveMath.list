@@ -30,6 +30,27 @@ ops = ```
 	[name: "UnsignedRightShift", operator: ">>>",         unary: false, aliases: true,  codes: "il",   verbs: "computes the unsigned right shift (>>>) of"],
 	[name: "MaxConstant",        function: "Math.max",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the maximum of"],
 	[name: "MinConstant",        function: "Math.min",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the minimum of"],
-	[name: "PowerConstant",      function: "Math.pow",    unary: false, aliases: false, codes:    "d", verbs: "exponentiate"]
+	[name: "PowerConstant",      function: "Math.pow",    unary: false, aliases: false, codes:    "d", verbs: "exponentiate"],
+	[name: "Negate",             operator: "-",           unary: true,  aliases: false, codes: "ilfd", verbs: "negates (-)"],
+	[name: "Abs",                function: "Math.abs",    unary: true,  aliases: false, codes: "ilfd", verbs: "computes the absolute value of"],
+	[name: "Arccos",             function: "Math.acos",   unary: true,  aliases: false, codes:    "d", verbs: "computes the arccosine of"],
+	[name: "Arcsin",             function: "Math.asin",   unary: true,  aliases: false, codes:    "d", verbs: "computes the arcsine of"],
+	[name: "Arctan",             function: "Math.atan",   unary: true,  aliases: false, codes:    "d", verbs: "computes the arctangent of"],
+	[name: "Ceil",               function: "Math.ceil",   unary: true,  aliases: false, codes:    "d", verbs: "computes the ceiling of"],
+	[name: "Cos",                function: "Math.cos",    unary: true,  aliases: false, codes:    "d", verbs: "computes the cosine of"],
+	[name: "Cosh",               function: "Math.cosh",   unary: true,  aliases: false, codes:    "d", verbs: "computes the hyperbolic cosine of"],
+	[name: "CubeRoot",           function: "Math.cbrt",   unary: true,  aliases: false, codes:    "d", verbs: "computes the cubic root of"],
+	[name: "Exp",                function: "Math.exp",    unary: true,  aliases: false, codes:    "d", verbs: "computes the natural exponent of"],
+	[name: "Floor",              function: "Math.floor",  unary: true,  aliases: false, codes:    "d", verbs: "computes the floor of"],
+	[name: "Log",                function: "Math.log",    unary: true,  aliases: false, codes:    "d", verbs: "computes the natural logarithm of"],
+	[name: "Log10",              function: "Math.log10",  unary: true,  aliases: false, codes:    "d", verbs: "computes the base 10 logarithm of"],
+	[name: "LogOnePlusX",        function: "Math.log1p",  unary: true,  aliases: false, codes:    "d", verbs: "computes the natural logarithm of one plus"],
+	[name: "Round",              function: "Math.round",  unary: true,  aliases: false, codes:   "fd", verbs: "rounds"],
+	[name: "Signum",             function: "Math.signum", unary: true,  aliases: false, codes:   "fd", verbs: "computes the signum of"],
+	[name: "Sin",                function: "Math.sin",    unary: true,  aliases: false, codes:    "d", verbs: "computes the sine of"],
+	[name: "Sinh",               function: "Math.sinh",   unary: true,  aliases: false, codes:    "d", verbs: "computes the hyperbolic sine of"],
+	[name: "Sqrt",               function: "Math.sqrt",   unary: true,  aliases: false, codes:    "d", verbs: "computes the square root of"],
+	[name: "Tan",                function: "Math.tan",    unary: true,  aliases: false, codes:    "d", verbs: "computes the tangent of"],
+	[name: "Tanh",               function: "Math.tanh",   unary: true,  aliases: false, codes:    "d", verbs: "computes the hyperbolic tangent of"]
 ]
 ```
