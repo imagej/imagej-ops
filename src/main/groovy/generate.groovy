@@ -240,7 +240,10 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		}
 
 		// ignore blank lines
-		if (line.trim().isEmpty()) continue;
+		trimmedLine = line.trim();
+		if (trimmedLine.isEmpty()) continue;
+		// ignore comments
+		if (trimmedLine.startsWith("#")) continue;
 
 		// parse key/value pair lines separate by equals
 		if (!line.contains('=')) {
