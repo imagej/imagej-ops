@@ -29,7 +29,6 @@
  */
 package net.imagej.ops;
 
-
 import java.util.Arrays;
 
 import net.imagej.ops.Op;
