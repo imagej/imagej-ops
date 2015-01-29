@@ -32,7 +32,6 @@ import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMome
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment30Feature;
 import net.imagej.ops.features.moments.helper.CentralMomentsHelper;
 import net.imagej.ops.features.moments.helper.NormalMomentsHelper;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
