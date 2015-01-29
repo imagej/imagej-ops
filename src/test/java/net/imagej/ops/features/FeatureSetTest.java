@@ -3,9 +3,15 @@ package net.imagej.ops.features;
 import java.util.List;
 
 import net.imagej.ops.features.sets.FirstOrderStatFeatureSet;
+import net.imagej.ops.features.sets.GeometricFeatureSet;
+import net.imagej.ops.features.sets.HaralickFeatureSet;
+import net.imagej.ops.features.sets.HistogramFeatureSet;
+import net.imagej.ops.features.sets.ImageMomentsFeatureSet;
+import net.imagej.ops.features.sets.ZernikeFeatureSet;
+import net.imagej.ops.geometric.polygon.Polygon;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.junit.Test;
@@ -13,7 +19,7 @@ import org.junit.Test;
 public class FeatureSetTest extends AbstractFeatureTest {
 
 	@Test
-	public void testFirstOrderStatistics() {
+	public void firstOrderTest() {
 
 		@SuppressWarnings("unchecked")
 		FirstOrderStatFeatureSet<Img<UnsignedByteType>> op = ops.op(
@@ -24,11 +30,68 @@ public class FeatureSetTest extends AbstractFeatureTest {
 		eval(op.getFeatures(empty));
 	}
 
-	private void eval(final List<Pair<String, DoubleType>> features) {
-		for (final Pair<String, DoubleType> result : features) {
-			System.out.println(result.getA() + " " + result.getB());
+	@Test
+	public void haralickTest() {
 
+		@SuppressWarnings("unchecked")
+		HaralickFeatureSet<UnsignedByteType> op = ops.op(
+				HaralickFeatureSet.class, random, 8, 1, "HORIZONTAL");
+
+		eval(op.getFeatures(random));
+		eval(op.getFeatures(constant));
+		eval(op.getFeatures(empty));
+	}
+
+	@Test
+	public void zernikeTest() {
+
+		@SuppressWarnings("unchecked")
+		ZernikeFeatureSet<UnsignedByteType> op = ops.op(
+				ZernikeFeatureSet.class, random, true, true, 5, 5);
+
+		eval(op.getFeatures(random));
+		eval(op.getFeatures(constant));
+		eval(op.getFeatures(empty));
+	}
+
+	@Test
+	public void geometricTest() {
+
+		GeometricFeatureSet op = ops.op(GeometricFeatureSet.class,
+				Polygon.class);
+
+		eval(op.getFeatures(createPolygon()));
+	}
+
+	@Test
+	public void momentsTest() {
+
+		@SuppressWarnings("unchecked")
+		ImageMomentsFeatureSet<Img<UnsignedByteType>> op = ops.op(
+				ImageMomentsFeatureSet.class, random);
+
+		eval(op.getFeatures(random));
+		eval(op.getFeatures(constant));
+		eval(op.getFeatures(empty));
+	}
+
+	@Test
+	public void histogramTest() {
+
+		@SuppressWarnings("unchecked")
+		HistogramFeatureSet<UnsignedByteType> op = ops.op(
+				HistogramFeatureSet.class, random, 256);
+
+		eval(op.getFeatures(random));
+		eval(op.getFeatures(constant));
+		eval(op.getFeatures(empty));
+	}
+
+	private <V extends RealType<V>> void eval(
+			final List<Pair<String, V>> features) {
+		for (final Pair<String, V> result : features) {
+			System.out.println(result.getA() + " "
+					+ result.getB().getRealDouble());
 		}
-
 	}
 }
