@@ -40,6 +40,7 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.features.ResolvedOp;
 
 
 import org.junit.Test;
@@ -57,24 +58,18 @@ public class FirstOrderFeaturesTest extends AbstractFeatureTest {
 	/**
 	 * Testing {@link Feature} implementation of {@link ${op.iface}}
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void ${op.iface}FeatureTest() {
-	
-			
-		OpRef<FirstOrderFeatures.${op.iface}Feature> feature = new OpRef<FirstOrderFeatures.${op.iface}Feature>(FirstOrderFeatures.${op.iface}Feature.class);
-		ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.build(empty, feature);
+
+		final ResolvedOp<Img<UnsignedByteType>, DoubleType> resolved = fs.resolveAndRun(DoubleType.class, empty, FirstOrderFeatures.${op.iface}Feature.class);
 		
-		assertEquals(${op.empty}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
-				.get(feature)).getOutput().get(),
+		assertEquals(${op.empty}, resolved.compute(empty).get(),
 				SMALL_DELTA);
 
-		assertEquals(${op.random}, ((OutputOp<DoubleType>) resolvedSet.compute(random)
-				.get(feature)).getOutput().get(),
+		assertEquals(${op.random}, resolved.compute(random).get(),
 				SMALL_DELTA);
 
-		assertEquals(${op.constant}, ((OutputOp<DoubleType>) resolvedSet.compute(constant)
-				.get(feature)).getOutput().get(),
+		assertEquals(${op.constant}, resolved.compute(constant).get(),
 				SMALL_DELTA);
 		
 	}
