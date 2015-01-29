@@ -162,7 +162,7 @@ public class DefaultOpResolverService extends AbstractService implements
 
 	// INTERNAL
 	private <I> CachedModule resolveModule(final OpRef<?> op,
-			final Set<OpRef<?>> helpers, final SourceOp<I> inputSource,
+			final Set<OpRef<?>> opPool, final SourceOp<I> inputSource,
 			final Map<OpRef<?>, CachedModule> modulePool)
 			throws ModuleException {
 
@@ -172,7 +172,7 @@ public class DefaultOpResolverService extends AbstractService implements
 
 		// see if there are any candidates in the set of helpers or features
 		// which may also provide parameters
-		for (final OpRef<?> ref : helpers) {
+		for (final OpRef<?> ref : opPool) {
 			if (op.getType().isAssignableFrom(ref.getType())) {
 				try {
 
@@ -187,7 +187,7 @@ public class DefaultOpResolverService extends AbstractService implements
 						// some of the parameters are already resolved.
 						//
 						module = checkIfAvailable(ref, tmp.getInfo(),
-								modulePool, inputSource, helpers, ref.getArgs());
+								modulePool, inputSource, opPool, ref.getArgs());
 						if (module != null)
 							return module;
 					}
@@ -211,7 +211,7 @@ public class DefaultOpResolverService extends AbstractService implements
 		// inputType nor a DescriptorParameterSet.
 		for (final OpCandidate<?> candidate : candidates) {
 			final CachedModule m = checkIfAvailable(op, candidate.getInfo(),
-					modulePool, inputSource, helpers, null);
+					modulePool, inputSource, opPool, null);
 			if (m != null)
 				return m;
 		}
