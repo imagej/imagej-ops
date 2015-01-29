@@ -91,6 +91,20 @@ public class DefaultOpResolverService extends AbstractService implements
 		return new ResolvedOpSet<I>(inputSource, modulePool, opPool);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public <I, O> ResolvedOp<I, O> resolveAndRun(final Class<O> outType,
+			final I input, final Class<? extends OutputOp> o, Object... args) {
+		return this.<I, O> resolveAndRun(outType, input, new OpRef(o, args));
+	}
+
+	@SuppressWarnings({ "rawtypes" })
+	@Override
+	public <I, O> ResolvedOp<I, O> resolveAndRun(final Class<O> outType,
+			final I input, final OpRef<? extends OutputOp> ref) {
+		return new ResolvedOp<I, O>(build(input, ref), ref);
+	}
+
 	/* Create one update listener */
 	private InputUpdateListener createUpdateListener(final Module module,
 			final ModuleItem<?> item) {
@@ -449,5 +463,4 @@ public class DefaultOpResolverService extends AbstractService implements
 			return module.getInfo().getName();
 		}
 	}
-
 }
