@@ -1,4 +1,5 @@
 [GeometricOps.java]
+<<<<<<< HEAD
 className = "GeometricOps"
 authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
 ops = ```
@@ -10,3 +11,14 @@ ops = ```
 	[name: "smallest-enclosing-rectangle", iface: "SmallestEnclosingRectangle"]
 ]
 ```
+=======
+ops = ```
+[
+{name: moore-contour, iface: MooreContours},
+{name: convex-hull, iface: ConvexHull},
+{name: bounding-box, iface: BoundingBox},
+{name: center-of-gravity, iface: CenterOfGravity},
+{name: smallest-enclosing-rectangle, iface: SmallestEnclosingRectangle}
+]
+```
+>>>>>>> add and update templates for StatisticOps and Features
