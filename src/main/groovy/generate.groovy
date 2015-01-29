@@ -202,6 +202,8 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	// initialize the Velocity engine
 	engine = new org.apache.velocity.app.VelocityEngine();
 	p = new java.util.Properties();
+	// fail if template uses an invalid expression; e.g., an undefined variable
+	p.setProperty("runtime.references.strict", "true");
 	// tell Velocity where the templates are located
 	p.setProperty("file.resource.loader.path", "$templateSubdirectory");
 	// tell Velocity to log to stderr rather than to a velocity.log file

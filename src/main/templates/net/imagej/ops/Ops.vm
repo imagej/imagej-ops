@@ -38,6 +38,7 @@ import net.imagej.ops.Op;
 #set ($prefix = "${namespace}.")
  * $namespace namespace.
 #else
+#set ($prefix = "")
  * global namespace.
 #end
  * <p>
@@ -77,13 +78,13 @@ public final class $className {
 	 * </pre>
 	 */
 	public interface $op.iface extends Op {
-		String NAME = "$!{prefix}$op.name";
+		String NAME = "$prefix$op.name";
 #if ($op.aliases)
 		String ALIASES = "##
 #set ($first = true)
 #foreach ($alias in $op.aliases)
 #if ($first)#set ($first = false)#else, #end
-$!prefix$alias##
+$prefix$alias##
 #end
 ";
 #end
