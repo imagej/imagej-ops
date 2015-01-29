@@ -1,5 +1,6 @@
 [FirstOrderStatIRTOps.java]
 <<<<<<< HEAD
+<<<<<<< HEAD
 className = "FirstOrderStatIRTOps"
 authors = [Christian Dietz, Daniel Seebacher, Andreas Graumann]
 ops = ```
@@ -25,6 +26,8 @@ ops = ```
   [name: "SumOfLogs",	iface: "SumOfLogs"],
   [name: "SumOfSquares",	iface: "SumOfSquares"]
 =======
+=======
+>>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 ops = ```
 [
   {iface: Max},
@@ -47,6 +50,9 @@ ops = ```
   {iface: SumOfInverses},
   {iface: SumOfLogs},
   {iface: SumOfSquares}
+<<<<<<< HEAD
 >>>>>>> add and update templates for StatisticOps and Features
+=======
+>>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 ]
 ```
