@@ -172,4 +172,9 @@ public final class OpUtils {
 		return sb.toString();
 	}
 
+	/** Helper method to cast an Object o to a given O. */ 
+	@SuppressWarnings("unchecked")
+	public static <O> O cast(Object src) {
+		return (O) src;
+	}
 }
