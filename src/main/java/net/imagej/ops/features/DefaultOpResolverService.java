@@ -14,6 +14,7 @@ import net.imagej.ops.OpCandidate;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
+import net.imagej.ops.OutputOp;
 
 import org.scijava.convert.ConvertService;
 import org.scijava.module.MethodCallException;
@@ -38,6 +39,57 @@ public class DefaultOpResolverService extends AbstractService implements
 
 	@Parameter
 	private OpMatchingService matcher;
+
+	@Override
+	public <I> ResolvedOpSet<I> build(I input, OpRef<?>... refs) {
+		Set<OpRef<?>> pool = new HashSet<OpRef<?>>();
+		pool.addAll(Arrays.asList(refs));
+		return build(input, pool);
+	}
+
+	@Override
+	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
+			final OpRef<OP> opRef) {
+		final HashSet<OpRef<?>> set = new HashSet<OpRef<?>>();
+		set.add(opRef);
+		return build(input, set);
+	}
+
+	@Override
+	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
+			final Class<OP> type, final Object... args) {
+		return build(input, new OpRef<OP>(type, args));
+	}
+
+	@Override
+	public <I> ResolvedOpSet<I> build(final I inputType,
+			final Set<OpRef<?>> opPool) {
+
+		@SuppressWarnings("unchecked")
+		final SourceOp<I> inputSource = new SourceOp<I>(
+				(Class<? extends I>) inputType.getClass());
+
+		final Map<OpRef<?>, CachedModule> modulePool = new HashMap<OpRef<?>, CachedModule>();
+
+		for (final OpRef<?> ref : opPool) {
+			try {
+				if (null == resolveModule(ref, opPool, inputSource, modulePool)) {
+					throw new IllegalArgumentException(
+							"Can't compile set of OpRefs!" + " Reason:"
+									+ ref.getType().getSimpleName()
+									+ " can't be auto-resolved!");
+				}
+
+			} catch (ModuleException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+
+		postProcess(modulePool, inputSource);
+
+		return new ResolvedOpSet<I>(inputSource, modulePool, opPool);
+	}
 
 	/* Create one update listener */
 	private InputUpdateListener createUpdateListener(final Module module,
@@ -113,7 +165,7 @@ public class DefaultOpResolverService extends AbstractService implements
 					CachedModule module = modulePool.get(ref);
 					if (module != null)
 						return module;
-					
+
 					Module tmp = ops.module(ref.getType(), ref.getArgs());
 					if (tmp != null) {
 
@@ -258,57 +310,6 @@ public class DefaultOpResolverService extends AbstractService implements
 		}
 
 		return module;
-	}
-
-	@Override
-	public <I, OP extends Op> ResolvedOpSet<I> build(I input, OpRef<?>... refs) {
-		Set<OpRef<?>> pool = new HashSet<OpRef<?>>();
-		pool.addAll(Arrays.asList(refs));
-		return build(input, pool);
-	}
-
-	@Override
-	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
-			final OpRef<OP> opRef) {
-		final HashSet<OpRef<?>> set = new HashSet<OpRef<?>>();
-		set.add(opRef);
-		return build(input, set);
-	}
-
-	@Override
-	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
-			final Class<OP> type, final Object... args) {
-		return build(input, new OpRef<OP>(type, args));
-	}
-
-	@Override
-	public <I> ResolvedOpSet<I> build(final I inputType,
-			final Set<OpRef<?>> opPool) {
-
-		@SuppressWarnings("unchecked")
-		final SourceOp<I> inputSource = new SourceOp<I>(
-				(Class<? extends I>) inputType.getClass());
-
-		final Map<OpRef<?>, CachedModule> modulePool = new HashMap<OpRef<?>, CachedModule>();
-
-		for (final OpRef<?> ref : opPool) {
-			try {
-				if (null == resolveModule(ref, opPool, inputSource, modulePool)) {
-					throw new IllegalArgumentException(
-							"Can't compile set of OpRefs!" + " Reason:"
-									+ ref.getType().getSimpleName()
-									+ " can't be auto-resolved!");
-				}
-
-			} catch (ModuleException e) {
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}
-
-		postProcess(modulePool, inputSource);
-
-		return new ResolvedOpSet<I>(inputSource, modulePool, opPool);
 	}
 
 	private class CachedModule implements Module {
