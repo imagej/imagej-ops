@@ -41,7 +41,16 @@ import java.io.IOException;
 import org.junit.Test;
 import org.scijava.util.ClassUtils;
 
+/**
+ * Tests that the Groovy-driven template generator works as expected.
+ *
+ * @author Johannes Schindelin
+ * @author Jonathan Hale (University of Konstanz)
+ * @author Curtis Rueden
+ */
 public class TemplateTest {
+
+	/** Tests that generation works for scalars, lists and maps. */
 	@Test
 	public void testTemplate() throws IOException {
 		final String prefix = ClassUtils.getLocation(getClass()).getFile();
