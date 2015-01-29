@@ -54,135 +54,15 @@ def processTemplate(engine, context, templateFile, outFilename) {
 	out.close();
 }
 
-/* Parses a string to a string, list or map. */
-def parseValue(str) {
-	symbols = new Stack<Character>();
-	parsed = new Stack<Object>();
-
-	buffer = "";
-
-	for (char c : str.toCharArray()) {
-		try {
-			// top symbol determines what kind of structure we're
-			// currently working on TODO: Speedup?
-			top = symbols.peek();
-
-			if (top == '\\') { // escaped
-				symbols.pop();
-			}
-			else {
-				if (top == '{') {
-					// parse a map
-					if (c == ':') {
-						// key is complete, push the key to parsed
-						if (!buffer.isEmpty()) {
-							parsed.push(new String(buffer));
-							buffer = "";
-						} // else
-								// buffer has probably already been pushed,
-								// therefore must have been enclosed in '"'
-						continue;
-					}
-					if (c == ',' || c == '}') {
-						if (buffer.isEmpty()) {
-							value = parsed.pop();
-						}
-						else {
-							value = new String(buffer);
-							buffer = "";
-						}
-
-						key = parsed.pop();
-
-						parsed.peek().put(key.trim(), value);
-
-						if (c == '}') {
-							// finish up this map.
-							symbols.pop();
-						}
-
-						continue;
-					}
-				}
-				else if (top == '[') {
-					// parse a list
-					if (c == ',' || c == ']') {
-						if (buffer.isEmpty()) {
-							value = parsed.pop();
-						}
-						else {
-							value = new String(buffer);
-							buffer = "";
-						}
-
-						parsed.peek().add(value);
-
-						if (c == ']') {
-							// finish up this map.
-							symbols.pop();
-						}
-
-						continue;
-					}
-				}
-				else if (top == '"') {
-					if (c == '"') {
-						parsed.push(new String(buffer));
-						buffer = "";
-						symbols.pop();
-						continue;
-					}
-				}
-
-				if (c == '[') {
-					symbols.push(c);
-					parsed.push(new ArrayList<Object>());
-					continue;
-				}
-				if (c == '{') {
-					symbols.push(c);
-					parsed.push(new HashMap<Object, Object>());
-					continue;
-				}
-				if (c == '"') {
-					symbols.push(c);
-					continue;
-					// uses buffer
-				}
-			}
-
-			// no special meaning to this char.
-			if (buffer.isEmpty() && isWhitespace(c)) {
-				// skip leading whitespaces
-				continue;
-			}
-			buffer += c;
-		}
-		catch (EmptyStackException e) {
-			if (isWhitespace(c)) {
-				// skip leading whitespaces
-			}
-			else if (c == '{') {
-				symbols.push(c);
-				parsed.push(new HashMap<Object, Object>());
-			}
-			else if (c == '[') {
-				symbols.push(c);
-				parsed.push(new ArrayList<Object>());
-			}
-			else {
-				// this is a simple string value, we're done.
-				parsed.push(str.trim());
-				break;
-			}
-		}
+/* Parses a string to a scalar, list or map. */
+def parseValue(sh, translationsFile, key, expression) {
+	try {
+		return sh.evaluate(expression);
 	}
-
-	return parsed.pop();
-}
-
-def isWhitespace(c) {
- return c == ' ' || c == '\t' || c == '\n';
+	catch (groovy.lang.GroovyRuntimeException e) {
+		print("[WARNING] $translationsFile: " +
+			"key '$key' has unparseable value: " + e.getMessage());
+	}
 }
 
 /*
@@ -220,6 +100,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		timestamp(templateSubdirectory, translationsFile),
 		timestamp(templateSubdirectory, templateFile));
 
+	sh = new groovy.lang.GroovyShell();
 	for (;;) {
 		// read the line
 		line = reader.readLine();
@@ -245,6 +126,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 		// ignore blank lines
 		trimmedLine = line.trim();
 		if (trimmedLine.isEmpty()) continue;
+
 		// ignore comments
 		if (trimmedLine.startsWith("#")) continue;
 
@@ -279,7 +161,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 
 		//For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
 
-		context.put(key, parseValue(value));
+		context.put(key, parseValue(sh, translationsFile, key, value));
 	}
 	reader.close();
 

@@ -1,63 +1,63 @@
 [ComputeHuangThresholdTest.java]
-name = Huang
+name = "Huang"
 expected = 36874
 
 [ComputeIntermodesThresholdTest.java]
-name = Intermodes
+name = "Intermodes"
 expected = 34859
 
 [ComputeIsoDataThresholdTest.java]
-name = IsoData
+name = "IsoData"
 expected = 33095
 
 [ComputeLiThresholdTest.java]
-name = Li
+name = "Li"
 expected = 26798
 
 [ComputeMaxEntropyThresholdTest.java]
-name = MaxEntropy
+name = "MaxEntropy"
 expected = 28309
 
 [ComputeMaxLikelihoodThresholdTest.java]
-name = MaxLikelihood
+name = "MaxLikelihood"
 expected = 46698
 
 [ComputeMeanThresholdTest.java]
-name = Mean
+name = "Mean"
 expected = 32591
 
 [ComputeMinErrorThresholdTest.java]
-name = MinError
+name = "MinError"
 expected = 32843
 
 [ComputeMinimumThresholdTest.java]
-name = Minimum
+name = "Minimum"
 expected = 44935
 
 [ComputeMomentsThresholdTest.java]
-name = Moments
+name = "Moments"
 expected = 34355
 
 [ComputeOtsuThresholdTest.java]
-name = Otsu
+name = "Otsu"
 expected = 34103
 
 [ComputePercentileThresholdTest.java]
-name = Percentile
+name = "Percentile"
 expected = 32088
 
 [ComputeRenyiEntropyThresholdTest.java]
-name = RenyiEntropy
+name = "RenyiEntropy"
 expected = 26546
 
 [ComputeShanbhagThresholdTest.java]
-name = Shanbhag
+name = "Shanbhag"
 expected = 27553
 
 [ComputeTriangleThresholdTest.java]
-name = Triangle
+name = "Triangle"
 expected = 34607
 
 [ComputeYenThresholdTest.java]
-name = Yen
+name = "Yen"
 expected = 24531
