@@ -1,0 +1,25 @@
+[FirstOrderStatIRTOps.java]
+ops = ```
+[
+  {iface: Max},
+  {iface: Mean},
+  {iface: Median},
+  {iface: Min},
+  {iface: Quantile},
+  {iface: StdDeviation},
+  {iface: Sum},
+  {iface: Variance},
+  {iface: GeometricMean},
+  {iface: HarmonicMean},
+  {iface: Kurtosis},
+  {iface: Moment1AboutMean},
+  {iface: Moment2AboutMean},
+  {iface: Moment3AboutMean},
+  {iface: Moment4AboutMean},
+  {iface: Percentile},
+  {iface: Skewness},
+  {iface: SumOfInverses},
+  {iface: SumOfLogs},
+  {iface: SumOfSquares}
+]
+```

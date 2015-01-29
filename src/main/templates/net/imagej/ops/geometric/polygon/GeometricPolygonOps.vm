@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,34 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.geometric.polygon;
 
-import java.util.Iterator;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.geometric.GeometricOps;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
+/**
+ * Static utility class containing geometric ops.
+ * <p>
+ * These interfaces are intended to mark all ops using a particular name,
+ * regardless of the area of functionality. 
+ *
+ * </p>
+	 * <pre>
+	 * @Plugin(type = Op.class, name = GeometricPolygonOps.MooreContours.NAME)
+	 * </pre>
+ *
+ * @author Daniel Seebacher, University of Konstanz
+ */
+public final class GeometricPolygonOps {
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Ops.Size.NAME, priority = Priority.LAST_PRIORITY)
-public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
-{
-
-	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
-		final Iterator<?> iterator = input.iterator();
-
-		long numElements = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			numElements++;
-		}
-
-		output.set(numElements);
-		return output;
+	private GeometricPolygonOps() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($op in $ops)
+
+	/**
+	 * Base interface for "$op.name" operations.
+	 * <p>
+	 * Implementing classes should be annotated with:
+	 * </p>
+	 *
+	 * <pre>
+#if ($op.aliases)
+	 * @Plugin(type = Op.class, name = GeometricPolygonOps.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = GeometricPolygonOps.${op.iface}.ALIASES) })
+#else
+	 * @Plugin(type = Op.class, name = GeometricPolygonOps.${op.iface}.NAME)
+#end
+	 * </pre>
+	 */
+	public interface ${op.iface}Polygon extends OutputOp<Polygon>, GeometricOps.${op.iface} {
+		String NAME = "$op.name";
+#if ($op.aliases)
+		String ALIASES = "$op.aliases";
+#end
+	}
+#end
+
 }

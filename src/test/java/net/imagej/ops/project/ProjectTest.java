@@ -33,8 +33,13 @@ package net.imagej.ops.project;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+<<<<<<< HEAD
 import net.imagej.ops.project.parallel.DefaultProjectParallel;
 import net.imagej.ops.statistics.Sum;
+=======
+import net.imagej.ops.project.parallel.DefaultProjectP;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
+>>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -66,7 +71,7 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
-		op = ops.op(Sum.class, RealType.class, out1);
+		op = ops.op(SumIRT.class, RealType.class, out1);
 	}
 
 	@Test
