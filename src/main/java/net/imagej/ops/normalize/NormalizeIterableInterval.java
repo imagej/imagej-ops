@@ -36,6 +36,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.statistics.FirstOrderOps.MinMax;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -59,7 +60,7 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 	{
 
 		T outType = output.firstElement().createVariable();
-		List<T> minmax = (List<T>) ops.run("minmax", input);
+		List<T> minmax = (List<T>) ops.run(MinMax.class, input);
 		double factor =
 			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
 				minmax.get(1).getRealDouble(), outType.getMinValue(), outType

@@ -31,10 +31,13 @@
 package net.imagej.ops.convolve;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+<<<<<<< HEAD
 import net.imagej.ops.Op;
+=======
+>>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
+import net.imagej.ops.statistics.FirstOrderOps.Sum;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
@@ -120,8 +123,8 @@ public class ConvolveTest extends AbstractOpTest {
 		FloatType outSum3 = new FloatType();
 
 		// calculate sum of input and kernel
-		ops.run("sum", inSum, in);
-		ops.run("sum", kernelSum, kernel);
+		ops.run(Sum.class, inSum, in);
+		ops.run(Sum.class, kernelSum, kernel);
 
 		// convolve and calculate the sum of output
 		Img<FloatType> out =
@@ -149,9 +152,9 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
-		ops.run("sum", outSum, out);
-		ops.run("sum", outSum2, out2);
-		ops.run("sum", outSum3, out3);
+		ops.run(Sum.class, outSum, out);
+		ops.run(Sum.class, outSum2, out2);
+		ops.run(Sum.class, outSum3, out3);
 
 		// multiply input sum by kernelSum and assert it is the same as outSum
 		inSum.mul(kernelSum);

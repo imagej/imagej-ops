@@ -30,24 +30,65 @@
 
 package net.imagej.ops.statistics;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+/**
+ * Static utility class containing built-in op interfaces of the
+#if ($namespace)
+#set ($prefix = "${namespace}.")
+ * $namespace namespace.
+#else
+ * global namespace.
+#end
+ * <p>
+ * These interfaces are intended to mark all ops using a particular name,
+ * regardless of their exact functionality. For example, all ops called
+ * "${ops.get(0).name}" would be marked by implementing the
+ * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
+ * </p>
+ * <pre>
+ * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
+ * </pre>
+ *
+#foreach ($author in $authors)
+ * @author $author
+#end
+ */
+public final class $className {
 
-@Plugin(type = Op.class, name = Ops.Sum.NAME, priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractStrictFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
-{
-
-	@Override
-	public V compute(final Iterable<T> input, final V output) {
-		for (final T t : input) {
-			output.setReal(output.getRealDouble() + t.getRealDouble());
-		}
-		return output;
+	private $className() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($op in $ops)
+
+	/**
+	 * Base interface for "$op.name" operations.
+	 * <p>
+	 * Implementing classes should be annotated with:
+	 * </p>
+	 *
+	 * <pre>
+#if ($op.aliases)
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
+#else
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME, label = $className.${op.iface}.LABEL)
+#end
+	 * </pre>
+	 */
+	public interface $op.iface extends Op {
+		String NAME = "$!{prefix}$op.name";
+		String LABEL = "$!{prefix}$op.iface";
+#if ($op.aliases)
+		String ALIASES = "##
+#set ($first = true)
+#foreach ($alias in $op.aliases)
+#if ($first)#set ($first = false)#else, #end
+$!prefix$alias##
+#end
+";
+#end
+	}
+#end
+
 }

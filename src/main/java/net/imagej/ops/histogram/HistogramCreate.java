@@ -35,7 +35,8 @@ import java.util.List;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.misc.MinMax;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.statistics.FirstOrderOps;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
@@ -48,7 +49,8 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn, University of Konstanz
  */
 @Plugin(type = Op.class, name = Ops.Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
+public class HistogramCreate<T extends RealType<T>> implements
+		OutputOp<Histogram1d<T>>, Ops.Histogram {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Histogram1d<T> out;
@@ -65,12 +67,22 @@ public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
 	@Override
 	public void run() {
 		@SuppressWarnings("unchecked")
-		final List<T> res = (List<T>) ops.run(MinMax.class, in);
+		final List<T> res = (List<T>) ops.run(FirstOrderOps.MinMax.class, in);
 
 		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
 				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
 
 		out.countData(in);
 
+	}
+
+	@Override
+	public Histogram1d<T> getOutput() {
+		return out;
+	}
+
+	@Override
+	public void setOutput(Histogram1d<T> output) {
+		this.out = output;
 	}
 }

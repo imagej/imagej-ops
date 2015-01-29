@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,39 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.features.firstorder;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Normalize;
-import net.imagej.ops.statistics.FirstOrderOps.MinMax;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AbstractFeatureTest;
+import net.imagej.ops.features.ResolvedOpSet;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures;
+import net.imagej.ops.OutputOp;
+
 
 import org.junit.Test;
 
+
 /**
- * @author Martin Horn
+ * Testing implementations of {@link FirstOrderFeatures}
+ * 
+ * @author Christian Dietz (University of Konstanz)
  */
-public class NormalizeTest extends AbstractOpTest {
+public class FirstOrderFeaturesTest extends AbstractFeatureTest {
 
+#foreach ($op in $ops)
+
+	/**
+	 * Testing {@link Feature} implementation of {@link ${op.iface}}
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
-	public void testNormalize() {
+	public void ${op.iface}FeatureTest() {
+	
+			
+		OpRef<FirstOrderFeatures.${op.iface}Feature> feature = new OpRef<FirstOrderFeatures.${op.iface}Feature>(FirstOrderFeatures.${op.iface}Feature.class);
+		ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.build(empty, feature);
+		
+		assertEquals(${op.empty}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
 
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
-		Img<ByteType> out = in.factory().create(in, new ByteType());
+		assertEquals(${op.random}, ((OutputOp<DoubleType>) resolvedSet.compute(random)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
 
-		// TODO: weird order of parameters
-		ops.run(Normalize.class, out, in);
-
-		List<ByteType> minmax1 = (List<ByteType>) ops.run(MinMax.class, in);
-		List<ByteType> minmax2 = (List<ByteType>) ops.run(MinMax.class, out);
-
-		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
-
+		assertEquals(${op.constant}, ((OutputOp<DoubleType>) resolvedSet.compute(constant)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		
 	}
+#end
+
 }

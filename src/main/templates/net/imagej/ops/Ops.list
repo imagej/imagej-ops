@@ -3,6 +3,7 @@ className = "Ops"
 authors = ["Curtis Rueden"]
 ops = ```
 [
+<<<<<<< HEAD
 	[name: "ascii",       iface: "ASCII"],
 	[name: "chunker",     iface: "Chunker"],
 	[name: "convert",     iface: "Convert"],
@@ -62,6 +63,37 @@ ops = ```
 	[name: "notequal",           iface: "NotEqual"],
 	[name: "or",                 iface: "Or"],
 	[name: "xor",                iface: "Xor"]
+=======
+  {name: ascii,       iface: ASCII},
+  {name: chunker,     iface: Chunker},
+  {name: convert,     iface: Convert},
+  {name: convolve,    iface: Convolve},
+  {name: createimg,   iface: CreateImg},
+  {name: crop,        iface: Crop,           aliases: [slice]},
+  {name: deconvolve,  iface: Deconvolve},
+  {name: divide,      iface: Divide},
+  {name: equation,    iface: Equation},
+  {name: fft,         iface: FFT},
+  {name: fftsize,     iface: FFTSize},
+  {name: gauss,       iface: Gauss,          aliases: [smooth]},
+  {name: gausskernel, iface: GaussKernel},
+  {name: histogram,   iface: Histogram},
+  {name: identity,    iface: Identity},
+  {name: ifft,        iface: IFFT},
+  {name: invert,      iface: Invert},
+  {name: join,        iface: Join},
+  {name: log,         iface: Log},
+  {name: logkernel,   iface: LogKernel},
+  {name: lookup,      iface: Lookup,         aliases: [op]},
+  {name: loop,        iface: Loop},
+  {name: map,         iface: Map},
+  {name: normalize,   iface: Normalize,      aliases: [norm]},
+  {name: project,     iface: Project},
+  {name: scale,       iface: Scale,          aliases: [resize]},
+  {name: size,        iface: Size},
+  {name: slicewise,   iface: Slicewise},
+  {name: threshold,   iface: Threshold}
+>>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 ]
 ```
 

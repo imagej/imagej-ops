@@ -1,0 +1,10 @@
+[GeometricOps.java]
+ops = ```
+[
+{name: moore-contour, iface: MooreContours},
+{name: convex-hull, iface: ConvexHull},
+{name: bounding-box, iface: BoundingBox},
+{name: center-of-gravity, iface: CenterOfGravity},
+{name: smallest-enclosing-rectangle, iface: SmallestEnclosingRectangle}
+]
+```
