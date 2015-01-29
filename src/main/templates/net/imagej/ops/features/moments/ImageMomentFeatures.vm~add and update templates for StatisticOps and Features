@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,70 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.features.moments;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.statistics.ImageMomentOps;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Static utility class containing built-in op interfaces of the
-#if ($namespace)
-#set ($prefix = "${namespace}.")
- * $namespace namespace.
-#else
- * global namespace.
-#end
+ * Static utility class containing built-in ops interfaces.
  * <p>
  * These interfaces are intended to mark all ops using a particular name,
- * regardless of their exact functionality. For example, all ops called
- * "${ops.get(0).name}" would be marked by implementing the
- * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
+ * regardless of the area of functionality. For example, all ops called "asm"
+ * would be marked by implementing the {@code HaralickFeatures.ASMFeature} interface, and
+ * annotating them with:
  * </p>
- * <pre>
- * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
- * </pre>
+	 * <pre>
+	 * @Plugin(type = Op.class, name = ImageMomentFeatures.Moment00.NAME)
+	 * </pre>
  *
-#foreach ($author in $authors)
- * @author $author
-#end
+ * @author Daniel Seebacher, University of Konstanz.
  */
-public final class $className {
+public final class ImageMomentFeatures {
 
-	private $className() {
+	private ImageMomentFeatures() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
 
 	/**
-	 * Base interface for "$op.name" operations.
-	 * <p>
-	 * Implementing classes should be annotated with:
-	 * </p>
-	 *
-	 * <pre>
-#if ($op.aliases)
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
-#else
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME, label = $className.${op.iface}.LABEL)
-#end
-	 * </pre>
+	 * Interface marking implementations of {@link ImageMomentOps.${op.iface}} as  as {@link OutputOp}
 	 */
-	public interface $op.iface extends Op {
-		String NAME = "$!{prefix}$op.name";
-<<<<<<< HEAD
-		String LABEL = "${op.iface}";
-=======
-		String LABEL = "$!{prefix}$op.iface";
->>>>>>> add and update templates for StatisticOps and Features
-#if ($op.aliases)
-		String ALIASES = "##
-#set ($first = true)
-#foreach ($alias in $op.aliases)
-#if ($first)#set ($first = false)#else, #end
-$!prefix$alias##
-#end
-";
-#end
+	public interface ${op.iface}Feature<T extends RealType<T>> extends OutputOp<T>, ImageMomentOps.${op.iface} {
+		// NB: Marker interface
 	}
 #end
 

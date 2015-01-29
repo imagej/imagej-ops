@@ -1,4 +1,5 @@
 [GeometricIntervalOps.java]
+<<<<<<< HEAD
 className = "GeometricIntervalOps"
 authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
 ops = ```
@@ -6,3 +7,10 @@ ops = ```
 	[name: "bounding-box", iface: "BoundingBox"]
 ]
 ```
+=======
+ops = ```
+[
+{name: bounding-box, iface: BoundingBox}
+]
+```
+>>>>>>> add and update templates for StatisticOps and Features
