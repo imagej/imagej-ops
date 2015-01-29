@@ -51,8 +51,8 @@ import org.scijava.plugin.PluginService;
  * 
  * @param <I>
  */
-public abstract class AutoResolvingFeatureSet<I, O> extends
-		AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
+public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
+		implements FeatureSet<I, O> {
 
 	@Parameter
 	private OpResolverService oobs;
@@ -117,7 +117,8 @@ public abstract class AutoResolvingFeatureSet<I, O> extends
 			modulSet = oobs.build(getInput(), pool);
 
 			for (final OpRef<?> ref : outputOps) {
-				names.put(ref, ps.getPlugin(modulSet.get().get(ref).getClass()).getName());
+				names.put(ref, ps.getPlugin(modulSet.get().get(ref).getClass())
+						.getLabel());
 			}
 
 		}
