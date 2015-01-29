@@ -202,6 +202,7 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 	// initialize the Velocity engine
 	engine = new org.apache.velocity.app.VelocityEngine();
 	p = new java.util.Properties();
+	// tell Velocity where the templates are located
 	p.setProperty("file.resource.loader.path", "$templateSubdirectory");
 	// tell Velocity to log to stderr rather than to a velocity.log file
 	p.setProperty(org.apache.velocity.runtime.RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
