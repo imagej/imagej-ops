@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = EccentricityFeature.NAME)
+@Plugin(type = Op.class, name = EccentricityFeature.NAME, label = EccentricityFeature.LABEL)
 public class DefaultEccentricityFeature implements
         EccentricityFeature<DoubleType> {
 

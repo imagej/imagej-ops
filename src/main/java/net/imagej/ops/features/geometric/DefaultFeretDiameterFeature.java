@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = FeretsDiameterFeature.NAME)
+@Plugin(type = Op.class, name = FeretsDiameterFeature.NAME, label = FeretsDiameterFeature.LABEL)
 public class DefaultFeretDiameterFeature implements
         FeretsDiameterFeature<DoubleType> {
 

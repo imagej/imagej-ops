@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = SolidityFeature.NAME)
+@Plugin(type = Op.class, name = SolidityFeature.NAME, label = SolidityFeature.LABEL)
 public class DefaultSolidityFeature implements SolidityFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

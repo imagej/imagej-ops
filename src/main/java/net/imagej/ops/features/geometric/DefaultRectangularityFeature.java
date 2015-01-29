@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = RectangularityFeature.NAME)
+@Plugin(type = Op.class, name = RectangularityFeature.NAME, label = RectangularityFeature.LABEL)
 public class DefaultRectangularityFeature implements
         RectangularityFeature<DoubleType> {
 

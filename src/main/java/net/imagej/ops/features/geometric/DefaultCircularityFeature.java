@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = CircularityFeature.NAME)
+@Plugin(type = Op.class, name = CircularityFeature.NAME , label = CircularityFeature.LABEL)
 public class DefaultCircularityFeature implements
         CircularityFeature<DoubleType> {
 

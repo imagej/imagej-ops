@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = FeretsAngleFeature.NAME)
+@Plugin(type = Op.class, name = FeretsAngleFeature.NAME, label = FeretsAngleFeature.LABEL)
 public class DefaultFeretAngleFeature implements FeretsAngleFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

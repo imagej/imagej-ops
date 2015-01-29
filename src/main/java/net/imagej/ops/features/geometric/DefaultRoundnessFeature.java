@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = RoundnessFeature.NAME)
+@Plugin(type = Op.class, name = RoundnessFeature.NAME, label = RoundnessFeature.LABEL)
 public class DefaultRoundnessFeature implements
         RoundnessFeature<DoubleType> {
 

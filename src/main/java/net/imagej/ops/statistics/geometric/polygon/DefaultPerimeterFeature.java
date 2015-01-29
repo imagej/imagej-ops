@@ -18,7 +18,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Perimeter.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Perimeter.NAME, label = Perimeter.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultPerimeterFeature<I extends Polygon, O extends RealType<O>>
         extends AbstractOutputFunction<Polygon, O> implements
         PerimeterFeature<O> {

@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = MinorAxisFeature.NAME)
+@Plugin(type = Op.class, name = MinorAxisFeature.NAME, label = MinorAxisFeature.LABEL)
 public class DefaultMinorAxisFeature implements MinorAxisFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

@@ -57,7 +57,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testArea() {
 		// value taken from imagej
-		assertEquals(AreaFeature.NAME, 24332, results.get("area"),
+		assertEquals(AreaFeature.NAME, 24332, results.get(AreaFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -68,7 +68,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testPerimeter() {
 		// value taken from imagej
 		assertEquals(PerimeterFeature.NAME, 866.690475583,
-				results.get("perimeter"),
+				results.get(PerimeterFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -79,7 +79,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testCircularity() {
 		// value taken from imagej
 		assertEquals(CircularityFeature.NAME, 0.407061121,
-				results.get("circularity"),
+				results.get(CircularityFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -90,7 +90,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testMinorAxis() {
 		// value taken from imagej
 		assertEquals(MinorAxisFeature.NAME, 166.288157325,
-				results.get("minoraxis"),
+				results.get(MinorAxisFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -101,7 +101,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testMajorAxis() {
 		// value taken from imagej
 		assertEquals(MajorAxisFeature.NAME, 186.305898754,
-				results.get("majoraxis"),
+				results.get(MajorAxisFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -112,7 +112,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testFeretDiameter() {
 		// value taken from imagej
 		assertEquals(FeretsDiameterFeature.NAME, 252.009920440,
-				results.get("feretsdiameter"),
+				results.get(FeretsDiameterFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 	}
 
@@ -125,13 +125,13 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 		// value taken from imagej, angle could be reversed so check 11.44.. and
 		// 11.44.. + 180
 		boolean isEquals = false;
-		if (Math.abs(11.443696697 - results.get("feretsangle")) < AbstractFeatureTest.SMALL_DELTA
+		if (Math.abs(11.443696697 - results.get(FeretsAngleFeature.LABEL)) < AbstractFeatureTest.SMALL_DELTA
 				|| Math.abs(11.443696697 + 180 - results
-						.get("feretsangle")) < AbstractFeatureTest.SMALL_DELTA) {
+						.get(FeretsAngleFeature.LABEL)) < AbstractFeatureTest.SMALL_DELTA) {
 			isEquals = true;
 		}
 
-		assertTrue("FeretsAngleFeature.NAME Expected [11.443696697] was ["
+		assertTrue(FeretsAngleFeature.NAME + " Expected [11.443696697] was ["
 				+ results.get("feretsangle") + "]", isEquals);
 	}
 
@@ -141,7 +141,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testEccentricity() {
 		assertEquals(EccentricityFeature.NAME, 1.120379838,
-				results.get("eccentricity"),
+				results.get(EccentricityFeature.LABEL),
 				AbstractFeatureTest.SMALL_DELTA);
 
 	}
@@ -152,8 +152,7 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testRoundness() {
 		assertEquals(RoundnessFeature.NAME, 0.892554441,
-				results.get("roundness"),
-				AbstractFeatureTest.SMALL_DELTA);
+				results.get(RoundnessFeature.LABEL), AbstractFeatureTest.SMALL_DELTA);
 	}
 
 	/**
@@ -163,6 +162,6 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 	public void testSolidity() {
 		// value taken from imagej
 		assertEquals(SolidityFeature.NAME, 0.759437569,
-				results.get("solidity"), AbstractFeatureTest.SMALL_DELTA);
+				results.get(SolidityFeature.LABEL), AbstractFeatureTest.SMALL_DELTA);
 	}
 }
