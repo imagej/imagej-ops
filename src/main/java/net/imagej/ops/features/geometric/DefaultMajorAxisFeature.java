@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = MajorAxisFeature.NAME)
+@Plugin(type = Op.class, name = MajorAxisFeature.NAME, label = MajorAxisFeature.LABEL)
 public class DefaultMajorAxisFeature implements MajorAxisFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

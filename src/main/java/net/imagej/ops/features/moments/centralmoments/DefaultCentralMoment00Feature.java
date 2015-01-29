@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = CentralMoment00Feature.NAME)
+@Plugin(type = Op.class, name = CentralMoment00Feature.NAME, label = CentralMoment00Feature.LABEL)
 public class DefaultCentralMoment00Feature implements
         CentralMoment00Feature<DoubleType> {
 

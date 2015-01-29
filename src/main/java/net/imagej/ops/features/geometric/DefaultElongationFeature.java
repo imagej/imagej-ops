@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = ElongationFeature.NAME)
+@Plugin(type = Op.class, name = ElongationFeature.NAME, label = ElongationFeature.LABEL)
 public class DefaultElongationFeature implements ElongationFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

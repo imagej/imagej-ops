@@ -17,7 +17,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = RugosityFeature.NAME)
+@Plugin(type = Op.class, name = RugosityFeature.NAME, label = RugosityFeature.LABEL)
 public class DefaultRugosityFeature implements
         RugosityFeature<DoubleType> {
 

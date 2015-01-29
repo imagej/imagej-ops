@@ -16,7 +16,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = ConvexityFeature.NAME)
+@Plugin(type = Op.class, name = ConvexityFeature.NAME, label = ConvexityFeature.LABEL)
 public class DefaultConvexityFeature implements ConvexityFeature<DoubleType> {
 
 	@Parameter(type = ItemIO.INPUT)

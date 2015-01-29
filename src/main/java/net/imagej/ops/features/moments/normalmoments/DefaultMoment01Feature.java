@@ -15,7 +15,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Moment01Feature.NAME)
+@Plugin(type = Op.class, name = Moment01Feature.NAME, label = Moment01Feature.LABEL)
 public class DefaultMoment01Feature implements Moment01Feature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)

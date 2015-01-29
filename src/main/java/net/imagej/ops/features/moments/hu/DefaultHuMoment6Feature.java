@@ -21,7 +21,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Op.class, name = HuMoment6Feature.NAME)
+@Plugin(type = Op.class, name = HuMoment6Feature.NAME, label = HuMoment6Feature.LABEL)
 public class DefaultHuMoment6Feature implements HuMoment6Feature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
