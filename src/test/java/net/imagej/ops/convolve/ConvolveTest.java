@@ -31,7 +31,6 @@
 package net.imagej.ops.convolve;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 
