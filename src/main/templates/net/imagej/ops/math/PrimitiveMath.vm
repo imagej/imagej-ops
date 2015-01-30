@@ -1,9 +1,9 @@
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,27 +28,60 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.MathOps;
 
 import org.scijava.ItemIO;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = $priority)
-public class AddConstantTo$name implements MathOps.Add {
+/**
+ * Generated arithmetic ops with primitive types.
+ *
+ * @author Curtis Rueden
+ */
+public final class PrimitiveMath {
 
-	@Parameter(type = ItemIO.BOTH)
-	private $primitive a;
-
-	@Parameter
-	private $primitive b;
-
-	@Override
-	public void run() {
-		a += b;
+	private PrimitiveMath() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#if ($op.codes.contains($type.code))
+#set ($iface = "MathOps.$op.name")
+
+	/** Op that $op.verbs#if ($op.unary) a $type.primitive value#else two $type.primitive values#end. */
+	@Plugin(type = Op.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
+	public static class $type.name$op.name implements $iface {
+		@Parameter(type = ItemIO.OUTPUT)
+		private $type.primitive result;
+
+		@Parameter
+		private $type.primitive a;
+#if (!$op.unary)
+
+		@Parameter
+		private $type.primitive b;
+#end
+
+		@Override
+		public void run() {
+#if ($op.unary && $op.operator)
+			result = ${op.operator}a;
+#elseif ($op.unary)
+			result = ${op.function}(a);
+#elseif ($op.operator)
+			result = a $op.operator b;
+#else
+			result = ${op.function}(a, b);
+#end
+		}
+	}
+#end
+#end
+#end
 
 }
