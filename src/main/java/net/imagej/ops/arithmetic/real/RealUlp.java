@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,31 +28,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to the size of the ulp of an input real number. An ulp of a floating point value is the positive distance between an input floating-point value and the floating point value next larger in magnitude. Note that for non-NaN x, ulp(-x) == ulp(x).
+ * Sets the real component of an output real number to the size of the ulp of an
+ * input real number. An ulp of a floating point value is the positive distance
+ * between an input floating-point value and the floating point value next
+ * larger in magnitude. Note that for non-NaN x, ulp(-x) == ulp(x).
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
 @Plugin(type = Op.class, name = MathOps.Ulp.NAME)
-public class RealUlp<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.Ulp
+public class RealUlp<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.Ulp
 {
 
 	@Override
-	public O compute(final I input, O output){
-						output.setReal(Math.ulp(input.getRealDouble()));
-						return output;
-			}
+	public O compute(final I input, final O output) {
+		output.setReal(Math.ulp(input.getRealDouble()));
+		return output;
+	}
 }

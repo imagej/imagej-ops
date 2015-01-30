@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,44 +28,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to the inverse secant of the real component of an input real number.
+ * Sets the real component of an output real number to the inverse secant of the
+ * real component of an input real number.
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
 @Plugin(type = Op.class, name = MathOps.Arcsec.NAME)
-public class RealArcsec<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.Arcsec
+public class RealArcsec<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.Arcsec
 {
-	private final static RealArcsin<DoubleType, DoubleType> asin= new RealArcsin<DoubleType, DoubleType>();
+
+	private final static RealArcsin<DoubleType, DoubleType> asin =
+		new RealArcsin<DoubleType, DoubleType>();
 	@Parameter
-	private DoubleType angle= new DoubleType();
+	private final DoubleType angle = new DoubleType();
 	@Parameter
-	private DoubleType tmp= new DoubleType();
+	private final DoubleType tmp = new DoubleType();
 
 	@Override
-	public O compute(final I input, O output){
-				double xt = input.getRealDouble();
-if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException("arcsec(x) : x out of range"); else if (xt == -1) output.setReal(Math.PI); else if (xt == 1) output.setReal(0); else {
-    tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-    asin.compute(tmp, angle);
-    double value = angle.getRealDouble();
-    if (xt < -1) value += Math.PI;
-    output.setReal(value);
-}
-								return output;
-			}
+	public O compute(final I input, final O output) {
+		final double xt = input.getRealDouble();
+		if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
+			"arcsec(x) : x out of range");
+		else if (xt == -1) output.setReal(Math.PI);
+		else if (xt == 1) output.setReal(0);
+		else {
+			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
+			asin.compute(tmp, angle);
+			double value = angle.getRealDouble();
+			if (xt < -1) value += Math.PI;
+			output.setReal(value);
+		}
+		return output;
+	}
 }

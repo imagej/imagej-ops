@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,39 +28,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to the division of the real component of an input real number by a constant value.
+ * Sets the real component of an output real number to the division of the real
+ * component of an input real number by a constant value.
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
 @Plugin(type = Op.class, name = MathOps.Divide.NAME)
-public class RealDivide<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.Divide
+public class RealDivide<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.Divide
 {
+
 	@Parameter
 	private double constant;
 	@Parameter
 	private double dbzVal;
 
 	@Override
-	public O compute(final I input, O output){
-				if (constant == 0) {
-	output.setReal(dbzVal);
-} else {
-	output.setReal( input.getRealDouble() / constant );
-}
-								return output;
-			}
+	public O compute(final I input, final O output) {
+		if (constant == 0) {
+			output.setReal(dbzVal);
+		}
+		else {
+			output.setReal(input.getRealDouble() / constant);
+		}
+		return output;
+	}
 }

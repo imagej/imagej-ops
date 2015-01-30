@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,20 +28,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to the real component of an input real number unless it exceeds a maximum value. If it exceeds the maximum value then it sets the output real component to that maximum value.
+ * Sets the real component of an output real number to the real component of an
+ * input real number unless it exceeds a maximum value. If it exceeds the
+ * maximum value then it sets the output real component to that maximum value.
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
@@ -50,13 +51,15 @@ import org.scijava.plugin.Plugin;
 public class RealMaxConstant<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStrictFunction<I, O> implements MathOps.MaxConstant
 {
+
 	@Parameter
 	private double constant;
 
 	@Override
-	public O compute(final I input, O output){
-				double value = input.getRealDouble();
-if (value < constant) output.setReal(value); else output.setReal(constant);
-								return output;
-			}
+	public O compute(final I input, final O output) {
+		final double value = input.getRealDouble();
+		if (value < constant) output.setReal(value);
+		else output.setReal(constant);
+		return output;
+	}
 }

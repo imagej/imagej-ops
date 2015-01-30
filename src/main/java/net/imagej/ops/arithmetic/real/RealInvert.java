@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,35 +28,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to the inversion of the real component of an input real number about a range.
+ * Sets the real component of an output real number to the inversion of the real
+ * component of an input real number about a range.
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
 @Plugin(type = Op.class, name = MathOps.Invert.NAME)
-public class RealInvert<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.Invert
+public class RealInvert<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.Invert
 {
+
 	@Parameter
 	private double specifiedMin;
 	@Parameter
 	private double specifiedMax;
 
 	@Override
-	public O compute(final I input, O output){
-						output.setReal(specifiedMax - (input.getRealDouble() - specifiedMin));
-						return output;
-			}
+	public O compute(final I input, final O output) {
+		output.setReal(specifiedMax - (input.getRealDouble() - specifiedMin));
+		return output;
+	}
 }

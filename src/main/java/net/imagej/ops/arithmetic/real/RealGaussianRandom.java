@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,21 +28,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
+
+import java.util.Random;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
-import java.util.Random;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to a random value using a gaussian distribution. The input value is considered the standard deviation of the desired distribution and must be positive. The output value has mean value 0.
+ * Sets the real component of an output real number to a random value using a
+ * gaussian distribution. The input value is considered the standard deviation
+ * of the desired distribution and must be positive. The output value has mean
+ * value 0.
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
@@ -51,12 +54,13 @@ import org.scijava.plugin.Plugin;
 public class RealGaussianRandom<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStrictFunction<I, O> implements MathOps.GaussianRandom
 {
+
 	@Parameter
-	private Random rng= new Random();
+	private final Random rng = new Random();
 
 	@Override
-	public O compute(final I input, O output){
-						output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
-						return output;
-			}
+	public O compute(final I input, final O output) {
+		output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
+		return output;
+	}
 }

@@ -1,11 +1,10 @@
 
-
 /*
  * #%L
- * ImageJ OPS: a framework for reusable algorithms.
+ * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,21 +28,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.arithmetic.real;
+
+import java.util.Random;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-
 import net.imglib2.type.numeric.RealType;
-import java.util.Random;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
- * Sets the real component of an output real number to a random value between 0 and (input real number).
+ * Sets the real component of an output real number to a random value between 0
+ * and (input real number).
+ * 
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
@@ -51,12 +52,14 @@ import org.scijava.plugin.Plugin;
 public class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStrictFunction<I, O> implements MathOps.UniformRandom
 {
+
 	@Parameter
-	private Random rng= new Random();
+	private final Random rng = new Random();
 
 	@Override
-	public O compute(final I input, O output){
-				double r = rng.nextDouble();output.setReal( r * input.getRealDouble() );
-								return output;
-			}
+	public O compute(final I input, final O output) {
+		final double r = rng.nextDouble();
+		output.setReal(r * input.getRealDouble());
+		return output;
+	}
 }
