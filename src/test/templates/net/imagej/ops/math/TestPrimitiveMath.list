@@ -1,0 +1,103 @@
+# Unit tests for the unary and binary arithmetic ops with primitive args.
+
+[TestPrimitiveMath.java]
+types = ```
+[
+	D: [name: "Double",  primitive: "double", delta: "0.0"],
+	F: [name: "Float",   primitive: "float",  delta: "0f"],
+	I: [name: "Integer", primitive: "int"],
+	L: [name: "Long",    primitive: "long"]
+]
+```
+tests = ```
+[
+	[op: "Add",                code: "D", result: "3.0",                   args: "1.0, 2.0"],
+	[op: "Add",                code: "F", result: "8f",                    args: "3f, 5f"],
+	[op: "Add",                code: "I", result: "-7",                    args: "11, -18"],
+	[op: "Add",                code: "L", result: "1111111111111111110L",  args: "123456789987654321L, 987654321123456789L"],
+
+	[op: "Subtract",           code: "D", result: "-1.0",                  args: "1.0, 2.0"],
+	[op: "Subtract",           code: "F", result: "2f",                    args: "5f, 3f"],
+	[op: "Subtract",           code: "I", result: "31",                    args: "12, -19"],
+	[op: "Subtract",           code: "L", result: "864197531135802468L",   args: "987654321123456789L, 123456789987654321L"],
+
+	[op: "Multiply",           code: "D", result: "8.4",                   args: "2.4, 3.5"],
+	[op: "Multiply",           code: "F", result: "15.84f",                args: "4.4f, 3.6f"],
+	[op: "Multiply",           code: "I", result: "-6",                    args: "2, -3"],
+	[op: "Multiply",           code: "L", result: "8747884673140948462L",  args: "1234567887654321L, 8765432112345678L"],
+
+	[op: "Divide",             code: "D", result: "2.0e11",                args: "2.2e34, 1.1e23"],
+	[op: "Divide",             code: "F", result: "1.375f",                args: "4.4f, 3.2f"],
+	[op: "Divide",             code: "I", result: "3",                     args: "11, 3"],
+	[op: "Divide",             code: "L", result: "80000L",                args: "987654321123456789L, 12345677654321L"],
+
+	[op: "Remainder",          code: "D", result: "5.914556415807146e120", args: "2.2e234, 1.1e123"],
+	[op: "Remainder",          code: "F", result: "2.5f",                  args: "9.3f, 3.4f"],
+	[op: "Remainder",          code: "I", result: "2",                     args: "11, 3"],
+	[op: "Remainder",          code: "L", result: "108777776789L",         args: "987654321123456789L, 12345677654321L"],
+
+	[op: "And",                code: "I", result: "0xcaacbaae",            args: "0xcafebabe, 0xdeadbeef"],
+	[op: "And",                code: "L", result: "0x9eadbabecaac8aeeL",   args: "0xdeadbabecafebeefL, 0xbeefbabedeadcafeL"],
+
+	[op: "Or",                 code: "I", result: "0xdeffbeff",            args: "0xcafebabe, 0xdeadbeef"],
+	[op: "Or",                 code: "L", result: "0xfeefbabedefffeffL",   args: "0xdeadbabecafebeefL, 0xbeefbabedeadcafeL"],
+
+	[op: "Xor",                code: "I", result: "0x14530451",            args: "0xcafebabe, 0xdeadbeef"],
+	[op: "Xor",                code: "L", result: "0x6042000014537411L",   args: "0xdeadbabecafebeefL, 0xbeefbabedeadcafeL"],
+	[op: "LeftShift",          code: "I", result: "0x5d5f0000",            args: "0xcafebabe, 15"],
+	[op: "LeftShift",          code: "L", result: "0x6f56e57f00000000L",   args: "0xbeefbabedeadcafeL, 31"],
+
+	[op: "RightShift",         code: "I", result: "0xffff95fd",            args: "0xcafebabe, 15"],
+	[op: "RightShift",         code: "L", result: "0xffffffff7ddf757dL",   args: "0xbeefbabedeadcafeL, 31"],
+
+	[op: "UnsignedRightShift", code: "I", result: "0x195fd",               args: "0xcafebabe, 15"],
+	[op: "UnsignedRightShift", code: "L", result: "0x17ddf757dL",          args: "0xbeefbabedeadcafeL, 31"],
+
+	[op: "MaxConstant",        code: "D", result: "1.6",                   args: "1.6, 1.55"],
+	[op: "MaxConstant",        code: "F", result: "-3.2f",                 args: "-4.8f, -3.2f"],
+	[op: "MaxConstant",        code: "I", result: "8",                     args: "3, 8"],
+	[op: "MaxConstant",        code: "L", result: "987654321123456789L",   args: "123456789987654321L, 987654321123456789L"],
+
+	[op: "MinConstant",        code: "D", result: "1.55",                  args: "1.6, 1.55"],
+	[op: "MinConstant",        code: "F", result: "-4.8f",                 args: "-4.8f, -3.2f"],
+	[op: "MinConstant",        code: "I", result: "11",                    args: "11, 571"],
+	[op: "MinConstant",        code: "L", result: "123456789987654321L",   args: "123456789987654321L, 987654321123456789L"],
+
+	[op: "PowerConstant",      code: "D", result: "8.0",                   args: "2.0, 3.0"],
+
+	[op: "Negate",             code: "D", result: "-3.0",                  args: "3.0"],
+	[op: "Negate",             code: "F", result: "3f",                    args: "-3f"],
+	[op: "Negate",             code: "I", result: "-3",                    args: "3"],
+	[op: "Negate",             code: "L", result: "123456789987654321L",   args: "-123456789987654321L"],
+
+	[op: "Abs",                code: "D", result: "2.0",                   args: "-2.0"],
+	[op: "Abs",                code: "F", result: "2f",                    args: "-2f"],
+	[op: "Abs",                code: "I", result: "2",                     args: "-2"],
+	[op: "Abs",                code: "L", result: "123456789987654321L",   args: "-123456789987654321L"],
+
+	[op: "Arccos",             code: "D", result: "0.6599873293874984",    args: "0.79"],
+	[op: "Arcsin",             code: "D", result: "0.9108089974073983",    args: "0.79"],
+	[op: "Arctan",             code: "D", result: "0.6686135679278209",    args: "0.79"],
+	[op: "Ceil",               code: "D", result: "1.0",                   args: "0.79"],
+	[op: "Cos",                code: "D", result: "0.7038453156522361",    args: "0.79"],
+	[op: "Cosh",               code: "D", result: "1.3286206107691463",    args: "0.79"],
+	[op: "CubeRoot",           code: "D", result: "0.9244335465376482",    args: "0.79"],
+	[op: "Exp",                code: "D", result: "2.203396426255937",     args: "0.79"],
+	[op: "Floor",              code: "D", result: "0.0",                   args: "0.79"],
+	[op: "Log",                code: "D", result: "-0.23572233352106983",  args: "0.79"],
+	[op: "Log10",              code: "D", result: "-0.10237290870955855",  args: "0.79"],
+	[op: "LogOnePlusX",        code: "D", result: "0.5822156198526637",    args: "0.79"],
+
+	[op: "Round",              code: "D", result: "1.0",                   args: "0.79"],
+	[op: "Round",              code: "F", result: "2f",                    args: "1.57f"],
+
+	[op: "Signum",             code: "D", result: "1.0",                   args: "0.79"],
+	[op: "Signum",             code: "F", result: "-1f",                   args: "-4.56f"],
+
+	[op: "Sin",                code: "D", result: "0.7103532724176078",    args: "0.79"],
+	[op: "Sinh",               code: "D", result: "0.8747758154867904",    args: "0.79"],
+	[op: "Sqrt",               code: "D", result: "0.8888194417315589",    args: "0.79"],
+	[op: "Tan",                code: "D", result: "1.0092462883827549",    args: "0.79"],
+	[op: "Tanh",               code: "D", result: "0.6584090359552511",    args: "0.79"]
+]
+```
