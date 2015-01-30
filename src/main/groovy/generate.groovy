@@ -164,8 +164,6 @@ def translate(templateSubdirectory, templateFile, translationsFile) {
 			value = builder.toString();
 		}
 
-		//For debugging: System.out.println("<" + key + ">: " + parseValue(value).toString());
-
 		context.put(key, parseValue(sh, translationsFile, key, value));
 	}
 	reader.close();
