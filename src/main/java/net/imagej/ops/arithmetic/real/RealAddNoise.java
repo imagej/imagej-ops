@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -28,67 +29,55 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.arithmetic.real;
 
+import java.util.Random;
+
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Static utility class containing built-in op interfaces of the
-#if ($namespace)
-#set ($prefix = "${namespace}.")
- * $namespace namespace.
-#else
-#set ($prefix = "")
- * global namespace.
-#end
- * <p>
- * These interfaces are intended to mark all ops using a particular name,
- * regardless of their exact functionality. For example, all ops called
- * "${ops.get(0).name}" would be marked by implementing the
- * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
- * </p>
- * <pre>
- * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
- * </pre>
- *
-#foreach ($author in $authors)
- * @author $author
-#end
+ * Sets the real component of an output real number to the addition of the real
+ * component of an input real number with an amount of Gaussian noise.
+ * 
+ * @author Barry DeZonia
+ * @author Jonathan Hale
  */
-public final class $className {
+@Plugin(type = Op.class, name = MathOps.AddNoise.NAME)
+public class RealAddNoise<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.AddNoise
+{
 
-	private $className() {
-		// NB: Prevent instantiation of utility class.
+	@Parameter
+	private double rangeMin;
+	@Parameter
+	private double rangeMax;
+	@Parameter
+	private double rangeStdDev;
+	@Parameter
+	private Random rng;
+
+	@Override
+	public O compute(final I input, final O output) {
+		if (rng == null) {
+			rng = new Random(System.currentTimeMillis());
+		}
+		int i = 0;
+		do {
+			final double newVal =
+				input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
+			if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
+				output.setReal(newVal);
+				return output;
+			}
+			if (i++ > 100) throw new IllegalArgumentException(
+				"noise function failing to terminate. probably misconfigured.");
+		}
+		while (true);
 	}
-#foreach ($op in $ops)
-
-	/**
-	 * Base interface for "$op.name" operations.
-	 * <p>
-	 * Implementing classes should be annotated with:
-	 * </p>
-	 *
-	 * <pre>
-#if ($op.aliases)
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
-#else
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME)
-#end
-	 * </pre>
-	 */
-	public interface $op.iface extends Op {
-		String NAME = "$prefix$op.name";
-#if ($op.aliases)
-		String ALIASES = "##
-#set ($first = true)
-#foreach ($alias in $op.aliases)
-#if ($first)#set ($first = false)#else, #end
-$prefix$alias##
-#end
-";
-#end
-	}
-#end
-
 }

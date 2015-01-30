@@ -41,7 +41,16 @@ import java.io.IOException;
 import org.junit.Test;
 import org.scijava.util.ClassUtils;
 
+/**
+ * Tests that the Groovy-driven template generator works as expected.
+ *
+ * @author Johannes Schindelin
+ * @author Jonathan Hale (University of Konstanz)
+ * @author Curtis Rueden
+ */
 public class TemplateTest {
+
+	/** Tests that generation works for scalars, lists and maps. */
 	@Test
 	public void testTemplate() throws IOException {
 		final String prefix = ClassUtils.getLocation(getClass()).getFile();
@@ -65,4 +74,29 @@ public class TemplateTest {
 			reader.close();
 		}
 	}
+
+	/** Tests that automagical type parsing works as intended. */
+	@Test
+	public void testTypeDetection() throws IOException {
+		final String prefix = ClassUtils.getLocation(getClass()).getFile();
+		final File testFile = new File(prefix
+				+ "/../generated-test-sources/from-template/TestTypes.txt");
+		final FileReader fileReader = new FileReader(testFile);
+		final BufferedReader reader = new BufferedReader(fileReader);
+		try {
+			int i = 0;
+			while (true) {
+				i++;
+				final String line = reader.readLine();
+				if (line == null) break;
+				final String[] tokens = line.split("\t");
+				assertEquals(2, tokens.length);
+				assertEquals("Failure on line " + i + ":", tokens[0], tokens[1]);
+			}
+		}
+		finally {
+			reader.close();
+		}
+	}
+
 }

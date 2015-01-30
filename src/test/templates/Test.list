@@ -1,9 +1,10 @@
 [TestTemplate.txt]
-name = Pinky
+name = "Pinky"
 multiLine = ```
+'''\
 Ten weary, footsore travelers,
 all in a woeful plight,
 sought shelter in a way-side inn
-one dark and rainy night
+one dark and rainy night'''
 ```
-mapList = [{name:alice, age:123}, { name : bob, age:1.2}, {name : "charly"}]
+mapList = [[name:"alice", age:123], [ name : "bob", age:1.2], [name : "charly"]]

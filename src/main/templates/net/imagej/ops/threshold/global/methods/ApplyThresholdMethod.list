@@ -1,48 +1,47 @@
 [ApplyHuangThreshold.java]
-name=Huang
+name = "Huang"
 
 [ApplyIntermodesThreshold.java]
-name=Intermodes
+name = "Intermodes"
 
 [ApplyIsoDataThreshold.java]
-name=IsoData
+name = "IsoData"
 
 [ApplyLiThreshold.java]
-name=Li
+name = "Li"
 
 [ApplyMaxEntropyThreshold.java]
-name=MaxEntropy
+name = "MaxEntropy"
 
 [ApplyMaxLikelihoodThreshold.java]
-name=MaxLikelihood
+name = "MaxLikelihood"
 
 [ApplyMeanThreshold.java]
-name=Mean
+name = "Mean"
 
 [ApplyMinErrorThreshold.java]
-name=MinError
+name = "MinError"
 
 [ApplyMinimumThreshold.java]
-name=Minimum
+name = "Minimum"
 
 [ApplyMomentsThreshold.java]
-name=Moments
+name = "Moments"
 
 [ApplyOtsuThreshold.java]
-name=Otsu
+name = "Otsu"
 
 [ApplyPercentileThreshold.java]
-name=Percentile
+name = "Percentile"
 
 [ApplyRenyiEntropyThreshold.java]
-name=RenyiEntropy
+name = "RenyiEntropy"
 
 [ApplyShanbhagThreshold.java]
-name=Shanbhag
+name = "Shanbhag"
 
 [ApplyTriangleThreshold.java]
-name=Triangle
+name = "Triangle"
 
 [ApplyYenThreshold.java]
-name=Yen
-
+name = "Yen"

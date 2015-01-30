@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -28,67 +29,38 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.arithmetic.real;
 
+import java.util.Random;
+
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Static utility class containing built-in op interfaces of the
-#if ($namespace)
-#set ($prefix = "${namespace}.")
- * $namespace namespace.
-#else
-#set ($prefix = "")
- * global namespace.
-#end
- * <p>
- * These interfaces are intended to mark all ops using a particular name,
- * regardless of their exact functionality. For example, all ops called
- * "${ops.get(0).name}" would be marked by implementing the
- * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
- * </p>
- * <pre>
- * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
- * </pre>
- *
-#foreach ($author in $authors)
- * @author $author
-#end
+ * Sets the real component of an output real number to a random value using a
+ * gaussian distribution. The input value is considered the standard deviation
+ * of the desired distribution and must be positive. The output value has mean
+ * value 0.
+ * 
+ * @author Barry DeZonia
+ * @author Jonathan Hale
  */
-public final class $className {
+@Plugin(type = Op.class, name = MathOps.GaussianRandom.NAME)
+public class RealGaussianRandom<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStrictFunction<I, O> implements MathOps.GaussianRandom
+{
 
-	private $className() {
-		// NB: Prevent instantiation of utility class.
+	@Parameter
+	private final Random rng = new Random();
+
+	@Override
+	public O compute(final I input, final O output) {
+		output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
+		return output;
 	}
-#foreach ($op in $ops)
-
-	/**
-	 * Base interface for "$op.name" operations.
-	 * <p>
-	 * Implementing classes should be annotated with:
-	 * </p>
-	 *
-	 * <pre>
-#if ($op.aliases)
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
-#else
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME)
-#end
-	 * </pre>
-	 */
-	public interface $op.iface extends Op {
-		String NAME = "$prefix$op.name";
-#if ($op.aliases)
-		String ALIASES = "##
-#set ($first = true)
-#foreach ($alias in $op.aliases)
-#if ($first)#set ($first = false)#else, #end
-$prefix$alias##
-#end
-";
-#end
-	}
-#end
-
 }

@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -28,67 +29,48 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.arithmetic.real;
 
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Static utility class containing built-in op interfaces of the
-#if ($namespace)
-#set ($prefix = "${namespace}.")
- * $namespace namespace.
-#else
-#set ($prefix = "")
- * global namespace.
-#end
- * <p>
- * These interfaces are intended to mark all ops using a particular name,
- * regardless of their exact functionality. For example, all ops called
- * "${ops.get(0).name}" would be marked by implementing the
- * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
- * </p>
- * <pre>
- * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
- * </pre>
- *
-#foreach ($author in $authors)
- * @author $author
-#end
+ * Sets the real component of an output real number to the inverse cosecant of
+ * the real component of an input real number.
+ * 
+ * @author Barry DeZonia
+ * @author Jonathan Hale
  */
-public final class $className {
+@Plugin(type = Op.class, name = MathOps.Arccsc.NAME)
+public class RealArccsc<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<I, O> implements MathOps.Arccsc
+{
 
-	private $className() {
-		// NB: Prevent instantiation of utility class.
+	private final static RealArccos<DoubleType, DoubleType> acos =
+		new RealArccos<DoubleType, DoubleType>();
+	@Parameter
+	private final DoubleType angle = new DoubleType();
+	@Parameter
+	private final DoubleType tmp = new DoubleType();
+
+	@Override
+	public O compute(final I input, final O output) {
+		final double xt = input.getRealDouble();
+		if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
+			"arccsc(x) : x out of range");
+		else if (xt == -1) output.setReal(-Math.PI / 2);
+		else if (xt == 1) output.setReal(Math.PI / 2);
+		else {
+			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
+			acos.compute(tmp, angle);
+			output.setReal(angle.getRealDouble());
+		}
+		return output;
 	}
-#foreach ($op in $ops)
-
-	/**
-	 * Base interface for "$op.name" operations.
-	 * <p>
-	 * Implementing classes should be annotated with:
-	 * </p>
-	 *
-	 * <pre>
-#if ($op.aliases)
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
-#else
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME)
-#end
-	 * </pre>
-	 */
-	public interface $op.iface extends Op {
-		String NAME = "$prefix$op.name";
-#if ($op.aliases)
-		String ALIASES = "##
-#set ($first = true)
-#foreach ($alias in $op.aliases)
-#if ($first)#set ($first = false)#else, #end
-$prefix$alias##
-#end
-";
-#end
-	}
-#end
-
 }

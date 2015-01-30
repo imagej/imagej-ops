@@ -69,9 +69,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	@Parameter 
 	protected int maxIterations;
 	
-	/**
-	 * 
-	 */
 	@Parameter
 	protected Interval imgConvolutionInterval;
 	
@@ -147,21 +144,16 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	}
 
 	void performIterations(int maxIterations) {
-
 		for (int i = 0; i < maxIterations; i++) {
 			performIteration();
 			createReblurred();
-			
-			System.out.println("iterations: "+i);
 		}
-
 	}
 	
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
 		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null,
 				fftInput, fftKernel, reblurred, true, false);
-		
 	}
 
 	abstract protected void performIteration();
