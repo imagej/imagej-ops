@@ -59,7 +59,7 @@ def processTemplate(engine, context, templateFile, outFilename) {
 	out.close();
 }
 
-/* Parses a string to a scalar, list or map. */
+/* Evaluates a string using Groovy. */
 def parseValue(sh, translationsFile, key, expression) {
 	try {
 		return sh.evaluate(expression);
