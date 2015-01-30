@@ -1,13 +1,5 @@
-#**
 
-	Template for generation RealType implementations of arithmetic ops interfaces
 
-	@author Jonathan Hale
-
-*#
-#** set default values *#
-#foreach ($member in $members)#if (!$member.type)$!member.put("type","double")#end#end
-#if (!$authors)#set($authors = ["Barry DeZonia", "Jonathan Hale"])#end
 /*
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
@@ -44,45 +36,26 @@ import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 
 import net.imglib2.type.numeric.RealType;
-#foreach ($imp in $imports)
-import $imp;
-#end
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 
 /**
-#foreach ($line in $javadoc.split('\n'))
- * $line
-#end
-#foreach ($author in $authors)
- * @author $author
-#end
+ * Sets the real component of an output real number to the addition of the real component of an input real number with a constant value.
+ * @author Barry DeZonia
+ * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.${interface}.NAME)
-public class Real$interface<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.$interface
+@Plugin(type = Op.class, name = MathOps.Add.NAME)
+public class RealAdd<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStrictFunction<I, O> implements MathOps.Add
 {
-#foreach ($member in $members)
-#if (!$member.isEmpty())
-#if (!$member.modifiers.equals("final static"))
 	@Parameter
-#end
-	private #if ($member.modifiers)${member.modifiers} #end${member.type} ${member.name}#if ($member.init)= ${member.init}#end;
-#end
-#end
+	private double constant;
 
 	@Override
 	public O compute(final I input, O output){
-		#if ($compute_body)
-		$compute_body
-		#end
-		#if ($compute_expr)
-		output.setReal(${compute_expr});
-		#end
-		#if (!$omit_return)
-		return output;
-		#end
-	}
+						output.setReal(input.getRealDouble() + constant);
+						return output;
+			}
 }
