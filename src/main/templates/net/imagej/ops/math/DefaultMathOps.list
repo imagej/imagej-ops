@@ -1,0 +1,47 @@
+[DefaultMathOps.java]
+types = ```
+[
+  {name: Double,  primitive: double, priority: 0.6},
+  {name: Long,    primitive: long,   priority: 0.5},
+  {name: Float,   primitive: float,  priority: 0.4},
+  {name: Integer, primitive: int,    priority: 0.3},
+  {name: Short,   primitive: short,  priority: 0.2},
+  {name: Byte,    primitive: byte,   priority: 0.1}
+]
+```
+binaryops = ```
+[
+  {name: Add,         operator: +},
+  {name: AndConstant, operator: &, nofloat: true},
+  {name: Divide,      operator: /},
+  {name: Multiply,    operator: *},
+  {name: OrConstant,  operator: |, nofloat: true},
+  {name: Subtract,    operator: -},
+  {name: XorConstant, operator: ^, nofloat: true},
+  {name: MaxConstant,   func: Math.max},
+  {name: MinConstant,   func: Math.min},
+  {name: PowerConstant, func: Math.pow}
+]
+```
+unaryops = ```
+[
+  {name: Negate, operator: -},
+  {name: Abs,         func: Math.abs},
+  {name: Arccos,      func: Math.acos},
+  {name: Arcsin,      func: Math.asin},
+  {name: Arctan,      func: Math.atan},
+  {name: Ceil,        func: Math.ceil},
+  {name: Cos,         func: Math.cos},
+  {name: CubeRoot,    func: Math.cbrt},
+  {name: Exp,         func: Math.exp},
+  {name: Floor,       func: Math.floor},
+  {name: Log,         func: Math.log},
+  {name: Log10,       func: Math.log10},
+  {name: LogOnePlusX, func: Math.log1p},
+  {name: Round,       func: Math.round},
+  {name: Signum,      func: Math.signum},
+  {name: Sin,         func: Math.sin},
+  {name: Sqrt,        func: Math.sqrt},
+  {name: Tan,         func: Math.tan}
+]
+```

@@ -31,10 +31,14 @@
 templateDirectory = project.properties['templateDirectory']
 outputDirectory = project.properties['outputDirectory']
 
+knownFiles = new java.util.HashSet();
+
 /* Gets the last modified timestap for the given file. */
 def timestamp(dir, file) {
 	if (file == null) return Long.MAX_VALUE;
-	return new java.io.File(dir, file).lastModified();
+	file = new java.io.File(dir, file);
+	knownFiles.add(file);
+	return file.lastModified();
 }
 
 /* Processes a template using Apache Velocity. */
@@ -43,6 +47,7 @@ def processTemplate(engine, context, templateFile, outFilename) {
 
 	// create output directory if it does not already exist
 	outFile = new java.io.File(outputDirectory, outFilename);
+	knownFiles.add(outFile);
 	if (outFile.getParentFile() != null) outFile.getParentFile().mkdirs();
 
 	// apply the template and write out the result
@@ -188,8 +193,22 @@ def translateDirectory(templateSubdirectory) {
 	}
 }
 
+def cleanStaleFiles(directory) {
+	list = directory == null ? null : directory.listFiles();
+	if (list == null) return;
+
+	for (File file : list) {
+		if (file.isDirectory()) {
+			cleanStaleFiles(file);
+		} else if (file.isFile() && !knownFiles.contains(file)) {
+			file.delete();
+		}
+	}
+}
+
 try {
 	translateDirectory(templateDirectory);
+	cleanStaleFiles(new File(outputDirectory));
 }
 catch (Throwable t) {
 	t.printStackTrace(System.err);
