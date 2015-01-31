@@ -46,6 +46,27 @@ import org.scijava.script.ScriptService;
  */
 public class OOps {
 
+	private static OpService op;
+
+	private synchronized static OpService op() {
+		if (op == null) {
+			op = new Context(OpService.class, ScriptService.class).getService(OpService.class);
+		}
+		return op;
+	}
+
+	/**
+	 * Parse and evaluate the given expression using an implicit {@link OpService}.
+	 * 
+	 * @param expression the expression to evaluate
+	 * @param args the variables on which to evaluate the expression
+	 * @return the result of the evaluated expression
+	 */
+	public static Object eval(final String expression, final Object... args)
+	{
+		return eval(op(), expression, args);
+	}
+
 	/**
 	 * Parse and evaluate the given expression using the specified {@link OpService}.
 	 * 
