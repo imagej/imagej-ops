@@ -71,8 +71,8 @@ public abstract class AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
 	}
 
 	@Override
-	public Map<OpRef<? extends Op>, Op> compute(final I random) {
-		setInput(random);
+	public Map<OpRef<? extends Op>, Op> compute(final I input) {
+		setInput(input);
 		run();
 		return getOutput();
 	}
