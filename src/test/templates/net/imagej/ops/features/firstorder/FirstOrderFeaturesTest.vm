@@ -61,7 +61,7 @@ public class FirstOrderFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void ${op.iface}FeatureTest() {
 
-		final ResolvedOp<Img<UnsignedByteType>, DoubleType> resolved = fs.resolveAndRun(DoubleType.class, empty, FirstOrderFeatures.${op.iface}Feature.class);
+		final ResolvedOp<Img<UnsignedByteType>, DoubleType> resolved = fs.resolve(DoubleType.class, empty, FirstOrderFeatures.${op.iface}Feature.class);
 		
 		assertEquals(${op.empty}, resolved.compute(empty).get(),
 				SMALL_DELTA);

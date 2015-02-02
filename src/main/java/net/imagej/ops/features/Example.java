@@ -39,7 +39,7 @@ public class Example {
 		 * Call a single feature.
 		 */
 		// 1. Create ResolvedOp (my naming sucks, ideas welcome)
-		ResolvedOp<Img<FloatType>, DoubleType> resolved = ors.resolveAndRun(
+		ResolvedOp<Img<FloatType>, DoubleType> resolved = ors.resolve(
 				DoubleType.class, rndImgA, MeanFeature.class);
 
 		// 2. Calculate and print results
