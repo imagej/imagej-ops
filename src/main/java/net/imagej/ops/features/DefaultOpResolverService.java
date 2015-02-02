@@ -41,28 +41,28 @@ public class DefaultOpResolverService extends AbstractService implements
 	private OpMatchingService matcher;
 
 	@Override
-	public <I> ResolvedOpSet<I> build(I input, OpRef<?>... refs) {
+	public <I> ResolvedOpSet<I> resolve(I input, OpRef<?>... refs) {
 		Set<OpRef<?>> pool = new HashSet<OpRef<?>>();
 		pool.addAll(Arrays.asList(refs));
-		return build(input, pool);
+		return resolve(input, pool);
 	}
 
 	@Override
-	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
+	public <I, OP extends Op> ResolvedOpSet<I> resolve(final I input,
 			final OpRef<OP> opRef) {
 		final HashSet<OpRef<?>> set = new HashSet<OpRef<?>>();
 		set.add(opRef);
-		return build(input, set);
+		return resolve(input, set);
 	}
 
 	@Override
-	public <I, OP extends Op> ResolvedOpSet<I> build(final I input,
+	public <I, OP extends Op> ResolvedOpSet<I> resolve(final I input,
 			final Class<OP> type, final Object... args) {
-		return build(input, new OpRef<OP>(type, args));
+		return resolve(input, new OpRef<OP>(type, args));
 	}
 
 	@Override
-	public <I> ResolvedOpSet<I> build(final I inputType,
+	public <I> ResolvedOpSet<I> resolve(final I inputType,
 			final Set<OpRef<?>> opPool) {
 
 		@SuppressWarnings("unchecked")
@@ -93,16 +93,16 @@ public class DefaultOpResolverService extends AbstractService implements
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public <I, O> ResolvedOp<I, O> resolveAndRun(final Class<O> outType,
+	public <I, O> ResolvedOp<I, O> resolve(final Class<O> outType,
 			final I input, final Class<? extends OutputOp> o, Object... args) {
-		return this.<I, O> resolveAndRun(outType, input, new OpRef(o, args));
+		return this.<I, O> resolve(outType, input, new OpRef(o, args));
 	}
 
 	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public <I, O> ResolvedOp<I, O> resolveAndRun(final Class<O> outType,
+	public <I, O> ResolvedOp<I, O> resolve(final Class<O> outType,
 			final I input, final OpRef<? extends OutputOp> ref) {
-		return new ResolvedOp<I, O>(build(input, ref), ref);
+		return new ResolvedOp<I, O>(resolve(input, ref), ref);
 	}
 
 	/* Create one update listener */

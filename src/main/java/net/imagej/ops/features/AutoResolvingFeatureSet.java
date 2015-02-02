@@ -114,7 +114,7 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 		if (modulSet == null) {
 			names = new HashMap<OpRef<?>, String>();
 
-			modulSet = oobs.build(getInput(), pool);
+			modulSet = oobs.resolve(getInput(), pool);
 
 			for (final OpRef<?> ref : outputOps) {
 				names.put(ref, ps.getPlugin(modulSet.get().get(ref).getClass())
