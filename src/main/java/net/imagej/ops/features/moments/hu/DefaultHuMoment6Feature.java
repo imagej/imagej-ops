@@ -1,6 +1,7 @@
 package net.imagej.ops.features.moments.hu;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment2Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.HuMoment6Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment02Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.NormalizedCentralMoment03Feature;
