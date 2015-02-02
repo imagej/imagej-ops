@@ -56,7 +56,7 @@ public class TestPrimitiveMath extends AbstractOpTest {
 #if ($type.delta)
 		assertEquals($test.result, value, $type.delta);
 #else
-		assertEquals($test.result, result);
+		assertEquals($test.result, value);
 #end
 	}
 #end
