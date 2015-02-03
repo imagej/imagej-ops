@@ -26,7 +26,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <T>
  */
-@Plugin(type = Op.class, label = "Histogram Features")
+@Plugin(type = FeatureSet.class, label = "Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
 		AbstractFeatureSet<Iterable<T>, LongType> {
 
