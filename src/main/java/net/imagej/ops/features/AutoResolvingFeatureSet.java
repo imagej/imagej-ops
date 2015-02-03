@@ -147,4 +147,12 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 
 		return features;
 	}
+
+	public Set<OpRef<?>> getOutputOps() {
+		return outputOps;
+	}
+
+	public void setOutputOps(Set<OpRef<?>> opRefs) {
+		this.outputOps = opRefs;
+	}
 }
