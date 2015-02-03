@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -53,9 +53,9 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing Zernike Moments {@link Feature}s
- * 
+ *
  * @author Andreas Graumann, University of Konstanz
- * 
+ *
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Moment Features")
@@ -72,18 +72,18 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 	@Parameter(label = "Compute Phase")
 	private boolean computePhase;
 
-	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1", initializer = "2")
-	private int orderMin;
+	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1")
+	private int orderMin = 2;
 
-	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1", initializer = "6")
-	private int orderMax;
+	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1")
+	private int orderMax = 6;
 
 	private ZernikeComputer op;
 
 	@Override
 	public boolean conforms() {
 		// something to compute?
-		if (!computeMagnitude && !computePhase) {
+		if (!this.computeMagnitude && !this.computePhase) {
 			return false;
 		}
 
@@ -98,11 +98,11 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 	@Override
 	public void run() {
 		// get ZernikeComputer
-		if (op == null) {
+		if (this.op == null) {
 			try {
-				op = ops.op(ZernikeComputer.class, getInput(), orderMin,
-						orderMax);
-			} catch (Exception e) {
+				this.op = this.ops.op(ZernikeComputer.class, getInput(),
+						this.orderMin, this.orderMax);
+			} catch (final Exception e) {
 				throw new IllegalStateException(
 						"Can not find suitable op! Error message: "
 								+ e.getMessage());
@@ -110,11 +110,13 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 		}
 
 		// run zernike computer
-		op.run();
+		this.op.run();
 
 		final Map<OpRef<?>, Op> result = new HashMap<OpRef<?>, Op>();
+
 		result.put(new OpRef<ZernikeComputer>(ZernikeComputer.class,
-				computeMagnitude, computePhase, orderMin, orderMax), op);
+				this.computeMagnitude, this.computePhase, this.orderMin,
+				this.orderMax), this.op);
 		setOutput(result);
 	}
 
@@ -123,16 +125,16 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 			final IterableInterval<T> input) {
 		compute(input);
 		final List<Pair<String, DoubleType>> res = new ArrayList<Pair<String, DoubleType>>();
-		for (ZernikeMoment moment : op.getAllZernikeMoments()) {
-			if (computeMagnitude) {
-				String featureName = "Zernike Magnitude of order "
+		for (final ZernikeMoment moment : this.op.getAllZernikeMoments()) {
+			if (this.computeMagnitude) {
+				final String featureName = "Zernike Magnitude of order "
 						+ moment.getN() + " and repitition " + moment.getM();
 				res.add(new ValuePair<String, DoubleType>(featureName,
 						new DoubleType(moment.getMagnitude())));
 			}
-			if (computePhase) {
-				String featureName = "Zernike Phase of order " + moment.getN()
-						+ " and repitition " + moment.getM();
+			if (this.computePhase) {
+				final String featureName = "Zernike Phase of order "
+						+ moment.getN() + " and repitition " + moment.getM();
 				res.add(new ValuePair<String, DoubleType>(featureName,
 						new DoubleType(moment.getPhase())));
 			}
