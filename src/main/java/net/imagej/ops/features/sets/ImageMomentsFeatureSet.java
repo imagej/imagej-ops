@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  * 
  */
-@Plugin(type = FeatureSet.class, label = "Image Moment Features")
+@Plugin(type = FeatureSet.class, label = "Image Moment Features", description = "Calculates the Image Moment Features")
 public class ImageMomentsFeatureSet<I> extends
 		AutoResolvingFeatureSet<I, DoubleType> {
 

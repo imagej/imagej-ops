@@ -55,6 +55,7 @@ import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -65,18 +66,19 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <I>
  */
-@Plugin(type = FeatureSet.class, label = "Haralick Features")
+@Plugin(type = FeatureSet.class, label = "Haralick Features", description = "Calculates the Haralick Features")
 public class HaralickFeatureSet<T> extends
 		AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 		Contingent {
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
 	private double nrGrayLevels = 8;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed", min = "1", max = "2147483647", stepSize = "1")
 	private double distance = 1;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT, label = "Matrix Orientation", choices = {
+			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
 
 	public HaralickFeatureSet() {

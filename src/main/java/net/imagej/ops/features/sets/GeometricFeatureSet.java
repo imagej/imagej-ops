@@ -66,7 +66,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  * 
  */
-@Plugin(type = FeatureSet.class, label = "Geometric Features")
+@Plugin(type = FeatureSet.class, label = "Geometric Features", description = "Calculates the xGeometric Features")
 public class GeometricFeatureSet extends
 		AutoResolvingFeatureSet<Polygon, DoubleType> {
 

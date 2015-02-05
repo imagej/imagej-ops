@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
  */
-@Plugin(type = FeatureSet.class, label = "First Order Statistics")
+@Plugin(type = FeatureSet.class, label = "First Order Statistics", description = "Calculates the First Order Statistics Features")
 public class FirstOrderStatFeatureSet<I> extends
 		AutoResolvingFeatureSet<I, DoubleType> {
 

@@ -16,6 +16,7 @@ import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -26,14 +27,14 @@ import org.scijava.plugin.Plugin;
  * 
  * @param <T>
  */
-@Plugin(type = FeatureSet.class, label = "Histogram Features")
+@Plugin(type = FeatureSet.class, label = "Histogram Features", description = "Calculates the Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
 		AbstractFeatureSet<Iterable<T>, LongType> {
 
 	@Parameter
 	private OpService ops;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT, label = "Number of Bins", description = "The number of bins of the histogram", min = "1", max = "2147483647", stepSize = "1")
 	private int numBins = 256;
 
 	private HistogramCreate<T> op;
