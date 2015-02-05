@@ -66,16 +66,16 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 	@Parameter
 	private OpService ops;
 
-	@Parameter(label = "Compute Magnitude")
-	private boolean computeMagnitude;
+	@Parameter(label = "Compute Magnitude", description = "If the Magnitude should be computed")
+	private boolean computeMagnitude = true;
 
-	@Parameter(label = "Compute Phase")
-	private boolean computePhase;
+	@Parameter(label = "Compute Phase", description = "If the Phase should be computed")
+	private boolean computePhase = true;
 
-	@Parameter(label = "Order Min", min = "1", max = "10", stepSize = "1")
+	@Parameter(label = "Order Min", description = "The minimum order", min = "1", max = "10", stepSize = "1")
 	private int orderMin = 2;
 
-	@Parameter(label = "Oder Max", min = "1", max = "10", stepSize = "1")
+	@Parameter(label = "Oder Max", description = "The maximum order", min = "1", max = "10", stepSize = "1")
 	private int orderMax = 6;
 
 	private ZernikeComputer op;
@@ -84,6 +84,10 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 	public boolean conforms() {
 		// something to compute?
 		if (!this.computeMagnitude && !this.computePhase) {
+			return false;
+		}
+
+		if (orderMax <= orderMin) {
 			return false;
 		}
 
