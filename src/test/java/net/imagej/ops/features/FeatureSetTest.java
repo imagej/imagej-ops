@@ -47,7 +47,7 @@ public class FeatureSetTest extends AbstractFeatureTest {
 
 		@SuppressWarnings("unchecked")
 		ZernikeFeatureSet<UnsignedByteType> op = ops.op(
-				ZernikeFeatureSet.class, random, true, true, 5, 5);
+				ZernikeFeatureSet.class, random, true, true, 3, 5);
 
 		eval(op.getFeatures(random));
 		eval(op.getFeatures(constant));
