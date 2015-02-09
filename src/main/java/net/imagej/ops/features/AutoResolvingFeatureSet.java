@@ -52,7 +52,7 @@ import org.scijava.plugin.PluginService;
  * @param <I>
  */
 public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
-		implements FeatureSet<I, O> {
+		implements FeatureSet<I, O>, LabeledFeatures<I,O> {
 
 	@Parameter
 	private OpResolverService oobs;
@@ -79,6 +79,14 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	 */
 	private ResolvedOpSet<I> modulSet;
 
+	/*
+	 * Map used to store OutputOps and avoid duplicate castings
+	 */
+	private Map<OpRef<?>, OutputOp<O>> outputOpMap;
+
+	/*
+	 * Keep names of ops
+	 */
 	private Map<OpRef<?>, String> names;
 
 	public AutoResolvingFeatureSet() {
@@ -108,51 +116,59 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 		pool.add(ref);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 
+		// compile
 		if (modulSet == null) {
-			names = new HashMap<OpRef<?>, String>();
-
 			modulSet = oobs.resolve(getInput(), pool);
+			outputOpMap = new HashMap<OpRef<?>, OutputOp<O>>();
 
+			names = new HashMap<OpRef<?>, String>();
+			
+			// avoid duplicate castings
 			for (final OpRef<?> ref : outputOps) {
+				outputOpMap.put(ref,
+						((OutputOp<O>) modulSet.getOutput().get(ref)));
 				names.put(ref, ps.getPlugin(modulSet.get().get(ref).getClass())
-						.getLabel());
+						.getName());
 			}
+
+			setOutput(new HashMap<OpRef<?>, O>());
+		} else {
 
 		}
 
 		modulSet.setInput(getInput());
 		modulSet.run();
 
-		final Map<OpRef<?>, Op> output = new HashMap<OpRef<?>, Op>();
-		for (OpRef<?> ref : outputOps) {
-			output.put(ref, modulSet.getOutput().get(ref));
+		getOutput().clear();
+		for (final Entry<OpRef<?>, OutputOp<O>> entry : outputOpMap.entrySet()) {
+			getOutput().put(entry.getKey(), entry.getValue().getOutput());
 		}
-
-		setOutput(output);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Pair<String, O>> getFeatures(I input) {
-		final Map<OpRef<? extends Op>, Op> map = compute(input);
+	public List<Pair<String, O>> getFeatureList(final I input) {
+		final Map<OpRef<? extends Op>, O> map = compute(input);
 		final List<Pair<String, O>> features = new ArrayList<Pair<String, O>>();
 
 		for (final Entry<OpRef<?>, String> entry : names.entrySet()) {
-			features.add(new ValuePair<String, O>(entry.getValue(),
-					((OutputOp<O>) map.get(entry.getKey())).getOutput()));
+			features.add(new ValuePair<String, O>(entry.getValue(), map
+					.get(entry.getKey())));
 		}
 
 		return features;
+	}
+
+	@Override
+	public Map<OpRef<? extends Op>, O> getFeaturesByRef(final I input) {
+		return compute(input);
 	}
 
 	public Set<OpRef<?>> getOutputOps() {
 		return outputOps;
 	}
 
-	public void setOutputOps(Set<OpRef<?>> opRefs) {
-		this.outputOps = opRefs;
-	}
 }

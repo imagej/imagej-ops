@@ -1,5 +1,7 @@
 package net.imagej.ops.features;
 
+import java.util.Map.Entry;
+
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
@@ -54,9 +56,10 @@ public class Example {
 				FirstOrderStatFeatureSet.class, rndImgA);
 
 		// access via list
-		for (final Pair<String, DoubleType> feature : set.getFeatures(rndImgA)) {
-			System.out.println("Feature: [" + feature.getA() + "] Value: ["
-					+ feature.getB().get() + "]");
+		for (final Entry<OpRef<?>, DoubleType> feature : set.compute(rndImgA)
+				.entrySet()) {
+			System.out.println("Feature: [" + feature.getKey() + "] Value: ["
+					+ feature.getValue().get() + "]");
 		}
 
 		/*
@@ -77,8 +80,8 @@ public class Example {
 		final MeanFeature<DoubleType> op = (MeanFeature<DoubleType>) ownSet
 				.compute(rndImgA).get(ref);
 
-		System.out
-				.println("My very own feature set got resolved " + op.getOutput());
+		System.out.println("My very own feature set got resolved "
+				+ op.getOutput());
 
 	}
 }
