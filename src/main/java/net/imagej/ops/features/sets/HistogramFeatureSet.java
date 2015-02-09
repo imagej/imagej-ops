@@ -10,7 +10,9 @@ import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
+import net.imagej.ops.features.LabeledFeatures;
 import net.imagej.ops.histogram.HistogramCreate;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.util.Pair;
@@ -29,7 +31,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Histogram Features", description = "Calculates the Histogram Features")
 public class HistogramFeatureSet<T extends RealType<T>> extends
-		AbstractFeatureSet<Iterable<T>, LongType> {
+		AbstractFeatureSet<Iterable<T>, Histogram1d<T>> implements
+		LabeledFeatures<Iterable<T>, LongType> {
 
 	@Parameter
 	private OpService ops;
@@ -39,29 +42,34 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 
 	private HistogramCreate<T> op;
 
+	private Map<OpRef<? extends Op>, Histogram1d<T>> output;
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void run() {
 
 		if (op == null) {
 			op = ops.op(HistogramCreate.class, getInput(), numBins);
+			output = new HashMap<OpRef<? extends Op>, Histogram1d<T>>();
+			setOutput(output);
 		}
 
 		op.run();
 		op.getOutput().countData(getInput());
 
-		final Map<OpRef<? extends Op>, Op> output = new HashMap<OpRef<? extends Op>, Op>();
+		final OpRef<HistogramCreate> ref = new OpRef<HistogramCreate>(
+				HistogramCreate.class, numBins);
 
-		output.put(new OpRef<HistogramCreate>(HistogramCreate.class, numBins),
-				op);
-
-		setOutput(output);
+		output.clear();
+		output.put(ref, op.getOutput());
 	}
 
 	@Override
-	public List<Pair<String, LongType>> getFeatures(final Iterable<T> input) {
+	public List<Pair<String, LongType>> getFeatureList(Iterable<T> input) {
 		compute(input);
+
 		final List<Pair<String, LongType>> res = new ArrayList<Pair<String, LongType>>();
+
 		int n = 0;
 		for (LongType type : op.getOutput()) {
 			res.add(new ValuePair<String, LongType>("Histogram [" + ++n + "]",
@@ -69,5 +77,11 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 		}
 
 		return res;
+	}
+
+	@Override
+	public Map<OpRef<? extends Op>, Histogram1d<T>> getFeaturesByRef(
+			Iterable<T> input) {
+		return compute(input);
 	}
 }

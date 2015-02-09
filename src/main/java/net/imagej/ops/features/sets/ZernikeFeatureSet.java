@@ -40,6 +40,7 @@ import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
 import net.imagej.ops.features.AbstractFeatureSet;
 import net.imagej.ops.features.FeatureSet;
+import net.imagej.ops.features.LabeledFeatures;
 import net.imagej.ops.features.zernike.ZernikeComputer;
 import net.imagej.ops.features.zernike.ZernikeMoment;
 import net.imglib2.IterableInterval;
@@ -60,8 +61,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Moment Features")
 public class ZernikeFeatureSet<T extends RealType<T>> extends
-		AbstractFeatureSet<IterableInterval<T>, DoubleType> implements
-		Contingent {
+		AbstractFeatureSet<IterableInterval<T>, List<DoubleType>> implements
+		Contingent, LabeledFeatures<IterableInterval<T>, DoubleType> {
 
 	@Parameter
 	private OpService ops;
@@ -111,21 +112,32 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 						"Can not find suitable op! Error message: "
 								+ e.getMessage());
 			}
+
+			setOutput(new HashMap<OpRef<? extends Op>, List<DoubleType>>());
 		}
 
 		// run zernike computer
 		this.op.run();
 
-		final Map<OpRef<?>, Op> result = new HashMap<OpRef<?>, Op>();
+		final List<DoubleType> res = new ArrayList<DoubleType>();
+		for (final ZernikeMoment moment : this.op.getAllZernikeMoments()) {
+			if (this.computeMagnitude) {
+				res.add(new DoubleType(moment.getMagnitude()));
+			}
+			if (this.computePhase) {
+				res.add(new DoubleType(moment.getPhase()));
+			}
+		}
 
-		result.put(new OpRef<ZernikeComputer>(ZernikeComputer.class,
-				this.computeMagnitude, this.computePhase, this.orderMin,
-				this.orderMax), this.op);
-		setOutput(result);
+		getOutput().clear();
+		getOutput().put(
+				new OpRef<ZernikeComputer>(ZernikeComputer.class,
+						this.computeMagnitude, this.computePhase,
+						this.orderMin, this.orderMax), res);
 	}
 
 	@Override
-	public List<Pair<String, DoubleType>> getFeatures(
+	public List<Pair<String, DoubleType>> getFeatureList(
 			final IterableInterval<T> input) {
 		compute(input);
 		final List<Pair<String, DoubleType>> res = new ArrayList<Pair<String, DoubleType>>();
@@ -145,5 +157,11 @@ public class ZernikeFeatureSet<T extends RealType<T>> extends
 		}
 
 		return res;
+	}
+
+	@Override
+	public Map<OpRef<? extends Op>, List<DoubleType>> getFeaturesByRef(
+			IterableInterval<T> input) {
+		return compute(input);
 	}
 }

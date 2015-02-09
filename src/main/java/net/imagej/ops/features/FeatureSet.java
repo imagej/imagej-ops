@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features;
 
-import java.util.List;
 import java.util.Map;
 
 import net.imagej.ops.Computer;
@@ -37,19 +36,11 @@ import net.imagej.ops.InputOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OutputOp;
-import net.imglib2.util.Pair;
 
 public interface FeatureSet<I, O> extends InputOp<I>,
-		OutputOp<Map<OpRef<? extends Op>, Op>>,
-		Computer<I, Map<OpRef<? extends Op>, Op>> {
+		OutputOp<Map<OpRef<? extends Op>, O>>,
+		Computer<I, Map<OpRef<? extends Op>, O>> {
 
-	/**
-	 * 
-	 * Get all calculated features as Pairs of 'name' and 'feature-value'
-	 * 
-	 * @param input
-	 * @return
-	 */
-	List<Pair<String, O>> getFeatures(I input);
+	Map<OpRef<? extends Op>, O> getFeaturesByRef(I input);
 
 }

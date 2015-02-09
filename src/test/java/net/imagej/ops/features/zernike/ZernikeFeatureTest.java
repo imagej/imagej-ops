@@ -57,7 +57,7 @@ public class ZernikeFeatureTest extends AbstractFeatureTest {
 		// test on ellipse
 		@SuppressWarnings("unchecked")
 		List<Pair<String, DoubleType>> res = ops.op(ZernikeFeatureSet.class,
-				ellipse, true, true, 1, 3).getFeatures(ellipse);
+				ellipse, true, true, 1, 3).getFeatureList(ellipse);
 
 		double[] matlabResultsEllipse = { 0.009, 45.0, 0.5737, 180.0, 0.1155,
 				179.905, 0.0158, 200.5937, 0.0065, 224.9683 };
@@ -77,7 +77,7 @@ public class ZernikeFeatureTest extends AbstractFeatureTest {
 		// test on rotated ellipse
 		List<Pair<String, DoubleType>> res = (List<Pair<String, DoubleType>>) ops
 				.op(ZernikeFeatureSet.class, rotatedEllipse, true, true, 1, 3)
-				.getFeatures(rotatedEllipse);
+				.getFeatureList(rotatedEllipse);
 
 		double[] matlabResultsRotated = { 0.009, 43.9237, 0.5735, 180.0,
 				0.1155, 0.0985, 0.016, 247.7494, 0.0065, 45.267 };
@@ -97,7 +97,7 @@ public class ZernikeFeatureTest extends AbstractFeatureTest {
 		// test on image with constant filling
 		List<Pair<String, DoubleType>> res = (List<Pair<String, DoubleType>>) ops
 				.op(ZernikeFeatureSet.class, constant, true, true, 1, 3)
-				.getFeatures(constant);
+				.getFeatureList(constant);
 
 		double[] matlabResultsConstant = { 0.0, 180.0, 0.002, 0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0, 0.0 };

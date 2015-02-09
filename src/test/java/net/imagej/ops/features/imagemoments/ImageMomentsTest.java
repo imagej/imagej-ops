@@ -54,7 +54,7 @@ public class ImageMomentsTest extends AbstractFeatureTest {
 	public void testMoments() {
 		
 		Map<String, Double> randomResults = featureResultsToMap(ops.op(
-				ImageMomentsFeatureSet.class, random).getFeatures(random));
+				ImageMomentsFeatureSet.class, random).getFeatureList(random));
 
 		assertEquals(Moment00Feature.NAME, 1277534.0,
 				randomResults.get("Moment00"), BIG_DELTA);
@@ -74,7 +74,7 @@ public class ImageMomentsTest extends AbstractFeatureTest {
 	public void testCentralMoments() {
 
 		Map<String, Double> randomResults = featureResultsToMap((List<Pair<String, DoubleType>>) ops
-				.op(ImageMomentsFeatureSet.class, random).getFeatures(random));
+				.op(ImageMomentsFeatureSet.class, random).getFeatureList(random));
 
 		assertEquals(CentralMoment11Feature.NAME, -5275876.956702232,
 				randomResults.get("CentralMoment11"), BIG_DELTA);
@@ -100,7 +100,7 @@ public class ImageMomentsTest extends AbstractFeatureTest {
 	public void testNormalizedCentralMoments() {
 
 		Map<String, Double> randomResults = featureResultsToMap((List<Pair<String, DoubleType>>) ops
-				.op(ImageMomentsFeatureSet.class, random).getFeatures(random));
+				.op(ImageMomentsFeatureSet.class, random).getFeatureList(random));
 
 		assertEquals(NormalizedCentralMoment11Feature.NAME,
 				-3.2325832933879204E-6,
@@ -140,7 +140,7 @@ public class ImageMomentsTest extends AbstractFeatureTest {
 	public void testHuMoments() {
 
 		Map<String, Double> randomResults = featureResultsToMap((List<Pair<String, DoubleType>>) ops
-				.op(ImageMomentsFeatureSet.class, random).getFeatures(random));
+				.op(ImageMomentsFeatureSet.class, random).getFeatureList(random));
 
 		assertEquals(HuMoment1Feature.NAME, 0.001303862018475966,
 				randomResults.get("HuMoment1"), BIG_DELTA);

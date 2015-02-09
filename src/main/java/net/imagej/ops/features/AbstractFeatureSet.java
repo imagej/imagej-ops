@@ -48,7 +48,9 @@ public abstract class AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
 	private I input;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private Map<OpRef<? extends Op>, Op> output;
+	private Map<OpRef<? extends Op>, O> output;
+
+	private boolean first = true;
 
 	@Override
 	public I getInput() {
@@ -61,19 +63,22 @@ public abstract class AbstractFeatureSet<I, O> implements FeatureSet<I, O> {
 	}
 
 	@Override
-	public Map<OpRef<? extends Op>, Op> getOutput() {
+	public Map<OpRef<? extends Op>, O> getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final Map<OpRef<? extends Op>, Op> output) {
+	public void setOutput(final Map<OpRef<? extends Op>, O> output) {
 		this.output = output;
 	}
 
 	@Override
-	public Map<OpRef<? extends Op>, Op> compute(final I input) {
-		setInput(input);
-		run();
+	public Map<OpRef<? extends Op>, O> compute(final I input) {
+		if (input != getInput() || first) {
+			setInput(input);
+			run();
+			first = false;
+		}
 		return getOutput();
 	}
 }
