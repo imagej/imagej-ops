@@ -1,0 +1,28 @@
+# Unit tests for the binary arithmetic ops with ImgLib2 RealTypes.
+
+[TestRealBinaryMath.java]
+types = ```
+[
+	"DoubleType",
+	"FloatType",
+	"IntType",
+	"UnsignedByteType",
+	"UnsignedIntType",
+	"ShortType",
+	"UnsignedShortType",
+	"Unsigned12BitType",
+	"Unsigned2BitType",
+	"Unsigned4BitType",
+	"UnboundedIntegerType",
+	"LongType"
+]
+```
+
+tests = ```
+[
+	[op: "Add",        result: "2.0"],
+	[op: "Subtract",   result: "0.0"],
+	[op: "Multiply",   result: "1.0"],
+	[op: "Divide",     result: "1.0"],
+]
+```
