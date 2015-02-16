@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -48,11 +48,11 @@ import org.scijava.plugin.PluginService;
 
 /**
  * @author Christian Dietz (University of Konstanz)
- * 
+ *
  * @param <I>
  */
 public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
-		implements FeatureSet<I, O>, LabeledFeatures<I,O> {
+		implements FeatureSet<I, O>, LabeledFeatures<I, O> {
 
 	@Parameter
 	private OpResolverService oobs;
@@ -98,22 +98,22 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	public <OP extends OutputOp> void addOutputOp(final Class<OP> op,
 			final Object... args) {
 		final OpRef<OP> opRef = new OpRef<OP>(op, args);
-		outputOps.add(opRef);
+		this.outputOps.add(opRef);
 		addHiddenOp(opRef);
 	}
 
 	public void addOutputOp(final OpRef<?> opRef) {
-		outputOps.add(opRef);
+		this.outputOps.add(opRef);
 		addHiddenOp(opRef);
 	}
 
 	public <OP extends Op> void addHiddenOp(final Class<OP> op,
 			final Object... args) {
-		pool.add(new OpRef<OP>(op, args));
+		this.pool.add(new OpRef<OP>(op, args));
 	}
 
 	public void addHiddenOp(final OpRef<?> ref) {
-		pool.add(ref);
+		this.pool.add(ref);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -121,18 +121,21 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	public void run() {
 
 		// compile
-		if (modulSet == null) {
-			modulSet = oobs.resolve(getInput(), pool);
-			outputOpMap = new HashMap<OpRef<?>, OutputOp<O>>();
+		if (this.modulSet == null) {
+			this.modulSet = this.oobs.resolve(getInput(), this.pool);
+			this.outputOpMap = new HashMap<OpRef<?>, OutputOp<O>>();
 
-			names = new HashMap<OpRef<?>, String>();
-			
+			this.names = new HashMap<OpRef<?>, String>();
+
 			// avoid duplicate castings
-			for (final OpRef<?> ref : outputOps) {
-				outputOpMap.put(ref,
-						((OutputOp<O>) modulSet.getOutput().get(ref)));
-				names.put(ref, ps.getPlugin(modulSet.get().get(ref).getClass())
-						.getName());
+			for (final OpRef<?> ref : this.outputOps) {
+				this.outputOpMap.put(ref, ((OutputOp<O>) this.modulSet
+						.getOutput().get(ref)));
+				this.names.put(
+						ref,
+						this.ps.getPlugin(
+								this.modulSet.get().get(ref).getClass())
+								.getName());
 			}
 
 			setOutput(new HashMap<OpRef<?>, O>());
@@ -140,11 +143,12 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 
 		}
 
-		modulSet.setInput(getInput());
-		modulSet.run();
+		this.modulSet.setInput(getInput());
+		this.modulSet.run();
 
 		getOutput().clear();
-		for (final Entry<OpRef<?>, OutputOp<O>> entry : outputOpMap.entrySet()) {
+		for (final Entry<OpRef<?>, OutputOp<O>> entry : this.outputOpMap
+				.entrySet()) {
 			getOutput().put(entry.getKey(), entry.getValue().getOutput());
 		}
 	}
@@ -154,7 +158,7 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 		final Map<OpRef<? extends Op>, O> map = compute(input);
 		final List<Pair<String, O>> features = new ArrayList<Pair<String, O>>();
 
-		for (final Entry<OpRef<?>, String> entry : names.entrySet()) {
+		for (final Entry<OpRef<?>, String> entry : this.names.entrySet()) {
 			features.add(new ValuePair<String, O>(entry.getValue(), map
 					.get(entry.getKey())));
 		}
@@ -168,7 +172,10 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	}
 
 	public Set<OpRef<?>> getOutputOps() {
-		return outputOps;
+		return this.outputOps;
 	}
 
+	public Set<OpRef<?>> getHiddenOps() {
+		return this.pool;
+	}
 }
