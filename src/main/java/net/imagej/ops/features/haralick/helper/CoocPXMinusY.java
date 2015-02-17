@@ -38,7 +38,8 @@ import org.scijava.plugin.Plugin;
 
 /**
  * 
- * @author Christian Dietz
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = Op.class)
 public class CoocPXMinusY implements OutputOp<double[]> {

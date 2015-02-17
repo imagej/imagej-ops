@@ -36,6 +36,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
 @Plugin(type = Op.class)
 public class CoocPXPlusY implements OutputOp<double[]> {
 

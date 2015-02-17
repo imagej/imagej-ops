@@ -37,6 +37,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
 @Plugin(type = Op.class)
 public class CoocStdX implements OutputOp<DoubleType> {
 
@@ -45,37 +51,36 @@ public class CoocStdX implements OutputOp<DoubleType> {
 
 	@Parameter
 	private CoocMeanX coocMeanX;
-
+	
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-
-		if (out == null) {
-			out = new DoubleType();
+		
+		if (output == null) {
+			output = new DoubleType();
 		}
+		
+		double res = 0;
 
-		final double meanx = coocMeanX.getOutput().get();
+		final double meanx = coocMeanX.getOutput().getRealDouble();
 		final double[] px = coocPX.getOutput();
 
-		double res = 0;
 		for (int i = 0; i < px.length; i++) {
-			res += (i - meanx) * (i - meanx) * px[i];
+			res += ((i - meanx) * (i - meanx)) * px[i];
 		}
 
-		res = Math.sqrt(res);
-
-		out.set(res);
+		output.setReal(res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
 	public void setOutput(DoubleType output) {
-		this.out = output;
+		this.output = output;
 	}
 }

@@ -42,44 +42,51 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Difference Variance")
+/**
+ * 
+ * Implementation of Difference Variance Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: Difference Variance", name = "Haralick: Difference Variance")
 public class DefaultDifferenceVarianceFeature implements
-		DifferenceVarianceFeature<DoubleType> {
+DifferenceVarianceFeature<DoubleType> {
 
 	@Parameter
 	private CoocPXMinusY coocPXMinusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-
-		if (out == null)
-			out = new DoubleType();
+		if (output == null) {
+			output = new DoubleType();
+		}
 
 		final double[] pxminusy = coocPXMinusY.getOutput();
 		double sum = 0.0d;
-
-		double output = 0;
+		double res = 0;
 		for (int k = 0; k < pxminusy.length; k++) {
 			sum += k * pxminusy[k];
 		}
 
 		for (int k = 0; k < pxminusy.length; k++) {
-			output += (k - sum) * pxminusy[k];
+			res += (k - sum) * pxminusy[k];
 		}
 		
-		out.setReal(output);
+		output.set(res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 }

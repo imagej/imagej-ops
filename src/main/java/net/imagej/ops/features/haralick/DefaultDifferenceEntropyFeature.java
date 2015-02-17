@@ -1,4 +1,5 @@
 /*
+
  * #%L
  * SciJava OPS: a framework for reusable algorithms.
  * %%
@@ -43,48 +44,54 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Difference Entropy")
-public class DefaultDifferenceEntropyFeature implements
-        DifferenceEntropyFeature<DoubleType> {
+/**
+ * 
+ * Implementation of Difference Entropy Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: Difference Entropy", name = "Haralick: Difference Entropy")
+public class DefaultDifferenceEntropyFeature implements DifferenceEntropyFeature<DoubleType> {
 
-    // Avoid log 0
-    private static final double EPSILON = 0.00000001f;
+	// Avoid log 0
+	private static final double EPSILON = 0.00000001f;
 
-    @Parameter
-    private CooccurrenceMatrix matrix;
+	@Parameter
+	private CooccurrenceMatrix matrix;
 
-    @Parameter
-    private CoocPXMinusY coocPXMinusY;
+	@Parameter
+	private CoocPXMinusY coocPXMinusY;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private DoubleType out;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType output;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		final double[] pxminusy = coocPXMinusY.getOutput();
+		final int nrGrayLevels = matrix.getOutput().length;
 
-        if (out == null) {
-            out = new DoubleType();
-        }
+		double res = 0;
+		for (int k = 0; k <= nrGrayLevels - 1; k++) {
+			res += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
+		}
 
-        final double[] pxminusy = coocPXMinusY.getOutput();
-        final int nrGrayLevels = matrix.getOutput().length;
+		output.set(-res);
+	}
 
-        double output = 0;
-        for (int k = 0; k <= nrGrayLevels - 1; k++) {
-            output += pxminusy[k] * Math.log(pxminusy[k] + EPSILON);
-        }
+	@Override
+	public DoubleType getOutput() {
+		return output;
+	}
 
-        out.setReal(-output);
-    }
-
-    @Override
-    public DoubleType getOutput() {
-        return out;
-    }
-
-    @Override
-    public void setOutput(DoubleType output) {
-        out = output;
-    }
+	@Override
+	public void setOutput(DoubleType _output) {
+		output = _output;
+	}
 
 }

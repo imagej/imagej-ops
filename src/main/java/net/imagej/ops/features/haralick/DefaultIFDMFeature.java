@@ -42,41 +42,53 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: IFDM")
+/**
+ * 
+ * Implementation of Inverse Difference Moment Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, Univesity of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: IFDM", name = "Haralick: Inverse Difference Moment")
 public class DefaultIFDMFeature implements IFDMFeature<DoubleType> {
 
 	@Parameter
 	private CooccurrenceMatrix cooc;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		double res = 0;
 
-		if (out == null)
-			out = new DoubleType();
-
-		double output = 0;
 		final double[][] matrix = cooc.getOutput();
 		final int nrGrayLevels = matrix.length;
-
+		
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {
-				output += 1.0 / (1 + (i - j) * (i - j)) * matrix[i][j];
+				if (i != j) {
+					res += matrix[i][j] / (Math.abs(i-j));
+				}
 			}
 		}
-
-		out.setReal(output);
+		
+		output.set(res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 }

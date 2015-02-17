@@ -36,6 +36,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Andreas Grauman, University of Konstanz
+ * @author Christian Dietz, Univesity of Konstanz
+ *
+ */
 @Plugin(type = Op.class)
 public class CoocHXY implements OutputOp<double[]> {
 

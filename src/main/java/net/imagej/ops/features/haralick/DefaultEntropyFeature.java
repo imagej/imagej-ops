@@ -42,44 +42,55 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Entropy")
+/**
+ * 
+ * Implementation of Entropy Haralick Feature
+ * Definition: -( sum_{i=1}^q sum_{j=1}^q c(i,j) log10(c(i,j)) )
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: Entropy", name = "Haralick: Entropy")
 public class DefaultEntropyFeature implements EntropyFeature<DoubleType> {
 
-    private static final double EPSILON = 0.00000001f;
+	private static final double EPSILON = 0.00000001f;
 
-    @Parameter
-    private CooccurrenceMatrix cooc;
+	@Parameter
+	private CooccurrenceMatrix cooc;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private DoubleType out;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType output;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
 
-        if (out == null) {
-            out = new DoubleType();
-        }
+		double res = 0;
+		
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
+		
+		for (int i = 0; i < nrGrayLevels; i++) {
+			for (int j = 0; j < nrGrayLevels; j++) {
+				res += matrix[i][j]
+						* Math.log10(matrix[i][j] + EPSILON);
+			}
+		}
 
-        final double[][] matrix = cooc.getOutput();
-        final int nrGrayLevels = matrix.length;
+		output.set(-res);
+	}
 
-        double output = 0;
-        for (int i = 0; i < nrGrayLevels; i++) {
-            for (int j = 0; j < nrGrayLevels; j++) {
-                output += matrix[i][j] * Math.log(matrix[i][j] + EPSILON);
-            }
-        }
+	@Override
+	public DoubleType getOutput() {
+		return output;
+	}
 
-        out.setReal(-output);
-    }
-
-    @Override
-    public DoubleType getOutput() {
-        return out;
-    }
-
-    @Override
-    public void setOutput(DoubleType output) {
-        out = output;
-    }
+	@Override
+	public void setOutput(DoubleType _output) {
+		output = _output;
+	}
 }
