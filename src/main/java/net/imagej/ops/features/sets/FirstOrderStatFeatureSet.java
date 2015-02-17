@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,7 +29,11 @@
  */
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AutoResolvingFeatureSet;
+import java.util.HashSet;
+import java.util.Set;
+
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.GeometricMeanFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.HarmonicMeanFeature;
@@ -50,30 +54,35 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing all kinds of first order statistics.
- * 
+ *
  * @author Christian Dietz (University of Konstanz)
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "First Order Statistics", description = "Calculates the First Order Statistics Features")
 public class FirstOrderStatFeatureSet<I> extends
-		AutoResolvingFeatureSet<I, DoubleType> {
+		AbstractAutoResolvingFeatureSet<I, DoubleType> {
 
-	public FirstOrderStatFeatureSet() {
-		super();
+	@Override
+	public Set<OpRef<?>> getOutputOps() {
+		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
+		outputOps.add(createOpRef(MeanFeature.class));
+		outputOps.add(createOpRef(SumFeature.class));
+		outputOps.add(createOpRef(KurtosisFeature.class));
+		outputOps.add(createOpRef(Moment1AboutMeanFeature.class));
+		outputOps.add(createOpRef(Moment2AboutMeanFeature.class));
+		outputOps.add(createOpRef(Moment3AboutMeanFeature.class));
+		outputOps.add(createOpRef(Moment4AboutMeanFeature.class));
+		outputOps.add(createOpRef(HarmonicMeanFeature.class));
+		outputOps.add(createOpRef(GeometricMeanFeature.class));
+		outputOps.add(createOpRef(VarianceFeature.class));
+		outputOps.add(createOpRef(MedianFeature.class));
+		outputOps.add(createOpRef(MinFeature.class));
+		outputOps.add(createOpRef(MaxFeature.class));
+		return outputOps;
+	}
 
-		addOutputOp(MeanFeature.class);
-		addOutputOp(SumFeature.class);
-		addOutputOp(KurtosisFeature.class);
-		addOutputOp(Moment1AboutMeanFeature.class);
-		addOutputOp(Moment2AboutMeanFeature.class);
-		addOutputOp(Moment3AboutMeanFeature.class);
-		addOutputOp(Moment4AboutMeanFeature.class);
-		addOutputOp(HarmonicMeanFeature.class);
-		addOutputOp(GeometricMeanFeature.class);
-		addOutputOp(VarianceFeature.class);
-		addOutputOp(MedianFeature.class);
-		addOutputOp(MinFeature.class);
-		addOutputOp(MaxFeature.class);
-
+	@Override
+	public Set<OpRef<?>> getHiddenOps() {
+		return new HashSet<OpRef<?>>();
 	}
 }

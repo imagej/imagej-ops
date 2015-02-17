@@ -51,8 +51,9 @@ import org.scijava.plugin.PluginService;
  *
  * @param <I>
  */
-public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
-		implements FeatureSet<I, O>, LabeledFeatures<I, O> {
+public abstract class AbstractAutoResolvingFeatureSet<I, O> extends
+		AbstractFeatureSet<I, O> implements FeatureSet<I, O>,
+		LabeledFeatures<I, O> {
 
 	@Parameter
 	private OpResolverService oobs;
@@ -61,18 +62,6 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	private PluginService ps;
 
 	/* internal stuff */
-
-	/*
-	 * Set containing all visible features, i.e. features will will be available
-	 * as FeatureResults
-	 */
-	private Set<OpRef<?>> outputOps;
-
-	/*
-	 * Set containing all invisible features, i.e. features which are required
-	 * by visible features.
-	 */
-	private Set<OpRef<?>> pool;
 
 	/*
 	 * function representing the compiled feature set
@@ -89,31 +78,22 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 	 */
 	private Map<OpRef<?>, String> names;
 
-	public AutoResolvingFeatureSet() {
-		this.outputOps = new HashSet<OpRef<?>>();
-		this.pool = new HashSet<OpRef<?>>();
-	}
+	// @SuppressWarnings("rawtypes")
+	// public <OP extends OutputOp> void addOutputOp(final Class<OP> op,
+	// final Object... args) {
+	// final OpRef<OP> opRef = new OpRef<OP>(op, args);
+	// this.outputOps.add(opRef);
+	// addHiddenOp(opRef);
+	// }
 
-	@SuppressWarnings("rawtypes")
-	public <OP extends OutputOp> void addOutputOp(final Class<OP> op,
+	// public void addOutputOp(final OpRef<?> opRef) {
+	// this.outputOps.add(opRef);
+	// addHiddenOp(opRef);
+	// }
+
+	protected <OP extends Op> OpRef<OP> createOpRef(final Class<OP> op,
 			final Object... args) {
-		final OpRef<OP> opRef = new OpRef<OP>(op, args);
-		this.outputOps.add(opRef);
-		addHiddenOp(opRef);
-	}
-
-	public void addOutputOp(final OpRef<?> opRef) {
-		this.outputOps.add(opRef);
-		addHiddenOp(opRef);
-	}
-
-	public <OP extends Op> void addHiddenOp(final Class<OP> op,
-			final Object... args) {
-		this.pool.add(new OpRef<OP>(op, args));
-	}
-
-	public void addHiddenOp(final OpRef<?> ref) {
-		this.pool.add(ref);
+		return new OpRef<OP>(op, args);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,13 +102,18 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 
 		// compile
 		if (this.modulSet == null) {
-			this.modulSet = this.oobs.resolve(getInput(), this.pool);
+			final Set<OpRef<?>> outputOps = getOutputOps();
+			final Set<OpRef<?>> pool = new HashSet<OpRef<?>>();
+			pool.addAll(outputOps);
+			pool.addAll(getHiddenOps());
+
+			this.modulSet = this.oobs.resolve(getInput(), pool);
 			this.outputOpMap = new HashMap<OpRef<?>, OutputOp<O>>();
 
 			this.names = new HashMap<OpRef<?>, String>();
 
 			// avoid duplicate castings
-			for (final OpRef<?> ref : this.outputOps) {
+			for (final OpRef<?> ref : outputOps) {
 				this.outputOpMap.put(ref, ((OutputOp<O>) this.modulSet
 						.getOutput().get(ref)));
 				this.names.put(
@@ -171,11 +156,8 @@ public class AutoResolvingFeatureSet<I, O> extends AbstractFeatureSet<I, O>
 		return compute(input);
 	}
 
-	public Set<OpRef<?>> getOutputOps() {
-		return this.outputOps;
-	}
+	public abstract Set<OpRef<?>> getOutputOps();
 
-	public Set<OpRef<?>> getHiddenOps() {
-		return this.pool;
-	}
+	public abstract Set<OpRef<?>> getHiddenOps();
+
 }

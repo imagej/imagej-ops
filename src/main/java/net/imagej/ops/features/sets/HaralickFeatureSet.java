@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,9 +30,12 @@
 
 package net.imagej.ops.features.sets;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpRef;
-import net.imagej.ops.features.AutoResolvingFeatureSet;
+import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
@@ -61,15 +64,15 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing Haralick texture {@link Feature}s
- * 
+ *
  * @author Christian Dietz (University of Konstanz)
- * 
+ *
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features", description = "Calculates the Haralick Features")
 public class HaralickFeatureSet<T> extends
-		AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
-		Contingent {
+		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType>
+		implements Contingent {
 
 	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
 	private double nrGrayLevels = 8;
@@ -81,51 +84,27 @@ public class HaralickFeatureSet<T> extends
 			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
 
-	public HaralickFeatureSet() {
-
-		addOutputOp(ASMFeature.class);
-		addOutputOp(ClusterPromenenceFeature.class);
-		addOutputOp(ClusterShadeFeature.class);
-		addOutputOp(ContrastFeature.class);
-		addOutputOp(CorrelationFeature.class);
-		addOutputOp(DifferenceVarianceFeature.class);
-		addOutputOp(DifferenceEntropyFeature.class);
-		addOutputOp(EntropyFeature.class);
-		addOutputOp(ICM1Feature.class);
-		addOutputOp(ICM2Feature.class);
-		addOutputOp(IFDMFeature.class);
-		addOutputOp(SumAverageFeature.class);
-		addOutputOp(SumEntropyFeature.class);
-		addOutputOp(SumVarianceFeature.class);
-		addOutputOp(VarianceFeature.class);
-
-		// add cooc parameters
-		addHiddenOp(new OpRef<CooccurrenceMatrix>(CooccurrenceMatrix.class,
-				IterableInterval.class, nrGrayLevels, distance, orientation,
-				MinFeature.class, MaxFeature.class));
-	}
-
-	public void setDistance(double distance) {
+	public void setDistance(final double distance) {
 		this.distance = distance;
 	}
 
 	public double getDistance() {
-		return distance;
+		return this.distance;
 	}
 
-	public void setOrientation(String orientation) {
+	public void setOrientation(final String orientation) {
 		this.orientation = orientation;
 	}
 
 	public String getOrientation() {
-		return orientation;
+		return this.orientation;
 	}
 
 	public double getNrGrayLevels() {
-		return nrGrayLevels;
+		return this.nrGrayLevels;
 	}
 
-	public void setNrGrayLevels(double nrGrayLevels) {
+	public void setNrGrayLevels(final double nrGrayLevels) {
 		this.nrGrayLevels = nrGrayLevels;
 	}
 
@@ -139,4 +118,38 @@ public class HaralickFeatureSet<T> extends
 
 		return count == 2;
 	}
+
+	@Override
+	public Set<OpRef<?>> getOutputOps() {
+
+		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
+		outputOps.add(createOpRef(ASMFeature.class));
+		outputOps.add(createOpRef(ClusterPromenenceFeature.class));
+		outputOps.add(createOpRef(ClusterShadeFeature.class));
+		outputOps.add(createOpRef(ContrastFeature.class));
+		outputOps.add(createOpRef(CorrelationFeature.class));
+		outputOps.add(createOpRef(DifferenceVarianceFeature.class));
+		outputOps.add(createOpRef(DifferenceEntropyFeature.class));
+		outputOps.add(createOpRef(EntropyFeature.class));
+		outputOps.add(createOpRef(ICM1Feature.class));
+		outputOps.add(createOpRef(ICM2Feature.class));
+		outputOps.add(createOpRef(IFDMFeature.class));
+		outputOps.add(createOpRef(SumAverageFeature.class));
+		outputOps.add(createOpRef(SumEntropyFeature.class));
+		outputOps.add(createOpRef(IFDMFeature.class));
+		outputOps.add(createOpRef(SumVarianceFeature.class));
+		outputOps.add(createOpRef(VarianceFeature.class));
+
+		return outputOps;
+	}
+
+	@Override
+	public Set<OpRef<?>> getHiddenOps() {
+		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
+		hiddenOps.add(createOpRef(CooccurrenceMatrix.class,
+				IterableInterval.class, this.nrGrayLevels, this.distance,
+				this.orientation, MinFeature.class, MaxFeature.class));
+		return hiddenOps;
+	}
+
 }

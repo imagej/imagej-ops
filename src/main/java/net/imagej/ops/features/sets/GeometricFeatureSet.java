@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,7 +30,11 @@
 
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AutoResolvingFeatureSet;
+import java.util.HashSet;
+import java.util.Set;
+
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
@@ -62,41 +66,49 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing Geometric Features.
- * 
+ *
  * @author Daniel Seebacher, University of Konstanz.
- * 
+ *
  */
-@Plugin(type = FeatureSet.class, label = "Geometric Features", description = "Calculates the xGeometric Features")
+@Plugin(type = FeatureSet.class, label = "Geometric Features", description = "Calculates the Geometric Features")
 public class GeometricFeatureSet extends
-		AutoResolvingFeatureSet<Polygon, DoubleType> {
+		AbstractAutoResolvingFeatureSet<Polygon, DoubleType> {
 
-	public GeometricFeatureSet() {
+	@Override
+	public Set<OpRef<?>> getOutputOps() {
+		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
 
-		// add helper
-		addHiddenOp(PolygonAreaOp.class);
-		addHiddenOp(PolygonPerimeterOp.class);
-		addHiddenOp(PolygonConvexHullOp.class);
-		addHiddenOp(PolygonConvexHullAreaOp.class);
-		addHiddenOp(PolygonConvexHullPerimeterOp.class);
-		addHiddenOp(PolygonSmallestEnclosingRectangleOp.class);
-		addHiddenOp(PolygonSmallestEnclosingRectangleAreaOp.class);
-		addHiddenOp(PolygonFeretOp.class);
-		addHiddenOp(MinorMajorAxisOp.class);
+		outputOps.add(createOpRef(AreaFeature.class));
+		outputOps.add(createOpRef(PerimeterFeature.class));
+		outputOps.add(createOpRef(CircularityFeature.class));
+		outputOps.add(createOpRef(RectangularityFeature.class));
+		outputOps.add(createOpRef(ConvexityFeature.class));
+		outputOps.add(createOpRef(SolidityFeature.class));
+		outputOps.add(createOpRef(RugosityFeature.class));
+		outputOps.add(createOpRef(ElongationFeature.class));
+		outputOps.add(createOpRef(MajorAxisFeature.class));
+		outputOps.add(createOpRef(MinorAxisFeature.class));
+		outputOps.add(createOpRef(EccentricityFeature.class));
+		outputOps.add(createOpRef(RoundnessFeature.class));
+		outputOps.add(createOpRef(FeretsDiameterFeature.class));
+		outputOps.add(createOpRef(FeretsAngleFeature.class));
 
-		// add features
-		addOutputOp(AreaFeature.class);
-		addOutputOp(PerimeterFeature.class);
-		addOutputOp(CircularityFeature.class);
-		addOutputOp(RectangularityFeature.class);
-		addOutputOp(ConvexityFeature.class);
-		addOutputOp(SolidityFeature.class);
-		addOutputOp(RugosityFeature.class);
-		addOutputOp(ElongationFeature.class);
-		addOutputOp(MajorAxisFeature.class);
-		addOutputOp(MinorAxisFeature.class);
-		addOutputOp(EccentricityFeature.class);
-		addOutputOp(RoundnessFeature.class);
-		addOutputOp(FeretsDiameterFeature.class);
-		addOutputOp(FeretsAngleFeature.class);
+		return outputOps;
+	}
+
+	@Override
+	public Set<OpRef<?>> getHiddenOps() {
+		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
+		hiddenOps.add(createOpRef(PolygonAreaOp.class));
+		hiddenOps.add(createOpRef(PolygonPerimeterOp.class));
+		hiddenOps.add(createOpRef(PolygonConvexHullOp.class));
+		hiddenOps.add(createOpRef(PolygonConvexHullAreaOp.class));
+		hiddenOps.add(createOpRef(PolygonConvexHullPerimeterOp.class));
+		hiddenOps.add(createOpRef(PolygonSmallestEnclosingRectangleOp.class));
+		hiddenOps
+				.add(createOpRef(PolygonSmallestEnclosingRectangleAreaOp.class));
+		hiddenOps.add(createOpRef(PolygonFeretOp.class));
+		hiddenOps.add(createOpRef(MinorMajorAxisOp.class));
+		return hiddenOps;
 	}
 }
