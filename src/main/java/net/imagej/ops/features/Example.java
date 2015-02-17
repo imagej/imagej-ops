@@ -1,6 +1,8 @@
 package net.imagej.ops.features;
 
+import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
@@ -10,13 +12,12 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.util.Pair;
 
 import org.scijava.Context;
 
 public class Example {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
 		// some rnd data (could actually be an op on its own)
 		final Img<FloatType> rndImgA = ArrayImgs
@@ -41,7 +42,7 @@ public class Example {
 		 * Call a single feature.
 		 */
 		// 1. Create ResolvedOp (my naming sucks, ideas welcome)
-		ResolvedOp<Img<FloatType>, DoubleType> resolved = ors.resolve(
+		final ResolvedOp<Img<FloatType>, DoubleType> resolved = ors.resolve(
 				DoubleType.class, rndImgA, MeanFeature.class);
 
 		// 2. Calculate and print results
@@ -65,23 +66,27 @@ public class Example {
 		/*
 		 * Create your own auto-resolving feature-set
 		 */
-		final AutoResolvingFeatureSet<Img<FloatType>, DoubleType> ownSet = new AutoResolvingFeatureSet<Img<FloatType>, DoubleType>();
+		final AbstractAutoResolvingFeatureSet<Img<FloatType>, DoubleType> ownSet = new AbstractAutoResolvingFeatureSet<Img<FloatType>, DoubleType>() {
+
+			@Override
+			public Set<OpRef<?>> getOutputOps() {
+				final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
+				outputOps.add(createOpRef(MeanFeature.class));
+				return outputOps;
+			}
+
+			@Override
+			public Set<OpRef<?>> getHiddenOps() {
+				return new HashSet<OpRef<?>>();
+			}
+
+		};
+
 		c.inject(ownSet);
-
-		// add any annotated op
-		@SuppressWarnings("rawtypes")
-		OpRef<MeanFeature> ref = new OpRef<MeanFeature>(MeanFeature.class);
-
-		// add some stuff
-		ownSet.addOutputOp(new OpRef<MeanFeature>(MeanFeature.class));
-
-		// get via ref. OpRef is required as you may want to add the same Op
-		// several times, but with different parameters (e.g. percentile)
-		final MeanFeature<DoubleType> op = (MeanFeature<DoubleType>) ownSet
-				.compute(rndImgA).get(ref);
-
+		ownSet.setInput(rndImgA);
+		ownSet.run();
 		System.out.println("My very own feature set got resolved "
-				+ op.getOutput());
+				+ ownSet.getOutput());
 
 	}
 }

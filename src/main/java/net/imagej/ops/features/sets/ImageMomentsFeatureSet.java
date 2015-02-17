@@ -1,6 +1,10 @@
 package net.imagej.ops.features.sets;
 
-import net.imagej.ops.features.AutoResolvingFeatureSet;
+import java.util.HashSet;
+import java.util.Set;
+
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment00Feature;
 import net.imagej.ops.features.moments.ImageMomentFeatures.CentralMoment01Feature;
@@ -38,51 +42,60 @@ import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} containing Geometric Features.
- * 
+ *
  * @author Daniel Seebacher, University of Konstanz.
- * 
+ *
  */
 @Plugin(type = FeatureSet.class, label = "Image Moment Features", description = "Calculates the Image Moment Features")
 public class ImageMomentsFeatureSet<I> extends
-		AutoResolvingFeatureSet<I, DoubleType> {
+		AbstractAutoResolvingFeatureSet<I, DoubleType> {
 
-	public ImageMomentsFeatureSet() {
+	@Override
+	public Set<OpRef<?>> getOutputOps() {
+		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
 
-		// add helper
-		addHiddenOp(NormalMomentsHelper.class);
-		addHiddenOp(CentralMomentsHelper.class);
+		outputOps.add(createOpRef(Moment00Feature.class));
+		outputOps.add(createOpRef(Moment01Feature.class));
+		outputOps.add(createOpRef(Moment10Feature.class));
+		outputOps.add(createOpRef(Moment11Feature.class));
 
-		// add features
-		addOutputOp(Moment00Feature.class);
-		addOutputOp(Moment01Feature.class);
-		addOutputOp(Moment10Feature.class);
-		addOutputOp(Moment11Feature.class);
+		outputOps.add(createOpRef(CentralMoment00Feature.class));
+		outputOps.add(createOpRef(CentralMoment01Feature.class));
+		outputOps.add(createOpRef(CentralMoment10Feature.class));
+		outputOps.add(createOpRef(CentralMoment11Feature.class));
+		outputOps.add(createOpRef(CentralMoment20Feature.class));
+		outputOps.add(createOpRef(CentralMoment02Feature.class));
+		outputOps.add(createOpRef(CentralMoment21Feature.class));
+		outputOps.add(createOpRef(CentralMoment12Feature.class));
+		outputOps.add(createOpRef(CentralMoment30Feature.class));
+		outputOps.add(createOpRef(CentralMoment03Feature.class));
 
-		addOutputOp(CentralMoment00Feature.class);
-		addOutputOp(CentralMoment01Feature.class);
-		addOutputOp(CentralMoment10Feature.class);
-		addOutputOp(CentralMoment11Feature.class);
-		addOutputOp(CentralMoment20Feature.class);
-		addOutputOp(CentralMoment02Feature.class);
-		addOutputOp(CentralMoment21Feature.class);
-		addOutputOp(CentralMoment12Feature.class);
-		addOutputOp(CentralMoment30Feature.class);
-		addOutputOp(CentralMoment03Feature.class);
+		outputOps.add(createOpRef(NormalizedCentralMoment02Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment03Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment11Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment12Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment20Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment21Feature.class));
+		outputOps.add(createOpRef(NormalizedCentralMoment30Feature.class));
 
-		addOutputOp(NormalizedCentralMoment02Feature.class);
-		addOutputOp(NormalizedCentralMoment03Feature.class);
-		addOutputOp(NormalizedCentralMoment11Feature.class);
-		addOutputOp(NormalizedCentralMoment12Feature.class);
-		addOutputOp(NormalizedCentralMoment20Feature.class);
-		addOutputOp(NormalizedCentralMoment21Feature.class);
-		addOutputOp(NormalizedCentralMoment30Feature.class);
+		outputOps.add(createOpRef(HuMoment1Feature.class));
+		outputOps.add(createOpRef(HuMoment2Feature.class));
+		outputOps.add(createOpRef(HuMoment3Feature.class));
+		outputOps.add(createOpRef(HuMoment4Feature.class));
+		outputOps.add(createOpRef(HuMoment5Feature.class));
+		outputOps.add(createOpRef(HuMoment6Feature.class));
+		outputOps.add(createOpRef(HuMoment7Feature.class));
 
-		addOutputOp(HuMoment1Feature.class);
-		addOutputOp(HuMoment2Feature.class);
-		addOutputOp(HuMoment3Feature.class);
-		addOutputOp(HuMoment4Feature.class);
-		addOutputOp(HuMoment5Feature.class);
-		addOutputOp(HuMoment6Feature.class);
-		addOutputOp(HuMoment7Feature.class);
+		return outputOps;
+	}
+
+	@Override
+	public Set<OpRef<?>> getHiddenOps() {
+		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
+
+		hiddenOps.add(createOpRef(NormalMomentsHelper.class));
+		hiddenOps.add(createOpRef(CentralMomentsHelper.class));
+
+		return hiddenOps;
 	}
 }
