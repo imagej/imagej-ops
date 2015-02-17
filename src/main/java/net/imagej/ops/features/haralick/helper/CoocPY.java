@@ -37,20 +37,31 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * @author Andreas Graumann (University of Konstany)
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class)
 public class CoocPY implements OutputOp<double[]> {
-
+	
 	@Parameter
-	private CoocPX coocPX;
+	private CooccurrenceMatrix cooc;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double[] output;
 
 	@Override
 	public void run() {
-		output = coocPX.getOutput();
+		final double[][] matrix = cooc.getOutput();
+		final int nrGrayLevels = matrix.length;
+		
+		final double[] px = new double[nrGrayLevels];
+		for (int i = 0; i < nrGrayLevels; i++) {
+			for (int j = 0; j < nrGrayLevels; j++) {
+				px[i] += matrix[i][j];
+			}
+		}
+
+		output = px;
 	}
 
 	@Override

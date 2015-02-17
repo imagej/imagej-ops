@@ -43,38 +43,47 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: ICM1")
+/**
+ * Implementation of Information Measure of Correlation 1 Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: ICM1", name = "Haralick: Information Measure of Correlation 1")
 public class DefaultICM1Feature implements ICM1Feature<DoubleType> {
 
-    @Parameter
-    private EntropyFeature<DoubleType> entropy;
+	@Parameter
+	private EntropyFeature<DoubleType> entropy;
 
-    @Parameter
-    private CoocHXY coocHXY;
+	@Parameter
+	private CoocHXY coocHXY;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private DoubleType out;
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType output;
 
-    @Override
-    public void run() {
+	@Override
+	public void run() {
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		double res = 0;
+		final double[] coochxy = coocHXY.getOutput();
+		res = (entropy.getOutput().get() - coochxy[2])
+				/ Math.max(coochxy[0], coochxy[1]);
+		output.set(res);
+	}
 
-        if (out == null) {
-            out = new DoubleType();
-        }
+	@Override
+	public DoubleType getOutput() {
+		return output;
+	}
 
-        final double[] coochxy = coocHXY.getOutput();
-        out.setReal((entropy.getOutput().get() - coochxy[2])
-                / Math.max(coochxy[0], coochxy[1]));
-    }
-
-    @Override
-    public DoubleType getOutput() {
-        return out;
-    }
-
-    @Override
-    public void setOutput(final DoubleType output) {
-        out = output;
-    }
+	@Override
+	public void setOutput(DoubleType _output) {
+		output = _output;
+	}
 
 }

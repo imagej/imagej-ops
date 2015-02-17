@@ -43,7 +43,14 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: ICM2")
+/**
+ * Implementation of Information Measure of Correlation 2 Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: ICM2", name = "Haralick: Information Measure of Correlation 2")
 public class DefaultICM2Feature implements ICM2Feature<DoubleType> {
 
 	@Parameter
@@ -53,25 +60,31 @@ public class DefaultICM2Feature implements ICM2Feature<DoubleType> {
 	private CoocHXY coocHXY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-		if (out == null)
-			out = new DoubleType();
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		double res = 0;
 		final double[] coochxy = coocHXY.getOutput();
-		out.set(Math.sqrt(1 - Math.exp(-2
-				* (coochxy[3] - entropy.getOutput().get()))));
+		res = Math.sqrt(1 - Math.exp(-2
+				* (coochxy[3] - entropy.getOutput().get())));
+		
+		output.set(res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 
 }

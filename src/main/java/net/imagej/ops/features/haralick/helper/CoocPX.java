@@ -36,6 +36,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
 @Plugin(type = Op.class)
 public class CoocPX implements OutputOp<double[]> {
 
@@ -49,11 +55,11 @@ public class CoocPX implements OutputOp<double[]> {
 	public void run() {
 		final double[][] matrix = cooc.getOutput();
 		final int nrGrayLevels = matrix.length;
-
+		
 		final double[] px = new double[nrGrayLevels];
 		for (int i = 0; i < nrGrayLevels; i++) {
 			for (int j = 0; j < nrGrayLevels; j++) {
-				px[i] += matrix[i][j];
+				px[j] += matrix[i][j];
 			}
 		}
 
@@ -64,7 +70,7 @@ public class CoocPX implements OutputOp<double[]> {
 	public double[] getOutput() {
 		return output;
 	}
-
+	
 	@Override
 	public void setOutput(double[] output) {
 		this.output = output;

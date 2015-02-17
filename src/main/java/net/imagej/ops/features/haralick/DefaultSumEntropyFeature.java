@@ -43,7 +43,15 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Sum Entropy")
+/**
+ * 
+ * Implementation of Sum Entropy Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ * 
+ */
+@Plugin(type = Op.class, label = "Haralick: Sum Entropy", name = "Haralick: Sum Entropy")
 public class DefaultSumEntropyFeature implements SumEntropyFeature<DoubleType> {
 
 	private static final double EPSILON = 0.00000001f;
@@ -55,34 +63,33 @@ public class DefaultSumEntropyFeature implements SumEntropyFeature<DoubleType> {
 	private CoocPXPlusY coocPXPlusY;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-
-		if (out == null)
-			out = new DoubleType();
-
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		final double[] pxplusy = coocPXPlusY.getOutput();
 		final int nrGrayLevels = matrix.getOutput().length;
 
-		double output = 0;
+		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
-			output += pxplusy[i] * Math.log(pxplusy[i] + EPSILON);
+			res += pxplusy[i] * Math.log10(pxplusy[i] + EPSILON);
 		}
 
-		output *= -1;
-
-		out.set(output);
+		output.set(-res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 }

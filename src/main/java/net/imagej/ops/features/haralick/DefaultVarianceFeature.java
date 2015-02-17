@@ -35,38 +35,70 @@ package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.features.haralick.HaralickFeatures.VarianceFeature;
-import net.imagej.ops.features.haralick.helper.CoocStdX;
+import net.imagej.ops.features.haralick.helper.CoocMeanX;
+import net.imagej.ops.features.haralick.helper.CoocMeanY;
+import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Variance")
+/**
+ * 
+ * Implementation of Variance Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: Variance", name = "Haralick: Variance")
 public class DefaultVarianceFeature implements VarianceFeature<DoubleType> {
 
 	@Parameter
-	private CoocStdX coocStdX;
+	private CoocMeanX meanx;
+
+	@Parameter
+	private CoocMeanY meany;
+
+	@Parameter
+	private CooccurrenceMatrix cooc;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-		if (out == null)
-			out = new DoubleType();
 
-		out.setReal(coocStdX.getOutput().get() * coocStdX.getOutput().get());
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
+		final double mux = meanx.getOutput().get();
+		final double muy = meany.getOutput().get();
+		final double matrix[][] = cooc.getOutput();
+		final int nrGreyLevel = matrix.length;
+
+		double result = 0.0;
+		for (int i = 0; i < nrGreyLevel; i++) {
+			for (int j = 0; j < nrGreyLevel; j++) {
+				result += (Math.pow((i - mux), 2) * matrix[i][j] + Math.pow(
+						(j - muy), 2) * matrix[i][j]);
+			}
+		}
+
+		output.set(result / 2);
+
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 
 }

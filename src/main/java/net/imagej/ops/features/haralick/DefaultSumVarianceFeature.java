@@ -44,9 +44,16 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, label = "Haralick 2D: Sum Variance")
+/**
+ * Implementation of Sum Variance Haralick Feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz 
+ *
+ */
+@Plugin(type = Op.class, label = "Haralick: Sum Variance", name = "Haralick: Sum Variance")
 public class DefaultSumVarianceFeature implements
-		SumVarianceFeature<DoubleType> {
+SumVarianceFeature<DoubleType> {
 
 	@Parameter
 	private SumAverageFeature<DoubleType> sumAverage;
@@ -58,33 +65,34 @@ public class DefaultSumVarianceFeature implements
 	private CooccurrenceMatrix matrix;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType out;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-
-		if (out == null)
-			out = new DoubleType();
-
+		
+		if (output == null) {
+			output = new DoubleType();
+		}
+		
 		final double[] pxplusy = coocPXPlusY.getOutput();
 		final int nrGrayLevels = matrix.getOutput().length;
 		final double average = sumAverage.getOutput().get();
 
-		double output = 0;
+		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
-			output += (i - average) * (i - average) * pxplusy[i];
+			res += (i - average) * (i - average) * pxplusy[i];
 		}
-
-		out.set(output);
+		
+		output.set(res);
 	}
 
 	@Override
 	public DoubleType getOutput() {
-		return out;
+		return output;
 	}
 
 	@Override
-	public void setOutput(DoubleType output) {
-		out = output;
+	public void setOutput(DoubleType _output) {
+		output = _output;
 	}
 }

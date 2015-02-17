@@ -34,11 +34,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.haralick.HaralickFeatures.CorrelationFeature;
-import net.imagej.ops.features.haralick.helper.CoocMeanX;
-import net.imagej.ops.features.haralick.helper.CoocMeanY;
-import net.imagej.ops.features.haralick.helper.CoocStdX;
-import net.imagej.ops.features.haralick.helper.CoocStdY;
+import net.imagej.ops.features.haralick.HaralickFeatures.MaxProbabilityFeature;
 import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -47,62 +43,37 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
- * Implementation of texture correlation haralick feature.
+ * Implementation of Maximum Probability Haralick Feature
  * 
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = Op.class, label = "Haralick: Correlation", name = "Haralick: Texture Correlation")
-public class DefaultCorrelationFeature implements
-CorrelationFeature<DoubleType> {
+@Plugin(type = Op.class, label = "Haralick: Maximum Probability Feature", name = "Haralick: Maximum Probability Feature Feature")
+public class DefaultMaxProbFeature implements MaxProbabilityFeature<DoubleType> {
 
 	@Parameter
 	private CooccurrenceMatrix cooc;
-
-	@Parameter
-	private CoocMeanX coocMeanX;
-
-	@Parameter
-	private CoocMeanY coocMeanY;
-
-	@Parameter
-	private CoocStdX coocStdX;
-
-	@Parameter
-	private CoocStdY coocStdY;
-
+	
 	@Parameter(type = ItemIO.OUTPUT)
 	private DoubleType output;
-
+	
 	@Override
 	public void run() {
 		
 		if (output == null) {
 			output = new DoubleType();
 		}
-
-		final double[][] matrix = cooc.getOutput();
-		final int nrGrayLevels = matrix.length;
-		final double meanx = coocMeanX.getOutput().getRealDouble();
-		final double meany = coocMeanY.getOutput().getRealDouble();
-		final double stdx = coocStdX.getOutput().getRealDouble();
-		final double stdy = coocStdY.getOutput().getRealDouble();
-
+		
+		final double[][] matrix  = cooc.getOutput();
+		final double nrGreyLevel = matrix.length;
+		
 		double res = 0;
-		for (int i = 0; i < nrGrayLevels; i++) {
-			for (int j = 0; j < nrGrayLevels; j++) {
-				res += ((i- meanx) * (j - meany)) * (matrix[i][j]
-						/ (stdx * stdy));
+		for (int i = 0; i < nrGreyLevel; i++) {
+			for (int j = 0; j < nrGreyLevel; j++) {
+				if (matrix[i][j] > res)
+					res = matrix[i][j];
 			}
-		}
-
-		// if NaN
-		if (Double.isNaN(res)) {
-			output.set(0);
-		} else {
-			output.set(res);
 		}
 	}
 

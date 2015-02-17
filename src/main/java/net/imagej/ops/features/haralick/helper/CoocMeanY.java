@@ -33,29 +33,48 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+/**
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @author Christian Dietz, University of Konstanz
+ *
+ */
 @Plugin(type = Op.class)
 public class CoocMeanY implements OutputOp<DoubleType> {
 
-	// for symmetric cooccurence matrices stdx = stdy
 	@Parameter
-	private CoocMeanX coocMeanX;
+	private CoocPY coocPY;
 
-	@Override
-	public DoubleType getOutput() {
-		return coocMeanX.getOutput();
-	}
+	@Parameter(type = ItemIO.OUTPUT)
+	private DoubleType meanY;
 
 	@Override
 	public void run() {
-		// Nothing to do here
+		
+		if (meanY == null) {
+			meanY = new DoubleType();
+		}
+		
+		double res = 0;
+		final double[] py = coocPY.getOutput();
+		for (int i = 0; i < py.length; i++) {
+			res += i * py[i];
+		}
+		meanY.setReal(res);
 	}
 
 	@Override
-	public void setOutput(DoubleType coocMeanX) {
-		this.coocMeanX.setOutput(coocMeanX);
+	public DoubleType getOutput() {
+		return meanY;
+	}
+
+	@Override
+	public void setOutput(final DoubleType meanX) {
+		this.meanY = meanX;
 	}
 
 }
