@@ -28,14 +28,14 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
-import net.imagej.ops.statistics.FirstOrderOps.SumOfInverses;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
+import net.imagej.ops.statistics.FirstOrderOps.Variance;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.VarianceIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -43,30 +43,36 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
+ * Calculate {@link Variance} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
- * 
+ * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultSumOfInversesFeature<I extends RealType<I>, O extends RealType<O>>
+@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
+public class DefaultVarianceIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
-		SumOfInversesIRT<I, O>, SumOfInversesFeature<O> {
+		VarianceIRT<I, O>, VarianceFeature<O> {
 
 	@Override
-	public O createOutput(final Iterable<I> in) {
+	public O createOutput(Iterable<I> in) {
         return OpUtils.<O> cast(new DoubleType());
 	}
 
 	@Override
-	protected O safeCompute(final Iterable<I> input, final O output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
-		double res = 0.0;
-		for (final RealType<?> type : input) {
-			res += (1.0d / type.getRealDouble());
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		for (final RealType<?> next : input) {
+			final double px = next.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
 		}
-		output.setReal(res);
-		return output;
 
+		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
+		return output;
 	}
 }

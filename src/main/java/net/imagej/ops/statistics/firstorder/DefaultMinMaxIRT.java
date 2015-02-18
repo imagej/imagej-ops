@@ -2,8 +2,8 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,51 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
-import net.imagej.ops.statistics.FirstOrderOps.Variance;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.VarianceIRT;
+import java.util.Iterator;
+
+import net.imagej.ops.statistics.FirstOrderOps.MinMax;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link Variance} on {@link Iterable} of {@link RealType}
+ * Calculates the minimum and maximum value of an {@link Iterable} of type
+ * {@link RealType}
  * 
- * @author Christian Dietz
- * @author Andreas Graumann
+ * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
-public class DefaultVarianceFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractOutputFunction<Iterable<I>, O> implements
-		VarianceIRT<I, O>, VarianceFeature<O> {
+@Plugin(type = MinMax.class, name = MinMax.NAME, label = MinMax.LABEL)
+public class DefaultMinMaxIRT<T extends RealType<T>> implements MinMax {
+
+	@Parameter(type = ItemIO.INPUT)
+	private Iterable<T> img;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T min;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private T max;
 
 	@Override
-	public O createOutput(Iterable<I> in) {
-        return OpUtils.<O> cast(new DoubleType());
-	}
+	public void run() {
+		min = img.iterator().next().createVariable();
+		max = min.copy();
 
-	@Override
-	protected O safeCompute(Iterable<I> input, O output) {
+		min.setReal(min.getMaxValue());
+		max.setReal(max.getMinValue());
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		for (final RealType<?> next : input) {
-			final double px = next.getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+		final Iterator<T> it = img.iterator();
+		while (it.hasNext()) {
+			final T i = it.next();
+			if (min.compareTo(i) > 0)
+				min.set(i);
+			if (max.compareTo(i) < 0)
+				max.set(i);
 		}
-
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
-		return output;
 	}
 }

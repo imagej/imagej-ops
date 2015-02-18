@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  */
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMedianFeature<I extends RealType<I>, O extends RealType<O>>
+public class DefaultMedianIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
 		MedianIRT<I, O>, MedianFeature<O> {
 

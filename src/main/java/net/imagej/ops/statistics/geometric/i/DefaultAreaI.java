@@ -17,9 +17,9 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Area.NAME, label = Area.LABEL, priority = Priority.VERY_LOW_PRIORITY)
-public class DefaultAreaFeature<I extends RealType<I>, O extends RealType<O>>
+public class DefaultAreaI<I extends RealType<I>, O extends RealType<O>>
         extends AbstractOutputFunction<Iterable<I>, O> implements
-        AreaFeature<O> {
+        AreaFeature<O>, Area {
 
     @Override
     public O createOutput(Iterable<I> input) {

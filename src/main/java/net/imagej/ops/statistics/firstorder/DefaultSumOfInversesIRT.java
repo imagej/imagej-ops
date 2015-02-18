@@ -28,14 +28,14 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
-import net.imagej.ops.statistics.FirstOrderOps.Max;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
+import net.imagej.ops.statistics.FirstOrderOps.SumOfInverses;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -43,33 +43,30 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link Max} of {@link Iterable} of {@link RealType}.
+ * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
+ * 
  */
-@Plugin(type = Op.class, name = Max.NAME, label = MaxFeature.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMaxFeature<I extends RealType<I>, O extends RealType<O>>
-        extends AbstractOutputFunction<Iterable<I>, O> implements MaxIRT<I, O>,
-        MaxFeature<O> {
+@Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumOfInversesIRT<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		SumOfInversesIRT<I, O>, SumOfInversesFeature<O> {
 
-    @Override
-    protected O safeCompute(Iterable<I> input, O output) {
-
-        double max = -Double.MAX_VALUE;
-
-        for (final RealType<?> val : input) {
-            final double tmp = val.getRealDouble();
-            if (tmp > max) {
-                max = tmp;
-            }
-        }
-
-        output.setReal(max);
-        return output;
-    }
-
-    @Override
-    public O createOutput(Iterable<I> in) {
+	@Override
+	public O createOutput(final Iterable<I> in) {
         return OpUtils.<O> cast(new DoubleType());
-    }
+	}
+
+	@Override
+	protected O safeCompute(final Iterable<I> input, final O output) {
+
+		double res = 0.0;
+		for (final RealType<?> type : input) {
+			res += (1.0d / type.getRealDouble());
+		}
+		output.setReal(res);
+		return output;
+
+	}
 }

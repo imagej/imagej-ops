@@ -1,4 +1,7 @@
+package net.imagej.ops.statistics.firstorder;
+
 /*
+
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
@@ -28,46 +31,41 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
-
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
-import net.imagej.ops.statistics.FirstOrderOps.SumOfSquares;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfSquaresIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
+import net.imagej.ops.statistics.FirstOrderOps.Sum;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link SumOfSquares} on {@link Iterable} of {@link RealType}
+ * Calculate {@link Sum} on {@link Iterable} of {@link RealType}
  * 
  * @author Christian Dietz
  * @author Andreas Graumann
- * 
  */
-@Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
-public class DefaultSumOfSquaresFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractOutputFunction<Iterable<I>, O> implements
-		SumOfSquaresIRT<I, O>, SumOfSquaresFeature<O> {
+@Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultSumIRT<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements SumIRT<I, O>,
+        SumFeature<O> {
 
-	@Override
-	public O createOutput(Iterable<I> in) {
+    @Override
+    public O createOutput(Iterable<I> in) {
         return OpUtils.<O> cast(new DoubleType());
-	}
+    }
 
-	@Override
-	protected O safeCompute(Iterable<I> input, O output) {
+    @Override
+    protected O safeCompute(Iterable<I> input, O output) {
+        output.setReal(0);
+        for (final RealType<?> d : input) {
+            output.setReal(output.getRealDouble() + d.getRealDouble());
+        }	
 
-		double result = 0;
-		for (final RealType<?> val : input) {
-			final double tmp = val.getRealDouble();
-			result += (tmp * tmp);
-		}
-
-		output.setReal(result);
-		return output;
-	}
+        return output;
+    }
 }
