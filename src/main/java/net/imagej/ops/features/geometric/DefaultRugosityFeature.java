@@ -22,7 +22,7 @@ public class DefaultRugosityFeature implements
         RugosityFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private PolygonPerimeterOp perimter;
+    private PolygonPerimeterOp perimeter;
 
     @Parameter(type = ItemIO.INPUT)
     private PolygonConvexHullPerimeterOp convexHullPerimeter;
@@ -36,7 +36,7 @@ public class DefaultRugosityFeature implements
             out = new DoubleType();
         }
 
-        out.setReal(perimter.getOutput().getRealDouble()
+        out.setReal(perimeter.getOutput().getRealDouble()
                 / convexHullPerimeter.getOutput().getRealDouble() );
     }
 

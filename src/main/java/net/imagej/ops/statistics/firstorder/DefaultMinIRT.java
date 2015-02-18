@@ -28,47 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
-import net.imagej.ops.statistics.FirstOrderOps.Mean;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MeanIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
+import net.imagej.ops.statistics.FirstOrderOps.Min;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link Mean} of {@link Iterable} of {@link RealType}.
+ * Calculate {@link Min} of {@link Iterable} of {@link RealType}.
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
-public class DefaultMeanFeature<I extends RealType<I>, O extends RealType<O>>
-        extends AbstractOutputFunction<Iterable<I>, O> implements
-        MeanIRT<I, O>, MeanFeature<O> {
+@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMinIRT<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements MinIRT<I, O>,
+		MinFeature<O> {
 
-    @Override
-    protected O safeCompute(Iterable<I> input, O output) {
-
-        double sum = 0;
-        double count = 0;
-
-        for (final RealType<?> val : getInput()) {
-            sum += val.getRealDouble();
-            ++count;
-        }
-
-        output.setReal((count == 0) ? 0 : sum / count);
-
-        return output;
-    }
-
-    @Override
-    public O createOutput(Iterable<I> in) {
+	@Override
+	public O createOutput(Iterable<I> in) {
         return OpUtils.<O> cast(new DoubleType());
-    }
+	}
+
+	@Override
+	protected O safeCompute(final Iterable<I> input, final O output) {
+
+		double min = Double.POSITIVE_INFINITY;
+
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp < min) {
+				min = tmp;
+			}
+		}
+
+		output.setReal(min);
+		return output;
+	}
 }

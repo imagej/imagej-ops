@@ -2,8 +2,8 @@
  * #%L
  * ImageJ OPS: a framework for reusable algorithms.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,50 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
-import java.util.Iterator;
-
-import net.imagej.ops.statistics.FirstOrderOps.MinMax;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpUtils;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
+import net.imagej.ops.statistics.FirstOrderOps.SumOfSquares;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfSquaresIRT;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an {@link Iterable} of type
- * {@link RealType}
+ * Calculate {@link SumOfSquares} on {@link Iterable} of {@link RealType}
  * 
- * @author Martin Horn
+ * @author Christian Dietz
+ * @author Andreas Graumann
+ * 
  */
-@Plugin(type = MinMax.class, name = MinMax.NAME)
-public class DefaultMinMaxOp<T extends RealType<T>> implements MinMax {
-
-	@Parameter(type = ItemIO.INPUT)
-	private Iterable<T> img;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+@Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
+public class DefaultSumOfSquaresIRT<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements
+		SumOfSquaresIRT<I, O>, SumOfSquaresFeature<O> {
 
 	@Override
-	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
+	public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
+	}
 
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
+	@Override
+	protected O safeCompute(Iterable<I> input, O output) {
 
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0)
-				min.set(i);
-			if (max.compareTo(i) < 0)
-				max.set(i);
+		double result = 0;
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			result += (tmp * tmp);
 		}
+
+		output.setReal(result);
+		return output;
 	}
 }

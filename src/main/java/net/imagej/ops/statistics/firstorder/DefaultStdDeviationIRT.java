@@ -28,29 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
-import net.imagej.ops.statistics.FirstOrderOps.Min;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.StdDeviationFeature;
+import net.imagej.ops.statistics.FirstOrderOps.StdDeviation;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-/**
- * Calculate {@link Min} of {@link Iterable} of {@link RealType}.
- * 
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
-public class DefaultMinFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractOutputFunction<Iterable<I>, O> implements MinIRT<I, O>,
-		MinFeature<O> {
+@Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviation.LABEL, priority = Priority.LOW_PRIORITY + 1)
+public class DefaultStdDeviationIRT<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractOutputFunction<Iterable<I>, O> implements StdDeviation,
+		StdDeviationFeature<O> {
 
 	@Override
 	public O createOutput(Iterable<I> in) {
@@ -58,18 +52,20 @@ public class DefaultMinFeature<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	protected O safeCompute(final Iterable<I> input, final O output) {
+	protected O safeCompute(Iterable<I> input, O output) {
 
-		double min = Double.POSITIVE_INFINITY;
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
 
-		for (final RealType<?> val : input) {
-			final double tmp = val.getRealDouble();
-			if (tmp < min) {
-				min = tmp;
-			}
+		for (final RealType<?> rt : input) {
+			final double px = rt.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
 		}
 
-		output.setReal(min);
+		output.setReal((Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1))));
 		return output;
 	}
 }

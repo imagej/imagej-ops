@@ -28,44 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.firstorder.realtype;
+package net.imagej.ops.statistics.firstorder;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfLogsFeature;
-import net.imagej.ops.statistics.FirstOrderOps.SumOfInverses;
-import net.imagej.ops.statistics.FirstOrderOps.SumOfLogs;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfLogsIRT;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.statistics.FirstOrderOps.Max;
+import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculate {@link SumOfInverses} on {@link Iterable} of {@link RealType}
+ * Calculate {@link Max} of {@link Iterable} of {@link RealType}.
  * 
  * @author Christian Dietz
- * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = SumOfLogs.NAME, label = SumOfLogs.LABEL)
-public class DefaultSumOfLogsFeature<T extends RealType<T>, O extends RealType<O>>
-        extends AbstractOutputFunction<Iterable<T>, O> implements
-        SumOfLogsIRT<T, O>, SumOfLogsFeature<O> {
+@Plugin(type = Op.class, name = Max.NAME, label = MaxFeature.LABEL, priority = Priority.LOW_PRIORITY)
+public class DefaultMaxIRT<I extends RealType<I>, O extends RealType<O>>
+        extends AbstractOutputFunction<Iterable<I>, O> implements MaxIRT<I, O>,
+        MaxFeature<O> {
 
     @Override
-    public O createOutput(Iterable<T> in) {
-        return OpUtils.<O> cast(new DoubleType());
+    protected O safeCompute(Iterable<I> input, O output) {
+
+        double max = -Double.MAX_VALUE;
+
+        for (final RealType<?> val : input) {
+            final double tmp = val.getRealDouble();
+            if (tmp > max) {
+                max = tmp;
+            }
+        }
+
+        output.setReal(max);
+        return output;
     }
 
     @Override
-    protected O safeCompute(Iterable<T> input, O output) {
-
-        double result = 0.0;
-        for (final RealType<?> type : input) {
-            result += Math.log(type.getRealDouble());
-        }
-        output.setReal(result);
-        return output;
+    public O createOutput(Iterable<I> in) {
+        return OpUtils.<O> cast(new DoubleType());
     }
 }
