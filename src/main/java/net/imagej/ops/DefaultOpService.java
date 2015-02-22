@@ -40,7 +40,6 @@ import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
 import org.scijava.module.Module;
-import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 import org.scijava.module.ModuleService;
 import org.scijava.plugin.AbstractPTService;
@@ -144,51 +143,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return sorted;
 	}
 
-	@Override
-	public String help(final String name) {
-		return help(matcher.findCandidates(new OpRef<Op>(name)));
-	}
-
-	@Override
-	public <OP extends Op> String help(final Class<OP> type) {
-		return help(matcher.findCandidates(new OpRef<OP>(type)));
-	}
-
-	@Override
-	public String help(final Op op) {
-		return help(Collections.singleton(info(op)));
-	}
-
-	// TODO: Convert help methods into a proper op.
-	private <OP extends Op> String help(List<OpCandidate<OP>> candidates) {
-		final ArrayList<ModuleInfo> infos = new ArrayList<ModuleInfo>();
-			for (final OpCandidate<OP> candidate : candidates) {
-				infos.add(candidate.getInfo());
-			}
-		return help(infos);
-	}
-
-	private String help(final Collection<? extends ModuleInfo> infos) {
-		if (infos.size() == 0) {
-			return "No such operation.";
-		}
-
-		final StringBuilder sb = new StringBuilder("Available operations:");
-		for (final ModuleInfo info : infos) {
-			sb.append("\n\t" + OpUtils.opString(info));
-		}
-
-		if (infos.size() == 1) {
-			final ModuleInfo info = infos.iterator().next();
-			final String description = info.getDescription();
-			if (description != null && !description.isEmpty()) {
-				sb.append("\n\n" + description);
-			}
-		}
-
-		return sb.toString();
-	}
-
 	// -- Operation shortcuts --
 
 	@Override
@@ -259,6 +213,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object gaussKernel(Object... args) {
 		return run("gausskernel", args);
+	}
+
+	@Override
+	public Object help(Object... args) {
+		return run(Ops.Help.NAME, args);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ ops = ```
 	[name: "fftsize",     iface: "FFTSize"],
 	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],
 	[name: "gausskernel", iface: "GaussKernel"],
+	[name: "help",        iface: "Help"],
 	[name: "histogram",   iface: "Histogram"],
 	[name: "identity",    iface: "Identity"],
 	[name: "ifft",        iface: "IFFT"],

@@ -157,15 +157,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the names of all available operations. */
 	Collection<String> ops();
 
-	/** Gets documentation for the operations with the given name. */
-	String help(String name);
-
-	/** Gets documentation for the operations of the given type. */
-	<OP extends Op> String help(Class<OP> type);
-
-	/** Gets documentation for the given {@link Op}. */
-	String help(Op op);
-
 	// -- Operation shortcuts --
 
 	public @interface BuiltIn {
@@ -213,6 +204,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	Object gaussKernel(Object... args);
+
+	/** Executes the "help" operation on the given arguments. */
+	Object help(Object... args);
 
 	/** Executes the "histogram" operation on the given arguments. */
 	Object histogram(Object... args);
