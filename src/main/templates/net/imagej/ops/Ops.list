@@ -44,6 +44,25 @@ ops = ```
 ]
 ```
 
+[LogicOps.java]
+className = "LogicOps"
+namespace = "logic"
+authors = ["Curtis Rueden"]
+ops = ```
+[
+	[name: "and",                iface: "And"],
+	[name: "equal",              iface: "Equal"],
+	[name: "greaterthan",        iface: "GreaterThan",         aliases: ["gt"]],
+	[name: "greaterthanorequal", iface: "GreaterThanOrEqual",  aliases: ["gtoe"]],
+	[name: "lessthan",           iface: "LessThan",            aliases: ["lt"]],
+	[name: "lessthanorequal",    iface: "LessThanOrEqual",     aliases: ["ltoe"]],
+	[name: "not",                iface: "Not"],
+	[name: "notequal",           iface: "NotEqual"],
+	[name: "or",                 iface: "Or"],
+	[name: "xor",                iface: "Xor"]
+]
+```
+
 [MathOps.java]
 className = "MathOps"
 namespace = "math"
