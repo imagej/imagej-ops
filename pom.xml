@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>5.9.0</version>
+		<version>5.10.0</version>
 		<relativePath />
 	</parent>
 
@@ -15,6 +15,10 @@
 	<name>ImageJ Operations</name>
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
 	<inceptionYear>2014</inceptionYear>
+
+	<properties>
+		<scijava-expression-parser.version>2.0.0</scijava-expression-parser.version>
+	</properties>
 
 	<developers>
 		<developer>
@@ -166,6 +170,10 @@
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-expression-parser</artifactId>
 		</dependency>
 
 		<!-- Third-party dependencies -->
