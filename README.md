@@ -36,8 +36,8 @@ For more details, see these tutorials:
 Working example
 ---------------
 
-Try this Jython script in
-[ImageJ2's Script Editor](http://developer.imagej.net/downloads)!
+Try this Jython script in ImageJ's
+[Script Editor](http://imagej.net/Script_Editor)!
 
 ```python
 # @ImageJ ij
@@ -78,9 +78,9 @@ We welcome [pull requests](https://help.github.com/articles/using-pull-requests)
 * Use an
   [existing op](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
   as a starting point
-* Use [ImageJ code style](http://developer.imagej.net/coding-style)
+* Use [ImageJ code style](http://imagej.net/Coding_style)
 * Use
   [small](https://www.crealytics.de/blog/2010/07/09/5-reasons-keeping-git-commits-small-admin/),
   [well-written](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
   commits
-* Use a [topic branch](http://fiji.sc/Git_topic_branches)
+* Use a [topic branch](http://imagej.net/Git_topic_branches)
