@@ -11,6 +11,7 @@ ops = ```
 	[name: "crop",        iface: "Crop",           aliases: ["slice"]],
 	[name: "deconvolve",  iface: "Deconvolve"],
 	[name: "equation",    iface: "Equation"],
+	[name: "eval",        iface: "Eval"],
 	[name: "fft",         iface: "FFT"],
 	[name: "fftsize",     iface: "FFTSize"],
 	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],

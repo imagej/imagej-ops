@@ -202,6 +202,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "equation" operation on the given arguments. */
 	Object equation(Object... args);
 
+	/** Executes the "eval" operation on the given arguments. */
+	Object eval(Object... args);
+
 	/** Executes the "fft" operation on the given arguments. */
 	Object fft(Object... args);
 

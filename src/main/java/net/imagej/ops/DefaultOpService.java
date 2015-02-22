@@ -242,6 +242,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object eval(Object... args) {
+		return run(Ops.Eval.NAME, args);
+	}
+
+	@Override
 	public Object fft(Object... args) {
 		return run("fft", args);
 	}
