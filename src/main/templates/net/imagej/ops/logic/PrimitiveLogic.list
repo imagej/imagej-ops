@@ -1,0 +1,26 @@
+# Generated unary and binary logical ops with primitive types.
+
+[PrimitiveLogic.java]
+types = ```
+[
+	[name: "Boolean", primitive: "boolean", code: "b", priority: 0.5],
+	[name: "Integer", primitive: "int",     code: "i", priority: 0.4],
+	[name: "Long",    primitive: "long",    code: "l", priority: 0.3],
+	[name: "Float",   primitive: "float",   code: "f", priority: 0.2],
+	[name: "Double",  primitive: "double",  code: "d", priority: 0.1]
+]
+```
+ops = ```
+[
+	[name: "And",                operator: "&&", unary: false, aliases: false, codes: "b",     verbs: "computes the logical AND (&&) of"],
+	[name: "Equal",              operator: "==", unary: false, aliases: false, codes: "bilfd", verbs: "tests for equality (==) between"],
+	[name: "GreaterThan",        operator: ">",  unary: false, aliases: true,  codes:  "ilfd", verbs: "performs a greater-than (>) comparison on"],
+	[name: "GreaterThanOrEqual", operator: ">=", unary: false, aliases: true,  codes:  "ilfd", verbs: "performs a greater-than-or-equal (>=) comparison on"],
+	[name: "LessThan",           operator: "<",  unary: false, aliases: true,  codes:  "ilfd", verbs: "performs a less-than (<) comparison on"],
+	[name: "LessThanOrEqual",    operator: "<=", unary: false, aliases: true,  codes:  "ilfd", verbs: "performs a less-than-or-equal (<=) comparison on"],
+	[name: "Not",                operator: "!",  unary: true,  aliases: false, codes: "b",     verbs: "computes the logical NOT (!) of"],
+	[name: "NotEqual",           operator: "!=", unary: false, aliases: false, codes: "bilfd", verbs: "tests for inequality (!=) between"],
+	[name: "Or",                 operator: "||", unary: false, aliases: false, codes: "b",     verbs: "computes the logical OR (||) of"],
+	[name: "Xor",                operator: "^",  unary: false, aliases: false, codes: "b",     verbs: "computes the logical XOR (^) of"]
+]
+```

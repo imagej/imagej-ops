@@ -1,0 +1,97 @@
+# Unit tests for the unary and binary logical ops with primitive args.
+
+[TestPrimitiveLogic.java]
+types = ```
+[
+	B: [name: "Boolean", primitive: "boolean"],
+	D: [name: "Double",  primitive: "double"],
+	F: [name: "Float",   primitive: "float"],
+	I: [name: "Integer", primitive: "int"],
+	L: [name: "Long",    primitive: "long"]
+]
+```
+tests = ```
+[
+	[op: "And",                code: "B", result: "false", args: "false, false"],
+	[op: "And",                code: "B", result: "false", args: "false, true"],
+	[op: "And",                code: "B", result: "false", args: "true, false"],
+	[op: "And",                code: "B", result: "true",  args: "true, true"],
+
+	[op: "GreaterThan",        code: "I", result: "true",  args: "2, 1"],
+	[op: "GreaterThan",        code: "I", result: "false", args: "2, 2"],
+	[op: "GreaterThan",        code: "I", result: "false", args: "2, 3"],
+
+	[op: "GreaterThan",        code: "L", result: "true",  args: "5L, 4L"],
+	[op: "GreaterThan",        code: "L", result: "false", args: "5L, 5L"],
+	[op: "GreaterThan",        code: "L", result: "false", args: "5L, 6L"],
+
+	[op: "GreaterThan",        code: "F", result: "true",  args: "8f, 7f"],
+	[op: "GreaterThan",        code: "F", result: "false", args: "8f, 8f"],
+	[op: "GreaterThan",        code: "F", result: "false", args: "8f, 9f"],
+
+	[op: "GreaterThan",        code: "D", result: "true",  args: "11d, 10d"],
+	[op: "GreaterThan",        code: "D", result: "false", args: "11d, 11d"],
+	[op: "GreaterThan",        code: "D", result: "false", args: "11d, 12d"],
+
+	[op: "GreaterThanOrEqual", code: "I", result: "true",  args: "2, 1"],
+	[op: "GreaterThanOrEqual", code: "I", result: "true",  args: "2, 2"],
+	[op: "GreaterThanOrEqual", code: "I", result: "false", args: "2, 3"],
+
+	[op: "GreaterThanOrEqual", code: "L", result: "true",  args: "5L, 4L"],
+	[op: "GreaterThanOrEqual", code: "L", result: "true",  args: "5L, 5L"],
+	[op: "GreaterThanOrEqual", code: "L", result: "false", args: "5L, 6L"],
+
+	[op: "GreaterThanOrEqual", code: "F", result: "true",  args: "8f, 7f"],
+	[op: "GreaterThanOrEqual", code: "F", result: "true",  args: "8f, 8f"],
+	[op: "GreaterThanOrEqual", code: "F", result: "false", args: "8f, 9f"],
+
+	[op: "GreaterThanOrEqual", code: "D", result: "true",  args: "11d, 10d"],
+	[op: "GreaterThanOrEqual", code: "D", result: "true",  args: "11d, 11d"],
+	[op: "GreaterThanOrEqual", code: "D", result: "false", args: "11d, 12d"],
+
+	[op: "LessThan",           code: "I", result: "false", args: "2, 1"],
+	[op: "LessThan",           code: "I", result: "false", args: "2, 2"],
+	[op: "LessThan",           code: "I", result: "true",  args: "2, 3"],
+
+	[op: "LessThan",           code: "L", result: "false", args: "5L, 4L"],
+	[op: "LessThan",           code: "L", result: "false", args: "5L, 5L"],
+	[op: "LessThan",           code: "L", result: "true",  args: "5L, 6L"],
+
+	[op: "LessThan",           code: "F", result: "false", args: "8f, 7f"],
+	[op: "LessThan",           code: "F", result: "false", args: "8f, 8f"],
+	[op: "LessThan",           code: "F", result: "true",  args: "8f, 9f"],
+
+	[op: "LessThan",           code: "D", result: "false", args: "11d, 10d"],
+	[op: "LessThan",           code: "D", result: "false", args: "11d, 11d"],
+	[op: "LessThan",           code: "D", result: "true",  args: "11d, 12d"],
+
+	[op: "LessThanOrEqual",    code: "I", result: "false", args: "2, 1"],
+	[op: "LessThanOrEqual",    code: "I", result: "true",  args: "2, 2"],
+	[op: "LessThanOrEqual",    code: "I", result: "true",  args: "2, 3"],
+
+	[op: "LessThanOrEqual",    code: "L", result: "false", args: "5L, 4L"],
+	[op: "LessThanOrEqual",    code: "L", result: "true",  args: "5L, 5L"],
+	[op: "LessThanOrEqual",    code: "L", result: "true",  args: "5L, 6L"],
+
+	[op: "LessThanOrEqual",    code: "F", result: "false", args: "8f, 7f"],
+	[op: "LessThanOrEqual",    code: "F", result: "true",  args: "8f, 8f"],
+	[op: "LessThanOrEqual",    code: "F", result: "true",  args: "8f, 9f"],
+
+	[op: "LessThanOrEqual",    code: "D", result: "false", args: "11d, 10d"],
+	[op: "LessThanOrEqual",    code: "D", result: "true",  args: "11d, 11d"],
+	[op: "LessThanOrEqual",    code: "D", result: "true",  args: "11d, 12d"],
+
+	[op: "Not",                code: "B", result: "true",  args: "false"],
+	[op: "Not",                code: "B", result: "false", args: "true"],
+
+	[op: "Or",                 code: "B", result: "false", args: "false, false"],
+	[op: "Or",                 code: "B", result: "true",  args: "false, true"],
+	[op: "Or",                 code: "B", result: "true",  args: "true, false"],
+	[op: "Or",                 code: "B", result: "true",  args: "true, true"],
+
+	[op: "Xor",                code: "B", result: "false", args: "false, false"],
+	[op: "Xor",                code: "B", result: "true",  args: "false, true"],
+	[op: "Xor",                code: "B", result: "true",  args: "true, false"],
+	[op: "Xor",                code: "B", result: "false", args: "true, true"]
+]
+```
