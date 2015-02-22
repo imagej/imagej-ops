@@ -87,6 +87,7 @@ ops = ```
 	[name: "arctan",             iface: "Arctan"],
 	[name: "arctanh",            iface: "Arctanh"],
 	[name: "ceil",               iface: "Ceil"],
+	[name: "complement",         iface: "Complement",          aliases: ["comp", "not"]],
 	[name: "copy",               iface: "Copy"],
 	[name: "cos",                iface: "Cos"],
 	[name: "cosh",               iface: "Cosh"],

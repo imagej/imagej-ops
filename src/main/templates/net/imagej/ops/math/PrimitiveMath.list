@@ -32,6 +32,7 @@ ops = ```
 	[name: "Max",                function: "Math.max",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the maximum of"],
 	[name: "Min",                function: "Math.min",    unary: false, aliases: false, codes: "ilfd", verbs: "computes the minimum of"],
 	[name: "Power",              function: "Math.pow",    unary: false, aliases: false, codes:    "d", verbs: "exponentiate"],
+	[name: "Complement",         operator: "~",           unary: true,  aliases: true,  codes: "il",   verbs: "computes the bitwise complement (~) of"],
 	[name: "Negate",             operator: "-",           unary: true,  aliases: false, codes: "ilfd", verbs: "negates (-)"],
 	[name: "Abs",                function: "Math.abs",    unary: true,  aliases: false, codes: "ilfd", verbs: "computes the absolute value of"],
 	[name: "Arccos",             function: "Math.acos",   unary: true,  aliases: false, codes:    "d", verbs: "computes the arccosine of"],
