@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.PowerConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.Power.NAME)
 public class RealPowerConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.PowerConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.Power
 {
 
 	@Parameter

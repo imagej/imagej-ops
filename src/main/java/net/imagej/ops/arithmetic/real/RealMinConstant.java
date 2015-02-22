@@ -48,9 +48,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.MinConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.Min.NAME)
 public class RealMinConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.MinConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.Min
 {
 
 	@Parameter

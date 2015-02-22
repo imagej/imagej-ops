@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.MaxConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.Max.NAME)
 public class RealMaxConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.MaxConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.Max
 {
 
 	@Parameter

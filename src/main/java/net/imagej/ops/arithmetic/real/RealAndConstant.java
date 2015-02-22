@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.AndConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.And.NAME)
 public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.AndConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.And
 {
 
 	@Parameter

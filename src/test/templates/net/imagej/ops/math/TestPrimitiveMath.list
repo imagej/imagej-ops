@@ -53,17 +53,17 @@ tests = ```
 	[op: "UnsignedRightShift", code: "I", result: "0x195fd",               args: "0xcafebabe, 15"],
 	[op: "UnsignedRightShift", code: "L", result: "0x17ddf757dL",          args: "0xbeefbabedeadcafeL, 31"],
 
-	[op: "MaxConstant",        code: "D", result: "1.6",                   args: "1.6, 1.55"],
-	[op: "MaxConstant",        code: "F", result: "-3.2f",                 args: "-4.8f, -3.2f"],
-	[op: "MaxConstant",        code: "I", result: "8",                     args: "3, 8"],
-	[op: "MaxConstant",        code: "L", result: "987654321123456789L",   args: "123456789987654321L, 987654321123456789L"],
+	[op: "Max",                code: "D", result: "1.6",                   args: "1.6, 1.55"],
+	[op: "Max",                code: "F", result: "-3.2f",                 args: "-4.8f, -3.2f"],
+	[op: "Max",                code: "I", result: "8",                     args: "3, 8"],
+	[op: "Max",                code: "L", result: "987654321123456789L",   args: "123456789987654321L, 987654321123456789L"],
 
-	[op: "MinConstant",        code: "D", result: "1.55",                  args: "1.6, 1.55"],
-	[op: "MinConstant",        code: "F", result: "-4.8f",                 args: "-4.8f, -3.2f"],
-	[op: "MinConstant",        code: "I", result: "11",                    args: "11, 571"],
-	[op: "MinConstant",        code: "L", result: "123456789987654321L",   args: "123456789987654321L, 987654321123456789L"],
+	[op: "Min",                code: "D", result: "1.55",                  args: "1.6, 1.55"],
+	[op: "Min",                code: "F", result: "-4.8f",                 args: "-4.8f, -3.2f"],
+	[op: "Min",                code: "I", result: "11",                    args: "11, 571"],
+	[op: "Min",                code: "L", result: "123456789987654321L",   args: "123456789987654321L, 987654321123456789L"],
 
-	[op: "PowerConstant",      code: "D", result: "8.0",                   args: "2.0, 3.0"],
+	[op: "Power",              code: "D", result: "8.0",                   args: "2.0, 3.0"],
 
 	[op: "Negate",             code: "D", result: "-3.0",                  args: "3.0"],
 	[op: "Negate",             code: "F", result: "3f",                    args: "-3f"],
