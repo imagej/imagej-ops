@@ -30,8 +30,12 @@
 
 package net.imagej.ops.features.sets;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.imagej.ops.Contingent;
-import net.imagej.ops.features.AutoResolvingFeatureSet;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
@@ -69,7 +73,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
 public class Haralick2DFeatureSet<T> extends
-AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
+		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 		Contingent {
 
 	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
@@ -81,7 +85,7 @@ AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 	@Parameter(type = ItemIO.INPUT, label = "Matrix Orientation", choices = {
 			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
-	
+
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
@@ -105,31 +109,6 @@ AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 	public void setNrGrayLevels(int nrGrayLevels) {
 		this.nrGrayLevels = nrGrayLevels;
 	}
-	
-	public Haralick2DFeatureSet() {
-
-		addOutputOp(ASMFeature.class);
-		addOutputOp(ClusterPromenenceFeature.class);
-		addOutputOp(ClusterShadeFeature.class);
-		addOutputOp(ContrastFeature.class);
-		addOutputOp(DifferenceVarianceFeature.class);
-		addOutputOp(DifferenceEntropyFeature.class);
-		addOutputOp(EntropyFeature.class);
-		addOutputOp(ICM1Feature.class);
-		addOutputOp(ICM2Feature.class);
-		addOutputOp(IFDMFeature.class);
-		addOutputOp(SumAverageFeature.class);
-		addOutputOp(SumEntropyFeature.class);
-		addOutputOp(SumVarianceFeature.class);
-		addOutputOp(VarianceFeature.class);
-		addOutputOp(TextureHomogenityFeature.class);
-		addOutputOp(MaxProbabilityFeature.class);
-
-		// add cooc parameters
-		addHiddenOp(CooccurrenceMatrix2D.class, getInput(), nrGrayLevels,
-				distance, orientation, MinFeature.class, MaxFeature.class);
-
-	}
 
 	@Override
 	public boolean conforms() {
@@ -140,5 +119,37 @@ AutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
 		}
 
 		return count == 2;
+	}
+
+	@Override
+	public Set<OpRef<?>> getOutputOps() {
+		
+		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
+		outputOps.add(createOpRef(ASMFeature.class));
+		outputOps.add(createOpRef(ClusterPromenenceFeature.class));
+		outputOps.add(createOpRef(ClusterShadeFeature.class));
+		outputOps.add(createOpRef(ContrastFeature.class));
+		outputOps.add(createOpRef(DifferenceVarianceFeature.class));
+		outputOps.add(createOpRef(DifferenceEntropyFeature.class));
+		outputOps.add(createOpRef(EntropyFeature.class));
+		outputOps.add(createOpRef(ICM1Feature.class));
+		outputOps.add(createOpRef(ICM2Feature.class));
+		outputOps.add(createOpRef(IFDMFeature.class));
+		outputOps.add(createOpRef(SumAverageFeature.class));
+		outputOps.add(createOpRef(SumEntropyFeature.class));
+		outputOps.add(createOpRef(SumVarianceFeature.class));
+		outputOps.add(createOpRef(VarianceFeature.class));
+		outputOps.add(createOpRef(TextureHomogenityFeature.class));
+		outputOps.add(createOpRef(MaxProbabilityFeature.class));
+		
+		return outputOps;
+	}
+
+	@Override
+	public Set<OpRef<?>> getHiddenOps() {
+		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
+		hiddenOps.add(createOpRef(CooccurrenceMatrix2D.class, getInput(), nrGrayLevels,
+				distance, orientation, MinFeature.class, MaxFeature.class));
+		return hiddenOps;
 	}
 }

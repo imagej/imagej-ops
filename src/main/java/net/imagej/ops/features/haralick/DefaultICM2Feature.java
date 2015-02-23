@@ -74,7 +74,13 @@ public class DefaultICM2Feature implements ICM2Feature<DoubleType> {
 		res = Math.sqrt(1 - Math.exp(-2
 				* (coochxy[3] - entropy.getOutput().get())));
 		
-		output.set(res);
+		// if NaN
+		if (Double.isNaN(res)) {
+			output.set(0);
+		} else {
+			output.set(res);
+		}
+		
 	}
 
 	@Override

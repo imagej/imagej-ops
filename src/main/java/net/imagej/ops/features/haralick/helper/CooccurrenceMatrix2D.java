@@ -116,8 +116,8 @@ public class CooccurrenceMatrix2D implements CooccurrenceMatrix, Contingent {
 
 		final double localMax = max.getOutput().getRealDouble();
 
-		final int[][] pixels = new int[(int) ii.dimension(dimX)][(int) ii
-				.dimension(dimY)];
+		final int[][] pixels = new int[(int) ii.dimension(dimY)][(int) ii
+				.dimension(dimX)];
 
 		for (int i = 0; i < pixels.length; i++) {
 			Arrays.fill(pixels[i], Integer.MAX_VALUE);
@@ -178,6 +178,6 @@ public class CooccurrenceMatrix2D implements CooccurrenceMatrix, Contingent {
 
 	@Override
 	public boolean conforms() {
-		return ii.numDimensions() == 2;
+		return true;//ii.numDimensions() == 2;
 	}
 }
