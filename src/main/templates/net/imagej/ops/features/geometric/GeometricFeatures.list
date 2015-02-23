@@ -1,5 +1,4 @@
 [GeometricFeatures.java]
-<<<<<<< HEAD
 className = "GeometricFeatures"
 authors = [Christian Dietz, Daniel Seebacher, Andreas Graumann]
 ops = ```
@@ -19,24 +18,5 @@ ops = ```
   [name: "Solidity",	iface: "Solidity"],
   [name: "Convexity",	iface: "Convexity"],
   [name: "Rugosity",	iface: "Rugosity"]
-=======
-ops = ```
-[
-  {name: area, iface: Area},
-  {name: circularity, iface: Circularity},
-  {name: eccentricity, iface: Eccentricity},
-  {name: feret, iface: Feret},
-  {name: feretsangle, iface: FeretsAngle},
-  {name: feretsdiameter, iface: FeretsDiameter},
-  {name: perimeter, iface: Perimeter},
-  {name: majoraxis, iface: MajorAxis},
-  {name: minoraxis, iface: MinorAxis},
-  {name: elongation, iface: Elongation},
-  {name: rectangularity, iface: Rectangularity},
-  {name: roundness, iface: Roundness},
-  {name: solidity, iface: Solidity},
-  {name: convexity, iface: Convexity},
-  {name: rugosity, iface: Rugosity}
->>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 ]
 ```
