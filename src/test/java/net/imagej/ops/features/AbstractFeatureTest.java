@@ -54,6 +54,11 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> empty;
 	protected Img<UnsignedByteType> constant;
 	protected Img<UnsignedByteType> random;
+	
+	protected Img<UnsignedByteType> empty3d;
+	protected Img<UnsignedByteType> constant3d;
+	protected Img<UnsignedByteType> random3d;
+	
 	protected Img<UnsignedByteType> ellipse;
 	protected Img<UnsignedByteType> rotatedEllipse;
 
@@ -63,10 +68,15 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	public void setup() {
 		ImageGenerator dataGenerator = new ImageGenerator(SEED);
 		long[] dim = new long[] { 100, 100 };
+		long[] dim3 = new long[] {100, 100, 30};
 
 		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
 		constant = dataGenerator.getConstantUnsignedByteImg(dim, 15);
 		random = dataGenerator.getRandomUnsignedByteImg(dim);
+		
+		empty3d = dataGenerator.getEmptyUnsignedByteImg(dim3);
+		constant3d = dataGenerator.getConstantUnsignedByteImg(dim3, 15);
+		random3d = dataGenerator.getRandomUnsignedByteImg(dim3);
 
 		double[] offset = new double[] { 0.0, 0.0 };
 		double[] radii = new double[] { 20, 40 };

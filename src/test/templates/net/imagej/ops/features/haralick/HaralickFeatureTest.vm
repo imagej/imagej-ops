@@ -37,7 +37,8 @@ import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imagej.ops.features.haralick.HaralickFeatures;
-import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix;
+import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix2D;
+import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix3D;
 import net.imagej.ops.statistics.HaralickOps.*;
 import net.imagej.ops.features.ResolvedOpSet;
 import net.imglib2.img.Img;
@@ -49,15 +50,21 @@ import org.junit.Test;
 /**
  * Testing implementations of {@link HaralickFeatures}
  * 
+ * @author Andreas Graumann (University of Konsanz)
  * @author Christian Dietz (University of Konstanz)
  */
 public class HaralickFeatureTest extends AbstractFeatureTest {
 
-	private OpRef<CooccurrenceMatrix> matrix;
+	private OpRef<CooccurrenceMatrix2D> matrix2d;
+	private OpRef<CooccurrenceMatrix3D> matrix3d;
 
 	{
-		matrix = new OpRef<CooccurrenceMatrix>(CooccurrenceMatrix.class,
+		matrix2d = new OpRef<CooccurrenceMatrix2D>(CooccurrenceMatrix2D.class,
 				Img.class, 8, 1, "HORIZONTAL", MinFeature.class,
+				MaxFeature.class);
+				
+		matrix3d = new OpRef<CooccurrenceMatrix3D>(CooccurrenceMatrix3D.class,
+				Img.class, 8, 1, "HORIZONTAL_DIAGONAL", MinFeature.class,
 				MaxFeature.class);
 	}
 
@@ -78,17 +85,40 @@ public class HaralickFeatureTest extends AbstractFeatureTest {
 		final ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.resolve(
 				empty, feature, matrix);
 			
-		assertEquals(${op.empty}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
+		assertEquals(${op.empty2d}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
 				.get(feature)).getOutput().get(),
 				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "empty2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(empty).get(feature)).getOutput().get());
 
-		assertEquals(${op.random}, ((OutputOp<DoubleType>) resolvedSet.compute(random)
+		assertEquals(${op.random2d}, ((OutputOp<DoubleType>) resolvedSet.compute(random)
 				.get(feature)).getOutput().get(),
 				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "random2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(random).get(feature)).getOutput().get());
 
-		assertEquals(${op.constant}, ((OutputOp<DoubleType>) resolvedSet.compute(constant)
+		assertEquals(${op.constant2d}, ((OutputOp<DoubleType>) resolvedSet.compute(constant)
 				.get(feature)).getOutput().get(),
 				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "constant2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(constant).get(feature)).getOutput().get());
+		
+		
+		resolvedSet = fs.resolve(
+				empty3d, feature, matrix3d);
+			
+		assertEquals(${op.empty3d}, ((OutputOp<DoubleType>) resolvedSet.compute(empty3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "empty3d: " + ((OutputOp<DoubleType>) resolvedSet.compute(empty3d).get(feature)).getOutput().get());
+
+		assertEquals(${op.random3d}, ((OutputOp<DoubleType>) resolvedSet.compute(random3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "random3d: " + ((OutputOp<DoubleType>) resolvedSet.compute(random3d).get(feature)).getOutput().get());
+		
+
+		assertEquals(${op.constant3d}, ((OutputOp<DoubleType>) resolvedSet.compute(constant3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "constant3d: " +  ((OutputOp<DoubleType>) resolvedSet.compute(constant3d).get(feature)).getOutput().get());
 		
 	}
 #end
