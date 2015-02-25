@@ -63,10 +63,18 @@ public class DefaultAutoResolvingFeatureSet<I, O> extends
 	}
 
 	public <OP extends Op> void addHiddenOp(Class<OP> type, Object... params) {
-		hiddenOps.add(new OpRef<OP>(type, params));
+		addHiddenOp(new OpRef<OP>(type, params));
 	}
 
 	public <OP extends Op> void addOutputOp(Class<OP> type, Object... params) {
-		hiddenOps.add(new OpRef<OP>(type, params));
+		addOutputOp(new OpRef<OP>(type, params));
+	}
+
+	public void addOutputOp(OpRef<?> ref) {
+		outputOps.add(ref);
+	}
+
+	public void addHiddenOp(OpRef<?> ref) {
+		hiddenOps.add(ref);
 	}
 }
