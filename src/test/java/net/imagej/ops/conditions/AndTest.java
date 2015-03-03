@@ -40,9 +40,9 @@ public class AndTest extends AbstractOpTest {
 	@Test
 	public void testAnd() {
 		final Condition<?> c1 =
-			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
 		final Condition<?> c2 =
-			(Condition<?>) ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
 
 		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
 		assertSame(result, true);
