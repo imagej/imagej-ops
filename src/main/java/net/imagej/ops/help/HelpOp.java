@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -29,34 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.help;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
+import java.util.Collections;
+
 import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * Gets documentation for the given op.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+@Plugin(type = Op.class, name = Ops.Help.NAME,
+	description = "Gets documentation for the given op.")
+public class HelpOp extends AbstractHelp {
 
 	@Parameter
-	private long constant;
+	private OpService ops;
+
+	@Parameter
+	private Op op;
 
 	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+	public void run() {
+		help(Collections.singleton(ops.info(op)));
 	}
+
 }

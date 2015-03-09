@@ -1,10 +1,9 @@
-
 /*
  * #%L
- * ImageJ software for multidimensional image processing and analysis.
+ * SciJava mathematical expression parser.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2015 Board of Regents of the University of
+ * Wisconsin-Madison.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,34 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import java.io.IOException;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.eval.OpEvaluator;
+
+import org.scijava.Context;
+import org.scijava.sjep.eval.EvaluatorConsole;
 
 /**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * Launches a console-based, OPS-driven expression evaluator.
+ *
+ * @author Curtis Rueden
+ * @see EvaluatorConsole
  */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+public final class Main {
 
-	@Parameter
-	private long constant;
-
-	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+	private Main() {
+		// Prevent instantiation of utility class.
 	}
+
+	// -- Main method --
+
+	public static void main(final String[] args) throws IOException {
+		final Context context = new Context(OpService.class);
+		final OpService ops = context.getService(OpService.class);
+		new EvaluatorConsole(new OpEvaluator(ops)).showConsole();
+	}
+
 }

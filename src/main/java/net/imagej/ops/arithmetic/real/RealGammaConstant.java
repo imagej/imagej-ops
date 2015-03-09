@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.GammaConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.Gamma.NAME)
 public class RealGammaConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.GammaConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.Gamma
 {
 
 	@Parameter

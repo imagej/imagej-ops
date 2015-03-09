@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -29,34 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.eval;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops.Eval;
+
+import org.junit.Test;
 
 /**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
+ * Tests {@link Eval}.
  * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+public class EvalTest extends AbstractOpTest {
 
-	@Parameter
-	private long constant;
+	@Test
+	public void testMath() {
+		final Map<String, Object> vars = new HashMap<String, Object>();
+		vars.put("a", 2);
+		vars.put("b", 3);
+		vars.put("c", 5);
 
-	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+		assertEquals(7, ops.eval("a+c", vars));
+		assertEquals(3, ops.eval("c-a", vars));
+		assertEquals(6, ops.eval("a*b", vars));
+		assertEquals(2, ops.eval("c/a", vars));
+		assertEquals(1, ops.eval("c%a", vars));
+		assertEquals(17, ops.eval("a+b*c", vars));
 	}
+
 }

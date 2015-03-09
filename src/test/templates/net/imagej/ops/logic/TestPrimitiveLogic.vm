@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -29,34 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import net.imagej.ops.AbstractOpTest;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * Tests the {@link PrimitiveLogic} ops.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+public class TestPrimitiveLogic extends AbstractOpTest {
+#set ($id = 0)
+#foreach ($test in $tests)
+#if ($types.containsKey($test.code))
+#set ($type = $types.get($test.code))
+#set ($className = "$type.name$test.op")
+#set ($id = $id + 1)
 
-	@Parameter
-	private long constant;
-
-	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+	/** Tests {@link PrimitiveLogic.$className}. */
+	@Test
+	public void test$id$className() {
+		final Object result = ops.run(PrimitiveLogic.${className}.class, $test.args);
+		assertTrue(result instanceof Boolean);
+		final boolean value = (Boolean) result;
+		assertEquals($test.result, value);
 	}
+#end
+#end
+
 }

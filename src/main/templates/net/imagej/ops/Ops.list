@@ -11,10 +11,12 @@ ops = ```
 	[name: "crop",        iface: "Crop",           aliases: ["slice"]],
 	[name: "deconvolve",  iface: "Deconvolve"],
 	[name: "equation",    iface: "Equation"],
+	[name: "eval",        iface: "Eval"],
 	[name: "fft",         iface: "FFT"],
 	[name: "fftsize",     iface: "FFTSize"],
 	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],
 	[name: "gausskernel", iface: "GaussKernel"],
+	[name: "help",        iface: "Help"],
 	[name: "histogram",   iface: "Histogram"],
 	[name: "identity",    iface: "Identity"],
 	[name: "ifft",        iface: "IFFT"],
@@ -43,6 +45,25 @@ ops = ```
 ]
 ```
 
+[LogicOps.java]
+className = "LogicOps"
+namespace = "logic"
+authors = ["Curtis Rueden"]
+ops = ```
+[
+	[name: "and",                iface: "And"],
+	[name: "equal",              iface: "Equal"],
+	[name: "greaterthan",        iface: "GreaterThan",         aliases: ["gt"]],
+	[name: "greaterthanorequal", iface: "GreaterThanOrEqual",  aliases: ["gtoe"]],
+	[name: "lessthan",           iface: "LessThan",            aliases: ["lt"]],
+	[name: "lessthanorequal",    iface: "LessThanOrEqual",     aliases: ["ltoe"]],
+	[name: "not",                iface: "Not"],
+	[name: "notequal",           iface: "NotEqual"],
+	[name: "or",                 iface: "Or"],
+	[name: "xor",                iface: "Xor"]
+]
+```
+
 [MathOps.java]
 className = "MathOps"
 namespace = "math"
@@ -53,7 +74,6 @@ ops = ```
 	[name: "add",                iface: "Add",                 aliases: ["sum"]],
 	[name: "addnoise",           iface: "AddNoise"],
 	[name: "and",                iface: "And"],
-	[name: "andconstant",        iface: "AndConstant"],
 	[name: "arccos",             iface: "Arccos"],
 	[name: "arccosh",            iface: "Arccosh"],
 	[name: "arccot",             iface: "Arccot"],
@@ -67,7 +87,7 @@ ops = ```
 	[name: "arctan",             iface: "Arctan"],
 	[name: "arctanh",            iface: "Arctanh"],
 	[name: "ceil",               iface: "Ceil"],
-	[name: "constant",           iface: "Constant"],
+	[name: "complement",         iface: "Complement",          aliases: ["comp", "not"]],
 	[name: "copy",               iface: "Copy"],
 	[name: "cos",                iface: "Cos"],
 	[name: "cosh",               iface: "Cosh"],
@@ -80,7 +100,7 @@ ops = ```
 	[name: "exp",                iface: "Exp"],
 	[name: "expminusone",        iface: "ExpMinusOne"],
 	[name: "floor",              iface: "Floor"],
-	[name: "gammaconstant",      iface: "GammaConstant"],
+	[name: "gamma",              iface: "Gamma"],
 	[name: "gaussianrandom",     iface: "GaussianRandom"],
 	[name: "invert",             iface: "Invert"],
 	[name: "leftshift",          iface: "LeftShift",           aliases: ["lshift"]],
@@ -88,14 +108,13 @@ ops = ```
 	[name: "log2",               iface: "Log2"],
 	[name: "log10",              iface: "Log10"],
 	[name: "logoneplusx",        iface: "LogOnePlusX"],
-	[name: "maxconstant",        iface: "MaxConstant"],
-	[name: "minconstant",        iface: "MinConstant"],
+	[name: "max",                iface: "Max"],
+	[name: "min",                iface: "Min"],
 	[name: "multiply",           iface: "Multiply",            aliases: ["mul", "product"]],
 	[name: "nearestint",         iface: "NearestInt"],
 	[name: "negate",             iface: "Negate"],
 	[name: "or",                 iface: "Or"],
-	[name: "orconstant",         iface: "OrConstant"],
-	[name: "powerconstant",      iface: "PowerConstant"],
+	[name: "power",              iface: "Power",               aliases: ["pow"]],
 	[name: "reciprocal",         iface: "Reciprocal"],
 	[name: "remainder",          iface: "Remainder",           aliases: ["modulus", "mod"]],
 	[name: "rightshift",         iface: "RightShift",          aliases: ["rshift"]],
@@ -117,7 +136,6 @@ ops = ```
 	[name: "uniformrandom",      iface: "UniformRandom"],
 	[name: "unsignedrightshift", iface: "UnsignedRightShift",  aliases: ["urshift"]],
 	[name: "xor",                iface: "Xor"],
-	[name: "xorconstant",        iface: "XorConstant"],
 	[name: "zero",               iface: "Zero"]
 ]
 ```

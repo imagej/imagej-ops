@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -8,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,34 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
- */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+/** Op that tests for inequality between two objects. */
+@Plugin(type = Op.class, name = LogicOps.NotEqual.NAME)
+public class ObjectsNotEqual implements LogicOps.NotEqual {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private boolean result;
 
 	@Parameter
-	private long constant;
+	private Object a;
+
+	@Parameter
+	private Object b;
 
 	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+	public void run() {
+		result = !a.equals(b);
 	}
+
 }

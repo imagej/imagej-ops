@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -29,34 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.eval;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
+import java.util.Map;
+
 import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to the logical AND of the
- * real component of an input real number with a constant value.
+ * Evaluates an expression.
+ * <p>
+ * The expression is parsed using <a
+ * href="https://github.com/scijava/scijava-expression-parser">SJEP</a>, then
+ * evaluated by invoking available ops.
+ * </p>
  * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * @author Curtis Rueden
+ * @see OpEvaluator
  */
-@Plugin(type = Op.class, name = MathOps.And.NAME)
-public class RealAndConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.And
-{
+@Plugin(type = Op.class, name = Ops.Eval.NAME)
+public class DefaultEval implements Ops.Eval {
 
 	@Parameter
-	private long constant;
+	private OpService ops;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Object result;
+
+	@Parameter
+	private String expression;
+
+	@Parameter(required = false)
+	private Map<String, Object> vars;
 
 	@Override
-	public O compute(final I input, final O output) {
-		output.setReal(constant & (long) input.getRealDouble());
-		return output;
+	public void run() {
+		final OpEvaluator e = new OpEvaluator(ops);
+		if (vars != null) e.setAll(vars);
+		result = e.evaluate(expression);
 	}
+
 }

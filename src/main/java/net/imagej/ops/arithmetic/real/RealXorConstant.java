@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.XorConstant.NAME)
+@Plugin(type = Op.class, name = MathOps.Xor.NAME)
 public class RealXorConstant<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.XorConstant
+	extends AbstractStrictFunction<I, O> implements MathOps.Xor
 {
 
 	@Parameter
