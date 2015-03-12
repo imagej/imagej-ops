@@ -40,8 +40,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.CreateImg.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.CreateImg.NAME, priority = Priority.HIGH_PRIORITY)
 public class CreateEmptyImgCopy<V extends NativeType<V>> implements
 	Ops.CreateImg
 {
@@ -54,7 +53,7 @@ public class CreateEmptyImgCopy<V extends NativeType<V>> implements
 
 	@Override
 	public void run() {
-		output =
-			input.factory().create(input, input.firstElement().createVariable());
+		output = input.factory().create(input,
+				input.firstElement().createVariable());
 	}
 }
