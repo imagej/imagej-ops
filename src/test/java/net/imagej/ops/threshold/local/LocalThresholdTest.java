@@ -33,7 +33,7 @@ package net.imagej.ops.threshold.local;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imglib2.algorithm.region.localneighborhood.RectangleShape;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;

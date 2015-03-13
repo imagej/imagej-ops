@@ -37,8 +37,8 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.Map;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.region.localneighborhood.Neighborhood;
-import net.imglib2.algorithm.region.localneighborhood.Shape;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.Shape;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
