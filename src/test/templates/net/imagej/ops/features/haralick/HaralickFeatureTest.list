@@ -16,6 +16,6 @@ ops = ```
   [iface: "SumEntropy",          empty: -0.00000001, random: 2.4348598585, constant: -0.00000001],
   [iface: "SumVariance",         empty: 0.0,         random: 8.0702558821, constant: 0.0],
   [iface: "Variance",            empty: 0.0,           random: 4.0857205362, constant: 0.0]
-
 ]
 ```
+

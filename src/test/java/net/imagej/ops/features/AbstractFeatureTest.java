@@ -54,7 +54,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> empty;
 	protected Img<UnsignedByteType> constant;
 	protected Img<UnsignedByteType> random;
-	
+		
 	protected Img<UnsignedByteType> empty3d;
 	protected Img<UnsignedByteType> constant3d;
 	protected Img<UnsignedByteType> random3d;
