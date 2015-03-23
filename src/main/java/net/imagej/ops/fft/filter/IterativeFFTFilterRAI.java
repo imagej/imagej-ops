@@ -130,12 +130,14 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.
-		// for now just set to constant value
+		// for now just set to original image
 		Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
+		Cursor<I> cIn = Views.iterable(raiExtendedInput).cursor();
 
 		while (c.hasNext()) {
 			c.fwd();
-			c.get().setReal(1.0f);
+			cIn.fwd();
+			c.get().setReal(cIn.get().getRealFloat());
 		}
 
 		createReblurred();
@@ -152,8 +154,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null, fftInput,
-			fftKernel, reblurred, true, false);
+		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null,
+				fftInput, fftKernel, raiExtendedReblurred, true, false);
 	}
 
 	abstract protected void performIteration();
