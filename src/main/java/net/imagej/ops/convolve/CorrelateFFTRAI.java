@@ -70,7 +70,7 @@ public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K ext
 			temp.set(cursorB.get());
 			temp.complexConjugate();
 
-			cursorA.get().mul(cursorB.get());
+			cursorA.get().mul(temp);
 		}
 	}
 }
