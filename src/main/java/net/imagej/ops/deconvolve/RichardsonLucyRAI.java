@@ -67,22 +67,21 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	@Override
 	protected void performIteration() {
 
-		// 1. Reblurred will have allready been created in previous iteration
+		// 1. Create Reblurred (this step will have already been done from the
+		// previous iteration in order to calculate error stats)
 
 		// 2. divide observed image by reblurred
 		inPlaceDivide(raiExtendedReblurred, raiExtendedInput);
 
 		// 3. correlate psf with the output of step 2.
 		ops.run(CorrelateFFTRAI.class, raiExtendedReblurred, null, fftInput,
-			fftKernel, reblurred, true, false);
+			fftKernel, raiExtendedReblurred, true, false);
 
 		// compute estimate -
 		// for standard RL this step will multiply output of correlation step
 		// and current estimate
 		// (Note: ComputeEstimate can be overridden to achieve regularization)
 		ComputeEstimate();
-
-		inPlaceMultiply(output, reblurred);
 
 		// TODO
 		// normalize for non-circulant deconvolution
@@ -134,7 +133,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	public void ComputeEstimate() {
-		inPlaceMultiply(output, reblurred);
+		inPlaceMultiply(raiExtendedEstimate, raiExtendedReblurred);
 	}
 
 }
