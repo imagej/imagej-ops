@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Kurtosis.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Kurtosis.NAME, label = KurtosisFeature.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultKurtosisFeature<O extends RealType<O>> implements
         KurtosisFeature<O> {
 

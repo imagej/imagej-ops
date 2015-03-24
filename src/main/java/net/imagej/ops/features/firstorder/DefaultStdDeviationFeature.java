@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = StdDeviation.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = StdDeviation.NAME, label = StdDeviationFeature.LABEL, priority = Priority.HIGH_PRIORITY)
 public class DefaultStdDeviationFeature<T extends RealType<T>, O extends RealType<O>>
 		implements StdDeviationFeature<O> {
 

@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Moment3AboutMean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Moment3AboutMean.NAME, label = Moment3AboutMeanFeature.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMoment3AboutMeanFeature<T extends RealType<T>, O extends RealType<O>>
 		implements Moment3AboutMeanFeature<O> {
 

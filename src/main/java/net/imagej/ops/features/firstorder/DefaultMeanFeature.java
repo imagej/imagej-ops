@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Mean.NAME, label = MeanFeature.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMeanFeature<I extends RealType<I>, O extends RealType<O>>
 		implements MeanFeature<O> {
 
