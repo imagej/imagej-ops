@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Mean.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Mean.NAME, label = GeometricMeanFeature.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultGeometricMeanFeature implements
 		GeometricMeanFeature<DoubleType> {
 

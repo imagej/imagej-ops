@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz
  * @author Andreas Graumann
  */
-@Plugin(type = Op.class, name = Skewness.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Skewness.NAME, label = SkewnessFeature.LABEL, priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSkewnessFeature<T extends RealType<T>, O extends RealType<O>>
 		implements SkewnessFeature<O> {
 

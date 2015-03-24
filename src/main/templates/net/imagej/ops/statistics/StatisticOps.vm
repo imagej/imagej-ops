@@ -78,7 +78,7 @@ public final class $className {
 	 */
 	public interface $op.iface extends Op {
 		String NAME = "$!{prefix}$op.name";
-		String LABEL = "$!{prefix}$op.iface";
+		String LABEL = "${op.iface}";
 #if ($op.aliases)
 		String ALIASES = "##
 #set ($first = true)
