@@ -89,7 +89,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	// TODO: replace this function with divide op
-	void inPlaceDivide(RandomAccessibleInterval<O> denominatorOutput,
+	protected void inPlaceDivide(RandomAccessibleInterval<O> denominatorOutput,
 		RandomAccessibleInterval<I> numerator)
 	{
 
@@ -117,7 +117,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	// TODO replace with op
-	void inPlaceMultiply(RandomAccessibleInterval<O> inputOutput,
+	protected void inPlaceMultiply(RandomAccessibleInterval<O> inputOutput,
 		RandomAccessibleInterval<O> input)
 	{
 
