@@ -64,7 +64,8 @@ public class DeconvolveTest extends AbstractOpTest {
 		Img<FloatType> convolved = (Img<FloatType>) ops.run("convolve", in, kernel);
 
 		Img<FloatType> deconvolved2 =
-			(Img<FloatType>) ops.run("deconvolve", convolved, kernel, 10);
+			(Img<FloatType>) ops.run("deconvolve.richardsonlucy", convolved, kernel,
+				10);
 
 	}
 
