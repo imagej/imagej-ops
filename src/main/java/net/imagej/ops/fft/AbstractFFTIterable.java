@@ -37,14 +37,14 @@ import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for forward fft implementations.
- *
+ * 
  * @author Brian Northan
  */
 public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends Iterable<T>>
-	extends AbstractOutputFunction<I, O> 
+	extends AbstractOutputFunction<I, O>
 {
 
 	@Parameter
 	protected OpService ops;
-	
+
 }

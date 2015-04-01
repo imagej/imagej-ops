@@ -52,18 +52,17 @@ import net.imglib2.view.Views;
 import net.imglib2.algorithm.fft2.FFTMethods;
 
 /**
- * 
  * Forward FFT that operates on an RAI and wraps FFTMethods.
  * 
  * @author Brian Northan
- * 
  * @param <T>
  * @param <C>
  */
 @Plugin(type = FFT.class, name = FFT.NAME, priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
-		extends
-		AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> {
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
+{
 
 	/**
 	 * generates the out of bounds strategy for the extended area
@@ -74,9 +73,9 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	@Parameter(required = false)
 	protected long[] paddedSize;
 
-	public RandomAccessibleInterval<C> compute(
-			RandomAccessibleInterval<T> input,
-			RandomAccessibleInterval<C> output) {
+	public RandomAccessibleInterval<C> compute(RandomAccessibleInterval<T> input,
+		RandomAccessibleInterval<C> output)
+	{
 
 		RandomAccessibleInterval<T> inputRAI;
 
@@ -93,23 +92,25 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
 
 			if (obf == null) {
-				obf = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+				obf =
+					new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
 						Util.getTypeFromInterval(input).createVariable());
 			}
 
-			Interval inputInterval = FFTMethods.paddingIntervalCentered(input,
-					FinalDimensions.wrap(paddedSize));
+			Interval inputInterval =
+				FFTMethods.paddingIntervalCentered(input, FinalDimensions
+					.wrap(paddedSize));
 
 			inputRAI = Views.interval(Views.extend(input, obf), inputInterval);
 
-		} else {
+		}
+		else {
 			inputRAI = input;
 		}
 
 		// TODO: proper use of Executor service
 		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService service = Executors
-				.newFixedThreadPool(numThreads);
+		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
 
 		FFTMethods.realToComplex(inputRAI, output, 0, false, service);
 

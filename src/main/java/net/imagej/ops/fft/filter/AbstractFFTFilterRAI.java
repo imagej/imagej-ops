@@ -43,14 +43,14 @@ import net.imglib2.type.numeric.RealType;
  * Abstract class for FFT based filters that operate on RAI
  * 
  * @author bnorthan
- * 
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
 public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		implements Op {
+	implements Op
+{
 
 	@Parameter
 	protected OpService ops;
@@ -69,15 +69,15 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	protected RandomAccessibleInterval<K> raiExtendedKernel;
 
 	/**
-	 * Img to be used to store FFTs for input. Size of fftInput must correspond
-	 * to the fft size of raiExtendedInput
+	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
+	 * the fft size of raiExtendedInput
 	 */
 	@Parameter(required = false)
 	protected Img<C> fftInput;
 
 	/**
-	 * Img to be used to store FFTs for kernel. Size of fftKernel must
-	 * correspond to the fft size of raiExtendedKernel
+	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
+	 * to the fft size of raiExtendedKernel
 	 */
 	@Parameter(required = false)
 	protected Img<C> fftKernel;

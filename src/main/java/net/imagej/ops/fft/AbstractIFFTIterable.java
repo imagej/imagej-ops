@@ -37,14 +37,14 @@ import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for inverse fft implementations.
- *
+ * 
  * @author Brian Northan
  */
 public abstract class AbstractIFFTIterable<T, C, I extends Iterable<T>, O extends Iterable<C>>
-	extends AbstractStrictFunction<I, O> 
+	extends AbstractStrictFunction<I, O>
 {
 
 	@Parameter
 	protected OpService ops;
-	
+
 }

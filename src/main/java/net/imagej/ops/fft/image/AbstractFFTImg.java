@@ -45,7 +45,8 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
  * @author Brian Northan
  */
 public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
-		extends AbstractFFTIterable<T, C, I, O> implements FFT {
+	extends AbstractFFTIterable<T, C, I, O> implements FFT
+{
 
 	/**
 	 * size of border to apply in each dimension
@@ -93,7 +94,8 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 
 		if (fast) {
 			computeFFTFastSize(inputSize);
-		} else {
+		}
+		else {
 			computeFFTSmallSize(inputSize);
 		}
 
