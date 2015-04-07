@@ -7,7 +7,7 @@ ops = ```
 	[name: "chunker",     iface: "Chunker"],
 	[name: "convert",     iface: "Convert"],
 	[name: "convolve",    iface: "Convolve"],
-	[name: "correlate",    iface: "Correlate"],
+	[name: "correlate",   iface: "Correlate"],
 	[name: "createimg",   iface: "CreateImg"],
 	[name: "crop",        iface: "Crop",           aliases: ["slice"]],
 	[name: "deconvolve",  iface: "Deconvolve"],
