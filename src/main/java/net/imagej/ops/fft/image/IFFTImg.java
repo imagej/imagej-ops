@@ -47,14 +47,13 @@ import net.imglib2.type.numeric.complex.ComplexFloatType;
  * Inverse FFT op implemented by wrapping FFTMethods.
  * 
  * @author Brian Northan
- * 
  * @param <T>
  * @param <I>
  */
 @Plugin(type = IFFT.class, name = IFFT.NAME, priority = Priority.HIGH_PRIORITY)
-public class IFFTImg<T extends RealType<T>, O extends Img<T>>
-		extends
-		AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O> {
+public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
+	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
+{
 
 	@Override
 	public O compute(Img<ComplexFloatType> input, O output) {

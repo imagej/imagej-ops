@@ -28,19 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops.convolve;
 
-import net.imagej.ops.Ops.IFFT;
-import net.imagej.ops.fft.AbstractIFFTIterable;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 
 /**
- * Abstract superclass for inverse fft implementations that operate on Img<C>.
+ * Correlate op for (@link Img) 
  * 
- * @author Brian Northan
+ * @author bnorthan
+ *
+ * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
-	extends AbstractIFFTIterable<C, T, I, O> implements IFFT
-{
+@Plugin(type = Op.class, name = Ops.Correlate.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		extends AbstractFFTFilterImg<I, O, K, C> implements Contingent {
+
+	/**
+	 * run the filter (CorrelateFFTRAI) on the rais
+	 */
+	@Override
+	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
+			Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval) {
+
+		ops.run(CorrelateFFTRAI.class, raiExtendedInput, raiExtendedKernel,
+				fftImg, fftKernel, output);
+
+	}
+	
+	@Override
+	public boolean conforms() {
+		// TODO: only conforms if the kernel is sufficiently large (else the
+		// naive approach should be used) -> what is a good heuristic??
+		return Intervals.numElements(kernel) > 9;
+	}
 
 }

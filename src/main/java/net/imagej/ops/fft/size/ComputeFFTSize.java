@@ -50,25 +50,21 @@ public class ComputeFFTSize extends AbstractFFTSize {
 
 		if (fast && forward) {
 
-			FFTMethods
-				.dimensionsRealToComplexFast(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsRealToComplexFast(dim, paddedSize, fftSize);
 
 		}
 		else if (!fast && forward) {
-			FFTMethods.dimensionsRealToComplexSmall(dim, paddedSize,
-				fftSize);
+			FFTMethods.dimensionsRealToComplexSmall(dim, paddedSize, fftSize);
 
 		}
 		if (fast && !forward) {
 
-			FFTMethods
-				.dimensionsComplexToRealFast(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsComplexToRealFast(dim, paddedSize, fftSize);
 
 		}
 		else if (!fast && !forward) {
 
-			FFTMethods.dimensionsComplexToRealSmall(dim, paddedSize,
-				fftSize);
+			FFTMethods.dimensionsComplexToRealSmall(dim, paddedSize, fftSize);
 
 		}
 	}

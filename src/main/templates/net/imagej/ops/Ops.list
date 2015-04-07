@@ -7,6 +7,7 @@ ops = ```
 	[name: "chunker",     iface: "Chunker"],
 	[name: "convert",     iface: "Convert"],
 	[name: "convolve",    iface: "Convolve"],
+	[name: "correlate",    iface: "Correlate"],
 	[name: "createimg",   iface: "CreateImg"],
 	[name: "crop",        iface: "Crop",           aliases: ["slice"]],
 	[name: "deconvolve",  iface: "Deconvolve"],
@@ -162,5 +163,15 @@ ops = ```
 	[name: "shanbhag",      iface: "Shanbhag"],
 	[name: "triangle",      iface: "Triangle"],
 	[name: "yen",           iface: "Yen"]
+]
+```
+
+[DeconvolveOps.java]
+className = "DeconvolveOps"
+namespace = "deconvolve"
+authors = ["Brian Northan"]
+ops = ```
+[
+	[name: "richardsonlucy",         iface: "RichardsonLucy"]
 ]
 ```

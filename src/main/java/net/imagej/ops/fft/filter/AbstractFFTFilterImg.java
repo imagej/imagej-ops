@@ -166,7 +166,8 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	}
 
 	/**
-	 * This function is called after the rais and ffts are set up and implements a frequency filter.  
+	 * This function is called after the rais and ffts are set up and implements a
+	 * frequency filter.
 	 * 
 	 * @param raiExtendedInput
 	 * @param raiExtendedKernel

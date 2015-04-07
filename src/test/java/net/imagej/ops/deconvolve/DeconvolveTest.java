@@ -51,21 +51,21 @@ public class DeconvolveTest extends AbstractOpTest {
 		int[] kernelSize = new int[] { 27, 39 };
 
 		// create an input with a small sphere at the center
-		Img<FloatType> in = new ArrayImgFactory<FloatType>().create(size,
-				new FloatType());
+		Img<FloatType> in =
+			new ArrayImgFactory<FloatType>().create(size, new FloatType());
 		placeSphereInCenter(in);
 
 		// create a kernel with a small sphere in the center
-		Img<FloatType> kernel = new ArrayImgFactory<FloatType>().create(
-				kernelSize, new FloatType());
+		Img<FloatType> kernel =
+			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> convolved = (Img<FloatType>) ops.run("convolve", in,
-				kernel);
-		
-		Img<FloatType> deconvolved2 = (Img<FloatType>) ops.run("deconvolve",
-				convolved, kernel,10);
+		Img<FloatType> convolved = (Img<FloatType>) ops.run("convolve", in, kernel);
+
+		Img<FloatType> deconvolved2 =
+			(Img<FloatType>) ops.run("deconvolve.richardsonlucy", convolved, kernel,
+				10);
 
 	}
 
@@ -77,8 +77,8 @@ public class DeconvolveTest extends AbstractOpTest {
 		for (int d = 0; d < img.numDimensions(); d++)
 			center.setPosition(img.dimension(d) / 2, d);
 
-		HyperSphere<FloatType> hyperSphere = new HyperSphere<FloatType>(img,
-				center, 2);
+		HyperSphere<FloatType> hyperSphere =
+			new HyperSphere<FloatType>(img, center, 2);
 
 		for (final FloatType value : hyperSphere) {
 			value.setReal(1);
