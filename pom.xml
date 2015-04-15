@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>imagej-ops</artifactId>
-	<version>0.11.0-SNAPSHOT</version>
+	<version>0.11.0</version>
 
 	<name>ImageJ Operations</name>
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
@@ -122,7 +122,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/imagej/imagej-ops</connection>
 		<developerConnection>scm:git:git@github.com:imagej/imagej-ops</developerConnection>
-		<tag>HEAD</tag>
+		<tag>imagej-ops-0.11.0</tag>
 		<url>https://github.com/imagej/imagej-ops</url>
 	</scm>
 	<issueManagement>
