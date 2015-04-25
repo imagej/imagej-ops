@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = Op.class)
-public class CooccurrenceMatrix3D implements CooccurrenceMatrix, Contingent {
+public class CooccurrenceMatrix3D implements CooccurrenceMatrix {
 
 	public static enum MatrixOrientation {
 		// 2D directions
@@ -216,10 +216,5 @@ public class CooccurrenceMatrix3D implements CooccurrenceMatrix, Contingent {
 	@Override
 	public void setOutput(double[][] output) {
 		this.output = output;
-	}
-
-	@Override
-	public boolean conforms() {
-		return true; // ii.numDimensions() == 3;
 	}
 }
