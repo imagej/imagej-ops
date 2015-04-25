@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  */
 @Plugin(type = Op.class)
-public class CooccurrenceMatrix2D implements CooccurrenceMatrix, Contingent {
+public class CooccurrenceMatrix2D implements CooccurrenceMatrix {
 
 	public static enum MatrixOrientation {
 		DIAGONAL(1, -1), ANTIDIAGONAL(1, 1), HORIZONTAL(1, 0), VERTICAL(0, 1);
@@ -174,10 +174,5 @@ public class CooccurrenceMatrix2D implements CooccurrenceMatrix, Contingent {
 	@Override
 	public void setOutput(double[][] output) {
 		this.output = output;
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;//ii.numDimensions() == 2;
 	}
 }
