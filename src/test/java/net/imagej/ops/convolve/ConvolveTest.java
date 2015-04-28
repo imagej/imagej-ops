@@ -31,9 +31,12 @@
 package net.imagej.ops.convolve;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
+import net.imglib2.RandomAccess;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -48,31 +51,49 @@ import org.junit.Test;
  */
 public class ConvolveTest extends AbstractOpTest {
 
-	/** Tests that the correct convolver is selected. */
+	/** Tests that the correct convolver is selected when using a small kernel. */
 	@Test
 	public void testConvolveMethodSelection() {
 
 		final Img<ByteType> in =
 			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
 				new ByteType());
-		final Img<ByteType> out = in.copy();
 
-		// TODO: rework method selection based on new convolve classes
+		// use a small kernel
+		int[] kernelSize = new int[] { 3, 3 };
+		Img<FloatType> kernel =
+			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
+		RandomAccess<FloatType> kernelRa = kernel.randomAccess();
 
-		// testing for a small kernel
-		/*Img<ByteType> kernel = new ArrayImgFactory<ByteType>().create(
-				new int[] { 3, 3 }, new ByteType());
-		Op op = ops.op("convolve", out, in, kernel);
-		assertSame(ConvolveNaive.class, op.getClass());
+		Op op = ops.op("convolve", in, kernel);
 
-		// testing for a 'bigger' kernel
-		kernel = new ArrayImgFactory<ByteType>().create(new int[] { 10, 10 },
-				new ByteType());
-		op = ops.op("convolve", in, out, kernel);
-		assertSame(ConvolveFourier.class, op.getClass());*/
+		// we should get ConvolveNaive
+		assertSame(ConvolveNaiveImg.class, op.getClass());
+
+		// make sure it runs
+		Img<FloatType> out = (Img<FloatType>) ops.run("convolve", in, kernel);
+
+		assertEquals(out.dimension(0), 20);
+
+		// use a bigger kernel
+		kernelSize = new int[] { 30, 30 };
+		kernel =
+			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
+		kernelRa = kernel.randomAccess();
+
+		op = ops.op("convolve", in, kernel);
+
+		// this time we should get ConvolveFFT
+		assertSame(ConvolveFFTImg.class, op.getClass());
+
+		// make sure it runs
+		out = (Img<FloatType>) ops.run("convolve", in, kernel);
+
+		assertEquals(out.dimension(0), 20);
 
 	}
 
+	/** tests fft based convolve */
 	@Test
 	public void testConvolve() {
 
