@@ -80,8 +80,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultOpService extends AbstractPTService<Op> implements
-	OpService
-{
+		OpService {
 
 	@Parameter
 	private ModuleService moduleService;
@@ -109,8 +108,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <OP extends Op> Object run(final Class<OP> type, final Object... args)
-	{
+	public <OP extends Op> Object run(final Class<OP> type,
+			final Object... args) {
 		final Module module = module(type, args);
 		return run(module);
 	}
@@ -123,14 +122,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Op op(final String name, final Object... args) {
 		final Module module = module(name, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		return (Op) module.getDelegateObject();
 	}
 
 	@Override
 	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		@SuppressWarnings("unchecked")
 		final OP op = (OP) module.getDelegateObject();
 		return op;
@@ -143,8 +144,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <OP extends Op> Module module(final Class<OP> type,
-		final Object... args)
-	{
+			final Object... args) {
 		return matcher.findModule(new OpRef<OP>(type, args));
 	}
 
@@ -166,7 +166,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
 			final String name = info.getName();
-			if (name != null && !name.isEmpty()) operations.add(info.getName());
+			if (name != null && !name.isEmpty())
+				operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list
@@ -208,57 +209,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object createimg(final long... args) {
-		return run(DefaultCreateImg.class, args);
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input) {
-		return (Img<V>) run(CreateEmptyImgCopy.class, input);
-	}
-
-	@Override
-	public <V extends NativeType<V>> ImgPlus<V> createimg(final ImgPlus<V> input)
-	{
-		return (ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
-		final NativeType<V> outType, final Dimensions dims)
-	{
-		return (ImgPlus<V>) run(CreateImgNativeType.class, fac, outType, dims);
-	}
-
-	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
-		final NativeType<V> type)
-	{
-		return (ImgPlus<V>) run(CreateImgDifferentNativeType.class, input, type);
-	}
-
-	@Override
-	public Object crop(final Object... args) {
-		return run(Ops.Crop.NAME, args);
-		}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
-		final V type)
-	{
+			final V type) {
 		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(CreateImgDifferentNativeType.class, input, type);
+		final Img<V> result = (Img<V>) run(CreateImgDifferentNativeType.class,
+				input, type);
 		return result;
 	}
 
 	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
-		final V outType, final Dimensions dims)
-	{
+			final V outType, final Dimensions dims) {
 		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(CreateImgNativeType.class, fac, outType, dims);
+		final Img<V> result = (Img<V>) run(CreateImgNativeType.class, fac,
+				outType, dims);
 		return result;
 	}
 
@@ -271,20 +235,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <V extends Type<V>> Img<V> createimg(final V outType,
-		final long... dims)
-	{
+			final long... dims) {
 		@SuppressWarnings("unchecked")
-		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, outType, dims);
+		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, outType,
+				dims);
 		return result;
 	}
 
 	@Override
 	public <V extends Type<V>> Img<V> createimg(final V outType,
-		final ImgFactory<V> fac, final long... dims)
-	{
+			final ImgFactory<V> fac, final long... dims) {
 		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(DefaultCreateImg.class, outType, fac, dims);
+		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, outType,
+				fac, dims);
 		return result;
 	}
 
@@ -479,19 +442,22 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public LogicNamespace logic() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return logic;
 	}
 
 	@Override
 	public MathNamespace math() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return math;
 	}
 
 	@Override
 	public ThresholdNamespace threshold() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return threshold;
 	}
 
@@ -521,7 +487,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Helper methods - lazy initialization --
 
 	private synchronized void initNamespaces() {
-		if (namespacesReady) return;
+		if (namespacesReady)
+			return;
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();

@@ -31,11 +31,9 @@
 package net.imagej.ops.convolve;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-<<<<<<< HEAD
 import net.imagej.ops.Op;
-=======
->>>>>>> 329ca6c... add and update templates for StatisticOps and Features
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
 import net.imagej.ops.statistics.FirstOrderOps.Sum;
 import net.imglib2.Point;
