@@ -54,7 +54,7 @@ import net.imglib2.util.Intervals;
  * @param <C>
  */
 @Plugin(type = Op.class, name = Ops.Convolve.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
+	priority = Priority.HIGH_PRIORITY)
 public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent
 {

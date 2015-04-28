@@ -52,7 +52,7 @@ import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
  * @param <C>
  */
 @Plugin(type = Op.class, name = Ops.Convolve.NAME,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.LOW_PRIORITY)
 public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends LinearFFTFilterRAI<I, O, K, C>
 {
