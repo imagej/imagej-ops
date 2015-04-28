@@ -78,8 +78,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultOpService extends AbstractPTService<Op> implements
-	OpService
-{
+		OpService {
 
 	@Parameter
 	private ModuleService moduleService;
@@ -107,8 +106,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <OP extends Op> Object run(final Class<OP> type, final Object... args)
-	{
+	public <OP extends Op> Object run(final Class<OP> type,
+			final Object... args) {
 		final Module module = module(type, args);
 		return run(module);
 	}
@@ -121,14 +120,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Op op(final String name, final Object... args) {
 		final Module module = module(name, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		return (Op) module.getDelegateObject();
 	}
 
 	@Override
 	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		@SuppressWarnings("unchecked")
 		final OP op = (OP) module.getDelegateObject();
 		return op;
@@ -141,8 +142,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <OP extends Op> Module module(final Class<OP> type,
-		final Object... args)
-	{
+			final Object... args) {
 		return matcher.findModule(new OpRef<OP>(type, args));
 	}
 
@@ -164,7 +164,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
 			final String name = info.getName();
-			if (name != null && !name.isEmpty()) operations.add(info.getName());
+			if (name != null && !name.isEmpty())
+				operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list
@@ -411,19 +412,22 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public LogicNamespace logic() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return logic;
 	}
 
 	@Override
 	public MathNamespace math() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return math;
 	}
 
 	@Override
 	public ThresholdNamespace threshold() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return threshold;
 	}
 
@@ -453,7 +457,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Helper methods - lazy initialization --
 
 	private synchronized void initNamespaces() {
-		if (namespacesReady) return;
+		if (namespacesReady)
+			return;
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();
