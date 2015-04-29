@@ -32,6 +32,7 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -93,7 +94,12 @@ public class DefaultOpMatchingService extends
 		}
 
 		// narrow down candidates to the exact matches
-		final List<Module> matches = findMatches(candidates);
+		List<Module> matches = findMatches(candidates);
+
+		// No matches were found, so we will try to recapitulate varargs and, if
+		// successful, attempt matching again.
+		if (matches.isEmpty() && condenseArgs(ref)) matches =
+			findMatches(candidates);
 
 		if (matches.size() == 1) {
 			// a single match: return it
@@ -280,6 +286,42 @@ public class DefaultOpMatchingService extends
 			paddedArgs[paddedIndex++] = args[argIndex++];
 		}
 		return paddedArgs;
+	}
+
+	/**
+	 * Attempts to reconstruct a varargs array as the final arg of the given ref.
+	 * If successful, updates the args of the provided {@link OpRef}. Useful to
+	 * counteract erroneous varags expansion due to a varargs parameter in the op
+	 * itself (e.g. passing height and width to <code>create(Object....)</code>)
+	 *
+	 * @return true if the ref's arguments were modified.
+	 */
+	private <OP extends Op> boolean condenseArgs(final OpRef<OP> ref)
+	{
+		final Object[] originalArgs = ref.getArgs();
+		int varArgsCount = 1;
+		final Class<?> lastArgType = originalArgs[originalArgs.length - 1].getClass();
+
+		for (int i = originalArgs.length - 2; i >= 0 &&
+			originalArgs[i].getClass() == lastArgType; i--)
+		{
+			varArgsCount++;
+		}
+
+		if (varArgsCount == 1) return false;
+
+		final Object[] condensedArgs =
+			new Object[originalArgs.length - varArgsCount + 1];
+
+		System.arraycopy(originalArgs, 0, condensedArgs, 0,
+			condensedArgs.length - 1);
+
+		condensedArgs[condensedArgs.length - 1] =
+			Arrays.copyOfRange(originalArgs, originalArgs.length - varArgsCount,
+				originalArgs.length);
+
+		ref.setArgs(condensedArgs);
+		return true;
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */
