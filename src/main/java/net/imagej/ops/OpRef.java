@@ -105,6 +105,11 @@ public class OpRef<OP extends Op> {
 		return args;
 	}
 
+	/** Sets the op's arguments. */
+	public void setArgs(final Object[] args) {
+		this.args = args;
+	}
+
 	/** Gets a label identifying the op's scope (i.e., its type or name). */
 	public String getLabel() {
 		if (type != null) return type.getName();
