@@ -208,36 +208,37 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object createimg(long... args) {
+	public Object createimg(final long... args) {
 		return run(DefaultCreateImg.class, args);
 	}
 
 	@Override
-	public <V extends NativeType<V>> Img<V> createimg(Img<V> input) {
+	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input) {
 		return (Img<V>) run(CreateEmptyImgCopy.class, input);
 	}
 
 	@Override
-	public <V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input) {
+	public <V extends NativeType<V>> ImgPlus<V> createimg(final ImgPlus<V> input)
+	{
 		return (ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
 	}
 
 	@Override
-	public <V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
-		NativeType<V> outType, Dimensions dims)
+	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
+		final NativeType<V> outType, final Dimensions dims)
 	{
 		return (ImgPlus<V>) run(CreateImgNativeType.class, fac, outType, dims);
 	}
 
 	@Override
-	public <V extends NativeType<V>> Img<V> createimg(Img<V> input,
-		NativeType<V> type)
+	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
+		final NativeType<V> type)
 	{
 		return (ImgPlus<V>) run(CreateImgDifferentNativeType.class, input, type);
 	}
 
 	@Override
-	public Object crop(Object... args) {
+	public Object crop(final Object... args) {
 		return run(Ops.Crop.NAME, args);
 		}
 
@@ -415,6 +416,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object multiply(final Object... args) {
+		return run(MathOps.Multiply.NAME, args);
+	}
+
+	@Override
 	public Object normalize(final Object... args) {
 		return run(Ops.Normalize.NAME, args);
 	}
@@ -450,7 +456,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object subtract(Object... args) {
+	public Object subtract(final Object... args) {
 		return run(MathOps.Subtract.NAME, args);
 	}
 
