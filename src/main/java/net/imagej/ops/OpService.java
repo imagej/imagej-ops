@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -45,7 +45,7 @@ import org.scijava.plugin.PTService;
 
 /**
  * Interface for services that manage and execute {@link Op}s.
- * 
+ *
  * @author Curtis Rueden
  */
 public interface OpService extends PTService<Op>, ImageJService {
@@ -54,7 +54,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * Executes the given operation with the specified arguments. The best
 	 * {@link Op} implementation to use will be selected automatically from the
 	 * operation name and arguments.
-	 * 
+	 *
 	 * @param name The operation to execute. If multiple {@link Op}s share this
 	 *          name, then the best {@link Op} implementation to use will be
 	 *          selected automatically from the name and arguments.
@@ -70,7 +70,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * Executes the operation of the given type with the specified arguments. The
 	 * best {@link Op} implementation to use will be selected automatically from
 	 * the operation type and arguments.
-	 * 
+	 *
 	 * @param type The {@link Class} of the operation to execute. If multiple
 	 *          {@link Op}s share this type (e.g., the type is an interface which
 	 *          multiple {@link Op}s implement), then the best {@link Op}
@@ -86,7 +86,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/**
 	 * Executes the given {@link Op} with the specified arguments.
-	 * 
+	 *
 	 * @param op The {@link Op} to execute.
 	 * @param args The operation's arguments.
 	 * @return The result of the execution. If the {@link Op} has no outputs, this
@@ -99,7 +99,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * populating its inputs.
-	 * 
+	 *
 	 * @param name The name of the operation. If multiple {@link Op}s share this
 	 *          name, then the best {@link Op} implementation to use will be
 	 *          selected automatically from the name and arguments.
@@ -111,7 +111,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/**
 	 * Gets the best {@link Op} to use for the given operation type and arguments,
 	 * populating its inputs.
-	 * 
+	 *
 	 * @param type The {@link Class} of the operation. If multiple {@link Op}s
 	 *          share this type (e.g., the type is an interface which multiple
 	 *          {@link Op}s implement), then the best {@link Op} implementation to
@@ -124,7 +124,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
-	 * 
+	 *
 	 * @param name The name of the operation.
 	 * @param args The operation's arguments.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
@@ -135,7 +135,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/**
 	 * Gets the best {@link Op} to use for the given operation type and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
-	 * 
+	 *
 	 * @param type The required type of the operation. If multiple {@link Op}s
 	 *          share this type (e.g., the type is an interface which multiple
 	 *          {@link Op}s implement), then the best {@link Op} implementation to
@@ -148,7 +148,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/**
 	 * Wraps the given {@link Op} as a {@link Module}, populating its inputs.
-	 * 
+	 *
 	 * @param op The {@link Op} to wrap and populate.
 	 * @param args The operation's arguments.
 	 * @return A {@link Module} wrapping the {@link Op}, with populated inputs,
