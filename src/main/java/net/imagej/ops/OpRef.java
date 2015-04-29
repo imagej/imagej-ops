@@ -114,6 +114,23 @@ public class OpRef<OP extends Op> {
 	// -- Object methods --
 
 	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getLabel());
+		sb.append("(");
+		boolean first = true;
+		for (Object arg : args) {
+			if (first) first = false;
+			else sb.append(", ");
+			sb.append(arg.getClass().getSimpleName());
+
+		}
+		sb.append(")");
+
+		return sb.toString();
+	}
+
+	@Override
 	public int hashCode() {
 		int hash = 31;
 		for (final Object o : args) {
