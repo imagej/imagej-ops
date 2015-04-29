@@ -33,6 +33,11 @@ package net.imagej.ops;
 import java.util.Collection;
 
 import net.imagej.ImageJService;
+import net.imagej.ImgPlus;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -291,5 +296,16 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** @deprecated Use {@link #createimg} instead. */
 	@Deprecated
 	Object create(Object... args);
+
+	Object createimg(long... args);
+
+	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
+
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+
+	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
+		NativeType<V> outType, Dimensions dims);
+
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
 
 }

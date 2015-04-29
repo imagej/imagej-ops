@@ -36,6 +36,17 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import net.imagej.ImgPlus;
+import net.imagej.ops.create.CreateEmptyImgCopy;
+import net.imagej.ops.create.CreateEmptyImgPlusCopy;
+import net.imagej.ops.create.CreateImgDifferentNativeType;
+import net.imagej.ops.create.CreateImgNativeType;
+import net.imagej.ops.create.DefaultCreateImg;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
+
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
@@ -173,6 +184,35 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object createimg(Object... args) {
 		return run(Ops.CreateImg.NAME, args);
+	}
+
+	@Override
+	public Object createimg(long... args) {
+		return run(DefaultCreateImg.class, args);
+	}
+
+	@Override
+	public <V extends NativeType<V>> Img<V> createimg(Img<V> input) {
+		return (Img<V>) run(CreateEmptyImgCopy.class, input);
+	}
+
+	@Override
+	public <V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input) {
+		return (ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
+	}
+
+	@Override
+	public <V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
+		NativeType<V> outType, Dimensions dims)
+	{
+		return (ImgPlus<V>) run(CreateImgNativeType.class, fac, outType, dims);
+	}
+
+	@Override
+	public <V extends NativeType<V>> Img<V> createimg(Img<V> input,
+		NativeType<V> type)
+	{
+		return (ImgPlus<V>) run(CreateImgDifferentNativeType.class, input, type);
 	}
 
 	@Override
