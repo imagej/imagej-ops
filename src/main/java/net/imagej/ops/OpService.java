@@ -375,4 +375,15 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@Deprecated
 	Object create(Object... args);
 
+	Object createimg(long... args);
+
+	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
+
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+
+	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
+		NativeType<V> outType, Dimensions dims);
+
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
+
 }
