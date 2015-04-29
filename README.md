@@ -1,3 +1,5 @@
+![](http://jenkins.imagej.net/job/ImageJ-OPS/lastBuild/badge/icon)
+
 ImageJ OPS
 ==========
 
