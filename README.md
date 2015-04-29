@@ -1,4 +1,4 @@
-![](http://jenkins.imagej.net/job/ImageJ-OPS/lastBuild/badge/icon)
+[![](http://jenkins.imagej.net/job/ImageJ-OPS/lastBuild/badge/icon)](http://jenkins.imagej.net/job/ImageJ-OPS/)
 
 ImageJ OPS
 ==========
