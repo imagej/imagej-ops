@@ -162,4 +162,8 @@ public class OpCandidate<OP extends Op> {
 		return sb.toString();
 	}
 
+	@Override
+	public String toString() {
+		return OpUtils.opString(getInfo());
+	}
 }
