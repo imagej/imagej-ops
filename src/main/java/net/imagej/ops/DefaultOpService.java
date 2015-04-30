@@ -330,11 +330,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object multiply(final Object... args) {
-		return run(MathOps.Multiply.NAME, args);
-	}
-
-	@Override
 	public Object normalize(final Object... args) {
 		return run(Ops.Normalize.NAME, args);
 	}
