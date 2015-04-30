@@ -42,6 +42,9 @@ import net.imagej.ops.create.CreateEmptyImgPlusCopy;
 import net.imagej.ops.create.CreateImgDifferentNativeType;
 import net.imagej.ops.create.CreateImgNativeType;
 import net.imagej.ops.create.DefaultCreateImg;
+import net.imagej.ops.logic.LogicNamespace;
+import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -79,6 +82,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Parameter
 	private LogService log;
+
+	private LogicNamespace logic;
+	private MathNamespace math;
+	private ThresholdNamespace threshold;
+	private boolean namespacesReady;
 
 	// -- OpService methods --
 
@@ -407,6 +415,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return run(Ops.Variance.NAME, args);
 	}
 
+	// -- Operation shortcuts - other namespaces --
+
+	@Override
+	public LogicNamespace logic() {
+		if (!namespacesReady) initNamespaces();
+		return logic;
+	}
+
+	@Override
+	public MathNamespace math() {
+		if (!namespacesReady) initNamespaces();
+		return math;
+	}
+
+	@Override
+	public ThresholdNamespace threshold() {
+		if (!namespacesReady) initNamespaces();
+		return threshold;
+	}
+
 	// -- SingletonService methods --
 
 	@Override
@@ -428,6 +456,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	// -- Helper methods - lazy initialization --
+
+	private synchronized void initNamespaces() {
+		if (namespacesReady) return;
+		logic = new LogicNamespace();
+		getContext().inject(logic);
+		math = new MathNamespace();
+		getContext().inject(math);
+		threshold = new ThresholdNamespace();
+		getContext().inject(threshold);
+		namespacesReady = true;
 	}
 
 	// -- Deprecated methods --

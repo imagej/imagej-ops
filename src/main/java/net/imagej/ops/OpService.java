@@ -39,6 +39,9 @@ import net.imagej.ops.create.CreateEmptyImgPlusCopy;
 import net.imagej.ops.create.CreateImgDifferentNativeType;
 import net.imagej.ops.create.CreateImgNativeType;
 import net.imagej.ops.create.DefaultCreateImg;
+import net.imagej.ops.logic.LogicNamespace;
+import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -361,6 +364,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(op = Ops.Variance.class)
 	Object variance(Object... args);
+
+	// -- Operation shortcuts - other namespaces --
+
+	/** Gateway into ops of the "logic" namespace. */
+	LogicNamespace logic();
+
+	/** Gateway into ops of the "math" namespace. */
+	MathNamespace math();
+
+	/** Gateway into ops of the "threshold" namespace. */
+	ThresholdNamespace threshold();
 
 	// -- Deprecated methods --
 
