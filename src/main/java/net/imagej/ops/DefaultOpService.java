@@ -155,7 +155,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return sorted;
 	}
 
-	// -- Operation shortcuts --
+	// -- Operation shortcuts - global namespace --
 
 	@Override
 	public Object add(final Object... args) {
@@ -180,6 +180,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object convolve(final Object... args) {
 		return run(Ops.Convolve.NAME, args);
+	}
+
+	@Override
+	public Object correlate(Object... args) {
+		return run(Ops.Correlate.NAME, args);
 	}
 
 	@Override
@@ -248,6 +253,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public Object fftsize(Object... args) {
+		return run(Ops.FFTSize.NAME, args);
+	}
+
+	@Override
 	public Object gauss(final Object... args) {
 		return run(Ops.Gauss.NAME, args);
 	}
@@ -285,6 +295,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object join(final Object... args) {
 		return run(Ops.Join.NAME, args);
+	}
+
+	@Override
+	public Object log(Object... args) {
+		return run(Ops.Log.NAME, args);
 	}
 
 	@Override

@@ -179,6 +179,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convolve" operation on the given arguments. */
 	Object convolve(Object... args);
 
+	/** Executes the "correlate" operation on the given arguments. */
+	Object correlate(Object... args);
+
 	/** Executes the "createimg" operation on the given arguments. */
 	Object createimg(Object... args);
 
@@ -216,6 +219,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "fft" operation on the given arguments. */
 	Object fft(Object... args);
 
+	/** Executes the "fftsize" operation on the given arguments. */
+	Object fftsize(Object... args);
+
 	/** Executes the "gauss" operation on the given arguments. */
 	Object gauss(Object... args);
 
@@ -239,6 +245,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	Object join(Object... args);
+
+	/** Executes the "log" operation on the given arguments. */
+	Object log(Object... args);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	Object logKernel(Object... args);
