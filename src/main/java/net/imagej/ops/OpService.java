@@ -186,6 +186,22 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "createimg" operation on the given arguments. */
 	Object createimg(Object... args);
 
+	/** Executes the "createimg" operation on the given arguments. */
+	Object createimg(long... args);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
+		NativeType<V> outType, Dimensions dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
+
 	/** Executes the "crop" operation on the given arguments. */
 	Object crop(Object... args);
 
@@ -296,16 +312,5 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** @deprecated Use {@link #createimg} instead. */
 	@Deprecated
 	Object create(Object... args);
-
-	Object createimg(long... args);
-
-	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
-
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
-
-	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
-		NativeType<V> outType, Dimensions dims);
-
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
 
 }
