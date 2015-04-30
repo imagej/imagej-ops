@@ -34,6 +34,7 @@ import java.util.Collection;
 
 import net.imagej.ImageJService;
 import net.imagej.ops.create.CreateOps;
+import net.imagej.ImgPlus;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
