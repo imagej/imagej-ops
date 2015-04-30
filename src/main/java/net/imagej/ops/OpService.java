@@ -162,7 +162,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the names of all available operations. */
 	Collection<String> ops();
 
-	// -- Operation shortcuts --
+	// -- Operation shortcuts - global namespace --
 
 	/** Executes the "add" operation on the given arguments. */
 	Object add(Object... args);
