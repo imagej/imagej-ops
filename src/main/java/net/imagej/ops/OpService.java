@@ -172,9 +172,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	// -- Operation shortcuts - global namespace --
 
-	/** Executes the "add" operation on the given arguments. */
-	Object add(Object... args);
-
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = Ops.ASCII.class)
 	Object ascii(Object... args);
@@ -227,9 +224,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Deconvolve.class)
 	Object deconvolve(Object... args);
-
-	/** Executes the "divide" operation on the given arguments. */
-	Object divide(Object... args);
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = Ops.Equation.class)
@@ -319,9 +313,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.MinMax.class)
 	Object minmax(Object... args);
 
-	/** Executes the "multiply" operation on the given arguments. */
-	Object multiply(Object... args);
-
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = Ops.Normalize.class)
 	Object normalize(Object... args);
@@ -349,9 +340,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)
 	Object stddev(Object... args);
-
-	/** Executes the "subtract" operation on the given arguments. */
-	Object subtract(Object... args);
 
 	/** Executes the "sum" operation on the given arguments. */
 	@OpMethod(op = Ops.Sum.class)

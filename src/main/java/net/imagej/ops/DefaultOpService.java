@@ -166,11 +166,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Operation shortcuts - global namespace --
 
 	@Override
-	public Object add(final Object... args) {
-		return run(MathOps.Add.NAME, args);
-	}
-
-	@Override
 	public Object ascii(final Object... args) {
 		return run(Ops.ASCII.NAME, args);
 	}
@@ -238,11 +233,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object deconvolve(final Object... args) {
 		return run(Ops.Deconvolve.NAME, args);
-	}
-
-	@Override
-	public Object divide(final Object... args) {
-		return run(MathOps.Divide.NAME, args);
 	}
 
 	@Override
@@ -356,11 +346,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object multiply(final Object... args) {
-		return run(MathOps.Multiply.NAME, args);
-	}
-
-	@Override
 	public Object normalize(final Object... args) {
 		return run(Ops.Normalize.NAME, args);
 	}
@@ -393,11 +378,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object stddev(final Object... args) {
 		return run(Ops.StdDeviation.NAME, args);
-	}
-
-	@Override
-	public Object subtract(final Object... args) {
-		return run(MathOps.Subtract.NAME, args);
 	}
 
 	@Override
