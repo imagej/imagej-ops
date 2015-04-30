@@ -15,19 +15,19 @@ Getting started
 Each op has a list of typed input and output parameters on which it operates.
 You can think of an op as a (potentially multi-variable) function:
 ```
-c = add(a, b)
+c = math.add(a, b)
 (phase, amplitude) = fft(image)
 ```
 
 In many cases you can also pass a pre-allocated output which will be populated:
 ```
-add(c, a, b)
+math.add(c, a, b)
 ```
 
 Some ops take other ops as inputs, which allows for things like "execute this
 op on every pixel of that image":
 ```
-add_op = op("add", 5)
+add_op = op("math.add", 5)
 output_image = map(input_image, add_op)
 ```
 
@@ -54,14 +54,14 @@ formula = "10 * (Math.cos(0.3*p[0]) + Math.sin(0.3*p[1]))"
 sinusoid = ij.op().equation(blank, formula)
 
 # add a constant value to an image
-ij.op().add(sinusoid, 13.0)
+ij.op().math().add(sinusoid, 13.0)
 
 # generate a gradient image using a formula
 gradient = ij.op().equation(ij.op().createimg(dims), "p[0]+p[1]")
 
 # add the two images
 composite = ij.op().createimg(dims)
-ij.op().add(composite, sinusoid, gradient)
+ij.op().math().add(composite, sinusoid, gradient)
 
 # display the images
 ij.ui().show("sinusoid", sinusoid)
