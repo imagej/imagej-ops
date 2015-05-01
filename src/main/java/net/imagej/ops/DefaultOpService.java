@@ -207,7 +207,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
-		final NativeType<V> type)
+		final V type)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<V> result =
@@ -217,7 +217,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
-		final NativeType<V> outType, final Dimensions dims)
+		final V outType, final Dimensions dims)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<V> result =
@@ -233,7 +233,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <V extends Type<V>> Img<V> createimg(final Type<V> outType,
+	public <V extends Type<V>> Img<V> createimg(final V outType,
 		final long... dims)
 	{
 		@SuppressWarnings("unchecked")
@@ -242,7 +242,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <V extends Type<V>> Img<V> createimg(final Type<V> outType,
+	public <V extends Type<V>> Img<V> createimg(final V outType,
 		final ImgFactory<V> fac, final long... dims)
 	{
 		@SuppressWarnings("unchecked")

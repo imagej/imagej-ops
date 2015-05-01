@@ -54,7 +54,7 @@ public class CreateImgNativeType<V extends NativeType<V>> implements
 	private ImgFactory<V> fac;
 
 	@Parameter
-	private NativeType<V> outType;
+	private V outType;
 
 	@Parameter
 	private Dimensions dims;

@@ -198,12 +198,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.CreateImgDifferentNativeType.class)
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, V type);
 
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.CreateImgNativeType.class)
-	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
-		NativeType<V> outType, Dimensions dims);
+	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac, V outType,
+		Dimensions dims);
 
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
@@ -211,11 +211,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
-	<V extends Type<V>> Img<V> createimg(Type<V> outType, long... dims);
+	<V extends Type<V>> Img<V> createimg(V outType, long... dims);
 
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
-	<V extends Type<V>> Img<V> createimg(Type<V> outType, ImgFactory<V> fac,
+	<V extends Type<V>> Img<V> createimg(V outType, ImgFactory<V> fac,
 		long... dims);
 
 	/** Executes the "createimg" operation on the given arguments. */
