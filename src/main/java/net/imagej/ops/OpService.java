@@ -34,14 +34,11 @@ import java.util.Collection;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
-<<<<<<< HEAD
-=======
 import net.imagej.ops.create.CreateEmptyImgCopy;
 import net.imagej.ops.create.CreateEmptyImgPlusCopy;
 import net.imagej.ops.create.CreateImgDifferentNativeType;
 import net.imagej.ops.create.CreateImgNativeType;
 import net.imagej.ops.create.DefaultCreateImg;
->>>>>>> e659229... OpService: add gateways for calling non-global ops
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
