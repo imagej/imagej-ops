@@ -41,11 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpCandidate;
-import net.imagej.ops.OpRef;
-
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.module.ModuleInfo;

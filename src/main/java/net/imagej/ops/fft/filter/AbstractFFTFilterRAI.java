@@ -30,14 +30,14 @@
 
 package net.imagej.ops.fft.filter;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for FFT based filters that operate on RAI

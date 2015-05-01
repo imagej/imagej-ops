@@ -32,7 +32,6 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.MathOps.Abs;
-import net.imagej.ops.math.MathNamespace;
 
 import org.junit.Test;
 

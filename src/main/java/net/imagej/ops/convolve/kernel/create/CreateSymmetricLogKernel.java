@@ -30,13 +30,13 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Convenience op for generating a symmetric LOG kernel

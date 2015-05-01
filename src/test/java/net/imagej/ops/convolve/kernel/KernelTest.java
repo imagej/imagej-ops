@@ -30,14 +30,13 @@
 
 package net.imagej.ops.convolve.kernel;
 
+import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Kernel generation test class.

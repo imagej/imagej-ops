@@ -30,10 +30,10 @@
 
 package net.imagej.ops.fft.size;
 
+import net.imagej.ops.Ops.FFTSize;
+
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-
-import net.imagej.ops.Ops.FFTSize;
 
 /**
  * Op to calculate FFT sizes.

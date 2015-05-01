@@ -29,7 +29,6 @@
  */
 package net.imagej.ops;
 
-import net.imagej.ops.Op;
 
 /**
  * Data structure which identifies an op by name and/or type, along with a list

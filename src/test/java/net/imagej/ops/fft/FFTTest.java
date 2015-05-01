@@ -31,9 +31,6 @@
 package net.imagej.ops.fft;
 
 import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
 import net.imagej.ops.create.DefaultCreateImg;
 import net.imagej.ops.fft.size.ComputeFFTSize;
@@ -49,6 +46,8 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.view.Views;
+
+import org.junit.Test;
 
 /**
  * Test FFT implementations

@@ -30,17 +30,16 @@
 
 package net.imagej.ops.convolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Convolve op for (@link RandomAccessibleInterval)
