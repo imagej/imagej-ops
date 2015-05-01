@@ -32,6 +32,7 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * The math namespace contains arithmetic operations.
@@ -45,6 +46,44 @@ public class MathNamespace extends Namespace {
 	@OpMethod(op = net.imagej.ops.MathOps.Abs.class)
 	public Object abs(final Object... args) {
 		return ops.run(net.imagej.ops.MathOps.Abs.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAbs.class)
+	public int abs(final int a) {
+		final int result =
+			(Integer) ops.run(net.imagej.ops.math.PrimitiveMath.IntegerAbs.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongAbs.class)
+	public long abs(final long a) {
+		final long result =
+			(Long) ops.run(net.imagej.ops.math.PrimitiveMath.LongAbs.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatAbs.class)
+	public float abs(final float a) {
+		final float result =
+			(Float) ops.run(net.imagej.ops.math.PrimitiveMath.FloatAbs.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleAbs.class)
+	public double abs(final double a) {
+		final double result =
+			(Double) ops.run(net.imagej.ops.math.PrimitiveMath.DoubleAbs.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealAbs.class)
+	public <I extends RealType<I>, O extends RealType<O>> O abs(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops.run(net.imagej.ops.arithmetic.real.RealAbs.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.Add.class)
