@@ -32,6 +32,7 @@ package net.imagej.ops.logic;
 
 import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.LogicOps.And;
+import net.imagej.ops.LogicOps.Equal;
 
 import org.junit.Test;
 
@@ -47,6 +48,12 @@ public class LogicNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testAnd() {
 		assertComplete("logic", LogicNamespace.class, And.NAME);
+	}
+
+	/** Tests for {@link Equal} method convergence. */
+	@Test
+	public void testEqual() {
+		assertComplete("logic", LogicNamespace.class, Equal.NAME);
 	}
 
 }
