@@ -49,6 +49,7 @@ import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -196,33 +197,65 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object createimg(final long... args) {
-		return run(DefaultCreateImg.class, args);
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input) {
-		return (Img<V>) run(CreateEmptyImgCopy.class, input);
-	}
-
-	@Override
 	public <V extends NativeType<V>> ImgPlus<V> createimg(final ImgPlus<V> input)
 	{
-		return (ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
-		final NativeType<V> outType, final Dimensions dims)
-	{
-		return (ImgPlus<V>) run(CreateImgNativeType.class, fac, outType, dims);
+		@SuppressWarnings("unchecked")
+		final ImgPlus<V> result =
+			(ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
+		return result;
 	}
 
 	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
 		final NativeType<V> type)
 	{
-		return (ImgPlus<V>) run(CreateImgDifferentNativeType.class, input, type);
+		@SuppressWarnings("unchecked")
+		final Img<V> result =
+			(Img<V>) run(CreateImgDifferentNativeType.class, input, type);
+		return result;
+	}
+
+	@Override
+	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
+		final NativeType<V> outType, final Dimensions dims)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<V> result =
+			(Img<V>) run(CreateImgNativeType.class, fac, outType, dims);
+		return result;
+	}
+
+	@Override
+	public <V extends Type<V>> Img<V> createimg(final long... dims) {
+		@SuppressWarnings("unchecked")
+		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, dims);
+		return result;
+	}
+
+	@Override
+	public <V extends Type<V>> Img<V> createimg(final Type<V> outType,
+		final long... dims)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, outType, dims);
+		return result;
+	}
+
+	@Override
+	public <V extends Type<V>> Img<V> createimg(final Type<V> outType,
+		final ImgFactory<V> fac, final long... dims)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<V> result =
+			(Img<V>) run(DefaultCreateImg.class, outType, fac, dims);
+		return result;
+	}
+
+	@Override
+	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input) {
+		@SuppressWarnings("unchecked")
+		final Img<V> result = (Img<V>) run(CreateEmptyImgCopy.class, input);
+		return result;
 	}
 
 	@Override

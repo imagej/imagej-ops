@@ -34,11 +34,6 @@ import java.util.Collection;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
-import net.imagej.ops.create.CreateEmptyImgCopy;
-import net.imagej.ops.create.CreateEmptyImgPlusCopy;
-import net.imagej.ops.create.CreateImgDifferentNativeType;
-import net.imagej.ops.create.CreateImgNativeType;
-import net.imagej.ops.create.DefaultCreateImg;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -46,6 +41,7 @@ import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -197,25 +193,34 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object createimg(Object... args);
 
 	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = DefaultCreateImg.class)
-	Object createimg(long... args);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = CreateEmptyImgPlusCopy.class)
+	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgPlusCopy.class)
 	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
 
 	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = CreateEmptyImgCopy.class)
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+	@OpMethod(op = net.imagej.ops.create.CreateImgDifferentNativeType.class)
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
 
 	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = CreateImgNativeType.class)
+	@OpMethod(op = net.imagej.ops.create.CreateImgNativeType.class)
 	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
 		NativeType<V> outType, Dimensions dims);
 
 	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = CreateImgDifferentNativeType.class)
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(Type<V> outType, long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(Type<V> outType, ImgFactory<V> fac,
+		long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgCopy.class)
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
