@@ -63,4 +63,5 @@ public class CreateImgNativeType<V extends NativeType<V>> implements
 	public void run() {
 		output = fac.create(dims, outType.copy());
 	}
+
 }

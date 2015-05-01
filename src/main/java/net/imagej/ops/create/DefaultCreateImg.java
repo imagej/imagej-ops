@@ -58,9 +58,8 @@ public class DefaultCreateImg<V extends Type<V>> extends
 
 	@Override
 	public void run() {
-
 		createOutputImg(dims, fac, outType, new PlanarImgFactory<DoubleType>(),
 			new DoubleType());
-
 	}
+
 }

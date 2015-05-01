@@ -70,4 +70,5 @@ public class CreateImgDifferentNativeType<T extends NativeType<T>, V extends Nat
 			throw new RuntimeException(e);
 		}
 	}
+
 }
