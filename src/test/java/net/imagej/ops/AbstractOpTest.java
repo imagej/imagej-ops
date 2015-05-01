@@ -143,4 +143,5 @@ public abstract class AbstractOpTest {
 
 		return ArrayImgs.floats(array, dims);
 	}
+
 }

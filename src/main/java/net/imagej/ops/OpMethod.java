@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,40 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import net.imagej.ops.Ops.IFFT;
-import net.imagej.ops.fft.methods.IFFTRAI;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Inverse FFT op implemented by wrapping FFTMethods.
- * 
- * @author Brian Northan
- * @param <T>
- * @param <I>
+ * Annotation for methods that delegate to a specific {@link Op} implementation.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = IFFT.class, name = IFFT.NAME, priority = Priority.HIGH_PRIORITY)
-public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
-	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
-{
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface OpMethod {
 
-	@Override
-	public O compute(Img<ComplexFloatType> input, O output) {
+	Class<? extends Op> op() default Op.class;
 
-		// TODO: proper use of Executor service
-		final ExecutorService service = Executors.newFixedThreadPool(4);
+	Class<? extends Op>[] ops() default {};
 
-		ops.run(IFFTRAI.class, output, input);
-
-		return output;
-	}
 }

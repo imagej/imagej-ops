@@ -40,9 +40,9 @@ import net.imglib2.RandomAccess;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.junit.Test;
 

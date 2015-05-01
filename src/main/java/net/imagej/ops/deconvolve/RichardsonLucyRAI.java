@@ -30,19 +30,18 @@
 
 package net.imagej.ops.deconvolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.convolve.CorrelateFFTRAI;
+import net.imagej.ops.fft.filter.IterativeFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.convolve.CorrelateFFTRAI;
-import net.imagej.ops.fft.filter.IterativeFFTFilterRAI;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval)

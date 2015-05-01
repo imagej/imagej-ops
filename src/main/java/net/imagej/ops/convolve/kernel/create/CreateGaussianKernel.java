@@ -30,8 +30,6 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -40,6 +38,8 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Util;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Gaussian filter ported from
@@ -57,6 +57,7 @@ public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
 	extends AbstractCreateKernel<T> implements Ops.GaussKernel
 {
 
+	@Override
 	void createKernel() {
 		double[] sigmaPixels = new double[numDimensions];
 

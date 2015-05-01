@@ -34,10 +34,14 @@ import java.util.Collection;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
+import net.imagej.ops.logic.LogicNamespace;
+import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -162,150 +166,213 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the names of all available operations. */
 	Collection<String> ops();
 
-	// -- Operation shortcuts --
-
-	public @interface BuiltIn {
-		// NB: Marker interface.
-	}
-
-	/** Executes the "add" operation on the given arguments. */
-	Object add(Object... args);
+	// -- Operation shortcuts - global namespace --
 
 	/** Executes the "ascii" operation on the given arguments. */
+	@OpMethod(op = Ops.ASCII.class)
 	Object ascii(Object... args);
 
 	/** Executes the "chunker" operation on the given arguments. */
+	@OpMethod(op = Ops.Chunker.class)
 	Object chunker(Object... args);
 
 	/** Executes the "convert" operation on the given arguments. */
+	@OpMethod(op = Ops.Convert.class)
 	Object convert(Object... args);
 
 	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = Ops.Convolve.class)
 	Object convolve(Object... args);
 
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = Ops.Correlate.class)
+	Object correlate(Object... args);
+
 	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = Ops.CreateImg.class)
 	Object createimg(Object... args);
 
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgPlusCopy.class)
+	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.CreateImgDifferentNativeType.class)
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input, V type);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.CreateImgNativeType.class)
+	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac, V outType,
+		Dimensions dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(V outType, long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
+	<V extends Type<V>> Img<V> createimg(V outType, ImgFactory<V> fac,
+		long... dims);
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgCopy.class)
+	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+
 	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = Ops.Crop.class)
 	Object crop(Object... args);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = Ops.Deconvolve.class)
 	Object deconvolve(Object... args);
 
-	/** Executes the "divide" operation on the given arguments. */
-	Object divide(Object... args);
-
 	/** Executes the "equation" operation on the given arguments. */
+	@OpMethod(op = Ops.Equation.class)
 	Object equation(Object... args);
 
 	/** Executes the "eval" operation on the given arguments. */
+	@OpMethod(op = Ops.Eval.class)
 	Object eval(Object... args);
 
 	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = Ops.FFT.class)
 	Object fft(Object... args);
 
+	/** Executes the "fftsize" operation on the given arguments. */
+	@OpMethod(op = Ops.FFTSize.class)
+	Object fftsize(Object... args);
+
 	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = Ops.Gauss.class)
 	Object gauss(Object... args);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(op = Ops.GaussKernel.class)
 	Object gaussKernel(Object... args);
 
 	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = Ops.Help.class)
 	Object help(Object... args);
 
 	/** Executes the "histogram" operation on the given arguments. */
+	@OpMethod(op = Ops.Histogram.class)
 	Object histogram(Object... args);
 
 	/** Executes the "identity" operation on the given arguments. */
+	@OpMethod(op = Ops.Identity.class)
 	Object identity(Object... args);
 
 	/** Executes the "ifft" operation on the given arguments. */
+	@OpMethod(op = Ops.IFFT.class)
 	Object ifft(Object... args);
 
 	/** Executes the "invert" operation on the given arguments. */
+	@OpMethod(op = Ops.Invert.class)
 	Object invert(Object... args);
 
 	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = Ops.Join.class)
 	Object join(Object... args);
 
+	/** Executes the "log" operation on the given arguments. */
+	@OpMethod(op = Ops.Log.class)
+	Object log(Object... args);
+
 	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(op = Ops.LogKernel.class)
 	Object logKernel(Object... args);
 
 	/** Executes the "lookup" operation on the given arguments. */
+	@OpMethod(op = Ops.Lookup.class)
 	Object lookup(Object... args);
 
 	/** Executes the "loop" operation on the given arguments. */
+	@OpMethod(op = Ops.Loop.class)
 	Object loop(Object... args);
 
 	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = Ops.Map.class)
 	Object map(Object... args);
 
 	/** Executes the "max" operation on the given arguments. */
+	@OpMethod(op = Ops.Max.class)
 	Object max(Object... args);
 
 	/** Executes the "mean" operation on the given arguments. */
+	@OpMethod(op = Ops.Mean.class)
 	Object mean(Object... args);
 
 	/** Executes the "median" operation on the given arguments. */
+	@OpMethod(op = Ops.Median.class)
 	Object median(Object... args);
 
 	/** Executes the "min" operation on the given arguments. */
+	@OpMethod(op = Ops.Min.class)
 	Object min(Object... args);
 
 	/** Executes the "minmax" operation on the given arguments. */
+	@OpMethod(op = Ops.MinMax.class)
 	Object minmax(Object... args);
 
-	/** Executes the "multiply" operation on the given arguments. */
-	Object multiply(Object... args);
-
 	/** Executes the "normalize" operation on the given arguments. */
+	@OpMethod(op = Ops.Normalize.class)
 	Object normalize(Object... args);
 
 	/** Executes the "project" operation on the given arguments. */
+	@OpMethod(op = Ops.Project.class)
 	Object project(Object... args);
 
 	/** Executes the "quantile" operation on the given arguments. */
+	@OpMethod(op = Ops.Quantile.class)
 	Object quantile(Object... args);
 
 	/** Executes the "scale" operation on the given arguments. */
+	@OpMethod(op = Ops.Scale.class)
 	Object scale(Object... args);
 
 	/** Executes the "size" operation on the given arguments. */
+	@OpMethod(op = Ops.Size.class)
 	Object size(Object... args);
 
 	/** Executes the "slicewise" operation on the given arguments. */
+	@OpMethod(op = Ops.Slicewise.class)
 	Object slicewise(Object... args);
 
 	/** Executes the "stddev" operation on the given arguments. */
+	@OpMethod(op = Ops.StdDeviation.class)
 	Object stddev(Object... args);
 
-	/** Executes the "subtract" operation on the given arguments. */
-	Object subtract(Object... args);
-
 	/** Executes the "sum" operation on the given arguments. */
+	@OpMethod(op = Ops.Sum.class)
 	Object sum(Object... args);
 
 	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(op = Ops.Threshold.class)
 	Object threshold(Object... args);
 
 	/** Executes the "variance" operation on the given arguments. */
+	@OpMethod(op = Ops.Variance.class)
 	Object variance(Object... args);
+
+	// -- Operation shortcuts - other namespaces --
+
+	/** Gateway into ops of the "logic" namespace. */
+	LogicNamespace logic();
+
+	/** Gateway into ops of the "math" namespace. */
+	MathNamespace math();
+
+	/** Gateway into ops of the "threshold" namespace. */
+	ThresholdNamespace threshold();
 
 	// -- Deprecated methods --
 
 	/** @deprecated Use {@link #createimg} instead. */
 	@Deprecated
 	Object create(Object... args);
-
-	Object createimg(long... args);
-
-	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
-
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
-
-	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac,
-		NativeType<V> outType, Dimensions dims);
-
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input, NativeType<V> type);
 
 }

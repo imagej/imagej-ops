@@ -28,40 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import net.imagej.ops.Ops.IFFT;
-import net.imagej.ops.fft.methods.IFFTRAI;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.scijava.Contextual;
+import org.scijava.Named;
 
 /**
- * Inverse FFT op implemented by wrapping FFTMethods.
+ * A namespace is a collection of ops with related functions.
  * 
- * @author Brian Northan
- * @param <T>
- * @param <I>
+ * @author Curtis Rueden
  */
-@Plugin(type = IFFT.class, name = IFFT.NAME, priority = Priority.HIGH_PRIORITY)
-public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
-	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
-{
+public interface Namespace extends Contextual, Named {
 
-	@Override
-	public O compute(Img<ComplexFloatType> input, O output) {
+	// -- Namespace methods --
 
-		// TODO: proper use of Executor service
-		final ExecutorService service = Executors.newFixedThreadPool(4);
+	public OpService ops();
 
-		ops.run(IFFTRAI.class, output, input);
-
-		return output;
-	}
 }

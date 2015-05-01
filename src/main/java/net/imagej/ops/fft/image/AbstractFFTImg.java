@@ -30,14 +30,14 @@
 
 package net.imagej.ops.fft.image;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Ops.FFT;
 import net.imagej.ops.fft.AbstractFFTIterable;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for forward FFT implementations that operate on Img<T>.

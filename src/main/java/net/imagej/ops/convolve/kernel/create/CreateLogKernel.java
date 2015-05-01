@@ -30,8 +30,6 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -39,6 +37,8 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Laplacian of Gaussian filter ported from
@@ -56,6 +56,7 @@ public class CreateLogKernel<T extends ComplexType<T> & NativeType<T>> extends
 	AbstractCreateKernel<T> implements Ops.LogKernel
 {
 
+	@Override
 	void createKernel() {
 		final double[] sigmaPixels = new double[numDimensions];
 		for (int i = 0; i < sigmaPixels.length; i++) {

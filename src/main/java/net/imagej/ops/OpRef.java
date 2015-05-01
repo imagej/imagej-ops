@@ -29,7 +29,6 @@
  */
 package net.imagej.ops;
 
-import net.imagej.ops.Op;
 
 /**
  * Data structure which identifies an op by name and/or type, along with a list
@@ -122,7 +121,11 @@ public class OpRef<OP extends Op> {
 		for (Object arg : args) {
 			if (first) first = false;
 			else sb.append(", ");
-			sb.append(arg.getClass().getSimpleName());
+			if (arg.getClass() == Class.class) {
+				// special typed null placeholder
+				sb.append(((Class<?>) arg).getSimpleName());
+			}
+			else sb.append(arg.getClass().getSimpleName());
 
 		}
 		sb.append(")");

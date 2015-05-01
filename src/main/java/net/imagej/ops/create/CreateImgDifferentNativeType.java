@@ -55,7 +55,7 @@ public class CreateImgDifferentNativeType<T extends NativeType<T>, V extends Nat
 	private Img<T> input;
 
 	@Parameter
-	private NativeType<V> type;
+	private V type;
 
 	// TODO discuss exception handling
 	@SuppressWarnings("unchecked")
@@ -70,4 +70,5 @@ public class CreateImgDifferentNativeType<T extends NativeType<T>, V extends Nat
 			throw new RuntimeException(e);
 		}
 	}
+
 }

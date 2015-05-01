@@ -30,8 +30,6 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.create.AbstractCreateImg;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -41,6 +39,8 @@ import net.imglib2.type.numeric.complex.ComplexDoubleType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for kernel generation from sigma and <b> calibrated units

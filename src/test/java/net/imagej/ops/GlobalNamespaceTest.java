@@ -28,40 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import net.imagej.ops.Ops.CreateImg;
 
-import net.imagej.ops.Ops.IFFT;
-import net.imagej.ops.fft.methods.IFFTRAI;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Inverse FFT op implemented by wrapping FFTMethods.
+ * Tests that the ops of the global namespace have corresponding type-safe Java
+ * method signatures declared in the {@link OpService} class.
  * 
- * @author Brian Northan
- * @param <T>
- * @param <I>
+ * @author Curtis Rueden
  */
-@Plugin(type = IFFT.class, name = IFFT.NAME, priority = Priority.HIGH_PRIORITY)
-public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
-	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
-{
+public class GlobalNamespaceTest extends AbstractNamespaceTest {
 
-	@Override
-	public O compute(Img<ComplexFloatType> input, O output) {
-
-		// TODO: proper use of Executor service
-		final ExecutorService service = Executors.newFixedThreadPool(4);
-
-		ops.run(IFFTRAI.class, output, input);
-
-		return output;
+	/** Tests for {@link CreateImg} method convergence. */
+	@Test
+	public void testCreateImg() {
+		assertComplete(null, OpService.class, CreateImg.NAME);
 	}
+
 }

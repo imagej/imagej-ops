@@ -54,7 +54,7 @@ public class CreateImgNativeType<V extends NativeType<V>> implements
 	private ImgFactory<V> fac;
 
 	@Parameter
-	private NativeType<V> outType;
+	private V outType;
 
 	@Parameter
 	private Dimensions dims;
@@ -63,4 +63,5 @@ public class CreateImgNativeType<V extends NativeType<V>> implements
 	public void run() {
 		output = fac.create(dims, outType.copy());
 	}
+
 }

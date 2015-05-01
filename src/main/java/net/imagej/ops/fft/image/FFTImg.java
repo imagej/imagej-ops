@@ -30,17 +30,17 @@
 
 package net.imagej.ops.fft.image;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops.FFT;
+import net.imagej.ops.fft.methods.FFTRAI;
+import net.imagej.ops.fft.size.ComputeFFTSize;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
-import net.imagej.ops.fft.methods.FFTRAI;
-import net.imagej.ops.fft.size.ComputeFFTSize;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Forward FFT that operates on Img

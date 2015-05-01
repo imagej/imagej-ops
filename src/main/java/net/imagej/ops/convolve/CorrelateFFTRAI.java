@@ -30,15 +30,14 @@
 
 package net.imagej.ops.convolve;
 
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.Op;
+import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
+import org.scijava.plugin.Plugin;
 
 /**
  * Correlate op for (@link RandomAccessibleInterval)
@@ -58,6 +57,7 @@ public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K ext
 	 * Perform correlation by conjugate multiplying the FFTs in the frequency
 	 * domain TODO use an op here??
 	 */
+	@Override
 	protected void frequencyOperation(Img<C> a, Img<C> b) {
 		final Cursor<C> cursorA = a.cursor();
 		final Cursor<C> cursorB = b.cursor();

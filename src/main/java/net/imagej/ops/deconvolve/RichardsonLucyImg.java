@@ -30,19 +30,18 @@
 
 package net.imagej.ops.deconvolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Op;
 import net.imagej.ops.DeconvolveOps;
-
+import net.imagej.ops.Op;
 import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy op that operates on (@link Img)
