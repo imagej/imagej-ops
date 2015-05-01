@@ -30,14 +30,14 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.Namespace;
+import net.imagej.ops.AbstractNamespace;
 
 /**
  * The threshold namespace contains operations related to binary thresholding.
  * 
  * @author Curtis Rueden
  */
-public class ThresholdNamespace extends Namespace {
+public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- Threshold namespace ops --
 

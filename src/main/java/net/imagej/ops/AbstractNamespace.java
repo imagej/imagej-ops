@@ -30,18 +30,33 @@
 
 package net.imagej.ops;
 
-import org.scijava.Contextual;
-import org.scijava.Named;
+import org.scijava.AbstractContextual;
+import org.scijava.plugin.Parameter;
 
 /**
- * A namespace is a collection of ops with related functions.
+ * Abstract base class for {@link Namespace} implementations.
  * 
  * @author Curtis Rueden
  */
-public interface Namespace extends Contextual, Named {
+public abstract class AbstractNamespace extends AbstractContextual implements
+	Namespace
+{
+
+	@Parameter
+	private OpService ops;
 
 	// -- Namespace methods --
 
-	public OpService ops();
+	@Override
+	public OpService ops() {
+		return ops;
+	}
+
+	// -- Named methods --
+
+	@Override
+	public void setName(final String name) {
+		throw new UnsupportedOperationException();
+	}
 
 }

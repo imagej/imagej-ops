@@ -30,14 +30,14 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.Namespace;
+import net.imagej.ops.AbstractNamespace;
 
 /**
  * The logic namespace contains logical (i.e., boolean) operations.
  * 
  * @author Curtis Rueden
  */
-public class LogicNamespace extends Namespace {
+public class LogicNamespace extends AbstractNamespace {
 
 	// -- Logic namespace ops --
 
