@@ -30,54 +30,66 @@
 
 package net.imagej.ops.convolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
+import net.imagej.ops.fft.filter.AbstractFilterImg;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
+import net.imglib2.util.Util;
+import net.imglib2.view.Views;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Convolve op for (@link Img)
- * 
- * @author bnorthan
- * @param <I>
- * @param <O>
- * @param <K>
- * @param <C>
+ * Convolves an image naively (no FFTs).
  */
 @Plugin(type = Op.class, name = Ops.Convolve.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent
+public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	extends AbstractFilterImg<I, O, K> implements Contingent, Ops.Convolve
 {
 
-	/**
-	 * run the filter (ConvolveFFTRAI) on the rais
-	 */
-	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
+	protected Img<O> safeCompute(Img<I> img, Img<O> out) {
 
-		ops.run(ConvolveFFTRAI.class, raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		if (obfInput == null) {
+			obfInput =
+				new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
+					Util.getTypeFromInterval(img).createVariable());
+		}
 
+		if ((obfKernel == null) && (kernel != null)) {
+			obfKernel =
+				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
+					Util.getTypeFromInterval(kernel).createVariable());
+		}
+
+		// extend the input
+		RandomAccessibleInterval<I> extendedIn =
+			Views.interval(Views.extend(img, obfInput), img);
+
+		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
+			new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+				.getTypeFromInterval(out).createVariable());
+
+		// extend the output
+		RandomAccessibleInterval<O> extendedOut =
+			Views.interval(Views.extend(out, obfOutput), out);
+
+		ops.run(ConvolveNaive.class, extendedOut, extendedIn, kernel);
+
+		return out;
 	}
 
 	@Override
 	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(kernel) > 9;
+		// conforms only if the kernel is sufficiently small
+		return Intervals.numElements(kernel) <= 9;
 	}
 
 }
