@@ -56,6 +56,7 @@ public class CreateLogKernel<T extends ComplexType<T> & NativeType<T>> extends
 	AbstractCreateKernel<T> implements Ops.LogKernel
 {
 
+	@Override
 	void createKernel() {
 		final double[] sigmaPixels = new double[numDimensions];
 		for (int i = 0; i < sigmaPixels.length; i++) {

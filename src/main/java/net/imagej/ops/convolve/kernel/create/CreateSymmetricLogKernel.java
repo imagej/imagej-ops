@@ -50,6 +50,7 @@ public class CreateSymmetricLogKernel<T extends ComplexType<T>> extends
 	AbstractCreateSymmetricKernel<T> implements Ops.LogKernel
 {
 
+	@Override
 	public void run() {
 
 		double[] sigmas = new double[numDimensions];

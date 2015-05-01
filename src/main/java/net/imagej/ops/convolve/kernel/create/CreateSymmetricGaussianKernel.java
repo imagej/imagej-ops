@@ -50,6 +50,7 @@ public class CreateSymmetricGaussianKernel<T extends ComplexType<T>> extends
 	AbstractCreateSymmetricKernel<T> implements Ops.GaussKernel
 {
 
+	@Override
 	public void run() {
 
 		double[] sigmas = new double[numDimensions];

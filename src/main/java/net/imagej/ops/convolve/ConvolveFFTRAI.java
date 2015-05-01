@@ -61,6 +61,7 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	 * Perform convolution by multiplying the FFTs in the frequency domain TODO
 	 * use an op here??
 	 */
+	@Override
 	protected void frequencyOperation(Img<C> a, Img<C> b) {
 		final Cursor<C> cursorA = a.cursor();
 		final Cursor<C> cursorB = b.cursor();

@@ -45,6 +45,7 @@ import net.imglib2.algorithm.fft2.FFTMethods;
 @Plugin(type = FFTSize.class, name = FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {
 
+	@Override
 	public void run() {
 		FinalDimensions dim = new FinalDimensions(inputSize);
 

@@ -57,6 +57,7 @@ public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
 	extends AbstractCreateKernel<T> implements Ops.GaussKernel
 {
 
+	@Override
 	void createKernel() {
 		double[] sigmaPixels = new double[numDimensions];
 
