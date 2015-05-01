@@ -31,6 +31,7 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.OpMethod;
 
 /**
  * The logic namespace contains logical (i.e., boolean) operations.
@@ -41,7 +42,13 @@ public class LogicNamespace extends AbstractNamespace {
 
 	// -- Logic namespace ops --
 
-	// TODO
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class)
+	public boolean and(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class,
+				a, b);
+		return result;
+	}
 
 	// -- Named methods --
 
