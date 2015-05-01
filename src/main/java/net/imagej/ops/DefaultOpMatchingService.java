@@ -149,14 +149,14 @@ public class DefaultOpMatchingService extends
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return null;
-		final Object[] args = paddedArgs(candidate);
+		final Object[] args = padArgs(candidate);
 		return args == null ? null : match(candidate, args);
 	}
 
 	@Override
 	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return false;
-		final Object[] args = paddedArgs(candidate);
+		final Object[] args = padArgs(candidate);
 		return args == null ? false : typesMatch(candidate, args);
 	}
 
@@ -167,6 +167,48 @@ public class DefaultOpMatchingService extends
 			assign(module, args[i++], item);
 		}
 		return module;
+	}
+
+	@Override
+	public <OP extends Op> Object[] padArgs(final OpCandidate<OP> candidate) {
+		int inputCount = 0, requiredCount = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			inputCount++;
+			if (item.isRequired()) requiredCount++;
+		}
+		final Object[] args = candidate.getRef().getArgs();
+		if (args.length == inputCount) {
+			// correct number of arguments
+			return args;
+		}
+		if (args.length > inputCount) {
+			// too many arguments
+			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
+				args.length + " > " + inputCount);
+			return null;
+		}
+		if (args.length < requiredCount) {
+			// too few arguments
+			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
+				args.length + " < " + requiredCount);
+			return null;
+		}
+
+		// pad optional parameters with null (from right to left)
+		final int argsToPad = inputCount - args.length;
+		final int optionalCount = inputCount - requiredCount;
+		final int optionalsToFill = optionalCount - argsToPad;
+		final Object[] paddedArgs = new Object[inputCount];
+		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
+		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
+				// skip this optional parameter (pad with null)
+				paddedIndex++;
+				continue;
+			}
+			paddedArgs[paddedIndex++] = args[argIndex++];
+		}
+		return paddedArgs;
 	}
 
 	@Override
@@ -238,48 +280,6 @@ public class DefaultOpMatchingService extends
 		if (candidate.getInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
 		return false;
-	}
-
-	/** Checks the number of args, padding optional args with null as needed. */
-	private <OP extends Op> Object[] paddedArgs(final OpCandidate<OP> candidate) {
-		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			inputCount++;
-			if (item.isRequired()) requiredCount++;
-		}
-		final Object[] args = candidate.getRef().getArgs();
-		if (args.length == inputCount) {
-			// correct number of arguments
-			return args;
-		}
-		if (args.length > inputCount) {
-			// too many arguments
-			candidate.setStatus(StatusCode.TOO_MANY_ARGS,
-				args.length + " > " + inputCount);
-			return null;
-		}
-		if (args.length < requiredCount) {
-			// too few arguments
-			candidate.setStatus(StatusCode.TOO_FEW_ARGS,
-				args.length + " < " + requiredCount);
-			return null;
-		}
-
-		// pad optional parameters with null (from right to left)
-		final int argsToPad = inputCount - args.length;
-		final int optionalCount = inputCount - requiredCount;
-		final int optionalsToFill = optionalCount - argsToPad;
-		final Object[] paddedArgs = new Object[inputCount];
-		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
-				// skip this optional parameter (pad with null)
-				paddedIndex++;
-				continue;
-			}
-			paddedArgs[paddedIndex++] = args[argIndex++];
-		}
-		return paddedArgs;
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */

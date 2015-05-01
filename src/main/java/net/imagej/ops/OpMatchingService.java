@@ -94,6 +94,9 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 */
 	<OP extends Op> boolean typesMatch(OpCandidate<OP> candidate);
 
+	/** Checks the number of args, padding optional args with null as needed. */
+	<OP extends Op> Object[] padArgs(OpCandidate<OP> candidate);
+
 	/**
 	 * Optimizes the performance of the given {@link Module} using all available
 	 * {@link Optimizer}s.
