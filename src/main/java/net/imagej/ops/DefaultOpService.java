@@ -46,10 +46,12 @@ import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
+import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -171,6 +173,27 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return run(Ops.ASCII.NAME, args);
 	}
 
+	@Override
+	public <T extends RealType<T>> String ascii(final IterableInterval<T> image) {
+		final String result =
+			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> String ascii(final IterableInterval<T> image, final RealType<T> min) {
+		final String result =
+			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> String ascii(final IterableInterval<T> image, final RealType<T> min, final RealType<T> max) {
+		final String result =
+			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min, max);
+		return result;
+	}
+	
 	@Override
 	public Object chunker(final Object... args) {
 		return run(Ops.Chunker.NAME, args);

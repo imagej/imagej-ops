@@ -38,10 +38,12 @@ import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
+import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -171,6 +173,20 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = Ops.ASCII.class)
 	Object ascii(Object... args);
+
+	/** Executes the "ascii" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
+	<T extends RealType<T>> String ascii(final IterableInterval<T> image);
+
+	/** Executes the "ascii" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
+	<T extends RealType<T>> String ascii(final IterableInterval<T> image,
+		final RealType<T> min);
+
+	/** Executes the "ascii" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
+	<T extends RealType<T>> String ascii(final IterableInterval<T> image,
+		final RealType<T> min, final RealType<T> max);
 
 	/** Executes the "chunker" operation on the given arguments. */
 	@OpMethod(op = Ops.Chunker.class)
