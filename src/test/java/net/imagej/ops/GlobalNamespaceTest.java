@@ -31,8 +31,9 @@
 package net.imagej.ops;
 
 import net.imagej.ops.Ops.ASCII;
-import net.imagej.ops.Ops.Equation;
 import net.imagej.ops.Ops.CreateImg;
+import net.imagej.ops.Ops.Equation;
+import net.imagej.ops.Ops.Eval;
 
 import org.junit.Test;
 
@@ -60,5 +61,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testEquation() {
 		assertComplete(null, OpService.class, Equation.NAME);
+	}
+
+	/** Tests for {@link Eval} method convergence. */
+	@Test
+	public void testEval() {
+		assertComplete(null, OpService.class, Eval.NAME);
 	}
 }
