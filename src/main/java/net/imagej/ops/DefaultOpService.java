@@ -181,19 +181,23 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image, final RealType<T> min) {
+	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
+		final RealType<T> min)
+	{
 		final String result =
 			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min);
 		return result;
 	}
 
 	@Override
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image, final RealType<T> min, final RealType<T> max) {
+	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
+		final RealType<T> min, final RealType<T> max)
+	{
 		final String result =
 			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min, max);
 		return result;
 	}
-	
+
 	@Override
 	public Object chunker(final Object... args) {
 		return run(Ops.Chunker.NAME, args);
@@ -210,7 +214,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object correlate(Object... args) {
+	public Object correlate(final Object... args) {
 		return run(Ops.Correlate.NAME, args);
 	}
 
@@ -297,6 +301,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) run(net.imagej.ops.equation.DefaultEquation.class,
+				in);
+		return result;
+	}
+
+	@Override
+	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
+	public <T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final String in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) run(net.imagej.ops.equation.DefaultEquation.class,
+				out, in);
+		return result;
+	}
+
+	@Override
 	public Object eval(final Object... args) {
 		return run(Ops.Eval.NAME, args);
 	}
@@ -307,7 +333,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object fftsize(Object... args) {
+	public Object fftsize(final Object... args) {
 		return run(Ops.FFTSize.NAME, args);
 	}
 
@@ -352,7 +378,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object log(Object... args) {
+	public Object log(final Object... args) {
 		return run(Ops.Log.NAME, args);
 	}
 

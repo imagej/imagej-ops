@@ -250,6 +250,15 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Equation.class)
 	Object equation(Object... args);
 
+	/** Executes the "equation" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
+	<T extends RealType<T>> IterableInterval<T> equation(final String in);
+
+	/** Executes the "equation" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
+	<T extends RealType<T>> IterableInterval<T> equation(
+		final IterableInterval<T> out, final String in);
+
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)
 	Object eval(Object... args);
