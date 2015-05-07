@@ -478,6 +478,33 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public String help(final Op op) {
+		final String result = (String) run(net.imagej.ops.help.HelpOp.class, op);
+		return result;
+	}
+
+	@Override
+	public String help() {
+		final String result =
+			(String) run(net.imagej.ops.help.HelpCandidates.class);
+		return result;
+	}
+
+	@Override
+	public String help(final String name) {
+		final String result =
+			(String) run(net.imagej.ops.help.HelpCandidates.class, name);
+		return result;
+	}
+
+	@Override
+	public String help(final String name, final Class<? extends Op> opType) {
+		final String result =
+			(String) run(net.imagej.ops.help.HelpCandidates.class, name, opType);
+		return result;
+	}
+
+	@Override
 	public Object histogram(final Object... args) {
 		return run(Ops.Histogram.NAME, args);
 	}

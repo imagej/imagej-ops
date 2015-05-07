@@ -351,6 +351,22 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Help.class)
 	Object help(Object... args);
 
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpOp.class)
+	String help(final Op op);
+
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
+	String help();
+
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
+	String help(final String name);
+
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
+	String help(final String name, final Class<? extends Op> opType);
+
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = Ops.Histogram.class)
 	Object histogram(Object... args);
