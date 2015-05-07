@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImgPlus;
+import net.imagej.ops.chunker.Chunk;
+import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateEmptyImgCopy;
 import net.imagej.ops.create.CreateEmptyImgPlusCopy;
@@ -222,6 +224,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object chunker(final Object... args) {
 		return run(Ops.Chunker.NAME, args);
+	}
+
+	@Override
+	public void chunker(final Chunk chunkable, final long numberOfElements) {
+		run(Chunker.class, chunkable, numberOfElements);
 	}
 
 	@Override
