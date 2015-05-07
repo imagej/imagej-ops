@@ -40,11 +40,15 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -275,6 +279,55 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = Ops.FFT.class)
 	Object fft(Object... args);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<I> in);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Boolean fast);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Boolean fast,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
+	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
+		fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
+	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
+		fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
+	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
+		fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
+			final long... paddedSize);
 
 	/** Executes the "fftsize" operation on the given arguments. */
 	@OpMethod(op = Ops.FFTSize.class)
