@@ -456,6 +456,18 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> RandomAccessibleInterval<T> gauss(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) run(
+				net.imagej.ops.gauss.GaussRAI2RAI.class, out, in, sigma);
+		return result;
+	}
+
+	@Override
 	public Object gaussKernel(final Object... args) {
 		return run("gausskernel", args);
 	}

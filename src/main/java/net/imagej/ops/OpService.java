@@ -337,6 +337,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Gauss.class)
 	Object gauss(Object... args);
 
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.gauss.GaussRAI2RAI.class)
+	<T extends RealType<T>> RandomAccessibleInterval<T> gauss(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final double sigma);
+
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(op = Ops.GaussKernel.class)
 	Object gaussKernel(Object... args);
