@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import java.util.Collection;
+import java.util.Map;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
@@ -262,6 +263,14 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)
 	Object eval(Object... args);
+
+	/** Executes the "eval" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
+	Object eval(final String expression);
+
+	/** Executes the "eval" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
+	Object eval(final String expression, final Map<String, Object> vars);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = Ops.FFT.class)

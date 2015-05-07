@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.create.CreateEmptyImgCopy;
@@ -301,7 +302,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result =
@@ -311,7 +311,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(
 		final IterableInterval<T> out, final String in)
 	{
@@ -325,6 +324,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object eval(final Object... args) {
 		return run(Ops.Eval.NAME, args);
+	}
+
+	@Override
+	public Object eval(final String expression) {
+		final Object result =
+			run(net.imagej.ops.eval.DefaultEval.class, expression);
+		return result;
+	}
+
+	@Override
+	public Object eval(final String expression, final Map<String, Object> vars) {
+		final Object result =
+			run(net.imagej.ops.eval.DefaultEval.class, expression, vars);
+		return result;
 	}
 
 	@Override
