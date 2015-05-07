@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import net.imagej.ops.Ops.ASCII;
+import net.imagej.ops.Ops.Chunker;
 import net.imagej.ops.Ops.Convert;
 import net.imagej.ops.Ops.Convolve;
 import net.imagej.ops.Ops.Correlate;
@@ -88,6 +89,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testASCII() {
 		assertComplete(null, OpService.class, ASCII.NAME);
+	}
+
+	/** Tests for {@link Chunker} method convergence. */
+	@Test
+	public void testChunker() {
+		assertComplete(null, OpService.class, Chunker.NAME);
 	}
 
 	/** Tests for {@link Convert} method convergence. */
