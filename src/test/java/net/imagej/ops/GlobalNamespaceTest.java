@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import net.imagej.ops.Ops.CreateImg;
+import net.imagej.ops.Ops.ASCII;
 
 import org.junit.Test;
 
@@ -46,6 +47,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCreateImg() {
 		assertComplete(null, OpService.class, CreateImg.NAME);
+	}
+	
+	/** Tests for {@link ASCII} method convergence. */
+	@Test
+	public void testASCII() {
+		assertComplete(null, OpService.class, ASCII.NAME);
 	}
 
 }
