@@ -37,6 +37,7 @@ import net.imagej.ops.Ops.Eval;
 import net.imagej.ops.Ops.FFT;
 import net.imagej.ops.Ops.Gauss;
 import net.imagej.ops.Ops.Help;
+import net.imagej.ops.Ops.Identity;
 
 import org.junit.Test;
 
@@ -88,5 +89,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testHelp() {
 		assertComplete(null, OpService.class, Help.NAME);
+	}
+
+	/** Tests for {@link Identity} method convergence. */
+	@Test
+	public void testIdentity() {
+		assertComplete(null, OpService.class, Identity.NAME);
 	}
 }
