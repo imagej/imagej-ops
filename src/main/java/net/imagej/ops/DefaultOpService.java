@@ -515,6 +515,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <A> A identity(final A arg) {
+		@SuppressWarnings("unchecked")
+		final A result =
+			(A) run(net.imagej.ops.identity.DefaultIdentity.class, arg);
+		return result;
+	}
+
+	@Override
 	public Object ifft(final Object... args) {
 		return run("ifft", args);
 	}

@@ -375,6 +375,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Identity.class)
 	Object identity(Object... args);
 
+	/** Executes the "identity" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.identity.DefaultIdentity.class)
+	<A> A identity(final A arg);
+
 	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = Ops.IFFT.class)
 	Object ifft(Object... args);
