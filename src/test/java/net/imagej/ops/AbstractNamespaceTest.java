@@ -427,9 +427,13 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			args.append(", " + input.getName());
 		}
 		sb.append(") {\n");
-		sb.append("\t\tfinal " + returnType + " result =\n");
-		sb.append("\t\t\t" + castPrefix + "ops().run(" + args + ");\n");
-		sb.append("\t\treturn result;\n");
+		sb.append("\t\t");
+		if (outputCount > 0) {
+			sb.append("final " + returnType + " result =\n" + //
+				"\t\t\t" + castPrefix);
+		}
+		sb.append("ops().run(" + args + ");\n");
+		if (outputCount > 0) sb.append("\t\treturn result;\n");
 		sb.append("\t}");
 
 		return sb.toString();
