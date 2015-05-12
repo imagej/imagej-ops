@@ -39,6 +39,7 @@ import net.imagej.ops.Ops.Gauss;
 import net.imagej.ops.Ops.Help;
 import net.imagej.ops.Ops.IFFT;
 import net.imagej.ops.Ops.Identity;
+import net.imagej.ops.Ops.Invert;
 
 import org.junit.Test;
 
@@ -97,10 +98,16 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	public void testIdentity() {
 		assertComplete(null, OpService.class, Identity.NAME);
 	}
-	
+
 	/** Tests for {@link IFFT} method convergence. */
 	@Test
 	public void testIFFT() {
 		assertComplete(null, OpService.class, IFFT.NAME);
+	}
+
+	/** Tests for {@link Invert} method convergence. */
+	@Test
+	public void testInvert() {
+		assertComplete(null, OpService.class, Invert.NAME);
 	}
 }
