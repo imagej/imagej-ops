@@ -453,10 +453,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<A, B> B join(final B out, final A in, final Function<A, B> first,
 		final InplaceFunction<B> second, final BufferFactory<A, B> bufferFactory);
 
-	/** Executes the "log" operation on the given arguments. */
-	@OpMethod(op = Ops.Log.class)
-	Object log(Object... args);
-
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(op = Ops.LogKernel.class)
 	Object logKernel(Object... args);

@@ -23,7 +23,6 @@ ops = ```
 	[name: "ifft",        iface: "IFFT"],
 	[name: "invert",      iface: "Invert"],
 	[name: "join",        iface: "Join"],
-	[name: "log",         iface: "Log"],
 	[name: "logkernel",   iface: "LogKernel"],
 	[name: "lookup",      iface: "Lookup",         aliases: ["op"]],
 	[name: "loop",        iface: "Loop"],
