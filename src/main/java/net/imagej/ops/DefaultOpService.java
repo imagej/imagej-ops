@@ -528,6 +528,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>, O extends Img<T>> Img<O> ifft(
+		final Img<O> out, final Img<ComplexFloatType> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) run(net.imagej.ops.fft.image.IFFTImg.class, out, in);
+		return result;
+	}
+
+	@Override
+	public <C extends ComplexType<C>, T extends RealType<T>>
+		RandomAccessibleInterval<T> ifft(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) run(
+				net.imagej.ops.fft.methods.IFFTRAI.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object invert(final Object... args) {
 		return run(Ops.Invert.NAME, args);
 	}
