@@ -570,6 +570,104 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <A, B, C> C join(final C out, final A in, final Function<A, B> first,
+		final Function<B, C> second)
+	{
+		@SuppressWarnings("unchecked")
+		final C result =
+			(C) run(net.imagej.ops.join.DefaultJoinFunctionAndFunction.class, out,
+				in, first, second);
+		return result;
+	}
+
+	@Override
+	public <A, B, C> C join(final C out, final A in, final Function<A, B> first,
+		final Function<B, C> second, final BufferFactory<A, B> bufferFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final C result =
+			(C) run(net.imagej.ops.join.DefaultJoinFunctionAndFunction.class, out,
+				in, first, second, bufferFactory);
+		return result;
+	}
+
+	@Override
+	public <A> A join(final A arg, final InplaceFunction<A> first,
+		final InplaceFunction<A> second)
+	{
+		@SuppressWarnings("unchecked")
+		final A result =
+			(A) run(net.imagej.ops.join.DefaultJoinInplaceAndInplace.class, arg,
+				first, second);
+		return result;
+	}
+
+	@Override
+	public <A> A join(final A out, final A in,
+		final List<? extends Function<A, A>> functions,
+		final BufferFactory<A, A> bufferFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final A result =
+			(A) run(net.imagej.ops.join.DefaultJoinFunctions.class, out, in,
+				functions, bufferFactory);
+		return result;
+	}
+
+	@Override
+	public <A> A join(final A arg, final List<InplaceFunction<A>> functions) {
+		@SuppressWarnings("unchecked")
+		final A result =
+			(A) run(net.imagej.ops.join.DefaultJoinInplaceFunctions.class, arg,
+				functions);
+		return result;
+	}
+
+	@Override
+	public <A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+		final Function<A, B> second)
+	{
+		@SuppressWarnings("unchecked")
+		final B result =
+			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndFunction.class, out, in,
+				first, second);
+		return result;
+	}
+
+	@Override
+	public <A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+		final Function<A, B> second, final BufferFactory<A, A> bufferFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final B result =
+			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndFunction.class, out, in,
+				first, second, bufferFactory);
+		return result;
+	}
+
+	@Override
+	public <A, B> B join(final B out, final A in, final Function<A, B> first,
+		final InplaceFunction<B> second)
+	{
+		@SuppressWarnings("unchecked")
+		final B result =
+			(B) run(net.imagej.ops.join.DefaultJoinFunctionAndInplace.class, out, in,
+				first, second);
+		return result;
+	}
+
+	@Override
+	public <A, B> B join(final B out, final A in, final Function<A, B> first,
+		final InplaceFunction<B> second, final BufferFactory<A, B> bufferFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final B result =
+			(B) run(net.imagej.ops.join.DefaultJoinFunctionAndInplace.class, out, in,
+				first, second, bufferFactory);
+		return result;
+	}
+
+	@Override
 	public Object log(final Object... args) {
 		return run(Ops.Log.NAME, args);
 	}

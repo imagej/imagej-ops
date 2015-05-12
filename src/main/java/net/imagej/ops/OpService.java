@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImageJService;
@@ -406,6 +407,51 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = Ops.Join.class)
 	Object join(Object... args);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
+	<A, B, C> C join(final C out, final A in, final Function<A, B> first,
+		final Function<B, C> second);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
+	<A, B, C> C join(final C out, final A in, final Function<A, B> first,
+		final Function<B, C> second, final BufferFactory<A, B> bufferFactory);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndInplace.class)
+	<A> A join(final A arg, final InplaceFunction<A> first,
+		final InplaceFunction<A> second);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctions.class)
+	<A> A join(final A out, final A in,
+		final List<? extends Function<A, A>> functions,
+		final BufferFactory<A, A> bufferFactory);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceFunctions.class)
+	<A> A join(final A arg, final List<InplaceFunction<A>> functions);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
+	<A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+		final Function<A, B> second);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
+	<A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+		final Function<A, B> second, final BufferFactory<A, A> bufferFactory);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
+	<A, B> B join(final B out, final A in, final Function<A, B> first,
+		final InplaceFunction<B> second);
+
+	/** Executes the "join" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
+	<A, B> B join(final B out, final A in, final Function<A, B> first,
+		final InplaceFunction<B> second, final BufferFactory<A, B> bufferFactory);
 
 	/** Executes the "log" operation on the given arguments. */
 	@OpMethod(op = Ops.Log.class)
