@@ -555,6 +555,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		invert(final IterableInterval<O> out, final IterableInterval<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result =
+			(IterableInterval<O>) run(net.imagej.ops.invert.InvertII.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object join(final Object... args) {
 		return run(Ops.Join.NAME, args);
 	}

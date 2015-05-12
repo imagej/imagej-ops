@@ -398,6 +398,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Invert.class)
 	Object invert(Object... args);
 
+	/** Executes the "invert" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.invert.InvertII.class)
+	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+		final IterableInterval<O> out, final IterableInterval<I> in);
+
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = Ops.Join.class)
 	Object join(Object... args);
