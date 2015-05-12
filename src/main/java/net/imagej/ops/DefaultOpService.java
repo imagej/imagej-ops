@@ -678,6 +678,100 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends ComplexType<T>> Img<T> logkernel(final int numDimensions,
+		final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class,
+				numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class,
+				outType, numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class,
+				outType, fac, numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class,
+				outType, fac, numDimensions, sigma, calibration);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(net.imagej.ops.convolve.kernel.create.CreateLogKernel.class,
+				sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(net.imagej.ops.convolve.kernel.create.CreateLogKernel.class,
+				outType, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(net.imagej.ops.convolve.kernel.create.CreateLogKernel.class,
+				outType, fac, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(net.imagej.ops.convolve.kernel.create.CreateLogKernel.class,
+				outType, fac, sigma, calibration);
+		return result;
+	}
+
+	@Override
 	public Object lookup(final Object... args) {
 		return run(Ops.Lookup.NAME, args);
 	}
@@ -830,5 +924,4 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object create(final Object... args) {
 		return createimg(args);
 	}
-
 }

@@ -461,6 +461,52 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.LogKernel.class)
 	Object logKernel(Object... args);
 
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
+	<T extends ComplexType<T>> Img<T> logkernel(final int numDimensions,
+		final double sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
+	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final int numDimensions, final double sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
+	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
+	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma,
+		final double... calibration);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final double... sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final double... sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma);
+
+	/** Executes the "logkernel" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration);
+
 	/** Executes the "lookup" operation on the given arguments. */
 	@OpMethod(op = Ops.Lookup.class)
 	Object lookup(Object... args);
