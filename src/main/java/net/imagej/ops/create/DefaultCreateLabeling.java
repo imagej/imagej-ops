@@ -51,7 +51,8 @@ public class DefaultCreateLabeling<L, T extends IntegerType<T>> implements
 	public void run() {
 		
 		if(outType == null){
-			outType = (T) new IntType();
+			//FIXME: don't get it, mvn complains but runs fine in eclipse.
+			outType = (T) (Object) new IntType();
 		}
 		
 		output = new ImgLabeling<L, T>((RandomAccessibleInterval<T>) ops.run(
