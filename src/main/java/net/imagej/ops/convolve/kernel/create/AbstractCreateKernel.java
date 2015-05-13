@@ -31,7 +31,6 @@
 package net.imagej.ops.convolve.kernel.create;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.create.AbstractCreateImg;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
@@ -51,7 +50,7 @@ import org.scijava.plugin.Parameter;
  * @param <T>
  */
 public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateImg<T, DoubleType, ArrayImgFactory<DoubleType>>
+	extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>>
 	implements Contingent
 {
 
