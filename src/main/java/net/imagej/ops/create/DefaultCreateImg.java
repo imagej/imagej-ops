@@ -31,35 +31,68 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.img.planar.PlanarImgFactory;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops.CreateImg;
+import net.imagej.ops.OutputOp;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates a default image. If outType is not passed it is set to a default of
- * DoubleType. If fac is not passed in it is set to a default of
- * PlanarImgFactory.
+ * Default implementation of the {@link CreateImg} interface.
  * 
- * @author bnorthan
- * @param <V>
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Tim-Oliver Buchholz, University of Konstanz.
+ * 
+ * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
-public class DefaultCreateImg<V extends Type<V>> extends
-	AbstractCreateImg<V, DoubleType, PlanarImgFactory<DoubleType>> implements
-	Ops.CreateImg
-{
+@Plugin(type = Op.class)
+public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
+		OutputOp<Img<T>> {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<T> output;
 
 	@Parameter
-	private long[] dims;
+	private OpService ops;
 
+	@Parameter
+	private Dimensions dims;
+
+	@Parameter(required = false)
+	private T outType;
+
+	@Parameter(required = false)
+	private ImgFactory<T> fac;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		createOutputImg(dims, fac, outType, new PlanarImgFactory<DoubleType>(),
-			new DoubleType());
+
+		if (outType == null) {
+			outType = (T) ops.createtype();
+		}
+
+		if (fac == null) {
+			fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+		}
+
+		output = fac.create(dims, outType);
+	}
+
+	@Override
+	public Img<T> getOutput() {
+		return output;
+	}
+
+	@Override
+	public void setOutput(Img<T> output) {
+		this.output = output;
 	}
 
 }

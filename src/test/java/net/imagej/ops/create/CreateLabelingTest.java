@@ -35,17 +35,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.CreateImg;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.NativeType;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
 
 import org.junit.Test;
@@ -57,7 +52,7 @@ import org.junit.Test;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 
-public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
+public class CreateLabelingTest<T extends NativeType<T>> extends AbstractOpTest {
 
 	private static final int TEST_SIZE = 100;
 
@@ -76,57 +71,59 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 				dim[j] = randomGenerator.nextInt(9) + 2;
 			}
 
-			// create img
-			Img<?> img = (Img<?>) ops.createimg(dim);
+			// create imglabeling
+			@SuppressWarnings("unchecked")
+			ImgLabeling<String, ?> img = (ImgLabeling<String, ?>) ops
+					.createlabeling(new String(), dim);
 
-			assertArrayEquals("Image Dimensions:", dim,
+			assertArrayEquals("Labeling Dimensions:", dim,
 					Intervals.dimensionsAsLongArray(img));
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testImageFactory() {
 
 		long[] dim = new long[] { 10, 10, 10 };
 
-		assertEquals("Image Factory: ", ArrayImgFactory.class,
-				((Img<?>) ops.run(CreateImg.class, dim, null,
-						new ArrayImgFactory<DoubleType>())).factory()
-						.getClass());
+		assertEquals("Labeling Factory: ", ArrayImgFactory.class,
+				((Img<?>) ((ImgLabeling<String, ?>) ops
+						.createlabeling(new String(), dim, null,
+								new ArrayImgFactory<IntType>())).getIndexImg())
+						.factory().getClass());
 
-		assertEquals("Image Factory: ", CellImgFactory.class,
-				((Img<?>) ops.run(CreateImg.class, dim, null,
-						new CellImgFactory<DoubleType>())).factory().getClass());
+		assertEquals(
+				"Labeling Factory: ",
+				CellImgFactory.class,
+				((Img<?>) ((ImgLabeling<String, ?>) ops.createlabeling(
+						new String(), dim, null, new CellImgFactory<IntType>()))
+						.getIndexImg()).factory().getClass());
 
 	}
 
 	@Test
 	public void testImageType() {
 
-		long[] dim = new long[] { 10, 10, 10 };
+		assertEquals("Labeling Type", String.class, createLabelingWithType("1")
+				.firstElement().toArray()[0].getClass());
 
-		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new BitType(), null)).firstElement()
-				.getClass());
+		assertEquals("Labeling Type", Integer.class, createLabelingWithType(1)
+				.firstElement().toArray()[0].getClass());
 
-		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new ByteType(), null)).firstElement()
-				.getClass());
+		assertEquals("Labeling Type", Double.class, createLabelingWithType(1d)
+				.firstElement().toArray()[0].getClass());
 
-		assertEquals("Image Type: ", UnsignedByteType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new UnsignedByteType(), null))
-				.firstElement().getClass());
+		assertEquals("Labeling Type", Float.class, createLabelingWithType(1f)
+				.firstElement().toArray()[0].getClass());
+	}
 
-		assertEquals("Image Type: ", IntType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new IntType(), null)).firstElement()
-				.getClass());
+	@SuppressWarnings("unchecked")
+	private <I> ImgLabeling<I, ?> createLabelingWithType(I type) {
 
-		assertEquals("Image Type: ", FloatType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new FloatType(), null)).firstElement()
-				.getClass());
-
-		assertEquals("Image Type: ", DoubleType.class, ((Img<?>) ops.run(
-				CreateImg.class, dim, new DoubleType(), null)).firstElement()
-				.getClass());
+		ImgLabeling<I, ?> imgLabeling = ((ImgLabeling<I, ?>) ops
+				.createlabeling(type, new long[] { 10, 10, 10 }));
+		imgLabeling.cursor().next().add(type);
+		return imgLabeling;
 	}
 }
