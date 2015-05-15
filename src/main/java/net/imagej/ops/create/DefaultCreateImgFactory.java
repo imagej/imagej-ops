@@ -25,7 +25,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateFactory<T extends NativeType<T>> implements
+public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 		CreateImgFactory, OutputOp<ImgFactory<T>> {
 
 	@Parameter(type = ItemIO.OUTPUT)

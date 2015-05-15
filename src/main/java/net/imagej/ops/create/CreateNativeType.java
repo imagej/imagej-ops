@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateType<T extends NativeType<T>> implements CreateType,
+public class CreateNativeType<T extends NativeType<T>> implements CreateType,
 		OutputOp<T> {
 
 	@Parameter(type = ItemIO.OUTPUT)
@@ -28,8 +28,7 @@ public class DefaultCreateType<T extends NativeType<T>> implements CreateType,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		// FIXME: wtf
-		output = (T) (Object) new DoubleType();
+		output = (T) new DoubleType();
 	}
 
 	@Override

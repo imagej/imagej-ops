@@ -3,7 +3,7 @@ package net.imagej.ops.create;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.CreateImg;
-import net.imagej.ops.Ops.CreateLabeling;
+import net.imagej.ops.Ops.CreateImgLabeling;
 import net.imagej.ops.OutputOp;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
@@ -33,8 +33,8 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateLabeling<L, T extends IntegerType<T>> implements
-		CreateLabeling, OutputOp<ImgLabeling<L, T>> {
+public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
+		CreateImgLabeling, OutputOp<ImgLabeling<L, T>> {
 
 	@Parameter
 	private OpService ops;

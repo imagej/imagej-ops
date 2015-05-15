@@ -436,6 +436,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object createlabeling(Object... args) {
-		return run(Ops.CreateLabeling.class, args);
+		return run(Ops.CreateImgLabeling.class, args);
 	}
 }

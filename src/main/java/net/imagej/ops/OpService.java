@@ -346,7 +346,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.CreateImgFactory.class)
 	Object createfactory(Object... args);
 
-	@OpMethod(op = Ops.CreateLabeling.class)
+	@OpMethod(op = Ops.CreateImgLabeling.class)
 	Object createlabeling(Object... args);
 
 	// -- Operation shortcuts - other namespaces --
