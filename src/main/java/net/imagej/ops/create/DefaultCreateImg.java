@@ -35,6 +35,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.CreateImg;
 import net.imagej.ops.OutputOp;
 import net.imglib2.Dimensions;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
@@ -57,7 +58,7 @@ public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
 
 	@Parameter
 	private OpService ops;
-	
+
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<T> output;
 
@@ -79,7 +80,22 @@ public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
 		}
 
 		if (fac == null) {
-			fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+			if ((dims instanceof Img)) {
+
+				final Img<?> inImg = ((Img<?>) dims);
+				if (inImg.firstElement().getClass()
+						.isAssignableFrom(outType.getClass())) {
+					fac = (ImgFactory<T>) inImg.factory();
+				} else {
+					try {
+						fac = inImg.factory().imgFactory(outType);
+					} catch (IncompatibleTypeException e) {
+						fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+					}
+				}
+			}else{
+				fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+			}
 		}
 
 		output = fac.create(dims, outType);

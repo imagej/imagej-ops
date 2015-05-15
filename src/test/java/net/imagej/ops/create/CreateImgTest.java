@@ -36,17 +36,22 @@ import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops.CreateImg;
+import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
+import net.imglib2.img.planar.PlanarImgs;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.ShortType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
 import org.junit.Test;
 
@@ -129,4 +134,58 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 				CreateImg.class, dim, new DoubleType(), null)).firstElement()
 				.getClass());
 	}
+
+	@Test
+	public void testCreateFromImgSameType() {
+
+		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
+		final Img<?> res = ((Img<?>) ops.run(CreateImg.class, input, input
+				.firstElement().createVariable()));
+
+		assertEquals("Image Type: ", ByteType.class, res.firstElement()
+				.getClass());
+		assertArrayEquals("Image Dimensions: ",
+				Intervals.dimensionsAsLongArray(input),
+				Intervals.dimensionsAsLongArray(res));
+		assertEquals("Image Factory: ", input.factory().getClass(), res
+				.factory().getClass());
+	}
+
+	@Test
+	public void testCreateFromImgDifferentType() {
+
+		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
+		final Img<?> res = ((Img<?>) ops.run(CreateImg.class, input,
+				new ShortType()));
+
+		assertEquals("Image Type: ", ShortType.class, res.firstElement()
+				.getClass());
+		assertArrayEquals("Image Dimensions: ",
+				Intervals.dimensionsAsLongArray(input),
+				Intervals.dimensionsAsLongArray(res));
+		assertEquals("Image Factory: ", input.factory().getClass(), res
+				.factory().getClass());
+	}
+
+	@Test
+	public void testCreateFromRaiDifferentType() {
+
+		final IntervalView<ByteType> input = Views.interval(
+				PlanarImgs.bytes(10, 10, 10), new FinalInterval(new long[] {
+						10, 10, 1 }));
+
+		final Img<?> res = ((Img<?>) ops.run(CreateImg.class, input,
+				new ShortType()));
+
+		assertEquals("Image Type: ", ShortType.class, res.firstElement()
+				.getClass());
+		
+		assertArrayEquals("Image Dimensions: ",
+				Intervals.dimensionsAsLongArray(input),
+				Intervals.dimensionsAsLongArray(res));
+		
+		assertEquals("Image Factory: ", ArrayImgFactory.class, res.factory()
+				.getClass());
+	}
+
 }
