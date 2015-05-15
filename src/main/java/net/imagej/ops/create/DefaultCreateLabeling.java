@@ -21,6 +21,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz
  * 
  * @param <T>
  */
@@ -31,20 +32,17 @@ public class DefaultCreateLabeling<L, T extends IntegerType<T>> implements
 	@Parameter
 	private OpService ops;
 
-	@Parameter
-	private L labelType;
-
+	@Parameter(type = ItemIO.OUTPUT)
+	private ImgLabeling<L, T> output;
+	
 	@Parameter
 	private Dimensions dims;
 
 	@Parameter(required = false)
 	private T outType;
-
+	
 	@Parameter(required = false)
 	private ImgFactory<T> fac;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgLabeling<L, T> output;
 
 	@SuppressWarnings("unchecked")
 	@Override
