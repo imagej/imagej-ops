@@ -74,7 +74,7 @@ public class CreateLabelingTest<T extends NativeType<T>> extends AbstractOpTest 
 			// create imglabeling
 			@SuppressWarnings("unchecked")
 			ImgLabeling<String, ?> img = (ImgLabeling<String, ?>) ops
-					.createlabeling(new String(), dim);
+					.createlabeling(dim);
 
 			assertArrayEquals("Labeling Dimensions:", dim,
 					Intervals.dimensionsAsLongArray(img));
@@ -93,12 +93,10 @@ public class CreateLabelingTest<T extends NativeType<T>> extends AbstractOpTest 
 								new ArrayImgFactory<IntType>())).getIndexImg())
 						.factory().getClass());
 
-		assertEquals(
-				"Labeling Factory: ",
-				CellImgFactory.class,
-				((Img<?>) ((ImgLabeling<String, ?>) ops.createlabeling(
-						new String(), dim, null, new CellImgFactory<IntType>()))
-						.getIndexImg()).factory().getClass());
+		assertEquals("Labeling Factory: ", CellImgFactory.class,
+				((Img<?>) ((ImgLabeling<String, ?>) ops.createlabeling(dim,
+						null, new CellImgFactory<IntType>())).getIndexImg())
+						.factory().getClass());
 
 	}
 
@@ -122,7 +120,7 @@ public class CreateLabelingTest<T extends NativeType<T>> extends AbstractOpTest 
 	private <I> ImgLabeling<I, ?> createLabelingWithType(I type) {
 
 		ImgLabeling<I, ?> imgLabeling = ((ImgLabeling<I, ?>) ops
-				.createlabeling(type, new long[] { 10, 10, 10 }));
+				.createlabeling(new long[] { 10, 10, 10 }));
 		imgLabeling.cursor().next().add(type);
 		return imgLabeling;
 	}

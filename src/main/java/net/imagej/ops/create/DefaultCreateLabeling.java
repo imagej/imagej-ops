@@ -9,8 +9,15 @@ import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedIntType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -44,13 +51,35 @@ public class DefaultCreateLabeling<L, T extends IntegerType<T>> implements
 	@Parameter(required = false)
 	private ImgFactory<T> fac;
 
+	@Parameter(required = false)
+	private int maxNumLabelSets = 0;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		
 		if(outType == null){
-			//FIXME: don't get it, mvn complains but runs fine in eclipse.
-			outType = (T) (Object) new IntType();
+			if(maxNumLabelSets > 0){
+				if(maxNumLabelSets <= 2){
+					outType = (T) new BitType();
+				}else if (maxNumLabelSets <= Byte.MAX_VALUE+1){
+					outType = (T) new ByteType();
+				}else if (maxNumLabelSets <= (Byte.MAX_VALUE+1)*2){
+					outType = (T) new UnsignedByteType();
+				}else if (maxNumLabelSets <= Short.MAX_VALUE+1){
+					outType = (T) new ShortType();
+				}else if (maxNumLabelSets <= (Short.MAX_VALUE+1)*2){
+					outType = (T) new UnsignedShortType();
+				}if (maxNumLabelSets <= Integer.MAX_VALUE+1){
+					outType = (T) new IntType();
+				}else if (maxNumLabelSets <= (Integer.MAX_VALUE+1)*2){
+					outType = (T) new UnsignedIntType();
+				}if (maxNumLabelSets <= Long.MAX_VALUE){
+					outType = (T) new LongType();
+				}
+			}else{
+				outType = (T) new IntType();
+			}
 		}
 		
 		output = new ImgLabeling<L, T>((RandomAccessibleInterval<T>) ops.run(
