@@ -30,6 +30,8 @@
 
 package net.imagej.ops.convolve.kernel.create;
 
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -48,6 +50,9 @@ import org.scijava.plugin.Parameter;
 abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Parameter(type = ItemIO.OUTPUT)
 	protected Img<V> output;
 
@@ -63,43 +68,18 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 		// no factory and no type
 		if ((fac == null) && (outType == null)) {
-			@SuppressWarnings("unchecked")
-			Img<V> temp = (Img<V>) defaultFactory.create(dims, defaultType);
-
-			output = temp;
+			output = (Img<V>) ops.createimg(dims, defaultType, defaultFactory);
 		}
 		// type but no factory
 		else if ((fac == null) && (outType != null)) {
-
-			try {
-				Img<V> temp =
-					defaultFactory.imgFactory(outType.createVariable()).create(dims,
-						outType.createVariable());
-
-				output = temp;
-			}
-			catch (IncompatibleTypeException ex) {
-
-			}
+			output = (Img<V>) ops.createimg(dims, outType, defaultFactory);
 		}
 		// factory but no type
 		else if ((fac != null) && (outType == null)) {
-			try {
-				@SuppressWarnings("unchecked")
-				Img<V> temp =
-					(Img<V>) fac.imgFactory(defaultType.createVariable()).create(dims,
-						defaultType.createVariable());
-
-				output = temp;
-			}
-			catch (IncompatibleTypeException ex) {
-
-			}
-
+			output = (Img<V>) ops.createimg(dims, defaultType, fac);
 		}
-		// type and a factory passed in
 		else {
-			output = fac.create(dims, outType.createVariable());
+			output = (Img<V>) ops.createimg(dims, outType, fac);
 		}
 
 	}
