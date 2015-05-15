@@ -55,11 +55,11 @@ import org.scijava.plugin.Plugin;
 public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
 		OutputOp<Img<T>> {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
-
 	@Parameter
 	private OpService ops;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<T> output;
 
 	@Parameter
 	private Dimensions dims;
