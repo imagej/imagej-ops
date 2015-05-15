@@ -89,7 +89,7 @@ public class CreateLabelingTest<T extends NativeType<T>> extends AbstractOpTest 
 
 		assertEquals("Labeling Factory: ", ArrayImgFactory.class,
 				((Img<?>) ((ImgLabeling<String, ?>) ops
-						.createlabeling(new String(), dim, null,
+						.createlabeling(dim, null,
 								new ArrayImgFactory<IntType>())).getIndexImg())
 						.factory().getClass());
 
