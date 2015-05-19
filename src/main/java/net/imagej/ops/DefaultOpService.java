@@ -784,6 +784,25 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <I> I loop(final I arg, final Function<I, I> function, final int n) {
+		@SuppressWarnings("unchecked")
+		final I result =
+			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, function, n);
+		return result;
+	}
+
+	@Override
+	public <A> A loop(final A out, final A in, final Function<A, A> function,
+		final BufferFactory<A, A> bufferFactory, final int n)
+	{
+		@SuppressWarnings("unchecked")
+		final A result =
+			(A) run(net.imagej.ops.loop.DefaultLoopFunction.class, out, in, function,
+				bufferFactory, n);
+		return result;
+	}
+
+	@Override
 	public Object map(final Object... args) {
 		return run(Ops.Map.NAME, args);
 	}

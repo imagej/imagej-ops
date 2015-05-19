@@ -509,11 +509,20 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "lookup" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.lookup.DefaultLookup.class)
-	public Op lookup(final String name, final Object... args);
+	Op lookup(final String name, final Object... args);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = Ops.Loop.class)
 	Object loop(Object... args);
+
+	/** Executes the "loop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
+	<I> I loop(final I arg, final Function<I, I> function, final int n);
+
+	/** Executes the "loop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.loop.DefaultLoopFunction.class)
+	<A> A loop(final A out, final A in, final Function<A, A> function,
+		final BufferFactory<A, A> bufferFactory, final int n);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = Ops.Map.class)
