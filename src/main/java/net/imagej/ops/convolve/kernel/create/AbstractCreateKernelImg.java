@@ -62,24 +62,25 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	@Parameter(required = false)
 	protected ImgFactory<V> fac;
 
+	@SuppressWarnings("unchecked")
 	protected void createOutputImg(long[] dims, ImgFactory<V> fac,
 		Type<V> outType, FAC defaultFactory, W defaultType)
 	{
 
 		// no factory and no type
 		if ((fac == null) && (outType == null)) {
-			output = (Img<V>) ops.createimg(dims, defaultType, defaultFactory);
+			output = (Img<V>) ops.create(dims, defaultType, defaultFactory);
 		}
 		// type but no factory
 		else if ((fac == null) && (outType != null)) {
-			output = (Img<V>) ops.createimg(dims, outType, defaultFactory);
+			output = (Img<V>) ops.create(dims, outType, defaultFactory);
 		}
 		// factory but no type
 		else if ((fac != null) && (outType == null)) {
-			output = (Img<V>) ops.createimg(dims, defaultType, fac);
+			output = (Img<V>) ops.create(dims, defaultType, fac);
 		}
 		else {
-			output = (Img<V>) ops.createimg(dims, outType, fac);
+			output = (Img<V>) ops.create(dims, outType, fac);
 		}
 
 	}

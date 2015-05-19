@@ -32,13 +32,16 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.CreateImg;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImgFactory;
+import net.imagej.ops.create.CreateOps.CreateNativeImg;
+import net.imagej.ops.create.CreateOps.CreateType;
 import net.imglib2.Dimensions;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.type.Type;
+import net.imglib2.type.NativeType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -53,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
+public class DefaultCreateImg<T extends NativeType<T>> implements CreateNativeImg,
 		OutputOp<Img<T>> {
 
 	@Parameter
@@ -76,7 +79,7 @@ public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
 	public void run() {
 
 		if (outType == null) {
-			outType = (T) ops.createtype();
+			outType = (T) ops.run(CreateType.class);
 		}
 
 		if (fac == null) {
@@ -90,11 +93,11 @@ public class DefaultCreateImg<T extends Type<T>> implements CreateImg,
 					try {
 						fac = inImg.factory().imgFactory(outType);
 					} catch (IncompatibleTypeException e) {
-						fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+						fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
 					}
 				}
-			}else{
-				fac = (ImgFactory<T>) ops.createfactory(dims, outType);
+			} else {
+				fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
 			}
 		}
 

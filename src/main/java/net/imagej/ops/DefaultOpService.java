@@ -36,6 +36,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImgFactory;
+import net.imagej.ops.create.CreateOps.CreateImgLabeling;
+import net.imagej.ops.create.CreateOps.CreateType;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -182,8 +186,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object createimg(final Object... args) {
-		return run(Ops.CreateImg.class, args);
+	public Object create(final Object... args) {
+		return run(Ops.Create.class, args);
 	}
 
 	@Override
@@ -355,6 +359,29 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object variance(final Object... args) {
 		return run(Ops.Variance.NAME, args);
 	}
+	
+	
+	// -- CreateOps short-cuts -
+
+	@Override
+	public Object createimg(Object... args) {
+		return run(CreateImg.class, args);
+	}
+
+	@Override
+	public Object createimglabeling(Object... args) {
+		return run(CreateImgLabeling.class, args);
+	}
+
+	@Override
+	public Object createimgfactory(Object... args) {
+		return run(CreateImgFactory.class, args);
+	}
+
+	@Override
+	public Object createtype() {
+		return run(CreateType.class);
+	}
 
 	// -- Operation shortcuts - other namespaces --
 
@@ -416,26 +443,4 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		namespacesReady = true;
 	}
 
-	// -- Deprecated methods --
-
-	@Deprecated
-	@Override
-	public Object create(final Object... args) {
-		return createimg(args);
-	}
-
-	@Override
-	public Object createtype() {
-		return run(Ops.CreateType.class);
-	}
-
-	@Override
-	public Object createfactory(final Object... args) {
-		return run(Ops.CreateImgFactory.class, args);
-	}
-
-	@Override
-	public Object createlabeling(Object... args) {
-		return run(Ops.CreateImgLabeling.class, args);
-	}
 }

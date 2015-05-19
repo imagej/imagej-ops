@@ -2,8 +2,9 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.CreateImgFactory;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateImgFactory;
+import net.imagej.ops.create.CreateOps.CreateType;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.ImgFactory;
@@ -49,7 +50,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 		}
 
 		if (outType == null) {
-			outType = (T) ops.createtype();
+			outType = (T) ops.run(CreateType.class);
 		}
 
 		output = Intervals.numElements(dims) > Integer.MAX_VALUE ? new CellImgFactory<T>()

@@ -1,0 +1,13 @@
+[CreateOps.java]
+className = "CreateOps"
+authors = ["Christian Dietz"]
+ops = ```
+[
+	[name: "createimg",			iface: "CreateImg", 			extends: "Ops.Create"],
+	[name: "createimglabeling",	iface: "CreateImgLabeling", 	extends: "Ops.Create"],
+	[name: "createtype",		iface: "CreateType",            extends: "Ops.Create"],
+	[name: "createimgfactory",	iface: "CreateImgFactory",		extends: "Ops.Create"],
+	[name: "createnativeimg",	iface: "CreateNativeImg", 		extends: "CreateImg"],
+	[name: "createnativetype",	iface: "CreateNativeType",		extends: "CreateType"]
+]
+```

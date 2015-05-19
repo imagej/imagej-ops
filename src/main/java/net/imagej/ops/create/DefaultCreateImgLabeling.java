@@ -2,9 +2,9 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.CreateImg;
-import net.imagej.ops.Ops.CreateImgLabeling;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImgLabeling;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;

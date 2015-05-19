@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImg;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -82,7 +82,7 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 			}
 
 			// create img
-			Img<?> img = (Img<?>) ops.createimg(dim);
+			Img<?> img = (Img<?>) ops.run(CreateImg.class, dim);
 
 			assertArrayEquals("Image Dimensions:", dim,
 					Intervals.dimensionsAsLongArray(img));
