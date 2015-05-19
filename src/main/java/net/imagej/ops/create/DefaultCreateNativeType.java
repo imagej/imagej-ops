@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class CreateNativeType<T extends NativeType<T>> implements CreateType,
+public class DefaultCreateNativeType<T extends NativeType<T>> implements CreateType,
 		OutputOp<T> {
 
 	@Parameter(type = ItemIO.OUTPUT)
