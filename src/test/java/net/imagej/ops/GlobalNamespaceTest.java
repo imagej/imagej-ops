@@ -42,6 +42,7 @@ import net.imagej.ops.Ops.Identity;
 import net.imagej.ops.Ops.Invert;
 import net.imagej.ops.Ops.Join;
 import net.imagej.ops.Ops.LogKernel;
+import net.imagej.ops.Ops.Lookup;
 
 import org.junit.Test;
 
@@ -118,10 +119,16 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	public void testJoin() {
 		assertComplete(null, OpService.class, Join.NAME);
 	}
-	
+
 	/** Tests for {@link LogKernel} method convergence. */
 	@Test
 	public void testLogKernel() {
 		assertComplete(null, OpService.class, LogKernel.NAME);
+	}
+
+	/** Tests for {@link Lookup} method convergence. */
+	@Test
+	public void testLookup() {
+		assertComplete(null, OpService.class, Lookup.NAME);
 	}
 }
