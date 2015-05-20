@@ -87,8 +87,8 @@ public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType
 		}
 
 		// if outType is not null make sure it is a supported type
-		if (outType != null) {
-			Object tmp = outType;
+		if (getOutType() != null) {
+			Object tmp = getOutType();
 			if ((tmp instanceof FloatType) || (tmp instanceof DoubleType) ||
 				(tmp instanceof ComplexFloatType) || (tmp instanceof ComplexDoubleType)) return true;
 			return false;

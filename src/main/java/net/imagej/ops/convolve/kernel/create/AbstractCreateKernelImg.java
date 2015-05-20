@@ -54,13 +54,13 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	protected Img<V> output;
+	private Img<V> output;
 
 	@Parameter(required = false)
-	protected Type<V> outType;
+	private Type<V> outType;
 
 	@Parameter(required = false)
-	protected ImgFactory<V> fac;
+	private ImgFactory<V> fac;
 
 	@SuppressWarnings("unchecked")
 	protected void createOutputImg(long[] dims, ImgFactory<V> fac,
@@ -95,6 +95,18 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 		FAC defaultFactory, W defaultType)
 	{
 		createOutputImg(dims, fac, null, defaultFactory, defaultType);
+	}
+
+	protected Img<V> getOutput() {
+		return output;
+	}
+
+	protected Type<V> getOutType() {
+		return outType;
+	}
+
+	protected ImgFactory<V> getFac() {
+		return fac;
 	}
 
 }

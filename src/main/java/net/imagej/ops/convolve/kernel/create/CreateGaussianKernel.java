@@ -71,10 +71,10 @@ public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
 			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
 		}
 
-		createOutputImg(dims, fac, outType, new ArrayImgFactory<DoubleType>(),
-			new DoubleType());
+		createOutputImg(dims, getFac(), getOutType(),
+			new ArrayImgFactory<DoubleType>(), new DoubleType());
 
-		Cursor<T> cursor = output.cursor();
+		Cursor<T> cursor = getOutput().cursor();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			double result = 1.0f;

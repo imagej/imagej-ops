@@ -77,10 +77,10 @@ public class CreateLogKernel<T extends ComplexType<T> & NativeType<T>> extends
 			middle[d] = 1 + hksizes;
 		}
 
-		createOutputImg(sizes, fac, outType, new ArrayImgFactory<DoubleType>(),
-			new DoubleType());
+		createOutputImg(sizes, getFac(), getOutType(),
+			new ArrayImgFactory<DoubleType>(), new DoubleType());
 
-		final Cursor<T> c = output.cursor();
+		final Cursor<T> c = getOutput().cursor();
 		final long[] coords = new long[numDimensions];
 		/*
 		 * The gaussian normalization factor, divided by a constant value. This
