@@ -48,7 +48,9 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -807,6 +809,89 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return run(Ops.Map.NAME, args);
 	}
 
+
+	@Override
+	public <A, B extends Type<B>> RandomAccessible<B> map(final RandomAccessible<A> input, final Function<A, B> function,final Type<B> type) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessible<B> result =
+			(RandomAccessible<B>) run(net.imagej.ops.map.MapRA2View.class, input, function, type);
+		return result;
+	}
+
+	@Override
+	public <A, B extends Type<B>> IterableInterval<B> map(final IterableInterval<A> input, final Function<A, B> function, final Type<B> type) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(net.imagej.ops.map.MapII2View.class, input, function, type);
+		return result;
+	}
+
+	@Override
+	public <A, B extends Type<B>> RandomAccessibleInterval<B> map(final RandomAccessibleInterval<A> input, final Function<A, B> function, final Type<B> type) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<B> result =
+			(RandomAccessibleInterval<B>) run(net.imagej.ops.map.MapRAI2View.class, input, function, type);
+		return result;
+	}
+
+	@Override
+	public <A> IterableInterval<A> map(final IterableInterval<A> arg, final InplaceFunction<A> func) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<A> result =
+			(IterableInterval<A>) run(net.imagej.ops.map.ParallelMap.class, arg, func);
+		return result;
+	}
+
+	@Override
+	@OpMethod(op = net.imagej.ops.map.ParallelMapI2I.class)
+	public <A, B> IterableInterval<B> map(final IterableInterval<B> out, final IterableInterval<A> in, final Function<A, B> func) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(net.imagej.ops.map.Map.class, out, in, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> RandomAccessibleInterval<B> map(final RandomAccessibleInterval<B> out, final IterableInterval<A> in, final Function<A, B> func) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<B> result =
+			(RandomAccessibleInterval<B>) run(net.imagej.ops.map.Map.class, out, in, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> IterableInterval<B> map(final IterableInterval<B> out, final RandomAccessibleInterval<A> in, final Function<A, B> func) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(net.imagej.ops.map.MapRAI2III.class, out, in, func);
+		return result;
+	}
+
+	@Override
+	@OpMethod(op = net.imagej.ops.map.MapI.class)
+	public <A> Iterable<A> map(final Iterable<A> arg, final InplaceFunction<A> func) {
+		@SuppressWarnings("unchecked")
+		final Iterable<A> result =
+			(Iterable<A>) run(net.imagej.ops.map.MapI.class, arg, func);
+		return result;
+	}
+
+	@Override
+	public <I, O> RandomAccessibleInterval<O> map(final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in, final Shape shape, final Function<Iterable<I>, O> func) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) run(net.imagej.ops.neighborhood.MapNeighborhood.class, out, in, shape, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in, final Function<A, B> func) {
+		@SuppressWarnings("unchecked")
+		final Iterable<B> result =
+			(Iterable<B>) run(net.imagej.ops.map.MapI2I.class, out, in, func);
+		return result;
+	}
+	
 	@Override
 	public Object max(final Object... args) {
 		return run(Ops.Max.NAME, args);

@@ -41,7 +41,9 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -527,6 +529,61 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = Ops.Map.class)
 	Object map(Object... args);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapRA2View.class)
+	<A, B extends Type<B>> RandomAccessible<B> map(
+		final RandomAccessible<A> input, final Function<A, B> function,
+		final Type<B> type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapII2View.class)
+	<A, B extends Type<B>> IterableInterval<B> map(
+		final IterableInterval<A> input, final Function<A, B> function,
+		final Type<B> type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapRAI2View.class)
+	<A, B extends Type<B>> RandomAccessibleInterval<B> map(
+		final RandomAccessibleInterval<A> input, final Function<A, B> function,
+		final Type<B> type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.ParallelMap.class)
+	<A> IterableInterval<A> map(final IterableInterval<A> arg,
+		final InplaceFunction<A> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = {net.imagej.ops.map.ParallelMapI2I.class,
+		net.imagej.ops.map.MapII2II.class})
+	<A, B> IterableInterval<B> map(final IterableInterval<B> out,
+		final IterableInterval<A> in, final Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = {net.imagej.ops.map.ParallelMapI2R.class,
+		net.imagej.ops.map.MapII2RAI.class})
+	<A, B> RandomAccessibleInterval<B> map(final RandomAccessibleInterval<B> out,
+		final IterableInterval<A> in, final Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapRAI2III.class)
+	<A, B> IterableInterval<B> map(final IterableInterval<B> out,
+		final RandomAccessibleInterval<A> in, final Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapI.class)
+	<A> Iterable<A> map(final Iterable<A> arg, final InplaceFunction<A> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.neighborhood.MapNeighborhood.class)
+	<I, O> RandomAccessibleInterval<O> map(final RandomAccessibleInterval<O> out,
+		final RandomAccessibleInterval<I> in, final Shape shape,
+		final Function<Iterable<I>, O> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapI2I.class)
+	<A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in,
+		final Function<A, B> func);
 
 	/** Executes the "max" operation on the given arguments. */
 	@OpMethod(op = Ops.Max.class)
