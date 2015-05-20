@@ -44,6 +44,7 @@ import net.imagej.ops.Ops.Join;
 import net.imagej.ops.Ops.LogKernel;
 import net.imagej.ops.Ops.Lookup;
 import net.imagej.ops.Ops.Loop;
+import net.imagej.ops.Ops.Map;
 
 import org.junit.Test;
 
@@ -137,5 +138,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testLoop() {
 		assertComplete(null, OpService.class, Loop.NAME);
+	}
+
+	/** Tests for {@link Map} method convergence. */
+	@Test
+	public void testMap() {
+		assertComplete(null, OpService.class, Map.NAME);
 	}
 }
