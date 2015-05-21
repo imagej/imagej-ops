@@ -55,6 +55,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -1054,8 +1055,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<V> result =
-			(IterableInterval<V>) run(Ops.Project.NAME, out, in,
-				method, dim);
+			(IterableInterval<V>) run(Ops.Project.NAME, out, in, method, dim);
 		return result;
 	}
 
@@ -1067,6 +1067,18 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object scale(final Object... args) {
 		return run(Ops.Scale.NAME, args);
+	}
+
+	@Override
+	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
+		final double[] scaleFactors,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(net.imagej.ops.scale.ScaleImg.class, in, scaleFactors,
+				interpolator);
+		return result;
 	}
 
 	@Override

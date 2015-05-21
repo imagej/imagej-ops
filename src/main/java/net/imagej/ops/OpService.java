@@ -48,6 +48,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -672,6 +673,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "scale" operation on the given arguments. */
 	@OpMethod(op = Ops.Scale.class)
 	Object scale(Object... args);
+
+	/** Executes the "scale" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.scale.ScaleImg.class)
+	<T extends RealType<T>> Img<T> scale(final Img<T> in,
+		final double[] scaleFactors,
+		final InterpolatorFactory<T, RandomAccessible<T>> interpolator);
 
 	/** Executes the "size" operation on the given arguments. */
 	@OpMethod(op = Ops.Size.class)
