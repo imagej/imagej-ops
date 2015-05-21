@@ -1107,6 +1107,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <I, O> RandomAccessibleInterval<O> slicewise(
+		final RandomAccessibleInterval<O> out,
+		final RandomAccessibleInterval<I> in, final Function<I, O> func,
+		final int... axisIndices)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) run(
+				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				axisIndices);
+		return result;
+	}
+
+	@Override
 	public Object stddev(final Object... args) {
 		return run(Ops.StdDeviation.NAME, args);
 	}
