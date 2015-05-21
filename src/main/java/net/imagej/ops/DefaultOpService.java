@@ -62,6 +62,7 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -1084,6 +1085,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object size(final Object... args) {
 		return run(Ops.Size.NAME, args);
+	}
+
+	@Override
+	public LongType size(final LongType out, final IterableInterval<?> in) {
+		final LongType result =
+			(LongType) run(net.imagej.ops.misc.SizeIterableInterval.class, out, in);
+		return result;
+	}
+
+	@Override
+	public LongType size(final LongType out, final Iterable<?> in) {
+		final LongType result =
+			(LongType) run(net.imagej.ops.misc.SizeIterable.class, out, in);
+		return result;
 	}
 
 	@Override

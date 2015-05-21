@@ -55,6 +55,7 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -683,6 +684,14 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "size" operation on the given arguments. */
 	@OpMethod(op = Ops.Size.class)
 	Object size(Object... args);
+
+	/** Executes the "size" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.misc.SizeIterableInterval.class)
+	LongType size(final LongType out, final IterableInterval<?> in);
+
+	/** Executes the "size" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.misc.SizeIterable.class)
+	LongType size(final LongType out, final Iterable<?> in);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = Ops.Slicewise.class)
