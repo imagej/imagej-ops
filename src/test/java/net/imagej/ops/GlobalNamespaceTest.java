@@ -54,6 +54,7 @@ import net.imagej.ops.Ops.Normalize;
 import net.imagej.ops.Ops.Project;
 import net.imagej.ops.Ops.Scale;
 import net.imagej.ops.Ops.Size;
+import net.imagej.ops.Ops.Slicewise;
 
 import org.junit.Test;
 
@@ -207,5 +208,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testSize() {
 		assertComplete(null, OpService.class, Size.NAME);
+	}
+
+	/** Tests for {@link Slicewise} method convergence. */
+	@Test
+	public void testSlicewise() {
+		assertComplete(null, OpService.class, Slicewise.NAME);
 	}
 }
