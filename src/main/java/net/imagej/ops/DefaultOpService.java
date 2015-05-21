@@ -1048,6 +1048,18 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
+		final RandomAccessibleInterval<T> in,
+		final Function<Iterable<T>, V> method, final int dim)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<V> result =
+			(IterableInterval<V>) run(Ops.Project.NAME, out, in,
+				method, dim);
+		return result;
+	}
+
+	@Override
 	public Object quantile(final Object... args) {
 		return run(Ops.Quantile.NAME, args);
 	}

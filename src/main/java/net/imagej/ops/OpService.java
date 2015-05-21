@@ -658,6 +658,13 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Project.class)
 	Object project(Object... args);
 
+	/** Executes the "project" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.project.parallel.DefaultProjectP.class,
+		net.imagej.ops.project.ProjectRAI2II.class })
+	<T, V> IterableInterval<V> project(final IterableInterval<V> out,
+		final RandomAccessibleInterval<T> in,
+		final Function<Iterable<T>, V> method, final int dim);
+
 	/** Executes the "quantile" operation on the given arguments. */
 	@OpMethod(op = Ops.Quantile.class)
 	Object quantile(Object... args);
