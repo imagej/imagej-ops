@@ -981,6 +981,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> T median(final T out, final Iterable<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) run(net.imagej.ops.statistics.MedianRealType.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object min(final Object... args) {
 		return run(Ops.Min.NAME, args);
 	}

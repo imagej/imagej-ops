@@ -619,6 +619,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Median.class)
 	Object median(Object... args);
 
+	/** Executes the "median" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MedianRealType.class)
+	<T extends RealType<T>> T median(final T out, final Iterable<T> in);
+
 	/** Executes the "min" operation on the given arguments. */
 	@OpMethod(op = Ops.Min.class)
 	Object min(Object... args);
