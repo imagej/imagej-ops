@@ -30,6 +30,7 @@
 
 package net.imagej.ops.fft.filter;
 
+import net.imagej.ops.OpService;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -52,17 +53,20 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	extends AbstractFilterImg<I, O, K>
 {
 
+	@Parameter
+	private OpService ops;
+
 	/**
 	 * FFT type
 	 */
 	@Parameter(required = false)
-	protected ComplexType<C> fftType;
+	private ComplexType<C> fftType;
 
 	/**
 	 * Factory to create ffts Imgs
 	 */
 	@Parameter(required = false)
-	protected ImgFactory<C> fftFactory;
+	private ImgFactory<C> fftFactory;
 
 	/**
 	 * 
@@ -73,7 +77,7 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm
 		CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops.op(CreateFFTFilterMemory.class, input, kernel, borderSize);
+			ops.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
 
 		createMemory.run();
 

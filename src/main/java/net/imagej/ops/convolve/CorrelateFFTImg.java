@@ -32,6 +32,7 @@ package net.imagej.ops.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
@@ -42,40 +43,46 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Correlate op for (@link Img) 
+ * Correlate op for (@link Img)
  * 
  * @author bnorthan
- *
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Correlate.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Correlate.NAME,
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		extends AbstractFFTFilterImg<I, O, K, C> implements Contingent {
+	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent
+{
+
+	@Parameter
+	private OpService ops;
 
 	/**
 	 * run the filter (CorrelateFFTRAI) on the rais
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-			Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval) {
+		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
+		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+	{
 
-		ops.run(CorrelateFFTRAI.class, raiExtendedInput, raiExtendedKernel,
-				fftImg, fftKernel, output);
+		ops.run(CorrelateFFTRAI.class, raiExtendedInput, raiExtendedKernel, fftImg,
+			fftKernel, output);
 
 	}
-	
+
 	@Override
 	public boolean conforms() {
 		// TODO: only conforms if the kernel is sufficiently large (else the
 		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(kernel) > 9;
+		return Intervals.numElements(getKernel()) > 9;
 	}
 
 }

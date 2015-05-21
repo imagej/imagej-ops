@@ -31,6 +31,7 @@
 package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convolve.CorrelateFFTRAI;
 import net.imagej.ops.fft.filter.IterativeFFTFilterRAI;
@@ -41,6 +42,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -58,6 +60,9 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	extends IterativeFFTFilterRAI<I, O, K, C>
 {
 
+	@Parameter
+	private OpService ops;
+
 	/**
 	 * performs one iteration of the Richardson Lucy Algorithm (Lucy, L. B.
 	 * (1974).
@@ -70,11 +75,11 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// previous iteration in order to calculate error stats)
 
 		// 2. divide observed image by reblurred
-		inPlaceDivide(raiExtendedReblurred, raiExtendedInput);
+		inPlaceDivide(getRaiExtendedReblurred(), getRaiExtendedInput());
 
 		// 3. correlate psf with the output of step 2.
-		ops.run(CorrelateFFTRAI.class, raiExtendedReblurred, null, fftInput,
-			fftKernel, raiExtendedReblurred, true, false);
+		ops.run(CorrelateFFTRAI.class, getRaiExtendedReblurred(), null,
+			getFFTInput(), getFFTKernel(), getRaiExtendedReblurred(), true, false);
 
 		// compute estimate -
 		// for standard RL this step will multiply output of correlation step
@@ -132,7 +137,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	public void ComputeEstimate() {
-		inPlaceMultiply(raiExtendedEstimate, raiExtendedReblurred);
+		inPlaceMultiply(getRaiExtendedEstimate(), getRaiExtendedReblurred());
 	}
 
 }

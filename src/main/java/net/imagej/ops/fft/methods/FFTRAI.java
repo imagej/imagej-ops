@@ -67,10 +67,10 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	 * generates the out of bounds strategy for the extended area
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
 
 	@Parameter(required = false)
-	protected long[] paddedSize;
+	private long[] paddedSize;
 
 	@Override
 	public RandomAccessibleInterval<C> compute(RandomAccessibleInterval<T> input,

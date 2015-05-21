@@ -30,6 +30,7 @@
 
 package net.imagej.ops.fft.image;
 
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.FFT;
 import net.imagej.ops.fft.methods.FFTRAI;
 import net.imagej.ops.fft.size.ComputeFFTSize;
@@ -40,6 +41,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -53,6 +55,13 @@ import org.scijava.plugin.Plugin;
 public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
 {
+
+	@Parameter
+	private OpService ops;
+
+	private long[] paddedSize;
+
+	private long[] fftSize;
 
 	@Override
 	protected void computeFFTFastSize(long[] inputSize) {
@@ -75,12 +84,10 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory,
-		long[] size)
-	{
+	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory) {
 
 		try {
-			return factory.imgFactory(new ComplexFloatType()).create(size,
+			return factory.imgFactory(new ComplexFloatType()).create(fftSize,
 				new ComplexFloatType());
 		}
 		// TODO: error handling?
@@ -94,7 +101,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		safeCompute(I input, Img<ComplexFloatType> output)
 	{
 
-		ops.run(FFTRAI.class, output, input, obf, paddedSize);
+		ops.run(FFTRAI.class, output, input, getOBF(), paddedSize);
 
 		return output;
 	}

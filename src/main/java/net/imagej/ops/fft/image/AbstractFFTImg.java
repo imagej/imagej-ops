@@ -52,7 +52,7 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * size of border to apply in each dimension
 	 */
 	@Parameter(required = false)
-	long[] borderSize = null;
+	private long[] borderSize = null;
 
 	/**
 	 * set to true to compute the FFT as fast as possible. The input will be
@@ -62,16 +62,13 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * extended to the nearest size that is supported.
 	 */
 	@Parameter(required = false)
-	Boolean fast = true;
+	private Boolean fast = true;
 
 	/**
 	 * generates the out of bounds strategy for the extended area
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
-
-	protected long[] paddedSize;
-	protected long[] fftSize;
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
 
 	/**
 	 * create the output based on the input. If fast=true the size is determined
@@ -99,7 +96,7 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 			computeFFTSmallSize(inputSize);
 		}
 
-		return createFFTImg(input.factory(), fftSize);
+		return createFFTImg(input.factory());
 
 	}
 
@@ -125,6 +122,11 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * @param size
 	 * @return
 	 */
-	protected abstract O createFFTImg(ImgFactory<T> factory, long[] size);
+	protected abstract O createFFTImg(ImgFactory<T> factory);
+
+	protected OutOfBoundsFactory<T, RandomAccessibleInterval<T>> getOBF() {
+		return obf;
+
+	}
 
 }

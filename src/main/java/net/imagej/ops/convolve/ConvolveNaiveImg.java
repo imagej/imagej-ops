@@ -32,6 +32,7 @@ package net.imagej.ops.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.fft.filter.AbstractFilterImg;
 import net.imglib2.RandomAccessibleInterval;
@@ -44,6 +45,7 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,23 +57,24 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 	extends AbstractFilterImg<I, O, K> implements Contingent, Ops.Convolve
 {
 
+	@Parameter
+	private OpService ops;
+
 	protected Img<O> safeCompute(Img<I> img, Img<O> out) {
 
-		if (obfInput == null) {
-			obfInput =
-				new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
-					Util.getTypeFromInterval(img).createVariable());
+		if (getOBFInput() == null) {
+			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
+				Util.getTypeFromInterval(img).createVariable()));
 		}
 
-		if ((obfKernel == null) && (kernel != null)) {
-			obfKernel =
-				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
-					Util.getTypeFromInterval(kernel).createVariable());
+		if ((getOBFKernel() == null) && (getKernel() != null)) {
+			setOBFKernel(new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
+				Util.getTypeFromInterval(getKernel()).createVariable()));
 		}
 
 		// extend the input
 		RandomAccessibleInterval<I> extendedIn =
-			Views.interval(Views.extend(img, obfInput), img);
+			Views.interval(Views.extend(img, getOBFInput()), img);
 
 		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
 			new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
@@ -81,7 +84,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 		RandomAccessibleInterval<O> extendedOut =
 			Views.interval(Views.extend(out, obfOutput), out);
 
-		ops.run(ConvolveNaive.class, extendedOut, extendedIn, kernel);
+		ops.run(ConvolveNaive.class, extendedOut, extendedIn, getKernel());
 
 		return out;
 	}
@@ -89,7 +92,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 	@Override
 	public boolean conforms() {
 		// conforms only if the kernel is sufficiently small
-		return Intervals.numElements(kernel) <= 9;
+		return Intervals.numElements(getKernel()) <= 9;
 	}
 
 }

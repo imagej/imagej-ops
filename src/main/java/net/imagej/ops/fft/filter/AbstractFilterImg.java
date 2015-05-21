@@ -58,43 +58,43 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 {
 
 	@Parameter
-	protected OpService ops;
+	private OpService ops;
 
 	/**
 	 * the kernel (psf)
 	 */
 	@Parameter
-	protected RandomAccessibleInterval<K> kernel;
+	private RandomAccessibleInterval<K> kernel;
 
 	/**
 	 * Border size in each dimensions. If null default border size will be added.
 	 */
 	@Parameter(required = false)
-	protected long[] borderSize = null;
+	private long[] borderSize = null;
 
 	/**
 	 * generates the out of bounds strategy for the extended area of the input
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
 
 	/**
 	 * generates the out of bounds strategy for the extended area of the kernel
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
+	private OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
 
 	/**
 	 * The output type. If null default output type will be used.
 	 */
 	@Parameter(required = false)
-	protected Type<O> outType;
+	private Type<O> outType;
 
 	/**
 	 * Factory to create output Img
 	 */
 	@Parameter(required = false)
-	protected ImgFactory<O> outFactory;
+	private ImgFactory<O> outFactory;
 
 	/**
 	 * Create the output using the outFactory and outType if they exist. If these
@@ -128,6 +128,34 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 		}
 
 		return outFactory.create(input, outType.createVariable());
+	}
+
+	protected RandomAccessibleInterval<K> getKernel() {
+		return kernel;
+	}
+
+	protected long[] getBorderSize() {
+		return borderSize;
+	}
+
+	protected OutOfBoundsFactory<I, RandomAccessibleInterval<I>> getOBFInput() {
+		return obfInput;
+	}
+
+	protected void setOBFInput(
+		OutOfBoundsFactory<I, RandomAccessibleInterval<I>> objInput)
+	{
+		this.obfInput = objInput;
+	}
+
+	protected OutOfBoundsFactory<K, RandomAccessibleInterval<K>> getOBFKernel() {
+		return obfKernel;
+	}
+
+	protected void setOBFKernel(
+		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> objInput)
+	{
+		this.obfKernel = obfKernel;
 	}
 
 }

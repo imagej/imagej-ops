@@ -45,6 +45,6 @@ public abstract class AbstractIFFTIterable<T, C, I extends Iterable<T>, O extend
 {
 
 	@Parameter
-	protected OpService ops;
+	private OpService ops;
 
 }

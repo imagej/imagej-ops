@@ -30,6 +30,9 @@
 
 package net.imagej.ops.fft.filter;
 
+import org.scijava.plugin.Parameter;
+
+import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -47,26 +50,29 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 	extends AbstractFFTFilterRAI<I, O, K, C>
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Override
 	public void run() {
 
 		// perform input FFT if needed
-		if (performInputFFT) {
-			ops.run("fft", fftInput, raiExtendedInput);
+		if (getPerformInputFFT()) {
+			ops.run("fft", getFFTInput(), getRaiExtendedInput());
 		}
 
 		// perform kernel FFT if needed
-		if (performKernelFFT) {
-			ops.run("fft", fftKernel, raiExtendedKernel);
+		if (getPerformKernelFFT()) {
+			ops.run("fft", getFFTKernel(), getRaiExtendedKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
 		// convolution, complex conjugate multiplication for correlation,
 		// etc.) Wiener Filter,
-		frequencyOperation(fftInput, fftKernel);
+		frequencyOperation(getFFTInput(), getFFTKernel());
 
 		// inverse fft
-		ops.run("ifft", output, fftInput);
+		ops.run("ifft", getOutput(), getFFTInput());
 	}
 
 	// abstract function that implements an operation in frequency domain (ie

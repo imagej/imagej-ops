@@ -61,30 +61,28 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 {
 
 	@Parameter
-	protected OpService ops;
+	private OpService ops;
 
 	/**
 	 * Max number of iterations to perform
 	 */
 	@Parameter
-	protected int maxIterations;
+	private int maxIterations;
 
 	@Parameter
-	protected Interval imgConvolutionInterval;
+	private Interval imgConvolutionInterval;
 
 	@Parameter
-	protected ImgFactory<O> imgFactory;
+	private ImgFactory<O> imgFactory;
 
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
+	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
-	protected RandomAccessibleInterval<O> raiExtendedReblurred;
+	private RandomAccessibleInterval<O> raiExtendedReblurred;
 
-	protected RandomAccessibleInterval<O> raiExtendedEstimate;
+	private RandomAccessibleInterval<O> raiExtendedEstimate;
 
-	protected Img<C> fftRoving;
-
-	protected Img<O> reblurred;
+	private Img<O> reblurred;
 
 	@Override
 	public void run() {
@@ -104,18 +102,19 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		if (obfOutput == null) {
 			obfOutput =
 				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(
-					Util.getTypeFromInterval(output).createVariable());
+					Util.getTypeFromInterval(getOutput()).createVariable());
 		}
 
-		Type<O> outType = Util.getTypeFromInterval(output);
+		Type<O> outType = Util.getTypeFromInterval(getOutput());
 
 		// create image for the reblurred
-		reblurred = imgFactory.create(output, outType.createVariable());
+		reblurred = imgFactory.create(getOutput(), outType.createVariable());
 
 		// TODO: review this step
 		// extend the output and use it as a buffer to store the estimate
 		raiExtendedEstimate =
-			Views.interval(Views.extend(output, obfOutput), imgConvolutionInterval);
+			Views.interval(Views.extend(getOutput(), obfOutput),
+				imgConvolutionInterval);
 
 		// assemble the extended view of the reblurred
 		raiExtendedReblurred =
@@ -123,16 +122,16 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				.interval(Views.extend(reblurred, obfOutput), imgConvolutionInterval);
 
 		// perform fft of input
-		ops.run("fft", fftInput, raiExtendedInput);
+		ops.run("fft", getFFTInput(), getRaiExtendedInput());
 
 		// perform fft of psf
-		ops.run("fft", fftKernel, raiExtendedKernel);
+		ops.run("fft", getFFTKernel(), getRaiExtendedKernel());
 
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.
 		// for now just set to original image
 		Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
-		Cursor<I> cIn = Views.iterable(raiExtendedInput).cursor();
+		Cursor<I> cIn = Views.iterable(getRaiExtendedInput()).cursor();
 
 		while (c.hasNext()) {
 			c.fwd();
@@ -154,10 +153,18 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null,
-				fftInput, fftKernel, raiExtendedReblurred, true, false);
+		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null, getFFTInput(),
+			getFFTKernel(), raiExtendedReblurred, true, false);
 	}
 
 	abstract protected void performIteration();
+
+	protected RandomAccessibleInterval<O> getRaiExtendedReblurred() {
+		return raiExtendedReblurred;
+	}
+
+	protected RandomAccessibleInterval<O> getRaiExtendedEstimate() {
+		return raiExtendedEstimate;
+	}
 
 }
