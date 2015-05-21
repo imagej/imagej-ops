@@ -554,14 +554,14 @@ public interface OpService extends PTService<Op>, ImageJService {
 		final InplaceFunction<A> func);
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = {net.imagej.ops.map.ParallelMapI2I.class,
-		net.imagej.ops.map.MapII2II.class})
+	@OpMethod(ops = { net.imagej.ops.map.ParallelMapI2I.class,
+		net.imagej.ops.map.MapII2II.class })
 	<A, B> IterableInterval<B> map(final IterableInterval<B> out,
 		final IterableInterval<A> in, final Function<A, B> func);
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = {net.imagej.ops.map.ParallelMapI2R.class,
-		net.imagej.ops.map.MapII2RAI.class})
+	@OpMethod(ops = { net.imagej.ops.map.ParallelMapI2R.class,
+		net.imagej.ops.map.MapII2RAI.class })
 	<A, B> RandomAccessibleInterval<B> map(final RandomAccessibleInterval<B> out,
 		final IterableInterval<A> in, final Function<A, B> func);
 
@@ -588,6 +588,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "max" operation on the given arguments. */
 	@OpMethod(op = Ops.Max.class)
 	Object max(Object... args);
+
+	/** Executes the "max" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MaxRealType.class)
+	<T extends RealType<T>> T max(final T out, final Iterable<T> in);
 
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = Ops.Mean.class)
