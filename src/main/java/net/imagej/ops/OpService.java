@@ -627,9 +627,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Min.class)
 	Object min(Object... args);
 
+	/** Executes the "min" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MinRealType.class)
+	<T extends RealType<T>> T min(final T out, final Iterable<T> in);
+
 	/** Executes the "minmax" operation on the given arguments. */
 	@OpMethod(op = Ops.MinMax.class)
 	Object minmax(Object... args);
+
+	/** Executes the "minmax" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.misc.MinMaxRT.class)
+	<T extends RealType<T>> List<T> minmax(final Iterable<T> img);
 
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = Ops.Normalize.class)

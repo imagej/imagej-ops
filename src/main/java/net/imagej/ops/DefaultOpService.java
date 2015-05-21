@@ -994,8 +994,24 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> T min(final T out, final Iterable<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) run(net.imagej.ops.statistics.MinRealType.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object minmax(final Object... args) {
 		return run(Ops.MinMax.NAME, args);
+	}
+
+	@Override
+	public <T extends RealType<T>> List<T> minmax(final Iterable<T> img) {
+		@SuppressWarnings("unchecked")
+		final List<T> result =
+			(List<T>) run(net.imagej.ops.misc.MinMaxRT.class, img);
+		return result;
 	}
 
 	@Override
