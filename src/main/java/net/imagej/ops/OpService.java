@@ -38,6 +38,8 @@ import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.misc.Size;
+import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
@@ -596,6 +598,22 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = Ops.Mean.class)
 	Object mean(Object... args);
+
+	/** Executes the "mean" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
+	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in);
+
+	/** Executes the "mean" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
+	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc);
+
+	/** Executes the "mean" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
+	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc,
+		final Size<Iterable<I>> sizeFunc);
 
 	/** Executes the "median" operation on the given arguments. */
 	@OpMethod(op = Ops.Median.class)

@@ -45,6 +45,8 @@ import net.imagej.ops.create.CreateImgNativeType;
 import net.imagej.ops.create.DefaultCreateImg;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.misc.Size;
+import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
@@ -939,6 +941,38 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object mean(final Object... args) {
 		return run(Ops.Mean.NAME, args);
+	}
+
+	@Override
+	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in);
+		return result;
+	}
+
+	@Override
+	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in, sumFunc);
+		return result;
+	}
+
+	@Override
+	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
+		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc,
+		final Size<Iterable<I>> sizeFunc)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in, sumFunc,
+				sizeFunc);
+		return result;
 	}
 
 	@Override
