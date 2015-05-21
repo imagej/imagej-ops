@@ -68,34 +68,34 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 {
 
 	@Parameter
-	protected OpService ops;
+	private OpService ops;
 
 	@Parameter
-	protected RandomAccessibleInterval<I> input;
+	private RandomAccessibleInterval<I> input;
 
 	@Parameter
-	protected RandomAccessibleInterval<K> kernel;
+	private RandomAccessibleInterval<K> kernel;
 
 	@Parameter(required = false)
-	protected long[] borderSize = null;
+	private long[] borderSize = null;
 
 	/**
 	 * generates the out of bounds strategy for the extended area
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
+	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
 
 	/**
 	 * generates the out of bounds strategy for the extended area
 	 */
 	@Parameter(required = false)
-	protected OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
+	private OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
 
 	@Parameter(required = false)
-	protected ComplexType<C> fftType;
+	private ComplexType<C> fftType;
 
 	@Parameter(required = false)
-	protected ImgFactory<C> fftFactory;
+	private ImgFactory<C> fftFactory;
 
 	Img<C> fftImg;
 

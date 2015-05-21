@@ -53,53 +53,81 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 {
 
 	@Parameter
-	protected OpService ops;
+	private OpService ops;
 
 	/**
 	 * input rai. If extension is desired it needs to be done before passing the
 	 * rai to the op
 	 */
 	@Parameter
-	protected RandomAccessibleInterval<I> raiExtendedInput;
+	private RandomAccessibleInterval<I> raiExtendedInput;
 
 	/**
 	 * kernel rai. Needs to be the same size as the input rai
 	 */
 	@Parameter(required = false)
-	protected RandomAccessibleInterval<K> raiExtendedKernel;
+	private RandomAccessibleInterval<K> raiExtendedKernel;
 
 	/**
 	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
 	 * the fft size of raiExtendedInput
 	 */
 	@Parameter(required = false)
-	protected Img<C> fftInput;
+	private Img<C> fftInput;
 
 	/**
 	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
 	 * to the fft size of raiExtendedKernel
 	 */
 	@Parameter(required = false)
-	protected Img<C> fftKernel;
+	private Img<C> fftKernel;
 
 	/**
 	 * RAI to store output
 	 */
 	@Parameter(required = false)
-	protected RandomAccessibleInterval<O> output;
+	private RandomAccessibleInterval<O> output;
 
 	/**
 	 * Boolean indicating that the input FFT has allready been calculated (use
 	 * when re-using an input with the same kernel size)
 	 */
 	@Parameter(required = false)
-	protected boolean performInputFFT = true;
+	private boolean performInputFFT = true;
 
 	/**
 	 * Boolean indicating that the kernel FFT has allready been calculated (use
 	 * when re-using an input with the same kernel size)
 	 */
 	@Parameter(required = false)
-	protected boolean performKernelFFT = true;
+	private boolean performKernelFFT = true;
+
+	protected RandomAccessibleInterval<I> getRaiExtendedInput() {
+		return raiExtendedInput;
+	}
+
+	protected RandomAccessibleInterval<K> getRaiExtendedKernel() {
+		return raiExtendedKernel;
+	}
+
+	protected Img<C> getFFTInput() {
+		return fftInput;
+	}
+
+	protected Img<C> getFFTKernel() {
+		return fftKernel;
+	}
+
+	protected RandomAccessibleInterval<O> getOutput() {
+		return output;
+	}
+
+	protected boolean getPerformInputFFT() {
+		return performInputFFT;
+	}
+
+	protected boolean getPerformKernelFFT() {
+		return performKernelFFT;
+	}
 
 }
