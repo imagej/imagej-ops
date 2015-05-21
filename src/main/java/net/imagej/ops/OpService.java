@@ -643,6 +643,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Normalize.class)
 	Object normalize(Object... args);
 
+	/** Executes the "normalize" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.normalize.NormalizeII.class)
+	<T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in);
+
+	/** Executes the "normalize" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.normalize.NormalizeRealType.class)
+	<T extends RealType<T>> T normalize(final T out, final T in,
+		final double oldMin, final double newMin, final double newMax,
+		final double factor);
+
 	/** Executes the "project" operation on the given arguments. */
 	@OpMethod(op = Ops.Project.class)
 	Object project(Object... args);

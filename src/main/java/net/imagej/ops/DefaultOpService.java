@@ -1020,6 +1020,29 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) run(net.imagej.ops.normalize.NormalizeII.class,
+				out, in);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> T normalize(final T out, final T in,
+		final double oldMin, final double newMin, final double newMax,
+		final double factor)
+	{
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) run(net.imagej.ops.normalize.NormalizeRealType.class, out, in,
+				oldMin, newMin, newMax, factor);
+		return result;
+	}
+
+	@Override
 	public Object project(final Object... args) {
 		return run(Ops.Project.NAME, args);
 	}
