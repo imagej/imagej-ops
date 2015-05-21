@@ -75,11 +75,11 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// previous iteration in order to calculate error stats)
 
 		// 2. divide observed image by reblurred
-		inPlaceDivide(getRAIExtendedReblurred(), getRAIExtendedInput());
+		inPlaceDivide(getRaiExtendedReblurred(), getRaiExtendedInput());
 
 		// 3. correlate psf with the output of step 2.
-		ops.run(CorrelateFFTRAI.class, getRAIExtendedReblurred(), null,
-			getFFTInput(), getFFTKernel(), getRAIExtendedReblurred(), true, false);
+		ops.run(CorrelateFFTRAI.class, getRaiExtendedReblurred(), null,
+			getFFTInput(), getFFTKernel(), getRaiExtendedReblurred(), true, false);
 
 		// compute estimate -
 		// for standard RL this step will multiply output of correlation step
@@ -137,7 +137,11 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	public void ComputeEstimate() {
+<<<<<<< HEAD
 		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
+=======
+		inPlaceMultiply(getRaiExtendedEstimate(), getRaiExtendedReblurred());
+>>>>>>> 61e8fad... Private fields and parameters
 	}
 
 }
