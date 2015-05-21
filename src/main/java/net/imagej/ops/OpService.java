@@ -40,6 +40,7 @@ import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
+import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
@@ -56,6 +57,7 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -707,6 +709,20 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)
 	Object stddev(Object... args);
+
+	/** Executes the "stddev" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.StdDevRealTypeDirect.class)
+	<T extends RealType<T>> T stddev(final T out, final Iterable<T> in);
+
+	/** Executes the "stddev" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
+	<T extends RealType<T>> DoubleType stddev(final DoubleType out,
+		final Iterable<T> in);
+
+	/** Executes the "stddev" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
+	<T extends RealType<T>> DoubleType stddev(final DoubleType out,
+		final Iterable<T> in, final Variance<T, DoubleType> variance);
 
 	/** Executes the "sum" operation on the given arguments. */
 	@OpMethod(op = Ops.Sum.class)

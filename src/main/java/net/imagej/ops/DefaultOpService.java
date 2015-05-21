@@ -47,6 +47,7 @@ import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
+import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
@@ -63,6 +64,7 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -1123,6 +1125,33 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object stddev(final Object... args) {
 		return run(Ops.StdDeviation.NAME, args);
+	}
+
+	@Override
+	public <T extends RealType<T>> T stddev(final T out, final Iterable<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) run(net.imagej.ops.statistics.StdDevRealTypeDirect.class, out, in);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> DoubleType stddev(final DoubleType out,
+		final Iterable<T> in)
+	{
+		final DoubleType result =
+			(DoubleType) run(net.imagej.ops.statistics.StdDevRealType.class, out, in);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> DoubleType stddev(final DoubleType out,
+		final Iterable<T> in, final Variance<T, DoubleType> variance)
+	{
+		final DoubleType result =
+			(DoubleType) run(net.imagej.ops.statistics.StdDevRealType.class, out, in,
+				variance);
+		return result;
 	}
 
 	@Override
