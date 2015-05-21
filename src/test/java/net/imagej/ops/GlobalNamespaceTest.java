@@ -53,6 +53,7 @@ import net.imagej.ops.Ops.MinMax;
 import net.imagej.ops.Ops.Normalize;
 import net.imagej.ops.Ops.Project;
 import net.imagej.ops.Ops.Scale;
+import net.imagej.ops.Ops.Size;
 
 import org.junit.Test;
 
@@ -202,4 +203,9 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 		assertComplete(null, OpService.class, Scale.NAME);
 	}
 
+	/** Tests for {@link Size} method convergence. */
+	@Test
+	public void testSize() {
+		assertComplete(null, OpService.class, Size.NAME);
+	}
 }
