@@ -28,7 +28,7 @@ public class DefaultCreateNativeType<T extends NativeType<T>> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		output = (T) new DoubleType();
+		output = (T) (Object) new DoubleType();
 	}
 
 	@Override

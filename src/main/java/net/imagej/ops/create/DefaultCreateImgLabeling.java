@@ -61,24 +61,24 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 		if(outType == null){
 			if(maxNumLabelSets > 0){
 				if(maxNumLabelSets <= 2){
-					outType = (T) new BitType();
+					outType = (T) (Object) new BitType();
 				}else if (maxNumLabelSets <= Byte.MAX_VALUE+1){
-					outType = (T) new ByteType();
+					outType = (T) (Object) new ByteType();
 				}else if (maxNumLabelSets <= (Byte.MAX_VALUE+1)*2){
-					outType = (T) new UnsignedByteType();
+					outType = (T) (Object) new UnsignedByteType();
 				}else if (maxNumLabelSets <= Short.MAX_VALUE+1){
-					outType = (T) new ShortType();
+					outType = (T) (Object) new ShortType();
 				}else if (maxNumLabelSets <= (Short.MAX_VALUE+1)*2){
-					outType = (T) new UnsignedShortType();
+					outType = (T) (Object) new UnsignedShortType();
 				}if (maxNumLabelSets <= Integer.MAX_VALUE+1){
-					outType = (T) new IntType();
+					outType = (T) (Object) new IntType();
 				}else if (maxNumLabelSets <= (Integer.MAX_VALUE+1)*2){
-					outType = (T) new UnsignedIntType();
+					outType = (T) (Object) new UnsignedIntType();
 				}if (maxNumLabelSets <= Long.MAX_VALUE){
-					outType = (T) new LongType();
+					outType = (T) (Object) new LongType();
 				}
 			}else{
-				outType = (T) new IntType();
+				outType = (T) (Object) new IntType();
 			}
 		}
 		
