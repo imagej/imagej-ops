@@ -48,6 +48,8 @@ import net.imagej.ops.Ops.Map;
 import net.imagej.ops.Ops.Max;
 import net.imagej.ops.Ops.Mean;
 import net.imagej.ops.Ops.Median;
+import net.imagej.ops.Ops.Min;
+import net.imagej.ops.Ops.MinMax;
 
 import org.junit.Test;
 
@@ -165,5 +167,17 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testMedian() {
 		assertComplete(null, OpService.class, Median.NAME);
+	}
+
+	/** Tests for {@link Min} method convergence. */
+	@Test
+	public void testMin() {
+		assertComplete(null, OpService.class, Min.NAME);
+	}
+
+	/** Tests for {@link MinMax} method convergence. */
+	@Test
+	public void testMinMax() {
+		assertComplete(null, OpService.class, MinMax.NAME);
 	}
 }
