@@ -102,11 +102,11 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
 
-	protected RandomAccessibleInterval<I> getRaiExtendedInput() {
+	protected RandomAccessibleInterval<I> getRAIExtendedInput() {
 		return raiExtendedInput;
 	}
 
-	protected RandomAccessibleInterval<K> getRaiExtendedKernel() {
+	protected RandomAccessibleInterval<K> getRAIExtendedKernel() {
 		return raiExtendedKernel;
 	}
 

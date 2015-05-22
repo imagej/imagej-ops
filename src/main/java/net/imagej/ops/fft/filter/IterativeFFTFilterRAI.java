@@ -122,16 +122,16 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				.interval(Views.extend(reblurred, obfOutput), imgConvolutionInterval);
 
 		// perform fft of input
-		ops.run("fft", getFFTInput(), getRaiExtendedInput());
+		ops.run("fft", getFFTInput(), getRAIExtendedInput());
 
 		// perform fft of psf
-		ops.run("fft", getFFTKernel(), getRaiExtendedKernel());
+		ops.run("fft", getFFTKernel(), getRAIExtendedKernel());
 
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.
 		// for now just set to original image
 		Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
-		Cursor<I> cIn = Views.iterable(getRaiExtendedInput()).cursor();
+		Cursor<I> cIn = Views.iterable(getRAIExtendedInput()).cursor();
 
 		while (c.hasNext()) {
 			c.fwd();
@@ -159,11 +159,11 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	abstract protected void performIteration();
 
-	protected RandomAccessibleInterval<O> getRaiExtendedReblurred() {
+	protected RandomAccessibleInterval<O> getRAIExtendedReblurred() {
 		return raiExtendedReblurred;
 	}
 
-	protected RandomAccessibleInterval<O> getRaiExtendedEstimate() {
+	protected RandomAccessibleInterval<O> getRAIExtendedEstimate() {
 		return raiExtendedEstimate;
 	}
 
