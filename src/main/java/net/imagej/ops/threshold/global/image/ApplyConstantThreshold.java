@@ -34,7 +34,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapI2I;
+import net.imagej.ops.map.MapIterableToIterable;
 import net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -73,7 +73,7 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 				.getClass(), threshold);
 
 		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
-		ops.run(MapI2I.class, output, input, applyThreshold);
+		ops.run(MapIterableToIterable.class, output, input, applyThreshold);
 
 		return output;
 	}

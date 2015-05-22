@@ -30,35 +30,30 @@
 
 package net.imagej.ops.map;
 
-import java.util.Iterator;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} from {@link Iterable} to {@link Iterable}.
+ * Map values of {@link RandomAccessibleInterval} to a View
  * 
- * @author Martin Horn
  * @author Christian Dietz
+ * 
+ * @param <A>
+ * @param <B>
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
-public class MapI2I<A, B> extends
-	AbstractFunctionMap<A, B, Iterable<A>, Iterable<B>>
+@Plugin(type = Op.class, name = Ops.Map.NAME)
+public class MapConvertRAIToRAI<A, B extends Type<B>> extends
+	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
-	{
-		final Iterator<A> inCursor = input.iterator();
-		final Iterator<B> outCursor = output.iterator();
-
-		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
-		}
-
-		return output;
+	public void run() {
+		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
+			getFunction(), getType()));
 	}
 }

@@ -30,57 +30,35 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Function;
+import java.util.Iterator;
+
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.chunker.Chunker;
-import net.imagej.ops.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapI}
+ * {@link Map} from {@link Iterable} to {@link Iterable}.
  * 
+ * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <A>
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 5)
-public class ParallelMap<A> extends
-	AbstractInplaceMap<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
+public class MapIterableToIterable<A, B> extends
+	AbstractMapFunction<A, B, Iterable<A>, Iterable<B>>
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(Chunker.class, new CursorBasedChunk() {
+	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
+	{
+		final Iterator<A> inCursor = input.iterator();
+		final Iterator<B> outCursor = output.iterator();
 
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Function<A, A> safe = func.getIndependentInstance();
-				final Cursor<A> inCursor = arg.cursor();
+		while (inCursor.hasNext()) {
+			func.compute(inCursor.next(), outCursor.next());
+		}
 
-				setToStart(inCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					safe.compute(t, t);
-					inCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
-
-		return arg;
+		return output;
 	}
 }

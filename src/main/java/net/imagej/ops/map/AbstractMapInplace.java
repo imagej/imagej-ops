@@ -28,52 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.map;
 
-import java.util.List;
+import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.Function;
+import net.imagej.ops.InplaceFunction;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Normalize.ALIASES) })
-public class NormalizeII<T extends RealType<T>> extends
-	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
-	Ops.Normalize
+/**
+ * Abstract implementation of an {@link MapIterableInplace}
+ * 
+ * @author Christian Dietz
+ * @param <A> type of values to be mapped
+ * @param <I> {@link Iterable} of <A>s
+ */
+public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
+	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
 {
 
+	/**
+	 * {@link Function} to be used for mapping
+	 */
 	@Parameter
-	private OpService ops;
+	protected InplaceFunction<A> func;
 
 	@Override
-	public IterableInterval<T> compute(IterableInterval<T> input,
-		IterableInterval<T> output)
-	{
+	public InplaceFunction<A> getFunction() {
+		return func;
+	}
 
-		T outType = output.firstElement().createVariable();
-		List<T> minmax = (List<T>) ops.run("minmax", input);
-		double factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue());
-
-		// lookup the pixel-wise normalize function
-		Op normalize =
-			ops.op(Ops.Normalize.class, outType, outType, minmax.get(0).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue(), factor);
-
-		// run normalize for each pixel
-		ops.run("map", output, input, normalize);
-
-		return output;
+	@Override
+	public void setFunction(final InplaceFunction<A> func) {
+		this.func = func;
 	}
 
 }

@@ -34,7 +34,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.chunker.Chunk;
-import net.imagej.ops.chunker.InterleavedChunker;
+import net.imagej.ops.chunker.ChunkerInterleaved;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -52,7 +52,7 @@ public class RunInterleavedChunkerArray<A> extends
 	public A[] compute(final A[] input,
 			final A[] output) {
 		
-		opService.run(InterleavedChunker.class, new Chunk() {
+		opService.run(ChunkerInterleaved.class, new Chunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)

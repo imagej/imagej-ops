@@ -28,8 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.project.parallel;
 
+import java.util.Iterator;
+
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
@@ -46,49 +50,99 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Parallelized {@link Map}.
- * 
- * @author Christian Dietz
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
- */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 2)
-public class ParallelMapI2R<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
+@Plugin(type = Op.class, name = Ops.Project.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
+public class DefaultProjectParallel<T, V> extends
+	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
+	implements Contingent, Parallel, Ops.Project
 {
 
 	@Parameter
 	private OpService opService;
 
+	@Parameter
+	private Function<Iterable<T>, V> method;
+
+	// dimension which will be projected
+	@Parameter
+	private int dim;
+
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
+	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
+		final IterableInterval<V> output)
 	{
 		opService.run(Chunker.class, new CursorBasedChunk() {
 
 			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
 			{
-				final Function<A, B> safe = func.getIndependentInstance();
-				final Cursor<A> cursor = input.localizingCursor();
+				final RandomAccess<T> access = input.randomAccess();
+				final Cursor<V> cursor = output.localizingCursor();
 
 				setToStart(cursor, startIndex);
 
-				final RandomAccess<B> rndAccess = output.randomAccess();
-
 				int ctr = 0;
 				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					safe.compute(cursor.get(), rndAccess.get());
+					for (int d = 0; d < input.numDimensions(); d++) {
+						if (d != dim) {
+							access
+								.setPosition(cursor.getIntPosition(d - d > dim ? -1 : 0), d);
+						}
+					}
+
+					method.compute(new DimensionIterable(input.dimension(dim), access),
+						cursor.get());
+
 					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, input.size());
+		}, output.size());
 
 		return output;
+	}
+
+	@Override
+	public boolean conforms() {
+		// TODO this first check is too simple, but for now ok
+		return getInput().numDimensions() == getOutput().numDimensions() + 1 &&
+			getInput().numDimensions() > dim;
+	}
+
+	final class DimensionIterable implements Iterable<T> {
+
+		private final long size;
+		private final RandomAccess<T> access;
+
+		public DimensionIterable(final long size, final RandomAccess<T> access) {
+			this.size = size;
+			this.access = access;
+		}
+
+		@Override
+		public Iterator<T> iterator() {
+			return new Iterator<T>() {
+
+				int k = -1;
+
+				@Override
+				public boolean hasNext() {
+					return k < size - 1;
+				}
+
+				@Override
+				public T next() {
+					k++;
+					access.setPosition(k, dim);
+					return access.get();
+				}
+
+				@Override
+				public void remove() {
+					throw new UnsupportedOperationException("Not supported");
+				}
+			};
+		}
 	}
 }

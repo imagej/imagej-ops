@@ -28,32 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.normalize;
 
+import java.util.List;
+
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessible;
-import net.imglib2.converter.read.ConvertedRandomAccessible;
-import net.imglib2.type.Type;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Maps values of a {@link RandomAccessible} in View.
- * 
- * @author Christian Dietz
- * 
- * @param <A>
- * @param <B>
- */
-@Plugin(type = Op.class, name = Ops.Map.NAME)
-public class MapRA2View<A, B extends Type<B>> extends
-	MapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
+@Plugin(type = Op.class, name = Ops.Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Normalize.ALIASES) })
+public class NormalizeIterableInterval<T extends RealType<T>> extends
+	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
+	Ops.Normalize
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Override
-	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getFunction(),
-			getType()));
+	public IterableInterval<T> compute(IterableInterval<T> input,
+		IterableInterval<T> output)
+	{
+
+		T outType = output.firstElement().createVariable();
+		List<T> minmax = (List<T>) ops.run("minmax", input);
+		double factor =
+			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
+				minmax.get(1).getRealDouble(), outType.getMinValue(), outType
+					.getMaxValue());
+
+		// lookup the pixel-wise normalize function
+		Op normalize =
+			ops.op(Ops.Normalize.class, outType, outType, minmax.get(0).getRealDouble(), outType.getMinValue(), outType
+					.getMaxValue(), factor);
+
+		// run normalize for each pixel
+		ops.run("map", output, input, normalize);
+
+		return output;
 	}
+
 }

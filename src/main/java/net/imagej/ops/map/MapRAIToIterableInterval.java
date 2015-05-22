@@ -28,12 +28,8 @@
  * #L%
  */
 
-package net.imagej.ops.project;
+package net.imagej.ops.map;
 
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -43,85 +39,35 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Project.NAME, priority = Priority.LOW_PRIORITY)
-public class ProjectRAI2II<T, V> extends
-	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
-	implements Contingent, Ops.Project
+/**
+ * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link IterableInterval}
+ * 
+ * @author Martin Horn
+ * @author Christian Dietz
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
+ */
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapRAIToIterableInterval<A, B> extends
+	AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
 {
 
-	@Parameter
-	private Function<Iterable<T>, V> method;
-
-	// dimension which will be projected
-	@Parameter
-	private int dim;
-
 	@Override
-	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
-		final IterableInterval<V> output)
+	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
+		final IterableInterval<B> output)
 	{
-
-		final Cursor<V> cursor = output.localizingCursor();
-		final RandomAccess<T> access = input.randomAccess();
+		final Cursor<B> cursor = output.localizingCursor();
+		final RandomAccess<A> rndAccess = input.randomAccess();
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			for (int d = 0; d < input.numDimensions(); d++) {
-				if (d != dim) {
-					access.setPosition(cursor.getIntPosition(d - d > dim ? -1 : 0), d);
-				}
-			}
-
-			method.compute(new DimensionIterable(input.dimension(dim), access),
-				cursor.get());
+			rndAccess.setPosition(cursor);
+			func.compute(rndAccess.get(), cursor.get());
 		}
 
 		return output;
-	}
-
-	@Override
-	public boolean conforms() {
-		// TODO this first check is too simple, but for now ok
-		return getInput().numDimensions() == getOutput().numDimensions() + 1 &&
-			getInput().numDimensions() > dim;
-	}
-
-	final class DimensionIterable implements Iterable<T> {
-
-		private final long size;
-		private final RandomAccess<T> access;
-
-		public DimensionIterable(final long size, final RandomAccess<T> access) {
-			this.size = size;
-			this.access = access;
-		}
-
-		@Override
-		public Iterator<T> iterator() {
-			return new Iterator<T>() {
-
-				int k = -1;
-
-				@Override
-				public boolean hasNext() {
-					return k < size - 1;
-				}
-
-				@Override
-				public T next() {
-					k++;
-					access.setPosition(k, dim);
-					return access.get();
-				}
-
-				@Override
-				public void remove() {
-					throw new UnsupportedOperationException("Not supported");
-				}
-			};
-		}
 	}
 }

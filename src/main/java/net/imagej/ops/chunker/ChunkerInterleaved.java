@@ -28,47 +28,84 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.chunker;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.concurrent.Future;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Calculates the minimum and maximum value of an image.
+ * Implementation of a {@link Chunker} that interleaves the chunks. In a
+ * element enumeration from 1..n with <b>k</b> {@link Chunk}s the
+ * first one will process the elements 1, k+1, 2k+1, ... the second chunk
+ * executable 2, k+2, 2k+2 and so on.
+ * 
+ * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = Ops.MinMax.NAME)
-public class MinMaxRT<T extends RealType<T>> implements MinMax<T> {
+@Plugin(type = Op.class, name = Ops.Chunker.NAME,
+	priority = Priority.VERY_LOW_PRIORITY)
+public class ChunkerInterleaved extends AbstractChunker {
 
 	@Parameter
-	private Iterable<T> img;
+	public LogService logService;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private T min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private T max;
+	private String cancellationMsg;
 
 	@Override
 	public void run() {
-		min = img.iterator().next().createVariable();
-		max = min.copy();
 
-		min.setReal(min.getMaxValue());
-		max.setReal(max.getMinValue());
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		final int numStepsFloor = (int) (numberOfElements / numThreads);
+		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
-		final Iterator<T> it = img.iterator();
-		while (it.hasNext()) {
-			final T i = it.next();
-			if (min.compareTo(i) > 0) min.set(i);
-			if (max.compareTo(i) < 0) max.set(i);
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
+
+		for (int i = 0; i < numThreads; i++) {
+			final int j = i;
+
+			futures.add(threadService.run(new Runnable() {
+
+				@Override
+				public void run() {
+					if (j < remainder) {
+						chunkable.execute(j, numThreads, (numStepsFloor + 1));
+					}
+					else {
+						chunkable.execute(j, numThreads, numStepsFloor);
+					}
+				}
+			}));
+		}
+
+		for (final Future<?> future : futures) {
+			try {
+				if (isCanceled()) {
+					break;
+				}
+				future.get();
+			}
+			catch (final Exception e) {
+				logService.error(e);
+				cancellationMsg = e.getMessage();
+				break;
+			}
 		}
 	}
 
+	@Override
+	public boolean isCanceled() {
+		return cancellationMsg != null;
+	}
+
+	@Override
+	public String getCancelReason() {
+		return cancellationMsg;
+	}
 }

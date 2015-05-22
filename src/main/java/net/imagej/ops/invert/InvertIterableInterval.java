@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  */
 @Plugin(type = Op.class, name = Ops.Invert.NAME, priority = Priority.NORMAL_PRIORITY + 1)
-public class InvertII<I extends RealType<I>, O extends RealType<O>> extends
+public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
 	MathOps.Invert
 {

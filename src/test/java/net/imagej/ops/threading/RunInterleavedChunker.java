@@ -34,7 +34,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.chunker.CursorBasedChunk;
-import net.imagej.ops.chunker.InterleavedChunker;
+import net.imagej.ops.chunker.ChunkerInterleaved;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -56,7 +56,7 @@ public class RunInterleavedChunker<A extends RealType<A>> extends
 	public IterableInterval<A> compute(final IterableInterval<A> input,
 			final IterableInterval<A> output) {
 		
-			opService.run(InterleavedChunker.class, new CursorBasedChunk() {
+			opService.run(ChunkerInterleaved.class, new CursorBasedChunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)

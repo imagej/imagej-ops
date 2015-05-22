@@ -28,24 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.convert;
 
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
-import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.type.Type;
+import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Map.NAME)
-public class MapII2View<A, B extends Type<B>> extends
-	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
+/**
+ * @author Martin Horn
+ */
+@Plugin(type = Op.class, name = Ops.Convert.NAME)
+public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
+	Convert<IterableInterval<I>, IterableInterval<O>>
 {
 
+	@Parameter
+	private ConvertPix<I, O> pixConvert;
+
+	@Parameter
+	private OpService ops;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getFunction(),
-			getType()));
+	public IterableInterval<O> compute(final IterableInterval<I> input,
+		final IterableInterval<O> output)
+	{
+		pixConvert.checkInput(input.firstElement().createVariable(), output
+			.firstElement().createVariable());
+		pixConvert.checkInput(input);
+		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
 	}
+
 }
