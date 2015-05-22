@@ -42,6 +42,7 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
+import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
@@ -788,6 +789,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(op = Ops.Variance.class)
 	Object variance(Object... args);
+
+	/** Executes the "variance" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.statistics.VarianceRealTypeDirect.class,
+		net.imagej.ops.statistics.VarianceRealType.class })
+	<T extends RealType<T>> DoubleType variance(final DoubleType out,
+		final Iterable<T> in);
+
+	/** Executes the "variance" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.VarianceRealType.class)
+	<T extends RealType<T>> DoubleType variance(final DoubleType out,
+		final Iterable<T> in, final Moment2AboutMean<T> moment2);
 
 	// -- Operation shortcuts - other namespaces --
 

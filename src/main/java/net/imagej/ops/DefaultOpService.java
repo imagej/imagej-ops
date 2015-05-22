@@ -49,6 +49,7 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
+import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
@@ -1272,6 +1273,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object variance(final Object... args) {
 		return run(Ops.Variance.NAME, args);
+	}
+
+	@Override
+	public <T extends RealType<T>> DoubleType variance(final DoubleType out,
+		final Iterable<T> in)
+	{
+		final DoubleType result =
+			(DoubleType) run(net.imagej.ops.statistics.VarianceRealTypeDirect.class,
+				out, in);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> DoubleType variance(final DoubleType out,
+		final Iterable<T> in, final Moment2AboutMean<T> moment2)
+	{
+		final DoubleType result =
+			(DoubleType) run(net.imagej.ops.statistics.VarianceRealType.class, out,
+				in, moment2);
+		return result;
 	}
 
 	// -- Operation shortcuts - other namespaces --
