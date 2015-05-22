@@ -728,6 +728,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Sum.class)
 	Object sum(Object... args);
 
+	/** Executes the "sum" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.statistics.SumRealType.class)
+	<T extends RealType<T>, V extends RealType<V>> V sum(final V out,
+		final Iterable<T> in);
+
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = Ops.Threshold.class)
 	Object threshold(Object... args);

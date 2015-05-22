@@ -1160,6 +1160,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>, V extends RealType<V>> V sum(final V out,
+		final Iterable<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final V result =
+			(V) run(net.imagej.ops.statistics.SumRealType.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object threshold(final Object... args) {
 		return run(Ops.Threshold.NAME, args);
 	}
