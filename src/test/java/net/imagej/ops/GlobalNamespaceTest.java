@@ -57,6 +57,7 @@ import net.imagej.ops.Ops.Size;
 import net.imagej.ops.Ops.Slicewise;
 import net.imagej.ops.Ops.StdDeviation;
 import net.imagej.ops.Ops.Sum;
+import net.imagej.ops.Ops.Threshold;
 
 import org.junit.Test;
 
@@ -228,5 +229,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testSum() {
 		assertComplete(null, OpService.class, Sum.NAME);
+	}
+
+	/** Tests for {@link Threshold} method convergence. */
+	@Test
+	public void testThreshold() {
+		assertComplete(null, OpService.class, Threshold.NAME);
 	}
 }
