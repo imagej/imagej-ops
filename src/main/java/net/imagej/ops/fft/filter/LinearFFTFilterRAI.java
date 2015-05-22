@@ -58,12 +58,12 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			ops.run("fft", getFFTInput(), getRaiExtendedInput());
+			ops.run("fft", getFFTInput(), getRAIExtendedInput());
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			ops.run("fft", getFFTKernel(), getRaiExtendedKernel());
+			ops.run("fft", getFFTKernel(), getRAIExtendedKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
