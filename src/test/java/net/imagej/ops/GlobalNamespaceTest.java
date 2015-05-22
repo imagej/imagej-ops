@@ -32,6 +32,7 @@ package net.imagej.ops;
 
 import net.imagej.ops.Ops.ASCII;
 import net.imagej.ops.Ops.Convert;
+import net.imagej.ops.Ops.Convolve;
 import net.imagej.ops.Ops.CreateImg;
 import net.imagej.ops.Ops.Equation;
 import net.imagej.ops.Ops.Eval;
@@ -87,6 +88,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testConvert() {
 		assertComplete(null, OpService.class, Convert.NAME);
+	}
+
+	/** Tests for {@link Convolve} method convergence. */
+	@Test
+	public void testConvolve() {
+		assertComplete(null, OpService.class, Convolve.NAME);
 	}
 
 	/** Tests for {@link Equation} method convergence. */
