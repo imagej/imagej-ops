@@ -33,6 +33,7 @@ package net.imagej.ops;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -60,6 +62,7 @@ import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
@@ -1172,6 +1175,98 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object threshold(final Object... args) {
 		return run(Ops.Threshold.NAME, args);
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T extends RealType<T>> Iterable<BitType> threshold(
+		final Iterable<BitType> out, final Iterable<T> in, final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<BitType> result =
+			(Iterable<BitType>) run(
+				net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class,
+				out, in, threshold);
+		return result;
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T extends RealType<T>> Img<BitType> threshold(final Img<T> in,
+		final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) run(
+				net.imagej.ops.threshold.global.image.ApplyManualThreshold.class, in,
+				threshold);
+		return result;
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T extends RealType<T>> Img<BitType> threshold(final Img<BitType> out,
+		final Img<T> in, final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) run(
+				net.imagej.ops.threshold.global.image.ApplyManualThreshold.class, out,
+				in, threshold);
+		return result;
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T> BitType threshold(final BitType out,
+		final Comparable<? super T> in, final T threshold)
+	{
+		final BitType result =
+			(BitType) run(
+				net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class,
+				out, in, threshold);
+		return result;
+	}
+
+	@SuppressWarnings("hiding")
+	@Override
+	public <T> BitType threshold(final BitType out, final T in,
+		final T threshold, final Comparator<? super T> comparator)
+	{
+		final BitType result =
+			(BitType) run(
+				net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class,
+				out, in, threshold, comparator);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) run(
+				net.imagej.ops.threshold.local.LocalThreshold.class, out, in, method,
+				shape);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) run(
+				net.imagej.ops.threshold.local.LocalThreshold.class, out, in, method,
+				shape, outOfBounds);
+		return result;
 	}
 
 	@Override

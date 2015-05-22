@@ -31,6 +31,7 @@
 package net.imagej.ops;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -53,6 +55,7 @@ import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
+import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
@@ -736,6 +739,51 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = Ops.Threshold.class)
 	Object threshold(Object... args);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class)
+	<T extends RealType<T>> Iterable<BitType> threshold(
+		final Iterable<BitType> out, final Iterable<T> in, final T threshold);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
+	<T extends RealType<T>> Img<BitType> threshold(final Img<T> in,
+		final T threshold);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
+	<T extends RealType<T>> Img<BitType> threshold(final Img<BitType> out,
+		final Img<T> in, final T threshold);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class)
+	<T> BitType threshold(final BitType out, final Comparable<? super T> in,
+		final T threshold);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class)
+	<T> BitType threshold(final BitType out, final T in, final T threshold,
+		final Comparator<? super T> comparator);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
+	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape);
+
+	/** Executes the "threshold" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
+	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
 
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(op = Ops.Variance.class)
