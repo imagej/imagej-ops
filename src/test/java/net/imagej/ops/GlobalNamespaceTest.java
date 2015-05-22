@@ -56,6 +56,7 @@ import net.imagej.ops.Ops.Scale;
 import net.imagej.ops.Ops.Size;
 import net.imagej.ops.Ops.Slicewise;
 import net.imagej.ops.Ops.StdDeviation;
+import net.imagej.ops.Ops.Sum;
 
 import org.junit.Test;
 
@@ -221,5 +222,11 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testStdDeviation() {
 		assertComplete(null, OpService.class, StdDeviation.NAME);
+	}
+
+	/** Tests for {@link Sum} method convergence. */
+	@Test
+	public void testSum() {
+		assertComplete(null, OpService.class, Sum.NAME);
 	}
 }
