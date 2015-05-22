@@ -37,6 +37,7 @@ import java.util.Map;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
+import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
@@ -213,6 +214,20 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "convert" operation on the given arguments. */
 	@OpMethod(op = Ops.Convert.class)
 	Object convert(Object... args);
+
+	/** Executes the "convert" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.convert.ConvertPixClip.class,
+		net.imagej.ops.convert.ConvertPixNormalizeScale.class,
+		net.imagej.ops.convert.ConvertPixScale.class,
+		net.imagej.ops.convert.ConvertPixCopy.class })
+	<I extends RealType<I>, O extends RealType<O>> O convert(final O out,
+		final I in);
+
+	/** Executes the "convert" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convert.ConvertII.class)
+	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O> convert(
+		final IterableInterval<O> out, final IterableInterval<I> in,
+		final ConvertPix<I, O> pixConvert);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Convolve.class)

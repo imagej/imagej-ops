@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImgPlus;
+import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateEmptyImgCopy;
 import net.imagej.ops.create.CreateEmptyImgPlusCopy;
 import net.imagej.ops.create.CreateImgDifferentNativeType;
@@ -223,6 +224,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object convert(final Object... args) {
 		return run(Ops.Convert.NAME, args);
+	}
+
+	@Override
+	public <I extends RealType<I>, O extends RealType<O>> O convert(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) run(net.imagej.ops.convert.ConvertPixClip.class, out, in);
+		return result;
+	}
+
+	@Override
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		convert(final IterableInterval<O> out, final IterableInterval<I> in,
+			final ConvertPix<I, O> pixConvert)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result =
+			(IterableInterval<O>) run(net.imagej.ops.convert.ConvertII.class, out,
+				in, pixConvert);
+		return result;
 	}
 
 	@Override
