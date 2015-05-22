@@ -232,7 +232,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
-			(O) run(net.imagej.ops.convert.ConvertPixClip.class, out, in);
+			(O) run(Ops.Convert.NAME, out, in);
 		return result;
 	}
 
