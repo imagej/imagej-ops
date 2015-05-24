@@ -28,43 +28,69 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.ARGBDoubleType;
-
+import net.imagej.ops.math.RealBinaryMath;
+import net.imagej.types.UnboundedIntegerType;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.*;
+import net.imglib2.type.numeric.real.*;
 import org.junit.Test;
 
 /**
- * Tests {@link AddConstantToNumericType}.
- * 
- * @author Johannes Schindelin
- * @author Curtis Rueden
+ * Tests the {@link RealBinaryMath} ops.
+ *
+ * @author Aparna Pal
  */
-public class AddConstantToNumericTypeTest extends AbstractOpTest {
+public class TestRealBinaryMath extends AbstractOpTest {
+#foreach ($test in $tests)
+#set ($className = "$test.op")
 
-	private final double DELTA = 0.00005;
-
-	/**
-	 * Verifies that {@link OpService#add(Object...)} finds the
-	 * {@link AddConstantToNumericType}.
-	 */
+	/** Tests {@link RealBinaryMath.$className}. */
 	@Test
-	public void testAdd() {
-		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
-		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
-		final Op op = ops.op(MathOps.Add.class, a, a, b);
-		assertSame(AddConstantToNumericType.class, op.getClass());
+	public void test$className() {
+	
+	RealType two;
+	RealType mid;
+	Object result;
+	ArrayList list;
+	double test;
+	
 
-		op.run();
-		assertEquals(203.0, a.getR(), DELTA);
-		assertEquals(163.0, a.getG(), DELTA);
-		assertEquals(173.0, a.getB(), DELTA);
+	#foreach($type in $types)
+		two = new ${type}();
+		two.setOne();
+		result = ops.run(RealBinaryMath.RealType${className}.class, two, two, two);
+		mid = ($type) result;
+		test = mid.getRealDouble();
+		assertEquals(test, $test.result, 0.0);
+
+	#end
+
 	}
+#end
+
+@Test
+	public void testBitType()
+	{
+		RealType two;
+		RealType mid;
+		Object result;
+		ArrayList list;
+		double test;
+		
+		two = new BitType();
+	two.setOne();
+	result = ops.run(RealBinaryMath.RealTypeAdd.class, two, two, two);
+	mid = (BitType) result;
+	test = mid.getRealDouble();
+	assertEquals(test,0.0, 0.0);
+	}
+		
 
 }

@@ -1,0 +1,26 @@
+# Generated unary and binary arithmetic ops with primitive types.
+#
+# Many of Java's binary numeric operators only work on ints and longs.
+# And still more of them purport to work on bytes and shorts, but
+# ultimately return int for the result. And most of Java's unary and
+# binary Math functions only work on doubles. So rather than generate
+# the entire cross-product of types-plus-operations, we do only those
+# that are both valid and consistent regarding the return type.
+
+[RealBinaryMath.java]
+types = ```
+[
+	[name: "UnsignedIntegerType", priority: 0.4],
+	[name: "Long",    primitive: "long",   code: "l", priority: 0.3],
+	[name: "Float",   primitive: "float",  code: "f", priority: 0.2],
+	[name: "Double",  primitive: "double", code: "d", priority: 0.1]
+]
+```
+ops = ```
+[
+	[name: "Add",      function: "add", aliases: true,  codes: "ilfd", verbs: "adds (+)"],
+	[name: "Divide",   function: "div", aliases: true,  codes: "ilfd", verbs: "divides (/)"],
+	[name: "Subtract", function: "sub", aliases: true,  codes: "ilfd", verbs: "subtracts (-)"],
+	[name: "Multiply", function: "mul", aliases: true,  codes: "ilfd", verbs: "multiplies (*)"],
+]
+```

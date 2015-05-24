@@ -28,43 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.MathOps;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.ARGBDoubleType;
+import net.imagej.ops.MathOps;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.NumericType;
 
-import org.junit.Test;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Tests {@link AddConstantToNumericType}.
- * 
- * @author Johannes Schindelin
- * @author Curtis Rueden
+ * Generated arithmetic ops with primitive types.
+ *
+ * @author Aparna Pal
  */
-public class AddConstantToNumericTypeTest extends AbstractOpTest {
+public final class RealBinaryMath {
 
-	private final double DELTA = 0.00005;
-
-	/**
-	 * Verifies that {@link OpService#add(Object...)} finds the
-	 * {@link AddConstantToNumericType}.
-	 */
-	@Test
-	public void testAdd() {
-		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
-		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
-		final Op op = ops.op(MathOps.Add.class, a, a, b);
-		assertSame(AddConstantToNumericType.class, op.getClass());
-
-		op.run();
-		assertEquals(203.0, a.getR(), DELTA);
-		assertEquals(163.0, a.getG(), DELTA);
-		assertEquals(173.0, a.getB(), DELTA);
+	private RealBinaryMath() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($op in $ops)
+#set ($iface = "MathOps.$op.name")
+
+	/** Op that $op.verbs two RealType values. */
+	@Plugin(type = Op.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
+	public static class RealType$op.name<T extends RealType<T>>
+		extends AbstractOutputFunction<T, T> implements $iface
+	{
+
+		@Parameter
+		private T b;
+
+		@Override
+		public T createOutput(T input) {
+			return input.createVariable();
+		}
+
+		@Override
+		protected T safeCompute(T input, T output) {
+			if(output== b)
+			{
+				output.$!{op.function}(input);
+			}
+			else{
+				output.set(input);
+				output.$!{op.function}(b);
+			}
+			return output;
+		}
+	}
+#end
 
 }
