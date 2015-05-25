@@ -46,7 +46,7 @@ import org.junit.Test;
 import com.sun.jdi.LongType;
 
 /**
- * Tests several ways to create an image
+ * Tests several ways to create an IntegerType
  *
  * @author Christian Dietz, University of Konstanz.
  */
