@@ -35,7 +35,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Create;
 import net.imagej.ops.create.CreateOps.CreateImgLabeling;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
