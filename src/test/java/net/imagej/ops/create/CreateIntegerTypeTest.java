@@ -36,14 +36,13 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.integer.ShortType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.integer.UnsignedIntType;
 import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 import org.junit.Test;
-
-import com.sun.jdi.LongType;
 
 /**
  * Tests several ways to create an IntegerType
@@ -71,9 +70,10 @@ public class CreateIntegerTypeTest<T extends NativeType<T>> extends
 		assertEquals(ops.run(CreateIntegerType.class, (Integer.MAX_VALUE + 1))
 				.getClass(), IntType.class);
 		assertEquals(
-				ops.run(CreateIntegerType.class, ((long)Integer.MAX_VALUE + 1l) * 2l)
-						.getClass(), UnsignedIntType.class);
-		assertEquals(ops.run(CreateIntegerType.class, (Long.MAX_VALUE) + 1l)
+				ops.run(CreateIntegerType.class,
+						((long) Integer.MAX_VALUE + 1l) * 2l).getClass(),
+				UnsignedIntType.class);
+		assertEquals(ops.run(CreateIntegerType.class, Long.MAX_VALUE)
 				.getClass(), LongType.class);
 
 	}
