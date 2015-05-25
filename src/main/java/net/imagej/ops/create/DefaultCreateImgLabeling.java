@@ -5,19 +5,12 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.create.CreateOps.CreateImg;
 import net.imagej.ops.create.CreateOps.CreateImgLabeling;
+import net.imagej.ops.create.CreateOps.CreateIntegerType;
 import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.integer.ShortType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.type.numeric.integer.UnsignedIntType;
-import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -59,27 +52,7 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 	public void run() {
 		
 		if(outType == null){
-			if(maxNumLabelSets > 0){
-				if(maxNumLabelSets <= 2){
-					outType = (T) (Object) new BitType();
-				}else if (maxNumLabelSets <= Byte.MAX_VALUE+1){
-					outType = (T) (Object) new ByteType();
-				}else if (maxNumLabelSets <= (Byte.MAX_VALUE+1)*2){
-					outType = (T) (Object) new UnsignedByteType();
-				}else if (maxNumLabelSets <= Short.MAX_VALUE+1){
-					outType = (T) (Object) new ShortType();
-				}else if (maxNumLabelSets <= (Short.MAX_VALUE+1)*2){
-					outType = (T) (Object) new UnsignedShortType();
-				}if (maxNumLabelSets <= Integer.MAX_VALUE+1){
-					outType = (T) (Object) new IntType();
-				}else if (maxNumLabelSets <= (Integer.MAX_VALUE+1)*2){
-					outType = (T) (Object) new UnsignedIntType();
-				}if (maxNumLabelSets <= Long.MAX_VALUE){
-					outType = (T) (Object) new LongType();
-				}
-			}else{
-				outType = (T) (Object) new IntType();
-			}
+			outType = (T) ops.run(CreateIntegerType.class, maxNumLabelSets);
 		}
 		
 		output = new ImgLabeling<L, T>((RandomAccessibleInterval<T>) ops.run(
