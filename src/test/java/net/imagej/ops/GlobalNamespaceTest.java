@@ -36,6 +36,7 @@ import net.imagej.ops.Ops.Convolve;
 import net.imagej.ops.Ops.Correlate;
 import net.imagej.ops.Ops.CreateImg;
 import net.imagej.ops.Ops.Crop;
+import net.imagej.ops.Ops.Deconvolve;
 import net.imagej.ops.Ops.Equation;
 import net.imagej.ops.Ops.Eval;
 import net.imagej.ops.Ops.FFT;
@@ -108,6 +109,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCrop() {
 		assertComplete(null, OpService.class, Crop.NAME);
+	}
+
+	/** Tests for {@link Deconvolve} method convergence. */
+	@Test
+	public void testDeconvolve() {
+		assertComplete(null, OpService.class, Deconvolve.NAME);
 	}
 
 	/** Tests for {@link Equation} method convergence. */
