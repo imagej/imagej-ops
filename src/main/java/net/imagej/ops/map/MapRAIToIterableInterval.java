@@ -30,6 +30,7 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -37,6 +38,7 @@ import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -47,18 +49,22 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Martin Horn
  * @author Christian Dietz
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @author Tim-Oliver Buchholz
+ * 
+ * @param <A>
+ *            mapped on <B>
+ * @param <B>
+ *            mapped from <A>
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<A, B> extends
-	AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
-{
+public class MapRAIToIterableInterval<A, B>
+		extends
+		AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+		implements Contingent {
 
 	@Override
 	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
-		final IterableInterval<B> output)
-	{
+			final IterableInterval<B> output) {
 		final Cursor<B> cursor = output.localizingCursor();
 		final RandomAccess<A> rndAccess = input.randomAccess();
 
@@ -69,5 +75,10 @@ public class MapRAIToIterableInterval<A, B> extends
 		}
 
 		return output;
+	}
+
+	@Override
+	public boolean conforms() {
+		return Intervals.equalDimensions(getOutput(), getInput());
 	}
 }
