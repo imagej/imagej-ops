@@ -31,6 +31,8 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.InputOp;
+import net.imagej.ops.OutputOp;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -46,7 +48,7 @@ import org.scijava.plugin.Parameter;
  * @param <O> type of resulting output
  */
 public abstract class MapView<A, B, I, O> implements
-	Map<A, B, Function<A, B>>
+	Map<A, B, Function<A, B>>, InputOp<I>, OutputOp<O>
 {
 
 	@Parameter
@@ -74,6 +76,7 @@ public abstract class MapView<A, B, I, O> implements
 	/**
 	 * @return input which will be converted to a converted output
 	 */
+	@Override
 	public I getInput() {
 		return input;
 	}
@@ -81,6 +84,7 @@ public abstract class MapView<A, B, I, O> implements
 	/**
 	 * @param input which will be converted to a converted output
 	 */
+	@Override
 	public void setInput(final I input) {
 		this.input = input;
 	}
@@ -90,14 +94,16 @@ public abstract class MapView<A, B, I, O> implements
 	 * 
 	 * @param output
 	 */
-	protected void setOutput(final O output) {
+	@Override
+	public void setOutput(final O output) {
 		this.output = output;
 	}
 
 	/**
 	 * @return the resulting converted output
 	 */
-	public O getoutput() {
+	@Override
+	public O getOutput() {
 		return output;
 	}
 
