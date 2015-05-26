@@ -54,6 +54,7 @@ import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -61,6 +62,7 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.interpolation.InterpolatorFactory;
+import net.imglib2.labeling.Labeling;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -671,6 +673,70 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object crop(final Object... args) {
 		return run(Ops.Crop.NAME, args);
+	}
+
+	@Override
+	public <T extends Type<T>> ImgPlus<T> crop(final Interval interval,
+		final ImgPlus<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgPlus<T> result =
+			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, interval, in);
+		return result;
+	}
+
+	@Override
+	public <T extends Type<T>> ImgPlus<T> crop(final Interval interval,
+		final ImgPlus<T> out, final ImgPlus<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgPlus<T> result =
+			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, interval, out, in);
+		return result;
+	}
+
+	@Override
+	public <L extends Comparable<L>> Labeling<L> crop(final Interval interval,
+		final Labeling<L> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Labeling<L> result =
+			(Labeling<L>) run(net.imagej.ops.crop.CropLabeling.class, interval, in);
+		return result;
+	}
+
+	@Override
+	public <L extends Comparable<L>> Labeling<L> crop(final Interval interval,
+		final Labeling<L> out, final Labeling<L> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Labeling<L> result =
+			(Labeling<L>) run(net.imagej.ops.crop.CropLabeling.class, interval, out,
+				in);
+		return result;
+	}
+
+	@Override
+	public <T> RandomAccessibleInterval<T> crop(final Interval interval,
+		final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class,
+				interval, in);
+		return result;
+	}
+
+	@Override
+	public <T> RandomAccessibleInterval<T>
+		crop(final Interval interval, final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class,
+				interval, out, in);
+		return result;
 	}
 
 	@Override

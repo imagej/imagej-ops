@@ -47,6 +47,7 @@ import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -54,6 +55,7 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.interpolation.InterpolatorFactory;
+import net.imglib2.labeling.Labeling;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -477,6 +479,37 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
 	Object crop(Object... args);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
+	<T extends Type<T>> ImgPlus<T> crop(final Interval interval,
+		final ImgPlus<T> in);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
+	<T extends Type<T>> ImgPlus<T> crop(final Interval interval,
+		final ImgPlus<T> out, final ImgPlus<T> in);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropLabeling.class)
+	<L extends Comparable<L>> Labeling<L> crop(final Interval interval,
+		final Labeling<L> in);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropLabeling.class)
+	<L extends Comparable<L>> Labeling<L> crop(final Interval interval,
+		final Labeling<L> out, final Labeling<L> in);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
+	<T> RandomAccessibleInterval<T> crop(final Interval interval,
+		final RandomAccessibleInterval<T> in);
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
+	<T> RandomAccessibleInterval<T>
+		crop(final Interval interval, final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Deconvolve.class)
