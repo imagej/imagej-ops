@@ -43,9 +43,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link ParallelMapI2R} and
- * {@link ParallelMapI2I}) of the mappers. Assumption: Naive Implementation of
- * {@link MapII2RAI} works fine.
+ * Testing multi threaded implementation ({@link MapIterableToRAIParallel} and
+ * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapIterableIntervalToRAI} works fine.
  * 
  * @author Christian Dietz
  */
@@ -64,7 +64,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(MapII2II.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToIterableInterval.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -81,7 +81,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapRAIII() {
 
 		final Op functional =
-			ops.op(MapRAI2III.class, out, in, new AddOneFunctional());
+			ops.op(MapRAIToIterableInterval.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -98,7 +98,7 @@ public class MapTest extends AbstractOpTest {
 	public void testMapIIRAI() {
 
 		final Op functional =
-			ops.op(MapII2RAI.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToRAI.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -117,7 +117,7 @@ public class MapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapI.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIterableInplace.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {

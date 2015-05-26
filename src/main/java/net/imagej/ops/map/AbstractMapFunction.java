@@ -30,30 +30,35 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
-import net.imglib2.type.Type;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Function;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Map values of {@link RandomAccessibleInterval} to a View
+ * Abstract implementation of a {@link Map}.
  * 
  * @author Christian Dietz
- * 
- * @param <A>
- * @param <B>
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
+ * @param <C> provides {@code <A>}s
+ * @param <D> provides {@code <B>}s
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME)
-public class MapRAI2View<A, B extends Type<B>> extends
-	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
+public abstract class AbstractMapFunction<A, B, C, D> extends
+	AbstractStrictFunction<C, D> implements Map<A, B, Function<A, B>>
 {
 
+	/** {@link Function} to be used for mapping. */
+	@Parameter
+	protected Function<A, B> func;
+
 	@Override
-	public void run() {
-		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getFunction(), getType()));
+	public Function<A, B> getFunction() {
+		return func;
+	}
+
+	@Override
+	public void setFunction(final Function<A, B> func) {
+		this.func = func;
 	}
 }

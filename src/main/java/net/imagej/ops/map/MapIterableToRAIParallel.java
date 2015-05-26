@@ -28,84 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.chunker;
+package net.imagej.ops.map;
 
-import java.util.ArrayList;
-import java.util.concurrent.Future;
-
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implementation of a {@link Chunker} that interleaves the chunks. In a
- * element enumeration from 1..n with <b>k</b> {@link Chunk}s the
- * first one will process the elements 1, k+1, 2k+1, ... the second chunk
- * executable 2, k+2, 2k+2 and so on.
+ * Parallelized {@link Map}.
  * 
- * @author Michael Zinsmaier
+ * @author Christian Dietz
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
  */
-@Plugin(type = Op.class, name = Ops.Chunker.NAME,
-	priority = Priority.VERY_LOW_PRIORITY)
-public class InterleavedChunker extends AbstractChunker {
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 2)
+public class MapIterableToRAIParallel<A, B> extends
+	AbstractMapFunction<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
+{
 
 	@Parameter
-	public LogService logService;
-
-	private String cancellationMsg;
+	private OpService opService;
 
 	@Override
-	public void run() {
+	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final int numStepsFloor = (int) (numberOfElements / numThreads);
-		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Function<A, B> safe = func.getIndependentInstance();
+				final Cursor<A> cursor = input.localizingCursor();
 
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
+				setToStart(cursor, startIndex);
 
-		for (int i = 0; i < numThreads; i++) {
-			final int j = i;
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
-			futures.add(threadService.run(new Runnable() {
-
-				@Override
-				public void run() {
-					if (j < remainder) {
-						chunkable.execute(j, numThreads, (numStepsFloor + 1));
-					}
-					else {
-						chunkable.execute(j, numThreads, numStepsFloor);
-					}
+				int ctr = 0;
+				while (ctr < numSteps) {
+					rndAccess.setPosition(cursor);
+					safe.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
+					ctr++;
 				}
-			}));
-		}
-
-		for (final Future<?> future : futures) {
-			try {
-				if (isCanceled()) {
-					break;
-				}
-				future.get();
 			}
-			catch (final Exception e) {
-				logService.error(e);
-				cancellationMsg = e.getMessage();
-				break;
-			}
-		}
-	}
+		}, input.size());
 
-	@Override
-	public boolean isCanceled() {
-		return cancellationMsg != null;
-	}
-
-	@Override
-	public String getCancelReason() {
-		return cancellationMsg;
+		return output;
 	}
 }

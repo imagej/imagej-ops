@@ -30,37 +30,29 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.Function;
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of an {@link MapI}
+ * Default (slower) implementation of an {@link MapIterableInplace}.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
+ * @param <A>
  */
-public abstract class AbstractInplaceMap<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
-{
-
-	/**
-	 * {@link Function} to be used for mapping
-	 */
-	@Parameter
-	protected InplaceFunction<A> func;
+@Plugin(type = Op.class, name = Ops.Map.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class MapIterableInplace<A> extends AbstractMapInplace<A, Iterable<A>> {
 
 	@Override
-	public InplaceFunction<A> getFunction() {
-		return func;
-	}
+	public Iterable<A> compute(final Iterable<A> arg) {
+		for (final A t : arg) {
+			func.compute(t, t);
+		}
 
-	@Override
-	public void setFunction(final InplaceFunction<A> func) {
-		this.func = func;
+		return arg;
 	}
-
 }

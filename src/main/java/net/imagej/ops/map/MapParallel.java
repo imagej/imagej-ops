@@ -30,35 +30,57 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of a {@link Map}.
+ * Parallelized {@link MapIterableInplace}
  * 
  * @author Christian Dietz
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
- * @param <C> provides {@code <A>}s
- * @param <D> provides {@code <B>}s
+ * @param <A> mapped on <A>
  */
-public abstract class AbstractFunctionMap<A, B, C, D> extends
-	AbstractStrictFunction<C, D> implements Map<A, B, Function<A, B>>
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 5)
+public class MapParallel<A> extends
+	AbstractMapInplace<A, IterableInterval<A>> implements Parallel
 {
 
-	/** {@link Function} to be used for mapping. */
 	@Parameter
-	protected Function<A, B> func;
+	private OpService opService;
 
 	@Override
-	public Function<A, B> getFunction() {
-		return func;
-	}
+	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
-	@Override
-	public void setFunction(final Function<A, B> func) {
-		this.func = func;
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Function<A, A> safe = func.getIndependentInstance();
+				final Cursor<A> inCursor = arg.cursor();
+
+				setToStart(inCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					final A t = inCursor.get();
+					safe.compute(t, t);
+					inCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, arg.size());
+
+		return arg;
 	}
 }

@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.integer.ShortType;
 import org.junit.Test;
 
 /**
- * A test of {@link ConvertII}.
+ * A test of {@link ConvertIterableInterval}.
  * 
  * @author Martin Horn
  */

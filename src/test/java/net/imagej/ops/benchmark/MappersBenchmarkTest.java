@@ -35,12 +35,12 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.map.MapI;
-import net.imagej.ops.map.MapII2II;
-import net.imagej.ops.map.MapII2RAI;
-import net.imagej.ops.map.ParallelMap;
-import net.imagej.ops.map.ParallelMapI2I;
-import net.imagej.ops.map.ParallelMapI2R;
+import net.imagej.ops.map.MapIterableInplace;
+import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
+import net.imagej.ops.map.MapIterableIntervalToRAI;
+import net.imagej.ops.map.MapParallel;
+import net.imagej.ops.map.MapIterableToIterableParallel;
+import net.imagej.ops.map.MapIterableToRAIParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -52,8 +52,8 @@ import org.junit.rules.TestRule;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link MapII2RAI}, {@link MapII2II},
- * {@link ParallelMapI2R}, {@link ParallelMapI2I}
+ * {@link MapIterableIntervalToRAI}, {@link MapIterableIntervalToIterableInterval},
+ * {@link MapIterableToRAIParallel}, {@link MapIterableToIterableParallel}
  * 
  * @author Christian Dietz
  */
@@ -80,32 +80,32 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestMapper() {
-		ops.run(new MapII2RAI<ByteType, ByteType>(), out, in, addConstant);
+		ops.run(new MapIterableIntervalToRAI<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestMapperII() {
-		ops.run(new MapII2II<ByteType, ByteType>(), out, in, addConstant);
+		ops.run(new MapIterableIntervalToIterableInterval<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapper() {
-		ops.run(new ParallelMapI2R<ByteType, ByteType>(), out, in, addConstant);
+		ops.run(new MapIterableToRAIParallel<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
-		ops.run(new ParallelMapI2I<ByteType, ByteType>(),
+		ops.run(new MapIterableToIterableParallel<ByteType, ByteType>(),
 			out, in, addConstant, out);
 	}
 
 	@Test
 	public void pixelWiseTestMapperInplace() {
-		ops.run(new MapI<ByteType>(), in, addConstantInplace);
+		ops.run(new MapIterableInplace<ByteType>(), in, addConstantInplace);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapperInplace() {
-		ops.run(new ParallelMap<ByteType>(), in.copy(), addConstantInplace);
+		ops.run(new MapParallel<ByteType>(), in.copy(), addConstantInplace);
 	}
 }

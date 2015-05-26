@@ -31,26 +31,36 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
- * Conforms if the {@link IterableInterval}s have the same IterationOrder.
+ * Parallelized {@link Map}, which is specialized for the case, that the two
+ * incoming {@link IterableInterval}s have the same IterationOrder.
  * 
- * @author Martin Horn
  * @author Christian Dietz
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class MapII2II<A, B> extends
-	AbstractFunctionMap<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent
+@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
+public class MapIterableToIterableParallel<A, B> extends
+	AbstractMapFunction<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	Contingent, Parallel
 {
+
+	@Parameter
+	private OpService opService;
 
 	@Override
 	public boolean conforms() {
@@ -69,15 +79,32 @@ public class MapII2II<A, B> extends
 	{
 		if (!isValid(input, output)) {
 			throw new IllegalArgumentException(
-				"Input and Output don't have the same iteration order!");
+				"Input and Output do not have the same iteration order!");
 		}
 
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
-		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
-		}
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final Function<A, B> safe = func.getIndependentInstance();
+				
+				final Cursor<A> inCursor = input.cursor();
+				final Cursor<B> outCursor = output.cursor();
+
+				setToStart(inCursor, startIndex);
+				setToStart(outCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					safe.compute(inCursor.get(), outCursor.get());
+					inCursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
 
 		return output;
 	}

@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 @Plugin(type = Op.class, name = "gauss")
-public class GaussRAI2RAI<T extends RealType<T>> extends
+public class GaussRAIToRAI<T extends RealType<T>> extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Gauss
 {

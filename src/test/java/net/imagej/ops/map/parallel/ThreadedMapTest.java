@@ -35,11 +35,11 @@ import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.map.MapII2II;
-import net.imagej.ops.map.MapII2RAI;
-import net.imagej.ops.map.ParallelMap;
-import net.imagej.ops.map.ParallelMapI2I;
-import net.imagej.ops.map.ParallelMapI2R;
+import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
+import net.imagej.ops.map.MapIterableIntervalToRAI;
+import net.imagej.ops.map.MapParallel;
+import net.imagej.ops.map.MapIterableToIterableParallel;
+import net.imagej.ops.map.MapIterableToRAIParallel;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -48,9 +48,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link ParallelMapI2R} and
- * {@link ParallelMapI2I}) of the mappers. Assumption: Naive Implementation of
- * {@link MapII2RAI} works fine.
+ * Testing multi threaded implementation ({@link MapIterableToRAIParallel} and
+ * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapIterableIntervalToRAI} works fine.
  * 
  * @author Christian Dietz
  */
@@ -69,7 +69,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(MapII2II.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToIterableInterval.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -86,7 +86,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIRAIP() {
 
 		final Op functional =
-			ops.op(ParallelMapI2R.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableToRAIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -104,7 +104,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(ParallelMapI2I.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableToIterableParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -123,7 +123,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(ParallelMap.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapParallel.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
