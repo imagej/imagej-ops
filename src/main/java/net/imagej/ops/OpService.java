@@ -515,6 +515,77 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Deconvolve.class)
 	Object deconvolve(Object... args);
 
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final int maxIterations, final Interval imgConvolutionInterval,
+			final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final int maxIterations, final Interval imgConvolutionInterval,
+			final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final int maxIterations,
+			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel, final int maxIterations,
+			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final int maxIterations,
+			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final int maxIterations, final Interval imgConvolutionInterval,
+			final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT, final int maxIterations,
+			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+
+	/** Executes the "deconvolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT, final int maxIterations,
+			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
+			final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput);
+
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = Ops.Equation.class)
 	Object equation(Object... args);
