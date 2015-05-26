@@ -370,6 +370,76 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Correlate.class)
 	Object correlate(Object... args);
 
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<I> in, final RandomAccessibleInterval<K> kernel);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long... borderSize);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType, final ImgFactory<C> fftFactory);
+
 	/** Executes the "createimg" operation on the given arguments. */
 	@OpMethod(op = Ops.CreateImg.class)
 	Object createimg(Object... args);
