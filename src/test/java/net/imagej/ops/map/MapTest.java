@@ -31,11 +31,16 @@
 package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessible;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -43,28 +48,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link MapIterableToRAIParallel} and
- * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
- * {@link MapIterableIntervalToRAI} works fine.
- * 
- * @author Christian Dietz
+ * @author Christian Dietz, University of Konstanz
  */
 public class MapTest extends AbstractOpTest {
 
 	private Img<ByteType> in;
 	private Img<ByteType> out;
+	private Img<ByteType> outDiffDims;
 
 	@Before
 	public void initImg() {
 		in = generateByteTestImg(true, 10, 10);
 		out = generateByteTestImg(false, 10, 10);
+		outDiffDims = generateByteTestImg(false, 10, 10, 15);
 	}
 
 	@Test
-	public void testMapII() {
-
-		final Op functional =
-			ops.op(MapIterableIntervalToIterableInterval.class, out, in, new AddOneFunctional());
+	public void testMapIterableIntervalToIterableInterval() {
+		final Op functional = ops.op(
+				MapIterableIntervalToIterableInterval.class, out, in,
+				new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -78,10 +81,23 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testMapRAIII() {
+	public void testMapIterableIntervalToIterableIntervalDiffDims() {
 
-		final Op functional =
-			ops.op(MapRAIToIterableInterval.class, out, in, new AddOneFunctional());
+		boolean fails = false;
+		try {
+			ops.run(MapIterableIntervalToIterableInterval.class, outDiffDims,
+					in, new AddOneFunctional());
+		} catch (IllegalArgumentException e) {
+			fails = true;
+		}
+		assertTrue(fails);
+	}
+
+	@Test
+	public void testMapRAIToIterableInterval() {
+
+		final Op functional = ops.op(MapRAIToIterableInterval.class, out, in,
+				new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -95,10 +111,22 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testMapIIRAI() {
+	public void testMapRAIToIterableIntervalDiffDims() {
+		boolean fails = false;
+		try {
+			ops.op(MapRAIToIterableInterval.class, outDiffDims, in,
+					new AddOneFunctional());
+		} catch (IllegalArgumentException e) {
+			fails = true;
+		}
+		assertTrue(fails);
+	}
 
-		final Op functional =
-			ops.op(MapIterableIntervalToRAI.class, out, in, new AddOneFunctional());
+	@Test
+	public void testMapIterableIntervalToRAI() {
+
+		final Op functional = ops.op(MapIterableIntervalToRAI.class, out, in,
+				new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -112,18 +140,109 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testInplaceII() {
+	public void testMapIterableIntervalToRAIDiffDims() {
+		boolean fails = false;
+		try {
+			ops.op(MapIterableIntervalToRAI.class, outDiffDims, in,
+					new AddOneFunctional());
+		} catch (IllegalArgumentException e) {
+			fails = true;
+		}
+		assertTrue(fails);
+	}
+
+	@Test
+	public void testMapIterableInplace() {
 
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapIterableInplace.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIterableInplace.class, in,
+				new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
 			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+		}
+	}
+
+	@Test
+	public void testMapIterableIntervalToView() {
+
+		final Op functional = ops.op(MapIterableIntervalToView.class, in,
+				new AddOneFunctional(), new ByteType());
+		functional.run();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		IterableInterval<ByteType> o = (IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
+				.getOutput();
+
+		RandomAccess<ByteType> inputRA = in.randomAccess();
+		final Cursor<ByteType> outCursor = o.localizingCursor();
+
+		while (outCursor.hasNext()) {
+			outCursor.fwd();
+			inputRA.setPosition(outCursor);
+			assertEquals(inputRA.get().get() + 1, outCursor.get().get());
+		}
+	}
+
+	@Test
+	public void testMapIterableToIterable() {
+
+		final Op functional = ops.op(MapIterableToIterable.class, out, in,
+				new AddOneFunctional());
+		functional.run();
+
+		final Cursor<ByteType> cursor1 = in.cursor();
+		final Cursor<ByteType> cursor2 = out.cursor();
+
+		while (cursor1.hasNext()) {
+			cursor1.fwd();
+			cursor2.fwd();
+			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+		}
+	}
+
+	@Test
+	public void testMapConvertRAIToRAI() {
+
+		final Op functional = ops.op(MapConvertRAIToRAI.class, in,
+				new AddOneFunctional(), new ByteType());
+		functional.run();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		RandomAccessibleInterval<ByteType> output = (RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
+				.getOutput();
+
+		final Cursor<ByteType> inputC = in.cursor();
+		final RandomAccess<ByteType> outputRA = output.randomAccess();
+
+		while (inputC.hasNext()) {
+			inputC.fwd();
+			outputRA.setPosition(inputC);
+			assertEquals(inputC.get().get() + 1, outputRA.get().get());
+		}
+	}
+
+	@Test
+	public void testMapConvertRandomAccessToRandomAccess() {
+
+		final Op functional = ops.op(
+				MapConvertRandomAccessToRandomAccess.class, in,
+				new AddOneFunctional(), new ByteType());
+		functional.run();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		RandomAccessible<ByteType> output = (RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
+				.getOutput();
+
+		final Cursor<ByteType> inputC = in.cursor();
+		final RandomAccess<ByteType> outputRA = output.randomAccess();
+
+		while (inputC.hasNext()) {
+			inputC.fwd();
+			outputRA.setPosition(inputC);
+			assertEquals(inputC.get().get() + 1, outputRA.get().get());
 		}
 	}
 }
