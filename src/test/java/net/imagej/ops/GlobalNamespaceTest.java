@@ -40,6 +40,7 @@ import net.imagej.ops.Ops.Deconvolve;
 import net.imagej.ops.Ops.Equation;
 import net.imagej.ops.Ops.Eval;
 import net.imagej.ops.Ops.FFT;
+import net.imagej.ops.Ops.FFTSize;
 import net.imagej.ops.Ops.Gauss;
 import net.imagej.ops.Ops.Help;
 import net.imagej.ops.Ops.IFFT;
@@ -133,6 +134,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testFFT() {
 		assertComplete(null, OpService.class, FFT.NAME);
+	}
+
+	/** Tests for {@link FFTSize} method convergence. */
+	@Test
+	public void testFFTSize() {
+		assertComplete(null, OpService.class, FFTSize.NAME);
 	}
 
 	/** Tests for {@link Gauss} method convergence. */
