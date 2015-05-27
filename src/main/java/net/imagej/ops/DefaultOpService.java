@@ -1005,6 +1005,18 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public List<long[]> fftsize(final long[] inputSize,
+		final long[] paddedSize, final long[] fftSize, final Boolean forward,
+		final Boolean fast)
+	{
+		@SuppressWarnings("unchecked")
+		final List<long[]> result =
+			(List<long[]>) run(net.imagej.ops.fft.size.ComputeFFTSize.class,
+				inputSize, paddedSize, fftSize, forward, fast);
+		return result;
+	}
+
+	@Override
 	public Object gauss(final Object... args) {
 		return run(Ops.Gauss.NAME, args);
 	}

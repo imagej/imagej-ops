@@ -668,6 +668,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.FFTSize.class)
 	Object fftsize(Object... args);
 
+	/** Executes the "fftsize" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.fft.size.ComputeFFTSize.class)
+	List<long[]> fftsize(final long[] inputSize, final long[] paddedSize,
+		final long[] fftSize, final Boolean forward, final Boolean fast);
+
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = Ops.Gauss.class)
 	Object gauss(Object... args);
