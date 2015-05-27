@@ -97,6 +97,46 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class)
+	public boolean greaterthan(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class)
+	public boolean greaterthan(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class)
+	public boolean greaterthan(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class)
+	public boolean greaterthan(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThan.class)
+	public <T> boolean greaterthan(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ComparableGreaterThan.class, a,
+				b);
+		return result;
+	}
+
 	// -- Named methods --
 
 	@Override
