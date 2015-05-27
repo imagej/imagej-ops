@@ -44,6 +44,7 @@ import net.imagej.ops.Ops.FFTSize;
 import net.imagej.ops.Ops.Gauss;
 import net.imagej.ops.Ops.GaussKernel;
 import net.imagej.ops.Ops.Help;
+import net.imagej.ops.Ops.Histogram;
 import net.imagej.ops.Ops.IFFT;
 import net.imagej.ops.Ops.Identity;
 import net.imagej.ops.Ops.Invert;
@@ -159,6 +160,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testHelp() {
 		assertComplete(null, OpService.class, Help.NAME);
+	}
+
+	/** Tests for {@link Histogram} method convergence. */
+	@Test
+	public void testHistogram() {
+		assertComplete(null, OpService.class, Histogram.NAME);
 	}
 
 	/** Tests for {@link Identity} method convergence. */
