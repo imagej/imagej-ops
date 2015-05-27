@@ -59,6 +59,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.interpolation.InterpolatorFactory;
@@ -1169,6 +1170,26 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object histogram(final Object... args) {
 		return run(Ops.Histogram.NAME, args);
+	}
+
+	@Override
+	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Histogram1d<T> result =
+			(Histogram1d<T>) run(net.imagej.ops.histogram.HistogramCreate.class, in);
+		return result;
+	}
+
+	@Override
+	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
+		final int numBins)
+	{
+		@SuppressWarnings("unchecked")
+		final Histogram1d<T> result =
+			(Histogram1d<T>) run(net.imagej.ops.histogram.HistogramCreate.class, in,
+				numBins);
+		return result;
 	}
 
 	@Override

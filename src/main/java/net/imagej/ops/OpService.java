@@ -52,6 +52,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.interpolation.InterpolatorFactory;
@@ -760,6 +761,15 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = Ops.Histogram.class)
 	Object histogram(Object... args);
+
+	/** Executes the "histogram" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
+	<T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in);
+
+	/** Executes the "histogram" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
+	<T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
+		final int numBins);
 
 	/** Executes the "identity" operation on the given arguments. */
 	@OpMethod(op = Ops.Identity.class)
