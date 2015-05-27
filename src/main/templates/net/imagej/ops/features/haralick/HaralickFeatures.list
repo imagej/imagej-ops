@@ -18,7 +18,7 @@ ops = ```
   [name: "haralicksumaverage", iface: "SumAverage"],
   [name: "haralicksumentropy", iface: "SumEntropy"],
   [name: "haralicksumvariance", iface: "SumVariance"],
-  [name: "haralickmaxprob", iface: "MaxProbability],
+  [name: "haralickmaxprob", iface: "MaxProbability"],
   [name: "haralicktexturehomogeneity", iface: "TextureHomogenity"]
 ]
 ```
