@@ -42,6 +42,7 @@ import net.imagej.ops.Ops.Eval;
 import net.imagej.ops.Ops.FFT;
 import net.imagej.ops.Ops.FFTSize;
 import net.imagej.ops.Ops.Gauss;
+import net.imagej.ops.Ops.GaussKernel;
 import net.imagej.ops.Ops.Help;
 import net.imagej.ops.Ops.IFFT;
 import net.imagej.ops.Ops.Identity;
@@ -146,6 +147,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testGauss() {
 		assertComplete(null, OpService.class, Gauss.NAME);
+	}
+
+	/** Tests for {@link GaussKernel} method convergence. */
+	@Test
+	public void testGaussKernel() {
+		assertComplete(null, OpService.class, GaussKernel.NAME);
 	}
 
 	/** Tests for {@link Help} method convergence. */
