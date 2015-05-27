@@ -687,6 +687,56 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.GaussKernel.class)
 	Object gaussKernel(Object... args);
 
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
+		<T extends ComplexType<T>> Img<T> gausskernel(final int numDimensions,
+			final double sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
+		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+			final int numDimensions, final double sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
+		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+			final ImgFactory<T> fac, final int numDimensions, final double sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
+		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+			final ImgFactory<T> fac, final int numDimensions, final double sigma,
+			final double... calibration);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final double... sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final double... sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration);
+
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = Ops.Help.class)
 	Object help(Object... args);

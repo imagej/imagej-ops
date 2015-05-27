@@ -1005,9 +1005,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public List<long[]> fftsize(final long[] inputSize,
-		final long[] paddedSize, final long[] fftSize, final Boolean forward,
-		final Boolean fast)
+	public List<long[]> fftsize(final long[] inputSize, final long[] paddedSize,
+		final long[] fftSize, final Boolean forward, final Boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final List<long[]> result =
@@ -1036,6 +1035,103 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Object gaussKernel(final Object... args) {
 		return run("gausskernel", args);
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> gausskernel(final int numDimensions,
+		final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class,
+				numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+		final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class,
+				outType, numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class,
+				outType, fac, numDimensions, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class,
+				outType, fac, numDimensions, sigma, calibration);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class,
+				outType, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class,
+				outType, fac, sigma);
+		return result;
+	}
+
+	@Override
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) run(
+				net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class,
+				outType, fac, sigma, calibration);
+		return result;
 	}
 
 	@Override
