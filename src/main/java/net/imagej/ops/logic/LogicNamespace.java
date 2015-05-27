@@ -171,6 +171,42 @@ public class LogicNamespace extends AbstractNamespace {
 			(Boolean) ops().run(net.imagej.ops.logic.ComparableGreaterThanOrEqual.class, a, b);
 		return result;
 	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class)
+	public boolean lessthan(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class)
+	public boolean lessthan(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class)
+	public boolean lessthan(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class)
+	public boolean lessthan(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableLessThan.class)
+	public <T> boolean lessthan(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ComparableLessThan.class, a, b);
+		return result;
+	}
+
 	// -- Named methods --
 
 	@Override
