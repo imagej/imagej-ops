@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.LogicOps.And;
 import net.imagej.ops.LogicOps.Equal;
 import net.imagej.ops.LogicOps.GreaterThan;
+import net.imagej.ops.LogicOps.GreaterThanOrEqual;
 
 import org.junit.Test;
 
@@ -61,5 +62,11 @@ public class LogicNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testGreaterThan() {
 		assertComplete("logic", LogicNamespace.class, GreaterThan.NAME);
+	}
+
+	/** Tests for {@link GreaterThanOrEqual} method convergence. */
+	@Test
+	public void testGreaterThanOrEqual() {
+		assertComplete("logic", LogicNamespace.class, GreaterThanOrEqual.NAME);
 	}
 }
