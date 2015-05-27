@@ -66,7 +66,7 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
-		op = ops.op(SumIRT.class, RealType.class, out1);
+		op = ops.op(Sum.class, RealType.class, out1);
 	}
 
 	@Test

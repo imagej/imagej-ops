@@ -81,9 +81,8 @@ public class HaralickFeatureTest extends AbstractFeatureTest {
 	
 		final OpRef<HaralickFeatures.${op.iface}Feature> feature = new OpRef<HaralickFeatures.${op.iface}Feature>(
 				HaralickFeatures.${op.iface}Feature.class);
-
-		final ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.resolve(
-				empty, feature, matrix);
+		ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.resolve(
+				empty, feature, matrix2d);
 			
 		assertEquals(${op.empty2d}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
 				.get(feature)).getOutput().get(),
