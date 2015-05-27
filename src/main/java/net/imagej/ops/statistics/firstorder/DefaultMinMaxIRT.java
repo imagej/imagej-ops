@@ -36,6 +36,7 @@ import net.imagej.ops.statistics.FirstOrderOps.MinMax;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Martin Horn
  */
-@Plugin(type = MinMax.class, name = MinMax.NAME, label = MinMax.LABEL)
+@Plugin(type = MinMax.class, name = MinMax.NAME, label = MinMax.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultMinMaxIRT<T extends RealType<T>> implements MinMax {
 
 	@Parameter(type = ItemIO.INPUT)

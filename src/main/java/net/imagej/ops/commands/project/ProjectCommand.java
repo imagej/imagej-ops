@@ -82,10 +82,12 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 
 		private MeanFeature<T> mean;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public T compute(Iterable<T> input, T output) {
 			if (mean == null) {
-				mean = (MeanFeature<T>) ops.op(MeanFeature.class, output, input);
+				mean = (MeanFeature<T>) ops
+						.op(MeanFeature.class, output, input);
 				mean.run();
 			}
 			return mean.getOutput();

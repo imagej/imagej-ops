@@ -78,11 +78,7 @@ public final class $className {
 	 */
 	public interface $op.iface extends Op {
 		String NAME = "$!{prefix}$op.name";
-<<<<<<< HEAD
-		String LABEL = "${op.iface}";
-=======
 		String LABEL = "$!{prefix}$op.iface";
->>>>>>> add and update templates for StatisticOps and Features
 #if ($op.aliases)
 		String ALIASES = "##
 #set ($first = true)

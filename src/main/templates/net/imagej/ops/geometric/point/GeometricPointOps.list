@@ -1,5 +1,4 @@
 [GeometricPointOps.java]
-<<<<<<< HEAD
 className = "GeometricPointOps"
 authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
 ops = ```
@@ -7,10 +6,3 @@ ops = ```
 	[name: "center-of-gravity", iface: "CenterOfGravity"]
 ]
 ```
-=======
-ops = ```
-[
-{name: center-of-gravity, iface: CenterOfGravity}
-]
-```
->>>>>>> add and update templates for StatisticOps and Features

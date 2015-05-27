@@ -35,7 +35,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imagej.ops.statistics.FirstOrderOps.Mean;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MeanIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Mean.NAME, label = Mean.LABEL)
 public class DefaultMeanIRT<I extends RealType<I>, O extends RealType<O>>
         extends AbstractOutputFunction<Iterable<I>, O> implements
-        MeanIRT<I, O>, MeanFeature<O> {
+        Mean, MeanFeature<O> {
 
     @Override
     protected O safeCompute(Iterable<I> input, O output) {

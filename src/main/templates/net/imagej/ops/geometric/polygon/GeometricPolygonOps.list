@@ -1,5 +1,4 @@
 [GeometricPolygonOps.java]
-<<<<<<< HEAD
 className = "GeometricPolygonOps"
 authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
 ops = ```
@@ -10,13 +9,3 @@ ops = ```
 	[name: "smallest-enclosing-rectangle", iface: "SmallestEnclosingRectangle"]
 ]
 ```
-=======
-ops = ```
-[
-{name: moore-contour, iface: MooreContours},
-{name: convex-hull, iface: ConvexHull},
-{name: bounding-box, iface: BoundingBox},
-{name: smallest-enclosing-rectangle, iface: SmallestEnclosingRectangle}
-]
-```
->>>>>>> add and update templates for StatisticOps and Features

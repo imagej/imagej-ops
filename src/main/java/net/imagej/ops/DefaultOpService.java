@@ -199,6 +199,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <V extends NativeType<V>> ImgPlus<V> createimg(final ImgPlus<V> input) {
+		@SuppressWarnings("unchecked")
+		final ImgPlus<V> result = (ImgPlus<V>) run(
+				CreateEmptyImgPlusCopy.class, input);
+		return result;
+	}
+
+	@Override
 	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
 			final V type) {
 		@SuppressWarnings("unchecked")

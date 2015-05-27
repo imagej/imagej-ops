@@ -35,7 +35,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
 import net.imagej.ops.statistics.FirstOrderOps.Min;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MinIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Min.NAME, label = Min.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultMinIRT<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractOutputFunction<Iterable<I>, O> implements MinIRT<I, O>,
+		extends AbstractOutputFunction<Iterable<I>, O> implements Min,
 		MinFeature<O> {
 
 	@Override
