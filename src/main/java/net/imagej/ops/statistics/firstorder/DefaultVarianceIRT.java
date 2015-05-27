@@ -35,7 +35,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.VarianceFeature;
 import net.imagej.ops.statistics.FirstOrderOps.Variance;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.VarianceIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Variance.NAME, label = Variance.LABEL, priority = Priority.FIRST_PRIORITY)
 public class DefaultVarianceIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
-		VarianceIRT<I, O>, VarianceFeature<O> {
+		Variance, VarianceFeature<O> {
 
 	@Override
 	public O createOutput(Iterable<I> in) {

@@ -35,7 +35,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfSquaresFeature;
 import net.imagej.ops.statistics.FirstOrderOps.SumOfSquares;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfSquaresIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = SumOfSquares.NAME, label = SumOfSquares.LABEL)
 public class DefaultSumOfSquaresIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
-		SumOfSquaresIRT<I, O>, SumOfSquaresFeature<O> {
+		SumOfSquares, SumOfSquaresFeature<O> {
 
 	@Override
 	public O createOutput(Iterable<I> in) {

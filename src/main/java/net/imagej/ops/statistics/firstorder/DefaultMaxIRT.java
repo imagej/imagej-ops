@@ -33,9 +33,8 @@ package net.imagej.ops.statistics.firstorder;
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
+import net.imagej.ops.Ops.Max;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
-import net.imagej.ops.statistics.FirstOrderOps.Max;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MaxIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -47,29 +46,29 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Max.NAME, label = MaxFeature.LABEL, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = MaxFeature.NAME, label = MaxFeature.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultMaxIRT<I extends RealType<I>, O extends RealType<O>>
-        extends AbstractOutputFunction<Iterable<I>, O> implements MaxIRT<I, O>,
-        MaxFeature<O> {
+		extends AbstractOutputFunction<Iterable<I>, O> implements Max,
+		MaxFeature<O> {
 
-    @Override
-    protected O safeCompute(Iterable<I> input, O output) {
+	@Override
+	protected O safeCompute(Iterable<I> input, O output) {
 
-        double max = -Double.MAX_VALUE;
+		double max = -Double.MAX_VALUE;
 
-        for (final RealType<?> val : input) {
-            final double tmp = val.getRealDouble();
-            if (tmp > max) {
-                max = tmp;
-            }
-        }
+		for (final RealType<?> val : input) {
+			final double tmp = val.getRealDouble();
+			if (tmp > max) {
+				max = tmp;
+			}
+		}
 
-        output.setReal(max);
-        return output;
-    }
+		output.setReal(max);
+		return output;
+	}
 
-    @Override
-    public O createOutput(Iterable<I> in) {
-        return OpUtils.<O> cast(new DoubleType());
-    }
+	@Override
+	public O createOutput(Iterable<I> in) {
+		return OpUtils.<O> cast(new DoubleType());
+	}
 }

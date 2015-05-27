@@ -35,7 +35,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumOfInversesFeature;
 import net.imagej.ops.statistics.FirstOrderOps.SumOfInverses;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumOfInversesIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = SumOfInverses.NAME, label = SumOfInverses.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultSumOfInversesIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
-		SumOfInversesIRT<I, O>, SumOfInversesFeature<O> {
+		SumOfInverses, SumOfInversesFeature<O> {
 
 	@Override
 	public O createOutput(final Iterable<I> in) {

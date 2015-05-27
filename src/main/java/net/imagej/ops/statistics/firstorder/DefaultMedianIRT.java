@@ -38,7 +38,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.MedianFeature;
 import net.imagej.ops.statistics.FirstOrderOps.Median;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.MedianIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -53,7 +52,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Median.NAME, label = Median.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultMedianIRT<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractOutputFunction<Iterable<I>, O> implements
-		MedianIRT<I, O>, MedianFeature<O> {
+		Median, MedianFeature<O> {
 
 	/**
 	 * Returns the value of the kth lowest element. Do note that for nth lowest

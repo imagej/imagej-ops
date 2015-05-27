@@ -36,7 +36,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.features.firstorder.FirstOrderFeatures.SumFeature;
 import net.imagej.ops.statistics.FirstOrderOps.Sum;
-import net.imagej.ops.statistics.firstorder.FirstOrderStatIRTOps.SumIRT;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = Sum.NAME, label = Sum.LABEL, priority = Priority.LOW_PRIORITY)
 public class DefaultSumIRT<I extends RealType<I>, O extends RealType<O>>
-        extends AbstractOutputFunction<Iterable<I>, O> implements SumIRT<I, O>,
+        extends AbstractOutputFunction<Iterable<I>, O> implements Sum,
         SumFeature<O> {
 
     @Override
