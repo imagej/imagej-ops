@@ -95,6 +95,17 @@
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
+			<id>danielseebacher</id>
+			<name>Daniel Seebacher</name>
+			<email>danielseebacher@t-online.de</email>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
 			<id>apal4</id>
 			<name>Aparna Pal</name>
 			<email>apal4@wisc.edu</email>
