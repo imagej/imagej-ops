@@ -321,6 +321,14 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class)
+	public boolean or(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class,
+				a, b);
+		return result;
+	}
+
 	// -- Named methods --
 
 	@Override
