@@ -269,7 +269,55 @@ public class LogicNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class)
 	public boolean not(final boolean a) {
 		final boolean result =
-			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class, a);
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class,
+				a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class)
+	public boolean notequal(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class)
+	public boolean notequal(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class)
+	public boolean notequal(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class)
+	public boolean notequal(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class)
+	public boolean notequal(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ObjectsNotEqual.class)
+	public boolean notequal(final Object a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ObjectsNotEqual.class, a, b);
 		return result;
 	}
 
