@@ -1,6 +1,13 @@
 package net.imagej.ops.features;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpMatchingService;
@@ -8,6 +15,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.geometric.polygon.Polygon;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.RealPoint;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayCursor;
@@ -15,7 +23,12 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.roi.EllipseRegionOfInterest;
+import net.imglib2.roi.labeling.ImgLabeling;
+import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.roi.labeling.LabelRegions;
+import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Before;
@@ -54,11 +67,11 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	protected Img<UnsignedByteType> empty;
 	protected Img<UnsignedByteType> constant;
 	protected Img<UnsignedByteType> random;
-		
+
 	protected Img<UnsignedByteType> empty3d;
 	protected Img<UnsignedByteType> constant3d;
 	protected Img<UnsignedByteType> random3d;
-	
+
 	protected Img<UnsignedByteType> ellipse;
 	protected Img<UnsignedByteType> rotatedEllipse;
 
@@ -68,12 +81,12 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	public void setup() {
 		ImageGenerator dataGenerator = new ImageGenerator(SEED);
 		long[] dim = new long[] { 100, 100 };
-		long[] dim3 = new long[] {100, 100, 30};
+		long[] dim3 = new long[] { 100, 100, 30 };
 
 		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
 		constant = dataGenerator.getConstantUnsignedByteImg(dim, 15);
 		random = dataGenerator.getRandomUnsignedByteImg(dim);
-		
+
 		empty3d = dataGenerator.getEmptyUnsignedByteImg(dim3);
 		constant3d = dataGenerator.getConstantUnsignedByteImg(dim3, 15);
 		random3d = dataGenerator.getRandomUnsignedByteImg(dim3);
@@ -880,4 +893,31 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		return p;
 	}
 
+	protected LabelRegion<?> createLabelRegion() throws MalformedURLException,
+			IOException {
+		// read simple polygon image
+		BufferedImage read = ImageIO.read(AbstractFeatureTest.class
+				.getResourceAsStream("cZgkFsK.png"));
+
+		System.out.println(read.getWidth() + "\t" + read.getHeight());
+
+		ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
+				ArrayImgs.ints(read.getWidth(), read.getHeight()));
+
+		// at each black pixel of the polygon add a "1" label.
+		RandomAccess<LabelingType<String>> randomAccess = img.randomAccess();
+		for (int y = 0; y < read.getHeight(); y++) {
+			for (int x = 0; x < read.getWidth(); x++) {
+				randomAccess.setPosition(new int[] { x, y });
+				Color c = new Color(read.getRGB(x, y));
+				if (c.getRed() == Color.black.getRed()) {
+					randomAccess.get().add("1");
+				}
+			}
+		}
+
+		LabelRegions<String> labelRegions = new LabelRegions<String>(img);
+		return labelRegions.getLabelRegion("1");
+
+	}
 }

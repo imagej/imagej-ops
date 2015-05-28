@@ -36,7 +36,6 @@ import java.util.Set;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
-import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.CircularityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.ConvexityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.EccentricityFeature;
@@ -45,21 +44,20 @@ import net.imagej.ops.features.geometric.GeometricFeatures.FeretsAngleFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.FeretsDiameterFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MinorAxisFeature;
-import net.imagej.ops.features.geometric.GeometricFeatures.PerimeterFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RectangularityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RugosityFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
 import net.imagej.ops.features.geometric.helper.polygonhelper.MinorMajorAxisOp;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonAreaOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullAreaOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonConvexHullPerimeterOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonFeretOp;
-import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonPerimeterOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleAreaOp;
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleOp;
-import net.imagej.ops.geometric.polygon.Polygon;
+import net.imagej.ops.statistics.geometric.polygon.DefaultAreaPolygon;
+import net.imagej.ops.statistics.geometric.polygon.DefaultPerimeterPolygon;
+import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -72,14 +70,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Geometric Features", description = "Calculates the Geometric Features")
 public class GeometricFeatureSet extends
-		AbstractAutoResolvingFeatureSet<Polygon, DoubleType> {
+		AbstractAutoResolvingFeatureSet<LabelRegion<?>, DoubleType> {
 
 	@Override
 	public Set<OpRef<?>> getOutputOps() {
 		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
 
-		outputOps.add(createOpRef(AreaFeature.class));
-		outputOps.add(createOpRef(PerimeterFeature.class));
+		outputOps.add(createOpRef(DefaultAreaPolygon.class));
+		outputOps.add(createOpRef(DefaultPerimeterPolygon.class));
 		outputOps.add(createOpRef(CircularityFeature.class));
 		outputOps.add(createOpRef(RectangularityFeature.class));
 		outputOps.add(createOpRef(ConvexityFeature.class));
@@ -99,8 +97,6 @@ public class GeometricFeatureSet extends
 	@Override
 	public Set<OpRef<?>> getHiddenOps() {
 		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
-		hiddenOps.add(createOpRef(PolygonAreaOp.class));
-		hiddenOps.add(createOpRef(PolygonPerimeterOp.class));
 		hiddenOps.add(createOpRef(PolygonConvexHullOp.class));
 		hiddenOps.add(createOpRef(PolygonConvexHullAreaOp.class));
 		hiddenOps.add(createOpRef(PolygonConvexHullPerimeterOp.class));

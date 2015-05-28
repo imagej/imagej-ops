@@ -1,9 +1,10 @@
 package net.imagej.ops.features.geometric;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.features.geometric.GeometricFeatures.AreaFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.MajorAxisFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
+import net.imagej.ops.geometric.polygon.Polygon;
+import net.imagej.ops.statistics.geometric.polygon.DefaultAreaPolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -21,7 +22,7 @@ public class DefaultRoundnessFeature implements
         RoundnessFeature<DoubleType> {
 
     @Parameter(type = ItemIO.INPUT)
-    private AreaFeature<DoubleType> area;
+    private DefaultAreaPolygon<Polygon, DoubleType> area;
 
     @Parameter(type = ItemIO.INPUT)
     private MajorAxisFeature<DoubleType> majorAxis;

@@ -36,8 +36,10 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
+import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BitType;
+import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.Views;
 
 import org.scijava.ItemIO;
@@ -73,7 +75,7 @@ public class DefaultMooreContoursOp implements MooreContoursPolygon, Contingent 
 	private Polygon output;
 
 	@Parameter(type = ItemIO.INPUT)
-	private RandomAccessibleInterval<BitType> input;
+	private LabelRegion<?> input;
 
 	@Parameter(type = ItemIO.INPUT, description = "Set this flag to use the refined Jacobs stopping criteria")
 	private boolean useJacobs = true;
@@ -205,10 +207,10 @@ public class DefaultMooreContoursOp implements MooreContoursPolygon, Contingent 
 
 		Polygon p = new Polygon();
 
-		final RandomAccess<BitType> raInput = Views.extendValue(input,
-				new BitType(!isInverted)).randomAccess();
-		final Cursor<BitType> cInput = Views.flatIterable(input).cursor();
-		final ClockwiseMooreNeighborhoodIterator<BitType> cNeigh = new ClockwiseMooreNeighborhoodIterator<BitType>(
+		final RandomAccess<BoolType> raInput = Views.extendValue(input,
+				new BoolType(!isInverted)).randomAccess();
+		final Cursor<BoolType> cInput = Views.flatIterable(input).cursor();
+		final ClockwiseMooreNeighborhoodIterator<BoolType> cNeigh = new ClockwiseMooreNeighborhoodIterator<BoolType>(
 				raInput);
 
 		double[] position = new double[2];

@@ -16,6 +16,7 @@ import net.imagej.ops.OpRef;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
 
+import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.ConvertService;
 import org.scijava.module.MethodCallException;
 import org.scijava.module.Module;
@@ -112,7 +113,14 @@ public class DefaultOpResolverService extends AbstractService implements
 
 			@Override
 			public void update(final Object o) {
-				module.setInput(item.getName(), o);
+				ConversionRequest cr = new ConversionRequest(o, item.getType());
+
+				if (item.getType().isAssignableFrom(o.getClass())) {
+					module.setInput(item.getName(), o);
+				} else if (cs.supports(cr)) {
+					module.setInput(item.getName(), cs.convert(cr));
+
+				}
 			}
 
 			// TODO: be more restrictive concerning generics here
@@ -149,12 +157,16 @@ public class DefaultOpResolverService extends AbstractService implements
 				final InputUpdateListener listener = createUpdateListener(
 						module, item);
 
-				if (type.isAssignableFrom(inputSource.getType())) {
-					inputSource.registerListener(listener);
-					continue;
-				}
+				// its an input parameter that we can convert
+				ConversionRequest cr = new ConversionRequest(
+						inputSource.getType(), type);
+				if (type.isAssignableFrom(inputSource.getType())
+						|| cs.supports(cr)) {
 
-				continue;
+					inputSource.registerListener(listener);
+					// only use input !!ONCE!!
+					break;
+				}
 			}
 
 		}
@@ -212,6 +224,7 @@ public class DefaultOpResolverService extends AbstractService implements
 		for (final OpCandidate<?> candidate : candidates) {
 			final CachedModule m = checkIfAvailable(op, candidate.getInfo(),
 					modulePool, inputSource, opPool, null);
+
 			if (m != null)
 				return m;
 		}
@@ -296,9 +309,17 @@ public class DefaultOpResolverService extends AbstractService implements
 				continue;
 			}
 
+			// check if we can use on of the parameters
 			if (param != null && param.length > i && param[i] != null
 					&& cs.supports(param[i], itemType)) {
 				resolvedParams.add(param[i]);
+				continue;
+			}
+
+			// last option, check if we can convert the input
+			if (cs.supports(new ConversionRequest(inputSource.getType(),
+					itemType))) {
+				resolvedParams.add(itemType);
 				continue;
 			}
 

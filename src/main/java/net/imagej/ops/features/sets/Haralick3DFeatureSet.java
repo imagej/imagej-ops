@@ -33,7 +33,6 @@ package net.imagej.ops.features.sets;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
 import net.imagej.ops.features.FeatureSet;
@@ -73,8 +72,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
 public class Haralick3DFeatureSet<T> extends
-		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType> implements
-		Contingent {
+		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType> {
 
 	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
 	private double nrGrayLevels = 8;
@@ -114,19 +112,8 @@ public class Haralick3DFeatureSet<T> extends
 	}
 
 	@Override
-	public boolean conforms() {
-
-		int count = 0;
-		for (int d = 0; d < getInput().numDimensions(); d++) {
-			count += getInput().dimension(d) > 1 ? 1 : 0;
-		}
-
-		return count == 3;
-	}
-
-	@Override
 	public Set<OpRef<?>> getOutputOps() {
-		
+
 		final HashSet<OpRef<?>> outputOps = new HashSet<OpRef<?>>();
 		outputOps.add(createOpRef(ASMFeature.class));
 		outputOps.add(createOpRef(ClusterPromenenceFeature.class));
@@ -144,15 +131,16 @@ public class Haralick3DFeatureSet<T> extends
 		outputOps.add(createOpRef(VarianceFeature.class));
 		outputOps.add(createOpRef(TextureHomogenityFeature.class));
 		outputOps.add(createOpRef(MaxProbabilityFeature.class));
-		
+
 		return outputOps;
 	}
 
 	@Override
 	public Set<OpRef<?>> getHiddenOps() {
 		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
-		hiddenOps.add(createOpRef(CooccurrenceMatrix3D.class, getInput(), nrGrayLevels,
-				distance, orientation, MinFeature.class, MaxFeature.class));
+		hiddenOps.add(createOpRef(CooccurrenceMatrix3D.class, getInput(),
+				nrGrayLevels, distance, orientation, MinFeature.class,
+				MaxFeature.class));
 		return hiddenOps;
 	}
 }
