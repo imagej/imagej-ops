@@ -278,6 +278,32 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.And.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAnd.class)
+	public int and(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerAnd.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongAnd.class)
+	public long and(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongAnd.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealAndConstant.class)
+	public <I extends RealType<I>, O extends RealType<O>> O and(final O out,
+		final I in, final long constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealAndConstant.class, out,
+				in, constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Arccos.class)
 	public Object arccos(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Arccos.class, args);
