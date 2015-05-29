@@ -38,6 +38,7 @@ import net.imagej.ops.MathOps.And;
 import net.imagej.ops.MathOps.Arccos;
 import net.imagej.ops.MathOps.Arccosh;
 import net.imagej.ops.MathOps.Arccot;
+import net.imagej.ops.MathOps.Arccoth;
 
 import org.junit.Test;
 
@@ -89,5 +90,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testArccot() {
 		assertComplete("math", MathNamespace.class, Arccot.NAME);
+	}
+
+	/** Tests for {@link Arccoth} method convergence. */
+	@Test
+	public void testArccoth() {
+		assertComplete("math", MathNamespace.class, Arccoth.NAME);
 	}
 }
