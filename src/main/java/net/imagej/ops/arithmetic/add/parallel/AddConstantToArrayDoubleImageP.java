@@ -60,7 +60,7 @@ public class AddConstantToArrayDoubleImageP implements MathOps.Add {
 	private ArrayImg<DoubleType, DoubleArray> image;
 
 	@Parameter
-	private byte value;
+	private double value;
 
 	@Override
 	public void run() {
