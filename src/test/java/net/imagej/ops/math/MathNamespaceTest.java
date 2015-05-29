@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.MathOps.Abs;
 import net.imagej.ops.MathOps.Add;
 import net.imagej.ops.MathOps.AddNoise;
+import net.imagej.ops.MathOps.And;
 
 import org.junit.Test;
 
@@ -61,5 +62,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testAddNoise() {
 		assertComplete("math", MathNamespace.class, AddNoise.NAME);
+	}
+
+	/** Tests for {@link And} method convergence. */
+	@Test
+	public void testAnd() {
+		assertComplete("math", MathNamespace.class, And.NAME);
 	}
 }
