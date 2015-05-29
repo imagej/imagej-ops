@@ -32,6 +32,7 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.MathOps.Abs;
+import net.imagej.ops.MathOps.Add;
 
 import org.junit.Test;
 
@@ -47,6 +48,12 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testAbs() {
 		assertComplete("math", MathNamespace.class, Abs.NAME);
+	}
+
+	/** Tests for {@link Add} method convergence. */
+	@Test
+	public void testAdd() {
+		assertComplete("math", MathNamespace.class, Add.NAME);
 	}
 
 }
