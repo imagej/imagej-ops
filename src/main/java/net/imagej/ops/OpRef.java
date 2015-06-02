@@ -58,8 +58,10 @@ public class OpRef<OP extends Op> {
 	/**
 	 * Creates a new op reference.
 	 * 
-	 * @param name name of the op, or null for any name.
-	 * @param args arguments to the op.
+	 * @param name
+	 *            name of the op, or null for any name.
+	 * @param args
+	 *            arguments to the op.
 	 */
 	public OpRef(final String name, final Object... args) {
 		this(name, null, args);
@@ -68,8 +70,10 @@ public class OpRef<OP extends Op> {
 	/**
 	 * Creates a new op reference.
 	 * 
-	 * @param type type of op, or null for any type.
-	 * @param args arguments to the op.
+	 * @param type
+	 *            type of op, or null for any type.
+	 * @param args
+	 *            arguments to the op.
 	 */
 	public OpRef(final Class<OP> type, final Object... args) {
 		this(null, type, args);
@@ -78,13 +82,14 @@ public class OpRef<OP extends Op> {
 	/**
 	 * Creates a new op reference.
 	 * 
-	 * @param name name of the op, or null for any name.
-	 * @param type type of op, or null for any type.
-	 * @param args arguments to the op.
+	 * @param name
+	 *            name of the op, or null for any name.
+	 * @param type
+	 *            type of op, or null for any type.
+	 * @param args
+	 *            arguments to the op.
 	 */
-	public OpRef(final String name, final Class<OP> type,
-		final Object... args)
-	{
+	public OpRef(final String name, final Class<OP> type, final Object... args) {
 		this.name = name;
 		this.type = type;
 		this.args = args;
@@ -109,7 +114,8 @@ public class OpRef<OP extends Op> {
 
 	/** Gets a label identifying the op's scope (i.e., its type or name). */
 	public String getLabel() {
-		if (type != null) return type.getName();
+		if (type != null)
+			return type.getName();
 		return name == null ? "(any)" : name;
 	}
 
@@ -122,13 +128,15 @@ public class OpRef<OP extends Op> {
 		sb.append("(");
 		boolean first = true;
 		for (Object arg : args) {
-			if (first) first = false;
-			else sb.append(", ");
+			if (first)
+				first = false;
+			else
+				sb.append(", ");
 			if (arg.getClass() == Class.class) {
 				// special typed null placeholder
 				sb.append(((Class<?>) arg).getSimpleName());
-			}
-			else sb.append(arg.getClass().getSimpleName());
+			} else
+				sb.append(arg.getClass().getSimpleName());
 
 		}
 		sb.append(")");
@@ -140,7 +148,9 @@ public class OpRef<OP extends Op> {
 	public int hashCode() {
 		int hash = 31;
 		for (final Object o : args) {
-			hash += o.hashCode() * 31;
+			if (o != null) {
+				hash += o.hashCode() * 31;
+			}
 		}
 		return type.hashCode() * 31 + hash;
 	}
