@@ -899,8 +899,6 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		BufferedImage read = ImageIO.read(AbstractFeatureTest.class
 				.getResourceAsStream("cZgkFsK.png"));
 
-		System.out.println(read.getWidth() + "\t" + read.getHeight());
-
 		ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
 				ArrayImgs.ints(read.getWidth(), read.getHeight()));
 

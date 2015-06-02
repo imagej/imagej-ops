@@ -33,6 +33,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.MooreContoursPolygon;
 import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
@@ -75,7 +76,7 @@ public class DefaultMooreContoursOp implements MooreContoursPolygon, Contingent 
 	private Polygon output;
 
 	@Parameter(type = ItemIO.INPUT)
-	private LabelRegion<?> input;
+	private RandomAccessibleInterval<BoolType> input;
 
 	@Parameter(type = ItemIO.INPUT, description = "Set this flag to use the refined Jacobs stopping criteria")
 	private boolean useJacobs = true;

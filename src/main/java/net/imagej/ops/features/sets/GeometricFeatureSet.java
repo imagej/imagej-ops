@@ -57,7 +57,8 @@ import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnc
 import net.imagej.ops.features.geometric.helper.polygonhelper.PolygonSmallestEnclosingRectangleOp;
 import net.imagej.ops.statistics.geometric.polygon.DefaultAreaPolygon;
 import net.imagej.ops.statistics.geometric.polygon.DefaultPerimeterPolygon;
-import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.logic.BoolType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -70,7 +71,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = FeatureSet.class, label = "Geometric Features", description = "Calculates the Geometric Features")
 public class GeometricFeatureSet extends
-		AbstractAutoResolvingFeatureSet<LabelRegion<?>, DoubleType> {
+		AbstractAutoResolvingFeatureSet<RandomAccessibleInterval<BoolType>, DoubleType> {
 
 	@Override
 	public Set<OpRef<?>> getOutputOps() {

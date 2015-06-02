@@ -22,6 +22,7 @@ import net.imagej.ops.features.geometric.GeometricFeatures.PerimeterFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.RoundnessFeature;
 import net.imagej.ops.features.geometric.GeometricFeatures.SolidityFeature;
 import net.imagej.ops.features.sets.GeometricFeatureSet;
+import net.imglib2.roi.Regions;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -46,8 +47,10 @@ public class GeometricFeaturesTest extends AbstractFeatureTest {
 
 		List<Pair<String, DoubleType>> compute = null;
 		try {
+
 			compute = ops.op(GeometricFeatureSet.class, LabelRegion.class)
-					.getFeatureList(createLabelRegion());
+					.getFeatureList(Regions.iterable(createLabelRegion()));
+
 		} catch (MalformedURLException e) {
 			fail("Couldn't create LabelRegion " + e.getMessage());
 		} catch (IOException e) {

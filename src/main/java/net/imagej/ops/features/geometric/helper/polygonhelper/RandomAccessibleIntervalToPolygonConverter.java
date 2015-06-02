@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import net.imagej.ops.OpService;
 import net.imagej.ops.geometric.polygon.GeometricPolygonOps.MooreContoursPolygon;
 import net.imagej.ops.geometric.polygon.Polygon;
-import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
@@ -16,8 +16,8 @@ import org.scijava.plugin.Plugin;
 
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class LabelRegionToPolygonConverter extends
-		AbstractConverter<LabelRegion, Polygon> {
+public class RandomAccessibleIntervalToPolygonConverter extends
+		AbstractConverter<RandomAccessibleInterval, Polygon> {
 
 	@Parameter
 	private OpService ops;
@@ -25,7 +25,9 @@ public class LabelRegionToPolygonConverter extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T convert(Object src, Class<T> dest) {
-		return (T) ops.run(MooreContoursPolygon.class, src, true, true);
+		Polygon p = (Polygon) ops.run(MooreContoursPolygon.class, src, true,
+				true);
+		return (T) p;
 	}
 
 	@Override
@@ -34,8 +36,8 @@ public class LabelRegionToPolygonConverter extends
 	}
 
 	@Override
-	public Class<LabelRegion> getInputType() {
-		return LabelRegion.class;
+	public Class<RandomAccessibleInterval> getInputType() {
+		return RandomAccessibleInterval.class;
 	}
 
 	@Override
@@ -44,9 +46,12 @@ public class LabelRegionToPolygonConverter extends
 		Object sourceObject = request.sourceObject();
 		Class<?> sourceClass = request.sourceClass();
 
-		if (sourceObject != null && !(sourceObject instanceof LabelRegion)) {
+		if (sourceObject != null
+				&& !(sourceObject instanceof RandomAccessibleInterval)) {
 			return false;
-		} else if (sourceObject != null && !(sourceClass == LabelRegion.class)) {
+		} else if (sourceClass != null
+				&& !(RandomAccessibleInterval.class
+						.isAssignableFrom(sourceClass))) {
 			return false;
 		}
 
