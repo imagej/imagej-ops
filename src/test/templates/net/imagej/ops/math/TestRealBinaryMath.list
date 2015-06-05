@@ -6,15 +6,15 @@ types = ```
 	"DoubleType",
 	"FloatType",
 	"IntType",
-	"UnsignedByteType",
-	"UnsignedIntType",
+	"LongType"
 	"ShortType",
-	"UnsignedShortType",
+	"UnboundedIntegerType",
 	"Unsigned12BitType",
 	"Unsigned2BitType",
 	"Unsigned4BitType",
-	"UnboundedIntegerType",
-	"LongType"
+	"UnsignedByteType",
+	"UnsignedIntType",
+	"UnsignedShortType",
 ]
 ```
 
