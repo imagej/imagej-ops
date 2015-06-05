@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -65,8 +65,8 @@ public class MapTest extends AbstractOpTest {
 
 	@Test
 	public void testMapIterableIntervalToIterableInterval() {
-		final Op functional = ops.op(
-				MapIterableIntervalToIterableInterval.class, out, in,
+		final Op functional =
+			ops.op(MapIterableIntervalToIterableInterval.class, out, in,
 				new AddOneFunctional());
 		functional.run();
 
@@ -85,9 +85,10 @@ public class MapTest extends AbstractOpTest {
 
 		boolean fails = false;
 		try {
-			ops.run(MapIterableIntervalToIterableInterval.class, outDiffDims,
-					in, new AddOneFunctional());
-		} catch (IllegalArgumentException e) {
+			ops.run(MapIterableIntervalToIterableInterval.class, outDiffDims, in,
+				new AddOneFunctional());
+		}
+		catch (final IllegalArgumentException e) {
 			fails = true;
 		}
 		assertTrue(fails);
@@ -96,8 +97,8 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapRAIToIterableInterval() {
 
-		final Op functional = ops.op(MapRAIToIterableInterval.class, out, in,
-				new AddOneFunctional());
+		final Op functional =
+			ops.op(MapRAIToIterableInterval.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -115,8 +116,9 @@ public class MapTest extends AbstractOpTest {
 		boolean fails = false;
 		try {
 			ops.op(MapRAIToIterableInterval.class, outDiffDims, in,
-					new AddOneFunctional());
-		} catch (IllegalArgumentException e) {
+				new AddOneFunctional());
+		}
+		catch (final IllegalArgumentException e) {
 			fails = true;
 		}
 		assertTrue(fails);
@@ -125,8 +127,8 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapIterableIntervalToRAI() {
 
-		final Op functional = ops.op(MapIterableIntervalToRAI.class, out, in,
-				new AddOneFunctional());
+		final Op functional =
+			ops.op(MapIterableIntervalToRAI.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -144,8 +146,9 @@ public class MapTest extends AbstractOpTest {
 		boolean fails = false;
 		try {
 			ops.op(MapIterableIntervalToRAI.class, outDiffDims, in,
-					new AddOneFunctional());
-		} catch (IllegalArgumentException e) {
+				new AddOneFunctional());
+		}
+		catch (final IllegalArgumentException e) {
 			fails = true;
 		}
 		assertTrue(fails);
@@ -157,8 +160,8 @@ public class MapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapIterableInplace.class, in,
-				new AddOneInplace());
+		final Op functional =
+			ops.op(MapIterableInplace.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
@@ -171,14 +174,16 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapIterableIntervalToView() {
 
-		final Op functional = ops.op(MapIterableIntervalToView.class, in,
-				new AddOneFunctional(), new ByteType());
+		final Op functional =
+			ops.op(MapIterableIntervalToView.class, in, new AddOneFunctional(),
+				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		IterableInterval<ByteType> o = (IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
+		final IterableInterval<ByteType> o =
+			(IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
 				.getOutput();
 
-		RandomAccess<ByteType> inputRA = in.randomAccess();
+		final RandomAccess<ByteType> inputRA = in.randomAccess();
 		final Cursor<ByteType> outCursor = o.localizingCursor();
 
 		while (outCursor.hasNext()) {
@@ -191,8 +196,8 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapIterableToIterable() {
 
-		final Op functional = ops.op(MapIterableToIterable.class, out, in,
-				new AddOneFunctional());
+		final Op functional =
+			ops.op(MapIterableToIterable.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -208,11 +213,13 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapConvertRAIToRAI() {
 
-		final Op functional = ops.op(MapConvertRAIToRAI.class, in,
-				new AddOneFunctional(), new ByteType());
+		final Op functional =
+			ops.op(MapConvertRAIToRAI.class, in, new AddOneFunctional(),
+				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		RandomAccessibleInterval<ByteType> output = (RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
+		final RandomAccessibleInterval<ByteType> output =
+			(RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
 				.getOutput();
 
 		final Cursor<ByteType> inputC = in.cursor();
@@ -228,12 +235,13 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapConvertRandomAccessToRandomAccess() {
 
-		final Op functional = ops.op(
-				MapConvertRandomAccessToRandomAccess.class, in,
+		final Op functional =
+			ops.op(MapConvertRandomAccessToRandomAccess.class, in,
 				new AddOneFunctional(), new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		RandomAccessible<ByteType> output = (RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
+		final RandomAccessible<ByteType> output =
+			(RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
 				.getOutput();
 
 		final Cursor<ByteType> inputC = in.cursor();

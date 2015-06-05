@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -46,25 +46,23 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
  * {@link IterableInterval}
- * 
+ *
  * @author Martin Horn
  * @author Christian Dietz
  * @author Tim-Oliver Buchholz
- * 
- * @param <A>
- *            mapped on <B>
- * @param <B>
- *            mapped from <A>
+ * @param <A> mapped on <B>
+ * @param <B> mapped from <A>
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<A, B>
-		extends
-		AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
-		implements Contingent {
+public class MapRAIToIterableInterval<A, B> extends
+	AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+	implements Contingent
+{
 
 	@Override
 	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
-			final IterableInterval<B> output) {
+		final IterableInterval<B> output)
+	{
 		final Cursor<B> cursor = output.localizingCursor();
 		final RandomAccess<A> rndAccess = input.randomAccess();
 
