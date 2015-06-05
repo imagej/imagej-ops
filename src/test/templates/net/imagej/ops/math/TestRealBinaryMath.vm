@@ -31,66 +31,55 @@
 package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import java.util.ArrayList;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.math.RealBinaryMath;
 import net.imagej.types.UnboundedIntegerType;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.*;
-import net.imglib2.type.numeric.real.*;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.integer.Unsigned12BitType;
+import net.imglib2.type.numeric.integer.Unsigned2BitType;
+import net.imglib2.type.numeric.integer.Unsigned4BitType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedIntType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
+
 import org.junit.Test;
 
 /**
  * Tests the {@link RealBinaryMath} ops.
  *
  * @author Aparna Pal
+ * @author Curtis Rueden
  */
 public class TestRealBinaryMath extends AbstractOpTest {
+
+	final double aValue = 6.0;
+	final double bValue = 2.0;
 #foreach ($test in $tests)
-#set ($className = "$test.op")
+#foreach ($type in $types)
 
-	/** Tests {@link RealBinaryMath.$className}. */
+	/** Tests {@link RealBinaryMath.RealType$test.op} with {@link $type} arguments. */
 	@Test
-	public void test$className() {
-	
-	RealType two;
-	RealType mid;
-	Object result;
-	ArrayList list;
-	double test;
-	
-
-	#foreach($type in $types)
-		two = new ${type}();
-		two.setOne();
-		result = ops.run(RealBinaryMath.RealType${className}.class, two, two, two);
-		mid = ($type) result;
-		test = mid.getRealDouble();
-		assertEquals(test, $test.result, 0.0);
-
-	#end
-
+	public void test${test.op}${type}() {
+		final $type a = new ${type}();
+		final $type b = new ${type}();
+		a.setReal(aValue);
+		b.setReal(bValue);
+		final $type expected = new ${type}();
+		expected.set(a);
+		expected.${test.function}(b);
+		final Object result = ops.run(RealBinaryMath.RealType${test.op}.class, a, b);
+		final $type actual = ($type) result;
+## NB: Compare values, until all types implement equals properly.
+##		assertEquals(expected, actual);
+		final Object expectedObj = expected.get();
+		final Object actualObj = actual.get();
+		assertEquals(expectedObj, actualObj);
 	}
 #end
-
-@Test
-	public void testBitType()
-	{
-		RealType two;
-		RealType mid;
-		Object result;
-		ArrayList list;
-		double test;
-		
-		two = new BitType();
-	two.setOne();
-	result = ops.run(RealBinaryMath.RealTypeAdd.class, two, two, two);
-	mid = (BitType) result;
-	test = mid.getRealDouble();
-	assertEquals(test,0.0, 0.0);
-	}
-		
+#end
 
 }
