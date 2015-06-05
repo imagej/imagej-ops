@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,6 +31,8 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
+import net.imagej.ops.InputOp;
+import net.imagej.ops.OutputOp;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -38,15 +40,15 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract implementation of a {@link Map} which virtually converts entries in
  * I and V from A to B.
- * 
+ *
  * @author Christian Dietz
  * @param <A> type to be converted to <B>
  * @param <B> result of conversion
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class MapView<A, B, I, O> implements
-	Map<A, B, Function<A, B>>
+public abstract class MapView<A, B, I, O> implements Map<A, B, Function<A, B>>,
+	InputOp<I>, OutputOp<O>
 {
 
 	@Parameter
@@ -74,6 +76,7 @@ public abstract class MapView<A, B, I, O> implements
 	/**
 	 * @return input which will be converted to a converted output
 	 */
+	@Override
 	public I getInput() {
 		return input;
 	}
@@ -81,23 +84,26 @@ public abstract class MapView<A, B, I, O> implements
 	/**
 	 * @param input which will be converted to a converted output
 	 */
+	@Override
 	public void setInput(final I input) {
 		this.input = input;
 	}
 
 	/**
 	 * Set the resulting output
-	 * 
+	 *
 	 * @param output
 	 */
-	protected void setOutput(final O output) {
+	@Override
+	public void setOutput(final O output) {
 		this.output = output;
 	}
 
 	/**
 	 * @return the resulting converted output
 	 */
-	public O getoutput() {
+	@Override
+	public O getOutput() {
 		return output;
 	}
 

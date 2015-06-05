@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,6 +30,7 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -37,6 +38,7 @@ import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -44,15 +46,17 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link Map} using a {@link Function} on {@link IterableInterval} and
  * {@link RandomAccessibleInterval}
- * 
+ *
  * @author Martin Horn
  * @author Christian Dietz
+ * @author Tim-Oliver Buchholz
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapIterableIntervalToRAI<A, B> extends
 	AbstractMapFunction<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Contingent
 {
 
 	@Override
@@ -69,5 +73,10 @@ public class MapIterableIntervalToRAI<A, B> extends
 		}
 
 		return output;
+	}
+
+	@Override
+	public boolean conforms() {
+		return Intervals.equalDimensions(getOutput(), getInput());
 	}
 }
