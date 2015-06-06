@@ -34,9 +34,7 @@ import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.MathOps;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -56,7 +54,7 @@ public final class RealBinaryMath {
 
 	/** Op that $op.verbs two RealType values. */
 	@Plugin(type = Op.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
-	public static class RealType$op.name<T extends RealType<T>>
+	public static class $op.name<T extends RealType<T>>
 		extends AbstractOutputFunction<T, T> implements $iface
 	{
 

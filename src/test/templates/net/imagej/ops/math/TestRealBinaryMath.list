@@ -3,26 +3,27 @@
 [TestRealBinaryMath.java]
 types = ```
 [
+	"BitType",
 	"DoubleType",
 	"FloatType",
 	"IntType",
-	"UnsignedByteType",
-	"UnsignedIntType",
+	"LongType",
 	"ShortType",
-	"UnsignedShortType",
+	"UnboundedIntegerType",
 	"Unsigned12BitType",
 	"Unsigned2BitType",
 	"Unsigned4BitType",
-	"UnboundedIntegerType",
-	"LongType"
+	"UnsignedByteType",
+	"UnsignedIntType",
+	"UnsignedShortType"
 ]
 ```
 
 tests = ```
 [
-	[op: "Add",        result: "2.0"],
-	[op: "Subtract",   result: "0.0"],
-	[op: "Multiply",   result: "1.0"],
-	[op: "Divide",     result: "1.0"],
+	[op: "Add",      function: "add"],
+	[op: "Subtract", function: "sub"],
+	[op: "Multiply", function: "mul"],
+	[op: "Divide",   function: "div"]
 ]
 ```
