@@ -59,9 +59,10 @@ public class TestRealBinaryMath extends AbstractOpTest {
 	final double aValue = 6.0;
 	final double bValue = 2.0;
 #foreach ($test in $tests)
+#set ($className = "RealBinaryMath.$test.op")
 #foreach ($type in $types)
 
-	/** Tests {@link RealBinaryMath.RealType$test.op} with {@link $type} arguments. */
+	/** Tests {@link $className} with {@link $type} arguments. */
 	@Test
 	public void test${test.op}${type}() {
 		final $type a = new ${type}();
@@ -71,7 +72,7 @@ public class TestRealBinaryMath extends AbstractOpTest {
 		final $type expected = new ${type}();
 		expected.set(a);
 		expected.${test.function}(b);
-		final Object result = ops.run(RealBinaryMath.RealType${test.op}.class, a, b);
+		final Object result = ops.run(${className}.class, a, b);
 		final $type actual = ($type) result;
 ## NB: Compare values, until all types implement equals properly.
 ##		assertEquals(expected, actual);

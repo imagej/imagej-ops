@@ -54,7 +54,7 @@ public final class RealBinaryMath {
 
 	/** Op that $op.verbs two RealType values. */
 	@Plugin(type = Op.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
-	public static class RealType$op.name<T extends RealType<T>>
+	public static class $op.name<T extends RealType<T>>
 		extends AbstractOutputFunction<T, T> implements $iface
 	{
 
