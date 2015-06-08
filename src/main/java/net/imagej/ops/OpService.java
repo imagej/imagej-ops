@@ -33,15 +33,10 @@ package net.imagej.ops;
 import java.util.Collection;
 
 import net.imagej.ImageJService;
-import net.imagej.ImgPlus;
+import net.imagej.ops.create.CreateOps;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imglib2.Dimensions;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -188,39 +183,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Correlate.class)
 	Object correlate(Object... args);
 
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = Ops.CreateImg.class)
-	Object createimg(Object... args);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgPlusCopy.class)
-	<V extends NativeType<V>> ImgPlus<V> createimg(ImgPlus<V> input);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.CreateImgDifferentNativeType.class)
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input, V type);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.CreateImgNativeType.class)
-	<V extends NativeType<V>> Img<V> createimg(ImgFactory<V> fac, V outType,
-		Dimensions dims);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
-	<V extends Type<V>> Img<V> createimg(long... dims);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
-	<V extends Type<V>> Img<V> createimg(V outType, long... dims);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.DefaultCreateImg.class)
-	<V extends Type<V>> Img<V> createimg(V outType, ImgFactory<V> fac,
-		long... dims);
-
-	/** Executes the "createimg" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.CreateEmptyImgCopy.class)
-	<V extends NativeType<V>> Img<V> createimg(Img<V> input);
+	/** Executes the "create" operation on the given arguments. */
+	@OpMethod(op = Ops.Create.class)
+	Object create(Object... args);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
@@ -358,6 +323,24 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Variance.class)
 	Object variance(Object... args);
 
+	// -- CreateOps short-cuts --
+
+	/** Executes the "createimg" operation on the given arguments. */
+	@OpMethod(op = CreateOps.CreateImg.class)
+	Object createimg(Object... args);
+
+	/** Executes the "createimglabeling" operation on the given arguments. */
+	@OpMethod(op = CreateOps.CreateImgLabeling.class)
+	Object createimglabeling(Object... args);
+
+	/** Executes the "createimgfactory" operation on the given arguments. */
+	@OpMethod(op = CreateOps.CreateImgFactory.class)
+	Object createimgfactory(Object... args);
+
+	/** Executes the "createtype" operation. */
+	@OpMethod(op = CreateOps.CreateType.class)
+	Object createtype();
+
 	// -- Operation shortcuts - other namespaces --
 
 	/** Gateway into ops of the "logic" namespace. */
@@ -368,11 +351,5 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
-
-	// -- Deprecated methods --
-
-	/** @deprecated Use {@link #createimg} instead. */
-	@Deprecated
-	Object create(Object... args);
 
 }

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,31 +30,66 @@
 
 package net.imagej.ops.create;
 
+import net.imagej.ImgPlus;
+import net.imagej.ImgPlusMetadata;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.OpService;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateImgPlus;
 import net.imglib2.img.Img;
-import net.imglib2.type.NativeType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.CreateImg.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class CreateEmptyImgCopy<V extends NativeType<V>> implements
-	Ops.CreateImg
+/**
+ * Default implementation of the {@link CreateImgPlus} interface.
+ *
+ * @author Christian Dietz, University of Konstanz
+ * @param <T>
+ */
+@Plugin(type = Op.class)
+public class DefaultCreateImgPlus<T> implements CreateImgPlus,
+	OutputOp<ImgPlus<T>>, Contingent
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Parameter(type = ItemIO.OUTPUT)
-	private Img<V> output;
+	private ImgPlus<T> output;
 
 	@Parameter
-	private Img<V> input;
+	private Img<T> img;
+
+	@Parameter(required = false)
+	private ImgPlusMetadata metadata;
 
 	@Override
 	public void run() {
-		output =
-			input.factory().create(input, input.firstElement().createVariable());
+
+		if (metadata != null) {
+			output = new ImgPlus<T>(img, metadata);
+		}
+		else {
+			output = new ImgPlus<T>(img);
+		}
+
+	}
+
+	@Override
+	public boolean conforms() {
+		return metadata == null || metadata.numDimensions() == img.numDimensions();
+	}
+
+	@Override
+	public ImgPlus<T> getOutput() {
+		return output;
+	}
+
+	@Override
+	public void setOutput(final ImgPlus<T> output) {
+		this.output = output;
 	}
 }

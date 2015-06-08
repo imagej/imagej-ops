@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,7 +31,6 @@
 package net.imagej.ops.convolve.kernel.create;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.create.AbstractCreateImg;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
@@ -46,12 +45,12 @@ import org.scijava.plugin.Parameter;
  * Abstract class for kernel generation from sigma and <b> calibrated units
  * </b>. The specified sigma and calibration is used to determine the
  * dimensionality of the kernel and to map it on a pixel grid.
- * 
+ *
  * @author bnorthan
  * @param <T>
  */
 public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateImg<T, DoubleType, ArrayImgFactory<DoubleType>>
+	extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>>
 	implements Contingent
 {
 
@@ -88,8 +87,8 @@ public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType
 		}
 
 		// if outType is not null make sure it is a supported type
-		if (outType != null) {
-			Object tmp = outType;
+		if (getOutType() != null) {
+			final Object tmp = getOutType();
 			if ((tmp instanceof FloatType) || (tmp instanceof DoubleType) ||
 				(tmp instanceof ComplexFloatType) || (tmp instanceof ComplexDoubleType)) return true;
 			return false;

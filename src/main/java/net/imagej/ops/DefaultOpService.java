@@ -36,20 +36,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.imagej.ImgPlus;
-import net.imagej.ops.create.CreateEmptyImgCopy;
-import net.imagej.ops.create.CreateEmptyImgPlusCopy;
-import net.imagej.ops.create.CreateImgDifferentNativeType;
-import net.imagej.ops.create.CreateImgNativeType;
-import net.imagej.ops.create.DefaultCreateImg;
+import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImgFactory;
+import net.imagej.ops.create.CreateOps.CreateImgLabeling;
+import net.imagej.ops.create.CreateOps.CreateType;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imglib2.Dimensions;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
-import net.imglib2.type.Type;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -187,75 +180,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object correlate(Object... args) {
+	public Object correlate(final Object... args) {
 		return run(Ops.Correlate.NAME, args);
 	}
 
 	@Override
-	public Object createimg(final Object... args) {
-		return run(Ops.CreateImg.NAME, args);
-	}
-
-	@Override
-	public <V extends NativeType<V>> ImgPlus<V> createimg(final ImgPlus<V> input)
-	{
-		@SuppressWarnings("unchecked")
-		final ImgPlus<V> result =
-			(ImgPlus<V>) run(CreateEmptyImgPlusCopy.class, input);
-		return result;
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input,
-		final V type)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(CreateImgDifferentNativeType.class, input, type);
-		return result;
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final ImgFactory<V> fac,
-		final V outType, final Dimensions dims)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(CreateImgNativeType.class, fac, outType, dims);
-		return result;
-	}
-
-	@Override
-	public <V extends Type<V>> Img<V> createimg(final long... dims) {
-		@SuppressWarnings("unchecked")
-		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, dims);
-		return result;
-	}
-
-	@Override
-	public <V extends Type<V>> Img<V> createimg(final V outType,
-		final long... dims)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<V> result = (Img<V>) run(DefaultCreateImg.class, outType, dims);
-		return result;
-	}
-
-	@Override
-	public <V extends Type<V>> Img<V> createimg(final V outType,
-		final ImgFactory<V> fac, final long... dims)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<V> result =
-			(Img<V>) run(DefaultCreateImg.class, outType, fac, dims);
-		return result;
-	}
-
-	@Override
-	public <V extends NativeType<V>> Img<V> createimg(final Img<V> input) {
-		@SuppressWarnings("unchecked")
-		final Img<V> result = (Img<V>) run(CreateEmptyImgCopy.class, input);
-		return result;
+	public Object create(final Object... args) {
+		return run(Ops.Create.class, args);
 	}
 
 	@Override
@@ -284,7 +215,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object fftsize(Object... args) {
+	public Object fftsize(final Object... args) {
 		return run(Ops.FFTSize.NAME, args);
 	}
 
@@ -329,7 +260,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object log(Object... args) {
+	public Object log(final Object... args) {
 		return run(Ops.Log.NAME, args);
 	}
 
@@ -428,6 +359,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return run(Ops.Variance.NAME, args);
 	}
 
+	// -- CreateOps short-cuts -
+
+	@Override
+	public Object createimg(final Object... args) {
+		return run(CreateImg.class, args);
+	}
+
+	@Override
+	public Object createimglabeling(final Object... args) {
+		return run(CreateImgLabeling.class, args);
+	}
+
+	@Override
+	public Object createimgfactory(final Object... args) {
+		return run(CreateImgFactory.class, args);
+	}
+
+	@Override
+	public Object createtype() {
+		return run(CreateType.class);
+	}
+
 	// -- Operation shortcuts - other namespaces --
 
 	@Override
@@ -482,14 +435,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
 		namespacesReady = true;
-	}
-
-	// -- Deprecated methods --
-
-	@Deprecated
-	@Override
-	public Object create(final Object... args) {
-		return createimg(args);
 	}
 
 }

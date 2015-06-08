@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,22 +30,22 @@
 
 package net.imagej.ops;
 
-import net.imagej.ops.Ops.CreateImg;
+import net.imagej.ops.Ops.Create;
 
 import org.junit.Test;
 
 /**
  * Tests that the ops of the global namespace have corresponding type-safe Java
  * method signatures declared in the {@link OpService} class.
- * 
+ *
  * @author Curtis Rueden
  */
 public class GlobalNamespaceTest extends AbstractNamespaceTest {
 
-	/** Tests for {@link CreateImg} method convergence. */
+	/** Tests for {@link Create} method convergence. */
 	@Test
 	public void testCreateImg() {
-		assertComplete(null, OpService.class, CreateImg.NAME);
+		assertComplete(null, OpService.class, Create.NAME);
 	}
 
 }

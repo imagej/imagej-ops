@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,35 +31,92 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.img.planar.PlanarImgFactory;
-import net.imglib2.type.Type;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.OpService;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imagej.ops.create.CreateOps.CreateImgFactory;
+import net.imagej.ops.create.CreateOps.CreateNativeImg;
+import net.imagej.ops.create.CreateOps.CreateType;
+import net.imglib2.Dimensions;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates a default image. If outType is not passed it is set to a default of
- * DoubleType. If fac is not passed in it is set to a default of
- * PlanarImgFactory.
- * 
- * @author bnorthan
- * @param <V>
+ * Default implementation of the {@link CreateImg} interface.
+ *
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.CreateImg.NAME)
-public class DefaultCreateImg<V extends Type<V>> extends
-	AbstractCreateImg<V, DoubleType, PlanarImgFactory<DoubleType>> implements
-	Ops.CreateImg
+@Plugin(type = Op.class)
+public class DefaultCreateImg<T extends NativeType<T>> implements
+	CreateNativeImg, OutputOp<Img<T>>
 {
 
 	@Parameter
-	private long[] dims;
+	private OpService ops;
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private Img<T> output;
+
+	@Parameter
+	private Dimensions dims;
+
+	@Parameter(required = false)
+	private T outType;
+
+	@Parameter(required = false)
+	private ImgFactory<T> fac;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		createOutputImg(dims, fac, outType, new PlanarImgFactory<DoubleType>(),
-			new DoubleType());
+
+		if (outType == null) {
+			outType = (T) ops.run(CreateType.class);
+		}
+
+		if (fac == null) {
+			if ((dims instanceof Img)) {
+
+				final Img<?> inImg = ((Img<?>) dims);
+				if (inImg.firstElement().getClass()
+					.isAssignableFrom(outType.getClass()))
+				{
+					fac = (ImgFactory<T>) inImg.factory();
+				}
+				else {
+					try {
+						fac = inImg.factory().imgFactory(outType);
+					}
+					catch (final IncompatibleTypeException e) {
+						fac =
+							(ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
+					}
+				}
+			}
+			else {
+				fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
+			}
+		}
+
+		output = fac.create(dims, outType);
+	}
+
+	@Override
+	public Img<T> getOutput() {
+		return output;
+	}
+
+	@Override
+	public void setOutput(final Img<T> output) {
+		this.output = output;
 	}
 
 }
