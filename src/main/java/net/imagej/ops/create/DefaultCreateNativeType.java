@@ -3,8 +3,8 @@ package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imagej.ops.create.CreateOps.CreateNativeType;
 import net.imagej.ops.create.CreateOps.CreateType;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -16,29 +16,27 @@ import org.scijava.plugin.Plugin;
  *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
- * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateNativeType<T extends NativeType<T>> implements
-	CreateType, OutputOp<T>
+public class DefaultCreateNativeType implements
+	CreateNativeType, OutputOp<DoubleType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private T output;
+	private DoubleType output;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		output = (T) new DoubleType();
+		output = new DoubleType();
 	}
 
 	@Override
-	public T getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final T output) {
+	public void setOutput(final DoubleType output) {
 		this.output = output;
 	}
 
