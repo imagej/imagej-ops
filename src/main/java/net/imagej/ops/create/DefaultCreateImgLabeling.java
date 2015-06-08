@@ -46,7 +46,7 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 	private ImgFactory<T> fac;
 
 	@Parameter(required = false)
-	private final int maxNumLabelSets = 0;
+	private int maxNumLabelSets;
 
 	@SuppressWarnings("unchecked")
 	@Override
