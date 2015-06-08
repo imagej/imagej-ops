@@ -1,3 +1,4 @@
+
 package net.imagej.ops.create;
 
 import net.imagej.ops.OpService;
@@ -13,17 +14,15 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Create a LabelingMapping which can store at least maxNumSets different Sets
- * 
- * @author Christian Dietz, University of Konstanz
  *
- * @param <L>
- *            label type
+ * @author Christian Dietz, University of Konstanz
+ * @param <L> label type
  */
 @Plugin(type = Create.class)
 public class DefaultCreateLabelingMapping<L> implements CreateLabelingMapping,
-		OutputOp<LabelingMapping<L>> {
+	OutputOp<LabelingMapping<L>>
+{
 
 	@Parameter
 	private OpService ops;
@@ -36,8 +35,9 @@ public class DefaultCreateLabelingMapping<L> implements CreateLabelingMapping,
 
 	@Override
 	public void run() {
-		output = new LabelingMapping<L>((IntegerType<?>) ops.run(
-				CreateIntegerType.class, maxNumSets));
+		output =
+			new LabelingMapping<L>((IntegerType<?>) ops.run(CreateIntegerType.class,
+				maxNumSets));
 	}
 
 	@Override

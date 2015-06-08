@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,8 +31,6 @@
 package net.imagej.ops.convolve.kernel.create;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
@@ -43,7 +41,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for creating an image from a factory and a type. Derived
  * classes will contain logic to determine size and values of the image.
- * 
+ *
  * @author bnorthan
  * @param <V>
  */
@@ -63,8 +61,8 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 	private ImgFactory<V> fac;
 
 	@SuppressWarnings("unchecked")
-	protected void createOutputImg(long[] dims, ImgFactory<V> fac,
-		Type<V> outType, FAC defaultFactory, W defaultType)
+	protected void createOutputImg(final long[] dims, final ImgFactory<V> fac,
+		final Type<V> outType, final FAC defaultFactory, final W defaultType)
 	{
 
 		// no factory and no type
@@ -85,14 +83,14 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 	}
 
-	protected void createOutputImg(long[] dims, Type<V> outType,
-		FAC defaultFactory, W defaultType)
+	protected void createOutputImg(final long[] dims, final Type<V> outType,
+		final FAC defaultFactory, final W defaultType)
 	{
 		createOutputImg(dims, null, outType, defaultFactory, defaultType);
 	}
 
-	protected void createOutputImg(long[] dims, ImgFactory<V> fac,
-		FAC defaultFactory, W defaultType)
+	protected void createOutputImg(final long[] dims, final ImgFactory<V> fac,
+		final FAC defaultFactory, final W defaultType)
 	{
 		createOutputImg(dims, fac, null, defaultFactory, defaultType);
 	}

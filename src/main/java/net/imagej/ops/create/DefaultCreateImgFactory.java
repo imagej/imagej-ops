@@ -1,3 +1,4 @@
+
 package net.imagej.ops.create;
 
 import net.imagej.ops.Op;
@@ -19,15 +20,15 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of the {@link CreateFactory} interface.
- * 
+ *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
- * 
  * @param <T>
  */
 @Plugin(type = Op.class)
 public class DefaultCreateImgFactory<T extends NativeType<T>> implements
-		CreateImgFactory, OutputOp<ImgFactory<T>> {
+	CreateImgFactory, OutputOp<ImgFactory<T>>
+{
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgFactory<T> output;
@@ -53,7 +54,8 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 			outType = (T) ops.run(CreateType.class);
 		}
 
-		output = Intervals.numElements(dims) > Integer.MAX_VALUE ? new CellImgFactory<T>()
+		output =
+			Intervals.numElements(dims) > Integer.MAX_VALUE ? new CellImgFactory<T>()
 				: new ArrayImgFactory<T>();
 	}
 
@@ -63,7 +65,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	}
 
 	@Override
-	public void setOutput(ImgFactory<T> output) {
+	public void setOutput(final ImgFactory<T> output) {
 		this.output = output;
 	}
 }

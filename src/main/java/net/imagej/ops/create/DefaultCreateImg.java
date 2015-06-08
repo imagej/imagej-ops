@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -49,15 +49,15 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of the {@link CreateImg} interface.
- * 
+ *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
- * 
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateImg<T extends NativeType<T>> implements CreateNativeImg,
-		OutputOp<Img<T>> {
+public class DefaultCreateImg<T extends NativeType<T>> implements
+	CreateNativeImg, OutputOp<Img<T>>
+{
 
 	@Parameter
 	private OpService ops;
@@ -87,16 +87,21 @@ public class DefaultCreateImg<T extends NativeType<T>> implements CreateNativeIm
 
 				final Img<?> inImg = ((Img<?>) dims);
 				if (inImg.firstElement().getClass()
-						.isAssignableFrom(outType.getClass())) {
+					.isAssignableFrom(outType.getClass()))
+				{
 					fac = (ImgFactory<T>) inImg.factory();
-				} else {
+				}
+				else {
 					try {
 						fac = inImg.factory().imgFactory(outType);
-					} catch (IncompatibleTypeException e) {
-						fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
+					}
+					catch (final IncompatibleTypeException e) {
+						fac =
+							(ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
 					}
 				}
-			} else {
+			}
+			else {
 				fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
 			}
 		}
@@ -110,7 +115,7 @@ public class DefaultCreateImg<T extends NativeType<T>> implements CreateNativeIm
 	}
 
 	@Override
-	public void setOutput(Img<T> output) {
+	public void setOutput(final Img<T> output) {
 		this.output = output;
 	}
 

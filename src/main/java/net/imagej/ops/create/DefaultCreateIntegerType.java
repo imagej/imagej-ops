@@ -1,3 +1,4 @@
+
 package net.imagej.ops.create;
 
 import net.imagej.ops.Ops.Create;
@@ -18,18 +19,16 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Create an IntegerType with at least maxValue maximum
- * 
- * @author Christian Dietz, University of Konstanz
  *
- * @param <I>
- *            any IntegerType
+ * @author Christian Dietz, University of Konstanz
+ * @param <I> any IntegerType
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Create.class)
 public class DefaultCreateIntegerType implements CreateIntegerType,
-		OutputOp<IntegerType> {
+	OutputOp<IntegerType>
+{
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private IntegerType output;
@@ -41,24 +40,32 @@ public class DefaultCreateIntegerType implements CreateIntegerType,
 	public void run() {
 		if (maxValue > 0) {
 			if (maxValue <= 2) {
-				output = (IntegerType) (Object) new BitType();
-			} else if (maxValue <= Byte.MAX_VALUE + 1) {
-				output = (IntegerType) (Object) new ByteType();
-			} else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
-				output = (IntegerType) (Object) new UnsignedByteType();
-			} else if (maxValue <= Short.MAX_VALUE + 1) {
-				output = (IntegerType) (Object) new ShortType();
-			} else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
-				output = (IntegerType) (Object) new UnsignedShortType();
-			} else if (maxValue <= Integer.MAX_VALUE + 1) {
-				output = (IntegerType) (Object) new IntType();
-			} else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
-				output = (IntegerType) (Object) new UnsignedIntType();
-			} else if (maxValue <= Long.MAX_VALUE) {
-				output = (IntegerType) (Object) new LongType();
+				output = (IntegerType) new BitType();
 			}
-		} else {
-			output = (IntegerType) (Object) new IntType();
+			else if (maxValue <= Byte.MAX_VALUE + 1) {
+				output = (IntegerType) new ByteType();
+			}
+			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
+				output = (IntegerType) new UnsignedByteType();
+			}
+			else if (maxValue <= Short.MAX_VALUE + 1) {
+				output = (IntegerType) new ShortType();
+			}
+			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
+				output = (IntegerType) new UnsignedShortType();
+			}
+			else if (maxValue <= Integer.MAX_VALUE + 1) {
+				output = (IntegerType) new IntType();
+			}
+			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
+				output = (IntegerType) new UnsignedIntType();
+			}
+			else if (maxValue <= Long.MAX_VALUE) {
+				output = (IntegerType) new LongType();
+			}
+		}
+		else {
+			output = (IntegerType) new IntType();
 		}
 	}
 

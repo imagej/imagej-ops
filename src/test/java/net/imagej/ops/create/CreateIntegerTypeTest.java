@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.create;
 
 import static org.junit.Assert.assertEquals;
@@ -51,30 +52,28 @@ import org.junit.Test;
  */
 
 public class CreateIntegerTypeTest<T extends NativeType<T>> extends
-		AbstractOpTest {
+	AbstractOpTest
+{
 
 	@Test
 	public void testCreateIntegerType() {
 
-		assertEquals(ops.run(CreateIntegerType.class, 2).getClass(),
-				BitType.class);
+		assertEquals(ops.run(CreateIntegerType.class, 2).getClass(), BitType.class);
 		assertEquals(ops.run(CreateIntegerType.class, Byte.MAX_VALUE + 1)
-				.getClass(), ByteType.class);
+			.getClass(), ByteType.class);
 		assertEquals(ops.run(CreateIntegerType.class, (Byte.MAX_VALUE + 1) * 2)
-				.getClass(), UnsignedByteType.class);
+			.getClass(), UnsignedByteType.class);
 		assertEquals(ops.run(CreateIntegerType.class, (Short.MAX_VALUE + 1))
-				.getClass(), ShortType.class);
-		assertEquals(ops
-				.run(CreateIntegerType.class, (Short.MAX_VALUE + 1) * 2)
-				.getClass(), UnsignedShortType.class);
+			.getClass(), ShortType.class);
+		assertEquals(ops.run(CreateIntegerType.class, (Short.MAX_VALUE + 1) * 2)
+			.getClass(), UnsignedShortType.class);
 		assertEquals(ops.run(CreateIntegerType.class, (Integer.MAX_VALUE + 1))
-				.getClass(), IntType.class);
-		assertEquals(
-				ops.run(CreateIntegerType.class,
-						((long) Integer.MAX_VALUE + 1l) * 2l).getClass(),
-				UnsignedIntType.class);
-		assertEquals(ops.run(CreateIntegerType.class, Long.MAX_VALUE)
-				.getClass(), LongType.class);
+			.getClass(), IntType.class);
+		assertEquals(ops
+			.run(CreateIntegerType.class, (Integer.MAX_VALUE + 1l) * 2l).getClass(),
+			UnsignedIntType.class);
+		assertEquals(ops.run(CreateIntegerType.class, Long.MAX_VALUE).getClass(),
+			LongType.class);
 
 	}
 }

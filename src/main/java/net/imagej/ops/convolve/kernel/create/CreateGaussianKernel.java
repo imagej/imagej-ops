@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Gaussian filter ported from
  * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
- * 
+ *
  * @author Christian Dietz
  * @Author Martin Horn
  * @Author Michael Zinsmaier
@@ -59,10 +59,10 @@ public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
 
 	@Override
 	void createKernel() {
-		double[] sigmaPixels = new double[numDimensions];
+		final double[] sigmaPixels = new double[numDimensions];
 
-		long[] dims = new long[numDimensions];
-		double[][] kernelArrays = new double[numDimensions][];
+		final long[] dims = new long[numDimensions];
+		final double[][] kernelArrays = new double[numDimensions][];
 
 		for (int d = 0; d < numDimensions; d++) {
 			sigmaPixels[d] = sigma[d] / calibration[d];
@@ -74,7 +74,7 @@ public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
 		createOutputImg(dims, getFac(), getOutType(),
 			new ArrayImgFactory<DoubleType>(), new DoubleType());
 
-		Cursor<T> cursor = getOutput().cursor();
+		final Cursor<T> cursor = getOutput().cursor();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			double result = 1.0f;
