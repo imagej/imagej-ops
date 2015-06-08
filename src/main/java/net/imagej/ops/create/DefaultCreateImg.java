@@ -78,6 +78,7 @@ public class DefaultCreateImg<T extends NativeType<T>> implements
 	@Override
 	public void run() {
 
+		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
 		if (outType == null) {
 			outType = (T) ops.run(CreateType.class);
 		}
