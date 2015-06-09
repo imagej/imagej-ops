@@ -18,7 +18,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link CreateFactory} interface.
+ * Default implementation of the {@link CreateImgFactory} interface.
  *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
