@@ -52,11 +52,11 @@ public class RealArccsc<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStrictFunction<I, O> implements MathOps.Arccsc
 {
 
-	private final static RealArccos<DoubleType, DoubleType> acos =
-		new RealArccos<DoubleType, DoubleType>();
-	@Parameter
+	private final static RealArcsin<DoubleType, DoubleType> asin =
+		new RealArcsin<DoubleType, DoubleType>();
+
 	private final DoubleType angle = new DoubleType();
-	@Parameter
+
 	private final DoubleType tmp = new DoubleType();
 
 	@Override
@@ -67,8 +67,8 @@ public class RealArccsc<I extends RealType<I>, O extends RealType<O>> extends
 		else if (xt == -1) output.setReal(-Math.PI / 2);
 		else if (xt == 1) output.setReal(Math.PI / 2);
 		else {
-			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-			acos.compute(tmp, angle);
+			tmp.setReal(1/xt);
+			asin.compute(tmp, angle);
 			output.setReal(angle.getRealDouble());
 		}
 		return output;
