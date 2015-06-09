@@ -36,7 +36,7 @@ import net.imagej.ops.OutputOp;
 import net.imagej.ops.create.CreateOps.CreateImg;
 import net.imagej.ops.create.CreateOps.CreateImgFactory;
 import net.imagej.ops.create.CreateOps.CreateNativeImg;
-import net.imagej.ops.create.CreateOps.CreateType;
+import net.imagej.ops.create.CreateOps.CreateNativeType;
 import net.imglib2.Dimensions;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
@@ -80,7 +80,7 @@ public class DefaultCreateImg<T extends NativeType<T>> implements
 
 		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
 		if (outType == null) {
-			outType = (T) ops.run(CreateType.class);
+			outType = (T) ops.run(CreateNativeType.class);
 		}
 
 		if (fac == null) {
