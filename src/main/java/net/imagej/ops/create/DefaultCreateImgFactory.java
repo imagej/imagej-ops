@@ -7,7 +7,6 @@ import net.imagej.ops.OutputOp;
 import net.imagej.ops.create.CreateOps.CreateImgFactory;
 import net.imagej.ops.create.CreateOps.CreateType;
 import net.imglib2.Dimensions;
-import net.imglib2.FinalInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
@@ -46,17 +45,13 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	@Override
 	public void run() {
 
-		if (dims == null) {
-			dims = new FinalInterval(10, 10);
-		}
-
 		if (outType == null) {
 			outType = (T) ops.run(CreateType.class);
 		}
 
 		output =
-			Intervals.numElements(dims) > Integer.MAX_VALUE ? new CellImgFactory<T>()
-				: new ArrayImgFactory<T>();
+			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
+				? new ArrayImgFactory<T>() : new CellImgFactory<T>();
 	}
 
 	@Override
