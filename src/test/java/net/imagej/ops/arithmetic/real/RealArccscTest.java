@@ -34,7 +34,9 @@ import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Tests {@link RealArccsc}.
@@ -54,6 +56,16 @@ public class RealArccscTest extends AbstractOpTest {
 		assertArccsc(-(2*Math.sqrt(3))/3, -Math.PI/3);
 	}
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none(); 
+	
+	@Test
+	public void testIllegalArgument(){
+		exception.expect(IllegalArgumentException.class);
+		exception.expectMessage("arccsc(x) : x out of range");
+		assertArccsc(0,0);
+	}
+	
 	private void assertArccsc(double i, double o) {
 		final DoubleType in = new DoubleType(i);
 		final DoubleType out = ops.math().arccsc(in.createVariable(), in);
