@@ -5,7 +5,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.create.CreateOps.CreateImgFactory;
-import net.imagej.ops.create.CreateOps.CreateType;
+import net.imagej.ops.create.CreateOps.CreateNativeType;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -46,7 +46,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	public void run() {
 
 		if (outType == null) {
-			outType = (T) ops.run(CreateType.class);
+			outType = (T) ops.run(CreateNativeType.class);
 		}
 
 		output =
