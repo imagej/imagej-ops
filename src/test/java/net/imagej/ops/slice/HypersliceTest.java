@@ -40,6 +40,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.slicer.Hyperslice;
 import net.imagej.ops.slicer.Slicewise;
 import net.imglib2.Cursor;
+import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -47,6 +48,8 @@ import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -127,6 +130,30 @@ public class HypersliceTest extends AbstractOpTest {
 			assertEquals(cur.getIntPosition(2), cur.get().getRealDouble(), 0);
 		}
 	}
+
+	@Test
+	public void testNonZeroMinimumInterval() {
+
+		Img<ByteType> img3D = ArrayImgs.bytes(50, 50, 3);
+		IntervalView<ByteType> interval2D =
+			Views.interval(img3D, new FinalInterval(new long[] { 25, 25, 2 },
+				new long[] { 35, 35, 2 }));
+		final int[] xyAxis = new int[] { 0, 1 };
+
+		// iterate through every slice, should return a single
+		// RandomAccessibleInterval<?> from 25, 25, 2 to 35, 35, 2
+
+		final Hyperslice hyperSlices = new Hyperslice(ops, interval2D, xyAxis);
+		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
+		int i = 0;
+		while (c.hasNext()) {
+			c.next();
+			i++;
+		}
+
+		assertEquals(1, i);
+	}
+
 
 	@Test
 	public void LoopThroughHyperSlicesTest() {
