@@ -31,29 +31,21 @@
 package net.imagej.ops;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Computer can compute the output given some input. 
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Christian Dietz, University of Konstanz
+ * 
+ * @param <I> type of input
+ * @param <O> type of output
  */
-public interface OutputFunction<I, O> extends Function<I, O>, Computer<I, O> {
+public interface Computer<I, O> {
 
 	/**
-	 * Compute the output of a function, given some input.
+	 * Compute the output given some input.
 	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
+	 * @param input of the {@link Computer}
 	 * @return output
 	 */
 	O compute(I input);
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
 }
