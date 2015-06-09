@@ -78,18 +78,17 @@ public class Hyperslice extends AbstractInterval implements
 	{
 		super(initIntervals(source, axesOfInterest));
 
-		final long[] sliceDims = new long[source.numDimensions()];
+		final long[] sliceMin = new long[source.numDimensions()];
+		final long[] sliceMax = new long[source.numDimensions()];
 
 		for (int d = 0; d < source.numDimensions(); d++) {
 			if (dimension(d) == 1) {
-				sliceDims[d] = source.dimension(d);
-			}
-			else {
-				sliceDims[d] = 1;
+				sliceMin[d] = source.min(d);
+				sliceMax[d] = source.max(d);
 			}
 		}
 
-		this.slice = new FinalInterval(sliceDims);
+		this.slice = new FinalInterval(sliceMin, sliceMax);
 		this.opService = opService;
 		this.source = source;
 	}
@@ -159,6 +158,7 @@ public class Hyperslice extends AbstractInterval implements
 		private final OpService opService;
 		private final RandomAccessibleInterval<?> src;
 		private final long[] sliceMax;
+		private final long[] sliceMin;
 
 		public HyperSliceCursor(final RandomAccessibleInterval<?> src,
 			final OpService service, final Interval fixedAxes, final Interval slice)
@@ -169,7 +169,10 @@ public class Hyperslice extends AbstractInterval implements
 			this.src = src;
 			this.tmpPosition = new long[fixedAxes.numDimensions()];
 			this.sliceMax = new long[slice.numDimensions()];
+			this.sliceMin = new long[slice.numDimensions()];
+
 			slice.max(sliceMax);
+			slice.min(sliceMin);
 		}
 
 		private HyperSliceCursor(final HyperSliceCursor cursor) {
@@ -178,6 +181,7 @@ public class Hyperslice extends AbstractInterval implements
 			this.opService = cursor.opService;
 			this.src = cursor.src;
 			this.sliceMax = cursor.sliceMax;
+			this.sliceMin = cursor.sliceMin;
 			this.tmpPosition = cursor.tmpPosition;
 
 			// set to the current position
@@ -189,12 +193,14 @@ public class Hyperslice extends AbstractInterval implements
 			localize(tmpPosition);
 
 			final long[] max = tmpPosition.clone();
+			final long[] min = tmpPosition.clone();
 			for (int d = 0; d < max.length; d++) {
 				max[d] += sliceMax[d];
+				min[d] += sliceMin[d];
 			}
 
 			return (RandomAccessibleInterval<?>) opService.run(Ops.Crop.class,
-				new FinalInterval(tmpPosition, max), null, src);
+					new FinalInterval(min, max), null, src);
 		}
 
 		@Override
