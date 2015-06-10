@@ -54,9 +54,9 @@ public class RealArcsec<I extends RealType<I>, O extends RealType<O>> extends
 
 	private final static RealArcsin<DoubleType, DoubleType> asin =
 		new RealArcsin<DoubleType, DoubleType>();
-	@Parameter
+
 	private final DoubleType angle = new DoubleType();
-	@Parameter
+
 	private final DoubleType tmp = new DoubleType();
 
 	@Override
