@@ -45,6 +45,7 @@ import net.imagej.ops.MathOps.Arcsec;
 import net.imagej.ops.MathOps.Arcsech;
 import net.imagej.ops.MathOps.Arcsin;
 import net.imagej.ops.MathOps.Arcsinh;
+import net.imagej.ops.MathOps.Arctan;
 
 import org.junit.Test;
 
@@ -138,5 +139,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testArcsinh() {
 		assertComplete("math", MathNamespace.class, Arcsinh.NAME);
+	}
+
+	/** Tests for {@link Arctan} method convergence. */
+	@Test
+	public void testArctan() {
+		assertComplete("math", MathNamespace.class, Arctan.NAME);
 	}
 }
