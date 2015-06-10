@@ -48,6 +48,7 @@ import net.imagej.ops.MathOps.Arcsinh;
 import net.imagej.ops.MathOps.Arctan;
 import net.imagej.ops.MathOps.Arctanh;
 import net.imagej.ops.MathOps.Ceil;
+import net.imagej.ops.MathOps.Complement;
 
 import org.junit.Test;
 
@@ -159,5 +160,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCeil() {
 		assertComplete("math", MathNamespace.class, Ceil.NAME);
+	}
+
+	/** Tests for {@link Complement} method convergence. */
+	@Test
+	public void testComplement() {
+		assertComplete("math", MathNamespace.class, Complement.NAME);
 	}
 }
