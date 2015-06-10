@@ -74,8 +74,6 @@ public class CropImgPlus<T extends Type<T>> implements Crop {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public void run() {
-		// if out is not provided, just return a view on the image, else write into
-		// the result
 		out =
 			new ImgPlus<T>(ImgView.wrap((RandomAccessibleInterval<T>) ops.run(CropRAI.class, in,
 				interval, dropSingleDimensions), in.factory()));
