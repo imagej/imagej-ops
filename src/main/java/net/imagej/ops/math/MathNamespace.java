@@ -422,6 +422,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Arcsech.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealArcsech.class)
+	public <I extends RealType<I>, O extends RealType<O>> O arcsech(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealArcsech.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Arcsin.class)
 	public Object arcsin(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Arcsin.class, args);
