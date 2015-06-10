@@ -57,6 +57,7 @@ import net.imagej.ops.MathOps.Coth;
 import net.imagej.ops.MathOps.Csc;
 import net.imagej.ops.MathOps.Csch;
 import net.imagej.ops.MathOps.CubeRoot;
+import net.imagej.ops.MathOps.Divide;
 
 import org.junit.Test;
 
@@ -222,5 +223,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCubeRoot() {
 		assertComplete("math", MathNamespace.class, CubeRoot.NAME);
+	}
+
+	/** Tests for {@link Divide} method convergence. */
+	@Test
+	public void testDivide() {
+		assertComplete("math", MathNamespace.class, Divide.NAME);
 	}
 }
