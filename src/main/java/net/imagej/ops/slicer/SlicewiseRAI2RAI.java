@@ -64,6 +64,9 @@ public class SlicewiseRAI2RAI<I, O>
 
 	@Parameter
 	private int[] axisIndices;
+	
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
 
 	@Override
 	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
@@ -71,8 +74,8 @@ public class SlicewiseRAI2RAI<I, O>
 	{
 
 		opService.run(Ops.Map.class, new Hyperslice(opService,
-				output, axisIndices), new Hyperslice(opService,
-				input, axisIndices), func);
+				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
+				input, axisIndices, dropSingleDimensions), func);
 
 		return output;
 	}

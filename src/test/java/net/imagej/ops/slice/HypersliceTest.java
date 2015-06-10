@@ -143,7 +143,7 @@ public class HypersliceTest extends AbstractOpTest {
 		// iterate through every slice, should return a single
 		// RandomAccessibleInterval<?> from 25, 25, 2 to 35, 35, 2
 
-		final Hyperslice hyperSlices = new Hyperslice(ops, interval2D, xyAxis);
+		final Hyperslice hyperSlices = new Hyperslice(ops, interval2D, xyAxis, true);
 		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
 		int i = 0;
 		while (c.hasNext()) {
@@ -175,7 +175,7 @@ public class HypersliceTest extends AbstractOpTest {
 		axisIndices[2] = 3;
 
 		final Hyperslice hyperSlices = new Hyperslice(
-				ops, testImage, axisIndices);
+				ops, testImage, axisIndices, true);
 
 		final Cursor<RandomAccessibleInterval<?>> c = hyperSlices.cursor();
 
