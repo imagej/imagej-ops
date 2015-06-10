@@ -475,6 +475,24 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Arctan.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleArctan.class)
+	public double arctan(final double a) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleArctan.class,
+				a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealArctan.class)
+	public <I extends RealType<I>, O extends RealType<O>> O arctan(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealArctan.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Arctanh.class)
 	public Object arctanh(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Arctanh.class, args);
