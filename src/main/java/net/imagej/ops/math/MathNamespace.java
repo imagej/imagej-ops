@@ -498,6 +498,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Arctanh.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealArctanh.class)
+	public <I extends RealType<I>, O extends RealType<O>> O arctanh(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealArctanh.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Ceil.class)
 	public Object ceil(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Ceil.class, args);
