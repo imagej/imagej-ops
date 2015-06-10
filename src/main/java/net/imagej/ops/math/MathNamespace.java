@@ -535,6 +535,20 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Complement.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerComplement.class)
+	public int complement(final int a) {
+		final int result =
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerComplement.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongComplement.class)
+	public long complement(final long a) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongComplement.class, a);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Copy.class)
 	public Object copy(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Copy.class, args);
