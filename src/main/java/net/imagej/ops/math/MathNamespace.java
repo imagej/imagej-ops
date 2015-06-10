@@ -513,6 +513,23 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Ceil.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCeil.class)
+	public double ceil(final double a) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleCeil.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealCeil.class)
+	public <I extends RealType<I>, O extends RealType<O>> O ceil(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealCeil.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Complement.class)
 	public Object complement(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Complement.class, args);
