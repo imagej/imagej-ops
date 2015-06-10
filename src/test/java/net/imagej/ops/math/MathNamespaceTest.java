@@ -53,6 +53,7 @@ import net.imagej.ops.MathOps.Copy;
 import net.imagej.ops.MathOps.Cos;
 import net.imagej.ops.MathOps.Cosh;
 import net.imagej.ops.MathOps.Cot;
+import net.imagej.ops.MathOps.Coth;
 
 import org.junit.Test;
 
@@ -194,5 +195,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCot() {
 		assertComplete("math", MathNamespace.class, Cot.NAME);
+	}
+
+	/** Tests for {@link Coth} method convergence. */
+	@Test
+	public void testCoth() {
+		assertComplete("math", MathNamespace.class, Coth.NAME);
 	}
 }
