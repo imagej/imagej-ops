@@ -70,6 +70,8 @@ public class Hyperslice extends AbstractInterval implements
 	 *          cropped
 	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
 	 *          other axes will be iterated.
+	 * @param dropSingleDimensions if true, dimensions of size one will be
+	 *          discarded in the hyper-sliced images
 	 */
 	public Hyperslice(final OpService opService,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest,
