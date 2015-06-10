@@ -698,6 +698,57 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Divide.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class)
+	public Object divide(final Object result, final Object a, final Object b) {
+		final Object result_op =
+			ops().run(net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class, result, a,
+				b);
+		return result_op;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerDivide.class)
+	public int divide(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerDivide.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongDivide.class)
+	public long divide(final long a, final long b) {
+		final long result =
+			(Long) ops()
+				.run(net.imagej.ops.math.PrimitiveMath.LongDivide.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatDivide.class)
+	public float divide(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatDivide.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleDivide.class)
+	public double divide(final double a, final double b) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleDivide.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealDivide.class)
+	public <I extends RealType<I>, O extends RealType<O>> O divide(final O out,
+		final I in, final double constant, final double dbzVal)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealDivide.class, out, in,
+				constant, dbzVal);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Exp.class)
 	public Object exp(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Exp.class, args);
