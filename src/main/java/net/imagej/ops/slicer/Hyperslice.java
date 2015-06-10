@@ -95,6 +95,19 @@ public class Hyperslice extends AbstractInterval implements
 		this.dropSingleDimensions = dropSingleDimensions;
 	}
 
+	/**
+	 * @param opService {@link OpService} used
+	 * @param source {@link RandomAccessibleInterval} which will be virtually
+	 *          cropped
+	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
+	 *          other axes will be iterated.
+	 */
+	public Hyperslice(final OpService opService,
+		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
+	{
+		this(opService, source, axesOfInterest, true);
+	}
+
 	// init method
 	private static Interval initIntervals(final RandomAccessibleInterval<?> src,
 		final int[] axesOfInterest)
