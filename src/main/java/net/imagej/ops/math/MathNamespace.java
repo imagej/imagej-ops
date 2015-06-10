@@ -538,20 +538,32 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerComplement.class)
 	public int complement(final int a) {
 		final int result =
-			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerComplement.class, a);
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerComplement.class, a);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongComplement.class)
 	public long complement(final long a) {
 		final long result =
-			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongComplement.class, a);
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongComplement.class,
+				a);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.Copy.class)
 	public Object copy(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Copy.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealCopy.class)
+	public <I extends RealType<I>, O extends RealType<O>> O copy(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealCopy.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.Cos.class)
