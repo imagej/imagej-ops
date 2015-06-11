@@ -60,7 +60,7 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 
 		if (destClass != null && !(destClass == Polygon.class)) {
 			return false;
-		} else if (destType != null && !(destType instanceof Polygon)) {
+		} else if (destType != null && !(destType == Polygon.class)) {
 			return false;
 		}
 
