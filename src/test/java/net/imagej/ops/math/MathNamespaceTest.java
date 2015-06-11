@@ -59,6 +59,7 @@ import net.imagej.ops.MathOps.Csch;
 import net.imagej.ops.MathOps.CubeRoot;
 import net.imagej.ops.MathOps.Divide;
 import net.imagej.ops.MathOps.Exp;
+import net.imagej.ops.MathOps.ExpMinusOne;
 
 import org.junit.Test;
 
@@ -236,5 +237,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testExp() {
 		assertComplete("math", MathNamespace.class, Exp.NAME);
+	}
+
+	/** Tests for {@link ExpMinusOne} method convergence. */
+	@Test
+	public void testExpMinusOne() {
+		assertComplete("math", MathNamespace.class, ExpMinusOne.NAME);
 	}
 }
