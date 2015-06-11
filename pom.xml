@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -18,6 +19,8 @@
 
 	<properties>
 		<scijava-expression-parser.version>2.0.0</scijava-expression-parser.version>
+		<imglib2-roi.version>0.3.1</imglib2-roi.version>
+		<scijava-common.version>2.42.2</scijava-common.version>
 	</properties>
 
 	<developers>
@@ -127,7 +130,9 @@
 			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
 			<timezone>-6</timezone>
 		</contributor>
-		<contributor><name>Michael Zinsmaier</name></contributor>
+		<contributor>
+			<name>Michael Zinsmaier</name>
+		</contributor>
 	</contributors>
 
 	<scm>
@@ -221,10 +226,7 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<!--
-					NB: Make Eclipse generate code in a full build; see:
-					http://wiki.eclipse.org/M2E_plugin_execution_not_covered
-					-->
+					<!-- NB: Make Eclipse generate code in a full build; see: http://wiki.eclipse.org/M2E_plugin_execution_not_covered -->
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
 					<version>1.0.0</version>
@@ -344,7 +346,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
 					<organizationName>Board of Regents of the University of
-Wisconsin-Madison, University of Konstanz and Brian Northan.</organizationName>
+						Wisconsin-Madison, University of Konstanz and Brian Northan.</organizationName>
 				</configuration>
 			</plugin>
 		</plugins>
