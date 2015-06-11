@@ -831,6 +831,28 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.GaussianRandom.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealGaussianRandom.class)
+	public <I extends RealType<I>, O extends RealType<O>> O gaussianrandom(
+		final O out, final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealGaussianRandom.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealGaussianRandom.class)
+	public <I extends RealType<I>, O extends RealType<O>> O gaussianrandom(
+		final O out, final I in, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealGaussianRandom.class,
+				out, in, seed);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Invert.class)
 	public Object invert(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Invert.class, args);
