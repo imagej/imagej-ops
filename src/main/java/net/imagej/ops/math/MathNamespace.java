@@ -792,6 +792,24 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Floor.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleFloor.class)
+	public double floor(final double a) {
+		final double result =
+			(Double) ops()
+				.run(net.imagej.ops.math.PrimitiveMath.DoubleFloor.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealFloor.class)
+	public <I extends RealType<I>, O extends RealType<O>> O floor(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealFloor.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Gamma.class)
 	public Object gamma(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Gamma.class, args);
