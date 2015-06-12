@@ -1481,6 +1481,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Sqr.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSqr.class)
+	public <I extends RealType<I>, O extends RealType<O>> O sqr(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealSqr.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Sqrt.class)
 	public Object sqrt(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Sqrt.class, args);
