@@ -92,6 +92,7 @@ import net.imagej.ops.MathOps.Sqrt;
 import net.imagej.ops.MathOps.Step;
 import net.imagej.ops.MathOps.Subtract;
 import net.imagej.ops.MathOps.Tan;
+import net.imagej.ops.MathOps.Tanh;
 
 import org.junit.Test;
 
@@ -467,5 +468,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testTan() {
 		assertComplete("math", MathNamespace.class, Tan.NAME);
+	}
+
+	/** Tests for {@link Tanh} method convergence. */
+	@Test
+	public void testTanh() {
+		assertComplete("math", MathNamespace.class, Tanh.NAME);
 	}
 }
