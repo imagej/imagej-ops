@@ -858,6 +858,17 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Invert.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealInvert.class)
+	public <I extends RealType<I>, O extends RealType<O>> O invert(final O out,
+		final I in, final double specifiedMin, final double specifiedMax)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealInvert.class, out, in,
+				specifiedMin, specifiedMax);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.LeftShift.class)
 	public Object leftshift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.LeftShift.class, args);
