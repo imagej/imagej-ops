@@ -1377,6 +1377,31 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Signum.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatSignum.class)
+	public float signum(final float a) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatSignum.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleSignum.class)
+	public double signum(final double a) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleSignum.class,
+				a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSignum.class)
+	public <I extends RealType<I>, O extends RealType<O>> O signum(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealSignum.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Sin.class)
 	public Object sin(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Sin.class, args);
