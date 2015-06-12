@@ -64,6 +64,7 @@ import net.imagej.ops.MathOps.Floor;
 import net.imagej.ops.MathOps.Gamma;
 import net.imagej.ops.MathOps.GaussianRandom;
 import net.imagej.ops.MathOps.Invert;
+import net.imagej.ops.MathOps.LeftShift;
 
 import org.junit.Test;
 
@@ -271,5 +272,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testInvert() {
 		assertComplete("math", MathNamespace.class, Invert.NAME);
+	}
+
+	/** Tests for {@link LeftShift} method convergence. */
+	@Test
+	public void testLeftShift() {
+		assertComplete("math", MathNamespace.class, LeftShift.NAME);
 	}
 }
