@@ -1317,6 +1317,31 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Round.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatRound.class)
+	public float round(final float a) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatRound.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleRound.class)
+	public double round(final double a) {
+		final double result =
+			(Double) ops()
+				.run(net.imagej.ops.math.PrimitiveMath.DoubleRound.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealRound.class)
+	public <I extends RealType<I>, O extends RealType<O>> O round(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealRound.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Sec.class)
 	public Object sec(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Sec.class, args);
