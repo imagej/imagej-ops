@@ -1611,6 +1611,23 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Tanh.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleTanh.class)
+	public double tanh(final double a) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleTanh.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealTanh.class)
+	public <I extends RealType<I>, O extends RealType<O>> O tanh(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealTanh.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Ulp.class)
 	public Object ulp(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Ulp.class, args);
