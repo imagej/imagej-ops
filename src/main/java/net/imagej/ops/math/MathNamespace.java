@@ -1362,6 +1362,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Sech.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSech.class)
+	public <I extends RealType<I>, O extends RealType<O>> O sech(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealSech.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Signum.class)
 	public Object signum(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Signum.class, args);
