@@ -82,6 +82,7 @@ import net.imagej.ops.MathOps.RightShift;
 import net.imagej.ops.MathOps.Round;
 import net.imagej.ops.MathOps.Sec;
 import net.imagej.ops.MathOps.Sech;
+import net.imagej.ops.MathOps.Signum;
 
 import org.junit.Test;
 
@@ -397,5 +398,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testSech() {
 		assertComplete("math", MathNamespace.class, Sech.NAME);
+	}
+
+	/** Tests for {@link Signum} method convergence. */
+	@Test
+	public void testSignum() {
+		assertComplete("math", MathNamespace.class, Signum.NAME);
 	}
 }
