@@ -69,6 +69,7 @@ import net.imagej.ops.MathOps.Log;
 import net.imagej.ops.MathOps.Log10;
 import net.imagej.ops.MathOps.Log2;
 import net.imagej.ops.MathOps.LogOnePlusX;
+import net.imagej.ops.MathOps.Max;
 
 import org.junit.Test;
 
@@ -306,5 +307,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testLogOnePlusX() {
 		assertComplete("math", MathNamespace.class, LogOnePlusX.NAME);
+	}
+
+	/** Tests for {@link Max} method convergence. */
+	@Test
+	public void testMax() {
+		assertComplete("math", MathNamespace.class, Max.NAME);
 	}
 }
