@@ -78,6 +78,7 @@ import net.imagej.ops.MathOps.Or;
 import net.imagej.ops.MathOps.Power;
 import net.imagej.ops.MathOps.Reciprocal;
 import net.imagej.ops.MathOps.Remainder;
+import net.imagej.ops.MathOps.RightShift;
 
 import org.junit.Test;
 
@@ -369,5 +370,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testRemainder() {
 		assertComplete("math", MathNamespace.class, Remainder.NAME);
+	}
+
+	/** Tests for {@link RightShift} method convergence. */
+	@Test
+	public void testRightShift() {
+		assertComplete("math", MathNamespace.class, RightShift.NAME);
 	}
 }
