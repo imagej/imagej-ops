@@ -76,6 +76,7 @@ import net.imagej.ops.MathOps.NearestInt;
 import net.imagej.ops.MathOps.Negate;
 import net.imagej.ops.MathOps.Or;
 import net.imagej.ops.MathOps.Power;
+import net.imagej.ops.MathOps.Reciprocal;
 
 import org.junit.Test;
 
@@ -355,5 +356,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testPower() {
 		assertComplete("math", MathNamespace.class, Power.NAME);
+	}
+
+	/** Tests for {@link Reciprocal} method convergence. */
+	@Test
+	public void testReciprocal() {
+		assertComplete("math", MathNamespace.class, Reciprocal.NAME);
 	}
 }
