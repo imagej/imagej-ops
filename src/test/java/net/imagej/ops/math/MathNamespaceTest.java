@@ -68,6 +68,7 @@ import net.imagej.ops.MathOps.LeftShift;
 import net.imagej.ops.MathOps.Log;
 import net.imagej.ops.MathOps.Log10;
 import net.imagej.ops.MathOps.Log2;
+import net.imagej.ops.MathOps.LogOnePlusX;
 
 import org.junit.Test;
 
@@ -299,5 +300,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testLog10() {
 		assertComplete("math", MathNamespace.class, Log10.NAME);
+	}
+
+	/** Tests for {@link LogOnePlusX} method convergence. */
+	@Test
+	public void testLogOnePlusX() {
+		assertComplete("math", MathNamespace.class, LogOnePlusX.NAME);
 	}
 }
