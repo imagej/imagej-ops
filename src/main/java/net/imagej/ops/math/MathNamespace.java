@@ -979,6 +979,47 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Max.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMax.class)
+	public int max(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerMax.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongMax.class)
+	public long max(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongMax.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatMax.class)
+	public float max(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatMax.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleMax.class)
+	public double max(final double a, final double b) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleMax.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealMaxConstant.class)
+	public <I extends RealType<I>, O extends RealType<O>> O max(final O out,
+		final I in, final double constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealMaxConstant.class, out,
+				in, constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Min.class)
 	public Object min(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Min.class, args);
