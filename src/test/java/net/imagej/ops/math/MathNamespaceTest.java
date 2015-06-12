@@ -77,6 +77,7 @@ import net.imagej.ops.MathOps.Negate;
 import net.imagej.ops.MathOps.Or;
 import net.imagej.ops.MathOps.Power;
 import net.imagej.ops.MathOps.Reciprocal;
+import net.imagej.ops.MathOps.Remainder;
 
 import org.junit.Test;
 
@@ -362,5 +363,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testReciprocal() {
 		assertComplete("math", MathNamespace.class, Reciprocal.NAME);
+	}
+
+	/** Tests for {@link Remainder} method convergence. */
+	@Test
+	public void testRemainder() {
+		assertComplete("math", MathNamespace.class, Remainder.NAME);
 	}
 }
