@@ -1243,6 +1243,17 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Reciprocal.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealReciprocal.class)
+	public <I extends RealType<I>, O extends RealType<O>> O reciprocal(
+		final O out, final I in, final double dbzVal)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealReciprocal.class, out,
+				in, dbzVal);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Remainder.class)
 	public Object remainder(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Remainder.class, args);
