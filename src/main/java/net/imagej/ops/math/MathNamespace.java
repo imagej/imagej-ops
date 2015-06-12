@@ -874,6 +874,22 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.LeftShift.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerLeftShift.class)
+	public int leftshift(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerLeftShift.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongLeftShift.class)
+	public long leftshift(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongLeftShift.class,
+				a, b);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Log.class)
 	public Object log(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Log.class, args);
