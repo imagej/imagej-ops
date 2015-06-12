@@ -1143,6 +1143,46 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Negate.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerNegate.class)
+	public int negate(final int a) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerNegate.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongNegate.class)
+	public long negate(final long a) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongNegate.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatNegate.class)
+	public float negate(final float a) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatNegate.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleNegate.class)
+	public double negate(final double a) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleNegate.class,
+				a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealNegate.class)
+	public <I extends RealType<I>, O extends RealType<O>> O negate(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealNegate.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Or.class)
 	public Object or(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Or.class, args);
