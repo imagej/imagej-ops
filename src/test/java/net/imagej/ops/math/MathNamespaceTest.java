@@ -80,6 +80,7 @@ import net.imagej.ops.MathOps.Reciprocal;
 import net.imagej.ops.MathOps.Remainder;
 import net.imagej.ops.MathOps.RightShift;
 import net.imagej.ops.MathOps.Round;
+import net.imagej.ops.MathOps.Sec;
 
 import org.junit.Test;
 
@@ -383,5 +384,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testRound() {
 		assertComplete("math", MathNamespace.class, Round.NAME);
+	}
+
+	/** Tests for {@link Sec} method convergence. */
+	@Test
+	public void testSec() {
+		assertComplete("math", MathNamespace.class, Sec.NAME);
 	}
 }
