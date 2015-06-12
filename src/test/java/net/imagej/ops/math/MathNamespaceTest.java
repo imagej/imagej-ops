@@ -73,6 +73,7 @@ import net.imagej.ops.MathOps.Max;
 import net.imagej.ops.MathOps.Min;
 import net.imagej.ops.MathOps.Multiply;
 import net.imagej.ops.MathOps.NearestInt;
+import net.imagej.ops.MathOps.Negate;
 
 import org.junit.Test;
 
@@ -334,5 +335,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testNearestInt() {
 		assertComplete("math", MathNamespace.class, NearestInt.NAME);
+	}
+
+	/** Tests for {@link Negate} method convergence. */
+	@Test
+	public void testNegate() {
+		assertComplete("math", MathNamespace.class, Negate.NAME);
 	}
 }
