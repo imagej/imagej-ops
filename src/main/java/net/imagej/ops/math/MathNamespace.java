@@ -1533,6 +1533,57 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Subtract.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class)
+	public Object subtract(final Object result, final Object a, final Object b) {
+		final Object result_op =
+			ops().run(net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class, result,
+				a, b);
+		return result_op;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerSubtract.class)
+	public int subtract(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerSubtract.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongSubtract.class)
+	public long subtract(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongSubtract.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatSubtract.class)
+	public float subtract(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatSubtract.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleSubtract.class)
+	public double subtract(final double a, final double b) {
+		final double result =
+			(Double) ops().run(
+				net.imagej.ops.math.PrimitiveMath.DoubleSubtract.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSubtract.class)
+	public <I extends RealType<I>, O extends RealType<O>> O subtract(final O out,
+		final I in, final double constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealSubtract.class, out, in,
+				constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Tan.class)
 	public Object tan(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Tan.class, args);
