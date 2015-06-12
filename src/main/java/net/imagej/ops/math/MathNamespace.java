@@ -1444,6 +1444,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.SincPi.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSincPi.class)
+	public <I extends RealType<I>, O extends RealType<O>> O sincpi(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealSincPi.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Sinh.class)
 	public Object sinh(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Sinh.class, args);
