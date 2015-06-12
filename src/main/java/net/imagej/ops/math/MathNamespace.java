@@ -932,6 +932,24 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Log10.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleLog10.class)
+	public double log10(final double a) {
+		final double result =
+			(Double) ops()
+				.run(net.imagej.ops.math.PrimitiveMath.DoubleLog10.class, a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealLog10.class)
+	public <I extends RealType<I>, O extends RealType<O>> O log10(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealLog10.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.LogOnePlusX.class)
 	public Object logoneplusx(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.LogOnePlusX.class, args);
