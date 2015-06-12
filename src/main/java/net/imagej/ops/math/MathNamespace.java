@@ -1071,6 +1071,57 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Multiply.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class)
+	public Object multiply(final Object result, final Object a, final Object b) {
+		final Object result_op =
+			ops().run(net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class, result,
+				a, b);
+		return result_op;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMultiply.class)
+	public int multiply(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerMultiply.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongMultiply.class)
+	public long multiply(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongMultiply.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatMultiply.class)
+	public float multiply(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatMultiply.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleMultiply.class)
+	public double multiply(final double a, final double b) {
+		final double result =
+			(Double) ops().run(
+				net.imagej.ops.math.PrimitiveMath.DoubleMultiply.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealMultiply.class)
+	public <I extends RealType<I>, O extends RealType<O>> O multiply(final O out,
+		final I in, final double constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealMultiply.class, out, in,
+				constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.NearestInt.class)
 	public Object nearestint(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.NearestInt.class, args);
