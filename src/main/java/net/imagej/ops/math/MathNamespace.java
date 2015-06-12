@@ -1259,6 +1259,38 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Remainder.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerRemainder.class)
+	public int remainder(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(
+				net.imagej.ops.math.PrimitiveMath.IntegerRemainder.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongRemainder.class)
+	public long remainder(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongRemainder.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatRemainder.class)
+	public float remainder(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatRemainder.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleRemainder.class)
+	public double remainder(final double a, final double b) {
+		final double result =
+			(Double) ops().run(
+				net.imagej.ops.math.PrimitiveMath.DoubleRemainder.class, a, b);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.RightShift.class)
 	public Object rightshift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.RightShift.class, args);
