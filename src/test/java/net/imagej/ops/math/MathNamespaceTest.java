@@ -89,6 +89,7 @@ import net.imagej.ops.MathOps.SincPi;
 import net.imagej.ops.MathOps.Sinh;
 import net.imagej.ops.MathOps.Sqr;
 import net.imagej.ops.MathOps.Sqrt;
+import net.imagej.ops.MathOps.Step;
 
 import org.junit.Test;
 
@@ -446,5 +447,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testSqrt() {
 		assertComplete("math", MathNamespace.class, Sqrt.NAME);
+	}
+
+	/** Tests for {@link Step} method convergence. */
+	@Test
+	public void testStep() {
+		assertComplete("math", MathNamespace.class, Step.NAME);
 	}
 }
