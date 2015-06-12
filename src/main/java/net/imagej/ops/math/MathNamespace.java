@@ -1025,6 +1025,47 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Min.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMin.class)
+	public int min(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerMin.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongMin.class)
+	public long min(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongMin.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatMin.class)
+	public float min(final float a, final float b) {
+		final float result =
+			(Float) ops().run(net.imagej.ops.math.PrimitiveMath.FloatMin.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleMin.class)
+	public double min(final double a, final double b) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoubleMin.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealMinConstant.class)
+	public <I extends RealType<I>, O extends RealType<O>> O min(final O out,
+		final I in, final double constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealMinConstant.class, out,
+				in, constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Multiply.class)
 	public Object multiply(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Multiply.class, args);
