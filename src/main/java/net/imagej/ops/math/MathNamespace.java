@@ -1191,7 +1191,8 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerOr.class)
 	public int or(final int a, final int b) {
 		final int result =
-			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerOr.class, a, b);
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerOr.class, a,
+				b);
 		return result;
 	}
 
@@ -1203,16 +1204,38 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealOrConstant.class)
-	public <I extends RealType<I>, O extends RealType<O>> O or(final O out, final I in, final long constant) {
+	public <I extends RealType<I>, O extends RealType<O>> O or(final O out,
+		final I in, final long constant)
+	{
 		@SuppressWarnings("unchecked")
 		final O result =
-			(O) ops().run(net.imagej.ops.arithmetic.real.RealOrConstant.class, out, in, constant);
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealOrConstant.class, out,
+				in, constant);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.Power.class)
 	public Object power(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Power.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoublePower.class)
+	public double power(final double a, final double b) {
+		final double result =
+			(Double) ops().run(net.imagej.ops.math.PrimitiveMath.DoublePower.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealPowerConstant.class)
+	public <I extends RealType<I>, O extends RealType<O>> O power(final O out,
+		final I in, final double constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealPowerConstant.class,
+				out, in, constant);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.Reciprocal.class)
