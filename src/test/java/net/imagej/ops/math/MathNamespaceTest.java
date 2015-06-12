@@ -79,6 +79,7 @@ import net.imagej.ops.MathOps.Power;
 import net.imagej.ops.MathOps.Reciprocal;
 import net.imagej.ops.MathOps.Remainder;
 import net.imagej.ops.MathOps.RightShift;
+import net.imagej.ops.MathOps.Round;
 
 import org.junit.Test;
 
@@ -376,5 +377,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testRightShift() {
 		assertComplete("math", MathNamespace.class, RightShift.NAME);
+	}
+
+	/** Tests for {@link Round} method convergence. */
+	@Test
+	public void testRound() {
+		assertComplete("math", MathNamespace.class, Round.NAME);
 	}
 }
