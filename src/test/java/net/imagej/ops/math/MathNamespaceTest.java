@@ -66,6 +66,7 @@ import net.imagej.ops.MathOps.GaussianRandom;
 import net.imagej.ops.MathOps.Invert;
 import net.imagej.ops.MathOps.LeftShift;
 import net.imagej.ops.MathOps.Log;
+import net.imagej.ops.MathOps.Log10;
 import net.imagej.ops.MathOps.Log2;
 
 import org.junit.Test;
@@ -292,5 +293,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testLog2() {
 		assertComplete("math", MathNamespace.class, Log2.NAME);
+	}
+
+	/** Tests for {@link Log10} method convergence. */
+	@Test
+	public void testLog10() {
+		assertComplete("math", MathNamespace.class, Log10.NAME);
 	}
 }
