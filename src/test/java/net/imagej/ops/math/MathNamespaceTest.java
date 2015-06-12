@@ -90,6 +90,7 @@ import net.imagej.ops.MathOps.Sinh;
 import net.imagej.ops.MathOps.Sqr;
 import net.imagej.ops.MathOps.Sqrt;
 import net.imagej.ops.MathOps.Step;
+import net.imagej.ops.MathOps.Subtract;
 
 import org.junit.Test;
 
@@ -453,5 +454,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testStep() {
 		assertComplete("math", MathNamespace.class, Step.NAME);
+	}
+
+	/** Tests for {@link Subtract} method convergence. */
+	@Test
+	public void testSubtract() {
+		assertComplete("math", MathNamespace.class, Subtract.NAME);
 	}
 }
