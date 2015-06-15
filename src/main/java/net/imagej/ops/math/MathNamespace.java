@@ -1648,6 +1648,28 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.UniformRandom.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealUniformRandom.class)
+	public <I extends RealType<I>, O extends RealType<O>> O uniformrandom(
+		final O out, final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealUniformRandom.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealUniformRandom.class)
+	public <I extends RealType<I>, O extends RealType<O>> O uniformrandom(
+		final O out, final I in, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealUniformRandom.class,
+				out, in, seed);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.UnsignedRightShift.class)
 	public Object unsignedrightshift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.UnsignedRightShift.class, args);
