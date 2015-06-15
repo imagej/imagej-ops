@@ -94,6 +94,7 @@ import net.imagej.ops.MathOps.Subtract;
 import net.imagej.ops.MathOps.Tan;
 import net.imagej.ops.MathOps.Tanh;
 import net.imagej.ops.MathOps.Ulp;
+import net.imagej.ops.MathOps.UniformRandom;
 
 import org.junit.Test;
 
@@ -482,4 +483,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	public void testUlp() {
 		assertComplete("math", MathNamespace.class, Ulp.NAME);
 	}
+
+	/** Tests for {@link UniformRandom} method convergence. */
+	@Test
+	public void testUniformRandom() {
+	assertComplete("math", MathNamespace.class, UniformRandom.NAME);
+	}
+
 }
