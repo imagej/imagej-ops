@@ -33,9 +33,11 @@ package net.imagej.ops.crop;
 import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccess;
+import net.imagej.ops.Ops.Crop;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgView;
 import net.imglib2.type.Type;
 
@@ -46,46 +48,37 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz, University of Konstanz
+ * @author Martin Horn, University of Konstanz
  */
 @Plugin(type = Op.class, name = Ops.Crop.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Crop.ALIASES) },
 	priority = Priority.LOW_PRIORITY + 1)
-public class CropImgPlus<T extends Type<T>> extends
-	AbstractCropRAI<T, ImgPlus<T>>
-{
+public class CropImgPlus<T extends Type<T>> implements Crop {
 
-	@Parameter(type = ItemIO.BOTH, required = false)
+	@Parameter
+	private OpService ops;
+
+	@Parameter(type = ItemIO.OUTPUT)
 	private ImgPlus<T> out;
 
 	@Parameter
 	private ImgPlus<T> in;
 
+	@Parameter
+	protected Interval interval;
+
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
+
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public void run() {
-		ImgPlus<T> unpackedIn = in;
-		while (unpackedIn.getImg() instanceof ImgPlus) {
-			unpackedIn = (ImgPlus<T>) unpackedIn.getImg();
-		}
+		out =
+			new ImgPlus<T>(ImgView.wrap((RandomAccessibleInterval<T>) ops.run(CropRAI.class, in,
+				interval, dropSingleDimensions), in.factory()));
 
-		// if out is not provided, just return a view on the image, else write into
-		// the result
-		ImgView<T> view = new ImgView<T>(crop(unpackedIn.getImg()), in.factory());
-		if (out == null) {
-			out = new ImgPlus<T>(view);
-		}
-		else {
-			// TODO: might be optimized here (using two cursors etc.)
-			Cursor<T> outC = out.cursor();
-			RandomAccess<T> viewRA = view.randomAccess();
-			while (outC.hasNext()) {
-				outC.fwd();
-				viewRA.setPosition(outC);
-				outC.get().set(viewRA.get());
-			}
-		}
-
+		// TODO remove metadata-util
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
 }

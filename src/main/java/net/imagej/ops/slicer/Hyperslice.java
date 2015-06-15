@@ -50,7 +50,7 @@ import net.imglib2.util.Intervals;
  * Helper class to iterate through subsets of {@link RandomAccessibleInterval}s
  * (e.g. {@link Img}s)
  * 
- * @author Christian Dietz
+ * @author Christian Dietz, University of Konstanz
  */
 public class Hyperslice extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
@@ -62,19 +62,20 @@ public class Hyperslice extends AbstractInterval implements
 
 	private final RandomAccessibleInterval<?> source;
 
+	private final boolean dropSingleDimensions;
+
 	/**
-	 * 
-	 * @param opService
-	 *            {@link OpService} used
-	 * @param source
-	 *            {@link RandomAccessibleInterval} which will be virtually
-	 *            cropped
-	 * @param axesOfInterest
-	 *            axes which define a plane, cube, hypercube, ...! All other
-	 *            axes will be iterated.
+	 * @param opService {@link OpService} used
+	 * @param source {@link RandomAccessibleInterval} which will be virtually
+	 *          cropped
+	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
+	 *          other axes will be iterated.
+	 * @param dropSingleDimensions if true, dimensions of size one will be
+	 *          discarded in the hyper-sliced images
 	 */
 	public Hyperslice(final OpService opService,
-		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
+		final RandomAccessibleInterval<?> source, final int[] axesOfInterest,
+		final boolean dropSingleDimensions)
 	{
 		super(initIntervals(source, axesOfInterest));
 
@@ -91,6 +92,20 @@ public class Hyperslice extends AbstractInterval implements
 		this.slice = new FinalInterval(sliceMin, sliceMax);
 		this.opService = opService;
 		this.source = source;
+		this.dropSingleDimensions = dropSingleDimensions;
+	}
+
+	/**
+	 * @param opService {@link OpService} used
+	 * @param source {@link RandomAccessibleInterval} which will be virtually
+	 *          cropped
+	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
+	 *          other axes will be iterated.
+	 */
+	public Hyperslice(final OpService opService,
+		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
+	{
+		this(opService, source, axesOfInterest, true);
 	}
 
 	// init method
@@ -199,8 +214,8 @@ public class Hyperslice extends AbstractInterval implements
 				min[d] += sliceMin[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Ops.Crop.class,
-					new FinalInterval(min, max), null, src);
+			return (RandomAccessibleInterval<?>) opService.run(Ops.Crop.class, src,
+				new FinalInterval(min, max), dropSingleDimensions);
 		}
 
 		@Override
