@@ -1,8 +1,0 @@
-[ViewOps.java]
-className = "ViewOps"
-authors = ["Tim-Oliver Buchholz"]
-ops = ```
-[
-	[name: "viewimg",				iface: "ViewImg", 			    extends: "Ops.View"]
-]
-```
