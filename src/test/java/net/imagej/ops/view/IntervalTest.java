@@ -2,6 +2,7 @@ package net.imagej.ops.view;
 
 import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.viewOp.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
