@@ -3,6 +3,8 @@
 ImageJ OPS
 ==========
 
+[![Join the chat at https://gitter.im/imagej/imagej-ops](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/imagej/imagej-ops?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ImageJ OPS is an extensible Java framework for algorithms, particularly image
 processing algorithms. OPS seeks to be a unifying library for scientific image
 processing. See the
