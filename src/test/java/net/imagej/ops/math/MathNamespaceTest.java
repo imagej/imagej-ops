@@ -95,6 +95,7 @@ import net.imagej.ops.MathOps.Tan;
 import net.imagej.ops.MathOps.Tanh;
 import net.imagej.ops.MathOps.Ulp;
 import net.imagej.ops.MathOps.UniformRandom;
+import net.imagej.ops.MathOps.UnsignedRightShift;
 
 import org.junit.Test;
 
@@ -490,4 +491,9 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	assertComplete("math", MathNamespace.class, UniformRandom.NAME);
 	}
 
+	/** Tests for {@link UnsignedRightShift} method convergence. */
+	@Test
+	public void testUnsignedRightShift() {
+	assertComplete("math", MathNamespace.class, UnsignedRightShift.NAME);
+	}
 }
