@@ -97,6 +97,7 @@ import net.imagej.ops.MathOps.Ulp;
 import net.imagej.ops.MathOps.UniformRandom;
 import net.imagej.ops.MathOps.UnsignedRightShift;
 import net.imagej.ops.MathOps.Xor;
+import net.imagej.ops.MathOps.Zero;
 
 import org.junit.Test;
 
@@ -502,5 +503,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testXor() {
 	assertComplete("math", MathNamespace.class, Xor.NAME);
+	}
+
+	/** Tests for {@link Zero} method convergence. */
+	@Test
+	public void testZero() {
+	assertComplete("math", MathNamespace.class, Zero.NAME);
 	}
 }
