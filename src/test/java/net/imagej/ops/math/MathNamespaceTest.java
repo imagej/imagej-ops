@@ -96,6 +96,7 @@ import net.imagej.ops.MathOps.Tanh;
 import net.imagej.ops.MathOps.Ulp;
 import net.imagej.ops.MathOps.UniformRandom;
 import net.imagej.ops.MathOps.UnsignedRightShift;
+import net.imagej.ops.MathOps.Xor;
 
 import org.junit.Test;
 
@@ -495,5 +496,11 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testUnsignedRightShift() {
 	assertComplete("math", MathNamespace.class, UnsignedRightShift.NAME);
+	}
+
+	/** Tests for {@link Xor} method convergence. */
+	@Test
+	public void testXor() {
+	assertComplete("math", MathNamespace.class, Xor.NAME);
 	}
 }
