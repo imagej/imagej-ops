@@ -1730,6 +1730,16 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Zero.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealZero.class)
+	public <I extends RealType<I>, O extends RealType<O>> O zero(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealZero.class, out, in);
+		return result;
+	}
+
 	// -- Named methods --
 
 	@Override
