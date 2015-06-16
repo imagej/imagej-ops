@@ -1699,6 +1699,32 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Xor.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerXor.class)
+	public int xor(final int a, final int b) {
+		final int result =
+			(Integer) ops().run(net.imagej.ops.math.PrimitiveMath.IntegerXor.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongXor.class)
+	public long xor(final long a, final long b) {
+		final long result =
+			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongXor.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealXorConstant.class)
+	public <I extends RealType<I>, O extends RealType<O>> O xor(final O out,
+		final I in, final long constant)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealXorConstant.class, out,
+				in, constant);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Zero.class)
 	public Object zero(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Zero.class, args);
