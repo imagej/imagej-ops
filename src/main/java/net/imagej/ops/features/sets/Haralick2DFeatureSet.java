@@ -67,21 +67,25 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Andreas Graumann (University of Konstanz)
- * 
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
 public class Haralick2DFeatureSet<T> extends
-		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType> {
+	AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType>
+{
 
-	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels",
+		description = "Determines the size of the co-occurrence matrix", min = "1",
+		max = "2147483647", stepSize = "1")
 	private double nrGrayLevels = 8;
 
-	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Distance",
+		description = "The distance at which the co-occurrence matrix is computed",
+		min = "1", max = "2147483647", stepSize = "1")
 	private double distance = 1;
 
 	@Parameter(type = ItemIO.INPUT, label = "Matrix Orientation", choices = {
-			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
+		"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
 
 	public void setDistance(int distance) {
@@ -135,9 +139,9 @@ public class Haralick2DFeatureSet<T> extends
 	@Override
 	public Set<OpRef<?>> getHiddenOps() {
 		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
-		hiddenOps.add(createOpRef(CooccurrenceMatrix2D.class, getInput(),
-				nrGrayLevels, distance, orientation, MinFeature.class,
-				MaxFeature.class));
+		hiddenOps.add(createOpRef(CooccurrenceMatrix2D.class,
+			IterableInterval.class, nrGrayLevels, distance, orientation,
+			MinFeature.class, MaxFeature.class));
 		return hiddenOps;
 	}
 }

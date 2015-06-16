@@ -67,24 +67,28 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Andreas Graumann (University of Konstanz)
- * 
  * @param <I>
  */
 @Plugin(type = FeatureSet.class, label = "Haralick Features")
 public class Haralick3DFeatureSet<T> extends
-		AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType> {
+	AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType>
+{
 
-	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels", description = "Determines the size of the co-occurrence matrix", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Number of Gray Levels",
+		description = "Determines the size of the co-occurrence matrix", min = "1",
+		max = "2147483647", stepSize = "1")
 	private double nrGrayLevels = 8;
 
-	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The distance at which the co-occurrence matrix is computed", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Distance",
+		description = "The distance at which the co-occurrence matrix is computed",
+		min = "1", max = "2147483647", stepSize = "1")
 	private double distance = 1;
 
 	@Parameter(label = "Matrix Orientation", choices = { "HORIZONTAL",
-			"VERTICAL", "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL_VERTICAL",
-			"HORIZONTAL_DIAGONAL", "VERTICAL_VERTICAL", "VERTICAL_DIAGONAL",
-			"DIAGONAL_VERTICAL", "DIAGONAL_DIAGONAL", "ANTIDIAGONAL_VERTICAL",
-			"ANTIDIAGONAL_DIAGONAL", "DEPTH" })
+		"VERTICAL", "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL_VERTICAL",
+		"HORIZONTAL_DIAGONAL", "VERTICAL_VERTICAL", "VERTICAL_DIAGONAL",
+		"DIAGONAL_VERTICAL", "DIAGONAL_DIAGONAL", "ANTIDIAGONAL_VERTICAL",
+		"ANTIDIAGONAL_DIAGONAL", "DEPTH" })
 	private String orientation;
 
 	public void setDistance(final double distance) {
@@ -138,9 +142,9 @@ public class Haralick3DFeatureSet<T> extends
 	@Override
 	public Set<OpRef<?>> getHiddenOps() {
 		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
-		hiddenOps.add(createOpRef(CooccurrenceMatrix3D.class, getInput(),
-				nrGrayLevels, distance, orientation, MinFeature.class,
-				MaxFeature.class));
+		hiddenOps.add(createOpRef(CooccurrenceMatrix3D.class,
+			IterableInterval.class, nrGrayLevels, distance, orientation,
+			MinFeature.class, MaxFeature.class));
 		return hiddenOps;
 	}
 }
