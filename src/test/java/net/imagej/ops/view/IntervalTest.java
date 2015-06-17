@@ -2,7 +2,7 @@ package net.imagej.ops.view;
 
 import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.viewOp.Interval;
+import net.imagej.ops.viewOp.DefaultView;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -17,7 +17,7 @@ public class IntervalTest extends AbstractOpTest {
 		Img<DoubleType> img = new ArrayImgFactory<DoubleType>().create(
 				new int[] { 10, 100 }, new DoubleType());
 		
-		IntervalView<DoubleType> view = (IntervalView<DoubleType>) ops.run(Interval.class, img);
+		IntervalView<DoubleType> view = (IntervalView<DoubleType>) ops.run(DefaultView.class, img, img);
 	
 		assertTrue(view.getSource().equals(img));
 	}
