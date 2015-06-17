@@ -48,77 +48,148 @@ import net.imglib2.type.numeric.RealType;
 public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<I> in, final RandomAccessibleInterval<K> kernel, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, in, kernel, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, in,
+				kernel, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, obfKernel, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel, final Type<O> outType, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, obfKernel, outType, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType,
+				maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel, final Type<O> outType, final ImgFactory<O> outFactory, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel, final Type<O> outType, final ImgFactory<O> outFactory, final ComplexType<C> fftType, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType, final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType, maxIterations);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>> Img<O> richardsonlucy(final Img<O> out, final Img<I> in, final RandomAccessibleInterval<K> kernel, final long[] borderSize, final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput, final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel, final Type<O> outType, final ImgFactory<O> outFactory, final ComplexType<C> fftType, final ImgFactory<C> fftFactory, final int maxIterations) {
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> richardsonlucy(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType, final ImgFactory<C> fftFactory,
+			final int maxIterations)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class, out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType, fftFactory, maxIterations);
+			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType, fftFactory, maxIterations);
 		return result;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "deconvolve";
