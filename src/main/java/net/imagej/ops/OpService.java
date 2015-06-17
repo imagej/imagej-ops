@@ -39,6 +39,7 @@ import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
 import net.imagej.ops.chunker.Chunk;
 import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
@@ -1204,6 +1205,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
+
+	/** Gateway into ops of the "deconvolve" namespace. */
+	DeconvolveNamespace deconvolve();
 
 	// -- Deprecated methods --
 
