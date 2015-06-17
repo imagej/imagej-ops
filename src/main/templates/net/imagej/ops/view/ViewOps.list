@@ -1,0 +1,40 @@
+[ViewOps.java]
+className = "ViewOps"
+authors = ["Tim-Oliver Buchholz"]
+ops = ```
+[
+	[name: "view",		                iface: "View",		                extends: "Computer"],
+	[name: "interpolate",               iface: "Interpolate",               extends: "View"],
+	[name: "raster",                    iface: "Raster",                    extends: "View"],
+	[name: "extend",                    iface: "Extend",                    extends: "View"],
+	[name: "extendmirrorsingle",        iface: "ExtendMirrorSingle",        extends: "Extend"],
+	[name: "extendmirrordouble",        iface: "ExtendMirrorDouble",        extends: "Extend"],
+	[name: "extendvalue",               iface: "ExtendValue",               extends: "Extend"],
+	[name: "extendzero",                iface: "ExtendZero",                extends: "Extend"],
+	[name: "extendrandom",              iface: "ExtendRandom",              extends: "Extend"],
+	[name: "extendperiodic",            iface: "ExtendPeriodic",            extends: "Extend"],
+	[name: "extendborder",              iface: "ExtendBorder",              extends: "Extend"],
+	[name: "rotate",                    iface: "Rotate",                    extends: "View"],
+	[name: "permute",                   iface: "Permute",                   extends: "View"],
+	[name: "translate",                 iface: "Translate",                 extends: "View"],
+	[name: "offset",                    iface: "Offset",                    extends: "View"],
+	[name: "zeromin",                   iface: "ZeroMin",                   extends: "View"],
+	[name: "hyperslice",                iface: "HyperSlice",                extends: "View"],
+	[name: "adddimension",              iface: "AddDimension",              extends: "View"],
+	[name: "invertaxis",                iface: "InvertAxis",                extends: "View"],
+	[name: "offsetinterval",            iface: "OffsetInterval",            extends: "View"],
+	[name: "iszeromin",                 iface: "IsZeroMin",                 extends: "View"],
+	[name: "iterable",                  iface: "Iterable",                  extends: "View"],
+	[name: "flatiterable",              iface: "FlatIterable",              extends: "Iterable"],
+	[name: "collapse",                  iface: "Collapse",                  extends: "View"],
+	[name: "collapsereal",              iface: "CollapseReal",              extends: "Collapse"],
+	[name: "CollapseNumeric",           iface: "CollapseNumeric",           extends: "Collapse"],
+	[name: "subsample",                 iface: "Subsample",                 extends: "View"],
+	[name: "dropsingletondimensions",   iface: "DropSingletonDimensions",   extends: "View"],
+	[name: "stack",                     iface: "Stack",                     extends: "View"],
+	[name: "shear",                     iface: "Shear",                     extends: "View"],
+	[name: "unshear",                   iface: "UnShear",                   extends: "View"],
+	[name: "permutecoordinates",        iface: "PermuteCoordinates",        extends: "View"],
+	[name: "permutecoordinatesinverse", iface: "PermuteCoordinatesInverse", extends: "View"]
+]
+```
