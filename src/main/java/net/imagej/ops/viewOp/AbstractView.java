@@ -1,30 +1,30 @@
 package net.imagej.ops.viewOp;
 
+import net.imagej.ops.view.ViewOps.View;
+
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.Type;
-
-public abstract class AbstractDefaultView <I extends Type<I>> implements DefaultView<RandomAccessibleInterval<I>, RandomAccessibleInterval<?>> {
+public abstract class AbstractView<I, O> implements
+		View<I, O> {
 	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<?> output;
-	
+	private O output;
+
 	@Parameter(type = ItemIO.INPUT)
-	private RandomAccessibleInterval<I> input;
-	
+	private I input;
+
 	@Override
 	public void run() {
 		output = compute(getInput());
 	}
 
 	@Override
-	public RandomAccessibleInterval<I> getInput() {
+	public I getInput() {
 		return input;
 	}
 
 	@Override
-	public void setInput(RandomAccessibleInterval<I> input) {
+	public void setInput(I input) {
 		this.input = input;
 	}
 }
