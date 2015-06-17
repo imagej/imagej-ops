@@ -47,6 +47,7 @@ import net.imagej.ops.create.CreateEmptyImgPlusCopy;
 import net.imagej.ops.create.CreateImgDifferentNativeType;
 import net.imagej.ops.create.CreateImgNativeType;
 import net.imagej.ops.create.DefaultCreateImg;
+import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
@@ -1993,6 +1994,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return threshold;
 	}
 
+	@Override
+	public DeconvolveNamespace deconvolve() {
+		if (!namespacesReady) initNamespaces();
+		return deconvolve();
+	}
 	// -- SingletonService methods --
 
 	@Override
@@ -2036,4 +2042,5 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object create(final Object... args) {
 		return createimg(args);
 	}
+
 }
