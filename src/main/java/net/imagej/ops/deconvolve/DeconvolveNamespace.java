@@ -47,6 +47,11 @@ import net.imglib2.type.numeric.RealType;
  */
 public class DeconvolveNamespace extends AbstractNamespace {
 
+	@OpMethod(op = net.imagej.ops.DeconvolveOps.RichardsonLucy.class)
+	public Object richardsonlucy(final Object... args) {
+		return ops().run(net.imagej.ops.DeconvolveOps.RichardsonLucy.class, args);
+	}
+
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
