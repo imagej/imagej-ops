@@ -1,4 +1,4 @@
-package net.imagej.ops.viewOp;
+package net.imagej.ops.views;
 
 import net.imagej.ops.view.ViewOps;
 import net.imagej.ops.view.ViewOps.View;

@@ -1,4 +1,4 @@
-package net.imagej.ops.viewOp;
+package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
