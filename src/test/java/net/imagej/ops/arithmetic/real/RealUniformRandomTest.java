@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -8,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,48 +30,55 @@
 
 package net.imagej.ops.arithmetic.real;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Sets the real component of an output real number to the inverse secant of the
- * real component of an input real number.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * Tests {@link RealUniformRandom}.
+ *
+ * @author Alison Walter
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.Arcsec.NAME)
-public class RealArcsec<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<I, O> implements MathOps.Arcsec
-{
+public class RealUniformRandomTest extends AbstractOpTest {
 
-	private final static RealArcsin<DoubleType, DoubleType> asin =
-		new RealArcsin<DoubleType, DoubleType>();
+	@Test
+	public void testUniformRandom() {
+		assertUniformRandom(23, 14.278690684728433);
+		assertUniformRandom(27, 5.940945158572171, 0xfeeddeadbeefbeefL);
+		assertUniformRandom(123, 52.3081016051914, 124, 95.52110798318904);
+	}
 
-	private final DoubleType angle = new DoubleType();
+	private void assertUniformRandom(final double i, final double o) {
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out = ops.math().uniformrandom(in.createVariable(), in);
+		assertEquals(o, out.get(), 0);
+	}
 
-	private final DoubleType tmp = new DoubleType();
+	private void assertUniformRandom(final double i, final double o,
+		final long seed)
+	{
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out =
+			ops.math().uniformrandom(in.createVariable(), in, seed);
+		assertEquals(o, out.get(), 0);
+	}
 
-	@Override
-	public O compute(final I input, final O output) {
-		final double xt = input.getRealDouble();
-		if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
-			"arcsec(x) : x out of range");
-		else if (xt == -1) output.setReal(Math.PI);
-		else if (xt == 1) output.setReal(0);
-		else {
-			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-			asin.compute(tmp, angle);
-			double value = angle.getRealDouble();
-			if (xt < -1) value += Math.PI;
-			output.setReal(value);
-		}
-		return output;
+	private void assertUniformRandom(final double i, final double o,
+		final double i2, final double o2)
+	{
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out = new DoubleType();
+		final long seed = 0xcafebabe12345678L;
+		@SuppressWarnings("unchecked")
+		final RealUniformRandom<DoubleType, DoubleType> op =
+			ops.op(RealUniformRandom.class, in.createVariable(), in, seed);
+		op.compute(in, out);
+		assertEquals(o, out.get(), 0);
+		in.set(i2);
+		op.compute(in, out);
+		assertEquals(o2, out.get(), 0);
 	}
 }

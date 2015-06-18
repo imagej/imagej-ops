@@ -53,11 +53,22 @@ public class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStrictFunction<I, O> implements MathOps.UniformRandom
 {
 
-	@Parameter
-	private final Random rng = new Random();
+	@Parameter(required = false)
+	private long seed = 0xabcdef1234567890L;
+
+	private Random rng;
+
+	public long getSeed() {
+		return seed;
+	}
+
+	public void setSeed(final long seed) {
+		this.seed = seed;
+	}
 
 	@Override
 	public O compute(final I input, final O output) {
+		if (rng == null) rng = new Random(seed);
 		final double r = rng.nextDouble();
 		output.setReal(r * input.getRealDouble());
 		return output;

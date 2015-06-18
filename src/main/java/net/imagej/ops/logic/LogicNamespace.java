@@ -97,6 +97,246 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class)
+	public boolean greaterthan(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class)
+	public boolean greaterthan(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class)
+	public boolean greaterthan(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class)
+	public boolean greaterthan(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThan.class)
+	public <T> boolean greaterthan(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ComparableGreaterThan.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThanOrEqual.class)
+	public boolean greaterthanorequal(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThanOrEqual.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.LongGreaterThanOrEqual.class)
+	public boolean greaterthanorequal(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThanOrEqual.class)
+	public boolean greaterthanorequal(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops()
+				.run(net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThanOrEqual.class,
+					a, b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThanOrEqual.class)
+	public boolean greaterthanorequal(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThanOrEqual.class, a,
+				b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThanOrEqual.class)
+	public <T> boolean greaterthanorequal(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.ComparableGreaterThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class)
+	public boolean lessthan(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class)
+	public boolean lessthan(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class)
+	public boolean lessthan(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class)
+	public boolean lessthan(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableLessThan.class)
+	public <T> boolean lessthan(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ComparableLessThan.class, a, b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThanOrEqual.class)
+	public boolean lessthanorequal(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongLessThanOrEqual.class)
+	public boolean lessthanorequal(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongLessThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatLessThanOrEqual.class)
+	public
+		boolean lessthanorequal(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatLessThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.logic.PrimitiveLogic.DoubleLessThanOrEqual.class)
+	public boolean lessthanorequal(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThanOrEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ComparableLessThanOrEqual.class)
+	public <T> boolean lessthanorequal(final Comparable<T> a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ComparableLessThanOrEqual.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class)
+	public boolean not(final boolean a) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanNot.class,
+				a);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class)
+	public boolean notequal(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class)
+	public boolean notequal(final int a, final int b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class)
+	public boolean notequal(final long a, final long b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class)
+	public boolean notequal(final float a, final float b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class)
+	public boolean notequal(final double a, final double b) {
+		final boolean result =
+			(Boolean) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.ObjectsNotEqual.class)
+	public boolean notequal(final Object a, final Object b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.ObjectsNotEqual.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class)
+	public boolean or(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanOr.class,
+				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class)
+	public boolean xor(final boolean a, final boolean b) {
+		final boolean result =
+			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class,
+				a, b);
+		return result;
+	}
+
 	// -- Named methods --
 
 	@Override

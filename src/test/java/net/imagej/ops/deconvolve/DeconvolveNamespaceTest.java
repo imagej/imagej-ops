@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -8,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -29,50 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.real;
+package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.DeconvolveOps.RichardsonLucy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Sets the real component of an output real number to the inverse secant of the
- * real component of an input real number.
- * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * Tests that the ops of the math namespace have corresponding type-safe Java
+ * method signatures declared in the {@link DeconvolveNamespace} class.
+ *
+ * @author Alison Walter
  */
-@Plugin(type = Op.class, name = MathOps.Arcsec.NAME)
-public class RealArcsec<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<I, O> implements MathOps.Arcsec
-{
+public class DeconvolveNamespaceTest extends AbstractNamespaceTest {
 
-	private final static RealArcsin<DoubleType, DoubleType> asin =
-		new RealArcsin<DoubleType, DoubleType>();
-
-	private final DoubleType angle = new DoubleType();
-
-	private final DoubleType tmp = new DoubleType();
-
-	@Override
-	public O compute(final I input, final O output) {
-		final double xt = input.getRealDouble();
-		if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
-			"arcsec(x) : x out of range");
-		else if (xt == -1) output.setReal(Math.PI);
-		else if (xt == 1) output.setReal(0);
-		else {
-			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-			asin.compute(tmp, angle);
-			double value = angle.getRealDouble();
-			if (xt < -1) value += Math.PI;
-			output.setReal(value);
-		}
-		return output;
+	/** Tests for {@link RichardsonLucy} method convergence. */
+	@Test
+	public void testRichardsonLucy() {
+		assertComplete("deconvolve", DeconvolveNamespace.class, RichardsonLucy.NAME);
 	}
+
 }
