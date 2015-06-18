@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.project.parallel.DefaultProjectParallel;
-import net.imagej.ops.statistics.Sum;
+import net.imagej.ops.statistics.FirstOrderOps.Sum;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;

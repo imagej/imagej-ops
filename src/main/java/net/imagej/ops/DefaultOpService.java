@@ -43,6 +43,12 @@ import net.imagej.ops.create.CreateOps.CreateType;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
+import net.imagej.ops.statistics.FirstOrderOps;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -62,8 +68,7 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultOpService extends AbstractPTService<Op> implements
-	OpService
-{
+		OpService {
 
 	@Parameter
 	private ModuleService moduleService;
@@ -91,8 +96,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <OP extends Op> Object run(final Class<OP> type, final Object... args)
-	{
+	public <OP extends Op> Object run(final Class<OP> type,
+			final Object... args) {
 		final Module module = module(type, args);
 		return run(module);
 	}
@@ -105,14 +110,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Op op(final String name, final Object... args) {
 		final Module module = module(name, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		return (Op) module.getDelegateObject();
 	}
 
 	@Override
 	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
 		final Module module = module(type, args);
-		if (module == null) return null;
+		if (module == null)
+			return null;
 		@SuppressWarnings("unchecked")
 		final OP op = (OP) module.getDelegateObject();
 		return op;
@@ -125,8 +132,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <OP extends Op> Module module(final Class<OP> type,
-		final Object... args)
-	{
+			final Object... args) {
 		return matcher.findModule(new OpRef<OP>(type, args));
 	}
 
@@ -148,7 +154,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final HashSet<String> operations = new HashSet<String>();
 		for (final CommandInfo info : matcher.getOps()) {
 			final String name = info.getName();
-			if (name != null && !name.isEmpty()) operations.add(info.getName());
+			if (name != null && !name.isEmpty())
+				operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list
@@ -285,28 +292,28 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object max(final Object... args) {
-		return run(Ops.Max.NAME, args);
+	public Object max(Object... args) {
+		return run(FirstOrderOps.Max.NAME, args);
 	}
 
 	@Override
-	public Object mean(final Object... args) {
-		return run(Ops.Mean.NAME, args);
+	public Object mean(Object... args) {
+		return run(FirstOrderOps.Mean.NAME, args);
 	}
 
 	@Override
-	public Object median(final Object... args) {
-		return run(Ops.Median.NAME, args);
+	public Object median(Object... args) {
+		return run(FirstOrderOps.Median.NAME, args);
 	}
 
 	@Override
-	public Object min(final Object... args) {
-		return run(Ops.Min.NAME, args);
+	public Object min(Object... args) {
+		return run(FirstOrderOps.Min.NAME, args);
 	}
 
 	@Override
-	public Object minmax(final Object... args) {
-		return run(Ops.MinMax.NAME, args);
+	public Object minmax(Object... args) {
+		return run(FirstOrderOps.MinMax.NAME, args);
 	}
 
 	@Override
@@ -320,8 +327,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object quantile(final Object... args) {
-		return run(Ops.Quantile.NAME, args);
+	public Object quantile(Object... args) {
+		return run(FirstOrderOps.Quantile.NAME, args);
 	}
 
 	@Override
@@ -340,13 +347,18 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object stddev(final Object... args) {
-		return run(Ops.StdDeviation.NAME, args);
+	public Object stddev(Object... args) {
+		return run(FirstOrderOps.StdDeviation.NAME, args);
 	}
 
 	@Override
-	public Object sum(final Object... args) {
-		return run(Ops.Sum.NAME, args);
+	public Object subtract(final Object... args) {
+		return run(MathOps.Subtract.NAME, args);
+	}
+
+	@Override
+	public Object sum(Object... args) {
+		return run(FirstOrderOps.Sum.NAME, args);
 	}
 
 	@Override
@@ -355,8 +367,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object variance(final Object... args) {
-		return run(Ops.Variance.NAME, args);
+	public Object variance(Object... args) {
+		return run(FirstOrderOps.Variance.NAME, args);
 	}
 
 	// -- CreateOps short-cuts -
@@ -385,19 +397,22 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public LogicNamespace logic() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return logic;
 	}
 
 	@Override
 	public MathNamespace math() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return math;
 	}
 
 	@Override
 	public ThresholdNamespace threshold() {
-		if (!namespacesReady) initNamespaces();
+		if (!namespacesReady)
+			initNamespaces();
 		return threshold;
 	}
 
@@ -427,7 +442,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Helper methods - lazy initialization --
 
 	private synchronized void initNamespaces() {
-		if (namespacesReady) return;
+		if (namespacesReady)
+			return;
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();

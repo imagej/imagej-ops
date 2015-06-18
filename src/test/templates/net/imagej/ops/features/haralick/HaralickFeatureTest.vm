@@ -1,0 +1,125 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.features.haralick;
+
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.OpRef;
+import net.imagej.ops.OutputOp;
+import net.imagej.ops.features.AbstractFeatureTest;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MaxFeature;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MinFeature;
+import net.imagej.ops.features.haralick.HaralickFeatures;
+import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix2D;
+import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix3D;
+import net.imagej.ops.statistics.HaralickOps.*;
+import net.imagej.ops.features.ResolvedOpSet;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.junit.Test;
+
+/**
+ * Testing implementations of {@link HaralickFeatures}
+ * 
+ * @author Andreas Graumann (University of Konsanz)
+ * @author Christian Dietz (University of Konstanz)
+ */
+public class HaralickFeatureTest extends AbstractFeatureTest {
+
+	private OpRef<CooccurrenceMatrix2D> matrix2d;
+	private OpRef<CooccurrenceMatrix3D> matrix3d;
+
+	{
+		matrix2d = new OpRef<CooccurrenceMatrix2D>(CooccurrenceMatrix2D.class,
+				Img.class, 8, 1, "HORIZONTAL", MinFeature.class,
+				MaxFeature.class);
+				
+		matrix3d = new OpRef<CooccurrenceMatrix3D>(CooccurrenceMatrix3D.class,
+				Img.class, 8, 1, "HORIZONTAL_DIAGONAL", MinFeature.class,
+				MaxFeature.class);
+	}
+
+
+
+#foreach ($op in $ops)
+
+	/**
+	 * Testing {@link Feature} implementation of {@link ${op.iface}}
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Test
+	public void Haralick${op.iface}FeatureTest() {
+	
+		final OpRef<HaralickFeatures.${op.iface}Feature> feature = new OpRef<HaralickFeatures.${op.iface}Feature>(
+				HaralickFeatures.${op.iface}Feature.class);
+		ResolvedOpSet<Img<UnsignedByteType>> resolvedSet = fs.resolve(
+				empty, feature, matrix2d);
+			
+		assertEquals(${op.empty2d}, ((OutputOp<DoubleType>) resolvedSet.compute(empty)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "empty2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(empty).get(feature)).getOutput().get());
+
+		assertEquals(${op.random2d}, ((OutputOp<DoubleType>) resolvedSet.compute(random)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "random2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(random).get(feature)).getOutput().get());
+
+		assertEquals(${op.constant2d}, ((OutputOp<DoubleType>) resolvedSet.compute(constant)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "constant2d: " + ((OutputOp<DoubleType>) resolvedSet.compute(constant).get(feature)).getOutput().get());
+		
+		
+		resolvedSet = fs.resolve(
+				empty3d, feature, matrix3d);
+			
+		assertEquals(${op.empty3d}, ((OutputOp<DoubleType>) resolvedSet.compute(empty3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "empty3d: " + ((OutputOp<DoubleType>) resolvedSet.compute(empty3d).get(feature)).getOutput().get());
+
+		assertEquals(${op.random3d}, ((OutputOp<DoubleType>) resolvedSet.compute(random3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "random3d: " + ((OutputOp<DoubleType>) resolvedSet.compute(random3d).get(feature)).getOutput().get());
+		
+
+		assertEquals(${op.constant3d}, ((OutputOp<DoubleType>) resolvedSet.compute(constant3d)
+				.get(feature)).getOutput().get(),
+				SMALL_DELTA);
+		//System.out.println("${op.iface}" + "constant3d: " +  ((OutputOp<DoubleType>) resolvedSet.compute(constant3d).get(feature)).getOutput().get());
+		
+	}
+#end
+
+}

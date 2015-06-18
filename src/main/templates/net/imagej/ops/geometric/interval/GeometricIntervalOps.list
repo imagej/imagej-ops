@@ -1,0 +1,8 @@
+[GeometricIntervalOps.java]
+className = "GeometricIntervalOps"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name: "bounding-box", iface: "BoundingBox"]
+]
+```

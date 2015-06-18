@@ -1,0 +1,23 @@
+[FirstOrderFeaturesTest.java]
+ops = ```
+[
+  [iface: "Max",              empty: 0.0, random: 254.0, constant: 15.0],
+  [iface: "Mean",             empty: 0.0, random: 127.7534, constant: 15.0],
+  [iface: "Median",           empty: 0.0, random: 128.0, constant: 15.0],
+  [iface: "Min",              empty: 0.0, random: 0.0, constant: 15.0],
+  [iface: "StdDeviation",     empty: 0.0, random: 73.7460374274008, constant: 0.0],
+  [iface: "Sum",              empty: 0.0, random: 1277534.0, constant: 150000],
+  [iface: "Variance",         empty: 0.0, random: 5438.4780362436, constant: 0.0],
+  [iface: "GeometricMean",    empty: 0.0, random: 0.0, constant: 14.9999999999985],
+  [iface: "HarmonicMean",     empty: 0.0, random: 0.0, constant: 14.9999999999985],
+  [iface: "Kurtosis",         empty: "Double.NaN", random: 1.794289587623922, constant: "Double.NaN"],
+  [iface: "Moment1AboutMean", empty: 0.0, random: 0.0, constant: 0.0],
+  [iface: "Moment2AboutMean", empty: 0.0, random: 5437.93418843998, constant: 0.0],
+  [iface: "Moment3AboutMean", empty: 0.0, random: -507.810691261427, constant: 0.0],
+  [iface: "Moment4AboutMean", empty: 0.0, random: 53069780.9168701, constant: 0.0],
+  [iface: "Skewness",         empty: "Double.NaN", random: -0.0012661517853476312, constant: "Double.NaN"],
+  [iface: "SumOfInverses",    empty: "Double.POSITIVE_INFINITY", random: "Double.POSITIVE_INFINITY", constant: 666.666666666766],
+  [iface: "SumOfLogs",        empty: "Double.NEGATIVE_INFINITY", random: "Double.NEGATIVE_INFINITY", constant: 27080.5020110211],
+  [iface: "SumOfSquares",      empty: 0.0, random: 217588654, constant: 2250000]
+]
+```

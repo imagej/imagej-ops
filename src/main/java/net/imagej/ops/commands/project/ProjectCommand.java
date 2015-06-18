@@ -35,7 +35,7 @@ import net.imagej.axis.TypedAxis;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Project;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
@@ -67,27 +67,30 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 	@Override
 	public void run() {
 		if (out == null) {
-			Img<T> img = in.factory().create(in, in.firstElement().createVariable());
+			Img<T> img = in.factory().create(in,
+					in.firstElement().createVariable());
 			out = new ImgPlus<T>(img, in);
 		}
 		int axisIndex = in.dimensionIndex(axis.type());
 		ops.run(Project.class, out, in, method, axisIndex);
 	}
 
-	/* -- Wrapper classes to mark certain operations as projection methods --*/
+	/* -- Wrapper classes to mark certain operations as projection methods -- */
 
 	private class ProjectMean extends AbstractStrictFunction<Iterable<T>, T>
-		implements ProjectMethod<T>
-	{
+			implements ProjectMethod<T> {
 
-		private Mean<Iterable<T>, T> mean;
+		private MeanFeature<T> mean;
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public T compute(Iterable<T> input, T output) {
 			if (mean == null) {
-				mean = (Mean<Iterable<T>, T>) ops.op(Mean.class, output, input);
+				mean = (MeanFeature<T>) ops
+						.op(MeanFeature.class, output, input);
+				mean.run();
 			}
-			return mean.compute(input, output);
+			return mean.getOutput();
 		}
 
 	}

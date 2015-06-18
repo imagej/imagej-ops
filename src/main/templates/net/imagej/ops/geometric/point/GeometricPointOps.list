@@ -1,0 +1,8 @@
+[GeometricPointOps.java]
+className = "GeometricPointOps"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name: "center-of-gravity", iface: "CenterOfGravity"]
+]
+```

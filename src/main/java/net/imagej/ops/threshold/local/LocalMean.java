@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.local;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.features.firstorder.FirstOrderFeatures.MeanFeature;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -52,14 +52,17 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
 	@Parameter
 	private OpService ops;
 
-	private Mean<Iterable<T>, DoubleType> mean;
+	private MeanFeature<DoubleType> mean;
 
 	@Override
 	public BitType compute(Pair<T> input, BitType output) {
 		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.neighborhood);
+			mean = (MeanFeature<DoubleType>) ops.op(MeanFeature.class,
+					DoubleType.class, input.neighborhood);
+			mean.run();
 		}
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
+		
+		final DoubleType m = mean.getOutput();
 		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
 		return output;
 	}

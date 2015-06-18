@@ -1,0 +1,38 @@
+[ImageMomentFeatures.java]
+className = "ImageMomentFeatures"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name: "Moment00",	iface: "Moment00"],
+	[name: "Moment01",	iface: "Moment01"],
+	[name: "Moment10",	iface: "Moment10"],
+	[name: "Moment11",	iface: "Moment11"],
+
+	[name: "CentralMoment00",	iface: "CentralMoment00"],
+	[name: "CentralMoment01",	iface: "CentralMoment01"],
+	[name: "CentralMoment10",	iface: "CentralMoment10"],
+	[name: "CentralMoment11",	iface: "CentralMoment11"],
+	[name: "CentralMoment20",	iface: "CentralMoment20"],
+	[name: "CentralMoment02",	iface: "CentralMoment02"],
+	[name: "CentralMoment21",	iface: "CentralMoment21"],
+	[name: "CentralMoment12",	iface: "CentralMoment12"],
+	[name: "CentralMoment30",	iface: "CentralMoment30"],
+	[name: "CentralMoment03",	iface: "CentralMoment03"],
+
+	[name: "NormalizedCentralMoment11",	iface: "NormalizedCentralMoment11"],
+	[name: "NormalizedCentralMoment20",	iface: "NormalizedCentralMoment20"],
+	[name: "NormalizedCentralMoment02",	iface: "NormalizedCentralMoment02"],
+	[name: "NormalizedCentralMoment21",	iface: "NormalizedCentralMoment21"],
+	[name: "NormalizedCentralMoment12",	iface: "NormalizedCentralMoment12"],
+	[name: "NormalizedCentralMoment30",	iface: "NormalizedCentralMoment30"],
+	[name: "NormalizedCentralMoment03",	iface: "NormalizedCentralMoment03"],
+
+	[name: "HuMoment1",	iface: "HuMoment1"],
+	[name: "HuMoment2",	iface: "HuMoment2"],
+	[name: "HuMoment3",	iface: "HuMoment3"],
+	[name: "HuMoment4",	iface: "HuMoment4"],
+	[name: "HuMoment5",	iface: "HuMoment5"],
+	[name: "HuMoment6",	iface: "HuMoment6"],
+	[name: "HuMoment7",	iface: "HuMoment7"]
+]
+```

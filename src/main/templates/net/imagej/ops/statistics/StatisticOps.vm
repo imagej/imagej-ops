@@ -1,0 +1,94 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.statistics;
+
+import net.imagej.ops.Op;
+
+/**
+ * Static utility class containing built-in op interfaces of the
+#if ($namespace)
+#set ($prefix = "${namespace}.")
+ * $namespace namespace.
+#else
+ * global namespace.
+#end
+ * <p>
+ * These interfaces are intended to mark all ops using a particular name,
+ * regardless of their exact functionality. For example, all ops called
+ * "${ops.get(0).name}" would be marked by implementing the
+ * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
+ * </p>
+ * <pre>
+ * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
+ * </pre>
+ *
+#foreach ($author in $authors)
+ * @author $author
+#end
+ */
+public final class $className {
+
+	private $className() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+
+	/**
+	 * Base interface for "$op.name" operations.
+	 * <p>
+	 * Implementing classes should be annotated with:
+	 * </p>
+	 *
+	 * <pre>
+#if ($op.aliases)
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
+#else
+	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME, label = $className.${op.iface}.LABEL)
+#end
+	 * </pre>
+	 */
+	public interface $op.iface extends Op {
+		String NAME = "$!{prefix}$op.name";
+		String LABEL = "$!{prefix}$op.iface";
+#if ($op.aliases)
+		String ALIASES = "##
+#set ($first = true)
+#foreach ($alias in $op.aliases)
+#if ($first)#set ($first = false)#else, #end
+$!prefix$alias##
+#end
+";
+#end
+	}
+#end
+
+}

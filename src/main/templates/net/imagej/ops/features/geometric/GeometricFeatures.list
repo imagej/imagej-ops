@@ -1,0 +1,22 @@
+[GeometricFeatures.java]
+className = "GeometricFeatures"
+authors = [Christian Dietz, Daniel Seebacher, Andreas Graumann]
+ops = ```
+[
+  [name: "Area",	iface: "Area"],
+  [name: "Circularity",	iface: "Circularity"],
+  [name: "Eccentricity",	iface: "Eccentricity"],
+  [name: "Feret",	iface: "Feret"],
+  [name: "FeretsAngle",	iface: "FeretsAngle"],
+  [name: "FeretsDiameter",	iface: "FeretsDiameter"],
+  [name: "Perimeter",	iface: "Perimeter"],
+  [name: "MajorAxis",	iface: "MajorAxis"],
+  [name: "MinorAxis",	iface: "MinorAxis"],
+  [name: "Elongation",	iface: "Elongation"],
+  [name: "Rectangularity",	iface: "Rectangularity"],
+  [name: "Roundness",	iface: "Roundness"],
+  [name: "Solidity",	iface: "Solidity"],
+  [name: "Convexity",	iface: "Convexity"],
+  [name: "Rugosity",	iface: "Rugosity"]
+]
+```

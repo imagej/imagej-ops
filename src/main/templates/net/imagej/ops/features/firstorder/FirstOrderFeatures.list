@@ -1,0 +1,27 @@
+[FirstOrderFeatures.java]
+className = "FirstOrderFeatures"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name:"Max",	iface:"Max"],
+	[name:"Mean",	iface:"Mean"],
+	[name:"Median",	iface:"Median"],
+	[name:"Min",	iface:"Min"],
+	[name:"Quantile",	iface:"Quantile"],
+	[name:"StdDeviation",	iface:"StdDeviation"],
+	[name:"Sum",	iface:"Sum"],
+	[name:"Variance",	iface:"Variance"],
+	[name:"GeometricMean",	iface:"GeometricMean"],
+	[name:"HarmonicMean",	iface:"HarmonicMean"],
+	[name:"Kurtosis",	iface:" Kurtosis"],
+	[name:"Moment1AboutMean",	iface:"Moment1AboutMean"],
+	[name:"Moment2AboutMean",	iface:"Moment2AboutMean"],
+	[name:"Moment3AboutMean",	iface:"Moment3AboutMean"],
+	[name:"Moment4AboutMean",	iface:"Moment4AboutMean"],
+	[name:"Percentile",	iface:"Percentile"],
+	[name:"Skewness",	iface:"Skewness"],
+	[name:"SumOfInverses",	iface:"SumOfInverses"],
+	[name:"SumOfLogs",	iface:"SumOfLogs"],
+	[name:"SumOfSquares",	iface:"SumOfSquares"]
+]
+```

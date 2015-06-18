@@ -34,6 +34,7 @@ import java.util.Collection;
 
 import net.imagej.ImageJService;
 import net.imagej.ops.create.CreateOps;
+import net.imagej.ImgPlus;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -54,44 +55,50 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * {@link Op} implementation to use will be selected automatically from the
 	 * operation name and arguments.
 	 *
-	 * @param name The operation to execute. If multiple {@link Op}s share this
-	 *          name, then the best {@link Op} implementation to use will be
-	 *          selected automatically from the name and arguments.
-	 * @param args The operation's arguments.
-	 * @return The result of the execution. If the {@link Op} has no outputs, this
-	 *         will return {@code null}. If exactly one output, it will be
-	 *         returned verbatim. If more than one, a {@code List<Object>} of the
-	 *         outputs will be given.
+	 * @param name
+	 *            The operation to execute. If multiple {@link Op}s share this
+	 *            name, then the best {@link Op} implementation to use will be
+	 *            selected automatically from the name and arguments.
+	 * @param args
+	 *            The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs,
+	 *         this will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of
+	 *         the outputs will be given.
 	 */
 	Object run(String name, Object... args);
 
 	/**
-	 * Executes the operation of the given type with the specified arguments. The
-	 * best {@link Op} implementation to use will be selected automatically from
-	 * the operation type and arguments.
+	 * Executes the operation of the given type with the specified arguments.
+	 * The best {@link Op} implementation to use will be selected automatically
+	 * from the operation type and arguments.
 	 *
-	 * @param type The {@link Class} of the operation to execute. If multiple
-	 *          {@link Op}s share this type (e.g., the type is an interface which
-	 *          multiple {@link Op}s implement), then the best {@link Op}
-	 *          implementation to use will be selected automatically from the type
-	 *          and arguments.
-	 * @param args The operation's arguments.
-	 * @return The result of the execution. If the {@link Op} has no outputs, this
-	 *         will return {@code null}. If exactly one output, it will be
-	 *         returned verbatim. If more than one, a {@code List<Object>} of the
-	 *         outputs will be given.
+	 * @param type
+	 *            The {@link Class} of the operation to execute. If multiple
+	 *            {@link Op}s share this type (e.g., the type is an interface
+	 *            which multiple {@link Op}s implement), then the best
+	 *            {@link Op} implementation to use will be selected
+	 *            automatically from the type and arguments.
+	 * @param args
+	 *            The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs,
+	 *         this will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of
+	 *         the outputs will be given.
 	 */
 	<OP extends Op> Object run(Class<OP> type, Object... args);
 
 	/**
 	 * Executes the given {@link Op} with the specified arguments.
 	 *
-	 * @param op The {@link Op} to execute.
-	 * @param args The operation's arguments.
-	 * @return The result of the execution. If the {@link Op} has no outputs, this
-	 *         will return {@code null}. If exactly one output, it will be
-	 *         returned verbatim. If more than one, a {@code List<Object>} of the
-	 *         outputs will be given.
+	 * @param op
+	 *            The {@link Op} to execute.
+	 * @param args
+	 *            The operation's arguments.
+	 * @return The result of the execution. If the {@link Op} has no outputs,
+	 *         this will return {@code null}. If exactly one output, it will be
+	 *         returned verbatim. If more than one, a {@code List<Object>} of
+	 *         the outputs will be given.
 	 */
 	Object run(Op op, Object... args);
 
@@ -99,23 +106,28 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * populating its inputs.
 	 *
-	 * @param name The name of the operation. If multiple {@link Op}s share this
-	 *          name, then the best {@link Op} implementation to use will be
-	 *          selected automatically from the name and arguments.
-	 * @param args The operation's arguments.
+	 * @param name
+	 *            The name of the operation. If multiple {@link Op}s share this
+	 *            name, then the best {@link Op} implementation to use will be
+	 *            selected automatically from the name and arguments.
+	 * @param args
+	 *            The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
 	Op op(String name, Object... args);
 
 	/**
-	 * Gets the best {@link Op} to use for the given operation type and arguments,
-	 * populating its inputs.
+	 * Gets the best {@link Op} to use for the given operation type and
+	 * arguments, populating its inputs.
 	 *
-	 * @param type The {@link Class} of the operation. If multiple {@link Op}s
-	 *          share this type (e.g., the type is an interface which multiple
-	 *          {@link Op}s implement), then the best {@link Op} implementation to
-	 *          use will be selected automatically from the type and arguments.
-	 * @param args The operation's arguments.
+	 * @param type
+	 *            The {@link Class} of the operation. If multiple {@link Op}s
+	 *            share this type (e.g., the type is an interface which multiple
+	 *            {@link Op}s implement), then the best {@link Op}
+	 *            implementation to use will be selected automatically from the
+	 *            type and arguments.
+	 * @param args
+	 *            The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
 	<O extends Op> O op(Class<O> type, Object... args);
@@ -124,22 +136,27 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
 	 *
-	 * @param name The name of the operation.
-	 * @param args The operation's arguments.
+	 * @param name
+	 *            The name of the operation.
+	 * @param args
+	 *            The operation's arguments.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
 	Module module(String name, Object... args);
 
 	/**
-	 * Gets the best {@link Op} to use for the given operation type and arguments,
-	 * wrapping it as a {@link Module} with populated inputs.
+	 * Gets the best {@link Op} to use for the given operation type and
+	 * arguments, wrapping it as a {@link Module} with populated inputs.
 	 *
-	 * @param type The required type of the operation. If multiple {@link Op}s
-	 *          share this type (e.g., the type is an interface which multiple
-	 *          {@link Op}s implement), then the best {@link Op} implementation to
-	 *          use will be selected automatically from the type and arguments.
-	 * @param args The operation's arguments.
+	 * @param type
+	 *            The required type of the operation. If multiple {@link Op}s
+	 *            share this type (e.g., the type is an interface which multiple
+	 *            {@link Op}s implement), then the best {@link Op}
+	 *            implementation to use will be selected automatically from the
+	 *            type and arguments.
+	 * @param args
+	 *            The operation's arguments.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 */
@@ -148,8 +165,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/**
 	 * Wraps the given {@link Op} as a {@link Module}, populating its inputs.
 	 *
-	 * @param op The {@link Op} to wrap and populate.
-	 * @param args The operation's arguments.
+	 * @param op
+	 *            The {@link Op} to wrap and populate.
+	 * @param args
+	 *            The operation's arguments.
 	 * @return A {@link Module} wrapping the {@link Op}, with populated inputs,
 	 *         ready to run.
 	 */
@@ -310,6 +329,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)
 	Object stddev(Object... args);
+
+	/** Executes the "subtract" operation on the given arguments. */
+	@OpMethod(op = MathOps.Subtract.class)
+	Object subtract(Object... args);
 
 	/** Executes the "sum" operation on the given arguments. */
 	@OpMethod(op = Ops.Sum.class)

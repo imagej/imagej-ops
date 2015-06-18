@@ -1,0 +1,11 @@
+[GeometricPolygonOps.java]
+className = "GeometricPolygonOps"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name: "moore-contour", iface: "MooreContours"],
+	[name: "convex-hull", iface: "ConvexHull"],
+	[name: "bounding-box", iface: "BoundingBox"],
+	[name: "smallest-enclosing-rectangle", iface: "SmallestEnclosingRectangle"]
+]
+```
