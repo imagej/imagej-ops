@@ -47,6 +47,8 @@ import net.imglib2.type.numeric.RealType;
  */
 public class DeconvolveNamespace extends AbstractNamespace {
 
+	//-- Deconvolve namespace ops --
+
 	@OpMethod(op = net.imagej.ops.DeconvolveOps.RichardsonLucy.class)
 	public Object richardsonlucy(final Object... args) {
 		return ops().run(net.imagej.ops.DeconvolveOps.RichardsonLucy.class, args);
