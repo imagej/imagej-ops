@@ -451,22 +451,22 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(Interval interval, ImgPlus<T> in);
+	<T extends Type<T>> ImgPlus<T> crop(ImgPlus<T> in, Interval interval);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(Interval interval, ImgPlus<T> out,
-		ImgPlus<T> in);
+	<T extends Type<T>> ImgPlus<T> crop(ImgPlus<T> in, Interval interval,
+		boolean dropSingleDimensions);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T> crop(Interval interval,
-		RandomAccessibleInterval<T> in);
+	<T> RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in,
+		Interval interval);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T> crop(Interval interval,
-		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in);
+	<T> RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in,
+		Interval interval, boolean dropSingleDimensions);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Deconvolve.class)
@@ -867,9 +867,53 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object map(Object... args);
 
 	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapConvertRAIToRAI.class)
+	<A, B extends Type<B>> RandomAccessibleInterval<B> map(
+		RandomAccessibleInterval<A> input, Function<A, B> function, B type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapConvertRandomAccessToRandomAccess.class)
+	<A, B extends Type<B>> RandomAccessible<B> map(RandomAccessible<A> input, Function<A, B> function,
+		B type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalToView.class)
+	<A, B extends Type<B>> IterableInterval<B> map(IterableInterval<A> input,
+		Function<A, B> function, B type);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapParallel.class)
+	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceFunction<A> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableToIterableParallel.class,
+		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
+	<A, B> IterableInterval<B> map(IterableInterval<B> out,
+		IterableInterval<A> in, Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableToRAIParallel.class,
+		net.imagej.ops.map.MapIterableIntervalToRAI.class })
+	<A, B> RandomAccessibleInterval<B> map(RandomAccessibleInterval<B> out,
+		IterableInterval<A> in, Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
+	<A> Iterable<A> map(Iterable<A> arg, InplaceFunction<A> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapRAIToIterableInterval.class)
+	<A, B> IterableInterval<B> map(IterableInterval<B> out,
+		RandomAccessibleInterval<A> in, Function<A, B> func);
+
+	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.neighborhood.MapNeighborhood.class)
 	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, Shape shape, Function<Iterable<I>, O> func);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
+	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, Function<A, B> func);
 
 	/** Executes the "max" operation on the given arguments. */
 	@OpMethod(op = Ops.Max.class)
@@ -917,6 +961,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.MinMax.class)
 	Object minmax(Object... args);
 
+	/** Executes the "minmax" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.misc.MinMaxRealType.class)
+	<T extends RealType<T>> List<T> minmax(Iterable<T> img);
+
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = Ops.Normalize.class)
 	Object normalize(Object... args);
@@ -926,9 +974,20 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<T extends RealType<T>> T normalize(T out, T in, double oldMin,
 		double newMin, double newMax, double factor);
 
+	@OpMethod(op = net.imagej.ops.normalize.NormalizeIterableInterval.class)
+	<T extends RealType<T>> IterableInterval<T> normalize(
+		IterableInterval<T> out, IterableInterval<T> in);
+
 	/** Executes the "project" operation on the given arguments. */
 	@OpMethod(op = Ops.Project.class)
 	Object project(Object... args);
+
+	/** Executes the "project" operation on the given arguments. */
+	@OpMethod(ops = {
+		net.imagej.ops.project.parallel.DefaultProjectParallel.class,
+		net.imagej.ops.project.ProjectRAIToIterableInterval.class })
+	<T, V> IterableInterval<V> project(IterableInterval<V> out,
+		RandomAccessibleInterval<T> in, Function<Iterable<T>, V> method, int dim);
 
 	/** Executes the "quantile" operation on the given arguments. */
 	@OpMethod(op = Ops.Quantile.class)
@@ -963,6 +1022,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.slicer.SlicewiseRAI2RAI.class)
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, Function<I, O> func, int... axisIndices);
+
+	/** Executes the "slicewise" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.slicer.SlicewiseRAI2RAI.class)
+	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
+		RandomAccessibleInterval<I> in, Function<I, O> func, int[] axisIndices,
+		boolean dropSingleDimensions);
 
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)

@@ -180,6 +180,22 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Add.class)
+	public <T extends RealType<T>> T add(final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Add.class, in, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Add.class)
+	public <T extends RealType<T>> T add(final T out, final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Add.class, out, in, b);
+		return result;
+	}
+
 	@OpMethod(
 		op = net.imagej.ops.arithmetic.add.AddRandomAccessibleIntervalToIterableInterval.class)
 	public
@@ -749,6 +765,22 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Divide.class)
+	public <T extends RealType<T>> T divide(final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Divide.class, in, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Divide.class)
+	public <T extends RealType<T>> T divide(final T out, final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Divide.class, out, in, b);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.MathOps.Exp.class)
 	public Object exp(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Exp.class, args);
@@ -1119,6 +1151,22 @@ public class MathNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops().run(net.imagej.ops.arithmetic.real.RealMultiply.class, out, in,
 				constant);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Multiply.class)
+	public <T extends RealType<T>> T multiply(final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Multiply.class, in, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Multiply.class)
+	public <T extends RealType<T>> T multiply(final T out, final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Multiply.class, out, in, b);
 		return result;
 	}
 
@@ -1581,6 +1629,22 @@ public class MathNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops().run(net.imagej.ops.arithmetic.real.RealSubtract.class, out, in,
 				constant);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Subtract.class)
+	public <T extends RealType<T>> T subtract(final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Subtract.class, in, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Subtract.class)
+	public <T extends RealType<T>> T subtract(final T out, final T in, final T b) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.math.RealBinaryMath.Subtract.class, out, in, b);
 		return result;
 	}
 

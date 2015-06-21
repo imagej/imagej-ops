@@ -617,45 +617,46 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends Type<T>> ImgPlus<T> crop(final Interval interval,
-		final ImgPlus<T> in)
+	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
+		final Interval interval)
 	{
 		@SuppressWarnings("unchecked")
 		final ImgPlus<T> result =
-			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, interval, in);
+			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, in, interval);
 		return result;
 	}
 
 	@Override
-	public <T extends Type<T>> ImgPlus<T> crop(final Interval interval,
-		final ImgPlus<T> out, final ImgPlus<T> in)
+	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
+		final Interval interval, final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final ImgPlus<T> result =
-			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, interval, out, in);
+			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, in, interval,
+				dropSingleDimensions);
 		return result;
 	}
 
 	@Override
-	public <T> RandomAccessibleInterval<T> crop(final Interval interval,
-		final RandomAccessibleInterval<T> in)
+	public <T> RandomAccessibleInterval<T> crop(
+		final RandomAccessibleInterval<T> in, final Interval interval)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class,
-				interval, in);
+			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class, in,
+				interval);
 		return result;
 	}
 
 	@Override
-	public <T> RandomAccessibleInterval<T>
-		crop(final Interval interval, final RandomAccessibleInterval<T> out,
-			final RandomAccessibleInterval<T> in)
+	public <T> RandomAccessibleInterval<T> crop(
+		final RandomAccessibleInterval<T> in, final Interval interval,
+		final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class,
-				interval, out, in);
+			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class, in,
+				interval, dropSingleDimensions);
 		return result;
 	}
 
@@ -1415,6 +1416,101 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <A, B extends Type<B>> RandomAccessibleInterval<B> map(
+		final RandomAccessibleInterval<A> input, final Function<A, B> function,
+		final B type)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<B> result =
+			(RandomAccessibleInterval<B>) run(
+				net.imagej.ops.map.MapConvertRAIToRAI.class, input, function, type);
+		return result;
+	}
+
+	@Override
+	public <A, B extends Type<B>> RandomAccessible<B>
+		map(final RandomAccessible<A> input, final Function<A, B> function,
+			final B type)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessible<B> result =
+			(RandomAccessible<B>) run(
+				net.imagej.ops.map.MapConvertRandomAccessToRandomAccess.class, input,
+				function, type);
+		return result;
+	}
+
+	@Override
+	public <A, B extends Type<B>> IterableInterval<B>
+		map(final IterableInterval<A> input, final Function<A, B> function,
+			final B type)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(
+				net.imagej.ops.map.MapIterableIntervalToView.class, input, function,
+				type);
+		return result;
+	}
+
+	@Override
+	public <A> IterableInterval<A> map(final IterableInterval<A> arg,
+		final InplaceFunction<A> func)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<A> result =
+			(IterableInterval<A>) run(net.imagej.ops.map.MapParallel.class, arg, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
+		final IterableInterval<A> in, final Function<A, B> func)
+	{
+		// net.imagej.ops.map.MapIterableToIterableParallel.class
+		// net.imagej.ops.map.MapIterableIntervalToIterableInterval.class
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(net.imagej.ops.Ops.Map.class, out, in, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> RandomAccessibleInterval<B> map(
+		final RandomAccessibleInterval<B> out, final IterableInterval<A> in,
+		final Function<A, B> func)
+	{
+		// net.imagej.ops.map.MapIterableToRAIParallel.class
+		// net.imagej.ops.map.MapIterableIntervalToRAI.class
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<B> result =
+			(RandomAccessibleInterval<B>) run(net.imagej.ops.Ops.Map.class, out, in,
+				func);
+		return result;
+	}
+
+	@Override
+	public <A> Iterable<A> map(final Iterable<A> arg,
+		final InplaceFunction<A> func)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<A> result =
+			(Iterable<A>) run(net.imagej.ops.map.MapIterableInplace.class, arg, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
+		final RandomAccessibleInterval<A> in, final Function<A, B> func)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<B> result =
+			(IterableInterval<B>) run(
+				net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, func);
+		return result;
+	}
+
+	@Override
 	public <I, O> RandomAccessibleInterval<O> map(
 		final RandomAccessibleInterval<O> out,
 		final RandomAccessibleInterval<I> in, final Shape shape,
@@ -1424,6 +1520,17 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
 				net.imagej.ops.neighborhood.MapNeighborhood.class, out, in, shape, func);
+		return result;
+	}
+
+	@Override
+	public <A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in,
+		final Function<A, B> func)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<B> result =
+			(Iterable<B>) run(net.imagej.ops.map.MapIterableToIterable.class, out,
+				in, func);
 		return result;
 	}
 
@@ -1509,6 +1616,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> List<T> minmax(final Iterable<T> img) {
+		@SuppressWarnings("unchecked")
+		final List<T> result =
+			(List<T>) run(net.imagej.ops.misc.MinMaxRealType.class, img);
+		return result;
+	}
+
+	@Override
 	public Object normalize(final Object... args) {
 		return run(Ops.Normalize.NAME, args);
 	}
@@ -1526,8 +1641,33 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public <T extends RealType<T>> IterableInterval<T> normalize(
+		final IterableInterval<T> out, final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) run(
+				net.imagej.ops.normalize.NormalizeRealType.class, out, in);
+		return result;
+	}
+
+	@Override
 	public Object project(final Object... args) {
 		return run(Ops.Project.NAME, args);
+	}
+
+	@Override
+	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
+		final RandomAccessibleInterval<T> in,
+		final Function<Iterable<T>, V> method, final int dim)
+	{
+		// net.imagej.ops.project.parallel.DefaultProjectParallel.class
+		// net.imagej.ops.project.ProjectRAIToIterableInterval.class
+		@SuppressWarnings("unchecked")
+		final IterableInterval<V> result =
+			(IterableInterval<V>) run(net.imagej.ops.Ops.Project.class, out, in,
+				method, dim);
+		return result;
 	}
 
 	@Override
@@ -1587,6 +1727,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(RandomAccessibleInterval<O>) run(
 				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices);
+		return result;
+	}
+
+	@Override
+	public <I, O> RandomAccessibleInterval<O> slicewise(
+		final RandomAccessibleInterval<O> out,
+		final RandomAccessibleInterval<I> in, final Function<I, O> func,
+		final int[] axisIndices, final boolean dropSingleDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) run(
+				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				axisIndices, dropSingleDimensions);
 		return result;
 	}
 
