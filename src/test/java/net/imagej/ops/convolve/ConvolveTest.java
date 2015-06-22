@@ -159,9 +159,8 @@ public class ConvolveTest extends AbstractOpTest {
 		assertEquals(inSum, outSum2);
 		assertEquals(inSum, outSum3);
 
-		System.out.println(out.dimension(0));
-		System.out.println(out2.dimension(0));
-
+		assertEquals(size[0], out.dimension(0));
+		assertEquals(size[0], out2.dimension(0));
 	}
 
 	// utility to place a small sphere at the center of the image
