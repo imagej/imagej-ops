@@ -30,12 +30,12 @@
 
 package net.imagej.ops;
 
-import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.ASCII;
 import net.imagej.ops.Ops.Chunker;
 import net.imagej.ops.Ops.Convert;
 import net.imagej.ops.Ops.Convolve;
 import net.imagej.ops.Ops.Correlate;
+import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.Crop;
 import net.imagej.ops.Ops.Deconvolve;
 import net.imagej.ops.Ops.Equation;
