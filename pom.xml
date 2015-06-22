@@ -16,10 +16,6 @@
 	<description>ImageJ OPS: a framework for reusable algorithms.</description>
 	<inceptionYear>2014</inceptionYear>
 
-	<properties>
-		<scijava-expression-parser.version>2.0.0</scijava-expression-parser.version>
-	</properties>
-
 	<developers>
 		<developer>
 			<id>dietzc</id>
@@ -180,7 +176,6 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.16.1-GA</version>
 		</dependency>
 
 		<!-- Test scope dependencies -->
