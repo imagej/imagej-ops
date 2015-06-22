@@ -61,12 +61,10 @@ public class DeconvolveTest extends AbstractOpTest {
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> convolved = (Img<FloatType>) ops.run("convolve", in, kernel);
+		Img<FloatType> convolved = ops.convolve(in, kernel);
 
 		Img<FloatType> deconvolved2 =
-			(Img<FloatType>) ops.run("deconvolve.richardsonlucy", convolved, kernel,
-				10);
-
+			ops.deconvolve().richardsonLucy(convolved, kernel, 10);
 	}
 
 	// utility to place a small sphere at the center of the image

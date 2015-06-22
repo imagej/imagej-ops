@@ -98,7 +98,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class)
-	public boolean greaterthan(final int a, final int b) {
+	public boolean greaterThan(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class, a, b);
@@ -106,7 +106,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class)
-	public boolean greaterthan(final long a, final long b) {
+	public boolean greaterThan(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThan.class, a, b);
@@ -114,7 +114,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class)
-	public boolean greaterthan(final float a, final float b) {
+	public boolean greaterThan(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThan.class, a, b);
@@ -122,7 +122,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class)
-	public boolean greaterthan(final double a, final double b) {
+	public boolean greaterThan(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThan.class, a, b);
@@ -130,7 +130,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThan.class)
-	public <T> boolean greaterthan(final Comparable<T> a, final Object b) {
+	public <T> boolean greaterThan(final Comparable<T> a, final Object b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.ComparableGreaterThan.class, a,
 				b);
@@ -139,7 +139,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThanOrEqual.class)
-	public boolean greaterthanorequal(final int a, final int b) {
+	public boolean greaterThanOrEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThanOrEqual.class, a,
@@ -149,7 +149,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.LongGreaterThanOrEqual.class)
-	public boolean greaterthanorequal(final long a, final long b) {
+	public boolean greaterThanOrEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.LongGreaterThanOrEqual.class, a, b);
@@ -158,7 +158,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThanOrEqual.class)
-	public boolean greaterthanorequal(final float a, final float b) {
+	public boolean greaterThanOrEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops()
 				.run(net.imagej.ops.logic.PrimitiveLogic.FloatGreaterThanOrEqual.class,
@@ -168,7 +168,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThanOrEqual.class)
-	public boolean greaterthanorequal(final double a, final double b) {
+	public boolean greaterThanOrEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.DoubleGreaterThanOrEqual.class, a,
@@ -177,7 +177,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.ComparableGreaterThanOrEqual.class)
-	public <T> boolean greaterthanorequal(final Comparable<T> a, final Object b) {
+	public <T> boolean greaterThanOrEqual(final Comparable<T> a, final Object b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.ComparableGreaterThanOrEqual.class, a, b);
@@ -185,7 +185,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class)
-	public boolean lessthan(final int a, final int b) {
+	public boolean lessThan(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class, a, b);
@@ -193,7 +193,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class)
-	public boolean lessthan(final long a, final long b) {
+	public boolean lessThan(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.LongLessThan.class, a, b);
@@ -201,7 +201,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class)
-	public boolean lessthan(final float a, final float b) {
+	public boolean lessThan(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.FloatLessThan.class, a, b);
@@ -209,7 +209,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class)
-	public boolean lessthan(final double a, final double b) {
+	public boolean lessThan(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThan.class, a, b);
@@ -217,7 +217,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.ComparableLessThan.class)
-	public <T> boolean lessthan(final Comparable<T> a, final Object b) {
+	public <T> boolean lessThan(final Comparable<T> a, final Object b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.ComparableLessThan.class, a, b);
 		return result;
@@ -225,7 +225,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThanOrEqual.class)
-	public boolean lessthanorequal(final int a, final int b) {
+	public boolean lessThanOrEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.IntegerLessThanOrEqual.class, a, b);
@@ -233,7 +233,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongLessThanOrEqual.class)
-	public boolean lessthanorequal(final long a, final long b) {
+	public boolean lessThanOrEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.LongLessThanOrEqual.class, a, b);
@@ -242,7 +242,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatLessThanOrEqual.class)
 	public
-		boolean lessthanorequal(final float a, final float b) {
+		boolean lessThanOrEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.FloatLessThanOrEqual.class, a, b);
@@ -251,7 +251,7 @@ public class LogicNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.logic.PrimitiveLogic.DoubleLessThanOrEqual.class)
-	public boolean lessthanorequal(final double a, final double b) {
+	public boolean lessThanOrEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.DoubleLessThanOrEqual.class, a, b);
@@ -259,7 +259,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.ComparableLessThanOrEqual.class)
-	public <T> boolean lessthanorequal(final Comparable<T> a, final Object b) {
+	public <T> boolean lessThanOrEqual(final Comparable<T> a, final Object b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.ComparableLessThanOrEqual.class,
 				a, b);
@@ -275,7 +275,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class)
-	public boolean notequal(final boolean a, final boolean b) {
+	public boolean notEqual(final boolean a, final boolean b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class, a, b);
@@ -283,7 +283,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class)
-	public boolean notequal(final int a, final int b) {
+	public boolean notEqual(final int a, final int b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.IntegerNotEqual.class, a, b);
@@ -291,7 +291,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class)
-	public boolean notequal(final long a, final long b) {
+	public boolean notEqual(final long a, final long b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.LongNotEqual.class, a, b);
@@ -299,7 +299,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class)
-	public boolean notequal(final float a, final float b) {
+	public boolean notEqual(final float a, final float b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.FloatNotEqual.class, a, b);
@@ -307,7 +307,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class)
-	public boolean notequal(final double a, final double b) {
+	public boolean notEqual(final double a, final double b) {
 		final boolean result =
 			(Boolean) ops().run(
 				net.imagej.ops.logic.PrimitiveLogic.DoubleNotEqual.class, a, b);
@@ -315,7 +315,7 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.ObjectsNotEqual.class)
-	public boolean notequal(final Object a, final Object b) {
+	public boolean notEqual(final Object a, final Object b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.ObjectsNotEqual.class, a, b);
 		return result;

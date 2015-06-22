@@ -34,7 +34,7 @@ import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "stddev" function.
+ * A typed "stdDev" function.
  * 
  * @author Christian Dietz
  */

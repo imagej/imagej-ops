@@ -611,13 +611,13 @@ public interface OpService extends PTService<Op>, ImageJService {
 			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
 			long... paddedSize);
 
-	/** Executes the "fftsize" operation on the given arguments. */
+	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = Ops.FFTSize.class)
-	Object fftsize(Object... args);
+	Object fftSize(Object... args);
 
-	/** Executes the "fftsize" operation on the given arguments. */
+	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.size.ComputeFFTSize.class)
-	List<long[]> fftsize(long[] inputSize, long[] paddedSize, long[] fftSize,
+	List<long[]> fftSize(long[] inputSize, long[] paddedSize, long[] fftSize,
 		Boolean forward, Boolean fast);
 
 	/** Executes the "gauss" operation on the given arguments. */
@@ -630,58 +630,58 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in,
 		double sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(op = Ops.GaussKernel.class)
 	Object gaussKernel(Object... args);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(int numDimensions,
+		<T extends ComplexType<T>> Img<T> gaussKernel(int numDimensions,
 			double sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(Type<T> outType,
+		<T extends ComplexType<T>> Img<T> gaussKernel(Type<T> outType,
 			int numDimensions, double sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(Type<T> outType,
+		<T extends ComplexType<T>> Img<T> gaussKernel(Type<T> outType,
 			ImgFactory<T> fac, int numDimensions, double sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
 		<T extends ComplexType<T>>
 		Img<T>
-		gausskernel(Type<T> outType, ImgFactory<T> fac, int numDimensions,
+		gaussKernel(Type<T> outType, ImgFactory<T> fac, int numDimensions,
 			double sigma, double... calibration);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
 	<T extends ComplexType<T> & NativeType<T>> Img<T>
-		gausskernel(double... sigma);
+		gaussKernel(double... sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		Type<T> outType, double... sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		Type<T> outType, ImgFactory<T> fac, double... sigma);
 
-	/** Executes the "gausskernel" operation on the given arguments. */
+	/** Executes the "gaussKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		Type<T> outType, ImgFactory<T> fac, double[] sigma, double... calibration);
 
 	/** Executes the "help" operation on the given arguments. */
@@ -795,50 +795,50 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = Ops.Log.class)
 	Object log(Object... args);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(op = Ops.LogKernel.class)
 	Object logKernel(Object... args);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(int numDimensions, double sigma);
+	<T extends ComplexType<T>> Img<T> logKernel(int numDimensions, double sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
 		int numDimensions, double sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
 		ImgFactory<T> fac, int numDimensions, double sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
 		ImgFactory<T> fac, int numDimensions, double sigma, double... calibration);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(double... sigma);
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(double... sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
 		double... sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
 		ImgFactory<T> fac, double... sigma);
 
-	/** Executes the "logkernel" operation on the given arguments. */
+	/** Executes the "logKernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
 		ImgFactory<T> fac, double[] sigma, double... calibration);
 
 	/** Executes the "lookup" operation on the given arguments. */
@@ -957,13 +957,13 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.statistics.MinRealType.class)
 	<T extends RealType<T>> T min(T out, Iterable<T> in);
 
-	/** Executes the "minmax" operation on the given arguments. */
+	/** Executes the "minMax" operation on the given arguments. */
 	@OpMethod(op = Ops.MinMax.class)
-	Object minmax(Object... args);
+	Object minMax(Object... args);
 
-	/** Executes the "minmax" operation on the given arguments. */
+	/** Executes the "minMax" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.misc.MinMaxRealType.class)
-	<T extends RealType<T>> List<T> minmax(Iterable<T> img);
+	<T extends RealType<T>> List<T> minMax(Iterable<T> img);
 
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = Ops.Normalize.class)
@@ -1029,21 +1029,21 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<I> in, Function<I, O> func, int[] axisIndices,
 		boolean dropSingleDimensions);
 
-	/** Executes the "stddev" operation on the given arguments. */
+	/** Executes the "stdDev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)
-	Object stddev(Object... args);
+	Object stdDev(Object... args);
 
-	/** Executes the "stddev" operation on the given arguments. */
+	/** Executes the "stdDev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealTypeDirect.class)
-	<T extends RealType<T>> T stddev(T out, Iterable<T> in);
+	<T extends RealType<T>> T stdDev(T out, Iterable<T> in);
 
-	/** Executes the "stddev" operation on the given arguments. */
+	/** Executes the "stdDev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stddev(DoubleType out, Iterable<T> in);
+	<T extends RealType<T>> DoubleType stdDev(DoubleType out, Iterable<T> in);
 
-	/** Executes the "stddev" operation on the given arguments. */
+	/** Executes the "stdDev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stddev(DoubleType out, Iterable<T> in,
+	<T extends RealType<T>> DoubleType stdDev(DoubleType out, Iterable<T> in,
 		Variance<T, DoubleType> variance);
 
 	/** Executes the "sum" operation on the given arguments. */
@@ -1115,21 +1115,21 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	// -- CreateOps short-cuts --
 
-	/** Executes the "createimg" operation on the given arguments. */
+	/** Executes the "createImg" operation on the given arguments. */
 	@OpMethod(op = CreateOps.CreateImg.class)
-	Object createimg(Object... args);
+	Object createImg(Object... args);
 
-	/** Executes the "createimglabeling" operation on the given arguments. */
+	/** Executes the "createImgLabeling" operation on the given arguments. */
 	@OpMethod(op = CreateOps.CreateImgLabeling.class)
-	Object createimglabeling(Object... args);
+	Object createImgLabeling(Object... args);
 
-	/** Executes the "createimgfactory" operation on the given arguments. */
+	/** Executes the "createImgFactory" operation on the given arguments. */
 	@OpMethod(op = CreateOps.CreateImgFactory.class)
-	Object createimgfactory(Object... args);
+	Object createImgFactory(Object... args);
 
-	/** Executes the "createtype" operation. */
+	/** Executes the "createType" operation. */
 	@OpMethod(op = CreateOps.CreateType.class)
-	Object createtype();
+	Object createType();
 
 	// -- Operation shortcuts - other namespaces --
 

@@ -159,13 +159,13 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.ThresholdOps.IsoData.class)
-	public Object isodata(final Object... args) {
+	public Object isoData(final Object... args) {
 		return ops().run(net.imagej.ops.ThresholdOps.IsoData.class, args);
 	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class)
-	public <T extends RealType<T>> Img<BitType> isodata(final Img<T> in) {
+	public <T extends RealType<T>> Img<BitType> isoData(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
@@ -177,7 +177,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class)
-	public <T extends RealType<T>> Img<BitType> isodata(final Img<BitType> out,
+	public <T extends RealType<T>> Img<BitType> isoData(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -190,7 +190,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeIsoDataThreshold.class)
-	public <T extends RealType<T>> List<Object> isodata(final Histogram1d<T> in) {
+	public <T extends RealType<T>> List<Object> isoData(final Histogram1d<T> in) {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
@@ -201,7 +201,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeIsoDataThreshold.class)
-	public <T extends RealType<T>> List<Object> isodata(final T out,
+	public <T extends RealType<T>> List<Object> isoData(final T out,
 		final Histogram1d<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -319,14 +319,14 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.ThresholdOps.MaxLikelihood.class)
-	public Object maxlikelihood(final Object... args) {
+	public Object maxLikelihood(final Object... args) {
 		return ops().run(net.imagej.ops.ThresholdOps.MaxLikelihood.class, args);
 	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class)
 	public
-		<T extends RealType<T>> Img<BitType> maxlikelihood(final Img<T> in) {
+		<T extends RealType<T>> Img<BitType> maxLikelihood(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
@@ -339,7 +339,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class)
 	public
-		<T extends RealType<T>> Img<BitType> maxlikelihood(final Img<BitType> out,
+		<T extends RealType<T>> Img<BitType> maxLikelihood(final Img<BitType> out,
 			final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -354,7 +354,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeMaxLikelihoodThreshold.class)
 	public
-		<T extends RealType<T>> List<Object> maxlikelihood(final Histogram1d<T> in)
+		<T extends RealType<T>> List<Object> maxLikelihood(final Histogram1d<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
@@ -368,7 +368,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeMaxLikelihoodThreshold.class)
 	public
-		<T extends RealType<T>> List<Object> maxlikelihood(final T out,
+		<T extends RealType<T>> List<Object> maxLikelihood(final T out,
 			final Histogram1d<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -430,13 +430,13 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.ThresholdOps.MinError.class)
-	public Object minerror(final Object... args) {
+	public Object minError(final Object... args) {
 		return ops().run(net.imagej.ops.ThresholdOps.MinError.class, args);
 	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class)
-	public <T extends RealType<T>> Img<BitType> minerror(final Img<T> in) {
+	public <T extends RealType<T>> Img<BitType> minError(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
@@ -447,7 +447,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class)
-	public <T extends RealType<T>> Img<BitType> minerror(final Img<BitType> out,
+	public <T extends RealType<T>> Img<BitType> minError(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -461,7 +461,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeMinErrorThreshold.class)
 	public
-		<T extends RealType<T>> List<Object> minerror(final Histogram1d<T> in) {
+		<T extends RealType<T>> List<Object> minError(final Histogram1d<T> in) {
 		@SuppressWarnings("unchecked")
 		final List<Object> result =
 			(List<Object>) ops().run(
@@ -473,7 +473,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeMinErrorThreshold.class)
 	public
-		<T extends RealType<T>> List<Object> minerror(final T out,
+		<T extends RealType<T>> List<Object> minError(final T out,
 			final Histogram1d<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -699,14 +699,14 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.ThresholdOps.RenyiEntropy.class)
-	public Object renyientropy(final Object... args) {
+	public Object renyiEntropy(final Object... args) {
 		return ops().run(net.imagej.ops.ThresholdOps.RenyiEntropy.class, args);
 	}
 
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class)
 	public
-		<T extends RealType<T>> Img<BitType> renyientropy(final Img<T> in) {
+		<T extends RealType<T>> Img<BitType> renyiEntropy(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
@@ -719,7 +719,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class)
 	public
-		<T extends RealType<T>> Img<BitType> renyientropy(final Img<BitType> out,
+		<T extends RealType<T>> Img<BitType> renyiEntropy(final Img<BitType> out,
 			final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
@@ -734,7 +734,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.methods.ComputeRenyiEntropyThreshold.class)
 	public
-		<T extends RealType<T>> T renyientropy(final Histogram1d<T> in) {
+		<T extends RealType<T>> T renyiEntropy(final Histogram1d<T> in) {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops()
@@ -749,7 +749,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	public
 		<T extends RealType<T>>
 		T
-		renyientropy(final T out, final Histogram1d<T> in)
+		renyiEntropy(final T out, final Histogram1d<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final T result =

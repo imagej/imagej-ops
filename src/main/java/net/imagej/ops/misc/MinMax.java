@@ -32,7 +32,7 @@ package net.imagej.ops.misc;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "minmax" operation.
+ * A typed "minMax" operation.
  * 
  * @author Christian Dietz
  */

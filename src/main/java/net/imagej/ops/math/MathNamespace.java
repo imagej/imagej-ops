@@ -273,12 +273,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.AddNoise.class)
-	public Object addnoise(final Object... args) {
+	public Object addNoise(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.AddNoise.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealAddNoise.class)
-	public <I extends RealType<I>, O extends RealType<O>> O addnoise(final O out,
+	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
 		final double rangeStdDev, final Random rng)
 	{
@@ -687,12 +687,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.CubeRoot.class)
-	public Object cuberoot(final Object... args) {
+	public Object cubeRoot(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.CubeRoot.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCubeRoot.class)
-	public double cuberoot(final double a) {
+	public double cubeRoot(final double a) {
 		final double result =
 			(Double) ops().run(
 				net.imagej.ops.math.PrimitiveMath.DoubleCubeRoot.class, a);
@@ -700,7 +700,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealCubeRoot.class)
-	public <I extends RealType<I>, O extends RealType<O>> O cuberoot(final O out,
+	public <I extends RealType<I>, O extends RealType<O>> O cubeRoot(final O out,
 		final I in)
 	{
 		@SuppressWarnings("unchecked")
@@ -804,12 +804,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.ExpMinusOne.class)
-	public Object expminusone(final Object... args) {
+	public Object expMinusOne(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.ExpMinusOne.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealExpMinusOne.class)
-	public <I extends RealType<I>, O extends RealType<O>> O expminusone(
+	public <I extends RealType<I>, O extends RealType<O>> O expMinusOne(
 		final O out, final I in)
 	{
 		@SuppressWarnings("unchecked")
@@ -875,12 +875,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.LeftShift.class)
-	public Object leftshift(final Object... args) {
+	public Object leftShift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.LeftShift.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerLeftShift.class)
-	public int leftshift(final int a, final int b) {
+	public int leftShift(final int a, final int b) {
 		final int result =
 			(Integer) ops().run(
 				net.imagej.ops.math.PrimitiveMath.IntegerLeftShift.class, a, b);
@@ -888,7 +888,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongLeftShift.class)
-	public long leftshift(final long a, final long b) {
+	public long leftShift(final long a, final long b) {
 		final long result =
 			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongLeftShift.class,
 				a, b);
@@ -956,12 +956,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.LogOnePlusX.class)
-	public Object logoneplusx(final Object... args) {
+	public Object logOnePlusX(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.LogOnePlusX.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleLogOnePlusX.class)
-	public double logoneplusx(final double a) {
+	public double logOnePlusX(final double a) {
 		final double result =
 			(Double) ops().run(
 				net.imagej.ops.math.PrimitiveMath.DoubleLogOnePlusX.class, a);
@@ -969,7 +969,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealLogOnePlusX.class)
-	public <I extends RealType<I>, O extends RealType<O>> O logoneplusx(
+	public <I extends RealType<I>, O extends RealType<O>> O logOnePlusX(
 		final O out, final I in)
 	{
 		@SuppressWarnings("unchecked")
@@ -1144,12 +1144,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.NearestInt.class)
-	public Object nearestint(final Object... args) {
+	public Object nearestInt(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.NearestInt.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealNearestInt.class)
-	public <I extends RealType<I>, O extends RealType<O>> O nearestint(
+	public <I extends RealType<I>, O extends RealType<O>> O nearestInt(
 		final O out, final I in)
 	{
 		@SuppressWarnings("unchecked")
@@ -1367,12 +1367,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.RightShift.class)
-	public Object rightshift(final Object... args) {
+	public Object rightShift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.RightShift.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerRightShift.class)
-	public int rightshift(final int a, final int b) {
+	public int rightShift(final int a, final int b) {
 		final int result =
 			(Integer) ops().run(
 				net.imagej.ops.math.PrimitiveMath.IntegerRightShift.class, a, b);
@@ -1380,7 +1380,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongRightShift.class)
-	public long rightshift(final long a, final long b) {
+	public long rightShift(final long a, final long b) {
 		final long result =
 			(Long) ops().run(net.imagej.ops.math.PrimitiveMath.LongRightShift.class,
 				a, b);
@@ -1515,12 +1515,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.SincPi.class)
-	public Object sincpi(final Object... args) {
+	public Object sincPi(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.SincPi.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.arithmetic.real.RealSincPi.class)
-	public <I extends RealType<I>, O extends RealType<O>> O sincpi(final O out,
+	public <I extends RealType<I>, O extends RealType<O>> O sincPi(final O out,
 		final I in)
 	{
 		@SuppressWarnings("unchecked")
@@ -1735,13 +1735,13 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.MathOps.UnsignedRightShift.class)
-	public Object unsignedrightshift(final Object... args) {
+	public Object unsignedRightShift(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.UnsignedRightShift.class, args);
 	}
 
 	@OpMethod(
 		op = net.imagej.ops.math.PrimitiveMath.IntegerUnsignedRightShift.class)
-	public int unsignedrightshift(final int a, final int b) {
+	public int unsignedRightShift(final int a, final int b) {
 		final int result =
 			(Integer) ops()
 				.run(net.imagej.ops.math.PrimitiveMath.IntegerUnsignedRightShift.class,
@@ -1751,7 +1751,7 @@ public class MathNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.LongUnsignedRightShift.class)
 	public
-		long unsignedrightshift(final long a, final long b) {
+		long unsignedRightShift(final long a, final long b) {
 		final long result =
 			(Long) ops().run(
 				net.imagej.ops.math.PrimitiveMath.LongUnsignedRightShift.class, a, b);

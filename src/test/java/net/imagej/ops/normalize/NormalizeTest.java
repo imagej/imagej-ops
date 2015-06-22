@@ -51,14 +51,13 @@ public class NormalizeTest extends AbstractOpTest {
 		Img<ByteType> in = generateByteTestImg(true, 5, 5);
 		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-		// TODO: weird order of parameters
-		ops.run("normalize", out, in);
+		ops.normalize(out, in);
 
-		List<ByteType> minmax1 = (List<ByteType>) ops.run("minmax", in);
-		List<ByteType> minmax2 = (List<ByteType>) ops.run("minmax", out);
+		List<ByteType> minMax1 = ops.minMax(in);
+		List<ByteType> minMax2 = ops.minMax(out);
 
-		assertEquals(minmax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minmax2.get(1).get(), Byte.MAX_VALUE);
+		assertEquals(minMax2.get(0).get(), Byte.MIN_VALUE);
+		assertEquals(minMax2.get(1).get(), Byte.MAX_VALUE);
 
 	}
 }

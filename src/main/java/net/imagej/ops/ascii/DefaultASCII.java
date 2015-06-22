@@ -72,9 +72,9 @@ public class DefaultASCII<T extends RealType<T>> implements Ops.ASCII {
 	@Override
 	public void run() {
 		if (min == null || max == null) {
-			final List<T> minmax = ops.minmax(image);
-			if (min == null) min = minmax.get(0);
-			if (max == null) max = minmax.get(1);
+			final List<T> minMax = ops.minMax(image);
+			if (min == null) min = minMax.get(0);
+			if (max == null) max = minMax.get(1);
 		}
 		ascii = ascii(image, min, max);
 	}

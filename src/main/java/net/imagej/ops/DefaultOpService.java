@@ -822,7 +822,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object fft(final Object... args) {
-		return run("fft", args);
+		return run(Ops.FFT.NAME, args);
 	}
 
 	@Override
@@ -922,7 +922,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public List<long[]> fftsize(final long[] inputSize, final long[] paddedSize,
+	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
 		final long[] fftSize, final Boolean forward, final Boolean fast)
 	{
 		@SuppressWarnings("unchecked")
@@ -951,11 +951,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object gaussKernel(final Object... args) {
-		return run("gausskernel", args);
+		return run(Ops.GaussKernel.NAME, args);
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> gausskernel(final int numDimensions,
+	public <T extends ComplexType<T>> Img<T> gaussKernel(final int numDimensions,
 		final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -967,7 +967,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> gaussKernel(final Type<T> outType,
 		final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -979,7 +979,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> gaussKernel(final Type<T> outType,
 		final ImgFactory<T> fac, final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -991,7 +991,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> gaussKernel(final Type<T> outType,
 		final ImgFactory<T> fac, final int numDimensions, final double sigma,
 		final double... calibration)
 	{
@@ -1004,7 +1004,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1015,7 +1015,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		final Type<T> outType, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1027,7 +1027,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1039,7 +1039,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
 		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
 		final double... calibration)
 	{
@@ -1123,7 +1123,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object ifft(final Object... args) {
-		return run("ifft", args);
+		return run(Ops.IFFT.NAME, args);
 	}
 
 	@Override
@@ -1268,16 +1268,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Object log(final Object... args) {
-		return run("log", args);
+		return run(Ops.Log.NAME, args);
 	}
 
 	@Override
 	public Object logKernel(final Object... args) {
-		return run("logkernel", args);
+		return run(Ops.LogKernel.NAME, args);
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> logkernel(final int numDimensions,
+	public <T extends ComplexType<T>> Img<T> logKernel(final int numDimensions,
 		final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1289,7 +1289,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> logKernel(final Type<T> outType,
 		final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1301,7 +1301,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> logKernel(final Type<T> outType,
 		final ImgFactory<T> fac, final int numDimensions, final double sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1313,7 +1313,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
+	public <T extends ComplexType<T>> Img<T> logKernel(final Type<T> outType,
 		final ImgFactory<T> fac, final int numDimensions, final double sigma,
 		final double... calibration)
 	{
@@ -1326,7 +1326,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(
 		final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1337,7 +1337,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(
 		final Type<T> outType, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1348,7 +1348,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(
 		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
 	{
 		@SuppressWarnings("unchecked")
@@ -1359,7 +1359,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(
 		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
 		final double... calibration)
 	{
@@ -1407,7 +1407,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object fftsize(final Object... args) {
+	public Object fftSize(final Object... args) {
 		return run(Ops.FFTSize.NAME, args);
 	}
 
@@ -1612,12 +1612,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object minmax(final Object... args) {
+	public Object minMax(final Object... args) {
 		return run(Ops.MinMax.NAME, args);
 	}
 
 	@Override
-	public <T extends RealType<T>> List<T> minmax(final Iterable<T> img) {
+	public <T extends RealType<T>> List<T> minMax(final Iterable<T> img) {
 		@SuppressWarnings("unchecked")
 		final List<T> result =
 			(List<T>) run(net.imagej.ops.misc.MinMaxRealType.class, img);
@@ -1746,12 +1746,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object stddev(final Object... args) {
+	public Object stdDev(final Object... args) {
 		return run(Ops.StdDeviation.NAME, args);
 	}
 
 	@Override
-	public <T extends RealType<T>> T stddev(final T out, final Iterable<T> in) {
+	public <T extends RealType<T>> T stdDev(final T out, final Iterable<T> in) {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) run(net.imagej.ops.statistics.StdDevRealTypeDirect.class, out, in);
@@ -1759,7 +1759,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends RealType<T>> DoubleType stddev(final DoubleType out,
+	public <T extends RealType<T>> DoubleType stdDev(final DoubleType out,
 		final Iterable<T> in)
 	{
 		final DoubleType result =
@@ -1768,7 +1768,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <T extends RealType<T>> DoubleType stddev(final DoubleType out,
+	public <T extends RealType<T>> DoubleType stdDev(final DoubleType out,
 		final Iterable<T> in, final Variance<T, DoubleType> variance)
 	{
 		final DoubleType result =
@@ -1917,22 +1917,22 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- CreateOps short-cuts --
 
 	@Override
-	public Object createimg(final Object... args) {
+	public Object createImg(final Object... args) {
 		return run(CreateOps.CreateImg.class, args);
 	}
 
 	@Override
-	public Object createimglabeling(final Object... args) {
+	public Object createImgLabeling(final Object... args) {
 		return run(CreateOps.CreateImgLabeling.class, args);
 	}
 
 	@Override
-	public Object createimgfactory(final Object... args) {
+	public Object createImgFactory(final Object... args) {
 		return run(CreateOps.CreateImgFactory.class, args);
 	}
 
 	@Override
-	public Object createtype() {
+	public Object createType() {
 		return run(CreateOps.CreateType.class);
 	}
 

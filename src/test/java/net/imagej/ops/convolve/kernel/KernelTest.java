@@ -32,6 +32,7 @@ package net.imagej.ops.convolve.kernel;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.FloatType;
@@ -58,21 +59,20 @@ public class KernelTest extends AbstractOpTest {
 			sigmas[i] = sigma;
 		}
 
-		Img<FloatType> gaussianKernel =
-			(Img<FloatType>) ops.run("gausskernel", new FloatType(), new ArrayImgFactory(), numDimensions, sigma, null
-				);
+		final Img<FloatType> gaussianKernel =
+			ops.gaussKernel(new FloatType(), new ArrayImgFactory<FloatType>(),
+				numDimensions, sigma);
 
-		Img<FloatType> gaussianKernel2 =
-			(Img<FloatType>) ops.run("gausskernel", new FloatType(),
-				new ArrayImgFactory(), sigmas, null);
+		final Img<FloatType> gaussianKernel2 =
+			ops
+				.gaussKernel(new FloatType(), new ArrayImgFactory<FloatType>(), sigmas);
 
-		Img<FloatType> logKernel =
-			(Img<FloatType>) ops.run("logkernel",
-				new FloatType(), new ArrayImgFactory(), numDimensions, sigma, null);
+		final Img<FloatType> logKernel =
+			ops.logKernel(new FloatType(), new ArrayImgFactory<FloatType>(),
+				numDimensions, sigma);
 
-		Img<FloatType> logKernel2 =
-			(Img<FloatType>) ops.run("logkernel", new FloatType(),
-				new ArrayImgFactory(), sigmas, null);
+		final Img<FloatType> logKernel2 =
+			ops.logKernel(new FloatType(), new ArrayImgFactory<FloatType>(), sigmas);
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
@@ -96,40 +96,36 @@ public class KernelTest extends AbstractOpTest {
 		}
 
 		/*Img<FloatType> gaussianKernel =
-			(Img<FloatType>) ops.run("gausskernel", sigmas, null, new FloatType(),
+			(Img<FloatType>) ops.gaussKernel(sigmas, null, new FloatType(),
 				new ArrayImgFactory());
 
 		// no factory
 		Img<FloatType> gaussianKernel2 =
-			(Img<FloatType>) ops.run("gausskernel", sigmas, null, new FloatType());
+			(Img<FloatType>) ops.gaussKernel(sigmas, null, new FloatType());
 		*/
-		Img<FloatType> gaussianKernel =
-			(Img<FloatType>) ops.run("gausskernel", new FloatType(),
-				new ArrayImgFactory(), sigmas, null);
+		final Img<FloatType> gaussianKernel =
+			ops.gaussKernel(new FloatType(), new ArrayImgFactory<FloatType>(),
+				sigmas);
 
 		// no factory
-		Img<FloatType> gaussianKernel2 =
-			(Img<FloatType>) ops.run("gausskernel", new FloatType(), null, sigmas,
-				null);
+		final Img<FloatType> gaussianKernel2 =
+			ops.gaussKernel(new FloatType(), null, sigmas);
 		// no factory, no type
-		Img<FloatType> gaussianKernel3 =
-			(Img<FloatType>) ops.run("gausskernel", sigmas);
+		final Img<FloatType> gaussianKernel3 = ops.<FloatType> gaussKernel(sigmas);
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
 
-		Img<FloatType> logKernel =
-			(Img<FloatType>) ops.run("logkernel", new FloatType(),
-				new ArrayImgFactory(), sigmas, null);
+		final Img<FloatType> logKernel =
+			ops.logKernel(new FloatType(), new ArrayImgFactory(), sigmas);
 
 		// no factory
-		Img<FloatType> logKernel2 =
-			(Img<FloatType>) ops
-				.run("logkernel", new FloatType(), null, sigmas, null);
+		final Img<FloatType> logKernel2 =
+			ops.logKernel(new FloatType(), null, sigmas);
 
 		// no factory, no type
-		Img<FloatType> logKernel3 = (Img<FloatType>) ops.run("logkernel", sigmas);
+		final Img<FloatType> logKernel3 = ops.<FloatType> logKernel(sigmas);
 
 		assertEquals(logKernel.dimension(1), 27);
 		assertEquals(logKernel2.dimension(1), 27);

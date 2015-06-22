@@ -58,17 +58,16 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 		outMin = outType.getMinValue();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void checkInput(IterableInterval<I> in) {
-		List<I> minmax = (List<I>) ops.run("minmax", in);
-		I inType = in.firstElement().createVariable();
+		final List<I> minMax = ops.minMax(in);
+		final I inType = in.firstElement().createVariable();
 		factor =
-			NormalizeRealType.normalizationFactor(minmax.get(0).getRealDouble(),
-				minmax.get(1).getRealDouble(), inType.getMinValue(), inType
+			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
+				minMax.get(1).getRealDouble(), inType.getMinValue(), inType
 					.getMaxValue());
 
-		inMin = minmax.get(0).getRealDouble();
+		inMin = minMax.get(0).getRealDouble();
 
 	}
 

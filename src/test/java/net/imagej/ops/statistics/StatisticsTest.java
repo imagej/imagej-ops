@@ -31,6 +31,7 @@
 package net.imagej.ops.statistics;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -132,7 +133,7 @@ public class StatisticsTest extends AbstractOpTest {
 
 		// calculate standard deviation using ops
 		DoubleType std2 = new DoubleType();
-		ops.run("stddev", std2, img);
+		ops.stdDev(std2, img);
 
 		// check that the ratio between std1 and std2 is 1.0
 		Assert.assertEquals(1.0, std1 / std2.getRealFloat(), delta);

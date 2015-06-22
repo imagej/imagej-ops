@@ -50,6 +50,6 @@ public class CreateImgPlusTest<T extends NativeType<T>> extends AbstractOpTest {
 	@Test
 	public void createImgPlusTest() {
 		assertEquals(ops.run(CreateImgPlus.class,
-			ops.createimg(new long[] { 10, 9, 8 })).getClass(), ImgPlus.class);
+			ops.createImg(new long[] { 10, 9, 8 })).getClass(), ImgPlus.class);
 	}
 }
