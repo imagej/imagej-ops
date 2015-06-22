@@ -85,7 +85,7 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 		@Override
 		public T compute(Iterable<T> input, T output) {
 			if (mean == null) {
-				mean = (Mean<Iterable<T>, T>) ops.op(Mean.class, output, input);
+				mean = ops.op(Mean.class, output, input);
 			}
 			return mean.compute(input, output);
 		}

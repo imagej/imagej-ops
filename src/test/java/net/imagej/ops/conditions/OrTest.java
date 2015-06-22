@@ -41,11 +41,11 @@ public class OrTest extends AbstractOpTest {
 	public void testOr() {
 
 		final Condition<?> c1 =
-			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
 		final Condition<?> c2 =
-			(Condition<?>) ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
 		final Condition<?> c3 =
-			(Condition<?>) ops.op(EqualsCondition.class, Double.class, 13.0);
+			ops.op(EqualsCondition.class, Double.class, 13.0);
 
 		final Boolean result = (Boolean) ops.run(OrCondition.class, 5.0, c1, c2);
 		assertSame(result, true);

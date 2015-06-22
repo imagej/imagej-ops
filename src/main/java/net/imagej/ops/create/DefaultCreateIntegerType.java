@@ -69,32 +69,32 @@ public class DefaultCreateIntegerType implements CreateIntegerType,
 	public void run() {
 		if (maxValue > 0) {
 			if (maxValue <= 2) {
-				output = (IntegerType) new BitType();
+				output = new BitType();
 			}
 			else if (maxValue <= Byte.MAX_VALUE + 1) {
-				output = (IntegerType) new ByteType();
+				output = new ByteType();
 			}
 			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
-				output = (IntegerType) new UnsignedByteType();
+				output = new UnsignedByteType();
 			}
 			else if (maxValue <= Short.MAX_VALUE + 1) {
-				output = (IntegerType) new ShortType();
+				output = new ShortType();
 			}
 			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
-				output = (IntegerType) new UnsignedShortType();
+				output = new UnsignedShortType();
 			}
 			else if (maxValue <= Integer.MAX_VALUE + 1) {
-				output = (IntegerType) new IntType();
+				output = new IntType();
 			}
 			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
-				output = (IntegerType) new UnsignedIntType();
+				output = new UnsignedIntType();
 			}
 			else if (maxValue <= Long.MAX_VALUE) {
-				output = (IntegerType) new LongType();
+				output = new LongType();
 			}
 		}
 		else {
-			output = (IntegerType) new IntType();
+			output = new IntType();
 		}
 	}
 

@@ -61,10 +61,10 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (mean == null) {
-			mean = (Mean<Iterable<T>, DoubleType>) ops.op(Mean.class, output, input);
+			mean = ops.op(Mean.class, output, input);
 		}
 		if (size == null) {
-			size = (Size<Iterable<T>>) ops.op(Size.class, output, input);
+			size = ops.op(Size.class, output, input);
 		}
 
 		final double mean = this.mean.compute(input, new DoubleType()).get();

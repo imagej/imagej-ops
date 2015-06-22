@@ -41,7 +41,7 @@ public class NotTest extends AbstractOpTest {
 	public void testAnd() {
 
 		final Condition<?> c1 =
-			(Condition<?>) ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
 
 		final Boolean result = (Boolean) ops.run(NotCondition.class, 5.0, c1);
 		assertSame(result, false);

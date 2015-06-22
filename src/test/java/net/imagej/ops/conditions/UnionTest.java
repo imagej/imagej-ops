@@ -45,9 +45,9 @@ public class UnionTest extends AbstractOpTest {
 
 		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
 
-		final Condition<?> c1 = (Condition<?>) ops.op(
+		final Condition<?> c1 = ops.op(
 				FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 = (Condition<?>) ops.op(
+		final Condition<?> c2 = ops.op(
 				FunctionGreaterCondition.class, Double.class, 6.0);
 
 		condition.add(c1);

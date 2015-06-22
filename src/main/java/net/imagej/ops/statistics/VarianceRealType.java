@@ -58,7 +58,7 @@ public class VarianceRealType<T extends RealType<T>> extends
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (moment2 == null) {
 			moment2 =
-				(Moment2AboutMean<T>) ops.op(Moment2AboutMean.class, output, input);
+				ops.op(Moment2AboutMean.class, output, input);
 		}
 		return moment2.compute(input, output);
 	}
