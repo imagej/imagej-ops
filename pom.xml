@@ -130,6 +130,10 @@
 		<url>http://jenkins.imagej.net/job/ImageJ-OPS/</url>
 	</ciManagement>
 
+	<properties>
+		<main-class>net.imagej.ops.Main</main-class>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>imagej.public</id>
