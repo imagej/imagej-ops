@@ -490,24 +490,24 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link UniformRandom} method convergence. */
 	@Test
 	public void testUniformRandom() {
-	assertComplete("math", MathNamespace.class, UniformRandom.NAME);
+		assertComplete("math", MathNamespace.class, UniformRandom.NAME);
 	}
 
 	/** Tests for {@link UnsignedRightShift} method convergence. */
 	@Test
 	public void testUnsignedRightShift() {
-	assertComplete("math", MathNamespace.class, UnsignedRightShift.NAME);
+		assertComplete("math", MathNamespace.class, UnsignedRightShift.NAME);
 	}
 
 	/** Tests for {@link Xor} method convergence. */
 	@Test
 	public void testXor() {
-	assertComplete("math", MathNamespace.class, Xor.NAME);
+		assertComplete("math", MathNamespace.class, Xor.NAME);
 	}
 
 	/** Tests for {@link Zero} method convergence. */
 	@Test
 	public void testZero() {
-	assertComplete("math", MathNamespace.class, Zero.NAME);
+		assertComplete("math", MathNamespace.class, Zero.NAME);
 	}
 }
