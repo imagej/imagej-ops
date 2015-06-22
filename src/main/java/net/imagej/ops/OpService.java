@@ -199,17 +199,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(final IterableInterval<T> image);
+	<T extends RealType<T>> String ascii(IterableInterval<T> image);
 
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min);
+	<T extends RealType<T>> String ascii(IterableInterval<T> image,
+		RealType<T> min);
 
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min, final RealType<T> max);
+	<T extends RealType<T>> String ascii(IterableInterval<T> image,
+		RealType<T> min, RealType<T> max);
 
 	/** Executes the "chunker" operation on the given arguments. */
 	@OpMethod(op = Ops.Chunker.class)
@@ -229,14 +229,13 @@ public interface OpService extends PTService<Op>, ImageJService {
 		net.imagej.ops.convert.ConvertPixNormalizeScale.class,
 		net.imagej.ops.convert.ConvertPixScale.class,
 		net.imagej.ops.convert.ConvertPixCopy.class })
-	<I extends RealType<I>, O extends RealType<O>> O convert(final O out,
-		final I in);
+	<I extends RealType<I>, O extends RealType<O>> O convert(O out, I in);
 
 	/** Executes the "convert" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convert.ConvertIterableInterval.class)
-	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O> convert(
-		final IterableInterval<O> out, final IterableInterval<I> in,
-		final ConvertPix<I, O> pixConvert);
+	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		convert(IterableInterval<O> out, IterableInterval<I> in,
+			ConvertPix<I, O> pixConvert);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Convolve.class)
@@ -246,134 +245,129 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<I> in, final RandomAccessibleInterval<K> kernel);
+		convolve(Img<I> in, RandomAccessibleInterval<K> kernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long... borderSize);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long... borderSize);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.convolve.ConvolveFFTImg.class,
 		net.imagej.ops.convolve.ConvolveNaiveImg.class })
 	<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>> Img<O>
-		convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory);
+		convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType);
+		Img<O> convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory);
+		Img<O> convolve(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType,
+			ImgFactory<C> fftFactory);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveNaive.class)
 	<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,
-			final RandomAccessible<I> in, final RandomAccessibleInterval<K> kernel);
+		RandomAccessibleInterval<O> convolve(RandomAccessibleInterval<O> out,
+			RandomAccessible<I> in, RandomAccessibleInterval<K> kernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void
-		convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output,
+			boolean performInputFFT);
 
 	/** Executes the "convolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.ConvolveFFTRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT);
+		void convolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output,
+			boolean performInputFFT, boolean performKernelFFT);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = Ops.Correlate.class)
@@ -382,72 +376,70 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<I> in, final RandomAccessibleInterval<K> kernel);
+		Img<O> correlate(Img<I> in, RandomAccessibleInterval<K> kernel);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long... borderSize);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long... borderSize);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType);
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTImg.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory);
+		Img<O> correlate(Img<O> out, Img<I> in, RandomAccessibleInterval<K> kernel,
+			long[] borderSize,
+			OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType,
+			ImgFactory<C> fftFactory);
 
 	/** Executes the "create" operation on the given arguments. */
 	@OpMethod(op = Ops.Create.class)
@@ -459,24 +451,22 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(final Interval interval,
-		final ImgPlus<T> in);
+	<T extends Type<T>> ImgPlus<T> crop(Interval interval, ImgPlus<T> in);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(final Interval interval,
-		final ImgPlus<T> out, final ImgPlus<T> in);
+	<T extends Type<T>> ImgPlus<T> crop(Interval interval, ImgPlus<T> out,
+		ImgPlus<T> in);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T> crop(final Interval interval,
-		final RandomAccessibleInterval<T> in);
+	<T> RandomAccessibleInterval<T> crop(Interval interval,
+		RandomAccessibleInterval<T> in);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T>
-		crop(final Interval interval, final RandomAccessibleInterval<T> out,
-			final RandomAccessibleInterval<T> in);
+	<T> RandomAccessibleInterval<T> crop(Interval interval,
+		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = Ops.Deconvolve.class)
@@ -485,73 +475,68 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			int maxIterations, Interval imgConvolutionInterval,
+			ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, int maxIterations,
+			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			int maxIterations, Interval imgConvolutionInterval,
+			ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, int maxIterations, Interval imgConvolutionInterval,
+			ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output, int maxIterations,
+			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output,
+			boolean performInputFFT, int maxIterations,
+			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output,
+			boolean performInputFFT, boolean performKernelFFT, int maxIterations,
+			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
 
 	/** Executes the "deconvolve" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
-			final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput);
+		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
+			Img<C> fftKernel, RandomAccessibleInterval<O> output,
+			boolean performInputFFT, boolean performKernelFFT, int maxIterations,
+			Interval imgConvolutionInterval, ImgFactory<O> imgFactory,
+			OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput);
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = Ops.Equation.class)
@@ -559,12 +544,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
-	<T extends RealType<T>> IterableInterval<T> equation(final String in);
+	<T extends RealType<T>> IterableInterval<T> equation(String in);
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
-	<T extends RealType<T>> IterableInterval<T> equation(
-		final IterableInterval<T> out, final String in);
+	<T extends RealType<T>> IterableInterval<T> equation(IterableInterval<T> out,
+		String in);
 
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)
@@ -572,11 +557,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
-	Object eval(final String expression);
+	Object eval(String expression);
 
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
-	Object eval(final String expression, final Map<String, Object> vars);
+	Object eval(String expression, Map<String, Object> vars);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = Ops.FFT.class)
@@ -584,52 +569,47 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<I> in);
+	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType>
+		fft(Img<I> in);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
 	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in);
+		Img<ComplexFloatType> out, Img<I> in);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
 	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize);
+		Img<ComplexFloatType> out, Img<I> in, long... borderSize);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
 	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast);
+		Img<ComplexFloatType> out, Img<I> in, long[] borderSize, Boolean fast);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
 	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
+		Img<ComplexFloatType> out, Img<I> in, long[] borderSize, Boolean fast,
+		OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
 	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in);
+		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
 	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
+		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in,
+			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
 
 	/** Executes the "fft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
 	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			final long... paddedSize);
+		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in,
+			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
+			long... paddedSize);
 
 	/** Executes the "fftsize" operation on the given arguments. */
 	@OpMethod(op = Ops.FFTSize.class)
@@ -637,8 +617,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "fftsize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.size.ComputeFFTSize.class)
-	List<long[]> fftsize(final long[] inputSize, final long[] paddedSize,
-		final long[] fftSize, final Boolean forward, final Boolean fast);
+	List<long[]> fftsize(long[] inputSize, long[] paddedSize, long[] fftSize,
+		Boolean forward, Boolean fast);
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = Ops.Gauss.class)
@@ -647,8 +627,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.gauss.GaussRAIToRAI.class)
 	<T extends RealType<T>> RandomAccessibleInterval<T> gauss(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in, final double sigma);
+		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in,
+		double sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(op = Ops.GaussKernel.class)
@@ -657,52 +637,52 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(final int numDimensions,
-			final double sigma);
+		<T extends ComplexType<T>> Img<T> gausskernel(int numDimensions,
+			double sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
-			final int numDimensions, final double sigma);
+		<T extends ComplexType<T>> Img<T> gausskernel(Type<T> outType,
+			int numDimensions, double sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
-			final ImgFactory<T> fac, final int numDimensions, final double sigma);
+		<T extends ComplexType<T>> Img<T> gausskernel(Type<T> outType,
+			ImgFactory<T> fac, int numDimensions, double sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gausskernel(final Type<T> outType,
-			final ImgFactory<T> fac, final int numDimensions, final double sigma,
-			final double... calibration);
+		<T extends ComplexType<T>>
+		Img<T>
+		gausskernel(Type<T> outType, ImgFactory<T> fac, int numDimensions,
+			double sigma, double... calibration);
+
+	/** Executes the "gausskernel" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
+	<T extends ComplexType<T> & NativeType<T>> Img<T>
+		gausskernel(double... sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
 	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
-		final double... sigma);
+		Type<T> outType, double... sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
 	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
-		final Type<T> outType, final double... sigma);
+		Type<T> outType, ImgFactory<T> fac, double... sigma);
 
 	/** Executes the "gausskernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
 	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
-		final Type<T> outType, final ImgFactory<T> fac, final double... sigma);
-
-	/** Executes the "gausskernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gausskernel(
-		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
-		final double... calibration);
+		Type<T> outType, ImgFactory<T> fac, double[] sigma, double... calibration);
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = Ops.Help.class)
@@ -710,7 +690,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpOp.class)
-	String help(final Op op);
+	String help(Op op);
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
@@ -718,11 +698,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
-	String help(final String name);
+	String help(String name);
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
-	String help(final String name, final Class<? extends Op> opType);
+	String help(String name, Class<? extends Op> opType);
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = Ops.Histogram.class)
@@ -730,12 +710,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
-	<T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in);
+	<T extends RealType<T>> Histogram1d<T> histogram(Iterable<T> in);
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
-	<T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
-		final int numBins);
+	<T extends RealType<T>> Histogram1d<T> histogram(Iterable<T> in, int numBins);
 
 	/** Executes the "identity" operation on the given arguments. */
 	@OpMethod(op = Ops.Identity.class)
@@ -743,7 +722,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "identity" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.identity.DefaultIdentity.class)
-	<A> A identity(final A arg);
+	<A> A identity(A arg);
 
 	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = Ops.IFFT.class)
@@ -751,14 +730,13 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.image.IFFTImg.class)
-	<T extends RealType<T>, O extends Img<T>> Img<O> ifft(final Img<O> out,
-		final Img<ComplexFloatType> in);
+	<T extends RealType<T>, O extends Img<T>> Img<O> ifft(Img<O> out,
+		Img<ComplexFloatType> in);
 
 	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.fft.methods.IFFTRAI.class)
 	<C extends ComplexType<C>, T extends RealType<T>> RandomAccessibleInterval<T>
-		ifft(final RandomAccessibleInterval<T> out,
-			final RandomAccessibleInterval<C> in);
+		ifft(RandomAccessibleInterval<T> out, RandomAccessibleInterval<C> in);
 
 	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(op = Ops.Invert.class)
@@ -767,7 +745,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.invert.InvertIterableInterval.class)
 	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-		final IterableInterval<O> out, final IterableInterval<I> in);
+		IterableInterval<O> out, IterableInterval<I> in);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = Ops.Join.class)
@@ -775,48 +753,43 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
-	<A, B, C> C join(final C out, final A in, final Function<A, B> first,
-		final Function<B, C> second);
+	<A, B, C> C join(C out, A in, Function<A, B> first, Function<B, C> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
-	<A, B, C> C join(final C out, final A in, final Function<A, B> first,
-		final Function<B, C> second, final BufferFactory<A, B> bufferFactory);
+	<A, B, C> C join(C out, A in, Function<A, B> first, Function<B, C> second,
+		BufferFactory<A, B> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndInplace.class)
-	<A> A join(final A arg, final InplaceFunction<A> first,
-		final InplaceFunction<A> second);
+	<A> A join(A arg, InplaceFunction<A> first, InplaceFunction<A> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctions.class)
-	<A> A join(final A out, final A in,
-		final List<? extends Function<A, A>> functions,
-		final BufferFactory<A, A> bufferFactory);
+	<A> A join(A out, A in, List<? extends Function<A, A>> functions,
+		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceFunctions.class)
-	<A> A join(final A arg, final List<InplaceFunction<A>> functions);
+	<A> A join(A arg, List<InplaceFunction<A>> functions);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
-	<A, B> B join(final B out, final A in, final InplaceFunction<A> first,
-		final Function<A, B> second);
+	<A, B> B join(B out, A in, InplaceFunction<A> first, Function<A, B> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
-	<A, B> B join(final B out, final A in, final InplaceFunction<A> first,
-		final Function<A, B> second, final BufferFactory<A, A> bufferFactory);
+	<A, B> B join(B out, A in, InplaceFunction<A> first, Function<A, B> second,
+		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
-	<A, B> B join(final B out, final A in, final Function<A, B> first,
-		final InplaceFunction<B> second);
+	<A, B> B join(B out, A in, Function<A, B> first, InplaceFunction<B> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
-	<A, B> B join(final B out, final A in, final Function<A, B> first,
-		final InplaceFunction<B> second, final BufferFactory<A, B> bufferFactory);
+	<A, B> B join(B out, A in, Function<A, B> first, InplaceFunction<B> second,
+		BufferFactory<A, B> bufferFactory);
 
 	/** Executes the "log" operation on the given arguments. */
 	@OpMethod(op = Ops.Log.class)
@@ -829,48 +802,44 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(final int numDimensions,
-		final double sigma);
+	<T extends ComplexType<T>> Img<T> logkernel(int numDimensions, double sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
-		final int numDimensions, final double sigma);
+	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+		int numDimensions, double sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
-		final ImgFactory<T> fac, final int numDimensions, final double sigma);
+	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+		ImgFactory<T> fac, int numDimensions, double sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logkernel(final Type<T> outType,
-		final ImgFactory<T> fac, final int numDimensions, final double sigma,
-		final double... calibration);
+	<T extends ComplexType<T>> Img<T> logkernel(Type<T> outType,
+		ImgFactory<T> fac, int numDimensions, double sigma, double... calibration);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
-		final double... sigma);
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(double... sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
-		final Type<T> outType, final double... sigma);
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+		double... sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
-		final Type<T> outType, final ImgFactory<T> fac, final double... sigma);
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+		ImgFactory<T> fac, double... sigma);
 
 	/** Executes the "logkernel" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(
-		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
-		final double... calibration);
+	<T extends ComplexType<T> & NativeType<T>> Img<T> logkernel(Type<T> outType,
+		ImgFactory<T> fac, double[] sigma, double... calibration);
 
 	/** Executes the "lookup" operation on the given arguments. */
 	@OpMethod(op = Ops.Lookup.class)
@@ -878,7 +847,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "lookup" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.lookup.DefaultLookup.class)
-	Op lookup(final String name, final Object... args);
+	Op lookup(String name, Object... args);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = Ops.Loop.class)
@@ -886,12 +855,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	<I> I loop(final I arg, final Function<I, I> function, final int n);
+	<I> I loop(I arg, Function<I, I> function, int n);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopFunction.class)
-	<A> A loop(final A out, final A in, final Function<A, A> function,
-		final BufferFactory<A, A> bufferFactory, final int n);
+	<A> A loop(A out, A in, Function<A, A> function,
+		BufferFactory<A, A> bufferFactory, int n);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = Ops.Map.class)
@@ -899,9 +868,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.neighborhood.MapNeighborhood.class)
-	<I, O> RandomAccessibleInterval<O> map(final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final Shape shape,
-		final Function<Iterable<I>, O> func);
+	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
+		RandomAccessibleInterval<I> in, Shape shape, Function<Iterable<I>, O> func);
 
 	/** Executes the "max" operation on the given arguments. */
 	@OpMethod(op = Ops.Max.class)
@@ -909,7 +877,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "max" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MaxRealType.class)
-	<T extends RealType<T>> T max(final T out, final Iterable<T> in);
+	<T extends RealType<T>> T max(T out, Iterable<T> in);
 
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = Ops.Mean.class)
@@ -917,19 +885,17 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in);
+	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in);
 
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc);
+	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in,
+		Sum<Iterable<I>, O> sumFunc);
 
 	/** Executes the "mean" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc,
-		final Size<Iterable<I>> sizeFunc);
+	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in,
+		Sum<Iterable<I>, O> sumFunc, Size<Iterable<I>> sizeFunc);
 
 	/** Executes the "median" operation on the given arguments. */
 	@OpMethod(op = Ops.Median.class)
@@ -937,7 +903,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "median" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MedianRealType.class)
-	<T extends RealType<T>> T median(final T out, final Iterable<T> in);
+	<T extends RealType<T>> T median(T out, Iterable<T> in);
 
 	/** Executes the "min" operation on the given arguments. */
 	@OpMethod(op = Ops.Min.class)
@@ -945,7 +911,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "min" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.MinRealType.class)
-	<T extends RealType<T>> T min(final T out, final Iterable<T> in);
+	<T extends RealType<T>> T min(T out, Iterable<T> in);
 
 	/** Executes the "minmax" operation on the given arguments. */
 	@OpMethod(op = Ops.MinMax.class)
@@ -957,9 +923,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.normalize.NormalizeRealType.class)
-	<T extends RealType<T>> T normalize(final T out, final T in,
-		final double oldMin, final double newMin, final double newMax,
-		final double factor);
+	<T extends RealType<T>> T normalize(T out, T in, double oldMin,
+		double newMin, double newMax, double factor);
 
 	/** Executes the "project" operation on the given arguments. */
 	@OpMethod(op = Ops.Project.class)
@@ -975,9 +940,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "scale" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.scale.ScaleImg.class)
-	<T extends RealType<T>> Img<T> scale(final Img<T> in,
-		final double[] scaleFactors,
-		final InterpolatorFactory<T, RandomAccessible<T>> interpolator);
+	<T extends RealType<T>> Img<T> scale(Img<T> in, double[] scaleFactors,
+		InterpolatorFactory<T, RandomAccessible<T>> interpolator);
 
 	/** Executes the "size" operation on the given arguments. */
 	@OpMethod(op = Ops.Size.class)
@@ -985,11 +949,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "size" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.misc.SizeIterableInterval.class)
-	LongType size(final LongType out, final IterableInterval<?> in);
+	LongType size(LongType out, IterableInterval<?> in);
 
 	/** Executes the "size" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.misc.SizeIterable.class)
-	LongType size(final LongType out, final Iterable<?> in);
+	LongType size(LongType out, Iterable<?> in);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = Ops.Slicewise.class)
@@ -997,10 +961,8 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.slicer.SlicewiseRAI2RAI.class)
-	<I, O> RandomAccessibleInterval<O> slicewise(
-		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final Function<I, O> func,
-		final int... axisIndices);
+	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
+		RandomAccessibleInterval<I> in, Function<I, O> func, int... axisIndices);
 
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = Ops.StdDeviation.class)
@@ -1008,17 +970,16 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealTypeDirect.class)
-	<T extends RealType<T>> T stddev(final T out, final Iterable<T> in);
+	<T extends RealType<T>> T stddev(T out, Iterable<T> in);
 
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stddev(final DoubleType out,
-		final Iterable<T> in);
+	<T extends RealType<T>> DoubleType stddev(DoubleType out, Iterable<T> in);
 
 	/** Executes the "stddev" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stddev(final DoubleType out,
-		final Iterable<T> in, final Variance<T, DoubleType> variance);
+	<T extends RealType<T>> DoubleType stddev(DoubleType out, Iterable<T> in,
+		Variance<T, DoubleType> variance);
 
 	/** Executes the "sum" operation on the given arguments. */
 	@OpMethod(op = Ops.Sum.class)
@@ -1026,8 +987,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "sum" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.SumRealType.class)
-	<T extends RealType<T>, V extends RealType<V>> V sum(final V out,
-		final Iterable<T> in);
+	<T extends RealType<T>, V extends RealType<V>> V sum(V out, Iterable<T> in);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = Ops.Threshold.class)
@@ -1036,47 +996,43 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class)
-	<T extends RealType<T>> Iterable<BitType> threshold(
-		final Iterable<BitType> out, final Iterable<T> in, final T threshold);
+	<T extends RealType<T>> Iterable<BitType> threshold(Iterable<BitType> out,
+		Iterable<T> in, T threshold);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
-	<T extends RealType<T>> Img<BitType> threshold(final Img<T> in,
-		final T threshold);
+	<T extends RealType<T>> Img<BitType> threshold(Img<T> in, T threshold);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
-	<T extends RealType<T>> Img<BitType> threshold(final Img<BitType> out,
-		final Img<T> in, final T threshold);
+	<T extends RealType<T>> Img<BitType> threshold(Img<BitType> out, Img<T> in,
+		T threshold);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class)
-	<T> BitType threshold(final BitType out, final Comparable<? super T> in,
-		final T threshold);
+	<T> BitType threshold(BitType out, Comparable<? super T> in, T threshold);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class)
-	<T> BitType threshold(final BitType out, final T in, final T threshold,
-		final Comparator<? super T> comparator);
+	<T> BitType threshold(BitType out, T in, T threshold,
+		Comparator<? super T> comparator);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
 	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
-		final RandomAccessibleInterval<BitType> out,
-		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
-		final Shape shape);
+		RandomAccessibleInterval<BitType> out, RandomAccessibleInterval<T> in,
+		LocalThresholdMethod<T> method, Shape shape);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
 	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
-		final RandomAccessibleInterval<BitType> out,
-		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
-		final Shape shape,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
+		RandomAccessibleInterval<BitType> out, RandomAccessibleInterval<T> in,
+		LocalThresholdMethod<T> method, Shape shape,
+		OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
 
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(op = Ops.Variance.class)
@@ -1085,13 +1041,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.statistics.VarianceRealTypeDirect.class,
 		net.imagej.ops.statistics.VarianceRealType.class })
-	<T extends RealType<T>> DoubleType variance(final DoubleType out,
-		final Iterable<T> in);
+	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in);
 
 	/** Executes the "variance" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.statistics.VarianceRealType.class)
-	<T extends RealType<T>> DoubleType variance(final DoubleType out,
-		final Iterable<T> in, final Moment2AboutMean<T> moment2);
+	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in,
+		Moment2AboutMean<T> moment2);
 
 	// -- CreateOps short-cuts --
 
