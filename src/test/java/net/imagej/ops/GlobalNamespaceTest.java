@@ -79,12 +79,6 @@ import org.junit.Test;
  */
 public class GlobalNamespaceTest extends AbstractNamespaceTest {
 
-	/** Tests for {@link Create} method convergence. */
-	@Test
-	public void testCreateImg() {
-		assertComplete(null, OpService.class, Create.NAME);
-	}
-
 	/** Tests for {@link ASCII} method convergence. */
 	@Test
 	public void testASCII() {
@@ -113,6 +107,12 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testCorrelate() {
 		assertComplete(null, OpService.class, Correlate.NAME);
+	}
+
+	/** Tests for {@link Create} method convergence. */
+	@Test
+	public void testCreate() {
+		assertComplete(null, OpService.class, Create.NAME);
 	}
 
 	/** Tests for {@link Crop} method convergence. */
