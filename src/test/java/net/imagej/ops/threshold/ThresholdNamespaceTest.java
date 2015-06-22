@@ -50,6 +50,13 @@ import net.imagej.ops.ThresholdOps.Yen;
 
 import org.junit.Test;
 
+/**
+ * Tests that the ops of the {@code threshold} namespace have corresponding
+ * type-safe Java method signatures declared in the {@link ThresholdNamespace}
+ * class.
+ *
+ * @author Alison Walter
+ */
 public class ThresholdNamespaceTest extends AbstractNamespaceTest {
 
 	/** Tests for {@link Huang} method convergence. */

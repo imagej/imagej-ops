@@ -45,10 +45,11 @@ import net.imagej.ops.LogicOps.Xor;
 import org.junit.Test;
 
 /**
- * Tests that the ops of the logic namespace have corresponding type-safe Java
- * method signatures declared in the {@link LogicNamespace} class.
+ * Tests that the ops of the {@code logic} namespace have corresponding
+ * type-safe Java method signatures declared in the {@link LogicNamespace}
+ * class.
  *
- * @author Curtis Rueden
+ * @author Alison Walter
  */
 public class LogicNamespaceTest extends AbstractNamespaceTest {
 

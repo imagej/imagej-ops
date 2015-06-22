@@ -102,10 +102,10 @@ import net.imagej.ops.MathOps.Zero;
 import org.junit.Test;
 
 /**
- * Tests that the ops of the math namespace have corresponding type-safe Java
- * method signatures declared in the {@link MathNamespace} class.
+ * Tests that the ops of the {@code math} namespace have corresponding type-safe
+ * Java method signatures declared in the {@link MathNamespace} class.
  *
- * @author Curtis Rueden
+ * @author Alison Walter
  */
 public class MathNamespaceTest extends AbstractNamespaceTest {
 

@@ -36,8 +36,9 @@ import net.imagej.ops.DeconvolveOps.RichardsonLucy;
 import org.junit.Test;
 
 /**
- * Tests that the ops of the math namespace have corresponding type-safe Java
- * method signatures declared in the {@link DeconvolveNamespace} class.
+ * Tests that the ops of the {@code deconvolve} namespace have corresponding
+ * type-safe Java method signatures declared in the {@link DeconvolveNamespace}
+ * class.
  *
  * @author Alison Walter
  */
