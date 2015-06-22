@@ -371,6 +371,12 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// TODO: Handle generics.
 		final Class<?> baseClass = GenericUtils.getClass(baseType);
 		final Class<?> subClass = GenericUtils.getClass(subType);
+
+		// NB: This avoids a bug in generics reflection processing.
+		// See: https://github.com/scijava/scijava-common/issues/172
+		// But it means that List return type matching is imperfect.
+		if (baseClass == null || subClass == null) return true;
+
 		return baseClass.isAssignableFrom(subClass);
 	}
 

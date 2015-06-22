@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -33,13 +33,21 @@ package net.imagej.ops.logic;
 import net.imagej.ops.AbstractNamespaceTest;
 import net.imagej.ops.LogicOps.And;
 import net.imagej.ops.LogicOps.Equal;
+import net.imagej.ops.LogicOps.GreaterThan;
+import net.imagej.ops.LogicOps.GreaterThanOrEqual;
+import net.imagej.ops.LogicOps.LessThan;
+import net.imagej.ops.LogicOps.LessThanOrEqual;
+import net.imagej.ops.LogicOps.Not;
+import net.imagej.ops.LogicOps.NotEqual;
+import net.imagej.ops.LogicOps.Or;
+import net.imagej.ops.LogicOps.Xor;
 
 import org.junit.Test;
 
 /**
  * Tests that the ops of the logic namespace have corresponding type-safe Java
  * method signatures declared in the {@link LogicNamespace} class.
- * 
+ *
  * @author Curtis Rueden
  */
 public class LogicNamespaceTest extends AbstractNamespaceTest {
@@ -56,4 +64,51 @@ public class LogicNamespaceTest extends AbstractNamespaceTest {
 		assertComplete("logic", LogicNamespace.class, Equal.NAME);
 	}
 
+	/** Tests for {@link GreaterThan} method convergence. */
+	@Test
+	public void testGreaterThan() {
+		assertComplete("logic", LogicNamespace.class, GreaterThan.NAME);
+	}
+
+	/** Tests for {@link GreaterThanOrEqual} method convergence. */
+	@Test
+	public void testGreaterThanOrEqual() {
+		assertComplete("logic", LogicNamespace.class, GreaterThanOrEqual.NAME);
+	}
+
+	/** Tests for {@link LessThan} method convergence. */
+	@Test
+	public void testLessThan() {
+		assertComplete("logic", LogicNamespace.class, LessThan.NAME);
+	}
+
+	/** Tests for {@link LessThanOrEqual} method convergence. */
+	@Test
+	public void testLessThanOrEqual() {
+		assertComplete("logic", LogicNamespace.class, LessThanOrEqual.NAME);
+	}
+
+	/** Tests for {@link Not} method convergence. */
+	@Test
+	public void testNot() {
+		assertComplete("logic", LogicNamespace.class, Not.NAME);
+	}
+
+	/** Tests for {@link NotEqual} method convergence. */
+	@Test
+	public void testNotEqual() {
+		assertComplete("logic", LogicNamespace.class, NotEqual.NAME);
+	}
+
+	/** Tests for {@link Or} method convergence. */
+	@Test
+	public void testOr() {
+		assertComplete("logic", LogicNamespace.class, Or.NAME);
+	}
+
+	/** Tests for {@link Xor} method convergence. */
+	@Test
+	public void testXor() {
+		assertComplete("logic", LogicNamespace.class, Xor.NAME);
+	}
 }

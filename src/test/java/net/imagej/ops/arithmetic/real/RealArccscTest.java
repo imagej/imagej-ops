@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -31,48 +30,46 @@
 
 package net.imagej.ops.arithmetic.real;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
- * Sets the real component of an output real number to the inverse secant of the
- * real component of an input real number.
+ * Tests {@link RealArccsc}.
  * 
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * @author Alison Walter
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.Arcsec.NAME)
-public class RealArcsec<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<I, O> implements MathOps.Arcsec
-{
+public class RealArccscTest extends AbstractOpTest {
 
-	private final static RealArcsin<DoubleType, DoubleType> asin =
-		new RealArcsin<DoubleType, DoubleType>();
-
-	private final DoubleType angle = new DoubleType();
-
-	private final DoubleType tmp = new DoubleType();
-
-	@Override
-	public O compute(final I input, final O output) {
-		final double xt = input.getRealDouble();
-		if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
-			"arcsec(x) : x out of range");
-		else if (xt == -1) output.setReal(Math.PI);
-		else if (xt == 1) output.setReal(0);
-		else {
-			tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-			asin.compute(tmp, angle);
-			double value = angle.getRealDouble();
-			if (xt < -1) value += Math.PI;
-			output.setReal(value);
-		}
-		return output;
+	@Test
+	public void testArccsc() {
+		assertArccsc(-1, -Math.PI/2);
+		assertArccsc(1, Math.PI/2);
+		assertArccsc(2, Math.PI/6);
+		assertArccsc(-2, -Math.PI/6);
+		assertArccsc((2*Math.sqrt(3))/3, Math.PI/3);
+		assertArccsc(-(2*Math.sqrt(3))/3, -Math.PI/3);
 	}
+
+	@Rule
+	public ExpectedException exception = ExpectedException.none(); 
+	
+	@Test
+	public void testIllegalArgument(){
+		exception.expect(IllegalArgumentException.class);
+		exception.expectMessage("arccsc(x) : x out of range");
+		assertArccsc(0,0);
+	}
+	
+	private void assertArccsc(double i, double o) {
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out = ops.math().arccsc(in.createVariable(), in);
+		assertEquals(o, out.get(), 1e-15);
+	}
+
 }
