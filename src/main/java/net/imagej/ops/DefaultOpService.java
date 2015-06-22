@@ -104,6 +104,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private LogService log;
 
+	private DeconvolveNamespace deconvolve;
 	private LogicNamespace logic;
 	private MathNamespace math;
 	private ThresholdNamespace threshold;
@@ -1938,6 +1939,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	// -- Operation shortcuts - other namespaces --
 
 	@Override
+	public DeconvolveNamespace deconvolve() {
+		if (!namespacesReady) initNamespaces();
+		return deconvolve;
+	}
+
+	@Override
 	public LogicNamespace logic() {
 		if (!namespacesReady) initNamespaces();
 		return logic;
@@ -1953,12 +1960,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public ThresholdNamespace threshold() {
 		if (!namespacesReady) initNamespaces();
 		return threshold;
-	}
-
-	@Override
-	public DeconvolveNamespace deconvolve() {
-		if (!namespacesReady) initNamespaces();
-		return deconvolve();
 	}
 
 	// -- SingletonService methods --
@@ -1988,6 +1989,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	private synchronized void initNamespaces() {
 		if (namespacesReady) return;
+		deconvolve = new DeconvolveNamespace();
+		getContext().inject(deconvolve);
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();

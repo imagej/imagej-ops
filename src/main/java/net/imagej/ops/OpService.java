@@ -1133,6 +1133,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	// -- Operation shortcuts - other namespaces --
 
+	/** Gateway into ops of the "deconvolve" namespace. */
+	DeconvolveNamespace deconvolve();
+
 	/** Gateway into ops of the "logic" namespace. */
 	LogicNamespace logic();
 
@@ -1141,8 +1144,5 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
-
-	/** Gateway into ops of the "deconvolve" namespace. */
-	DeconvolveNamespace deconvolve();
 
 }
