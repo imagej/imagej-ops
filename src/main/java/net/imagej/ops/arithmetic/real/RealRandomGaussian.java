@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -42,15 +41,17 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to a random value between 0
- * and (input real number).
- * 
+ * Sets the real component of an output real number to a random value using a
+ * gaussian distribution. The input value is considered the standard deviation
+ * of the desired distribution and must be positive. The output value has mean
+ * value 0.
+ *
  * @author Barry DeZonia
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class, name = MathOps.UniformRandom.NAME)
-public class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.UniformRandom
+@Plugin(type = Op.class, name = MathOps.RandomGaussian.NAME)
+public class RealRandomGaussian<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStrictFunction<I, O> implements MathOps.RandomGaussian
 {
 
 	@Parameter(required = false)
@@ -69,8 +70,7 @@ public class RealUniformRandom<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public O compute(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
-		final double r = rng.nextDouble();
-		output.setReal(r * input.getRealDouble());
+		output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
 		return output;
 	}
 }

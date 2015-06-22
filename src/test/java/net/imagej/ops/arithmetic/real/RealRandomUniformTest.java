@@ -37,44 +37,44 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.junit.Test;
 
 /**
- * Tests {@link RealUniformRandom}.
+ * Tests {@link RealRandomUniform}.
  *
  * @author Alison Walter
  * @author Curtis Rueden
  */
-public class RealUniformRandomTest extends AbstractOpTest {
+public class RealRandomUniformTest extends AbstractOpTest {
 
 	@Test
-	public void testUniformRandom() {
-		assertUniformRandom(23, 14.278690684728433);
-		assertUniformRandom(27, 5.940945158572171, 0xfeeddeadbeefbeefL);
-		assertUniformRandom(123, 52.3081016051914, 124, 95.52110798318904);
+	public void testRandomUniform() {
+		assertRandomUniform(23, 14.278690684728433);
+		assertRandomUniform(27, 5.940945158572171, 0xfeeddeadbeefbeefL);
+		assertRandomUniform(123, 52.3081016051914, 124, 95.52110798318904);
 	}
 
-	private void assertUniformRandom(final double i, final double o) {
+	private void assertRandomUniform(final double i, final double o) {
 		final DoubleType in = new DoubleType(i);
-		final DoubleType out = ops.math().uniformrandom(in.createVariable(), in);
+		final DoubleType out = ops.math().randomUniform(in.createVariable(), in);
 		assertEquals(o, out.get(), 0);
 	}
 
-	private void assertUniformRandom(final double i, final double o,
+	private void assertRandomUniform(final double i, final double o,
 		final long seed)
 	{
 		final DoubleType in = new DoubleType(i);
 		final DoubleType out =
-			ops.math().uniformrandom(in.createVariable(), in, seed);
+			ops.math().randomUniform(in.createVariable(), in, seed);
 		assertEquals(o, out.get(), 0);
 	}
 
-	private void assertUniformRandom(final double i, final double o,
+	private void assertRandomUniform(final double i, final double o,
 		final double i2, final double o2)
 	{
 		final DoubleType in = new DoubleType(i);
 		final DoubleType out = new DoubleType();
 		final long seed = 0xcafebabe12345678L;
 		@SuppressWarnings("unchecked")
-		final RealUniformRandom<DoubleType, DoubleType> op =
-			ops.op(RealUniformRandom.class, in.createVariable(), in, seed);
+		final RealRandomUniform<DoubleType, DoubleType> op =
+			ops.op(RealRandomUniform.class, in.createVariable(), in, seed);
 		op.compute(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);

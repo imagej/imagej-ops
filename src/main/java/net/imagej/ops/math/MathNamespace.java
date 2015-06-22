@@ -858,33 +858,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.GaussianRandom.class)
-	public Object gaussianrandom(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.GaussianRandom.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.arithmetic.real.RealGaussianRandom.class)
-	public <I extends RealType<I>, O extends RealType<O>> O gaussianrandom(
-		final O out, final I in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.arithmetic.real.RealGaussianRandom.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.arithmetic.real.RealGaussianRandom.class)
-	public <I extends RealType<I>, O extends RealType<O>> O gaussianrandom(
-		final O out, final I in, final long seed)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.arithmetic.real.RealGaussianRandom.class,
-				out, in, seed);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.MathOps.Invert.class)
 	public Object invert(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Invert.class, args);
@@ -1283,6 +1256,60 @@ public class MathNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops().run(net.imagej.ops.arithmetic.real.RealPowerConstant.class,
 				out, in, constant);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.MathOps.RandomGaussian.class)
+	public Object randomGaussian(final Object... args) {
+		return ops().run(net.imagej.ops.MathOps.RandomGaussian.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealRandomGaussian.class)
+	public <I extends RealType<I>, O extends RealType<O>> O randomGaussian(
+		final O out, final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealRandomGaussian.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealRandomGaussian.class)
+	public <I extends RealType<I>, O extends RealType<O>> O randomGaussian(
+		final O out, final I in, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealRandomGaussian.class,
+				out, in, seed);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.MathOps.RandomUniform.class)
+	public Object randomUniform(final Object... args) {
+		return ops().run(net.imagej.ops.MathOps.RandomUniform.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealRandomUniform.class)
+	public <I extends RealType<I>, O extends RealType<O>> O randomUniform(
+		final O out, final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealRandomUniform.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.real.RealRandomUniform.class)
+	public <I extends RealType<I>, O extends RealType<O>> O randomUniform(
+		final O out, final I in, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.arithmetic.real.RealRandomUniform.class,
+				out, in, seed);
 		return result;
 	}
 
@@ -1704,33 +1731,6 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final O result =
 			(O) ops().run(net.imagej.ops.arithmetic.real.RealUlp.class, out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.MathOps.UniformRandom.class)
-	public Object uniformrandom(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.UniformRandom.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.arithmetic.real.RealUniformRandom.class)
-	public <I extends RealType<I>, O extends RealType<O>> O uniformrandom(
-		final O out, final I in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.arithmetic.real.RealUniformRandom.class,
-				out, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.arithmetic.real.RealUniformRandom.class)
-	public <I extends RealType<I>, O extends RealType<O>> O uniformrandom(
-		final O out, final I in, final long seed)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.arithmetic.real.RealUniformRandom.class,
-				out, in, seed);
 		return result;
 	}
 

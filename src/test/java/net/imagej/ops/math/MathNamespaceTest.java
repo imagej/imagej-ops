@@ -62,7 +62,6 @@ import net.imagej.ops.MathOps.Exp;
 import net.imagej.ops.MathOps.ExpMinusOne;
 import net.imagej.ops.MathOps.Floor;
 import net.imagej.ops.MathOps.Gamma;
-import net.imagej.ops.MathOps.GaussianRandom;
 import net.imagej.ops.MathOps.Invert;
 import net.imagej.ops.MathOps.LeftShift;
 import net.imagej.ops.MathOps.Log;
@@ -76,6 +75,8 @@ import net.imagej.ops.MathOps.NearestInt;
 import net.imagej.ops.MathOps.Negate;
 import net.imagej.ops.MathOps.Or;
 import net.imagej.ops.MathOps.Power;
+import net.imagej.ops.MathOps.RandomGaussian;
+import net.imagej.ops.MathOps.RandomUniform;
 import net.imagej.ops.MathOps.Reciprocal;
 import net.imagej.ops.MathOps.Remainder;
 import net.imagej.ops.MathOps.RightShift;
@@ -94,7 +95,6 @@ import net.imagej.ops.MathOps.Subtract;
 import net.imagej.ops.MathOps.Tan;
 import net.imagej.ops.MathOps.Tanh;
 import net.imagej.ops.MathOps.Ulp;
-import net.imagej.ops.MathOps.UniformRandom;
 import net.imagej.ops.MathOps.UnsignedRightShift;
 import net.imagej.ops.MathOps.Xor;
 import net.imagej.ops.MathOps.Zero;
@@ -295,12 +295,6 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 		assertComplete("math", MathNamespace.class, Gamma.NAME);
 	}
 
-	/** Tests for {@link GaussianRandom} method convergence. */
-	@Test
-	public void testGaussianRandom() {
-		assertComplete("math", MathNamespace.class, GaussianRandom.NAME);
-	}
-
 	/** Tests for {@link Invert} method convergence. */
 	@Test
 	public void testInvert() {
@@ -377,6 +371,18 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testPower() {
 		assertComplete("math", MathNamespace.class, Power.NAME);
+	}
+
+	/** Tests for {@link RandomGaussian} method convergence. */
+	@Test
+	public void testRandomGaussian() {
+		assertComplete("math", MathNamespace.class, RandomGaussian.NAME);
+	}
+
+	/** Tests for {@link RandomUniform} method convergence. */
+	@Test
+	public void testRandomUniform() {
+		assertComplete("math", MathNamespace.class, RandomUniform.NAME);
 	}
 
 	/** Tests for {@link Reciprocal} method convergence. */
@@ -485,12 +491,6 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	@Test
 	public void testUlp() {
 		assertComplete("math", MathNamespace.class, Ulp.NAME);
-	}
-
-	/** Tests for {@link UniformRandom} method convergence. */
-	@Test
-	public void testUniformRandom() {
-		assertComplete("math", MathNamespace.class, UniformRandom.NAME);
 	}
 
 	/** Tests for {@link UnsignedRightShift} method convergence. */

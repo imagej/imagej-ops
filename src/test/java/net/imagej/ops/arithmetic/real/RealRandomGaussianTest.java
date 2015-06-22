@@ -30,47 +30,55 @@
 
 package net.imagej.ops.arithmetic.real;
 
-import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Sets the real component of an output real number to a random value using a
- * gaussian distribution. The input value is considered the standard deviation
- * of the desired distribution and must be positive. The output value has mean
- * value 0.
+ * Tests {@link RealRandomGaussian}.
  *
- * @author Barry DeZonia
- * @author Jonathan Hale
+ * @author Alison Walter
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.GaussianRandom.NAME)
-public class RealGaussianRandom<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<I, O> implements MathOps.GaussianRandom
-{
+public class RealRandomGaussianTest extends AbstractOpTest {
 
-	@Parameter(required = false)
-	private long seed = 0xabcdef1234567890L;
-
-	private Random rng;
-
-	public long getSeed() {
-		return seed;
+	@Test
+	public void testRandomGaussian() {
+		assertRandomGaussian(23, 16.53373419964066);
+		assertRandomGaussian(27, -15.542815799078497, 0xfeeddeadbeefbeefL);
+		assertRandomGaussian(123, -49.838353142718006, 124, 181.75101003563117);
 	}
 
-	public void setSeed(final long seed) {
-		this.seed = seed;
+	private void assertRandomGaussian(final double i, final double o) {
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out = ops.math().randomGaussian(in.createVariable(), in);
+		assertEquals(o, out.get(), 0);
 	}
 
-	@Override
-	public O compute(final I input, final O output) {
-		if (rng == null) rng = new Random(seed);
-		output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
-		return output;
+	private void assertRandomGaussian(final double i, final double o,
+		final long seed)
+	{
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out =
+			ops.math().randomGaussian(in.createVariable(), in, seed);
+		assertEquals(o, out.get(), 0);
+	}
+
+	private void assertRandomGaussian(final double i, final double o,
+		final double i2, final double o2)
+	{
+		final DoubleType in = new DoubleType(i);
+		final DoubleType out = new DoubleType();
+		final long seed = 0xcafebabe12345678L;
+		@SuppressWarnings("unchecked")
+		final RealRandomGaussian<DoubleType, DoubleType> op =
+			ops.op(RealRandomGaussian.class, in.createVariable(), in, seed);
+		op.compute(in, out);
+		assertEquals(o, out.get(), 0);
+		in.set(i2);
+		op.compute(in, out);
+		assertEquals(o2, out.get(), 0);
 	}
 }
