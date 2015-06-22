@@ -71,7 +71,7 @@ public class MapNeighborhood<I, O> extends
 		final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		ops.run("map", output, shape.neighborhoodsSafe(input), func);
+		ops.map(output, shape.neighborhoodsSafe(input), func);
 		// TODO: threaded map neighborhood
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood

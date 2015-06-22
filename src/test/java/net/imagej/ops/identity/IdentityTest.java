@@ -45,15 +45,15 @@ public class IdentityTest extends AbstractOpTest {
 	@Test
 	public void testIdentity() {
 		final Byte b = 35;
-		final Object ib = ops.run("identity", b);
+		final Object ib = ops.identity(b);
 		assertSame(b, ib);
 
 		final int i = 23;
-		final Object ii = ops.run("identity", i);
+		final Object ii = ops.identity(i);
 		assertSame(i, ii);
 
 		final String s = "hello";
-		final Object is = ops.run("identity", s);
+		final Object is = ops.identity(s);
 		assertSame(s, is);
 	}
 

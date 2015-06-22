@@ -58,12 +58,12 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			ops.run("fft", getFFTInput(), getRAIExtendedInput());
+			ops.fft(getFFTInput(), getRAIExtendedInput());
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			ops.run("fft", getFFTKernel(), getRAIExtendedKernel());
+			ops.fft(getFFTKernel(), getRAIExtendedKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
@@ -72,7 +72,7 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 		frequencyOperation(getFFTInput(), getFFTKernel());
 
 		// inverse fft
-		ops.run("ifft", getOutput(), getFFTInput());
+		ops.ifft(getOutput(), getFFTInput());
 	}
 
 	// abstract function that implements an operation in frequency domain (ie

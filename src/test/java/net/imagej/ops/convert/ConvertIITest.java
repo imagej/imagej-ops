@@ -56,11 +56,11 @@ public class ConvertIITest extends AbstractOpTest {
 		final Img<ByteType> res =
 			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.run("convert", res, img, new ConvertPixCopy<ShortType, ByteType>());
+		ops.convert(res, img, new ConvertPixCopy<ShortType, ByteType>());
 
 		// FIXME won't work neither, as the pre-processor to create the result is
 		// missing
-//		ops.run("convert", img, new ConvertPixCopy<ShortType, ByteType>());
+//		ops.convert(img, new ConvertPixCopy<ShortType, ByteType>());
 
 	}
 }

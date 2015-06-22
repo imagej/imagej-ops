@@ -59,7 +59,7 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 	{
 
 		T outType = output.firstElement().createVariable();
-		List<T> minMax = (List<T>) ops.run("minMax", input);
+		List<T> minMax = ops.minMax(input);
 		double factor =
 			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
 				minMax.get(1).getRealDouble(), outType.getMinValue(), outType
@@ -71,7 +71,7 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 					.getMaxValue(), factor);
 
 		// run normalize for each pixel
-		ops.run("map", output, input, normalize);
+		ops.map(output, input, normalize);
 
 		return output;
 	}

@@ -71,7 +71,7 @@ public class ConvolveTest extends AbstractOpTest {
 		assertSame(ConvolveNaiveImg.class, op.getClass());
 
 		// make sure it runs
-		Img<FloatType> out = (Img<FloatType>) ops.run("convolve", in, kernel);
+		Img<FloatType> out = ops.convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
@@ -87,7 +87,7 @@ public class ConvolveTest extends AbstractOpTest {
 		assertSame(ConvolveFFTImg.class, op.getClass());
 
 		// make sure it runs
-		out = (Img<FloatType>) ops.run("convolve", in, kernel);
+		out = ops.convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
@@ -120,12 +120,11 @@ public class ConvolveTest extends AbstractOpTest {
 		FloatType outSum3 = new FloatType();
 
 		// calculate sum of input and kernel
-		ops.run("sum", inSum, in);
-		ops.run("sum", kernelSum, kernel);
+		ops.sum(inSum, in);
+		ops.sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> out =
-			(Img<FloatType>) ops.run("convolve", null, in, kernel, borderSize);
+		Img<FloatType> out = ops.convolve(null, in, kernel, borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 =
@@ -150,9 +149,9 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
-		ops.run("sum", outSum, out);
-		ops.run("sum", outSum2, out2);
-		ops.run("sum", outSum3, out3);
+		ops.sum(outSum, out);
+		ops.sum(outSum2, out2);
+		ops.sum(outSum3, out3);
 
 		// multiply input sum by kernelSum and assert it is the same as outSum
 		inSum.mul(kernelSum);

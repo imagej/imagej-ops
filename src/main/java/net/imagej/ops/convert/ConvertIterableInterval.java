@@ -55,7 +55,6 @@ public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O
 	@Parameter
 	private OpService ops;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<O> compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
@@ -63,7 +62,7 @@ public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O
 		pixConvert.checkInput(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
 		pixConvert.checkInput(input);
-		return (IterableInterval<O>) ops.run("map", output, input, pixConvert);
+		return ops.map(output, input, pixConvert);
 	}
 
 }

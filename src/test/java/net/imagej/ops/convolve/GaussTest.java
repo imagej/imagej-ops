@@ -54,7 +54,6 @@ public class GaussTest extends AbstractOpTest {
 		final Img<ByteType> out = in.copy();
 		final double sigma = 5;
 
-		ops.run("gauss", out, in, sigma);
-
+		ops.gauss(out, in, sigma);
 	}
 }
