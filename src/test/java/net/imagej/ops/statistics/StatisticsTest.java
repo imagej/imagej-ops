@@ -41,13 +41,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests statistics operations using the following general pattern. 
- * 
- * 1. Generate a random test image. 
- * 2. Get a reference to the raw data pointer. 
- * 3. Calculate the statistic by directly using the raw data. 
- * 4. Calculate the statistic by calling the op. 
- * 5. Assert that the two values are the same.
+ * Tests statistics operations using the following general pattern.
+ * <ol>
+ * <li>Generate a random test image.</li>
+ * <li>Get a reference to the raw data pointer.</li>
+ * <li>Calculate the statistic by directly using the raw data.</li>
+ * <li>Calculate the statistic by calling the op.</li>
+ * <li>Assert that the two values are the same.</li>
+ * </ol>
  * 
  * @author Brian Northan
  */
