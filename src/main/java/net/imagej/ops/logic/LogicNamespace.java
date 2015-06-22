@@ -32,6 +32,7 @@ package net.imagej.ops.logic;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.conditions.Condition;
 
 /**
  * The logic namespace contains logical (i.e., boolean) operations.
@@ -47,6 +48,26 @@ public class LogicNamespace extends AbstractNamespace {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class,
 				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.AndCondition.class)
+	public <T> Boolean and(final Object in, final Condition<T> c1,
+		final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.AndCondition.class, in, c1,
+				c2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.AndCondition.class)
+	public <T> Boolean and(final Boolean out, final Object in,
+		final Condition<T> c1, final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.AndCondition.class, out,
+				in, c1, c2);
 		return result;
 	}
 
@@ -274,6 +295,23 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.conditions.NotCondition.class)
+	public <T> Boolean not(final Object in, final Condition<T> c1) {
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.NotCondition.class, in, c1);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.NotCondition.class)
+	public <T> Boolean not(final Boolean out, final Object in,
+		final Condition<T> c1)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.NotCondition.class, out,
+				in, c1);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanNotEqual.class)
 	public boolean notEqual(final boolean a, final boolean b) {
 		final boolean result =
@@ -329,11 +367,51 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.conditions.OrCondition.class)
+	public <T> Boolean or(final Object in, final Condition<T> c1,
+		final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.OrCondition.class, in, c1,
+				c2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.OrCondition.class)
+	public <T> Boolean or(final Boolean out, final Object in,
+		final Condition<T> c1, final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.OrCondition.class, out, in,
+				c1, c2);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class)
 	public boolean xor(final boolean a, final boolean b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class,
 				a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.XorCondition.class)
+	public <T> Boolean xor(final Object in, final Condition<T> c1,
+		final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.XorCondition.class, in, c1,
+				c2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.XorCondition.class)
+	public <T> Boolean xor(final Boolean out, final Object in,
+		final Condition<T> c1, final Condition<T> c2)
+	{
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.XorCondition.class, out,
+				in, c1, c2);
 		return result;
 	}
 

@@ -30,13 +30,16 @@
 
 package net.imagej.ops.conditions;
 
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Xor.NAME)
-public class XorCondition<T> extends AbstractCondition<T> implements Xor {
+@Plugin(type = Op.class, name = LogicOps.Xor.NAME)
+public class XorCondition<T> extends AbstractCondition<T> implements
+	LogicOps.Xor
+{
 
 	@Parameter
 	private Condition<T> c1;

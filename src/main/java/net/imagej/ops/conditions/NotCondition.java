@@ -30,13 +30,16 @@
 
 package net.imagej.ops.conditions;
 
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Not.NAME)
-public class NotCondition<T> extends AbstractCondition<T> implements And {
+@Plugin(type = Op.class, name = LogicOps.Not.NAME)
+public class NotCondition<T> extends AbstractCondition<T> implements
+	LogicOps.Not
+{
 
 	@Parameter
 	private Condition<T> c1;
