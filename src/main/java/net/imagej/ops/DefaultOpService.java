@@ -283,7 +283,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final Img<O> result =
-			(Img) run(Ops.Convolve.NAME, out, in, kernel, borderSize);
+			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize);
 		return result;
 	}
 
