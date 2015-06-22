@@ -58,8 +58,7 @@ public class Apply${name}Threshold<T extends RealType<T>> extends
 
 	@Override
 	public T getThreshold(final Img<T> input) {
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> hist = (Histogram1d<T>) ops.histogram(input);
+		final Histogram1d<T> hist = ops.histogram(input);
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops.run(Compute${name}Threshold.class, hist);
 		return result;

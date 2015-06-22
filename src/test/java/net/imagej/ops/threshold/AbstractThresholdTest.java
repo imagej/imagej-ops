@@ -82,7 +82,7 @@ public class AbstractThresholdTest extends AbstractOpTest {
 	}
 
 	protected Histogram1d<UnsignedShortType> histogram() {
-		return (Histogram1d<UnsignedShortType>) ops.histogram(in);
+		return ops.histogram(in);
 	}
 
 	protected void assertThreshold(final Class<? extends Op> opClass,

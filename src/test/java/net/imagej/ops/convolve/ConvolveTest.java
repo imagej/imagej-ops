@@ -136,7 +136,8 @@ public class ConvolveTest extends AbstractOpTest {
 			new ArrayImgFactory<FloatType>().create(size, new FloatType());
 
 		// this time create reusable fft memory first
-		CreateFFTFilterMemory<FloatType, FloatType, FloatType, ComplexFloatType> createMemory =
+		@SuppressWarnings("unchecked")
+		final CreateFFTFilterMemory<FloatType, FloatType, FloatType, ComplexFloatType> createMemory =
 			ops.op(CreateFFTFilterMemory.class, in, kernel);
 
 		createMemory.run();
