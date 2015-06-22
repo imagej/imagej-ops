@@ -1648,7 +1648,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result =
 			(IterableInterval<T>) run(
-				net.imagej.ops.normalize.NormalizeRealType.class, out, in);
+				net.imagej.ops.normalize.NormalizeIterableInterval.class, out, in);
 		return result;
 	}
 
