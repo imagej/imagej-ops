@@ -45,14 +45,10 @@ public class UnionCondition<T> extends AbstractCondition<T> {
 
 	@Override
 	public boolean isTrue(final T val) {
-
 		for (final Condition<T> c1 : conditions) {
-			if (c1.isTrue( val)) {
-				return true;
-			}
+			if (c1.isTrue(val)) return true;
 		}
 		return false;
-
 	}
 
 }

@@ -48,11 +48,7 @@ public class DimensionEqualCondition<T> extends AbstractCondition<Object> {
 
 	@Override
 	public boolean isTrue(final Object val) {
-		if (listing.get(index).equals(val)) {
-			return true;
-		}
-		return false;
-
+		return listing.get(index).equals(val);
 	}
 
 }

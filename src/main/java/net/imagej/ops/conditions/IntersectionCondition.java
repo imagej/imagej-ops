@@ -45,14 +45,10 @@ public class IntersectionCondition<T> extends AbstractCondition<T> {
 
 	@Override
 	public boolean isTrue(final T val) {
-
 		for (final Condition<T> c1 : conditions) {
-			if (!c1.isTrue(val)) {
-				return false;
-			}
+			if (!c1.isTrue(val)) return false;
 		}
 		return true;
-
 	}
 
 }

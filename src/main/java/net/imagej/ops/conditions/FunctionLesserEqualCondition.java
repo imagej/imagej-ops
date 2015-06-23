@@ -45,9 +45,7 @@ public class FunctionLesserEqualCondition<T extends Comparable<T>> extends
 
 	@Override
 	public boolean isTrue(final T val) {
-		final int result = val.compareTo(o);
-
-		return result <= 0;
+		return val.compareTo(o) <= 0;
 	}
 
 }

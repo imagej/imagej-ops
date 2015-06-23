@@ -48,8 +48,7 @@ public class WithinRangeCondition<T extends Comparable<T>> extends
 
 	@Override
 	public boolean isTrue(final T val) {
-
-		return (min.compareTo(val) <= 0) && (max.compareTo(val) >= 0);
+		return min.compareTo(val) <= 0 && max.compareTo(val) >= 0;
 	}
 
 }
