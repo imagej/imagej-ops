@@ -162,7 +162,7 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 		}
 
 		// 2. compute the size of the complex-valued output and the required
-		// padding based on the prior extended input image
+		// padding based on the prior extended input image size
 		// (The image size is recalculated again so that it is a "fast" fft
 		// size. FFTs are much faster for certain sizes.)
 
