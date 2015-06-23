@@ -89,26 +89,32 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private ImgFactory<O> imgFactory;
 
 	/**
-	 * TODO: review k is the size of the measurement window. That is the size of
-	 * the acquired image before extension k is required to calculate the
+	 * TODO: review! - k is the size of the measurement window. That is the size
+	 * of the acquired image before extension k is required to calculate the
 	 * non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private long[] k;
 
 	/**
-	 * TODO: review l is the size of the psf. l is required to calculate the
+	 * TODO: review! - l is the size of the psf. l is required to calculate the
 	 * non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private long[] l;
 
 	/**
-	 * TODO: review boolean which indicates wether to perform non-circulant
+	 * TODO: review boolean which indicates whether to perform non-circulant
 	 * deconvolution
 	 */
 	@Parameter(required = false)
-	private boolean nonCirculant = true;
+	private boolean nonCirculant = false;
+
+	/**
+	 * TODO: review boolean which indicates whether to perform acceleration
+	 */
+	@Parameter(required = false)
+	private boolean accelerate = false;
 
 	/**
 	 * TODO: review An OutOfBoundsFactory which defines the extension strategy
@@ -387,6 +393,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	public Img<O> getNormalization() {
 		return normalization;
+	}
+
+	public boolean getAccelerate() {
+		return accelerate;
 	}
 
 }

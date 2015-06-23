@@ -44,7 +44,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Richardson Lucy op that operates on (@link Img)
+ * Richardson Lucy op that operates on (@link Img) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,8 +53,8 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class, name = Ops.Deconvolve.RichardsonLucy.NAME,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+	name = Ops.Deconvolve.RichardsonLucy.NAME, priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterImg<I, O, K, C>
 {
@@ -68,6 +69,18 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 	private int maxIterations;
 
 	/**
+	 * indicates whether to use non-circulant edge handling
+	 */
+	@Parameter(required = false)
+	private boolean nonCirculant = false;
+
+	/**
+	 * indicates whether to use acceleration
+	 */
+	@Parameter(required = false)
+	private boolean accelerate = false;
+
+	/**
 	 * run RichardsonLucyRAI
 	 */
 	@Override
@@ -75,9 +88,20 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel,
-			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory());
+		Img<I> input = this.getInput();
+
+		long[] k = new long[input.numDimensions()];
+		long[] l = new long[input.numDimensions()];
+
+		for (int i = 0; i < input.numDimensions(); i++) {
+			k[i] = input.dimension(i);
+			l[i] = getKernel().dimension(i);
+		}
+
+		ops.deconvolve().richardsonLucy(RichardsonLucyRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel, output, true, true, maxIterations,
+			imgConvolutionInterval, output.factory(), k, l, nonCirculant, accelerate);
+
 	}
 
 }

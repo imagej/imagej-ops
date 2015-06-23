@@ -44,7 +44,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval)
+ * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
+ * L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -62,12 +64,17 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	private OpService ops;
 
 	/**
-	 * performs one iteration of the Richardson Lucy Algorithm (Lucy, L. B.
-	 * (1974).
-	 * "An iterative technique for the rectification of observed distributions".)
+	 * performs one iteration of the Richardson Lucy Algorithm
 	 */
 	@Override
 	protected void performIteration() {
+
+		// trouble shooting TODO: remove this
+		if (getK() != null) {
+			System.out.println("k: " + getK()[0]);
+			System.out.println("l: " + getL()[0]);
+		}
+		System.out.println("non-circulant: " + getNonCirculant());
 
 		// 1. Create Reblurred (this step will have already been done from the
 		// previous iteration in order to calculate error stats)
@@ -85,8 +92,10 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// (Note: ComputeEstimate can be overridden to achieve regularization)
 		ComputeEstimate();
 
-		// TODO
 		// normalize for non-circulant deconvolution
+		if (getNonCirculant()) {
+			inPlaceDivide2(getNormalization(), getRAIExtendedEstimate());
+		}
 
 	}
 
@@ -115,6 +124,34 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 			}
 
 			cursorDenominatorOutput.get().setReal(res);
+		}
+	}
+
+	// TODO: replace this function with divide op
+	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
+		RandomAccessibleInterval<O> numeratorOutput)
+	{
+
+		final Cursor<O> cursorDenominator = Views.iterable(denominator).cursor();
+		final Cursor<O> cursorNumeratorOutput =
+			Views.iterable(numeratorOutput).cursor();
+
+		while (cursorDenominator.hasNext()) {
+			cursorDenominator.fwd();
+			cursorNumeratorOutput.fwd();
+
+			float num = cursorNumeratorOutput.get().getRealFloat();
+			float div = cursorDenominator.get().getRealFloat();
+			float res = 0;
+
+			if (div > 0) {
+				res = num / div;
+			}
+			else {
+				res = 0;
+			}
+
+			cursorNumeratorOutput.get().setReal(res);
 		}
 	}
 
