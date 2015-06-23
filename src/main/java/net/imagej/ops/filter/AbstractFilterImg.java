@@ -153,7 +153,7 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	}
 
 	protected void setOBFKernel(
-		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> objInput)
+		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		this.obfKernel = obfKernel;
 	}
