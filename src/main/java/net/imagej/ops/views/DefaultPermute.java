@@ -1,14 +1,14 @@
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.view.ViewOps;
 import net.imagej.ops.view.ViewOps.Permute;
 import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 @Plugin(type = ViewOps.Permute.class, name = ViewOps.Permute.NAME)
 public class DefaultPermute<T> extends
