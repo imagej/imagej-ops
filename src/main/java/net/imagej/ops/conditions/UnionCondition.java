@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 public class UnionCondition<T> extends AbstractCondition<T> {
 
 	@Parameter
-	List<Condition<T>> conditions;
+	private List<Condition<T>> conditions;
 
 	@Override
 	public boolean isTrue(final T val) {

@@ -41,7 +41,7 @@ public class FunctionLesserEqualCondition<T extends Comparable<T>> extends
 {
 
 	@Parameter
-	T o;
+	private T o;
 
 	@Override
 	public boolean isTrue(final T val) {

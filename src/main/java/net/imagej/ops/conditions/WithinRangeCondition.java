@@ -41,9 +41,10 @@ public class WithinRangeCondition<T extends Comparable<T>> extends
 {
 
 	@Parameter
-	T max;
+	private T max;
+
 	@Parameter
-	T min;
+	private T min;
 
 	@Override
 	public boolean isTrue(final T val) {

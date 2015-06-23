@@ -44,7 +44,7 @@ public class DimensionEqualCondition<T> extends AbstractCondition<Object> {
 	private int index;
 
 	@Parameter
-	ArrayList<T> listing;
+	private ArrayList<T> listing;
 
 	@Override
 	public boolean isTrue(final Object val) {
