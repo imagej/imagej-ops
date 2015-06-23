@@ -30,22 +30,25 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.logic.EqualsCondition;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class EqualsTest extends AbstractOpTest {
+/** Tests {@link ComparableLessThan}. */
+public class ComparableLessThanTest extends AbstractOpTest {
 
 	@Test
-	public void testEquals() {
+	public void testFunctionLesser() {
+		final BoolType result =
+			(BoolType) ops.run(ComparableLessThan.class, 5.0, 3.0);
+		assertFalse(result.get());
 
-		final Boolean result = (Boolean) ops.run(EqualsCondition.class, 5.0, 5.0);
-		assertSame(result, true);
-
-		final Boolean result1 = (Boolean) ops.run(EqualsCondition.class, 5.0, 6.0);
-		assertSame(result1, false);
-
+		final BoolType result2 =
+			(BoolType) ops.run(ComparableLessThan.class, 5.0, 6.0);
+		assertTrue(result2.get());
 	}
+
 }

@@ -30,43 +30,23 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-
-import java.util.ArrayList;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.logic.Condition;
-import net.imagej.ops.logic.FunctionGreaterCondition;
-import net.imagej.ops.logic.UnionCondition;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class UnionTest extends AbstractOpTest {
+/** Tests {@link BooleanCondition}. */
+public class BooleanConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testIntersection() {
+	public void testBoolean() {
+		final BoolType result = (BoolType) ops.run(BooleanCondition.class, true);
+		assertTrue(result.get());
 
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
-
-		final Condition<?> c1 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 6.0);
-
-		condition.add(c1);
-		condition.add(c2);
-
-		final Boolean result = (Boolean) ops.run(UnionCondition.class, 2.0,
-				condition);
-		assertSame(result, false);
-
-		condition.add(0, c2);
-		final Boolean result1 = (Boolean) ops.run(UnionCondition.class, 4.0,
-				condition);
-		assertSame(result1, true);
-		
-		final Boolean result2 = (Boolean) ops.run(UnionCondition.class, 7.0,
-				condition);
-		assertSame(result2, true);
+		final BoolType result1 = (BoolType) ops.run(BooleanCondition.class, false);
+		assertFalse(result1.get());
 	}
+
 }

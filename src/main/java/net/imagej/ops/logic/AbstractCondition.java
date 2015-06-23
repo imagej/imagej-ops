@@ -31,23 +31,21 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.AbstractOutputFunction;
+import net.imglib2.type.logic.BoolType;
 
+/** Abstract superclass for {@link Condition} ops. */
 public abstract class AbstractCondition<T> extends
-	AbstractOutputFunction<T, Boolean> implements Condition<T>
+	AbstractOutputFunction<T, BoolType> implements Condition<T>
 {
 
 	@Override
-	public Boolean createOutput(final T input) {
-		// NB: We must perform the actual computation here,
-		// because Boolean objects are immutable. So we cannot
-		// just "pre-allocate" it and fill it in later.
-		return isTrue(input);
+	public BoolType createOutput(final T input) {
+		return new BoolType();
 	}
 
 	@Override
-	protected Boolean safeCompute(final T input, final Boolean output) {
-		// NB: No need to do anything here, because the actual
-		// computation was already done by the "createOutput" method.
+	protected BoolType safeCompute(final T input, final BoolType output) {
+		output.set(isTrue(input));
 		return output;
 	}
 

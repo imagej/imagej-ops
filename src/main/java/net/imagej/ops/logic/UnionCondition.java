@@ -32,13 +32,16 @@ package net.imagej.ops.logic;
 
 import java.util.List;
 
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "union")
-public class UnionCondition<T> extends AbstractCondition<T> {
+@Plugin(type = Op.class, name = LogicOps.Or.NAME)
+public class UnionCondition<T> extends AbstractCondition<T> implements
+	LogicOps.Or
+{
 
 	@Parameter
 	private List<Condition<T>> conditions;

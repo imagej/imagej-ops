@@ -31,6 +31,7 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.Function;
+import net.imglib2.type.logic.BoolType;
 
 /**
  * An interface that can be tested for truth or falsity for a given input.
@@ -38,7 +39,7 @@ import net.imagej.ops.Function;
  * @author Barry DeZonia
  * @author Aparna Pal
  */
-public interface Condition<T> extends Function<T, Boolean> {
+public interface Condition<T> extends Function<T, BoolType> {
 
 	boolean isTrue(T val);
 

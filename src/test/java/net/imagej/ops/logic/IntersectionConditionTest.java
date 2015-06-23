@@ -30,27 +30,39 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.logic.FunctionLesserEqualCondition;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class FunctionLesserEqual extends AbstractOpTest {
+/** Tests {@link IntersectionCondition}. */
+public class IntersectionConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionLesser() {
+	public void testIntersection() {
+		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
 
-		final Boolean result =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 3.0);
-		assertSame(result, false);
+		final Condition<?> c1 =
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(ComparableLessThan.class, Double.class, 6.0);
 
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 6.0);
-		assertSame(result2, true);
+		condition.add(c1);
+		condition.add(c2);
 
-		final Boolean result3 =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 5.0);
-		assertSame(result3, true);
+		final BoolType result =
+			(BoolType) ops.run(IntersectionCondition.class, 2.0 , condition);
+		assertFalse(result.get());
+
+		condition.add(0, c2);
+		final BoolType result1 =
+			(BoolType) ops.run(IntersectionCondition.class, 4.0, condition);
+		assertTrue(result1.get());
 	}
+
 }

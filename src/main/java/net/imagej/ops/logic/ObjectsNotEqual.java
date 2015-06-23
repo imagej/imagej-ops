@@ -33,26 +33,21 @@ package net.imagej.ops.logic;
 import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /** Op that tests for inequality between two objects. */
 @Plugin(type = Op.class, name = LogicOps.NotEqual.NAME)
-public class ObjectsNotEqual implements LogicOps.NotEqual {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private boolean result;
-
-	@Parameter
-	private Object a;
+public class ObjectsNotEqual extends AbstractCondition<Object> implements
+	LogicOps.NotEqual
+{
 
 	@Parameter
-	private Object b;
+	private Object o;
 
 	@Override
-	public void run() {
-		result = !a.equals(b);
+	public boolean isTrue(Object val) {
+		return !o.equals(val);
 	}
 
 }

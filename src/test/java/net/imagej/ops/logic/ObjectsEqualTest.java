@@ -30,38 +30,24 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.logic.Condition;
-import net.imagej.ops.logic.EqualsCondition;
-import net.imagej.ops.logic.FunctionGreaterCondition;
-import net.imagej.ops.logic.FunctionLesserCondition;
-import net.imagej.ops.logic.OrCondition;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class OrTest extends AbstractOpTest {
+/** Tests {@link ObjectsEqual}. */
+public class ObjectsEqualTest extends AbstractOpTest {
 
 	@Test
-	public void testOr() {
+	public void testEquals() {
 
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
-		final Condition<?> c3 =
-			ops.op(EqualsCondition.class, Double.class, 13.0);
+		final BoolType result = (BoolType) ops.run(ObjectsEqual.class, 5.0, 5.0);
+		assertTrue(result.get());
 
-		final Boolean result = (Boolean) ops.run(OrCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
+		final BoolType result1 = (BoolType) ops.run(ObjectsEqual.class, 5.0, 6.0);
+		assertFalse(result1.get());
 
-		final Boolean result2 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c2);
-		assertSame(result2, true);
-
-		final Boolean result3 = (Boolean) ops.run(OrCondition.class, 7.0, c1, c2);
-		assertSame(result3, true);
-
-		final Boolean result4 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c3);
-		assertSame(result4, false);
 	}
 }

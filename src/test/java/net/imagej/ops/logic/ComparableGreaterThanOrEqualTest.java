@@ -30,26 +30,28 @@
 
 package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.logic.FunctionGreaterEqualCondition;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class FunctionGreaterEqualTest extends AbstractOpTest {
+/** Tests {@link ComparableGreaterThanOrEqual}. */
+public class ComparableGreaterThanOrEqualTest extends AbstractOpTest {
 
 	@Test
 	public void testFunctionGreater() {
-		final Boolean result =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 3.0);
-		assertSame(result, true);
+		final BoolType result =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 3.0);
+		assertTrue(result.get());
 
-		final Boolean result3 =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 5.0);
-		assertSame(result3, true);
+		final BoolType result3 =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 5.0);
+		assertTrue(result3.get());
 
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 6.0);
-		assertSame(result2, false);
+		final BoolType result2 =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 6.0);
+		assertFalse(result2.get());
 	}
 }

@@ -33,26 +33,21 @@ package net.imagej.ops.logic;
 import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /** Op that tests for equality between two objects. */
 @Plugin(type = Op.class, name = LogicOps.Equal.NAME)
-public class ObjectsEqual implements LogicOps.Equal {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private boolean result;
-
-	@Parameter
-	private Object a;
+public class ObjectsEqual extends AbstractCondition<Object> implements
+	LogicOps.Equal
+{
 
 	@Parameter
-	private Object b;
+	private Object o;
 
 	@Override
-	public void run() {
-		result = a.equals(b);
+	public boolean isTrue(final Object val) {
+		return o.equals(val);
 	}
 
 }
