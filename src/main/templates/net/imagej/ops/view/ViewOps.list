@@ -22,7 +22,6 @@ ops = ```
 	[name: "hyperslice",                iface: "HyperSlice",                extends: "View"],
 	[name: "adddimension",              iface: "AddDimension",              extends: "View"],
 	[name: "invertaxis",                iface: "InvertAxis",                extends: "View"],
-	[name: "offsetinterval",            iface: "OffsetInterval",            extends: "View"],
 	[name: "iszeromin",                 iface: "IsZeroMin",                 extends: "View"],
 	[name: "iterable",                  iface: "Iterable",                  extends: "View"],
 	[name: "flatiterable",              iface: "FlatIterable",              extends: "Iterable"],
