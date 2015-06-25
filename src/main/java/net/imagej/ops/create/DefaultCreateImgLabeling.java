@@ -30,7 +30,6 @@
 
 package net.imagej.ops.create;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
 import net.imagej.ops.create.CreateOps.CreateImg;
@@ -54,7 +53,8 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Op.class)
+@Plugin(type = CreateImgLabeling.class, name = CreateImgLabeling.NAME,
+	priority = -1.0)
 public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 	CreateImgLabeling, OutputOp<ImgLabeling<L, T>>
 {

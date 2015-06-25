@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  * @param <T>
  */
-@Plugin(type = Op.class)
+@Plugin(type = Op.class, name = CreateImgFactory.NAME, priority = -2.0)
 public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	CreateImgFactory, OutputOp<ImgFactory<T>>
 {
