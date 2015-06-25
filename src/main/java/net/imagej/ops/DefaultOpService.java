@@ -44,6 +44,7 @@ import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateOps;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.misc.Size;
@@ -108,7 +109,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private LogicNamespace logic;
 	private MathNamespace math;
 	private ThresholdNamespace threshold;
+	private LabelingNamespace labeling;
+
 	private boolean namespacesReady;
+
 
 	// -- OpService methods --
 
@@ -1962,6 +1966,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return threshold;
 	}
 
+	@Override
+	public LabelingNamespace labeling() {
+		if (!namespacesReady) initNamespaces();
+		return labeling;
+	}
+
 	// -- SingletonService methods --
 
 	@Override
@@ -1997,6 +2007,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(math);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
+		labeling = new LabelingNamespace();
+		getContext().inject(labeling);
 		namespacesReady = true;
 	}
 
