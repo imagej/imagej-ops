@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Op.class)
+@Plugin(type = Op.class, name = CreateImgPlus.NAME)
 public class DefaultCreateImgPlus<T> implements CreateImgPlus,
 	OutputOp<ImgPlus<T>>, Contingent
 {
