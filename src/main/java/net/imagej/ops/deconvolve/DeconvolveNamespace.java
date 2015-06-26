@@ -56,7 +56,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final int maxIterations)
 	{
@@ -69,7 +69,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final int maxIterations)
 	{
@@ -82,7 +82,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final int maxIterations)
@@ -96,7 +96,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
@@ -111,7 +111,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
@@ -127,7 +127,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
@@ -144,7 +144,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)
 	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		Img<O> richardsonLucy(final Img<O> out, final Img<I> in,
 			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
 			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
