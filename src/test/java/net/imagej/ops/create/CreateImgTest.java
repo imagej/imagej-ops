@@ -91,6 +91,18 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 	}
 
 	@Test
+	public void testImgFromImg() {
+		long[] dim = new long[] { 1 };
+		// create img
+		final Img<?> img = (Img<?>) ops.run(CreateImg.class, dim, new ByteType());
+		final Img<?> newImg = (Img<?>) ops.run(CreateImg.class, img);
+
+		// should both be ByteType. New Img shouldn't be DoubleType (default)
+		assertEquals(img.firstElement().getClass(), newImg.firstElement()
+			.getClass());
+	}
+
+	@Test
 	public void testImageFactory() {
 
 		final long[] dim = new long[] { 10, 10, 10 };
