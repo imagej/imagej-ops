@@ -67,7 +67,7 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	private RandomAccessibleInterval<K> kernel;
 
 	/**
-	 * Border size in each dimensions. If null default border size will be added.
+	 * Border size in each dimension. If null default border size will be added.
 	 */
 	@Parameter(required = false)
 	private long[] borderSize = null;

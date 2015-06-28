@@ -80,13 +80,13 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 	private long[] borderSize = null;
 
 	/**
-	 * generates the out of bounds strategy for the extended area
+	 * generates the out of bounds strategy for the extended input
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
 
 	/**
-	 * generates the out of bounds strategy for the extended area
+	 * generates the out of bounds strategy for the extended kernel
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
@@ -218,6 +218,8 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 			}
 		}
 
+		// TODO: the ffts could have been allready created.  Need to modify this
+		// step for the case where FFT memory allready exists
 		fftImg = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
 
 		fftKernel = ((ImgFactory) fftFactory).create(fftDimensions, fftType);

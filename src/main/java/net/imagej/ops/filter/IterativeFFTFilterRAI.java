@@ -67,9 +67,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	@Parameter
 	private OpService ops;
 
-	@Parameter
-	Context ctx;
-
 	/**
 	 * Max number of iterations to perform
 	 */
@@ -188,9 +185,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
 		Cursor<I> cIn = Views.iterable(getRAIExtendedInput()).cursor();
 
-		// ops
-		// .run("correlate", normalization, normalization, getRaiExtendedKernel(),
-		// new int[]{0,0,0});
 		while (c.hasNext()) {
 			c.fwd();
 			cIn.fwd();
@@ -207,7 +201,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		//
 		createReblurred();
 
-		// TODO: code for edge handling scheme
 	}
 
 	void performIterations(int maxIterations) {
@@ -265,15 +258,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		// 3. correlate psf with the output of step 2.
 		ops.run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
 			getFFTKernel(), normalization, true, false);
-
-		try {
-			// saver.saveImg("/home/bnorthan/Brian2014/Projects/deconware2/cube_2.tif",
-			// normalization);
-
-		}
-		catch (Exception ex) {
-
-		}
 
 	}
 
