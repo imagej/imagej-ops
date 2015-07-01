@@ -48,14 +48,11 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 	@Override
 	public void run() {
 
-		if (op == null) {
-			op = ops.op(HistogramCreate.class, getInput(), numBins);
-			output = new HashMap<OpRef<? extends Op>, Histogram1d<T>>();
-			setOutput(output);
-		}
+		op = ops.op(HistogramCreate.class, getInput(), numBins);
+		output = new HashMap<OpRef<? extends Op>, Histogram1d<T>>();
+		setOutput(output);
 
 		op.run();
-		op.getOutput().countData(getInput());
 
 		final OpRef<HistogramCreate> ref = new OpRef<HistogramCreate>(
 				HistogramCreate.class, numBins);
@@ -73,7 +70,7 @@ public class HistogramFeatureSet<T extends RealType<T>> extends
 		int n = 0;
 		for (LongType type : op.getOutput()) {
 			res.add(new ValuePair<String, LongType>("Histogram [" + ++n + "]",
-					type));
+					type.copy()));
 		}
 
 		return res;
