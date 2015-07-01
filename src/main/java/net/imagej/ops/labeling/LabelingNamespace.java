@@ -63,8 +63,13 @@ public class LabelingNamespace extends AbstractNamespace {
 			final RandomAccessibleInterval<T> in, final StructuringElement element,
 			final Iterator<L> labelGenerator)
 	{
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, I> result =
+			(ImgLabeling<L, I>) ops().run(
+				net.imagej.ops.labeling.cca.DefaultCCA.class, out, in, element,
+				labelGenerator);
 
-		return cca(out, in, element, labelGenerator);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
@@ -72,7 +77,12 @@ public class LabelingNamespace extends AbstractNamespace {
 		ImgLabeling<L, I> cca(final RandomAccessibleInterval<T> in,
 			final StructuringElement element)
 	{
-		return cca(null, in, element, null);
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, I> result =
+			(ImgLabeling<L, I>) ops().run(
+				net.imagej.ops.labeling.cca.DefaultCCA.class, in, element);
+
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
@@ -80,7 +90,12 @@ public class LabelingNamespace extends AbstractNamespace {
 		ImgLabeling<L, I> cca(final ImgLabeling<L, I> out,
 			final RandomAccessibleInterval<T> in, final StructuringElement element)
 	{
-		return cca(out, in, element, null);
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, I> result =
+			(ImgLabeling<L, I>) ops().run(
+				net.imagej.ops.labeling.cca.DefaultCCA.class, out, in, element, null);
+
+		return result;
 	}
 
 	@Override
