@@ -175,3 +175,13 @@ ops = ```
 	[name: "richardsonLucy",         iface: "RichardsonLucy"]
 ]
 ```
+
+[LabelingOps.java]
+className = "LabelingOps"
+namespace = "labeling"
+authors = ["Christian Dietz"]
+ops = ```
+[
+	[name: "cca", iface: "CCA", aliases: ["connected-components", "connected-component-analysis"]]
+]
+```
