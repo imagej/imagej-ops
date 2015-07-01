@@ -1,9 +1,10 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,31 +29,33 @@
  * #L%
  */
 
-package net.imglib2.ops.operation.bool.binary;
+package net.imagej.ops.operation.bool.binary;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Op;
 import net.imglib2.ops.operation.BinaryOperation; 
 import net.imglib2.type.logic.BitType;
 
 /**
  * Sets a BitType output to the result of ANDing a first BitType value with the
  * NOT of a second BitType number.
- *  
+ * 
  * @author Barry DeZonia
  * @deprecated Use net.imagej.ops instead.
  */
-@Deprecated
-public class BinaryAndNot implements BinaryOperation<BitType, BitType, BitType> {
 
-	@Override
-	public BitType compute(BitType input1, BitType input2, BitType output) {
-		boolean value = input1.get() && !input2.get();
-		output.set(value);
-		return output;
-	}
+@Plugin(type = Op.class, name = "xor")
+public class BinaryXor extends BooleanOperation {
 
+	@Parameter
+	BitType input2;
+	
 	@Override
-	public BinaryAndNot copy() {
-		return new BinaryAndNot();
+	public BitType compute(BitType input1) {
+		input1.xor(input2);
+		return input1;
 	}
 
 }

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.conditions;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertSame; 
 import net.imagej.ops.AbstractOpTest;
 
 import org.junit.Test;

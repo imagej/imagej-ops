@@ -2,18 +2,18 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,31 +28,24 @@
  * #L%
  */
 
-package net.imglib2.ops.operation.bool.binary;
+package net.imagej.ops.operation.complex.binary;
 
-import net.imglib2.ops.operation.BinaryOperation; 
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.Op;
 
 /**
- * Sets a BitType output to the result of ANDing a first BitType value with the
- * NOT of a second BitType number.
- *  
- * @author Barry DeZonia
- * @deprecated Use net.imagej.ops instead.
+ * Base interface for "multiply" operations.
+ * <p>
+ * Implementing classes should be annotated with:
+ * </p>
+ *
+ * <pre>
+ * @Plugin(type = Op.class, name = Multiply.NAME)
+ * </pre>
+ *
+ * @author Aparna Pal
  */
-@Deprecated
-public class BinaryAndNot implements BinaryOperation<BitType, BitType, BitType> {
+public interface Multiply extends Op {
 
-	@Override
-	public BitType compute(BitType input1, BitType input2, BitType output) {
-		boolean value = input1.get() && !input2.get();
-		output.set(value);
-		return output;
-	}
-
-	@Override
-	public BinaryAndNot copy() {
-		return new BinaryAndNot();
-	}
+	String NAME = "multiply";
 
 }
