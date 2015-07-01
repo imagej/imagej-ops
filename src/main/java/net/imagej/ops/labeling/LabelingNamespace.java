@@ -57,6 +57,32 @@ public class LabelingNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
+	public <T extends IntegerType<T>, L, I extends IntegerType<I>>
+		ImgLabeling<L, I> cca(final ImgLabeling<L, I> out,
+			final RandomAccessibleInterval<T> in, final StructuringElement element,
+			final Iterator<L> labelGenerator)
+	{
+
+		return cca(out, in, element, labelGenerator);
+	}
+
+	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
+	public <T extends IntegerType<T>, L, I extends IntegerType<I>>
+		ImgLabeling<L, I> cca(final RandomAccessibleInterval<T> in,
+			final StructuringElement element)
+	{
+		return cca(null, in, element, null);
+	}
+
+	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)
+	public <T extends IntegerType<T>, L, I extends IntegerType<I>>
+		ImgLabeling<L, I> cca(final ImgLabeling<L, I> out,
+			final RandomAccessibleInterval<T> in, final StructuringElement element)
+	{
+		return cca(out, in, element, null);
+	}
+
 	@Override
 	public String getName() {
 		return "labeling";
