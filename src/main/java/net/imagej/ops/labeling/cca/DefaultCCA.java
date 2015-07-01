@@ -121,5 +121,10 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 		public Integer next() {
 			return i++;
 		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
 	}
 }
