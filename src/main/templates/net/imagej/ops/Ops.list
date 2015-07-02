@@ -37,7 +37,9 @@ namespaces = ```
 		[name: "nativeType",         iface: "NativeType"]
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [
-		[name: "richardsonLucy",     iface: "RichardsonLucy"]
+		[name: "richardsonLucy",     iface: "RichardsonLucy"],
+		[name: "richardsonLucyTV",         iface: "RichardsonLucyTV"]
+
 	]],
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",           iface: "AddNoise"],
