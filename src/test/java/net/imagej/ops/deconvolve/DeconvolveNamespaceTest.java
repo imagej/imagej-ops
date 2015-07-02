@@ -35,8 +35,6 @@ import net.imagej.ops.AbstractNamespaceTest;
 import org.junit.Test;
 
 /**
- * Tests {@link DeconvolveNamespace}.
- *
  * @author Alison Walter
  * @author Curtis Rueden
  */
