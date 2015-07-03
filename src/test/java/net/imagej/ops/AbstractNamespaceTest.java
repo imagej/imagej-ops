@@ -85,8 +85,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * (i.e., subtype) matches.</li>
 	 * <li>There are some limitations to the matching of generic parameters.</li>
 	 * <li>When a method is missing, the system generates a suggested code block,
-	 * but that code block does not includes only raw type parameters, not
-	 * generified type parameters. For details on why, see <a
+	 * but that code block includes only raw type parameters, not generified type
+	 * parameters. For details on why, see <a
 	 * href="http://stackoverflow.com/q/28143029">this post on StackOverflow</a>.</li>
 	 * </ul>
 	 * 
