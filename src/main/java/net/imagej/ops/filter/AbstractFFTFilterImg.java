@@ -68,6 +68,9 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
+	/**
+	 * compute output by extending the input(s) and running the filter
+	 */
 	@Override
 	public void compute(final Img<I> input, final Img<O> output) {
 
@@ -85,7 +88,7 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	}
 
 	/**
-	 * This function is called after the rais and ffts are set up and implements a
+	 * This function is called after the RAIs and FFTs are set up and implements a
 	 * frequency filter.
 	 * 
 	 * @param raiExtendedInput
