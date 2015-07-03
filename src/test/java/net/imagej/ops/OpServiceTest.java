@@ -59,7 +59,7 @@ public class OpServiceTest extends AbstractOpTest {
 		final DoubleType value = new DoubleType(123.456);
 
 		assertFalse(Double.isInfinite(value.get()));
-		final Object result = ops.run("infinity", value);
+		final Object result = ops.run("test.infinity", value);
 		assertSame(value, result);
 		assertTrue(Double.isInfinite(value.get()));
 	}
@@ -91,7 +91,7 @@ public class OpServiceTest extends AbstractOpTest {
 	public void testOpByName() {
 		final DoubleType value = new DoubleType(123.456);
 
-		final Op op = ops.op("infinity", value);
+		final Op op = ops.op("test.infinity", value);
 		assertSame(InfinityOp.class, op.getClass());
 
 		assertFalse(Double.isInfinite(value.get()));
@@ -117,7 +117,7 @@ public class OpServiceTest extends AbstractOpTest {
 	public void testModuleByName() {
 		final DoubleType value = new DoubleType(123.456);
 
-		final Module module = ops.module("infinity", value);
+		final Module module = ops.module("test.infinity", value);
 		assertSame(value, module.getInput("arg"));
 
 		assertFalse(Double.isInfinite(value.get()));
@@ -182,15 +182,15 @@ public class OpServiceTest extends AbstractOpTest {
 	/** Tests op lookups by class. */
 	@Test
 	public void testMatchingByClass() {
-		Op op = ops.op("arrr!", (Object) null);
+		Op op = ops.op("test.arrr!", (Object) null);
 		assertSame(FirstMate.class, op.getClass());
-		op = ops.op("arrr!", (EyePatch) null);
+		op = ops.op("test.arrr!", (EyePatch) null);
 		assertSame(FirstMate.class, op.getClass());
-		op = ops.op("arrr!", (Booty) null);
+		op = ops.op("test.arrr!", (Booty) null);
 		assertSame(FirstMate.class, op.getClass());
-		op = ops.op("arrr!", EyePatch.class);
+		op = ops.op("test.arrr!", EyePatch.class);
 		assertSame(FirstMate.class, op.getClass());
-		op = ops.op("arrr!", Booty.class);
+		op = ops.op("test.arrr!", Booty.class);
 		assertSame(Captain.class, op.getClass());
 	}
 
@@ -210,7 +210,7 @@ public class OpServiceTest extends AbstractOpTest {
 	}
 
 	/** A test {@link Op}. */
-	@Plugin(type = Op.class, name = "infinity",
+	@Plugin(type = Op.class, name = "test.infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
 	public static class InfinityOp extends AbstractInplaceFunction<DoubleType> {
 
@@ -225,7 +225,8 @@ public class OpServiceTest extends AbstractOpTest {
 		// NB: Marker interface.
 	}
 
-	@Plugin(type = Op.class, name = "arrr!", priority = Priority.HIGH_PRIORITY)
+	@Plugin(type = Op.class, name = "test.arrr!",
+		priority = Priority.HIGH_PRIORITY)
 	public static class FirstMate implements Op {
 
 		@Parameter(required = false)
@@ -241,7 +242,7 @@ public class OpServiceTest extends AbstractOpTest {
 		// NB: Marker interface.
 	}
 
-	@Plugin(type = Op.class, name = "arrr!")
+	@Plugin(type = Op.class, name = "test.arrr!")
 	public static class Captain implements Op {
 
 		@Parameter
