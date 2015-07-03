@@ -31,85 +31,25 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.LogicOps.And;
-import net.imagej.ops.LogicOps.Equal;
-import net.imagej.ops.LogicOps.GreaterThan;
-import net.imagej.ops.LogicOps.GreaterThanOrEqual;
-import net.imagej.ops.LogicOps.LessThan;
-import net.imagej.ops.LogicOps.LessThanOrEqual;
-import net.imagej.ops.LogicOps.Not;
-import net.imagej.ops.LogicOps.NotEqual;
-import net.imagej.ops.LogicOps.Or;
-import net.imagej.ops.LogicOps.Xor;
 
 import org.junit.Test;
 
 /**
- * Tests that the ops of the {@code logic} namespace have corresponding
- * type-safe Java method signatures declared in the {@link LogicNamespace}
- * class.
+ * Tests {@link LogicNamespace}.
  *
  * @author Alison Walter
+ * @author Curtis Rueden
  */
 public class LogicNamespaceTest extends AbstractNamespaceTest {
 
-	/** Tests for {@link And} method convergence. */
+	/**
+	 * Tests that the ops of the {@code logic} namespace have corresponding
+	 * type-safe Java method signatures declared in the {@link LogicNamespace}
+	 * class.
+	 */
 	@Test
-	public void testAnd() {
-		assertComplete(LogicNamespace.class, And.NAME);
+	public void testCompleteness() {
+		assertComplete("logic", LogicNamespace.class);
 	}
 
-	/** Tests for {@link Equal} method convergence. */
-	@Test
-	public void testEqual() {
-		assertComplete(LogicNamespace.class, Equal.NAME);
-	}
-
-	/** Tests for {@link GreaterThan} method convergence. */
-	@Test
-	public void testGreaterThan() {
-		assertComplete(LogicNamespace.class, GreaterThan.NAME);
-	}
-
-	/** Tests for {@link GreaterThanOrEqual} method convergence. */
-	@Test
-	public void testGreaterThanOrEqual() {
-		assertComplete(LogicNamespace.class, GreaterThanOrEqual.NAME);
-	}
-
-	/** Tests for {@link LessThan} method convergence. */
-	@Test
-	public void testLessThan() {
-		assertComplete(LogicNamespace.class, LessThan.NAME);
-	}
-
-	/** Tests for {@link LessThanOrEqual} method convergence. */
-	@Test
-	public void testLessThanOrEqual() {
-		assertComplete(LogicNamespace.class, LessThanOrEqual.NAME);
-	}
-
-	/** Tests for {@link Not} method convergence. */
-	@Test
-	public void testNot() {
-		assertComplete(LogicNamespace.class, Not.NAME);
-	}
-
-	/** Tests for {@link NotEqual} method convergence. */
-	@Test
-	public void testNotEqual() {
-		assertComplete(LogicNamespace.class, NotEqual.NAME);
-	}
-
-	/** Tests for {@link Or} method convergence. */
-	@Test
-	public void testOr() {
-		assertComplete(LogicNamespace.class, Or.NAME);
-	}
-
-	/** Tests for {@link Xor} method convergence. */
-	@Test
-	public void testXor() {
-		assertComplete(LogicNamespace.class, Xor.NAME);
-	}
 }

@@ -31,23 +31,25 @@
 package net.imagej.ops.labeling;
 
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.LabelingOps.CCA;
 
 import org.junit.Test;
 
 /**
- * Tests that the ops of the {@code labeling} namespace have corresponding
- * type-safe Java method signatures declared in the {@link LabelingNamespace}
- * class.
+ * Tests {@link LabelingNamespace}.
  *
  * @author Christian Dietz, University of Konstanz
+ * @author Curtis Rueden
  */
 public class LabelingNamespaceTest extends AbstractNamespaceTest {
 
-	/** Tests for {@link CCA} method convergence. */
+	/**
+	 * Tests that the ops of the {@code labeling} namespace have corresponding
+	 * type-safe Java method signatures declared in the {@link LabelingNamespace}
+	 * class.
+	 */
 	@Test
-	public void testCCA() {
-		assertComplete(LabelingNamespace.class, CCA.NAME);
+	public void testCompleteness() {
+		assertComplete("labeling", LabelingNamespace.class);
 	}
 
 }
