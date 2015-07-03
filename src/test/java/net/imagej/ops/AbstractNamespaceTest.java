@@ -90,16 +90,15 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * href="http://stackoverflow.com/q/28143029">this post on StackOverflow</a>.</li>
 	 * </ul>
 	 * 
-	 * @param namespace The namespace of the ops to scrutinize (e.g., "math").
 	 * @param namespaceClass Class with the {@link OpMethod}-annotated methods.
 	 * @param qName The fully qualified (with namespace) name of the op to verify
 	 *          is completely covered.
 	 * @see GlobalNamespaceTest Usage examples for global namespace ops.
 	 * @see net.imagej.ops.math.MathNamespaceTest Usage examples for math ops.
 	 */
-	public void assertComplete(final String namespace,
-		final Class<?> namespaceClass, final String qName)
+	public void assertComplete(final Class<?> namespaceClass, final String qName)
 	{
+		final String namespace = getNamespace(qName);
 		final String opName = stripNamespace(qName);
 
 		// obtain the list of built-in methods
@@ -451,6 +450,12 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 
 	private String castTypeString(final ModuleItem<?> item) {
 		return ConversionUtils.getNonprimitiveType(item.getType()).getSimpleName();
+	}
+
+	private String getNamespace(final String qName) {
+		if (qName == null) return null;
+		final int dot = qName.lastIndexOf(".");
+		return dot < 0 ? null : qName.substring(0, dot);
 	}
 
 	private String stripNamespace(final String qName) {
