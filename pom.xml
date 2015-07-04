@@ -176,12 +176,6 @@
 			<artifactId>scijava-expression-parser</artifactId>
 		</dependency>
 
-		<!-- Third-party dependencies -->
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-		</dependency>
-
 		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
