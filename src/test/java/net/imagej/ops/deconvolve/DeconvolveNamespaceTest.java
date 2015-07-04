@@ -47,7 +47,7 @@ public class DeconvolveNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link RichardsonLucy} method convergence. */
 	@Test
 	public void testRichardsonLucy() {
-		assertComplete("deconvolve", DeconvolveNamespace.class, RichardsonLucy.NAME);
+		assertComplete(DeconvolveNamespace.class, RichardsonLucy.NAME);
 	}
 
 }

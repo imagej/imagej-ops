@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imglib2.histogram.Histogram1d;
@@ -48,8 +49,8 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = "default")
-public class ComputeDefaultThreshold<T extends RealType<T>> extends
+@Plugin(type = ComputeThreshold.class, name = ThresholdOps.IJ1.NAME)
+public class ComputeIJ1Threshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 
 	@Override

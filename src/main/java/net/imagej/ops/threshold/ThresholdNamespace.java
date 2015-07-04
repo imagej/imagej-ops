@@ -99,6 +99,32 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.ThresholdOps.IJ1.class)
+	public Object ij1(final Object... args) {
+		return ops().run(net.imagej.ops.ThresholdOps.IJ1.class, args);
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.methods.ComputeIJ1Threshold.class)
+	public <T extends RealType<T>> T ij1(final Histogram1d<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
+				net.imagej.ops.threshold.global.methods.ComputeIJ1Threshold.class, in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.methods.ComputeIJ1Threshold.class)
+	public <T extends RealType<T>> T ij1(final T out, final Histogram1d<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
+				net.imagej.ops.threshold.global.methods.ComputeIJ1Threshold.class, out,
+				in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.ThresholdOps.Intermodes.class)
 	public Object intermodes(final Object... args) {
 		return ops().run(net.imagej.ops.ThresholdOps.Intermodes.class, args);

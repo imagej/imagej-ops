@@ -62,97 +62,97 @@ public class ThresholdNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link Huang} method convergence. */
 	@Test
 	public void testHuang() {
-		assertComplete("threshold", ThresholdNamespace.class, Huang.NAME);
+		assertComplete(ThresholdNamespace.class, Huang.NAME);
 	}
 
 	/** Tests for {@link Intermodes} method convergence. */
 	@Test
 	public void testIntermodes() {
-		assertComplete("threshold", ThresholdNamespace.class, Intermodes.NAME);
+		assertComplete(ThresholdNamespace.class, Intermodes.NAME);
 	}
 
 	/** Tests for {@link IsoData} method convergence. */
 	@Test
 	public void testIsoData() {
-		assertComplete("threshold", ThresholdNamespace.class, IsoData.NAME);
+		assertComplete(ThresholdNamespace.class, IsoData.NAME);
 	}
 
 	/** Tests for {@link Li} method convergence. */
 	@Test
 	public void testLi() {
-		assertComplete("threshold", ThresholdNamespace.class, Li.NAME);
+		assertComplete(ThresholdNamespace.class, Li.NAME);
 	}
 
 	/** Tests for {@link MaxEntropy} method convergence. */
 	@Test
 	public void testMaxEntropy() {
-		assertComplete("threshold", ThresholdNamespace.class, MaxEntropy.NAME);
+		assertComplete(ThresholdNamespace.class, MaxEntropy.NAME);
 	}
 
 	/** Tests for {@link MaxLikelihood} method convergence. */
 	@Test
 	public void testMaxLikelihood() {
-		assertComplete("threshold", ThresholdNamespace.class, MaxLikelihood.NAME);
+		assertComplete(ThresholdNamespace.class, MaxLikelihood.NAME);
 	}
 
 	/** Tests for {@link Mean} method convergence. */
 	@Test
 	public void testMean() {
-		assertComplete("threshold", ThresholdNamespace.class, Mean.NAME);
+		assertComplete(ThresholdNamespace.class, Mean.NAME);
 	}
 
 	/** Tests for {@link MinError} method convergence. */
 	@Test
 	public void testMinError() {
-		assertComplete("threshold", ThresholdNamespace.class, MinError.NAME);
+		assertComplete(ThresholdNamespace.class, MinError.NAME);
 	}
 
 	/** Tests for {@link Minimum} method convergence. */
 	@Test
 	public void testMinimum() {
-		assertComplete("threshold", ThresholdNamespace.class, Minimum.NAME);
+		assertComplete(ThresholdNamespace.class, Minimum.NAME);
 	}
 
 	/** Tests for {@link Moments} method convergence. */
 	@Test
 	public void testMoments() {
-		assertComplete("threshold", ThresholdNamespace.class, Moments.NAME);
+		assertComplete(ThresholdNamespace.class, Moments.NAME);
 	}
 
 	/** Tests for {@link Otsu} method convergence. */
 	@Test
 	public void testOtsu() {
-		assertComplete("threshold", ThresholdNamespace.class, Otsu.NAME);
+		assertComplete(ThresholdNamespace.class, Otsu.NAME);
 	}
 
 	/** Tests for {@link Percentile} method convergence. */
 	@Test
 	public void testPercentile() {
-		assertComplete("threshold", ThresholdNamespace.class, Percentile.NAME);
+		assertComplete(ThresholdNamespace.class, Percentile.NAME);
 	}
 
 	/** Tests for {@link RenyiEntropy} method convergence. */
 	@Test
 	public void testRenyiEntropy() {
-		assertComplete("threshold", ThresholdNamespace.class, RenyiEntropy.NAME);
+		assertComplete(ThresholdNamespace.class, RenyiEntropy.NAME);
 	}
 
 	/** Tests for {@link Shanbhag} method convergence. */
 	@Test
 	public void testShanbhag() {
-		assertComplete("threshold", ThresholdNamespace.class, Shanbhag.NAME);
+		assertComplete(ThresholdNamespace.class, Shanbhag.NAME);
 	}
 
 	/** Tests for {@link Triangle} method convergence. */
 	@Test
 	public void testTriangle() {
-		assertComplete("threshold", ThresholdNamespace.class, Triangle.NAME);
+		assertComplete(ThresholdNamespace.class, Triangle.NAME);
 	}
 
 	/** Tests for {@link Yen} method convergence. */
 	@Test
 	public void testYen() {
-		assertComplete("threshold", ThresholdNamespace.class, Yen.NAME);
+		assertComplete(ThresholdNamespace.class, Yen.NAME);
 	}
 
 }

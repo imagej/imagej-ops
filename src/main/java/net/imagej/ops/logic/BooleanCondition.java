@@ -30,15 +30,14 @@
 
 package net.imagej.ops.logic;
 
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "bool")
-public class BooleanCondition extends AbstractCondition<Boolean> implements
-	Ops.Identity
-{
+@Plugin(type = Op.class, name = LogicOps.Bool.NAME)
+public class BooleanCondition extends AbstractCondition<Boolean> {
 
 	@Override
 	public boolean isTrue(final Boolean val) {

@@ -112,402 +112,402 @@ public class MathNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link Abs} method convergence. */
 	@Test
 	public void testAbs() {
-		assertComplete("math", MathNamespace.class, Abs.NAME);
+		assertComplete(MathNamespace.class, Abs.NAME);
 	}
 
 	/** Tests for {@link Add} method convergence. */
 	@Test
 	public void testAdd() {
-		assertComplete("math", MathNamespace.class, Add.NAME);
+		assertComplete(MathNamespace.class, Add.NAME);
 	}
 
 	/** Tests for {@link AddNoise} method convergence. */
 	@Test
 	public void testAddNoise() {
-		assertComplete("math", MathNamespace.class, AddNoise.NAME);
+		assertComplete(MathNamespace.class, AddNoise.NAME);
 	}
 
 	/** Tests for {@link And} method convergence. */
 	@Test
 	public void testAnd() {
-		assertComplete("math", MathNamespace.class, And.NAME);
+		assertComplete(MathNamespace.class, And.NAME);
 	}
 
 	/** Tests for {@link Arccos} method convergence. */
 	@Test
 	public void testArccos() {
-		assertComplete("math", MathNamespace.class, Arccos.NAME);
+		assertComplete(MathNamespace.class, Arccos.NAME);
 	}
 
 	/** Tests for {@link Arccosh} method convergence. */
 	@Test
 	public void testArccosh() {
-		assertComplete("math", MathNamespace.class, Arccosh.NAME);
+		assertComplete(MathNamespace.class, Arccosh.NAME);
 	}
 
 	/** Tests for {@link Arccot} method convergence. */
 	@Test
 	public void testArccot() {
-		assertComplete("math", MathNamespace.class, Arccot.NAME);
+		assertComplete(MathNamespace.class, Arccot.NAME);
 	}
 
 	/** Tests for {@link Arccoth} method convergence. */
 	@Test
 	public void testArccoth() {
-		assertComplete("math", MathNamespace.class, Arccoth.NAME);
+		assertComplete(MathNamespace.class, Arccoth.NAME);
 	}
 
 	/** Tests for {@link Arccsc} method convergence. */
 	@Test
 	public void testArccsc() {
-		assertComplete("math", MathNamespace.class, Arccsc.NAME);
+		assertComplete(MathNamespace.class, Arccsc.NAME);
 	}
 
 	/** Tests for {@link Arccsch} method convergence. */
 	@Test
 	public void testArccsch() {
-		assertComplete("math", MathNamespace.class, Arccsch.NAME);
+		assertComplete(MathNamespace.class, Arccsch.NAME);
 	}
 
 	/** Tests for {@link Arcsec} method convergence. */
 	@Test
 	public void testArcsec() {
-		assertComplete("math", MathNamespace.class, Arcsec.NAME);
+		assertComplete(MathNamespace.class, Arcsec.NAME);
 	}
 
 	/** Tests for {@link Arcsech} method convergence. */
 	@Test
 	public void testArcsech() {
-		assertComplete("math", MathNamespace.class, Arcsech.NAME);
+		assertComplete(MathNamespace.class, Arcsech.NAME);
 	}
 
 	/** Tests for {@link Arcsin} method convergence. */
 	@Test
 	public void testArcsin() {
-		assertComplete("math", MathNamespace.class, Arcsin.NAME);
+		assertComplete(MathNamespace.class, Arcsin.NAME);
 	}
 
 	/** Tests for {@link Arcsinh} method convergence. */
 	@Test
 	public void testArcsinh() {
-		assertComplete("math", MathNamespace.class, Arcsinh.NAME);
+		assertComplete(MathNamespace.class, Arcsinh.NAME);
 	}
 
 	/** Tests for {@link Arctan} method convergence. */
 	@Test
 	public void testArctan() {
-		assertComplete("math", MathNamespace.class, Arctan.NAME);
+		assertComplete(MathNamespace.class, Arctan.NAME);
 	}
 
 	/** Tests for {@link Arctanh} method convergence. */
 	@Test
 	public void testArctanh() {
-		assertComplete("math", MathNamespace.class, Arctanh.NAME);
+		assertComplete(MathNamespace.class, Arctanh.NAME);
 	}
 
 	/** Tests for {@link Ceil} method convergence. */
 	@Test
 	public void testCeil() {
-		assertComplete("math", MathNamespace.class, Ceil.NAME);
+		assertComplete(MathNamespace.class, Ceil.NAME);
 	}
 
 	/** Tests for {@link Complement} method convergence. */
 	@Test
 	public void testComplement() {
-		assertComplete("math", MathNamespace.class, Complement.NAME);
+		assertComplete(MathNamespace.class, Complement.NAME);
 	}
 
 	/** Tests for {@link Copy} method convergence. */
 	@Test
 	public void testCopy() {
-		assertComplete("math", MathNamespace.class, Copy.NAME);
+		assertComplete(MathNamespace.class, Copy.NAME);
 	}
 
 	/** Tests for {@link Cos} method convergence. */
 	@Test
 	public void testCos() {
-		assertComplete("math", MathNamespace.class, Cos.NAME);
+		assertComplete(MathNamespace.class, Cos.NAME);
 	}
 
 	/** Tests for {@link Cosh} method convergence. */
 	@Test
 	public void testCosh() {
-		assertComplete("math", MathNamespace.class, Cosh.NAME);
+		assertComplete(MathNamespace.class, Cosh.NAME);
 	}
 
 	/** Tests for {@link Cot} method convergence. */
 	@Test
 	public void testCot() {
-		assertComplete("math", MathNamespace.class, Cot.NAME);
+		assertComplete(MathNamespace.class, Cot.NAME);
 	}
 
 	/** Tests for {@link Coth} method convergence. */
 	@Test
 	public void testCoth() {
-		assertComplete("math", MathNamespace.class, Coth.NAME);
+		assertComplete(MathNamespace.class, Coth.NAME);
 	}
 
 	/** Tests for {@link Csc} method convergence. */
 	@Test
 	public void testCsc() {
-		assertComplete("math", MathNamespace.class, Csc.NAME);
+		assertComplete(MathNamespace.class, Csc.NAME);
 	}
 
 	/** Tests for {@link Csch} method convergence. */
 	@Test
 	public void testCsch() {
-		assertComplete("math", MathNamespace.class, Csch.NAME);
+		assertComplete(MathNamespace.class, Csch.NAME);
 	}
 
 	/** Tests for {@link CubeRoot} method convergence. */
 	@Test
 	public void testCubeRoot() {
-		assertComplete("math", MathNamespace.class, CubeRoot.NAME);
+		assertComplete(MathNamespace.class, CubeRoot.NAME);
 	}
 
 	/** Tests for {@link Divide} method convergence. */
 	@Test
 	public void testDivide() {
-		assertComplete("math", MathNamespace.class, Divide.NAME);
+		assertComplete(MathNamespace.class, Divide.NAME);
 	}
 
 	/** Tests for {@link Exp} method convergence. */
 	@Test
 	public void testExp() {
-		assertComplete("math", MathNamespace.class, Exp.NAME);
+		assertComplete(MathNamespace.class, Exp.NAME);
 	}
 
 	/** Tests for {@link ExpMinusOne} method convergence. */
 	@Test
 	public void testExpMinusOne() {
-		assertComplete("math", MathNamespace.class, ExpMinusOne.NAME);
+		assertComplete(MathNamespace.class, ExpMinusOne.NAME);
 	}
 
 	/** Tests for {@link Floor} method convergence. */
 	@Test
 	public void testFloor() {
-		assertComplete("math", MathNamespace.class, Floor.NAME);
+		assertComplete(MathNamespace.class, Floor.NAME);
 	}
 
 	/** Tests for {@link Gamma} method convergence. */
 	@Test
 	public void testGamma() {
-		assertComplete("math", MathNamespace.class, Gamma.NAME);
+		assertComplete(MathNamespace.class, Gamma.NAME);
 	}
 
 	/** Tests for {@link Invert} method convergence. */
 	@Test
 	public void testInvert() {
-		assertComplete("math", MathNamespace.class, Invert.NAME);
+		assertComplete(MathNamespace.class, Invert.NAME);
 	}
 
 	/** Tests for {@link LeftShift} method convergence. */
 	@Test
 	public void testLeftShift() {
-		assertComplete("math", MathNamespace.class, LeftShift.NAME);
+		assertComplete(MathNamespace.class, LeftShift.NAME);
 	}
 
 	/** Tests for {@link Log} method convergence. */
 	@Test
 	public void testLog() {
-		assertComplete("math", MathNamespace.class, Log.NAME);
+		assertComplete(MathNamespace.class, Log.NAME);
 	}
 
 	/** Tests for {@link Log2} method convergence. */
 	@Test
 	public void testLog2() {
-		assertComplete("math", MathNamespace.class, Log2.NAME);
+		assertComplete(MathNamespace.class, Log2.NAME);
 	}
 
 	/** Tests for {@link Log10} method convergence. */
 	@Test
 	public void testLog10() {
-		assertComplete("math", MathNamespace.class, Log10.NAME);
+		assertComplete(MathNamespace.class, Log10.NAME);
 	}
 
 	/** Tests for {@link LogOnePlusX} method convergence. */
 	@Test
 	public void testLogOnePlusX() {
-		assertComplete("math", MathNamespace.class, LogOnePlusX.NAME);
+		assertComplete(MathNamespace.class, LogOnePlusX.NAME);
 	}
 
 	/** Tests for {@link Max} method convergence. */
 	@Test
 	public void testMax() {
-		assertComplete("math", MathNamespace.class, Max.NAME);
+		assertComplete(MathNamespace.class, Max.NAME);
 	}
 
 	/** Tests for {@link Min} method convergence. */
 	@Test
 	public void testMin() {
-		assertComplete("math", MathNamespace.class, Min.NAME);
+		assertComplete(MathNamespace.class, Min.NAME);
 	}
 
 	/** Tests for {@link Multiply} method convergence. */
 	@Test
 	public void testMultiply() {
-		assertComplete("math", MathNamespace.class, Multiply.NAME);
+		assertComplete(MathNamespace.class, Multiply.NAME);
 	}
 
 	/** Tests for {@link NearestInt} method convergence. */
 	@Test
 	public void testNearestInt() {
-		assertComplete("math", MathNamespace.class, NearestInt.NAME);
+		assertComplete(MathNamespace.class, NearestInt.NAME);
 	}
 
 	/** Tests for {@link Negate} method convergence. */
 	@Test
 	public void testNegate() {
-		assertComplete("math", MathNamespace.class, Negate.NAME);
+		assertComplete(MathNamespace.class, Negate.NAME);
 	}
 
 	/** Tests for {@link Or} method convergence. */
 	@Test
 	public void testOr() {
-		assertComplete("math", MathNamespace.class, Or.NAME);
+		assertComplete(MathNamespace.class, Or.NAME);
 	}
 
 	/** Tests for {@link Power} method convergence. */
 	@Test
 	public void testPower() {
-		assertComplete("math", MathNamespace.class, Power.NAME);
+		assertComplete(MathNamespace.class, Power.NAME);
 	}
 
 	/** Tests for {@link RandomGaussian} method convergence. */
 	@Test
 	public void testRandomGaussian() {
-		assertComplete("math", MathNamespace.class, RandomGaussian.NAME);
+		assertComplete(MathNamespace.class, RandomGaussian.NAME);
 	}
 
 	/** Tests for {@link RandomUniform} method convergence. */
 	@Test
 	public void testRandomUniform() {
-		assertComplete("math", MathNamespace.class, RandomUniform.NAME);
+		assertComplete(MathNamespace.class, RandomUniform.NAME);
 	}
 
 	/** Tests for {@link Reciprocal} method convergence. */
 	@Test
 	public void testReciprocal() {
-		assertComplete("math", MathNamespace.class, Reciprocal.NAME);
+		assertComplete(MathNamespace.class, Reciprocal.NAME);
 	}
 
 	/** Tests for {@link Remainder} method convergence. */
 	@Test
 	public void testRemainder() {
-		assertComplete("math", MathNamespace.class, Remainder.NAME);
+		assertComplete(MathNamespace.class, Remainder.NAME);
 	}
 
 	/** Tests for {@link RightShift} method convergence. */
 	@Test
 	public void testRightShift() {
-		assertComplete("math", MathNamespace.class, RightShift.NAME);
+		assertComplete(MathNamespace.class, RightShift.NAME);
 	}
 
 	/** Tests for {@link Round} method convergence. */
 	@Test
 	public void testRound() {
-		assertComplete("math", MathNamespace.class, Round.NAME);
+		assertComplete(MathNamespace.class, Round.NAME);
 	}
 
 	/** Tests for {@link Sec} method convergence. */
 	@Test
 	public void testSec() {
-		assertComplete("math", MathNamespace.class, Sec.NAME);
+		assertComplete(MathNamespace.class, Sec.NAME);
 	}
 
 	/** Tests for {@link Sech} method convergence. */
 	@Test
 	public void testSech() {
-		assertComplete("math", MathNamespace.class, Sech.NAME);
+		assertComplete(MathNamespace.class, Sech.NAME);
 	}
 
 	/** Tests for {@link Signum} method convergence. */
 	@Test
 	public void testSignum() {
-		assertComplete("math", MathNamespace.class, Signum.NAME);
+		assertComplete(MathNamespace.class, Signum.NAME);
 	}
 
 	/** Tests for {@link Sin} method convergence. */
 	@Test
 	public void testSin() {
-		assertComplete("math", MathNamespace.class, Sin.NAME);
+		assertComplete(MathNamespace.class, Sin.NAME);
 	}
 
 	/** Tests for {@link Sinc} method convergence. */
 	@Test
 	public void testSinc() {
-		assertComplete("math", MathNamespace.class, Sinc.NAME);
+		assertComplete(MathNamespace.class, Sinc.NAME);
 	}
 
 	/** Tests for {@link SincPi} method convergence. */
 	@Test
 	public void testSincPi() {
-		assertComplete("math", MathNamespace.class, SincPi.NAME);
+		assertComplete(MathNamespace.class, SincPi.NAME);
 	}
 
 	/** Tests for {@link Sinh} method convergence. */
 	@Test
 	public void testSinh() {
-		assertComplete("math", MathNamespace.class, Sinh.NAME);
+		assertComplete(MathNamespace.class, Sinh.NAME);
 	}
 
 	/** Tests for {@link Sqr} method convergence. */
 	@Test
 	public void testSqr() {
-		assertComplete("math", MathNamespace.class, Sqr.NAME);
+		assertComplete(MathNamespace.class, Sqr.NAME);
 	}
 
 	/** Tests for {@link Sqrt} method convergence. */
 	@Test
 	public void testSqrt() {
-		assertComplete("math", MathNamespace.class, Sqrt.NAME);
+		assertComplete(MathNamespace.class, Sqrt.NAME);
 	}
 
 	/** Tests for {@link Step} method convergence. */
 	@Test
 	public void testStep() {
-		assertComplete("math", MathNamespace.class, Step.NAME);
+		assertComplete(MathNamespace.class, Step.NAME);
 	}
 
 	/** Tests for {@link Subtract} method convergence. */
 	@Test
 	public void testSubtract() {
-		assertComplete("math", MathNamespace.class, Subtract.NAME);
+		assertComplete(MathNamespace.class, Subtract.NAME);
 	}
 
 	/** Tests for {@link Tan} method convergence. */
 	@Test
 	public void testTan() {
-		assertComplete("math", MathNamespace.class, Tan.NAME);
+		assertComplete(MathNamespace.class, Tan.NAME);
 	}
 
 	/** Tests for {@link Tanh} method convergence. */
 	@Test
 	public void testTanh() {
-		assertComplete("math", MathNamespace.class, Tanh.NAME);
+		assertComplete(MathNamespace.class, Tanh.NAME);
 	}
 
 	/** Tests for {@link Ulp} method convergence. */
 	@Test
 	public void testUlp() {
-		assertComplete("math", MathNamespace.class, Ulp.NAME);
+		assertComplete(MathNamespace.class, Ulp.NAME);
 	}
 
 	/** Tests for {@link UnsignedRightShift} method convergence. */
 	@Test
 	public void testUnsignedRightShift() {
-		assertComplete("math", MathNamespace.class, UnsignedRightShift.NAME);
+		assertComplete(MathNamespace.class, UnsignedRightShift.NAME);
 	}
 
 	/** Tests for {@link Xor} method convergence. */
 	@Test
 	public void testXor() {
-		assertComplete("math", MathNamespace.class, Xor.NAME);
+		assertComplete(MathNamespace.class, Xor.NAME);
 	}
 
 	/** Tests for {@link Zero} method convergence. */
 	@Test
 	public void testZero() {
-		assertComplete("math", MathNamespace.class, Zero.NAME);
+		assertComplete(MathNamespace.class, Zero.NAME);
 	}
 }

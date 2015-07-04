@@ -53,6 +53,7 @@ authors = ["Curtis Rueden"]
 ops = ```
 [
 	[name: "and",                iface: "And"],
+	[name: "bool",               iface: "Bool"],
 	[name: "equal",              iface: "Equal"],
 	[name: "greaterThan",        iface: "GreaterThan",         aliases: ["gt"]],
 	[name: "greaterThanOrEqual", iface: "GreaterThanOrEqual",  aliases: ["gtoe"]],
@@ -148,6 +149,7 @@ authors = ["Curtis Rueden"]
 ops = ```
 [
 	[name: "huang",         iface: "Huang"],
+	[name: "ij1",           iface: "IJ1"],
 	[name: "intermodes",    iface: "Intermodes"],
 	[name: "isoData",       iface: "IsoData"],
 	[name: "li",            iface: "Li"],

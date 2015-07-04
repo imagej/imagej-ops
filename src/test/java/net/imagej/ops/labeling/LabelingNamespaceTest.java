@@ -47,7 +47,7 @@ public class LabelingNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link CCA} method convergence. */
 	@Test
 	public void testCCA() {
-		assertComplete("labeling", LabelingNamespace.class, CCA.NAME);
+		assertComplete(LabelingNamespace.class, CCA.NAME);
 	}
 
 }

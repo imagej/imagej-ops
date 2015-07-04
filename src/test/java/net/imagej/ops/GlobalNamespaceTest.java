@@ -82,228 +82,228 @@ public class GlobalNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link ASCII} method convergence. */
 	@Test
 	public void testASCII() {
-		assertComplete(null, OpService.class, ASCII.NAME);
+		assertComplete(OpService.class, ASCII.NAME);
 	}
 
 	/** Tests for {@link Chunker} method convergence. */
 	@Test
 	public void testChunker() {
-		assertComplete(null, OpService.class, Chunker.NAME);
+		assertComplete(OpService.class, Chunker.NAME);
 	}
 
 	/** Tests for {@link Convert} method convergence. */
 	@Test
 	public void testConvert() {
-		assertComplete(null, OpService.class, Convert.NAME);
+		assertComplete(OpService.class, Convert.NAME);
 	}
 
 	/** Tests for {@link Convolve} method convergence. */
 	@Test
 	public void testConvolve() {
-		assertComplete(null, OpService.class, Convolve.NAME);
+		assertComplete(OpService.class, Convolve.NAME);
 	}
 
 	/** Tests for {@link Correlate} method convergence. */
 	@Test
 	public void testCorrelate() {
-		assertComplete(null, OpService.class, Correlate.NAME);
+		assertComplete(OpService.class, Correlate.NAME);
 	}
 
 	/** Tests for {@link Create} method convergence. */
 	@Test
 	public void testCreate() {
-		assertComplete(null, OpService.class, Create.NAME);
+		assertComplete(OpService.class, Create.NAME);
 	}
 
 	/** Tests for {@link Crop} method convergence. */
 	@Test
 	public void testCrop() {
-		assertComplete(null, OpService.class, Crop.NAME);
+		assertComplete(OpService.class, Crop.NAME);
 	}
 
 	/** Tests for {@link Deconvolve} method convergence. */
 	@Test
 	public void testDeconvolve() {
-		assertComplete(null, OpService.class, Deconvolve.NAME);
+		assertComplete(OpService.class, Deconvolve.NAME);
 	}
 
 	/** Tests for {@link Equation} method convergence. */
 	@Test
 	public void testEquation() {
-		assertComplete(null, OpService.class, Equation.NAME);
+		assertComplete(OpService.class, Equation.NAME);
 	}
 
 	/** Tests for {@link Eval} method convergence. */
 	@Test
 	public void testEval() {
-		assertComplete(null, OpService.class, Eval.NAME);
+		assertComplete(OpService.class, Eval.NAME);
 	}
 
 	/** Tests for {@link FFT} method convergence. */
 	@Test
 	public void testFFT() {
-		assertComplete(null, OpService.class, FFT.NAME);
+		assertComplete(OpService.class, FFT.NAME);
 	}
 
 	/** Tests for {@link FFTSize} method convergence. */
 	@Test
 	public void testFFTSize() {
-		assertComplete(null, OpService.class, FFTSize.NAME);
+		assertComplete(OpService.class, FFTSize.NAME);
 	}
 
 	/** Tests for {@link Gauss} method convergence. */
 	@Test
 	public void testGauss() {
-		assertComplete(null, OpService.class, Gauss.NAME);
+		assertComplete(OpService.class, Gauss.NAME);
 	}
 
 	/** Tests for {@link GaussKernel} method convergence. */
 	@Test
 	public void testGaussKernel() {
-		assertComplete(null, OpService.class, GaussKernel.NAME);
+		assertComplete(OpService.class, GaussKernel.NAME);
 	}
 
 	/** Tests for {@link Help} method convergence. */
 	@Test
 	public void testHelp() {
-		assertComplete(null, OpService.class, Help.NAME);
+		assertComplete(OpService.class, Help.NAME);
 	}
 
 	/** Tests for {@link Histogram} method convergence. */
 	@Test
 	public void testHistogram() {
-		assertComplete(null, OpService.class, Histogram.NAME);
+		assertComplete(OpService.class, Histogram.NAME);
 	}
 
 	/** Tests for {@link Identity} method convergence. */
 	@Test
 	public void testIdentity() {
-		assertComplete(null, OpService.class, Identity.NAME);
+		assertComplete(OpService.class, Identity.NAME);
 	}
 
 	/** Tests for {@link IFFT} method convergence. */
 	@Test
 	public void testIFFT() {
-		assertComplete(null, OpService.class, IFFT.NAME);
+		assertComplete(OpService.class, IFFT.NAME);
 	}
 
 	/** Tests for {@link Invert} method convergence. */
 	@Test
 	public void testInvert() {
-		assertComplete(null, OpService.class, Invert.NAME);
+		assertComplete(OpService.class, Invert.NAME);
 	}
 
 	/** Tests for {@link Join} method convergence. */
 	@Test
 	public void testJoin() {
-		assertComplete(null, OpService.class, Join.NAME);
+		assertComplete(OpService.class, Join.NAME);
 	}
 
 	/** Tests for {@link LogKernel} method convergence. */
 	@Test
 	public void testLogKernel() {
-		assertComplete(null, OpService.class, LogKernel.NAME);
+		assertComplete(OpService.class, LogKernel.NAME);
 	}
 
 	/** Tests for {@link Lookup} method convergence. */
 	@Test
 	public void testLookup() {
-		assertComplete(null, OpService.class, Lookup.NAME);
+		assertComplete(OpService.class, Lookup.NAME);
 	}
 
 	/** Tests for {@link Loop} method convergence. */
 	@Test
 	public void testLoop() {
-		assertComplete(null, OpService.class, Loop.NAME);
+		assertComplete(OpService.class, Loop.NAME);
 	}
 
 	/** Tests for {@link Map} method convergence. */
 	@Test
 	public void testMap() {
-		assertComplete(null, OpService.class, Map.NAME);
+		assertComplete(OpService.class, Map.NAME);
 	}
 
 	/** Tests for {@link Max} method convergence. */
 	@Test
 	public void testMax() {
-		assertComplete(null, OpService.class, Max.NAME);
+		assertComplete(OpService.class, Max.NAME);
 	}
 
 	/** Tests for {@link Mean} method convergence. */
 	@Test
 	public void testMean() {
-		assertComplete(null, OpService.class, Mean.NAME);
+		assertComplete(OpService.class, Mean.NAME);
 	}
 
 	/** Tests for {@link Median} method convergence. */
 	@Test
 	public void testMedian() {
-		assertComplete(null, OpService.class, Median.NAME);
+		assertComplete(OpService.class, Median.NAME);
 	}
 
 	/** Tests for {@link Min} method convergence. */
 	@Test
 	public void testMin() {
-		assertComplete(null, OpService.class, Min.NAME);
+		assertComplete(OpService.class, Min.NAME);
 	}
 
 	/** Tests for {@link MinMax} method convergence. */
 	@Test
 	public void testMinMax() {
-		assertComplete(null, OpService.class, MinMax.NAME);
+		assertComplete(OpService.class, MinMax.NAME);
 	}
 
 	/** Tests for {@link Normalize} method convergence. */
 	@Test
 	public void testNormalize() {
-		assertComplete(null, OpService.class, Normalize.NAME);
+		assertComplete(OpService.class, Normalize.NAME);
 	}
 
 	/** Tests for {@link Project} method convergence. */
 	@Test
 	public void testProject() {
-		assertComplete(null, OpService.class, Project.NAME);
+		assertComplete(OpService.class, Project.NAME);
 	}
 
 	/** Tests for {@link Scale} method convergence. */
 	@Test
 	public void testScale() {
-		assertComplete(null, OpService.class, Scale.NAME);
+		assertComplete(OpService.class, Scale.NAME);
 	}
 
 	/** Tests for {@link Size} method convergence. */
 	@Test
 	public void testSize() {
-		assertComplete(null, OpService.class, Size.NAME);
+		assertComplete(OpService.class, Size.NAME);
 	}
 
 	/** Tests for {@link Slicewise} method convergence. */
 	@Test
 	public void testSlicewise() {
-		assertComplete(null, OpService.class, Slicewise.NAME);
+		assertComplete(OpService.class, Slicewise.NAME);
 	}
 
 	/** Tests for {@link StdDeviation} method convergence. */
 	@Test
 	public void testStdDeviation() {
-		assertComplete(null, OpService.class, StdDeviation.NAME);
+		assertComplete(OpService.class, StdDeviation.NAME);
 	}
 
 	/** Tests for {@link Sum} method convergence. */
 	@Test
 	public void testSum() {
-		assertComplete(null, OpService.class, Sum.NAME);
+		assertComplete(OpService.class, Sum.NAME);
 	}
 
 	/** Tests for {@link Threshold} method convergence. */
 	@Test
 	public void testThreshold() {
-		assertComplete(null, OpService.class, Threshold.NAME);
+		assertComplete(OpService.class, Threshold.NAME);
 	}
 
 	/** Tests for {@link Variance} method convergence. */
 	@Test
 	public void testVariance() {
-		assertComplete(null, OpService.class, Variance.NAME);
+		assertComplete(OpService.class, Variance.NAME);
 	}
 }

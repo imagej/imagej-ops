@@ -56,60 +56,60 @@ public class LogicNamespaceTest extends AbstractNamespaceTest {
 	/** Tests for {@link And} method convergence. */
 	@Test
 	public void testAnd() {
-		assertComplete("logic", LogicNamespace.class, And.NAME);
+		assertComplete(LogicNamespace.class, And.NAME);
 	}
 
 	/** Tests for {@link Equal} method convergence. */
 	@Test
 	public void testEqual() {
-		assertComplete("logic", LogicNamespace.class, Equal.NAME);
+		assertComplete(LogicNamespace.class, Equal.NAME);
 	}
 
 	/** Tests for {@link GreaterThan} method convergence. */
 	@Test
 	public void testGreaterThan() {
-		assertComplete("logic", LogicNamespace.class, GreaterThan.NAME);
+		assertComplete(LogicNamespace.class, GreaterThan.NAME);
 	}
 
 	/** Tests for {@link GreaterThanOrEqual} method convergence. */
 	@Test
 	public void testGreaterThanOrEqual() {
-		assertComplete("logic", LogicNamespace.class, GreaterThanOrEqual.NAME);
+		assertComplete(LogicNamespace.class, GreaterThanOrEqual.NAME);
 	}
 
 	/** Tests for {@link LessThan} method convergence. */
 	@Test
 	public void testLessThan() {
-		assertComplete("logic", LogicNamespace.class, LessThan.NAME);
+		assertComplete(LogicNamespace.class, LessThan.NAME);
 	}
 
 	/** Tests for {@link LessThanOrEqual} method convergence. */
 	@Test
 	public void testLessThanOrEqual() {
-		assertComplete("logic", LogicNamespace.class, LessThanOrEqual.NAME);
+		assertComplete(LogicNamespace.class, LessThanOrEqual.NAME);
 	}
 
 	/** Tests for {@link Not} method convergence. */
 	@Test
 	public void testNot() {
-		assertComplete("logic", LogicNamespace.class, Not.NAME);
+		assertComplete(LogicNamespace.class, Not.NAME);
 	}
 
 	/** Tests for {@link NotEqual} method convergence. */
 	@Test
 	public void testNotEqual() {
-		assertComplete("logic", LogicNamespace.class, NotEqual.NAME);
+		assertComplete(LogicNamespace.class, NotEqual.NAME);
 	}
 
 	/** Tests for {@link Or} method convergence. */
 	@Test
 	public void testOr() {
-		assertComplete("logic", LogicNamespace.class, Or.NAME);
+		assertComplete(LogicNamespace.class, Or.NAME);
 	}
 
 	/** Tests for {@link Xor} method convergence. */
 	@Test
 	public void testXor() {
-		assertComplete("logic", LogicNamespace.class, Xor.NAME);
+		assertComplete(LogicNamespace.class, Xor.NAME);
 	}
 }
