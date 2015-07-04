@@ -51,6 +51,7 @@ import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -108,6 +109,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private DeconvolveNamespace deconvolve;
 	private LogicNamespace logic;
 	private MathNamespace math;
+	private StatsNamespace stats;
 	private ThresholdNamespace threshold;
 	private LabelingNamespace labeling;
 
@@ -1961,6 +1963,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public StatsNamespace stats() {
+		if (!namespacesReady) initNamespaces();
+		return stats;
+	}
+
+	@Override
 	public ThresholdNamespace threshold() {
 		if (!namespacesReady) initNamespaces();
 		return threshold;
@@ -2005,6 +2013,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(logic);
 		math = new MathNamespace();
 		getContext().inject(math);
+		stats = new StatsNamespace();
+		getContext().inject(stats);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
 		labeling = new LabelingNamespace();
