@@ -38,6 +38,7 @@ import net.imagej.ops.OpMethod;
 import net.imglib2.IterableInterval;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -269,6 +270,29 @@ public class MathNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.arithmetic.add.AddConstantToImageFunctional.class, out,
 				in, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	public <T extends NumericType<T>> Img<T> add(final Img<T> in,
+		final IterableInterval<T> ii)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	public <T extends NumericType<T>> Img<T> add(final Img<T> out,
+		final Img<T> in, final IterableInterval<T> ii)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, out, in,
+				ii);
 		return result;
 	}
 
