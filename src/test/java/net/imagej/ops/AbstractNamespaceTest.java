@@ -49,6 +49,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.util.ClassUtils;
 import org.scijava.util.ConversionUtils;
 import org.scijava.util.GenericUtils;
+import org.scijava.util.MiscUtils;
 
 /**
  * Base class for unit testing of namespaces. In particular, this class has
@@ -61,6 +62,23 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 
 	@Parameter
 	private CommandService commandService;
+
+	/**
+	 * Checks that all ops of the given namespace are "covered" by
+	 * {@link OpMethod}-annotated methods declared in the given namespace class.
+	 * 
+	 * @param namespace The namespace of the ops to scrutinize (e.g., "math").
+	 * @param namespaceClass Class with the {@link OpMethod}-annotated methods.
+	 */
+	public void assertComplete(final String namespace,
+		final Class<?> namespaceClass)
+	{
+		for (final String op : ops.ops()) {
+			final String ns = getNamespace(op);
+			if (!MiscUtils.equal(namespace, ns)) continue;
+			assertComplete(namespaceClass, op);
+		}
+	}
 
 	/**
 	 * Checks that the given class's list of {@link OpMethod}-annotated methods

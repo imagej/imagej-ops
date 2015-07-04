@@ -46,6 +46,26 @@ ops = ```
 ]
 ```
 
+[DeconvolveOps.java]
+className = "DeconvolveOps"
+namespace = "deconvolve"
+authors = ["Brian Northan"]
+ops = ```
+[
+	[name: "richardsonLucy",         iface: "RichardsonLucy"]
+]
+```
+
+[LabelingOps.java]
+className = "LabelingOps"
+namespace = "labeling"
+authors = ["Christian Dietz"]
+ops = ```
+[
+	[name: "cca", iface: "CCA", aliases: ["connected-components", "connected-component-analysis"]]
+]
+```
+
 [LogicOps.java]
 className = "LogicOps"
 namespace = "logic"
@@ -142,6 +162,16 @@ ops = ```
 ]
 ```
 
+[StatsOps.java]
+className = "StatsOps"
+namespace = "stats"
+authors = ["Curtis Rueden"]
+ops = ```
+[
+	[name: "moment1AboutMean", iface: "Moment1AboutMean"]
+]
+```
+
 [ThresholdOps.java]
 className = "ThresholdOps"
 namespace = "threshold"
@@ -165,25 +195,5 @@ ops = ```
 	[name: "shanbhag",      iface: "Shanbhag"],
 	[name: "triangle",      iface: "Triangle"],
 	[name: "yen",           iface: "Yen"]
-]
-```
-
-[DeconvolveOps.java]
-className = "DeconvolveOps"
-namespace = "deconvolve"
-authors = ["Brian Northan"]
-ops = ```
-[
-	[name: "richardsonLucy",         iface: "RichardsonLucy"]
-]
-```
-
-[LabelingOps.java]
-className = "LabelingOps"
-namespace = "labeling"
-authors = ["Christian Dietz"]
-ops = ```
-[
-	[name: "cca", iface: "CCA", aliases: ["connected-components", "connected-component-analysis"]]
 ]
 ```

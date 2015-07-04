@@ -48,6 +48,7 @@ import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -1137,16 +1138,19 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
 
+	/** Gateway into ops of the "labeling" namespace. */
+	LabelingNamespace labeling();
+
 	/** Gateway into ops of the "logic" namespace. */
 	LogicNamespace logic();
 
 	/** Gateway into ops of the "math" namespace. */
 	MathNamespace math();
 
+	/** Gateway into ops of the "stats" namespace. */
+	StatsNamespace stats();
+
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
-
-	/** Gateway into ops of the "labeling" namespace. */
-	LabelingNamespace labeling();
 
 }

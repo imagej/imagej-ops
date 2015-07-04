@@ -51,6 +51,7 @@ import net.imagej.ops.misc.Size;
 import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
+import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -106,10 +107,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private LogService log;
 
 	private DeconvolveNamespace deconvolve;
+	private LabelingNamespace labeling;
 	private LogicNamespace logic;
 	private MathNamespace math;
+	private StatsNamespace stats;
 	private ThresholdNamespace threshold;
-	private LabelingNamespace labeling;
 
 	private boolean namespacesReady;
 
@@ -1949,6 +1951,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public LabelingNamespace labeling() {
+		if (!namespacesReady) initNamespaces();
+		return labeling;
+	}
+
+	@Override
 	public LogicNamespace logic() {
 		if (!namespacesReady) initNamespaces();
 		return logic;
@@ -1961,15 +1969,15 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public ThresholdNamespace threshold() {
+	public StatsNamespace stats() {
 		if (!namespacesReady) initNamespaces();
-		return threshold;
+		return stats;
 	}
 
 	@Override
-	public LabelingNamespace labeling() {
+	public ThresholdNamespace threshold() {
 		if (!namespacesReady) initNamespaces();
-		return labeling;
+		return threshold;
 	}
 
 	// -- SingletonService methods --
@@ -2001,14 +2009,16 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		if (namespacesReady) return;
 		deconvolve = new DeconvolveNamespace();
 		getContext().inject(deconvolve);
+		labeling = new LabelingNamespace();
+		getContext().inject(labeling);
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();
 		getContext().inject(math);
+		stats = new StatsNamespace();
+		getContext().inject(stats);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
-		labeling = new LabelingNamespace();
-		getContext().inject(labeling);
 		namespacesReady = true;
 	}
 

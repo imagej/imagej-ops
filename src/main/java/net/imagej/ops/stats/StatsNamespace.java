@@ -28,47 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.statistics.moments;
+package net.imagej.ops.stats;
 
-import java.util.Iterator;
+import net.imagej.ops.AbstractNamespace;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.StatsOps;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Mean;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
+/**
+ * The stats namespace contains operations related to numerical statistics.
+ *
+ * @author Curtis Rueden
+ */
+public class StatsNamespace extends AbstractNamespace {
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = StatsOps.Moment1AboutMean.NAME)
-public class Moment2AboutMean<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType>
-{
-	@Parameter
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Parameter
-	private Size<Iterable<T>> size;
+	// -- Named methods --
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-
-		final double meanVal = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
-
-		double res = 0.0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - meanVal;
-			res += val * val;
-		}
-
-		output.setReal(res / area);
-		return output;
+	public String getName() {
+		return "stats";
 	}
+
 }
