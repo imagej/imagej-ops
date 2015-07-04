@@ -72,11 +72,11 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	 * 
 	 */
 	@Override
-	public Img<O> safeCompute(Img<I> input, Img<O> output) {
+	public void safeCompute(final Img<I> input, final Img<O> output) {
 
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm
-		CreateFFTFilterMemory<I, O, K, C> createMemory =
+		final CreateFFTFilterMemory<I, O, K, C> createMemory =
 			ops.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
 
 		createMemory.run();
@@ -85,8 +85,6 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 		runFilter(createMemory.getRAIExtendedInput(), createMemory
 			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
 			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
-
-		return output;
 	}
 
 	/**

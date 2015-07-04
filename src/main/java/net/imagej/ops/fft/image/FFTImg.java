@@ -97,12 +97,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	public Img<ComplexFloatType>
-		safeCompute(I input, Img<ComplexFloatType> output)
-	{
-
+	public void safeCompute(final I input, final Img<ComplexFloatType> output) {
 		ops.run(FFTRAI.class, output, input, getOBF(), paddedSize);
-
-		return output;
 	}
 }

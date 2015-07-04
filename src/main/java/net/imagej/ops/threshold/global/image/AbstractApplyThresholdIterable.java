@@ -52,12 +52,8 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 	private OpService ops;
 
 	@Override
-	protected O safeCompute(final I input, final O output) {
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops.run(ApplyConstantThreshold.class, output, input,
-				getThreshold(input));
-		return result;
+	protected void safeCompute(final I input, final O output) {
+		ops.run(ApplyConstantThreshold.class, output, input, getThreshold(input));
 	}
 
 }

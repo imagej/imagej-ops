@@ -57,10 +57,9 @@ public class AddConstantToNumericType<T extends NumericType<T>> extends
 	// -- Internal methods --
 
 	@Override
-	protected T safeCompute(final T input, final T output) {
+	protected void safeCompute(final T input, final T output) {
 		output.set(input);
 		output.add(value);
-		return output;
 	}
 
 }

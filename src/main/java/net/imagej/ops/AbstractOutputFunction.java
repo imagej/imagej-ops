@@ -60,7 +60,9 @@ public abstract class AbstractOutputFunction<I, O> extends
 
 	@Override
 	public O compute(final I input, final O output) {
-		return safeCompute(input, output == null ? createOutput(input) : output);
+		final O result = output == null ? createOutput(input) : output;
+		safeCompute(input, result);
+		return result;
 	}
 
 	// -- InputOp methods --
@@ -94,8 +96,7 @@ public abstract class AbstractOutputFunction<I, O> extends
 	 * 
 	 * @param input Non-null input value.
 	 * @param output Non-null output value.
-	 * @return The computed output value.
 	 */
-	protected abstract O safeCompute(I input, O output);
+	protected abstract void safeCompute(I input, O output);
 
 }

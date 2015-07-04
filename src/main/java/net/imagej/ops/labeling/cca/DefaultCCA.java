@@ -74,7 +74,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ImgLabeling<L, I> safeCompute(RandomAccessibleInterval<T> input,
+	protected void safeCompute(RandomAccessibleInterval<T> input,
 		ImgLabeling<L, I> output)
 	{
 		if (labelGenerator == null) {
@@ -83,8 +83,6 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 		ConnectedComponents.labelAllConnectedComponents(input, output,
 			labelGenerator, se, threads.getExecutorService());
-
-		return output;
 	}
 
 	@SuppressWarnings("unchecked")

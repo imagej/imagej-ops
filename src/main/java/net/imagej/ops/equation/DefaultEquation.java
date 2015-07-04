@@ -90,8 +90,8 @@ public class DefaultEquation<T extends RealType<T>> extends
 	// -- Internal methods --
 
 	@Override
-	protected IterableInterval<T> safeCompute(String input,
-		IterableInterval<T> output)
+	protected void safeCompute(final String input,
+		final IterableInterval<T> output)
 	{
 		final String equation = input + ";";
 
@@ -121,7 +121,6 @@ public class DefaultEquation<T extends RealType<T>> extends
 			final Compilable compiler = (Compilable) engine;
 			final CompiledScript compiled = compiler.compile(script);
 			compiled.eval(bindings);
-			return output;
 		} catch (ScriptException e) {
 			log.warn(e);
 			// fallthru
@@ -140,7 +139,6 @@ public class DefaultEquation<T extends RealType<T>> extends
 		catch (final ScriptException exc) {
 			log.error(exc);
 		}
-		return output;
 	}
 
 }

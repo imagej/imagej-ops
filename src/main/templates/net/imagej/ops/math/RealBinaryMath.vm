@@ -67,7 +67,7 @@ public final class RealBinaryMath {
 		}
 
 		@Override
-		protected T safeCompute(T input, T output) {
+		protected void safeCompute(T input, T output) {
 			if(output== b)
 			{
 				output.$!{op.function}(input);
@@ -76,7 +76,6 @@ public final class RealBinaryMath {
 				output.set(input);
 				output.$!{op.function}(b);
 			}
-			return output;
 		}
 	}
 #end

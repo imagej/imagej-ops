@@ -44,9 +44,8 @@ public abstract class AbstractCondition<T> extends
 	}
 
 	@Override
-	protected BoolType safeCompute(final T input, final BoolType output) {
+	protected void safeCompute(final T input, final BoolType output) {
 		output.set(isTrue(input));
-		return output;
 	}
 
 }

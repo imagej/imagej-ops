@@ -60,8 +60,8 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 	@Parameter
 	private OpService ops;
 
-	protected Img<O> safeCompute(Img<I> img, Img<O> out) {
-
+	@Override
+	protected void safeCompute(final Img<I> img, final Img<O> out) {
 		if (getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
 				Util.getTypeFromInterval(img).createVariable()));
@@ -85,8 +85,6 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 			Views.interval(Views.extend(out, obfOutput), out);
 
 		ops.run(ConvolveNaive.class, extendedOut, extendedIn, getKernel());
-
-		return out;
 	}
 
 	@Override
