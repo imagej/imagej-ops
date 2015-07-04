@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,27 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import java.util.ArrayList;
 
-@Plugin(type = Op.class, name = LogicOps.Or.NAME)
-public class OrCondition<T> extends AbstractCondition<T> implements LogicOps.Or
-{
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
-	@Parameter
-	private Condition<T> c1;
+import org.junit.Test;
 
-	@Parameter
-	private Condition<T> c2;
+/** Tests {@link UnionCondition}. */
+public class UnionConditionTest extends AbstractOpTest {
 
-	@Override
-	public boolean isTrue(final T val) {
-		return c1.isTrue(val) || c2.isTrue(val);
+	@Test
+	public void testIntersection() {
+		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
+
+		final Condition<?> c1 =
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(ComparableGreaterThan.class, Double.class, 6.0);
+
+		condition.add(c1);
+		condition.add(c2);
+
+		final BoolType result =
+			(BoolType) ops.run(UnionCondition.class, 2.0, condition);
+		assertFalse(result.get());
+
+		condition.add(0, c2);
+		final BoolType result1 =
+			(BoolType) ops.run(UnionCondition.class, 4.0, condition);
+		assertTrue(result1.get());
+
+		final BoolType result2 =
+			(BoolType) ops.run(UnionCondition.class, 7.0, condition);
+		assertTrue(result2.get());
 	}
 
 }

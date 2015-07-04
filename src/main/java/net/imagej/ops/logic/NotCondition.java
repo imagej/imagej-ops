@@ -28,24 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.LogicOps;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-public class FunctionLesserTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = LogicOps.Not.NAME)
+public class NotCondition<T> extends AbstractCondition<T> implements
+	LogicOps.Not
+{
 
-	@Test
-	public void testFunctionLesser() {
+	@Parameter
+	private Condition<T> c1;
 
-		final Boolean result =
-			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 3.0);
-		assertSame(result, false);
-
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 6.0);
-		assertSame(result2, true);
+	@Override
+	public boolean isTrue(final T val) {
+		return !c1.isTrue(val);
 	}
+
 }

@@ -28,33 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class AndTest extends AbstractOpTest {
+/** Tests {@link BooleanCondition}. */
+public class BooleanConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+	public void testBoolean() {
+		final BoolType result = (BoolType) ops.run(BooleanCondition.class, true);
+		assertTrue(result.get());
 
-		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
-
-		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
-		assertSame(result2, false);
-
-		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
-		assertSame(result3, false);
-
-		final Boolean result4 =
-			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
-		assertSame(result4, false);
+		final BoolType result1 = (BoolType) ops.run(BooleanCondition.class, false);
+		assertFalse(result1.get());
 	}
+
 }

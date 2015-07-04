@@ -28,23 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class EqualsTest extends AbstractOpTest {
+/** Tests {@link ObjectsEqual}. */
+public class ObjectsEqualTest extends AbstractOpTest {
 
 	@Test
 	public void testEquals() {
 
-		final Boolean result = (Boolean) ops.run(EqualsCondition.class, 5.0, 5.0);
-		assertSame(result, true);
+		final BoolType result = (BoolType) ops.run(ObjectsEqual.class, 5.0, 5.0);
+		assertTrue(result.get());
 
-		final Boolean result1 = (Boolean) ops.run(EqualsCondition.class, 5.0, 6.0);
-		assertSame(result1, false);
+		final BoolType result1 = (BoolType) ops.run(ObjectsEqual.class, 5.0, 6.0);
+		assertFalse(result1.get());
 
 	}
 }

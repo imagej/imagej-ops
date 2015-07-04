@@ -28,26 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class NotTest extends AbstractOpTest {
+/** Tests {@link IntersectionCondition}. */
+public class IntersectionConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
+	public void testIntersection() {
+		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
 
 		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(ComparableLessThan.class, Double.class, 6.0);
 
-		final Boolean result = (Boolean) ops.run(NotCondition.class, 5.0, c1);
-		assertSame(result, false);
+		condition.add(c1);
+		condition.add(c2);
 
-		final Boolean result2 = (Boolean) ops.run(NotCondition.class, 2.0, c1);
-		assertSame(result2, true);
+		final BoolType result =
+			(BoolType) ops.run(IntersectionCondition.class, 2.0 , condition);
+		assertFalse(result.get());
 
+		condition.add(0, c2);
+		final BoolType result1 =
+			(BoolType) ops.run(IntersectionCondition.class, 4.0, condition);
+		assertTrue(result1.get());
 	}
+
 }

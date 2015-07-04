@@ -28,42 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOutputFunction;
+import net.imglib2.type.logic.BoolType;
 
-import java.util.ArrayList;
+/** Abstract superclass for {@link Condition} ops. */
+public abstract class AbstractCondition<T> extends
+	AbstractOutputFunction<T, BoolType> implements Condition<T>
+{
 
-import net.imagej.ops.AbstractOpTest;
-
-import org.junit.Test;
-
-public class UnionTest extends AbstractOpTest {
-
-	@Test
-	public void testIntersection() {
-
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
-
-		final Condition<?> c1 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 6.0);
-
-		condition.add(c1);
-		condition.add(c2);
-
-		final Boolean result = (Boolean) ops.run(UnionCondition.class, 2.0,
-				condition);
-		assertSame(result, false);
-
-		condition.add(0, c2);
-		final Boolean result1 = (Boolean) ops.run(UnionCondition.class, 4.0,
-				condition);
-		assertSame(result1, true);
-		
-		final Boolean result2 = (Boolean) ops.run(UnionCondition.class, 7.0,
-				condition);
-		assertSame(result2, true);
+	@Override
+	public BoolType createOutput(final T input) {
+		return new BoolType();
 	}
+
+	@Override
+	protected BoolType safeCompute(final T input, final BoolType output) {
+		output.set(isTrue(input));
+		return output;
+	}
+
 }

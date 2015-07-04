@@ -33,7 +33,6 @@ package net.imagej.ops.logic;
 import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -44,20 +43,16 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class, name = LogicOps.GreaterThan.NAME, attrs = { @Attr(
 	name = "aliases", value = LogicOps.GreaterThan.ALIASES) })
-public class ComparableGreaterThan<T> implements LogicOps.GreaterThan {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private boolean result;
-
-	@Parameter
-	private Comparable<T> a;
+public class ComparableGreaterThan<T> extends AbstractCondition<T> implements
+	LogicOps.GreaterThan
+{
 
 	@Parameter
-	private T b;
+	private Comparable<? super T> c;
 
 	@Override
-	public void run() {
-		result = a.compareTo(b) > 0;
+	public boolean isTrue(final T val) {
+		return 0 > c.compareTo(val);
 	}
 
 }

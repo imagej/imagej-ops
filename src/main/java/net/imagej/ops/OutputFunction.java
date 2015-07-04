@@ -48,6 +48,7 @@ public interface OutputFunction<I, O> extends Function<I, O>, Computer<I, O> {
 	 * 
 	 * @return output
 	 */
+	@Override
 	O compute(I input);
 
 	/**

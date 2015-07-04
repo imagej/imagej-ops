@@ -28,39 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-
-import java.util.ArrayList;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class IntersectionTest extends AbstractOpTest {
+/** Tests {@link XorCondition}. */
+public class XorConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testIntersection() {
-
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
-
+	public void testXor() {
 		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
 		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+			ops.op(ComparableLessThan.class, Double.class, 6.0);
 
-		condition.add(c1);
-		condition.add(c2);
+		final BoolType result = (BoolType) ops.run(XorCondition.class, 5.0, c1, c2);
+		assertFalse(result.get());
 
-		final Boolean result =
-			(Boolean) ops.run(IntersectionCondition.class, 2.0 , condition);
-		assertSame(result, false);
+		final BoolType result2 = (BoolType) ops.run(XorCondition.class, 2.0, c1, c2);
+		assertTrue(result2.get());
 
-		condition.add(0, c2);
-		final Boolean result1 =
-			(Boolean) ops.run(IntersectionCondition.class, 4.0, condition);
-		assertSame(result1, true);
+		final BoolType result3 = (BoolType) ops.run(XorCondition.class, 7.0, c1, c2);
+		assertTrue(result3.get());
 
+		final BoolType result4 =
+			(BoolType) ops.run(XorCondition.class, Double.NaN, c1, c2);
+		assertTrue(result4.get());
 	}
+
 }

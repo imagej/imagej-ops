@@ -28,31 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import java.util.List;
-
+import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "union")
-public class UnionCondition<T> extends AbstractCondition<T> {
+@Plugin(type = Op.class, name = LogicOps.And.NAME)
+public class AndCondition<T> extends AbstractCondition<T> implements
+	LogicOps.And
+{
 
 	@Parameter
-	List<Condition<T>> conditions;
+	private Condition<T> c1;
+
+	@Parameter
+	private Condition<T> c2;
 
 	@Override
 	public boolean isTrue(final T val) {
-
-		for (final Condition<T> c1 : conditions) {
-			if (c1.isTrue( val)) {
-				return true;
-			}
-		}
-		return false;
-
+		return c1.isTrue(val) && c2.isTrue(val);
 	}
 
 }

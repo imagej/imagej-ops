@@ -28,25 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = LogicOps.Not.NAME)
-public class NotCondition<T> extends AbstractCondition<T> implements
-	LogicOps.Not
-{
+/** Tests {@link ComparableGreaterThanOrEqual}. */
+public class ComparableGreaterThanOrEqualTest extends AbstractOpTest {
 
-	@Parameter
-	private Condition<T> c1;
+	@Test
+	public void testFunctionGreater() {
+		final BoolType result =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 3.0);
+		assertTrue(result.get());
 
-	@Override
-	public boolean isTrue(final T val) {
-		return !c1.isTrue(val);
+		final BoolType result3 =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 5.0);
+		assertTrue(result3.get());
+
+		final BoolType result2 =
+			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 6.0);
+		assertFalse(result2.get());
 	}
-
 }

@@ -32,6 +32,8 @@ package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
@@ -50,44 +52,51 @@ public class ComparisonTest extends AbstractOpTest {
 
 	@Test
 	public void testComparableGreaterThan() {
-		assertEquals(true, ops.run(ComparableGreaterThan.class, 2, 1));
-		assertEquals(false, ops.run(ComparableGreaterThan.class, 2, 2));
-		assertEquals(false, ops.run(ComparableGreaterThan.class, 2, 3));
+		assertEquals(true, run(ComparableGreaterThan.class, 2, 1));
+		assertEquals(false, run(ComparableGreaterThan.class, 2, 2));
+		assertEquals(false, run(ComparableGreaterThan.class, 2, 3));
 	}
 
 	@Test
 	public void testComparableGreaterThanOrEqual() {
-		assertEquals(true, ops.run(ComparableGreaterThanOrEqual.class, 2, 1));
-		assertEquals(true, ops.run(ComparableGreaterThanOrEqual.class, 2, 2));
-		assertEquals(false, ops.run(ComparableGreaterThanOrEqual.class, 2, 3));
+		assertEquals(true, run(ComparableGreaterThanOrEqual.class, 2, 1));
+		assertEquals(true, run(ComparableGreaterThanOrEqual.class, 2, 2));
+		assertEquals(false, run(ComparableGreaterThanOrEqual.class, 2, 3));
 	}
 
 	@Test
 	public void testComparableLessThan() {
-		assertEquals(false, ops.run(ComparableLessThan.class, 2, 1));
-		assertEquals(false, ops.run(ComparableLessThan.class, 2, 2));
-		assertEquals(true, ops.run(ComparableLessThan.class, 2, 3));
+		assertEquals(false, run(ComparableLessThan.class, 2, 1));
+		assertEquals(false, run(ComparableLessThan.class, 2, 2));
+		assertEquals(true, run(ComparableLessThan.class, 2, 3));
 	}
 
 	@Test
 	public void testComparableLessThanOrEqual() {
-		assertEquals(false, ops.run(ComparableLessThanOrEqual.class, 2, 1));
-		assertEquals(true, ops.run(ComparableLessThanOrEqual.class, 2, 2));
-		assertEquals(true, ops.run(ComparableLessThanOrEqual.class, 2, 3));
+		assertEquals(false, run(ComparableLessThanOrEqual.class, 2, 1));
+		assertEquals(true, run(ComparableLessThanOrEqual.class, 2, 2));
+		assertEquals(true, run(ComparableLessThanOrEqual.class, 2, 3));
 	}
 
 	@Test
 	public void testObjectsEqual() {
-		assertEquals(false, ops.run(ObjectsEqual.class, 2, 1));
-		assertEquals(true, ops.run(ObjectsEqual.class, 2, 2));
-		assertEquals(false, ops.run(ObjectsEqual.class, 2, 3));
+		assertEquals(false, run(ObjectsEqual.class, 2, 1));
+		assertEquals(true, run(ObjectsEqual.class, 2, 2));
+		assertEquals(false, run(ObjectsEqual.class, 2, 3));
 	}
 
 	@Test
 	public void testObjectsNotEqual() {
-		assertEquals(true, ops.run(ObjectsNotEqual.class, 2, 1));
-		assertEquals(false, ops.run(ObjectsNotEqual.class, 2, 2));
-		assertEquals(true, ops.run(ObjectsNotEqual.class, 2, 3));
+		assertEquals(true, run(ObjectsNotEqual.class, 2, 1));
+		assertEquals(false, run(ObjectsNotEqual.class, 2, 2));
+		assertEquals(true, run(ObjectsNotEqual.class, 2, 3));
+	}
+
+	// -- Helper methods --
+
+	private <OP extends Op> boolean run(Class<OP> type, Object... args) {
+		final BoolType result = (BoolType) ops.run(type, args);
+		return result.get();
 	}
 
 }

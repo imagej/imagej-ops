@@ -28,7 +28,9 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
+
+import java.util.List;
 
 import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
@@ -36,22 +38,20 @@ import net.imagej.ops.Op;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = LogicOps.Xor.NAME)
-public class XorCondition<T> extends AbstractCondition<T> implements
-	LogicOps.Xor
+@Plugin(type = Op.class, name = LogicOps.And.NAME)
+public class IntersectionCondition<T> extends AbstractCondition<T> implements
+	LogicOps.And
 {
 
 	@Parameter
-	private Condition<T> c1;
-
-	@Parameter
-	private Condition<T> c2;
+	private List<Condition<T>> conditions;
 
 	@Override
 	public boolean isTrue(final T val) {
-		final boolean one = c1.isTrue(val);
-		final boolean two = c2.isTrue(val);
-		return (one && !two) || (!one && two);
+		for (final Condition<T> c1 : conditions) {
+			if (!c1.isTrue(val)) return false;
+		}
+		return true;
 	}
 
 }

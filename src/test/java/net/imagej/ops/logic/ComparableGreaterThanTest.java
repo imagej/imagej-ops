@@ -28,31 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "greater_equal")
-public class FunctionGreaterEqualCondition<T extends Comparable<T>> extends
-	AbstractCondition<T>
-{
+/** Tests {@link ComparableGreaterThan}. */
+public class ComparableGreaterThanTest extends AbstractOpTest {
 
-	@Parameter
-	T o;
+	@Test
+	public void testFunctionGreater() {
+		final BoolType result =
+			(BoolType) ops.run(ComparableGreaterThan.class, 5.0, 3.0);
+		assertTrue(result.get());
 
-	@Override
-	public boolean isTrue(final T val) {
-		final int result = val.compareTo(o);
-
-		// TODO:
-		// Double.NaN.compareTo(o) always returns 1 but Double.NaN > o returns
-		// false.
-		// This could be confusing. Should this method return false if val is NaN?
-
-		return result >= 0;
+		final BoolType result2 =
+			(BoolType) ops.run(ComparableGreaterThan.class, 5.0, 6.0);
+		assertFalse(result2.get());
 	}
 
 }

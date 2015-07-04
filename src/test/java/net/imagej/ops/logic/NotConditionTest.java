@@ -28,18 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.Function;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
-/**
- * An interface that can be tested for truth or falsity for a given input.
- * 
- * @author Barry DeZonia
- * @author Aparna Pal
- */
-public interface Condition<T> extends Function<T, Boolean> {
+import org.junit.Test;
 
-	boolean isTrue(T val);
+/** Tests {@link NotCondition}. */
+public class NotConditionTest extends AbstractOpTest {
+
+	@Test
+	public void testAnd() {
+		final Condition<?> c1 =
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+
+		final BoolType result = (BoolType) ops.run(NotCondition.class, 5.0, c1);
+		assertFalse(result.get());
+
+		final BoolType result2 = (BoolType) ops.run(NotCondition.class, 2.0, c1);
+		assertTrue(result2.get());
+	}
 
 }

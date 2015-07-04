@@ -28,28 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-public class FunctionLesserEqual extends AbstractOpTest {
+@Plugin(type = Op.class, name = "bool")
+public class BooleanCondition extends AbstractCondition<Boolean> implements
+	Ops.Identity
+{
 
-	@Test
-	public void testFunctionLesser() {
-
-		final Boolean result =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 3.0);
-		assertSame(result, false);
-
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 6.0);
-		assertSame(result2, true);
-
-		final Boolean result3 =
-			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 5.0);
-		assertSame(result3, true);
+	@Override
+	public boolean isTrue(final Boolean val) {
+		return val;
 	}
+
 }

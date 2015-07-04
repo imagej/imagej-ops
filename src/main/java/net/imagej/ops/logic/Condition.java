@@ -28,31 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import java.util.ArrayList;
+import net.imagej.ops.Function;
+import net.imglib2.type.logic.BoolType;
 
-import net.imagej.ops.Op;
+/**
+ * An interface that can be tested for truth or falsity for a given input.
+ * 
+ * @author Barry DeZonia
+ * @author Aparna Pal
+ */
+public interface Condition<T> extends Function<T, BoolType> {
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "dimension equals")
-public class DimensionEqualCondition<T> extends AbstractCondition<Object> {
-
-	@Parameter
-	private int index;
-
-	@Parameter
-	ArrayList<T> listing;
-
-	@Override
-	public boolean isTrue(final Object val) {
-		if (listing.get(index).equals(val)) {
-			return true;
-		}
-		return false;
-
-	}
+	boolean isTrue(T val);
 
 }

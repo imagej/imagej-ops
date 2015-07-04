@@ -28,27 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
 
 import org.junit.Test;
 
-public class WithinRangeTest extends AbstractOpTest {
+/** Tests {@link OrCondition}. */
+public class OrConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testWithinRange() {
-		final Boolean result =
-			(Boolean) ops.run(WithinRangeCondition.class, 4.0, 5.0, 3.0);
-		assertSame(result, true);
+	public void testOr() {
 
-		final Boolean result2 =
-			(Boolean) ops.run(WithinRangeCondition.class, 5.0, 3.0, 2.0);
-		assertSame(result2, false);
+		final Condition<?> c1 =
+			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(ComparableLessThan.class, Double.class, 6.0);
+		final Condition<?> c3 =
+			ops.op(ObjectsEqual.class, Double.class, 13.0);
 
-		final Boolean result3 =
-			(Boolean) ops.run(WithinRangeCondition.class, 5.0, 3.0, 6.0);
-		assertSame(result3, false);
+		final BoolType result = (BoolType) ops.run(OrCondition.class, 5.0, c1, c2);
+		assertTrue(result.get());
+
+		final BoolType result2 = (BoolType) ops.run(OrCondition.class, 2.0, c1, c2);
+		assertTrue(result2.get());
+
+		final BoolType result3 = (BoolType) ops.run(OrCondition.class, 7.0, c1, c2);
+		assertTrue(result3.get());
+
+		final BoolType result4 = (BoolType) ops.run(OrCondition.class, 2.0, c1, c3);
+		assertFalse(result4.get());
 	}
 }
