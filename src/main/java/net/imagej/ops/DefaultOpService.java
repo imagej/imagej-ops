@@ -107,11 +107,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private LogService log;
 
 	private DeconvolveNamespace deconvolve;
+	private LabelingNamespace labeling;
 	private LogicNamespace logic;
 	private MathNamespace math;
 	private StatsNamespace stats;
 	private ThresholdNamespace threshold;
-	private LabelingNamespace labeling;
 
 	private boolean namespacesReady;
 
@@ -1951,6 +1951,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public LabelingNamespace labeling() {
+		if (!namespacesReady) initNamespaces();
+		return labeling;
+	}
+
+	@Override
 	public LogicNamespace logic() {
 		if (!namespacesReady) initNamespaces();
 		return logic;
@@ -1972,12 +1978,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public ThresholdNamespace threshold() {
 		if (!namespacesReady) initNamespaces();
 		return threshold;
-	}
-
-	@Override
-	public LabelingNamespace labeling() {
-		if (!namespacesReady) initNamespaces();
-		return labeling;
 	}
 
 	// -- SingletonService methods --
@@ -2009,6 +2009,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		if (namespacesReady) return;
 		deconvolve = new DeconvolveNamespace();
 		getContext().inject(deconvolve);
+		labeling = new LabelingNamespace();
+		getContext().inject(labeling);
 		logic = new LogicNamespace();
 		getContext().inject(logic);
 		math = new MathNamespace();
@@ -2017,8 +2019,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(stats);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
-		labeling = new LabelingNamespace();
-		getContext().inject(labeling);
 		namespacesReady = true;
 	}
 
