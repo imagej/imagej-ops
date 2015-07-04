@@ -133,13 +133,6 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.AddOp.class)
-	public Object add(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.AddOp.class, result, a, b);
-		return result_op;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAdd.class)
 	public int add(final int a, final int b) {
 		final int result =
@@ -738,14 +731,6 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Divide.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class)
-	public Object divide(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class, result, a,
-				b);
-		return result_op;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerDivide.class)
 	public int divide(final int a, final int b) {
 		final int result =
@@ -1098,14 +1083,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.MathOps.Multiply.class)
 	public Object multiply(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Multiply.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class)
-	public Object multiply(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class, result,
-				a, b);
-		return result_op;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMultiply.class)
@@ -1630,14 +1607,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.MathOps.Subtract.class)
 	public Object subtract(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Subtract.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class)
-	public Object subtract(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class, result,
-				a, b);
-		return result_op;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerSubtract.class)
