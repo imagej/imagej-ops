@@ -28,27 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.AbstractOutputFunction;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.Condition;
+import net.imagej.ops.logic.FunctionGreaterCondition;
+import net.imagej.ops.logic.NotCondition;
 
-public abstract class AbstractCondition<T> extends
-	AbstractOutputFunction<T, Boolean> implements Condition<T>
-{
+import org.junit.Test;
 
-	@Override
-	public Boolean createOutput(final T input) {
-		// NB: We must perform the actual computation here,
-		// because Boolean objects are immutable. So we cannot
-		// just "pre-allocate" it and fill it in later.
-		return isTrue(input);
+public class NotTest extends AbstractOpTest {
+
+	@Test
+	public void testAnd() {
+
+		final Condition<?> c1 =
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+
+		final Boolean result = (Boolean) ops.run(NotCondition.class, 5.0, c1);
+		assertSame(result, false);
+
+		final Boolean result2 = (Boolean) ops.run(NotCondition.class, 2.0, c1);
+		assertSame(result2, true);
+
 	}
-
-	@Override
-	protected Boolean safeCompute(final T input, final Boolean output) {
-		// NB: No need to do anything here, because the actual
-		// computation was already done by the "createOutput" method.
-		return output;
-	}
-
 }

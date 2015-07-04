@@ -28,18 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import net.imagej.ops.Op;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "bool")
-public class BooleanCondition extends AbstractCondition<Boolean> {
+@Plugin(type = Op.class, name = "equals")
+public class EqualsCondition extends AbstractCondition<Object> {
+
+	@Parameter
+	private Object o;
 
 	@Override
-	public boolean isTrue(final Boolean val) {
-		return val;
+	public boolean isTrue(final Object val) {
+		return o.equals(val);
 	}
 
 }

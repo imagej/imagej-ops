@@ -28,22 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.FunctionGreaterCondition;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "equals")
-public class EqualsCondition extends AbstractCondition<Object> {
+public class FunctionGreaterTest extends AbstractOpTest {
 
-	@Parameter
-	private Object o;
+	@Test
+	public void testFunctionGreater() {
+		final Boolean result =
+			(Boolean) ops.run(FunctionGreaterCondition.class, 5.0, 3.0);
+		assertSame(result, true);
 
-	@Override
-	public boolean isTrue(final Object val) {
-		return o.equals(val);
+		final Boolean result2 =
+			(Boolean) ops.run(FunctionGreaterCondition.class, 5.0, 6.0);
+		assertSame(result2, false);
 	}
-
 }

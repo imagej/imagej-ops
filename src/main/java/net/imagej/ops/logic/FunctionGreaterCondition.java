@@ -28,23 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-public class EqualsTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = "greater")
+public class FunctionGreaterCondition<T extends Comparable<T>> extends
+	AbstractCondition<T>
+{
 
-	@Test
-	public void testEquals() {
+	@Parameter
+	private T o;
 
-		final Boolean result = (Boolean) ops.run(EqualsCondition.class, 5.0, 5.0);
-		assertSame(result, true);
+	@Override
+	public boolean isTrue(final T val) {
+		final int result = val.compareTo(o);
 
-		final Boolean result1 = (Boolean) ops.run(EqualsCondition.class, 5.0, 6.0);
-		assertSame(result1, false);
+		// TODO:
+		// Double.NaN.compareTo(o) always returns 1 but Double.NaN > o returns
+		// false.
+		// This could be confusing. Should this method return false if val is NaN?
 
+		return result > 0;
 	}
+
 }

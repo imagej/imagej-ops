@@ -28,28 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.AndCondition;
+import net.imagej.ops.logic.Condition;
+import net.imagej.ops.logic.FunctionGreaterCondition;
+import net.imagej.ops.logic.FunctionLesserCondition;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = LogicOps.And.NAME)
-public class AndCondition<T> extends AbstractCondition<T> implements
-	LogicOps.And
-{
+public class AndTest extends AbstractOpTest {
 
-	@Parameter
-	private Condition<T> c1;
+	@Test
+	public void testAnd() {
+		final Condition<?> c1 =
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
 
-	@Parameter
-	private Condition<T> c2;
+		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
+		assertSame(result, true);
 
-	@Override
-	public boolean isTrue(final T val) {
-		return c1.isTrue(val) && c2.isTrue(val);
+		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
+		assertSame(result2, false);
+
+		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
+		assertSame(result3, false);
+
+		final Boolean result4 =
+			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
+		assertSame(result4, false);
 	}
-
 }

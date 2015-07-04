@@ -28,26 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.FunctionGreaterEqualCondition;
 
 import org.junit.Test;
 
-public class NotTest extends AbstractOpTest {
+public class FunctionGreaterEqualTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
+	public void testFunctionGreater() {
+		final Boolean result =
+			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 3.0);
+		assertSame(result, true);
 
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+		final Boolean result3 =
+			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 5.0);
+		assertSame(result3, true);
 
-		final Boolean result = (Boolean) ops.run(NotCondition.class, 5.0, c1);
-		assertSame(result, false);
-
-		final Boolean result2 = (Boolean) ops.run(NotCondition.class, 2.0, c1);
-		assertSame(result2, true);
-
+		final Boolean result2 =
+			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 6.0);
+		assertSame(result2, false);
 	}
 }

@@ -28,35 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.Condition;
+import net.imagej.ops.logic.FunctionGreaterCondition;
+import net.imagej.ops.logic.FunctionLesserCondition;
+import net.imagej.ops.logic.XorCondition;
 
 import org.junit.Test;
 
-public class OrTest extends AbstractOpTest {
+public class XorTest extends AbstractOpTest {
 
 	@Test
-	public void testOr() {
-
+	public void testXor() {
 		final Condition<?> c1 =
 			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
 		final Condition<?> c2 =
 			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
-		final Condition<?> c3 =
-			ops.op(EqualsCondition.class, Double.class, 13.0);
 
-		final Boolean result = (Boolean) ops.run(OrCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
+		final Boolean result = (Boolean) ops.run(XorCondition.class, 5.0, c1, c2);
+		assertSame(result, false);
 
-		final Boolean result2 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c2);
+		final Boolean result2 = (Boolean) ops.run(XorCondition.class, 2.0, c1, c2);
 		assertSame(result2, true);
 
-		final Boolean result3 = (Boolean) ops.run(OrCondition.class, 7.0, c1, c2);
+		final Boolean result3 = (Boolean) ops.run(XorCondition.class, 7.0, c1, c2);
 		assertSame(result3, true);
 
-		final Boolean result4 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c3);
-		assertSame(result4, false);
+		final Boolean result4 =
+			(Boolean) ops.run(XorCondition.class, Double.NaN, c1, c2);
+		assertSame(result4, true);
 	}
 }

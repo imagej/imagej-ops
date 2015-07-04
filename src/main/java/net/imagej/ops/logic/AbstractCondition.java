@@ -28,25 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractOutputFunction;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = LogicOps.Not.NAME)
-public class NotCondition<T> extends AbstractCondition<T> implements
-	LogicOps.Not
+public abstract class AbstractCondition<T> extends
+	AbstractOutputFunction<T, Boolean> implements Condition<T>
 {
 
-	@Parameter
-	private Condition<T> c1;
+	@Override
+	public Boolean createOutput(final T input) {
+		// NB: We must perform the actual computation here,
+		// because Boolean objects are immutable. So we cannot
+		// just "pre-allocate" it and fill it in later.
+		return isTrue(input);
+	}
 
 	@Override
-	public boolean isTrue(final T val) {
-		return !c1.isTrue(val);
+	protected Boolean safeCompute(final T input, final Boolean output) {
+		// NB: No need to do anything here, because the actual
+		// computation was already done by the "createOutput" method.
+		return output;
 	}
 
 }

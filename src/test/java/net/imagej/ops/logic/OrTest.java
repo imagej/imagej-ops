@@ -28,24 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.Condition;
+import net.imagej.ops.logic.EqualsCondition;
+import net.imagej.ops.logic.FunctionGreaterCondition;
+import net.imagej.ops.logic.FunctionLesserCondition;
+import net.imagej.ops.logic.OrCondition;
 
 import org.junit.Test;
 
-public class FunctionLesserTest extends AbstractOpTest {
+public class OrTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionLesser() {
+	public void testOr() {
 
-		final Boolean result =
-			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 3.0);
-		assertSame(result, false);
+		final Condition<?> c1 =
+			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
+		final Condition<?> c2 =
+			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+		final Condition<?> c3 =
+			ops.op(EqualsCondition.class, Double.class, 13.0);
 
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 6.0);
+		final Boolean result = (Boolean) ops.run(OrCondition.class, 5.0, c1, c2);
+		assertSame(result, true);
+
+		final Boolean result2 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c2);
 		assertSame(result2, true);
+
+		final Boolean result3 = (Boolean) ops.run(OrCondition.class, 7.0, c1, c2);
+		assertSame(result3, true);
+
+		final Boolean result4 = (Boolean) ops.run(OrCondition.class, 2.0, c1, c3);
+		assertSame(result4, false);
 	}
 }

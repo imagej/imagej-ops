@@ -28,27 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Function;
 
-import org.junit.Test;
+/**
+ * An interface that can be tested for truth or falsity for a given input.
+ * 
+ * @author Barry DeZonia
+ * @author Aparna Pal
+ */
+public interface Condition<T> extends Function<T, Boolean> {
 
-public class FunctionGreaterEqualTest extends AbstractOpTest {
+	boolean isTrue(T val);
 
-	@Test
-	public void testFunctionGreater() {
-		final Boolean result =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 3.0);
-		assertSame(result, true);
-
-		final Boolean result3 =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 5.0);
-		assertSame(result3, true);
-
-		final Boolean result2 =
-			(Boolean) ops.run(FunctionGreaterEqualCondition.class, 5.0, 6.0);
-		assertSame(result2, false);
-	}
 }

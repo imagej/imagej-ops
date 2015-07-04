@@ -28,24 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import net.imagej.ops.Op;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "less")
-public class FunctionLesserEqualCondition<T extends Comparable<T>> extends
-	AbstractCondition<T>
-{
-
-	@Parameter
-	private T o;
+@Plugin(type = Op.class, name = "bool")
+public class BooleanCondition extends AbstractCondition<Boolean> {
 
 	@Override
-	public boolean isTrue(final T val) {
-		return val.compareTo(o) <= 0;
+	public boolean isTrue(final Boolean val) {
+		return val;
 	}
 
 }

@@ -28,27 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
-
-import java.util.List;
+package net.imagej.ops.logic;
 
 import net.imagej.ops.Op;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "union")
-public class IntersectionCondition<T> extends AbstractCondition<T> {
+@Plugin(type = Op.class, name = "less")
+public class FunctionLesserEqualCondition<T extends Comparable<T>> extends
+	AbstractCondition<T>
+{
 
 	@Parameter
-	private List<Condition<T>> conditions;
+	private T o;
 
 	@Override
 	public boolean isTrue(final T val) {
-		for (final Condition<T> c1 : conditions) {
-			if (!c1.isTrue(val)) return false;
-		}
-		return true;
+		return val.compareTo(o) <= 0;
 	}
 
 }

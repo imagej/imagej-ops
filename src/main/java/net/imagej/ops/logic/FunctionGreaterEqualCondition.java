@@ -28,42 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import net.imagej.ops.Op;
 
-import java.util.ArrayList;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractOpTest;
+@Plugin(type = Op.class, name = "greater_equal")
+public class FunctionGreaterEqualCondition<T extends Comparable<T>> extends
+	AbstractCondition<T>
+{
 
-import org.junit.Test;
+	@Parameter
+	private T o;
 
-public class UnionTest extends AbstractOpTest {
+	@Override
+	public boolean isTrue(final T val) {
+		final int result = val.compareTo(o);
 
-	@Test
-	public void testIntersection() {
+		// TODO:
+		// Double.NaN.compareTo(o) always returns 1 but Double.NaN > o returns
+		// false.
+		// This could be confusing. Should this method return false if val is NaN?
 
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
-
-		final Condition<?> c1 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 = ops.op(
-				FunctionGreaterCondition.class, Double.class, 6.0);
-
-		condition.add(c1);
-		condition.add(c2);
-
-		final Boolean result = (Boolean) ops.run(UnionCondition.class, 2.0,
-				condition);
-		assertSame(result, false);
-
-		condition.add(0, c2);
-		final Boolean result1 = (Boolean) ops.run(UnionCondition.class, 4.0,
-				condition);
-		assertSame(result1, true);
-		
-		final Boolean result2 = (Boolean) ops.run(UnionCondition.class, 7.0,
-				condition);
-		assertSame(result2, true);
+		return result >= 0;
 	}
+
 }

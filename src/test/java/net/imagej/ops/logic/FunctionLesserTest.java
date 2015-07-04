@@ -28,24 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import net.imagej.ops.Op;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.FunctionLesserCondition;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-@Plugin(type = Op.class, name = "less")
-public class FunctionLesserCondition<T extends Comparable<T>> extends
-	AbstractCondition<T>
-{
+public class FunctionLesserTest extends AbstractOpTest {
 
-	@Parameter
-	private T o;
+	@Test
+	public void testFunctionLesser() {
 
-	@Override
-	public boolean isTrue(final T val) {
-		return val.compareTo(o) < 0;
+		final Boolean result =
+			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 3.0);
+		assertSame(result, false);
+
+		final Boolean result2 =
+			(Boolean) ops.run(FunctionLesserCondition.class, 5.0, 6.0);
+		assertSame(result2, true);
 	}
-
 }

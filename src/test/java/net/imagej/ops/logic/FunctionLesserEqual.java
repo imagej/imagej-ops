@@ -28,22 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.logic.FunctionLesserEqualCondition;
 
 import org.junit.Test;
 
-public class BooleanTest extends AbstractOpTest {
+public class FunctionLesserEqual extends AbstractOpTest {
 
 	@Test
-	public void testBoolean() {
+	public void testFunctionLesser() {
 
-		final Boolean result = (Boolean) ops.run(BooleanCondition.class, true);
-		assertSame(result, true);
+		final Boolean result =
+			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 3.0);
+		assertSame(result, false);
 
-		final Boolean result1 = (Boolean) ops.run(BooleanCondition.class, false);
-		assertSame(result1, false);
+		final Boolean result2 =
+			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 6.0);
+		assertSame(result2, true);
+
+		final Boolean result3 =
+			(Boolean) ops.run(FunctionLesserEqualCondition.class, 5.0, 5.0);
+		assertSame(result3, true);
 	}
 }

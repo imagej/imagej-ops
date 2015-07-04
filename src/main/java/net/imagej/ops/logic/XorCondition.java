@@ -28,39 +28,30 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
+import net.imagej.ops.LogicOps;
+import net.imagej.ops.Op;
 
-import java.util.ArrayList;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractOpTest;
+@Plugin(type = Op.class, name = LogicOps.Xor.NAME)
+public class XorCondition<T> extends AbstractCondition<T> implements
+	LogicOps.Xor
+{
 
-import org.junit.Test;
+	@Parameter
+	private Condition<T> c1;
 
-public class IntersectionTest extends AbstractOpTest {
+	@Parameter
+	private Condition<T> c2;
 
-	@Test
-	public void testIntersection() {
-
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
-
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
-
-		condition.add(c1);
-		condition.add(c2);
-
-		final Boolean result =
-			(Boolean) ops.run(IntersectionCondition.class, 2.0 , condition);
-		assertSame(result, false);
-
-		condition.add(0, c2);
-		final Boolean result1 =
-			(Boolean) ops.run(IntersectionCondition.class, 4.0, condition);
-		assertSame(result1, true);
-
+	@Override
+	public boolean isTrue(final T val) {
+		final boolean one = c1.isTrue(val);
+		final boolean two = c2.isTrue(val);
+		return (one && !two) || (!one && two);
 	}
+
 }

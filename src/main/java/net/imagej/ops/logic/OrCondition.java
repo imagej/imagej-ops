@@ -28,33 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.LogicOps;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-public class AndTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = LogicOps.Or.NAME)
+public class OrCondition<T> extends AbstractCondition<T> implements LogicOps.Or
+{
 
-	@Test
-	public void testAnd() {
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+	@Parameter
+	private Condition<T> c1;
 
-		final Boolean result = (Boolean) ops.run(AndCondition.class, 5.0, c1, c2);
-		assertSame(result, true);
+	@Parameter
+	private Condition<T> c2;
 
-		final Boolean result2 = (Boolean) ops.run(AndCondition.class, 2.0, c1, c2);
-		assertSame(result2, false);
-
-		final Boolean result3 = (Boolean) ops.run(AndCondition.class, 7.0, c1, c2);
-		assertSame(result3, false);
-
-		final Boolean result4 =
-			(Boolean) ops.run(AndCondition.class, Double.NaN, c1, c2);
-		assertSame(result4, false);
+	@Override
+	public boolean isTrue(final T val) {
+		return c1.isTrue(val) || c2.isTrue(val);
 	}
+
 }

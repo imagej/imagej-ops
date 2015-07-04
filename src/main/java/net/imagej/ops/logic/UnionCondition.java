@@ -28,33 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.conditions;
+package net.imagej.ops.logic;
 
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import java.util.List;
 
-import org.junit.Test;
+import net.imagej.ops.Op;
 
-public class XorTest extends AbstractOpTest {
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	@Test
-	public void testXor() {
-		final Condition<?> c1 =
-			ops.op(FunctionGreaterCondition.class, Double.class, 3.0);
-		final Condition<?> c2 =
-			ops.op(FunctionLesserCondition.class, Double.class, 6.0);
+@Plugin(type = Op.class, name = "union")
+public class UnionCondition<T> extends AbstractCondition<T> {
 
-		final Boolean result = (Boolean) ops.run(XorCondition.class, 5.0, c1, c2);
-		assertSame(result, false);
+	@Parameter
+	private List<Condition<T>> conditions;
 
-		final Boolean result2 = (Boolean) ops.run(XorCondition.class, 2.0, c1, c2);
-		assertSame(result2, true);
-
-		final Boolean result3 = (Boolean) ops.run(XorCondition.class, 7.0, c1, c2);
-		assertSame(result3, true);
-
-		final Boolean result4 =
-			(Boolean) ops.run(XorCondition.class, Double.NaN, c1, c2);
-		assertSame(result4, true);
+	@Override
+	public boolean isTrue(final T val) {
+		for (final Condition<T> c1 : conditions) {
+			if (c1.isTrue(val)) return true;
+		}
+		return false;
 	}
+
 }
