@@ -28,59 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add.parallel;
+package net.imagej.ops.math.add;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.chunker.Chunk;
-import net.imagej.ops.chunker.Chunker;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.math.add.AddConstantToNumericType;
+import net.imglib2.type.numeric.ARGBDoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
- * {@link DoubleType}.
+ * Tests {@link AddConstantToNumericType}.
  * 
+ * @author Johannes Schindelin
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
-public class AddConstantToArrayDoubleImageP implements MathOps.Add {
+public class AddConstantToNumericTypeTest extends AbstractOpTest {
 
-	@Parameter
-	private OpService opService;
+	private final double DELTA = 0.00005;
 
-	@Parameter(type = ItemIO.BOTH)
-	private ArrayImg<DoubleType, DoubleArray> image;
+	/**
+	 * Verifies that {@link OpService#add(Object...)} finds the
+	 * {@link AddConstantToNumericType}.
+	 */
+	@Test
+	public void testAdd() {
+		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
+		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
+		final Op op = ops.op(MathOps.Add.class, a, a, b);
+		assertSame(AddConstantToNumericType.class, op.getClass());
 
-	@Parameter
-	private double value;
-
-	@Override
-	public void run() {
-		final double[] data = image.update(null).getCurrentStorageArray();
-		opService.run(Chunker.class, new Chunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize, final int numSteps)
-			{
-				if (stepSize != 1) {
-					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
-						data[i] += value;
-					}
-				}
-				else {
-					for (int i = startIndex; i < startIndex + numSteps; i++) {
-						data[i] += value;
-					}
-				}
-			}
-		}, data.length);
+		op.run();
+		assertEquals(203.0, a.getR(), DELTA);
+		assertEquals(163.0, a.getG(), DELTA);
+		assertEquals(173.0, a.getB(), DELTA);
 	}
+
 }

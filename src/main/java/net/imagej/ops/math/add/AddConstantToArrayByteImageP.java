@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add.parallel;
+package net.imagej.ops.math.add;
 
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;

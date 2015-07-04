@@ -28,45 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.planar.PlanarImg;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME,
-	priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractStrictFunction<IterableInterval<T>, RandomAccessibleInterval<T>>
-	implements MathOps.Add
-{
+@Plugin(type = Op.class, name = MathOps.Add.NAME)
+public class AddConstantToPlanarDoubleImage implements MathOps.Add, Contingent {
+
+	@Parameter(type = ItemIO.BOTH)
+	private PlanarImg<DoubleType, DoubleArray> image;
 
 	@Parameter
-	private T value;
+	private double value;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
+	public void run() {
+		long planeCount = 1;
+		for (int d = 2; d < image.numDimensions(); d++) {
+			planeCount *= image.dimension(d);
 		}
-
-		return output;
+		for (int p = 0; p < planeCount; p++) {
+			final double[] plane = image.getPlane(p).getCurrentStorageArray();
+			for (int i = 0; i < plane.length; i++) {
+				plane[i] += value;
+			}
+		}
 	}
+
+	@Override
+	public boolean conforms() {
+		// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
+		// The warning is expected, because the image parameter is assigned via
+		// reflection and hence might not match the declared generic types.
+		return image.firstElement() instanceof DoubleType;
+	}
+
 }

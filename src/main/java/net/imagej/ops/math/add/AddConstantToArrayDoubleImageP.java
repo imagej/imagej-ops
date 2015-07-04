@@ -28,48 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.chunker.Chunk;
+import net.imagej.ops.chunker.Chunker;
+import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.img.planar.PlanarImg;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME)
-public class AddConstantToPlanarDoubleImage implements MathOps.Add, Contingent {
+/**
+ * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
+ * {@link DoubleType}.
+ * 
+ * @author Curtis Rueden
+ */
+@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
+public class AddConstantToArrayDoubleImageP implements MathOps.Add {
+
+	@Parameter
+	private OpService opService;
 
 	@Parameter(type = ItemIO.BOTH)
-	private PlanarImg<DoubleType, DoubleArray> image;
+	private ArrayImg<DoubleType, DoubleArray> image;
 
 	@Parameter
 	private double value;
 
 	@Override
 	public void run() {
-		long planeCount = 1;
-		for (int d = 2; d < image.numDimensions(); d++) {
-			planeCount *= image.dimension(d);
-		}
-		for (int p = 0; p < planeCount; p++) {
-			final double[] plane = image.getPlane(p).getCurrentStorageArray();
-			for (int i = 0; i < plane.length; i++) {
-				plane[i] += value;
+		final double[] data = image.update(null).getCurrentStorageArray();
+		opService.run(Chunker.class, new Chunk() {
+
+			@Override
+			public void execute(final int startIndex, final int stepSize, final int numSteps)
+			{
+				if (stepSize != 1) {
+					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
+						data[i] += value;
+					}
+				}
+				else {
+					for (int i = startIndex; i < startIndex + numSteps; i++) {
+						data[i] += value;
+					}
+				}
 			}
-		}
+		}, data.length);
 	}
-
-	@Override
-	public boolean conforms() {
-		// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
-		// The warning is expected, because the image parameter is assigned via
-		// reflection and hence might not match the declared generic types.
-		return image.firstElement() instanceof DoubleType;
-	}
-
 }

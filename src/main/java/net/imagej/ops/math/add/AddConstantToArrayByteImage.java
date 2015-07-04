@@ -28,56 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME)
-public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>>
-	implements MathOps.Add, Contingent
-{
+@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY)
+public class AddConstantToArrayByteImage implements MathOps.Add {
 
 	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<T> a;
+	private ArrayImg<ByteType, ByteArray> image;
 
 	@Parameter
-	private RandomAccessibleInterval<T> b;
+	private byte value;
 
 	@Override
 	public void run() {
-		final long[] pos = new long[a.numDimensions()];
-		final Cursor<T> cursor = a.cursor();
-		final RandomAccess<T> access = b.randomAccess();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.localize(pos);
-			access.setPosition(pos);
-			cursor.get().add(access.get());
+		final byte[] data = image.update(null).getCurrentStorageArray();
+		for (int i = 0; i < data.length; i++) {
+			data[i] += value;
 		}
 	}
-
-	@Override
-	public boolean conforms() {
-		int n = a.numDimensions();
-		if (n != b.numDimensions()) return false;
-		long[] dimsA = new long[n], dimsB = new long[n];
-		a.dimensions(dimsA);
-		b.dimensions(dimsB);
-		for (int i = 0; i < n; i++) {
-			if (dimsA[i] != dimsB[i]) return false;
-		}
-		return true;
-	}
-
 }

@@ -107,8 +107,8 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(ops = {
-		net.imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP.class,
-		net.imagej.ops.arithmetic.add.AddConstantToArrayByteImage.class })
+		net.imagej.ops.math.add.AddConstantToArrayByteImageP.class,
+		net.imagej.ops.math.add.AddConstantToArrayByteImage.class })
 	public ArrayImg<ByteType, ByteArray> add(
 		final ArrayImg<ByteType, ByteArray> image, final byte value)
 	{
@@ -120,8 +120,8 @@ public class MathNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		ops = {
-			net.imagej.ops.arithmetic.add.parallel.AddConstantToArrayDoubleImageP.class,
-			net.imagej.ops.arithmetic.add.AddConstantToArrayDoubleImage.class })
+			net.imagej.ops.math.add.AddConstantToArrayDoubleImageP.class,
+			net.imagej.ops.math.add.AddConstantToArrayDoubleImage.class })
 	public
 		ArrayImg<DoubleType, DoubleArray> add(
 			final ArrayImg<DoubleType, DoubleArray> image, final double value)
@@ -191,7 +191,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.arithmetic.add.AddRandomAccessibleIntervalToIterableInterval.class)
+		op = net.imagej.ops.math.add.AddRandomAccessibleIntervalToIterableInterval.class)
 	public
 		<T extends NumericType<T>> IterableInterval<T> add(
 			final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
@@ -200,60 +200,60 @@ public class MathNamespace extends AbstractNamespace {
 		final IterableInterval<T> result =
 			(IterableInterval<T>) ops()
 				.run(
-					net.imagej.ops.arithmetic.add.AddRandomAccessibleIntervalToIterableInterval.class,
+					net.imagej.ops.math.add.AddRandomAccessibleIntervalToIterableInterval.class,
 					a, b);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.arithmetic.add.AddConstantToPlanarDoubleImage.class)
+		op = net.imagej.ops.math.add.AddConstantToPlanarDoubleImage.class)
 	public PlanarImg<DoubleType, DoubleArray> add(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
 	{
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.arithmetic.add.AddConstantToPlanarDoubleImage.class,
+				net.imagej.ops.math.add.AddConstantToPlanarDoubleImage.class,
 				image, value);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.arithmetic.add.AddConstantToImageInPlace.class)
+	@OpMethod(op = net.imagej.ops.math.add.AddConstantToImageInPlace.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> add(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result =
 			(IterableRealInterval<T>) ops().run(
-				net.imagej.ops.arithmetic.add.AddConstantToImageInPlace.class, image,
+				net.imagej.ops.math.add.AddConstantToImageInPlace.class, image,
 				value);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.arithmetic.add.AddConstantToNumericType.class)
+	@OpMethod(op = net.imagej.ops.math.add.AddConstantToNumericType.class)
 	public <T extends NumericType<T>> T add(final T in, final T value) {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops()
-				.run(net.imagej.ops.arithmetic.add.AddConstantToNumericType.class, in,
+				.run(net.imagej.ops.math.add.AddConstantToNumericType.class, in,
 					value);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.arithmetic.add.AddConstantToNumericType.class)
+	@OpMethod(op = net.imagej.ops.math.add.AddConstantToNumericType.class)
 	public <T extends NumericType<T>> T
 		add(final T out, final T in, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.arithmetic.add.AddConstantToNumericType.class, out, in,
+				net.imagej.ops.math.add.AddConstantToNumericType.class, out, in,
 				value);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.arithmetic.add.AddConstantToImageFunctional.class)
+		op = net.imagej.ops.math.add.AddConstantToImageFunctional.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> add(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -261,7 +261,7 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.arithmetic.add.AddConstantToImageFunctional.class, out,
+				net.imagej.ops.math.add.AddConstantToImageFunctional.class, out,
 				in, value);
 		return result;
 	}

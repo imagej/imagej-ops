@@ -28,33 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY)
-public class AddConstantToArrayByteImage implements MathOps.Add {
+@Plugin(type = Op.class, name = MathOps.Add.NAME)
+public class AddConstantToImageInPlace<T extends NumericType<T>> implements
+	MathOps.Add
+{
 
 	@Parameter(type = ItemIO.BOTH)
-	private ArrayImg<ByteType, ByteArray> image;
+	private IterableRealInterval<T> image;
 
 	@Parameter
-	private byte value;
+	private T value;
 
 	@Override
 	public void run() {
-		final byte[] data = image.update(null).getCurrentStorageArray();
-		for (int i = 0; i < data.length; i++) {
-			data[i] += value;
+		for (final T t : image) {
+			t.add(value);
 		}
 	}
+
 }

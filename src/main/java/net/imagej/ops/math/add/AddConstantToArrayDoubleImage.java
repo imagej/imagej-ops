@@ -28,38 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.LOW_PRIORITY)
-public class AddConstantToNumericType<T extends NumericType<T>> extends
-	AbstractOutputFunction<T, T> implements MathOps.Add
-{
+@Plugin(type = Op.class, name = MathOps.Add.NAME,
+	priority = Priority.HIGH_PRIORITY + 1)
+public class AddConstantToArrayDoubleImage implements MathOps.Add {
+
+	@Parameter(type = ItemIO.BOTH)
+	private ArrayImg<DoubleType, DoubleArray> image;
 
 	@Parameter
-	private T value;
-
-	// -- OutputFunction methods --
+	private double value;
 
 	@Override
-	public T createOutput(final T input) {
-		return input.createVariable();
+	public void run() {
+		final double[] data = image.update(null).getCurrentStorageArray();
+		for (int i = 0; i < data.length; i++) {
+			data[i] += value;
+		}
 	}
-
-	// -- Internal methods --
-
-	@Override
-	protected void safeCompute(final T input, final T output) {
-		output.set(input);
-		output.add(value);
-	}
-
 }

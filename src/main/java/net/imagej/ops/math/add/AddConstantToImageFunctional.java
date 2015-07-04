@@ -28,43 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.ARGBDoubleType;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.NumericType;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * Tests {@link AddConstantToNumericType}.
- * 
- * @author Johannes Schindelin
- * @author Curtis Rueden
- */
-public class AddConstantToNumericTypeTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = MathOps.Add.NAME,
+	priority = Priority.VERY_LOW_PRIORITY)
+public class AddConstantToImageFunctional<T extends NumericType<T>> extends
+	AbstractStrictFunction<IterableInterval<T>, RandomAccessibleInterval<T>>
+	implements MathOps.Add
+{
 
-	private final double DELTA = 0.00005;
+	@Parameter
+	private T value;
 
-	/**
-	 * Verifies that {@link OpService#add(Object...)} finds the
-	 * {@link AddConstantToNumericType}.
-	 */
-	@Test
-	public void testAdd() {
-		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
-		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
-		final Op op = ops.op(MathOps.Add.class, a, a, b);
-		assertSame(AddConstantToNumericType.class, op.getClass());
+	@Override
+	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
+		final RandomAccessibleInterval<T> output)
+	{
+		final Cursor<T> c = input.localizingCursor();
+		final RandomAccess<T> ra = output.randomAccess();
+		while (c.hasNext()) {
+			final T in = c.next();
+			ra.setPosition(c);
+			final T out = ra.get();
+			out.set(in);
+			out.add(value);
+		}
 
-		op.run();
-		assertEquals(203.0, a.getR(), DELTA);
-		assertEquals(163.0, a.getG(), DELTA);
-		assertEquals(173.0, a.getB(), DELTA);
+		return output;
 	}
-
 }
