@@ -97,12 +97,8 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@Override
 	public boolean conforms() {
-		if (getOutput() != null) {
-			return Intervals.equalDimensions(getInput(), getOutput());
-		}
-		else {
-			return true;
-		}
+		if (getOutput() == null) return true;
+		return Intervals.equalDimensions(getInput(), getOutput());
 	}
 
 	/*
