@@ -70,16 +70,17 @@ public class ReadmeExampleTest {
 		final int end = contents.indexOf("```\n", begin);
 		assertTrue(end > 0);
 		final String snippet = contents.substring(begin, end);
-System.err.println(snippet);
+		assertTrue(snippet.startsWith("# @ImageJ ij"));
 
 		final Context context = new Context();
 		final ScriptService script = context.getService(ScriptService.class);
 
 		// create mock ImageJ gateway
 		script.addAlias("ImageJ", Mock.class);
-		final ScriptModule result = script.run("op-example.py", snippet, true).get();
-		assertNotNull(result);
-		result.run();
+		final ScriptModule module =
+			script.run("op-example.py", snippet, true).get();
+		assertNotNull(module);
+		module.run();
 
 		final Mock ij = context.getService(Mock.class);
 		assertEquals(3, ij.images.size());
