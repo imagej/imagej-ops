@@ -71,6 +71,21 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.conditions.BooleanCondition.class)
+	public Boolean bool(final Boolean in) {
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.BooleanCondition.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.conditions.BooleanCondition.class)
+	public Boolean bool(final Boolean out, final Boolean in) {
+		final Boolean result =
+			(Boolean) ops().run(net.imagej.ops.conditions.BooleanCondition.class,
+				out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class)
 	public boolean equal(final boolean a, final boolean b) {
 		final boolean result =
