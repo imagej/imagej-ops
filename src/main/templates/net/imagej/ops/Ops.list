@@ -149,6 +149,7 @@ authors = ["Curtis Rueden"]
 ops = ```
 [
 	[name: "huang",         iface: "Huang"],
+	[name: "ij1",           iface: "IJ1"],
 	[name: "intermodes",    iface: "Intermodes"],
 	[name: "isoData",       iface: "IsoData"],
 	[name: "li",            iface: "Li"],
