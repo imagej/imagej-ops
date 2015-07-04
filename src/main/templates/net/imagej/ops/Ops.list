@@ -162,6 +162,16 @@ ops = ```
 ]
 ```
 
+[StatsOps.java]
+className = "StatsOps"
+namespace = "stats"
+authors = ["Curtis Rueden"]
+ops = ```
+[
+	[name: "moment1AboutMean", iface: "Moment1AboutMean"]
+]
+```
+
 [ThresholdOps.java]
 className = "ThresholdOps"
 namespace = "threshold"
