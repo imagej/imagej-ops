@@ -37,16 +37,13 @@ import net.imagej.ImageJService;
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
-import org.scijava.plugin.SingletonService;
 
 /**
  * Interface for services that find {@link Op}s which match an {@link OpRef}.
  * 
  * @author Curtis Rueden
  */
-public interface OpMatchingService extends SingletonService<Optimizer>,
-	ImageJService
-{
+public interface OpMatchingService extends ImageJService {
 
 	/** Gets the list of all available {@link Op} implementations. */
 	public List<CommandInfo> getOps();
@@ -96,12 +93,6 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 
 	/** Checks the number of args, padding optional args with null as needed. */
 	<OP extends Op> Object[] padArgs(OpCandidate<OP> candidate);
-
-	/**
-	 * Optimizes the performance of the given {@link Module} using all available
-	 * {@link Optimizer}s.
-	 */
-	Module optimize(Module module);
 
 	/** Assigns arguments into the given module's inputs. */
 	Module assignInputs(Module module, Object... args);
