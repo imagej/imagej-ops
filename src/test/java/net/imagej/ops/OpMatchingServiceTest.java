@@ -55,7 +55,8 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	public void testFindModule() {
 		final DoubleType value = new DoubleType(123.456);
 
-		final Module moduleByName = matcher.findModule(new OpRef<Op>("nan", value));
+		final Module moduleByName =
+			matcher.findModule(new OpRef<Op>("test.nan", value));
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -132,7 +133,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	// -- Helper classes --
 
 	/** A test {@link Op}. */
-	@Plugin(type = Op.class, name = "nan")
+	@Plugin(type = Op.class, name = "test.nan")
 	public static class NaNOp extends AbstractInplaceFunction<DoubleType> {
 
 		@Override
