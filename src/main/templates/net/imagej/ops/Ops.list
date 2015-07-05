@@ -4,7 +4,6 @@ authors = ["Curtis Rueden"]
 ops = ```
 [
 	[name: "ascii",       iface: "ASCII"],
-	[name: "chunker",     iface: "Chunker"],
 	[name: "convert",     iface: "Convert"],
 	[name: "convolve",    iface: "Convolve"],
 	[name: "correlate",   iface: "Correlate"],
@@ -185,6 +184,16 @@ authors = ["Curtis Rueden"]
 ops = ```
 [
 	[name: "moment1AboutMean", iface: "Moment1AboutMean"]
+]
+```
+
+[ThreadOps.java]
+className = "ThreadOps"
+namespace = "thread"
+authors = ["Curtis Rueden"]
+ops = ```
+[
+	[name: "chunker", iface: "Chunker"]
 ]
 ```
 

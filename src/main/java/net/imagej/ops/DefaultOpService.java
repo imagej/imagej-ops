@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImgPlus;
-import net.imagej.ops.chunker.Chunk;
-import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
@@ -52,6 +50,7 @@ import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
+import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -112,6 +111,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private LogicNamespace logic;
 	private MathNamespace math;
 	private StatsNamespace stats;
+	private ThreadNamespace thread;
 	private ThresholdNamespace threshold;
 
 	private boolean namespacesReady;
@@ -222,16 +222,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final String result =
 			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min, max);
 		return result;
-	}
-
-	@Override
-	public Object chunker(final Object... args) {
-		return run(Ops.Chunker.NAME, args);
-	}
-
-	@Override
-	public void chunker(final Chunk chunkable, final long numberOfElements) {
-		run(Chunker.class, chunkable, numberOfElements);
 	}
 
 	@Override
@@ -1840,6 +1830,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public ThreadNamespace thread() {
+		if (!namespacesReady) initNamespaces();
+		return thread;
+	}
+
+	@Override
 	public ThresholdNamespace threshold() {
 		if (!namespacesReady) initNamespaces();
 		return threshold;
@@ -1884,6 +1880,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(math);
 		stats = new StatsNamespace();
 		getContext().inject(stats);
+		thread = new ThreadNamespace();
+		getContext().inject(thread);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
 		namespacesReady = true;

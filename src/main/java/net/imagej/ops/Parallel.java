@@ -41,7 +41,7 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  * @see Threadable
- * @see net.imagej.ops.chunker
+ * @see net.imagej.ops.thread.chunker
  */
 public interface Parallel {
 	// NB: Marker interface.

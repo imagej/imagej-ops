@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.chunker;
+package net.imagej.ops.thread.chunker;
 
 import net.imglib2.Cursor;
 

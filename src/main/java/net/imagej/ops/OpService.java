@@ -37,7 +37,6 @@ import java.util.Map;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
-import net.imagej.ops.chunker.Chunk;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
@@ -49,6 +48,7 @@ import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
+import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -212,15 +212,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
 	<T extends RealType<T>> String ascii(IterableInterval<T> image,
 		RealType<T> min, RealType<T> max);
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(op = Ops.Chunker.class)
-	Object chunker(Object... args);
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.chunker.DefaultChunker.class,
-		net.imagej.ops.chunker.ChunkerInterleaved.class })
-	void chunker(Chunk chunkable, long numberOfElements);
 
 	/** Executes the "convert" operation on the given arguments. */
 	@OpMethod(op = Ops.Convert.class)
@@ -1060,6 +1051,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
+
+	/** Gateway into ops of the "thread" namespace. */
+	ThreadNamespace thread();
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();

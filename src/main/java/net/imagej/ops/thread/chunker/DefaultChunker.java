@@ -28,13 +28,13 @@
  * #L%
  */
 
-package net.imagej.ops.chunker;
+package net.imagej.ops.thread.chunker;
 
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.ThreadOps;
 
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz
  */
-@Plugin(type = Op.class, name = Ops.Chunker.NAME)
+@Plugin(type = Op.class, name = ThreadOps.Chunker.NAME)
 public class DefaultChunker extends AbstractChunker {
 
 	private final int STEP_SIZE = 1;

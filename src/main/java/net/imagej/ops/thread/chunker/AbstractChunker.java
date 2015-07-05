@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.chunker;
+package net.imagej.ops.thread.chunker;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;

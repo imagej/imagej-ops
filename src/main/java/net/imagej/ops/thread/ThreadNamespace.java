@@ -27,49 +27,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.threading;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Parallel;
+package net.imagej.ops.thread;
+
+import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.OpMethod;
 import net.imagej.ops.thread.chunker.Chunk;
-import net.imagej.ops.thread.chunker.DefaultChunker;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * The thread namespace contains operations related to multithreading.
+ *
+ * @author Curtis Rueden
+ */
+public class ThreadNamespace extends AbstractNamespace {
 
-@Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkerArray<A> extends AbstractStrictFunction<A[], A[]>
-	implements Parallel
-{
+	// -- Thread namespace ops --
 
-	@Parameter
-	private OpService opService;
-	
-	@Override
-	public A[] compute(final A[] input,
-			final A[] output) {
-		
-		opService.run(DefaultChunker.class, new Chunk() {
-
-			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				int i = startIndex;
-				
-				int ctr = 0;
-				while (ctr < numSteps) {
-					output[i] = input[i];
-				    i += stepSize;
-					ctr++;
-				}
-			}
-		}, input.length);
-	
-		return output;
-		
+	/** Executes the "chunker" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.ThreadOps.Chunker.class)
+	public Object chunker(final Object... args) {
+		return ops().run(net.imagej.ops.ThreadOps.Chunker.class, args);
 	}
+
+	/** Executes the "chunker" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.thread.chunker.DefaultChunker.class,
+		net.imagej.ops.thread.chunker.ChunkerInterleaved.class })
+	public void chunker(final Chunk chunkable, final long numberOfElements) {
+		ops().run(net.imagej.ops.thread.chunker.DefaultChunker.class, chunkable,
+			numberOfElements);
+	}
+
+	// -- Named methods --
+
+	@Override
+	public String getName() {
+		return "thread";
+	}
+
 }
