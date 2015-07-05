@@ -28,68 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.nativeType;
 
-import net.imagej.ImgPlus;
-import net.imagej.ImgPlusMetadata;
-import net.imagej.ops.Contingent;
+import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateImgPlus;
-import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link CreateImgPlus} interface.
+ * Default implementation of the "create.nativeType" op.
  *
- * @author Christian Dietz, University of Konstanz
- * @param <T>
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class)
-public class DefaultCreateImgPlus<T> implements CreateImgPlus,
-	OutputOp<ImgPlus<T>>, Contingent
+@Plugin(type = Op.class, name = CreateOps.NativeType.NAME)
+public class DefaultCreateNativeType implements
+	CreateOps.NativeType, OutputOp<DoubleType>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> output;
-
-	@Parameter
-	private Img<T> img;
-
-	@Parameter(required = false)
-	private ImgPlusMetadata metadata;
+	private DoubleType output;
 
 	@Override
 	public void run() {
-
-		if (metadata != null) {
-			output = new ImgPlus<T>(img, metadata);
-		}
-		else {
-			output = new ImgPlus<T>(img);
-		}
-
+		output = new DoubleType();
 	}
 
 	@Override
-	public boolean conforms() {
-		return metadata == null || metadata.numDimensions() == img.numDimensions();
-	}
-
-	@Override
-	public ImgPlus<T> getOutput() {
+	public DoubleType getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final ImgPlus<T> output) {
+	public void setOutput(final DoubleType output) {
 		this.output = output;
 	}
+
 }

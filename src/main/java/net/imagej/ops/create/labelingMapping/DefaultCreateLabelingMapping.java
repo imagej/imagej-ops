@@ -2,8 +2,8 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 Board of Regents of the University of
- * Wisconsin-Madison and University of Konstanz.
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,37 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.labelingMapping;
 
-import net.imagej.ops.Ops;
+import net.imagej.ops.CreateOps;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.OutputOp;
+import net.imglib2.roi.labeling.LabelingMapping;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Static utility class containing built-in ops interfaces.
- * <p>
- * These interfaces are intended to mark all ops using a particular name,
- * regardless of the area of functionality. For example, all ops called "create"
- * would be marked by implementing the {@code Ops.Create} interface, and
- * annotating them with:
- * </p>
-	 * <pre>
-	 * @Plugin(type = Ops.Create.class, name = Ops.Create.NAME)
-	 * </pre>
+ * Create a LabelingMapping which can store at least maxNumSets different Sets
  *
- * @author Christian Dietz (University of Konstanz)
+ * @author Christian Dietz, University of Konstanz
+ * @param <L> label type
  */
-public final class CreateOps {
+@Plugin(type = Op.class, name = CreateOps.LabelingMapping.NAME)
+public class DefaultCreateLabelingMapping<L> implements
+	CreateOps.LabelingMapping, OutputOp<LabelingMapping<L>>
+{
 
-	private CreateOps() {
-		// NB: Prevent instantiation of utility class.
-	}
-#foreach ($op in $ops)
+	@Parameter
+	private OpService ops;
 
-	/**
-	 * Interface marking implementations of {@link Ops.Create}
-	 */
-	public interface ${op.iface} extends ${op.extends} {
-		// NB: Marker interface
+	@Parameter(type = ItemIO.OUTPUT)
+	private LabelingMapping<L> output;
+
+	@Parameter(required = false)
+	private int maxNumSets;
+
+	@Override
+	public void run() {
+		output = new LabelingMapping<L>(ops.create().integerType(maxNumSets));
 	}
-#end
+
+	@Override
+	public LabelingMapping<L> getOutput() {
+		return output;
+	}
+
+	@Override
+	public void setOutput(final LabelingMapping<L> output) {
+		this.output = output;
+	}
 
 }

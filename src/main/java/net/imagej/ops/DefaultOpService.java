@@ -42,7 +42,7 @@ import net.imagej.ImgPlus;
 import net.imagej.ops.chunker.Chunk;
 import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.convert.ConvertPix;
-import net.imagej.ops.create.CreateOps;
+import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -106,6 +106,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private LogService log;
 
+	private CreateNamespace create;
 	private DeconvolveNamespace deconvolve;
 	private LabelingNamespace labeling;
 	private LogicNamespace logic;
@@ -611,11 +612,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 				kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType,
 				fftFactory);
 		return result;
-	}
-
-	@Override
-	public Object create(final Object... args) {
-		return run(Ops.Create.class, args);
 	}
 
 	@Override
@@ -1920,29 +1916,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return result;
 	}
 
-	// -- CreateOps short-cuts --
-
-	@Override
-	public Object createImg(final Object... args) {
-		return run(CreateOps.CreateImg.class, args);
-	}
-
-	@Override
-	public Object createImgLabeling(final Object... args) {
-		return run(CreateOps.CreateImgLabeling.class, args);
-	}
-
-	@Override
-	public Object createImgFactory(final Object... args) {
-		return run(CreateOps.CreateImgFactory.class, args);
-	}
-
-	@Override
-	public Object createType() {
-		return run(CreateOps.CreateType.class);
-	}
-
 	// -- Operation shortcuts - other namespaces --
+
+	@Override
+	public CreateNamespace create() {
+		if (!namespacesReady) initNamespaces();
+		return create;
+	}
 
 	@Override
 	public DeconvolveNamespace deconvolve() {
@@ -2007,6 +1987,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	private synchronized void initNamespaces() {
 		if (namespacesReady) return;
+		create = new CreateNamespace();
+		getContext().inject(create);
 		deconvolve = new DeconvolveNamespace();
 		getContext().inject(deconvolve);
 		labeling = new LabelingNamespace();

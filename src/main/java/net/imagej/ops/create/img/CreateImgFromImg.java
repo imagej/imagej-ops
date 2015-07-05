@@ -28,75 +28,59 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.img;
 
+import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateImg;
-import net.imagej.ops.create.CreateOps.CreateImgLabeling;
-import net.imagej.ops.create.CreateOps.CreateIntegerType;
-import net.imglib2.Dimensions;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.roi.labeling.ImgLabeling;
-import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link CreateLabeling} interface.
+ * Create an {@link Img} from another {@link Img} implementation using its
+ * {@link Type} and {@link ImgFactory}.
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz, University of Konstanz.
  * @param <T>
  */
-@Plugin(type = Op.class)
-public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
-	CreateImgLabeling, OutputOp<ImgLabeling<L, T>>
+@Plugin(type = Op.class, name = CreateOps.Img.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class CreateImgFromImg<T extends NativeType<T>> implements
+	CreateOps.Img, OutputOp<Img<T>>
 {
 
 	@Parameter
 	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private ImgLabeling<L, T> output;
+	private Img<T> output;
 
 	@Parameter
-	private Dimensions dims;
-
-	@Parameter(required = false)
-	private T outType;
-
-	@Parameter(required = false)
-	private ImgFactory<T> fac;
-
-	@Parameter(required = false)
-	private int maxNumLabelSets;
+	private Img<T> input;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-
-		if (outType == null) {
-			outType = (T) ops.run(CreateIntegerType.class, maxNumLabelSets);
-		}
-
 		output =
-			new ImgLabeling<L, T>((RandomAccessibleInterval<T>) ops.run(
-				CreateImg.class, dims, outType, fac));
+			(Img<T>) ops.run(DefaultCreateImg.class, input, input.firstElement()
+				.createVariable(), input.factory());
 	}
 
 	@Override
-	public ImgLabeling<L, T> getOutput() {
+	public Img<T> getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final ImgLabeling<L, T> output) {
+	public void setOutput(final Img<T> output) {
 		this.output = output;
 	}
 

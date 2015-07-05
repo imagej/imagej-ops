@@ -28,84 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.imgPlus;
 
-import net.imagej.ops.Ops.Create;
+import net.imagej.ImgPlus;
+import net.imagej.ImgPlusMetadata;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateIntegerType;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.IntegerType;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.integer.ShortType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
-import net.imglib2.type.numeric.integer.UnsignedIntType;
-import net.imglib2.type.numeric.integer.UnsignedShortType;
+import net.imagej.ops.CreateOps;
+import net.imglib2.img.Img;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Create an IntegerType with at least maxValue maximum
+ * Default implementation of the "create.imgPlus" op.
  *
  * @author Christian Dietz, University of Konstanz
- * @param <I> any IntegerType
+ * @param <T>
  */
-@SuppressWarnings("rawtypes")
-@Plugin(type = Create.class)
-public class DefaultCreateIntegerType implements CreateIntegerType,
-	OutputOp<IntegerType>
+@Plugin(type = Op.class, name = CreateOps.ImgPlus.NAME)
+public class DefaultCreateImgPlus<T> implements CreateOps.ImgPlus,
+	OutputOp<ImgPlus<T>>, Contingent
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Parameter(type = ItemIO.OUTPUT)
-	private IntegerType output;
+	private ImgPlus<T> output;
+
+	@Parameter
+	private Img<T> img;
 
 	@Parameter(required = false)
-	private long maxValue;
+	private ImgPlusMetadata metadata;
 
 	@Override
 	public void run() {
-		if (maxValue > 0) {
-			if (maxValue <= 2) {
-				output = new BitType();
-			}
-			else if (maxValue <= Byte.MAX_VALUE + 1) {
-				output = new ByteType();
-			}
-			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
-				output = new UnsignedByteType();
-			}
-			else if (maxValue <= Short.MAX_VALUE + 1) {
-				output = new ShortType();
-			}
-			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
-				output = new UnsignedShortType();
-			}
-			else if (maxValue <= Integer.MAX_VALUE + 1) {
-				output = new IntType();
-			}
-			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
-				output = new UnsignedIntType();
-			}
-			else if (maxValue <= Long.MAX_VALUE) {
-				output = new LongType();
-			}
+
+		if (metadata != null) {
+			output = new ImgPlus<T>(img, metadata);
 		}
 		else {
-			output = new IntType();
+			output = new ImgPlus<T>(img);
 		}
+
 	}
 
 	@Override
-	public IntegerType getOutput() {
+	public boolean conforms() {
+		return metadata == null || metadata.numDimensions() == img.numDimensions();
+	}
+
+	@Override
+	public ImgPlus<T> getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final IntegerType output) {
+	public void setOutput(final ImgPlus<T> output) {
 		this.output = output;
 	}
-
 }

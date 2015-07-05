@@ -39,7 +39,7 @@ import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
 import net.imagej.ops.chunker.Chunk;
 import net.imagej.ops.convert.ConvertPix;
-import net.imagej.ops.create.CreateOps;
+import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -442,10 +442,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 			OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
 			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType,
 			ImgFactory<C> fftFactory);
-
-	/** Executes the "create" operation on the given arguments. */
-	@OpMethod(op = Ops.Create.class)
-	Object create(Object... args);
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
@@ -1115,25 +1111,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in,
 		Moment2AboutMean<T> moment2);
 
-	// -- CreateOps short-cuts --
-
-	/** Executes the "createImg" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImg.class)
-	Object createImg(Object... args);
-
-	/** Executes the "createImgLabeling" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImgLabeling.class)
-	Object createImgLabeling(Object... args);
-
-	/** Executes the "createImgFactory" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImgFactory.class)
-	Object createImgFactory(Object... args);
-
-	/** Executes the "createType" operation. */
-	@OpMethod(op = CreateOps.CreateType.class)
-	Object createType();
-
 	// -- Operation shortcuts - other namespaces --
+
+	/** Gateway into ops of the "create" namespace. */
+	CreateNamespace create();
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();

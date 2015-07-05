@@ -33,8 +33,6 @@ package net.imagej.ops.create;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.CreateOps.CreateImgPlus;
-import net.imglib2.type.NativeType;
 
 import org.junit.Test;
 
@@ -45,11 +43,11 @@ import org.junit.Test;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 
-public class CreateImgPlusTest<T extends NativeType<T>> extends AbstractOpTest {
+public class CreateImgPlusTest extends AbstractOpTest {
 
 	@Test
 	public void createImgPlusTest() {
-		assertEquals(ops.run(CreateImgPlus.class,
-			ops.createImg(new long[] { 10, 9, 8 })).getClass(), ImgPlus.class);
+		assertEquals(ops.create().imgPlus(
+			ops.create().img(new long[] { 10, 9, 8 })).getClass(), ImgPlus.class);
 	}
 }

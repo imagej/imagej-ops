@@ -28,44 +28,83 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.integerType;
 
+import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateNativeType;
-import net.imagej.ops.create.CreateOps.CreateType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.logic.BitType;
+import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedIntType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link CreateType} interface.
+ * Create an IntegerType with at least maxValue maximum
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz
+ * @param <I> any IntegerType
  */
-@Plugin(type = Op.class)
-public class DefaultCreateNativeType implements
-	CreateNativeType, OutputOp<DoubleType>
+@SuppressWarnings("rawtypes")
+@Plugin(type = Op.class, name = CreateOps.IntegerType.NAME)
+public class DefaultCreateIntegerType implements CreateOps.IntegerType,
+	OutputOp<IntegerType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType output;
+	private IntegerType output;
+
+	@Parameter(required = false)
+	private long maxValue;
 
 	@Override
 	public void run() {
-		output = new DoubleType();
+		if (maxValue > 0) {
+			if (maxValue <= 2) {
+				output = new BitType();
+			}
+			else if (maxValue <= Byte.MAX_VALUE + 1) {
+				output = new ByteType();
+			}
+			else if (maxValue <= (Byte.MAX_VALUE + 1) * 2) {
+				output = new UnsignedByteType();
+			}
+			else if (maxValue <= Short.MAX_VALUE + 1) {
+				output = new ShortType();
+			}
+			else if (maxValue <= (Short.MAX_VALUE + 1) * 2) {
+				output = new UnsignedShortType();
+			}
+			else if (maxValue <= Integer.MAX_VALUE + 1) {
+				output = new IntType();
+			}
+			else if (maxValue <= (Integer.MAX_VALUE + 1l) * 2l) {
+				output = new UnsignedIntType();
+			}
+			else if (maxValue <= Long.MAX_VALUE) {
+				output = new LongType();
+			}
+		}
+		else {
+			output = new IntType();
+		}
 	}
 
 	@Override
-	public DoubleType getOutput() {
+	public IntegerType getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final DoubleType output) {
+	public void setOutput(final IntegerType output) {
 		this.output = output;
 	}
 

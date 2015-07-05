@@ -36,13 +36,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.CreateOps.CreateImg;
+import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.img.planar.PlanarImgs;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
@@ -63,7 +62,7 @@ import org.junit.Test;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 
-public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
+public class CreateImgTest extends AbstractOpTest {
 
 	private static final int TEST_SIZE = 100;
 
@@ -83,7 +82,7 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 			}
 
 			// create img
-			final Img<?> img = (Img<?>) ops.run(CreateImg.class, dim);
+			final Img<?> img = (Img<?>) ops.create().img(dim);
 
 			assertArrayEquals("Image Dimensions:", dim, Intervals
 				.dimensionsAsLongArray(img));
@@ -92,10 +91,10 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 
 	@Test
 	public void testImgFromImg() {
-		long[] dim = new long[] { 1 };
 		// create img
-		final Img<?> img = (Img<?>) ops.run(CreateImg.class, dim, new ByteType());
-		final Img<?> newImg = (Img<?>) ops.run(CreateImg.class, img);
+		final Img<ByteType> img =
+			ops.create().img(new FinalDimensions(1), new ByteType());
+		final Img<ByteType> newImg = ops.create().img(img);
 
 		// should both be ByteType. New Img shouldn't be DoubleType (default)
 		assertEquals(img.firstElement().getClass(), newImg.firstElement()
@@ -107,12 +106,12 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 
 		final long[] dim = new long[] { 10, 10, 10 };
 
-		assertEquals("Image Factory: ", ArrayImgFactory.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, null, new ArrayImgFactory<DoubleType>())).factory()
+		assertEquals("Image Factory: ", ArrayImgFactory.class, ((Img<?>) ops
+			.create().img(dim, null, new ArrayImgFactory<DoubleType>())).factory()
 			.getClass());
 
-		assertEquals("Image Factory: ", CellImgFactory.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, null, new CellImgFactory<DoubleType>())).factory()
+		assertEquals("Image Factory: ", CellImgFactory.class, ((Img<?>) ops
+			.create().img(dim, null, new CellImgFactory<DoubleType>())).factory()
 			.getClass());
 
 	}
@@ -122,24 +121,23 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 
 		final long[] dim = new long[] { 10, 10, 10 };
 
-		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new BitType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(
+			dim, new BitType(), null)).firstElement().getClass());
 
-		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new ByteType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.create().img(
+			dim, new ByteType(), null)).firstElement().getClass());
 
-		assertEquals("Image Type: ", UnsignedByteType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new UnsignedByteType(), null)).firstElement()
-			.getClass());
+		assertEquals("Image Type: ", UnsignedByteType.class, ((Img<?>) ops.create()
+			.img(dim, new UnsignedByteType(), null)).firstElement().getClass());
 
-		assertEquals("Image Type: ", IntType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new IntType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", IntType.class, ((Img<?>) ops.create().img(dim,
+			new IntType(), null)).firstElement().getClass());
 
-		assertEquals("Image Type: ", FloatType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new FloatType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", FloatType.class, ((Img<?>) ops.create().img(
+			dim, new FloatType(), null)).firstElement().getClass());
 
-		assertEquals("Image Type: ", DoubleType.class, ((Img<?>) ops.run(
-			CreateImg.class, dim, new DoubleType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", DoubleType.class, ((Img<?>) ops.create().img(
+			dim, new DoubleType(), null)).firstElement().getClass());
 	}
 
 	@Test
@@ -147,8 +145,7 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
 		final Img<?> res =
-			((Img<?>) ops.run(CreateImg.class, input, input.firstElement()
-				.createVariable()));
+			ops.create().img(input, input.firstElement().createVariable());
 
 		assertEquals("Image Type: ", ByteType.class, res.firstElement().getClass());
 		assertArrayEquals("Image Dimensions: ", Intervals
@@ -161,8 +158,7 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 	public void testCreateFromImgDifferentType() {
 
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
-		final Img<?> res =
-			((Img<?>) ops.run(CreateImg.class, input, new ShortType()));
+		final Img<?> res = ops.create().img(input, new ShortType());
 
 		assertEquals("Image Type: ", ShortType.class, res.firstElement().getClass());
 		assertArrayEquals("Image Dimensions: ", Intervals
@@ -178,8 +174,7 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 			Views.interval(PlanarImgs.bytes(10, 10, 10), new FinalInterval(
 				new long[] { 10, 10, 1 }));
 
-		final Img<?> res =
-			((Img<?>) ops.run(CreateImg.class, input, new ShortType()));
+		final Img<?> res = ops.create().img(input, new ShortType());
 
 		assertEquals("Image Type: ", ShortType.class, res.firstElement().getClass());
 

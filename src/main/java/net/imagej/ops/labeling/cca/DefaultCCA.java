@@ -85,12 +85,11 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 			labelGenerator, se, threads.getExecutorService());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ImgLabeling<L, I>
 		createOutput(final RandomAccessibleInterval<T> input)
 	{
-		return (ImgLabeling<L, I>) ops.createImgLabeling(input);
+		return ops.create().imgLabeling(input);
 	}
 
 	@Override

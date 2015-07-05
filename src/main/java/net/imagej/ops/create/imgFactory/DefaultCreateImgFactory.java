@@ -28,96 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.imgFactory;
 
+import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateImg;
-import net.imagej.ops.create.CreateOps.CreateImgFactory;
-import net.imagej.ops.create.CreateOps.CreateNativeImg;
-import net.imagej.ops.create.CreateOps.CreateNativeType;
 import net.imglib2.Dimensions;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.NativeType;
+import net.imglib2.util.Intervals;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link CreateImg} interface.
+ * Default implementation of the "create.imgFactory" op.
  *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
  * @param <T>
  */
-@Plugin(type = Op.class)
-public class DefaultCreateImg<T extends NativeType<T>> implements
-	CreateNativeImg, OutputOp<Img<T>>
+@Plugin(type = Op.class, name = CreateOps.ImgFactory.NAME)
+public class DefaultCreateImgFactory<T extends NativeType<T>> implements
+	CreateOps.ImgFactory, OutputOp<ImgFactory<T>>
 {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private ImgFactory<T> output;
 
 	@Parameter
 	private OpService ops;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
-
-	@Parameter
+	@Parameter(required = false)
 	private Dimensions dims;
 
 	@Parameter(required = false)
 	private T outType;
 
-	@Parameter(required = false)
-	private ImgFactory<T> fac;
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 
-		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
 		if (outType == null) {
-			outType = (T) ops.run(CreateNativeType.class);
+			outType = (T) ops.create().nativeType();
 		}
 
-		if (fac == null) {
-			if ((dims instanceof Img)) {
-
-				final Img<?> inImg = ((Img<?>) dims);
-				if (inImg.firstElement().getClass()
-					.isAssignableFrom(outType.getClass()))
-				{
-					fac = (ImgFactory<T>) inImg.factory();
-				}
-				else {
-					try {
-						fac = inImg.factory().imgFactory(outType);
-					}
-					catch (final IncompatibleTypeException e) {
-						fac =
-							(ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
-					}
-				}
-			}
-			else {
-				fac = (ImgFactory<T>) ops.run(CreateImgFactory.class, dims, outType);
-			}
-		}
-
-		output = fac.create(dims, outType);
+		output =
+			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
+				? new ArrayImgFactory<T>() : new CellImgFactory<T>();
 	}
 
 	@Override
-	public Img<T> getOutput() {
+	public ImgFactory<T> getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final Img<T> output) {
+	public void setOutput(final ImgFactory<T> output) {
 		this.output = output;
 	}
-
 }

@@ -28,14 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.create;
+package net.imagej.ops.create.imgLabeling;
 
+import net.imagej.ops.CreateOps;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Create;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.create.CreateOps.CreateIntegerType;
-import net.imagej.ops.create.CreateOps.CreateLabelingMapping;
-import net.imglib2.roi.labeling.LabelingMapping;
+import net.imglib2.Dimensions;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.ItemIO;
@@ -43,39 +44,54 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Create a LabelingMapping which can store at least maxNumSets different Sets
+ * Default implementation of the "create.imgLabeling" op.
  *
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Tim-Oliver Buchholz, University of Konstanz.
  * @author Christian Dietz, University of Konstanz
- * @param <L> label type
+ * @param <T>
  */
-@Plugin(type = Create.class)
-public class DefaultCreateLabelingMapping<L> implements CreateLabelingMapping,
-	OutputOp<LabelingMapping<L>>
+@Plugin(type = Op.class, name = CreateOps.ImgLabeling.NAME)
+public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
+	CreateOps.ImgLabeling, OutputOp<ImgLabeling<L, T>>
 {
 
 	@Parameter
 	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private LabelingMapping<L> output;
+	private ImgLabeling<L, T> output;
+
+	@Parameter
+	private Dimensions dims;
 
 	@Parameter(required = false)
-	private int maxNumSets;
+	private T outType;
 
+	@Parameter(required = false)
+	private ImgFactory<T> fac;
+
+	@Parameter(required = false)
+	private int maxNumLabelSets;
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		output =
-			new LabelingMapping<L>((IntegerType<?>) ops.run(CreateIntegerType.class,
-				maxNumSets));
+
+		if (outType == null) {
+			outType = (T) ops.create().integerType(maxNumLabelSets);
+		}
+
+		output = new ImgLabeling<L, T>(ops.create().img(dims, outType, fac));
 	}
 
 	@Override
-	public LabelingMapping<L> getOutput() {
+	public ImgLabeling<L, T> getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final LabelingMapping<L> output) {
+	public void setOutput(final ImgLabeling<L, T> output) {
 		this.output = output;
 	}
 
