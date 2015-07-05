@@ -46,9 +46,9 @@ import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 import org.scijava.module.ModuleService;
-import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 
 /**
@@ -57,8 +57,8 @@ import org.scijava.service.Service;
  * @author Curtis Rueden
  */
 @Plugin(type = Service.class)
-public class DefaultOpMatchingService extends
-	AbstractSingletonService<Optimizer> implements OpMatchingService
+public class DefaultOpMatchingService extends AbstractService implements
+	OpMatchingService
 {
 
 	@Parameter
@@ -101,7 +101,7 @@ public class DefaultOpMatchingService extends
 				log.debug("Selected '" + ref.getLabel() + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
-			return optimize(matches.get(0));
+			return matches.get(0);
 		}
 
 		final String analysis = OpUtils.matchInfo(candidates, matches);
@@ -209,49 +209,6 @@ public class DefaultOpMatchingService extends
 			paddedArgs[paddedIndex++] = args[argIndex++];
 		}
 		return paddedArgs;
-	}
-
-	@Override
-	public Module optimize(final Module module) {
-		final ArrayList<Module> optimal = new ArrayList<Module>();
-		final ArrayList<Optimizer> optimizers = new ArrayList<Optimizer>();
-
-		double priority = Double.NaN;
-		for (final Optimizer optimizer : getInstances()) {
-			final double p = optimizer.getPriority();
-			if (p != priority && !optimal.isEmpty()) {
-				// NB: Lower priority was reached; stop looking for any more matches.
-				break;
-			}
-			priority = p;
-			final Module m = optimizer.optimize(module);
-			if (m != null) {
-				optimal.add(m);
-				optimizers.add(optimizer);
-			}
-		}
-
-		if (optimal.size() == 1) return optimal.get(0);
-		if (optimal.isEmpty()) return module;
-
-		// multiple matches
-		final double p = optimal.get(0).getInfo().getPriority();
-		final StringBuilder sb = new StringBuilder();
-		final String label = module.getDelegateObject().getClass().getName();
-		sb.append("Multiple '" + label + "' optimizations of priority " + p + ":\n");
-		for (int i = 0; i < optimizers.size(); i++) {
-			sb.append("\t" + optimizers.get(i).getClass().getName() + " produced:");
-			sb.append("\t\t" + OpUtils.opString(optimal.get(i).getInfo()) + "\n");
-		}
-		log.warn(sb.toString());
-		return module;
-	}
-
-	// -- PTService methods --
-
-	@Override
-	public Class<Optimizer> getPluginType() {
-		return Optimizer.class;
 	}
 
 	// -- Helper methods --

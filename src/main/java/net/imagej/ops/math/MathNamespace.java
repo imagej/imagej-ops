@@ -38,6 +38,7 @@ import net.imagej.ops.OpMethod;
 import net.imglib2.IterableInterval;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -130,13 +131,6 @@ public class MathNamespace extends AbstractNamespace {
 			(ArrayImg<DoubleType, DoubleArray>) ops().run(MathOps.Add.NAME, image,
 				value);
 		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.AddOp.class)
-	public Object add(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.AddOp.class, result, a, b);
-		return result_op;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAdd.class)
@@ -269,6 +263,29 @@ public class MathNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.arithmetic.add.AddConstantToImageFunctional.class, out,
 				in, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	public <T extends NumericType<T>> Img<T> add(final Img<T> in,
+		final IterableInterval<T> ii)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	public <T extends NumericType<T>> Img<T> add(final Img<T> out,
+		final Img<T> in, final IterableInterval<T> ii)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, out, in,
+				ii);
 		return result;
 	}
 
@@ -714,14 +731,6 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.MathOps.Divide.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class)
-	public Object divide(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.DivideOp.class, result, a,
-				b);
-		return result_op;
-	}
-
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerDivide.class)
 	public int divide(final int a, final int b) {
 		final int result =
@@ -1074,14 +1083,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.MathOps.Multiply.class)
 	public Object multiply(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Multiply.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class)
-	public Object multiply(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.MultiplyOp.class, result,
-				a, b);
-		return result_op;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMultiply.class)
@@ -1606,14 +1607,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.MathOps.Subtract.class)
 	public Object subtract(final Object... args) {
 		return ops().run(net.imagej.ops.MathOps.Subtract.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class)
-	public Object subtract(final Object result, final Object a, final Object b) {
-		final Object result_op =
-			ops().run(net.imagej.ops.onthefly.ArithmeticOp.SubtractOp.class, result,
-				a, b);
-		return result_op;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerSubtract.class)

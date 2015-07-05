@@ -38,10 +38,9 @@ import net.imagej.ops.arithmetic.add.AddConstantToImageFunctional;
 import net.imagej.ops.arithmetic.add.AddConstantToImageInPlace;
 import net.imagej.ops.arithmetic.add.AddConstantToNumericType;
 import net.imagej.ops.arithmetic.add.parallel.AddConstantToArrayByteImageP;
-import net.imagej.ops.map.MapParallel;
 import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableToRAIParallel;
-import net.imagej.ops.onthefly.ArithmeticOp;
+import net.imagej.ops.map.MapParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -95,11 +94,6 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	public void inTestDefaultInplaceMapperP() {
 		ops.run(MapParallel.class, in, ops.op(
 			AddConstantInplace.class, NumericType.class, new ByteType((byte) 10)));
-	}
-
-	@Test
-	public void inTestJavaAssist() {
-		ops.run(new ArithmeticOp.AddOp(), in, in, new ByteType((byte) 10));
 	}
 
 	@Test
