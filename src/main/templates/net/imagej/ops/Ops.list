@@ -46,6 +46,24 @@ ops = ```
 ]
 ```
 
+[CreateOps.java]
+className = "CreateOps"
+namespace = "create"
+authors = ["Christian Dietz", "Curtis Rueden"]
+ops = ```
+[
+	[name: "img",             iface: "Img"],
+	[name: "imgLabeling",     iface: "ImgLabeling"],
+	[name: "imgPlus",         iface: "ImgPlus"],
+	[name: "integerType",     iface: "IntegerType"],
+	[name: "labelingMapping", iface: "LabelingMapping"],
+	[name: "type",            iface: "Type"],
+	[name: "imgFactory",      iface: "ImgFactory"],
+	[name: "nativeImg",       iface: "NativeImg"],
+	[name: "nativeType",      iface: "NativeType"]
+]
+```
+
 [DeconvolveOps.java]
 className = "DeconvolveOps"
 namespace = "deconvolve"
