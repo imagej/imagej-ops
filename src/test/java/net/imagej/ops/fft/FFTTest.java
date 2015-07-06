@@ -32,7 +32,7 @@ package net.imagej.ops.fft;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
-import net.imagej.ops.create.DefaultCreateImg;
+import net.imagej.ops.create.img.DefaultCreateImg;
 import net.imagej.ops.fft.size.ComputeFFTSize;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;

@@ -33,8 +33,8 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.chunker.Chunk;
-import net.imagej.ops.chunker.DefaultChunker;
+import net.imagej.ops.thread.chunker.Chunk;
+import net.imagej.ops.thread.chunker.DefaultChunker;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;

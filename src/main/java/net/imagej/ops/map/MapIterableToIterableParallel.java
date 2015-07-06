@@ -36,8 +36,8 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.chunker.Chunker;
-import net.imagej.ops.chunker.CursorBasedChunk;
+import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 

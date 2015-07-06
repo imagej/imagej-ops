@@ -32,6 +32,7 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -195,6 +196,46 @@ public class DeconvolveNamespace extends AbstractNamespace {
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
 				fftType, fftFactory, maxIterations);
 		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final Img<C> fftKernel, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final Img<C> fftKernel, final RandomAccessibleInterval<O> output, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final Img<C> fftKernel, final RandomAccessibleInterval<O> output, final boolean performInputFFT, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output, performInputFFT, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final Img<C> fftKernel, final RandomAccessibleInterval<O> output, final boolean performInputFFT, final boolean performKernelFFT, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output, performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval, imgFactory);
+	}
+
+	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>void richardsonLucy(final RandomAccessibleInterval<I> raiExtendedInput, final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput, final Img<C> fftKernel, final RandomAccessibleInterval<O> output, final boolean performInputFFT, final boolean performKernelFFT, final int maxIterations, final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory, final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput) {
+		ops().run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output, performInputFFT, performKernelFFT, maxIterations, imgConvolutionInterval, imgFactory, obfOutput);
 	}
 
 	@Override

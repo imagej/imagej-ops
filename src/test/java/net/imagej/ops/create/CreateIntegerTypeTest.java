@@ -32,8 +32,6 @@ package net.imagej.ops.create;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.create.CreateOps.CreateIntegerType;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
@@ -51,28 +49,26 @@ import org.junit.Test;
  * @author Christian Dietz, University of Konstanz.
  */
 
-public class CreateIntegerTypeTest<T extends NativeType<T>> extends
-	AbstractOpTest
-{
+public class CreateIntegerTypeTest extends AbstractOpTest {
 
 	@Test
 	public void testCreateIntegerType() {
 
-		assertEquals(ops.run(CreateIntegerType.class, 2).getClass(), BitType.class);
-		assertEquals(ops.run(CreateIntegerType.class, Byte.MAX_VALUE + 1)
+		assertEquals(ops.create().integerType(2).getClass(), BitType.class);
+		assertEquals(ops.create().integerType(Byte.MAX_VALUE + 1)
 			.getClass(), ByteType.class);
-		assertEquals(ops.run(CreateIntegerType.class, (Byte.MAX_VALUE + 1) * 2)
+		assertEquals(ops.create().integerType((Byte.MAX_VALUE + 1) * 2)
 			.getClass(), UnsignedByteType.class);
-		assertEquals(ops.run(CreateIntegerType.class, (Short.MAX_VALUE + 1))
+		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1))
 			.getClass(), ShortType.class);
-		assertEquals(ops.run(CreateIntegerType.class, (Short.MAX_VALUE + 1) * 2)
+		assertEquals(ops.create().integerType((Short.MAX_VALUE + 1) * 2)
 			.getClass(), UnsignedShortType.class);
-		assertEquals(ops.run(CreateIntegerType.class, (Integer.MAX_VALUE + 1))
+		assertEquals(ops.create().integerType((Integer.MAX_VALUE + 1))
 			.getClass(), IntType.class);
 		assertEquals(ops
-			.run(CreateIntegerType.class, (Integer.MAX_VALUE + 1l) * 2l).getClass(),
+			.create().integerType((Integer.MAX_VALUE + 1l) * 2l).getClass(),
 			UnsignedIntType.class);
-		assertEquals(ops.run(CreateIntegerType.class, Long.MAX_VALUE).getClass(),
+		assertEquals(ops.create().integerType(Long.MAX_VALUE).getClass(),
 			LongType.class);
 
 	}

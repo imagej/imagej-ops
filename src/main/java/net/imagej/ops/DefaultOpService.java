@@ -39,10 +39,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImgPlus;
-import net.imagej.ops.chunker.Chunk;
-import net.imagej.ops.chunker.Chunker;
 import net.imagej.ops.convert.ConvertPix;
-import net.imagej.ops.create.CreateOps;
+import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -52,6 +50,7 @@ import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
+import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -106,11 +105,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Parameter
 	private LogService log;
 
+	private CreateNamespace create;
 	private DeconvolveNamespace deconvolve;
 	private LabelingNamespace labeling;
 	private LogicNamespace logic;
 	private MathNamespace math;
 	private StatsNamespace stats;
+	private ThreadNamespace thread;
 	private ThresholdNamespace threshold;
 
 	private boolean namespacesReady;
@@ -221,16 +222,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final String result =
 			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min, max);
 		return result;
-	}
-
-	@Override
-	public Object chunker(final Object... args) {
-		return run(Ops.Chunker.NAME, args);
-	}
-
-	@Override
-	public void chunker(final Chunk chunkable, final long numberOfElements) {
-		run(Chunker.class, chunkable, numberOfElements);
 	}
 
 	@Override
@@ -614,11 +605,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object create(final Object... args) {
-		return run(Ops.Create.class, args);
-	}
-
-	@Override
 	public Object crop(final Object... args) {
 		return run(Ops.Crop.NAME, args);
 	}
@@ -665,121 +651,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class, in,
 				interval, dropSingleDimensions);
 		return result;
-	}
-
-	@Override
-	public Object deconvolve(final Object... args) {
-		return run(Ops.Deconvolve.NAME, args);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			maxIterations, imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, maxIterations, imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, maxIterations, imgConvolutionInterval,
-			imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, maxIterations,
-			imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, maxIterations,
-			imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final int maxIterations, final Interval imgConvolutionInterval,
-			final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
-			maxIterations, imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
-			performKernelFFT, maxIterations, imgConvolutionInterval, imgFactory);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT, final int maxIterations,
-			final Interval imgConvolutionInterval, final ImgFactory<O> imgFactory,
-			final OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput)
-	{
-		run(net.imagej.ops.deconvolve.RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
-			performKernelFFT, maxIterations, imgConvolutionInterval, imgFactory,
-			obfOutput);
 	}
 
 	@Override
@@ -1920,29 +1791,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return result;
 	}
 
-	// -- CreateOps short-cuts --
-
-	@Override
-	public Object createImg(final Object... args) {
-		return run(CreateOps.CreateImg.class, args);
-	}
-
-	@Override
-	public Object createImgLabeling(final Object... args) {
-		return run(CreateOps.CreateImgLabeling.class, args);
-	}
-
-	@Override
-	public Object createImgFactory(final Object... args) {
-		return run(CreateOps.CreateImgFactory.class, args);
-	}
-
-	@Override
-	public Object createType() {
-		return run(CreateOps.CreateType.class);
-	}
-
 	// -- Operation shortcuts - other namespaces --
+
+	@Override
+	public CreateNamespace create() {
+		if (!namespacesReady) initNamespaces();
+		return create;
+	}
 
 	@Override
 	public DeconvolveNamespace deconvolve() {
@@ -1972,6 +1827,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public StatsNamespace stats() {
 		if (!namespacesReady) initNamespaces();
 		return stats;
+	}
+
+	@Override
+	public ThreadNamespace thread() {
+		if (!namespacesReady) initNamespaces();
+		return thread;
 	}
 
 	@Override
@@ -2007,6 +1868,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	private synchronized void initNamespaces() {
 		if (namespacesReady) return;
+		create = new CreateNamespace();
+		getContext().inject(create);
 		deconvolve = new DeconvolveNamespace();
 		getContext().inject(deconvolve);
 		labeling = new LabelingNamespace();
@@ -2017,6 +1880,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(math);
 		stats = new StatsNamespace();
 		getContext().inject(stats);
+		thread = new ThreadNamespace();
+		getContext().inject(thread);
 		threshold = new ThresholdNamespace();
 		getContext().inject(threshold);
 		namespacesReady = true;

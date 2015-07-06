@@ -35,7 +35,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
-import net.imagej.ops.chunker.Chunker;
+import net.imagej.ops.thread.chunker.Chunker;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 

@@ -37,9 +37,8 @@ import java.util.Map;
 
 import net.imagej.ImageJService;
 import net.imagej.ImgPlus;
-import net.imagej.ops.chunker.Chunk;
 import net.imagej.ops.convert.ConvertPix;
-import net.imagej.ops.create.CreateOps;
+import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -49,6 +48,7 @@ import net.imagej.ops.statistics.Sum;
 import net.imagej.ops.statistics.Variance;
 import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
+import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
@@ -212,15 +212,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
 	<T extends RealType<T>> String ascii(IterableInterval<T> image,
 		RealType<T> min, RealType<T> max);
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(op = Ops.Chunker.class)
-	Object chunker(Object... args);
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.chunker.DefaultChunker.class,
-		net.imagej.ops.chunker.ChunkerInterleaved.class })
-	void chunker(Chunk chunkable, long numberOfElements);
 
 	/** Executes the "convert" operation on the given arguments. */
 	@OpMethod(op = Ops.Convert.class)
@@ -443,10 +434,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType,
 			ImgFactory<C> fftFactory);
 
-	/** Executes the "create" operation on the given arguments. */
-	@OpMethod(op = Ops.Create.class)
-	Object create(Object... args);
-
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
 	Object crop(Object... args);
@@ -469,76 +456,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
 	<T> RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in,
 		Interval interval, boolean dropSingleDimensions);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = Ops.Deconvolve.class)
-	Object deconvolve(Object... args);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			int maxIterations, Interval imgConvolutionInterval,
-			ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, int maxIterations,
-			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			int maxIterations, Interval imgConvolutionInterval,
-			ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			Img<C> fftKernel, int maxIterations, Interval imgConvolutionInterval,
-			ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			Img<C> fftKernel, RandomAccessibleInterval<O> output, int maxIterations,
-			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			Img<C> fftKernel, RandomAccessibleInterval<O> output,
-			boolean performInputFFT, int maxIterations,
-			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			Img<C> fftKernel, RandomAccessibleInterval<O> output,
-			boolean performInputFFT, boolean performKernelFFT, int maxIterations,
-			Interval imgConvolutionInterval, ImgFactory<O> imgFactory);
-
-	/** Executes the "deconvolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyRAI.class)
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void deconvolve(RandomAccessibleInterval<I> raiExtendedInput,
-			RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftInput,
-			Img<C> fftKernel, RandomAccessibleInterval<O> output,
-			boolean performInputFFT, boolean performKernelFFT, int maxIterations,
-			Interval imgConvolutionInterval, ImgFactory<O> imgFactory,
-			OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput);
 
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = Ops.Equation.class)
@@ -1115,25 +1032,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in,
 		Moment2AboutMean<T> moment2);
 
-	// -- CreateOps short-cuts --
-
-	/** Executes the "createImg" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImg.class)
-	Object createImg(Object... args);
-
-	/** Executes the "createImgLabeling" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImgLabeling.class)
-	Object createImgLabeling(Object... args);
-
-	/** Executes the "createImgFactory" operation on the given arguments. */
-	@OpMethod(op = CreateOps.CreateImgFactory.class)
-	Object createImgFactory(Object... args);
-
-	/** Executes the "createType" operation. */
-	@OpMethod(op = CreateOps.CreateType.class)
-	Object createType();
-
 	// -- Operation shortcuts - other namespaces --
+
+	/** Gateway into ops of the "create" namespace. */
+	CreateNamespace create();
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
@@ -1149,6 +1051,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
+
+	/** Gateway into ops of the "thread" namespace. */
+	ThreadNamespace thread();
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
