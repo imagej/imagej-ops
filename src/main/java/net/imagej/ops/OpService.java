@@ -95,6 +95,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByName.class)
 	Object run(String name, Object... args);
 
 	/**
@@ -113,6 +114,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByType.class)
 	<OP extends Op> Object run(Class<OP> type, Object... args);
 
 	/**
@@ -125,6 +127,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByOp.class)
 	Object run(Op op, Object... args);
 
 	/**
@@ -137,6 +140,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @param args The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
+	@OpMethod(op = net.imagej.ops.lookup.LookupByName.class)
 	Op op(String name, Object... args);
 
 	/**
@@ -150,6 +154,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @param args The operation's arguments.
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
+	@OpMethod(op = net.imagej.ops.lookup.LookupByType.class)
 	<O extends Op> O op(Class<O> type, Object... args);
 
 	/**
@@ -759,14 +764,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
 	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
 		ImgFactory<T> fac, double[] sigma, double... calibration);
-
-	/** Executes the "lookup" operation on the given arguments. */
-	@OpMethod(op = Ops.Lookup.class)
-	Object lookup(Object... args);
-
-	/** Executes the "lookup" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.lookup.DefaultLookup.class)
-	Op lookup(String name, Object... args);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = Ops.Loop.class)

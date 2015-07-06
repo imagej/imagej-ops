@@ -28,31 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.lookup;
+package net.imagej.ops.run;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Attr;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the "lookup" op.
+ * Implementation of "run" that invokes the op by type.
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Lookup.NAME,
-	attrs = { @Attr(name = "aliases", value = Ops.Lookup.ALIASES) })
-public class DefaultLookup extends AbstractLookup {
+@Plugin(type = Op.class, name = Ops.Run.NAME)
+public class RunByType implements Ops.Run {
 
 	@Parameter
 	private OpService ops;
 
+	@Parameter(type = ItemIO.OUTPUT)
+	private Object output;
+
+	@Parameter
+	private Class<? extends Op> type;
+
+	@Parameter
+	private Object[] args;
+
 	@Override
 	public void run() {
-		op = ops.op(name, args);
+		output = ops.run(type, args);
 	}
 
 }
