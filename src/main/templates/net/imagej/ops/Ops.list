@@ -33,6 +33,7 @@ ops = ```
 	[name: "normalize",   iface: "Normalize",      aliases: ["norm"]],
 	[name: "project",     iface: "Project"],
 	[name: "quantile",    iface: "Quantile"],
+	[name: "run",         iface: "Run"],
 	[name: "scale",       iface: "Scale",          aliases: ["resize"]],
 	[name: "size",        iface: "Size"],
 	[name: "slicewise",   iface: "Slicewise"],

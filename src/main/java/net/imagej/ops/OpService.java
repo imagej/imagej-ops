@@ -95,6 +95,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByName.class)
 	Object run(String name, Object... args);
 
 	/**
@@ -113,6 +114,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByType.class)
 	<OP extends Op> Object run(Class<OP> type, Object... args);
 
 	/**
@@ -125,6 +127,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *         returned verbatim. If more than one, a {@code List<Object>} of the
 	 *         outputs will be given.
 	 */
+	@OpMethod(op = net.imagej.ops.run.RunByOp.class)
 	Object run(Op op, Object... args);
 
 	/**
