@@ -28,41 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.max;
 
-import java.util.Iterator;
+import net.imagej.ops.Function;
+import net.imagej.ops.StatsOps;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Ops.Variance.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
-{
-
-	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
-		}
-
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
-		return output;
-	}
+/**
+ * A typed "max" function.
+ * 
+ * @author Christian Dietz
+ */
+public interface Max<T, V> extends StatsOps.Max, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

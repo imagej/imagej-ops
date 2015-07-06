@@ -28,16 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.moment1AboutMean;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import java.util.Iterator;
 
-/**
- * A typed "max" function.
- * 
- * @author Christian Dietz
- */
-public interface Max<T, V> extends Ops.Max, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.StatsOps;
+import net.imagej.ops.misc.Size;
+import net.imagej.ops.stats.mean.Mean;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = StatsOps.Moment1AboutMean.NAME)
+public class Moment2AboutMean<T extends RealType<T>> extends
+	AbstractStrictFunction<Iterable<T>, DoubleType>
+{
+	@Parameter
+	private Mean<Iterable<T>, DoubleType> mean;
+
+	@Parameter
+	private Size<Iterable<T>> size;
+
+	@Override
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+
+		final double meanVal = this.mean.compute(input, new DoubleType()).get();
+		final double area = this.size.compute(input, new LongType()).get();
+
+		double res = 0.0;
+
+		final Iterator<T> it = input.iterator();
+		while (it.hasNext()) {
+			final double val = it.next().getRealDouble() - meanVal;
+			res += val * val;
+		}
+
+		output.setReal(res / area);
+		return output;
+	}
 }

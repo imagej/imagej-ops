@@ -120,8 +120,8 @@ public class ConvolveTest extends AbstractOpTest {
 		FloatType outSum3 = new FloatType();
 
 		// calculate sum of input and kernel
-		ops.sum(inSum, in);
-		ops.sum(kernelSum, kernel);
+		ops.stats().sum(inSum, in);
+		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
 		Img<FloatType> out = ops.convolve(null, in, kernel, borderSize);
@@ -149,9 +149,9 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
-		ops.sum(outSum, out);
-		ops.sum(outSum2, out2);
-		ops.sum(outSum3, out3);
+		ops.stats().sum(outSum, out);
+		ops.stats().sum(outSum2, out2);
+		ops.stats().sum(outSum3, out3);
 
 		// multiply input sum by kernelSum and assert it is the same as outSum
 		inSum.mul(kernelSum);

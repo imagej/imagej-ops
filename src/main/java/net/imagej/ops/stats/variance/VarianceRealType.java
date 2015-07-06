@@ -28,16 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.variance;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.StatsOps;
+import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-/**
- * A typed "quantile" function.
- * 
- * @author Christian Dietz
- */
-public interface Quantile<T, V> extends Ops.Quantile, Function<T, V> {
-	// NB: Marker interface.
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = StatsOps.Variance.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class VarianceRealType<T extends RealType<T>> extends
+	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	Variance<T, DoubleType>
+{
+
+	@Parameter(required = false)
+	private Moment2AboutMean<T> moment2;
+
+	@Parameter
+	private OpService ops;
+
+	@Override
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (moment2 == null) {
+			moment2 = ops.op(Moment2AboutMean.class, output, input);
+		}
+		return moment2.compute(input, output);
+	}
 }

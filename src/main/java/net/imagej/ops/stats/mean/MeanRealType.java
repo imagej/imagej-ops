@@ -28,39 +28,71 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
-
-import java.util.Iterator;
+package net.imagej.ops.stats.mean;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.OpService;
+import net.imagej.ops.StatsOps;
+import net.imagej.ops.misc.Size;
+import net.imagej.ops.stats.sum.Sum;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.StdDeviation.NAME, priority = Priority.LOW_PRIORITY + 1)
-public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements StdDeviation<T, T>
+/**
+ * Computes the mean of values for the input {@link Iterable}.
+ * 
+ * @author Christian Dietz
+ */
+@Plugin(type = Op.class, name = StatsOps.Mean.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStrictFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
 {
 
+	@Parameter(required = false)
+	private Sum<Iterable<I>, O> sumFunc;
+
+	@Parameter(required = false)
+	private Size<Iterable<I>> sizeFunc;
+
+	@Parameter
+	private OpService ops;
+
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
+	public O compute(final Iterable<I> input, final O output) {
 
-		double sum = 0;
-		double sumSqr = 0;
-		int n = 0;
-
-		final Iterator<T> it = input.iterator();
-		while (it.hasNext()) {
-			final double px = it.next().getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+		if (sumFunc == null) {
+			sumFunc = ops.op(Sum.class, LongType.class, input);
+		}
+		if (sizeFunc == null) {
+			sizeFunc = ops.op(Size.class, LongType.class, input);
 		}
 
-		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
-		return output;
+		final O result;
+		if (output == null) {
+			// HACK: Need to cast through Object to satisfy javac.
+			final Object o = new DoubleType();
+			@SuppressWarnings("unchecked")
+			final O newOutput = (O) o;
+			result = newOutput;
+		}
+		else result = output;
+
+		final LongType size = sizeFunc.compute(input, new LongType());
+		final O sum = sumFunc.compute(input, result.createVariable());
+
+		// TODO: Better way to go LongType -> O without going through double?
+		double mean = sum.getRealDouble() / size.getRealDouble();
+
+		result.setReal(mean);
+
+		return result;
 	}
+
 }

@@ -31,7 +31,7 @@
 package net.imagej.ops.misc;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.StatsOps;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
@@ -39,6 +39,6 @@ import net.imglib2.type.numeric.integer.LongType;
  * 
  * @author Christian Dietz
  */
-public interface Size<I> extends Ops.Size, Function<I, LongType> {
+public interface Size<I> extends StatsOps.Size, Function<I, LongType> {
 	// NB: Marker interface.
 }

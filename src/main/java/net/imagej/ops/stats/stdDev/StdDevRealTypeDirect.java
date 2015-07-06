@@ -28,16 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.stdDev;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import java.util.Iterator;
 
-/**
- * A typed "stdDev" function.
- * 
- * @author Christian Dietz
- */
-public interface StdDeviation<T, V> extends Ops.StdDeviation, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.StatsOps;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = StatsOps.StdDeviation.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
+public class StdDevRealTypeDirect<T extends RealType<T>> extends
+	AbstractStrictFunction<Iterable<T>, T> implements StdDeviation<T, T>
+{
+
+	@Override
+	public T compute(final Iterable<T> input, final T output) {
+
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		final Iterator<T> it = input.iterator();
+		while (it.hasNext()) {
+			final double px = it.next().getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
+		return output;
+	}
 }

@@ -43,10 +43,6 @@ import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Sum;
-import net.imagej.ops.statistics.Variance;
-import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -67,8 +63,6 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -831,56 +825,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
 	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, Function<A, B> func);
 
-	/** Executes the "max" operation on the given arguments. */
-	@OpMethod(op = Ops.Max.class)
-	Object max(Object... args);
-
-	/** Executes the "max" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MaxRealType.class)
-	<T extends RealType<T>> T max(T out, Iterable<T> in);
-
-	/** Executes the "mean" operation on the given arguments. */
-	@OpMethod(op = Ops.Mean.class)
-	Object mean(Object... args);
-
-	/** Executes the "mean" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in);
-
-	/** Executes the "mean" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in,
-		Sum<Iterable<I>, O> sumFunc);
-
-	/** Executes the "mean" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MeanRealType.class)
-	<I extends RealType<I>, O extends RealType<O>> O mean(O out, Iterable<I> in,
-		Sum<Iterable<I>, O> sumFunc, Size<Iterable<I>> sizeFunc);
-
-	/** Executes the "median" operation on the given arguments. */
-	@OpMethod(op = Ops.Median.class)
-	Object median(Object... args);
-
-	/** Executes the "median" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MedianRealType.class)
-	<T extends RealType<T>> T median(T out, Iterable<T> in);
-
-	/** Executes the "min" operation on the given arguments. */
-	@OpMethod(op = Ops.Min.class)
-	Object min(Object... args);
-
-	/** Executes the "min" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.MinRealType.class)
-	<T extends RealType<T>> T min(T out, Iterable<T> in);
-
-	/** Executes the "minMax" operation on the given arguments. */
-	@OpMethod(op = Ops.MinMax.class)
-	Object minMax(Object... args);
-
-	/** Executes the "minMax" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.misc.MinMaxRealType.class)
-	<T extends RealType<T>> List<T> minMax(Iterable<T> img);
-
 	/** Executes the "normalize" operation on the given arguments. */
 	@OpMethod(op = Ops.Normalize.class)
 	Object normalize(Object... args);
@@ -905,10 +849,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<T, V> IterableInterval<V> project(IterableInterval<V> out,
 		RandomAccessibleInterval<T> in, Function<Iterable<T>, V> method, int dim);
 
-	/** Executes the "quantile" operation on the given arguments. */
-	@OpMethod(op = Ops.Quantile.class)
-	Object quantile(Object... args);
-
 	/** Executes the "scale" operation on the given arguments. */
 	@OpMethod(op = Ops.Scale.class)
 	Object scale(Object... args);
@@ -917,18 +857,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.scale.ScaleImg.class)
 	<T extends RealType<T>> Img<T> scale(Img<T> in, double[] scaleFactors,
 		InterpolatorFactory<T, RandomAccessible<T>> interpolator);
-
-	/** Executes the "size" operation on the given arguments. */
-	@OpMethod(op = Ops.Size.class)
-	Object size(Object... args);
-
-	/** Executes the "size" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.misc.SizeIterableInterval.class)
-	LongType size(LongType out, IterableInterval<?> in);
-
-	/** Executes the "size" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.misc.SizeIterable.class)
-	LongType size(LongType out, Iterable<?> in);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = Ops.Slicewise.class)
@@ -944,31 +872,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, Function<I, O> func, int[] axisIndices,
 		boolean dropSingleDimensions);
-
-	/** Executes the "stdDev" operation on the given arguments. */
-	@OpMethod(op = Ops.StdDeviation.class)
-	Object stdDev(Object... args);
-
-	/** Executes the "stdDev" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.StdDevRealTypeDirect.class)
-	<T extends RealType<T>> T stdDev(T out, Iterable<T> in);
-
-	/** Executes the "stdDev" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stdDev(DoubleType out, Iterable<T> in);
-
-	/** Executes the "stdDev" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.StdDevRealType.class)
-	<T extends RealType<T>> DoubleType stdDev(DoubleType out, Iterable<T> in,
-		Variance<T, DoubleType> variance);
-
-	/** Executes the "sum" operation on the given arguments. */
-	@OpMethod(op = Ops.Sum.class)
-	Object sum(Object... args);
-
-	/** Executes the "sum" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.SumRealType.class)
-	<T extends RealType<T>, V extends RealType<V>> V sum(V out, Iterable<T> in);
 
 	/** Executes the "threshold" operation on the given arguments. */
 	@OpMethod(op = Ops.Threshold.class)
@@ -1014,20 +917,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<BitType> out, RandomAccessibleInterval<T> in,
 		LocalThresholdMethod<T> method, Shape shape,
 		OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
-
-	/** Executes the "variance" operation on the given arguments. */
-	@OpMethod(op = Ops.Variance.class)
-	Object variance(Object... args);
-
-	/** Executes the "variance" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.statistics.VarianceRealTypeDirect.class,
-		net.imagej.ops.statistics.VarianceRealType.class })
-	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in);
-
-	/** Executes the "variance" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.statistics.VarianceRealType.class)
-	<T extends RealType<T>> DoubleType variance(DoubleType out, Iterable<T> in,
-		Moment2AboutMean<T> moment2);
 
 	// -- Operation shortcuts - other namespaces --
 

@@ -35,7 +35,7 @@ import net.imagej.axis.TypedAxis;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Project;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.stats.mean.Mean;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 

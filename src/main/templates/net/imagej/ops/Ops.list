@@ -24,23 +24,13 @@ ops = ```
 	[name: "logKernel",   iface: "LogKernel"],
 	[name: "loop",        iface: "Loop"],
 	[name: "map",         iface: "Map"],
-	[name: "max",         iface: "Max"],
-	[name: "mean",        iface: "Mean",           aliases: ["avg"]],
-	[name: "median",      iface: "Median"],
-	[name: "min",         iface: "Min"],
-	[name: "minMax",      iface: "MinMax"],
 	[name: "normalize",   iface: "Normalize",      aliases: ["norm"]],
 	[name: "op",          iface: "Lookup"],
 	[name: "project",     iface: "Project"],
-	[name: "quantile",    iface: "Quantile"],
 	[name: "run",         iface: "Run"],
 	[name: "scale",       iface: "Scale",          aliases: ["resize"]],
-	[name: "size",        iface: "Size"],
 	[name: "slicewise",   iface: "Slicewise"],
-	[name: "stdDev",      iface: "StdDeviation"],
-	[name: "sum",         iface: "Sum"],
 	[name: "threshold",   iface: "Threshold"],
-	[name: "variance",    iface: "Variance"]
 ]
 ```
 
@@ -184,7 +174,17 @@ namespace = "stats"
 authors = ["Curtis Rueden"]
 ops = ```
 [
-	[name: "moment1AboutMean", iface: "Moment1AboutMean"]
+	[name: "moment1AboutMean", iface: "Moment1AboutMean"],
+	[name: "max",              iface: "Max"],
+	[name: "mean",             iface: "Mean",              aliases: ["avg"]],
+	[name: "median",           iface: "Median"],
+	[name: "min",              iface: "Min"],
+	[name: "minMax",           iface: "MinMax"],
+	[name: "quantile",         iface: "Quantile"],
+	[name: "size",             iface: "Size"],
+	[name: "stdDev",           iface: "StdDeviation"],
+	[name: "sum",              iface: "Sum"],
+	[name: "variance",         iface: "Variance"]
 ]
 ```
 

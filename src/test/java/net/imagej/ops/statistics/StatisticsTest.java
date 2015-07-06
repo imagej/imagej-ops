@@ -90,12 +90,12 @@ public class StatisticsTest extends AbstractOpTest {
 		// calculate min using ops
 		FloatType min2 = new FloatType();
 		min2.setReal(Float.MAX_VALUE);
-		ops.min(min2, img);
+		ops.stats().min(min2, img);
 
 		// calculate max using ops
 		FloatType max2 = new FloatType();
 		max2.setReal(Float.MIN_VALUE);
-		ops.max(max2, img);
+		ops.stats().max(max2, img);
 
 		// check to see if everything matches
 		Assert.assertEquals(min1, min2.getRealFloat(), delta);
@@ -126,14 +126,14 @@ public class StatisticsTest extends AbstractOpTest {
 
 		// calculate mean using ops
 		DoubleType mean2 = new DoubleType();
-		mean2 = (DoubleType) ops.mean(DoubleType.class, img);
+		mean2 = (DoubleType) ops.stats().mean(DoubleType.class, img);
 
 		// check that the ratio between mean1 and mean2 is 1.0
 		Assert.assertEquals(1.0, mean1 / mean2.getRealFloat(), delta);
 
 		// calculate standard deviation using ops
 		DoubleType std2 = new DoubleType();
-		ops.stdDev(std2, img);
+		ops.stats().stdDev(std2, img);
 
 		// check that the ratio between std1 and std2 is 1.0
 		Assert.assertEquals(1.0, std1 / std2.getRealFloat(), delta);

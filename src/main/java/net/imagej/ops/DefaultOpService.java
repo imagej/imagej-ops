@@ -45,10 +45,6 @@ import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
-import net.imagej.ops.misc.Size;
-import net.imagej.ops.statistics.Sum;
-import net.imagej.ops.statistics.Variance;
-import net.imagej.ops.statistics.moments.Moment2AboutMean;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -69,8 +65,6 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -1401,95 +1395,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object max(final Object... args) {
-		return run(Ops.Max.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> T max(final T out, final Iterable<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) run(net.imagej.ops.statistics.MaxRealType.class, out, in);
-		return result;
-	}
-
-	@Override
-	public Object mean(final Object... args) {
-		return run(Ops.Mean.NAME, args);
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in, sumFunc);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc,
-		final Size<Iterable<I>> sizeFunc)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) run(net.imagej.ops.statistics.MeanRealType.class, out, in, sumFunc,
-				sizeFunc);
-		return result;
-	}
-
-	@Override
-	public Object median(final Object... args) {
-		return run(Ops.Median.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> T median(final T out, final Iterable<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) run(net.imagej.ops.statistics.MedianRealType.class, out, in);
-		return result;
-	}
-
-	@Override
-	public Object min(final Object... args) {
-		return run(Ops.Min.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> T min(final T out, final Iterable<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) run(net.imagej.ops.statistics.MinRealType.class, out, in);
-		return result;
-	}
-
-	@Override
-	public Object minMax(final Object... args) {
-		return run(Ops.MinMax.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> List<T> minMax(final Iterable<T> img) {
-		@SuppressWarnings("unchecked")
-		final List<T> result =
-			(List<T>) run(net.imagej.ops.misc.MinMaxRealType.class, img);
-		return result;
-	}
-
-	@Override
 	public Object normalize(final Object... args) {
 		return run(Ops.Normalize.NAME, args);
 	}
@@ -1537,11 +1442,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object quantile(final Object... args) {
-		return run(Ops.Quantile.NAME, args);
-	}
-
-	@Override
 	public Object scale(final Object... args) {
 		return run(Ops.Scale.NAME, args);
 	}
@@ -1555,25 +1455,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final Img<T> result =
 			(Img<T>) run(net.imagej.ops.scale.ScaleImg.class, in, scaleFactors,
 				interpolator);
-		return result;
-	}
-
-	@Override
-	public Object size(final Object... args) {
-		return run(Ops.Size.NAME, args);
-	}
-
-	@Override
-	public LongType size(final LongType out, final IterableInterval<?> in) {
-		final LongType result =
-			(LongType) run(net.imagej.ops.misc.SizeIterableInterval.class, out, in);
-		return result;
-	}
-
-	@Override
-	public LongType size(final LongType out, final Iterable<?> in) {
-		final LongType result =
-			(LongType) run(net.imagej.ops.misc.SizeIterable.class, out, in);
 		return result;
 	}
 
@@ -1607,53 +1488,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(RandomAccessibleInterval<O>) run(
 				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices, dropSingleDimensions);
-		return result;
-	}
-
-	@Override
-	public Object stdDev(final Object... args) {
-		return run(Ops.StdDeviation.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> T stdDev(final T out, final Iterable<T> in) {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) run(net.imagej.ops.statistics.StdDevRealTypeDirect.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> DoubleType stdDev(final DoubleType out,
-		final Iterable<T> in)
-	{
-		final DoubleType result =
-			(DoubleType) run(net.imagej.ops.statistics.StdDevRealType.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> DoubleType stdDev(final DoubleType out,
-		final Iterable<T> in, final Variance<T, DoubleType> variance)
-	{
-		final DoubleType result =
-			(DoubleType) run(net.imagej.ops.statistics.StdDevRealType.class, out, in,
-				variance);
-		return result;
-	}
-
-	@Override
-	public Object sum(final Object... args) {
-		return run(Ops.Sum.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>> V sum(final V out,
-		final Iterable<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final V result =
-			(V) run(net.imagej.ops.statistics.SumRealType.class, out, in);
 		return result;
 	}
 
@@ -1751,31 +1585,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(RandomAccessibleInterval<BitType>) run(
 				net.imagej.ops.threshold.local.LocalThreshold.class, out, in, method,
 				shape, outOfBounds);
-		return result;
-	}
-
-	@Override
-	public Object variance(final Object... args) {
-		return run(Ops.Variance.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> DoubleType variance(final DoubleType out,
-		final Iterable<T> in)
-	{
-		final DoubleType result =
-			(DoubleType) run(net.imagej.ops.statistics.VarianceRealTypeDirect.class,
-				out, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> DoubleType variance(final DoubleType out,
-		final Iterable<T> in, final Moment2AboutMean<T> moment2)
-	{
-		final DoubleType result =
-			(DoubleType) run(net.imagej.ops.statistics.VarianceRealType.class, out,
-				in, moment2);
 		return result;
 	}
 

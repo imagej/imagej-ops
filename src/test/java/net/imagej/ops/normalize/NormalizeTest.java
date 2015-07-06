@@ -53,8 +53,8 @@ public class NormalizeTest extends AbstractOpTest {
 
 		ops.normalize(out, in);
 
-		List<ByteType> minMax1 = ops.minMax(in);
-		List<ByteType> minMax2 = ops.minMax(out);
+		List<ByteType> minMax1 = ops.stats().minMax(in);
+		List<ByteType> minMax2 = ops.stats().minMax(out);
 
 		assertEquals(minMax2.get(0).get(), Byte.MIN_VALUE);
 		assertEquals(minMax2.get(1).get(), Byte.MAX_VALUE);

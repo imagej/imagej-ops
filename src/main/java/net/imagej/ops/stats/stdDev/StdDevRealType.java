@@ -28,16 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.stdDev;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.StatsOps;
+import net.imagej.ops.stats.variance.Variance;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-/**
- * A typed "min" function.
- * 
- * @author Christian Dietz
- */
-public interface Min<T, V> extends Ops.Min, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = StatsOps.StdDeviation.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class StdDevRealType<T extends RealType<T>> extends
+	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	StdDeviation<T, DoubleType>
+{
+
+	@Parameter(required = false)
+	private Variance<T, DoubleType> variance;
+
+	@Parameter
+	private OpService ops;
+
+	@Override
+	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+		if (variance == null) {
+			variance = ops.op(Variance.class, output, input);
+		}
+		output.set(Math.sqrt(variance.compute(input, output).get()));
+		return output;
+	}
+
 }

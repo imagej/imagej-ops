@@ -28,35 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.min;
 
-import java.util.Iterator;
+import net.imagej.ops.Function;
+import net.imagej.ops.StatsOps;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = "max", priority = Priority.LOW_PRIORITY)
-public class MaxRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Max<T, T>
-{
-
-	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
-		final Iterator<T> it = input.iterator();
-		T max = it.next().copy();
-
-		while (it.hasNext()) {
-			final T next = it.next();
-			if (max.compareTo(next) < 0) {
-				max.set(next);
-			}
-		}
-		output.set(max);
-		return output;
-	}
+/**
+ * A typed "min" function.
+ * 
+ * @author Christian Dietz
+ */
+public interface Min<T, V> extends StatsOps.Min, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

@@ -29,13 +29,13 @@
  */
 package net.imagej.ops.misc;
 
-import net.imagej.ops.Ops;
+import net.imagej.ops.StatsOps;
 
 /**
  * A typed "minMax" operation.
  * 
  * @author Christian Dietz
  */
-public interface MinMax<T> extends Ops.MinMax {
+public interface MinMax<T> extends StatsOps.MinMax {
 	// NB: Marker interface.
 }

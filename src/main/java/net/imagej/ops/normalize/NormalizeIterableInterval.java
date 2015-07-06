@@ -59,7 +59,7 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 	{
 
 		T outType = output.firstElement().createVariable();
-		List<T> minMax = ops.minMax(input);
+		List<T> minMax = ops.stats().minMax(input);
 		double factor =
 			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
 				minMax.get(1).getRealDouble(), outType.getMinValue(), outType

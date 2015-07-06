@@ -28,14 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.variance;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.StatsOps;
 
 /**
- * A typed "mean" function.
+ * A typed "variance" function.
+ * 
+ * @author Christian Dietz
  */
-public interface Mean<I, O> extends Ops.Mean, Function<I, O> {
+public interface Variance<T, V> extends StatsOps.Variance,
+	Function<Iterable<T>, V>
+{
 	// NB: Marker interface.
 }

@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.local;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.statistics.Mean;
+import net.imagej.ops.stats.mean.Mean;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

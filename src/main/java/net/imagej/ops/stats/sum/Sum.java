@@ -28,16 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.sum;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.StatsOps;
 
 /**
- * A typed "variance" function.
+ * A typed "sum" function.
  * 
  * @author Christian Dietz
  */
-public interface Variance<T, V> extends Ops.Variance, Function<Iterable<T>, V> {
+public interface Sum<I, O> extends StatsOps.Sum, Function<I, O> {
 	// NB: Marker interface.
 }

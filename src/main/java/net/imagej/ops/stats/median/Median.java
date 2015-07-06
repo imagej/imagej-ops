@@ -28,16 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.median;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import net.imagej.ops.StatsOps;
+import net.imagej.ops.stats.quantile.Quantile;
 
 /**
- * A typed "sum" function.
+ * A typed "median" function.
  * 
  * @author Christian Dietz
  */
-public interface Sum<I, O> extends Ops.Sum, Function<I, O> {
+public interface Median<T, V> extends StatsOps.Median, Quantile<T, V> {
 	// NB: Marker interface.
 }

@@ -28,69 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.max;
+
+import java.util.Iterator;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.misc.Size;
+import net.imagej.ops.StatsOps;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-/**
- * Computes the mean of values for the input {@link Iterable}.
- * 
- * @author Christian Dietz
- */
-@Plugin(type = Op.class, name = Ops.Mean.NAME, priority = Priority.LOW_PRIORITY)
-public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
+@Plugin(type = Op.class, name = StatsOps.Max.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class MaxRealType<T extends RealType<T>> extends
+	AbstractStrictFunction<Iterable<T>, T> implements Max<T, T>
 {
 
-	@Parameter(required = false)
-	private Sum<Iterable<I>, O> sumFunc;
-
-	@Parameter(required = false)
-	private Size<Iterable<I>> sizeFunc;
-
-	@Parameter
-	private OpService ops;
-
 	@Override
-	public O compute(final Iterable<I> input, final O output) {
+	public T compute(final Iterable<T> input, final T output) {
 
-		if (sumFunc == null) {
-			sumFunc = ops.op(Sum.class, LongType.class, input);
+		final Iterator<T> it = input.iterator();
+		T max = it.next().copy();
+
+		while (it.hasNext()) {
+			final T next = it.next();
+			if (max.compareTo(next) < 0) {
+				max.set(next);
+			}
 		}
-		if (sizeFunc == null) {
-			sizeFunc = ops.op(Size.class, LongType.class, input);
-		}
-
-		final O result;
-		if (output == null) {
-			// HACK: Need to cast through Object to satisfy javac.
-			final Object o = new DoubleType();
-			@SuppressWarnings("unchecked")
-			final O newOutput = (O) o;
-			result = newOutput;
-		}
-		else result = output;
-
-		final LongType size = sizeFunc.compute(input, new LongType());
-		final O sum = sumFunc.compute(input, result.createVariable());
-
-		// TODO: Better way to go LongType -> O without going through double?
-		double mean = sum.getRealDouble() / size.getRealDouble();
-
-		result.setReal(mean);
-
-		return result;
+		output.set(max);
+		return output;
 	}
-
 }

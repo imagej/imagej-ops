@@ -28,36 +28,14 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats.mean;
 
-import java.util.Iterator;
+import net.imagej.ops.Function;
+import net.imagej.ops.StatsOps;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Ops.Min.NAME, priority = Priority.LOW_PRIORITY)
-public class MinRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Min<T, T>
-{
-
-	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
-		final Iterator<T> it = input.iterator();
-		T min = it.next().copy();
-
-		while (it.hasNext()) {
-			final T next = it.next();
-			if (min.compareTo(next) > 0) {
-				min.set(next);
-			}
-		}
-		output.set(min);
-		return output;
-	}
+/**
+ * A typed "mean" function.
+ */
+public interface Mean<I, O> extends StatsOps.Mean, Function<I, O> {
+	// NB: Marker interface.
 }
