@@ -1248,18 +1248,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object lookup(final Object... args) {
-		return run(Ops.Lookup.NAME, args);
-	}
-
-	@Override
-	public Op lookup(final String name, final Object... args) {
-		final Op result =
-			(Op) run(net.imagej.ops.lookup.DefaultLookup.class, name, args);
-		return result;
-	}
-
-	@Override
 	public Object loop(final Object... args) {
 		return run(Ops.Loop.NAME, args);
 	}

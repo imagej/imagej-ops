@@ -31,29 +31,36 @@
 package net.imagej.ops.lookup;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass of "lookup" implementations.
+ * Implementation of "op" that finds the op by name.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractLookup implements Ops.Lookup {
+@Plugin(type = Op.class, name = Ops.Lookup.NAME)
+public class LookupByName implements Ops.Lookup {
 
 	@Parameter
-	protected String name;
-
-	@Parameter
-	protected Object[] args;
+	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	protected Op op;
+	private Op op;
 
-	public Op getOp() {
-		return op;
+	@Parameter
+	private String name;
+
+	@Parameter
+	private Object[] args;
+
+	@Override
+	public void run() {
+		op = ops.op(name, args);
 	}
 
 }
