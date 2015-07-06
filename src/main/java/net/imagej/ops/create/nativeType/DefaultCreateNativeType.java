@@ -90,8 +90,10 @@ public class DefaultCreateNativeType<T extends NativeType<T>> implements
 
 	private T createTypeFromScratch() {
 		// NB: No type given; we can only guess.
+		// HACK: For Java 6 compiler.
+		final Object o = new DoubleType();
 		@SuppressWarnings("unchecked")
-		final T t = (T) new DoubleType();
+		final T t = (T) o;
 		return t;
 	}
 

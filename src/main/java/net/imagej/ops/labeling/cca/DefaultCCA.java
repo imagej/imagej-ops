@@ -89,7 +89,8 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	public ImgLabeling<L, I>
 		createOutput(final RandomAccessibleInterval<T> input)
 	{
-		return ops.create().imgLabeling(input);
+		// HACK: For Java 6 compiler.
+		return ops.create().<L, I> imgLabeling(input);
 	}
 
 	@Override

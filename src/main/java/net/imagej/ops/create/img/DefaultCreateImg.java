@@ -38,6 +38,7 @@ import net.imglib2.Dimensions;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.type.NativeType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -75,7 +76,12 @@ public class DefaultCreateImg<T> implements
 	public void run() {
 		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
 		if (outType == null) {
-			outType = ops.create().nativeType();
+			// HACK: For Java 6 compiler.
+			@SuppressWarnings("rawtypes")
+			final NativeType o = ops.create().nativeType();
+			@SuppressWarnings("unchecked")
+			final T result = (T) o;
+			outType = result;
 		}
 
 		if (fac == null) {
@@ -89,7 +95,11 @@ public class DefaultCreateImg<T> implements
 				}
 				else {
 					try {
-						fac = inImg.factory().imgFactory(outType);
+						// HACK: For Java 6 compiler.
+						final Object o = inImg.factory().imgFactory(outType);
+						@SuppressWarnings("unchecked")
+						final ImgFactory<T> result = (ImgFactory<T>) o;
+						fac = result;
 					}
 					catch (final IncompatibleTypeException e) {
 						// FIXME: outType may not be a NativeType, but imgFactory needs one.
