@@ -74,7 +74,7 @@ public class DefaultCreateImg<T> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
+		// FIXME: not guaranteed to be a T unless a Class<T> is given.
 		if (outType == null) {
 			// HACK: For Java 6 compiler.
 			@SuppressWarnings("rawtypes")
@@ -85,12 +85,9 @@ public class DefaultCreateImg<T> implements
 		}
 
 		if (fac == null) {
-			if ((dims instanceof Img)) {
-
+			if (dims instanceof Img) {
 				final Img<?> inImg = ((Img<?>) dims);
-				if (inImg.firstElement().getClass()
-					.isAssignableFrom(outType.getClass()))
-				{
+				if (inImg.firstElement().getClass().isInstance(outType)) {
 					fac = (ImgFactory<T>) inImg.factory();
 				}
 				else {
