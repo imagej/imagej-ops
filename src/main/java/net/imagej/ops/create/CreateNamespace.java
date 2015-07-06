@@ -291,10 +291,21 @@ public class CreateNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
 	public
-		DoubleType nativeType() {
-		final DoubleType result =
-			(DoubleType) ops().run(
+		<T extends NativeType<T>> T nativeType() {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
 				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
+	public
+		<T extends NativeType<T>> T nativeType(final Class<T> type) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(
+				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class, type);
 		return result;
 	}
 

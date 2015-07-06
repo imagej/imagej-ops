@@ -69,12 +69,10 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	@Parameter(required = false)
 	private T outType;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-
 		if (outType == null) {
-			outType = (T) ops.create().nativeType();
+			outType = ops.create().nativeType();
 		}
 
 		output =

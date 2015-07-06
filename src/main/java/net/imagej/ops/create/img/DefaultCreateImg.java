@@ -73,10 +73,9 @@ public class DefaultCreateImg<T> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-
 		// FIXME this is not guaranteed to be a T unless Class<T> is passed in here..
 		if (outType == null) {
-			outType = (T) ops.create().nativeType();
+			outType = ops.create().nativeType();
 		}
 
 		if (fac == null) {

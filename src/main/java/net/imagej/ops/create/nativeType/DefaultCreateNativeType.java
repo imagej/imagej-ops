@@ -33,6 +33,7 @@ package net.imagej.ops.create.nativeType;
 import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OutputOp;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
@@ -44,28 +45,54 @@ import org.scijava.plugin.Plugin;
  *
  * @author Daniel Seebacher, University of Konstanz.
  * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Curtis Rueden
  */
 @Plugin(type = Op.class, name = CreateOps.NativeType.NAME)
-public class DefaultCreateNativeType implements
-	CreateOps.NativeType, OutputOp<DoubleType>
+public class DefaultCreateNativeType<T extends NativeType<T>> implements
+	CreateOps.NativeType, OutputOp<T>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private DoubleType output;
+	private T output;
+
+	@Parameter(required = false)
+	private Class<T> type;
 
 	@Override
 	public void run() {
-		output = new DoubleType();
+		if (type != null) output = createTypeFromClass();
+		else output = createTypeFromScratch();
 	}
 
 	@Override
-	public DoubleType getOutput() {
+	public T getOutput() {
 		return output;
 	}
 
 	@Override
-	public void setOutput(final DoubleType output) {
+	public void setOutput(final T output) {
 		this.output = output;
+	}
+
+	// -- Helper methods --
+
+	private T createTypeFromClass() {
+		try {
+			return type.newInstance();
+		}
+		catch (final InstantiationException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+		catch (final IllegalAccessException exc) {
+			throw new IllegalStateException(exc);
+		}
+	}
+
+	private T createTypeFromScratch() {
+		// NB: No type given; we can only guess.
+		@SuppressWarnings("unchecked")
+		final T t = (T) new DoubleType();
+		return t;
 	}
 
 }
