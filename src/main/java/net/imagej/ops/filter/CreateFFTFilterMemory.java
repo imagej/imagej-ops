@@ -205,6 +205,7 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 		raiExtendedInput =
 			Views.interval(Views.extend(input, obfInput), imgConvolutionInterval);
 
+		// if fftType, and/or fftFactory do not exist, create them using defaults
 		if (fftType == null) {
 			fftType = (ComplexType) (new ComplexFloatType().createVariable());
 		}
@@ -218,7 +219,9 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 			}
 		}
 
-		// TODO: the ffts could have been allready created.  Need to modify this
+		// create images for the FFTs
+
+		// TODO: the ffts could have been allready created. Need to modify this
 		// step for the case where FFT memory allready exists
 		fftImg = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
 
