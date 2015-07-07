@@ -28,46 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.stats.mean.Mean;
-import net.imglib2.Cursor;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.AbstractNamespaceTest;
 
 import org.junit.Test;
 
 /**
- * Tests {@link Mean}.
- * 
+ * Tests {@link StatsNamespace}.
+ *
  * @author Curtis Rueden
  */
-public class MeanTest extends AbstractOpTest {
+public class StatsNamespaceTest extends AbstractNamespaceTest {
 
+	/**
+	 * Tests that the ops of the {@code stats} namespace have corresponding
+	 * type-safe Java method signatures declared in the {@link StatsNamespace}
+	 * class.
+	 */
 	@Test
-	public void testMean() {
-		final Img<ByteType> image = generateByteTestImg(true, 40, 50);
-		DoubleType mean = (DoubleType) ops.stats().mean(RealType.class, image);
-
-		assertEquals(1.0 / 15.625, mean.get(), 0.0);
-
-		Cursor<ByteType> c = image.cursor();
-
-		// this time lets just make every value 100
-		while (c.hasNext()) {
-			c.fwd();
-			c.get().setReal(100.0);
-		}
-
-		mean = (DoubleType) ops.stats().mean(RealType.class, image);
-
-		// the mean should be 100
-		assertEquals(100.0, mean.get(), 0.0);
-
+	public void testCompleteness() {
+		assertComplete("stats", StatsNamespace.class);
 	}
 
 }

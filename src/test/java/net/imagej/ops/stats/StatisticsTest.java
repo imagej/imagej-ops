@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.array.ArrayImg;
