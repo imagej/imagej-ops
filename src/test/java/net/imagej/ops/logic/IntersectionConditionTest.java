@@ -45,23 +45,24 @@ public class IntersectionConditionTest extends AbstractOpTest {
 
 	@Test
 	public void testIntersection() {
-		final ArrayList<Condition<?>> condition = new ArrayList<Condition<?>>();
+		final ArrayList<Condition<Double>> condition =
+			new ArrayList<Condition<Double>>();
 
-		final Condition<?> c1 =
+		@SuppressWarnings("unchecked")
+		final Condition<Double> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
-		final Condition<?> c2 =
+		@SuppressWarnings("unchecked")
+		final Condition<Double> c2 =
 			ops.op(ComparableLessThan.class, Double.class, 6.0);
 
 		condition.add(c1);
 		condition.add(c2);
 
-		final BoolType result =
-			(BoolType) ops.run(IntersectionCondition.class, 2.0 , condition);
+		final BoolType result = ops.logic().and(2.0, condition);
 		assertFalse(result.get());
 
 		condition.add(0, c2);
-		final BoolType result1 =
-			(BoolType) ops.run(IntersectionCondition.class, 4.0, condition);
+		final BoolType result1 = ops.logic().and(4.0, condition);
 		assertTrue(result1.get());
 	}
 

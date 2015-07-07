@@ -72,10 +72,8 @@ public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K exte
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-
-		ops.run(ConvolveFFTRAI.class, raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
-
+		ops
+			.convolve(raiExtendedInput, raiExtendedKernel, fftImg, fftKernel, output);
 	}
 
 	@Override

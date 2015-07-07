@@ -33,7 +33,6 @@ package net.imagej.ops.project;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.project.parallel.DefaultProjectParallel;
 import net.imagej.ops.stats.sum.Sum;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -71,8 +70,8 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Test
 	public void testProjector() {
-		ops.run(ProjectRAIToIterableInterval.class, out1, in, op, PROJECTION_DIM);
-		ops.run(DefaultProjectParallel.class, out2, in, op, PROJECTION_DIM);
+		ops.project(out1, in, op, PROJECTION_DIM);
+		ops.project(out2, in, op, PROJECTION_DIM);
 
 		// test
 		final Cursor<ByteType> out1Cursor = out1.cursor();

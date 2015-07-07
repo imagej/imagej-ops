@@ -73,8 +73,8 @@ public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K ext
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.run(CorrelateFFTRAI.class, raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		ops.correlate(raiExtendedInput, raiExtendedKernel, fftImg, fftKernel,
+			output);
 
 	}
 

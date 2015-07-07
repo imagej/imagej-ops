@@ -53,7 +53,7 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 
 	@Override
 	protected void safeCompute(final I input, final O output) {
-		ops.run(ApplyConstantThreshold.class, output, input, getThreshold(input));
+		ops.threshold().apply(output, input, getThreshold(input));
 	}
 
 }

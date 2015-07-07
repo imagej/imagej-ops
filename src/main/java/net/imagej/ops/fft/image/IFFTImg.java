@@ -35,7 +35,6 @@ import java.util.concurrent.Executors;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.IFFT;
-import net.imagej.ops.fft.methods.IFFTRAI;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
@@ -65,7 +64,7 @@ public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 		// TODO: proper use of Executor service
 		final ExecutorService service = Executors.newFixedThreadPool(4);
 
-		ops.run(IFFTRAI.class, output, input);
+		ops.ifft(output, input);
 
 		return output;
 	}

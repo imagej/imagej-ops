@@ -71,7 +71,7 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 			out = new ImgPlus<T>(img, in);
 		}
 		int axisIndex = in.dimensionIndex(axis.type());
-		ops.run(Project.class, out, in, method, axisIndex);
+		ops.project(out, in, method, axisIndex);
 	}
 
 	/* -- Wrapper classes to mark certain operations as projection methods --*/

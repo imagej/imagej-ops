@@ -90,7 +90,7 @@ public class HypersliceTest extends AbstractOpTest {
 		// selected interval XY
 		final int[] xyAxis = new int[] { 0, 1 };
 
-		ops.run(Slicewise.class, out, in, new DummyOp(), xyAxis);
+		ops.slicewise(out, in, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = out.cursor(); cur.hasNext();) {
 			cur.fwd();
@@ -123,7 +123,7 @@ public class HypersliceTest extends AbstractOpTest {
 		// selected interval XYZ
 		final int[] xyAxis = new int[] { 0, 1, 2 };
 
-		ops.run(Slicewise.class, outSequence, inSequence, new DummyOp(), xyAxis);
+		ops.slicewise(outSequence, inSequence, new DummyOp(), xyAxis);
 
 		for (final Cursor<ByteType> cur = outSequence.cursor(); cur.hasNext();) {
 			cur.fwd();

@@ -66,12 +66,11 @@ public class CreateImgFromImg<T extends NativeType<T>> implements
 	@Parameter
 	private Img<T> input;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		output =
-			(Img<T>) ops.run(DefaultCreateImg.class, input, input.firstElement()
-				.createVariable(), input.factory());
+			ops.create().img(input, input.firstElement().createVariable(),
+				input.factory());
 	}
 
 	@Override

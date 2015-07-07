@@ -67,8 +67,6 @@ public class CreateSymmetricGaussianKernel<T extends ComplexType<T>> extends
 			}
 		}
 
-		output =
-			(Img<T>) ops.run(CreateGaussianKernel.class, outType, fac, sigmas,
-				calibration);
+		output = (Img<T>) ops.gaussKernel(outType, fac, sigmas, calibration);
 	}
 }

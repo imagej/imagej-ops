@@ -33,15 +33,12 @@ package net.imagej.ops.crop;
 import static org.junit.Assert.assertTrue;
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Crop;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.labeling.Labeling;
-import net.imglib2.labeling.NativeImgLabeling;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.view.Views;
 
@@ -70,7 +67,6 @@ public class CropTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testCropTypes() {
-
 		// Set-up interval
 		final Interval defInterval =
 			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 19 });
@@ -79,45 +75,44 @@ public class CropTest extends AbstractOpTest {
 			new FinalInterval(new long[] { 0, 0, 0 }, new long[] { 19, 19, 18 });
 
 		// check if result is ImgView
-		assertTrue(ops.run(Ops.Crop.class, in, defInterval) instanceof Img);
+		assertTrue(ops.crop(in, defInterval) instanceof Img);
 
 		// check if result is ImgPlus
-		assertTrue(ops.run(Ops.Crop.class, new ImgPlus<ByteType>(in), defInterval) instanceof ImgPlus);
+		final Object imgPlus = ops.crop(new ImgPlus<ByteType>(in), defInterval);
+		assertTrue(imgPlus instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval
 		final Object run =
-			ops.run(Ops.Crop.class, Views.interval(in, smallerInterval),
-				smallerInterval);
+			ops.crop(Views.interval(in, smallerInterval), smallerInterval);
 		assertTrue(run instanceof RandomAccessibleInterval && !(run instanceof Img));
 	}
 
 	/** Tests the result of the slicing. */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testCropResults() {
 
 		// Case 1: fix one dimension
-		Img<ByteType> res =
-			(Img<ByteType>) ops.run(Ops.Crop.class, in, new FinalInterval(new long[] {
-				0, 0, 5 }, new long[] { 19, 19, 5 }));
+		long[] min = { 0, 0, 5 };
+		long[] max = { 19, 19, 5 };
+		RandomAccessibleInterval<ByteType> res =
+			ops.crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
 		assertTrue(res.max(0) == 19);
 
 		// Case B: Fix one dimension and don't start at zero
-		res =
-			(Img<ByteType>) ops.run(Ops.Crop.class, in, new FinalInterval(new long[] {
-				0, 0, 5 }, new long[] { 19, 0, 10 }));
+		max = new long[] { 19, 0, 10 };
+		res = ops.crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 2);
 		assertTrue(res.min(0) == 0);
 		assertTrue(res.max(1) == 5);
 
 		// Case C: fix two dimensions
-		res =
-			(Img<ByteType>) ops.run(Ops.Crop.class, in, new FinalInterval(new long[] { 0,
-				0, 0 }, new long[] { 0, 15, 0 }));
+		min = new long[] { 0, 0, 0 };
+		max = new long[] { 0, 15, 0 };
+		res = ops.crop(in, new FinalInterval(min, max));
 
 		assertTrue(res.numDimensions() == 1);
 		assertTrue(res.max(0) == 15);

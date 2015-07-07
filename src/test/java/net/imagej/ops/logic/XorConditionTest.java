@@ -42,22 +42,23 @@ public class XorConditionTest extends AbstractOpTest {
 
 	@Test
 	public void testXor() {
-		final Condition<?> c1 =
+		@SuppressWarnings("unchecked")
+		final Condition<Double> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
-		final Condition<?> c2 =
+		@SuppressWarnings("unchecked")
+		final Condition<Double> c2 =
 			ops.op(ComparableLessThan.class, Double.class, 6.0);
 
-		final BoolType result = (BoolType) ops.run(XorCondition.class, 5.0, c1, c2);
+		final BoolType result = ops.logic().xor(5.0, c1, c2);
 		assertFalse(result.get());
 
-		final BoolType result2 = (BoolType) ops.run(XorCondition.class, 2.0, c1, c2);
+		final BoolType result2 = ops.logic().xor(2.0, c1, c2);
 		assertTrue(result2.get());
 
-		final BoolType result3 = (BoolType) ops.run(XorCondition.class, 7.0, c1, c2);
+		final BoolType result3 = ops.logic().xor(7.0, c1, c2);
 		assertTrue(result3.get());
 
-		final BoolType result4 =
-			(BoolType) ops.run(XorCondition.class, Double.NaN, c1, c2);
+		final BoolType result4 = ops.logic().xor(Double.NaN, c1, c2);
 		assertTrue(result4.get());
 	}
 

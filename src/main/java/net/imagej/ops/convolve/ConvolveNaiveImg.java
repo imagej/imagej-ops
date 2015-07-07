@@ -84,7 +84,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 		RandomAccessibleInterval<O> extendedOut =
 			Views.interval(Views.extend(out, obfOutput), out);
 
-		ops.run(ConvolveNaive.class, extendedOut, extendedIn, getKernel());
+		ops.convolve(extendedOut, extendedIn, getKernel());
 	}
 
 	@Override
