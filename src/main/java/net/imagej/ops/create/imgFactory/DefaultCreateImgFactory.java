@@ -72,7 +72,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 	@Override
 	public void run() {
 		if (outType == null) {
-			outType = ops.create().nativeType();
+			outType = ops.create().<T> nativeType();
 		}
 
 		output =
