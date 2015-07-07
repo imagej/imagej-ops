@@ -33,7 +33,6 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.DeconvolveOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
 import net.imagej.ops.convolve.CorrelateFFTRAI;
 import net.imagej.ops.fft.filter.IterativeFFTFilterRAI;
 import net.imglib2.Cursor;

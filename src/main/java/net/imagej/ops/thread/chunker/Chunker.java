@@ -30,8 +30,9 @@
 
 package net.imagej.ops.thread.chunker;
 
-import org.scijava.Cancelable;
 import net.imagej.ops.ThreadOps;
+
+import org.scijava.Cancelable;
 
 /**
  * A "chunker" operation which executes code across

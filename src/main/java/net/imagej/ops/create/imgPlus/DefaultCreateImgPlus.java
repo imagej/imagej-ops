@@ -33,10 +33,10 @@ package net.imagej.ops.create.imgPlus;
 import net.imagej.ImgPlus;
 import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.OutputOp;
-import net.imagej.ops.CreateOps;
 import net.imglib2.img.Img;
 
 import org.scijava.ItemIO;

@@ -31,7 +31,6 @@
 package net.imagej.ops;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,6 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -59,7 +57,6 @@ import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;

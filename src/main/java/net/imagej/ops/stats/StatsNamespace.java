@@ -33,7 +33,6 @@ package net.imagej.ops.stats;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.Ops;
 import net.imagej.ops.StatsOps;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
