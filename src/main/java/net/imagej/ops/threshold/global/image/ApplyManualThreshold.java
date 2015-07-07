@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.global.image;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
+import net.imagej.ops.ThresholdOps;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME)
+@Plugin(type = Op.class, name = ThresholdOps.Apply.NAME)
 public class ApplyManualThreshold<T extends RealType<T>> extends
 	AbstractApplyThresholdImg<T, Img<T>>
 {

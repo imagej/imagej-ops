@@ -873,51 +873,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<I> in, Function<I, O> func, int[] axisIndices,
 		boolean dropSingleDimensions);
 
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(op = Ops.Threshold.class)
-	Object threshold(Object... args);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class)
-	<T extends RealType<T>> Iterable<BitType> threshold(Iterable<BitType> out,
-		Iterable<T> in, T threshold);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
-	<T extends RealType<T>> Img<BitType> threshold(Img<T> in, T threshold);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
-	<T extends RealType<T>> Img<BitType> threshold(Img<BitType> out, Img<T> in,
-		T threshold);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class)
-	<T> BitType threshold(BitType out, Comparable<? super T> in, T threshold);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class)
-	<T> BitType threshold(BitType out, T in, T threshold,
-		Comparator<? super T> comparator);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
-	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
-		RandomAccessibleInterval<BitType> out, RandomAccessibleInterval<T> in,
-		LocalThresholdMethod<T> method, Shape shape);
-
-	/** Executes the "threshold" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
-	<T extends RealType<T>> RandomAccessibleInterval<BitType> threshold(
-		RandomAccessibleInterval<BitType> out, RandomAccessibleInterval<T> in,
-		LocalThresholdMethod<T> method, Shape shape,
-		OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
-
 	// -- Operation shortcuts - other namespaces --
 
 	/** Gateway into ops of the "create" namespace. */

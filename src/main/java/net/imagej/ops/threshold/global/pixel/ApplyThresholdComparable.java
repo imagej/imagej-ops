@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.global.pixel;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.ThresholdOps;
 import net.imagej.ops.threshold.global.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
 
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Martin Horn
  */
-@Plugin(type = Op.class, name = Ops.Threshold.NAME)
+@Plugin(type = Op.class, name = ThresholdOps.Apply.NAME)
 public class ApplyThresholdComparable<T> extends
 	AbstractStrictFunction<Comparable<? super T>, BitType> implements
 	ApplyThreshold<Comparable<? super T>, BitType>

@@ -30,12 +30,18 @@
 
 package net.imagej.ops.threshold;
 
+import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.ThresholdOps;
+import net.imagej.ops.threshold.local.LocalThresholdMethod;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -47,6 +53,107 @@ import net.imglib2.type.numeric.RealType;
 public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- Threshold namespace ops --
+
+	// -- apply --
+
+	@OpMethod(op = net.imagej.ops.ThresholdOps.Apply.class)
+	public Object apply(final Object... args) {
+		return ops().run(ThresholdOps.Apply.NAME, args);
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class)
+	public <T extends RealType<T>> Iterable<BitType> apply(
+		final Iterable<BitType> out, final Iterable<T> in, final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Iterable<BitType> result =
+			(Iterable<BitType>) ops().run(
+				net.imagej.ops.threshold.global.image.ApplyConstantThreshold.class,
+				out, in, threshold);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
+	public <T extends RealType<T>> Img<BitType> apply(final Img<T> in,
+		final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) ops().run(
+				net.imagej.ops.threshold.global.image.ApplyManualThreshold.class, in,
+				threshold);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.image.ApplyManualThreshold.class)
+	public <T extends RealType<T>> Img<BitType> apply(final Img<BitType> out,
+		final Img<T> in, final T threshold)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) ops().run(
+				net.imagej.ops.threshold.global.image.ApplyManualThreshold.class, out,
+				in, threshold);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class)
+	public <T> BitType apply(final BitType out,
+		final Comparable<? super T> in, final T threshold)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable.class,
+				out, in, threshold);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class)
+	public <T> BitType apply(final BitType out, final T in,
+		final T threshold, final Comparator<? super T> comparator)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.global.pixel.ApplyThresholdComparator.class,
+				out, in, threshold, comparator);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> apply(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.local.LocalThreshold.class, out, in, method,
+				shape);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.local.LocalThreshold.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> apply(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final LocalThresholdMethod<T> method,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.local.LocalThreshold.class, out, in, method,
+				shape, outOfBounds);
+		return result;
+	}
+
+	// -- huang --
 
 	@OpMethod(op = net.imagej.ops.ThresholdOps.Huang.class)
 	public Object huang(final Object... args) {

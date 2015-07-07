@@ -29,8 +29,7 @@ ops = ```
 	[name: "project",     iface: "Project"],
 	[name: "run",         iface: "Run"],
 	[name: "scale",       iface: "Scale",          aliases: ["resize"]],
-	[name: "slicewise",   iface: "Slicewise"],
-	[name: "threshold",   iface: "Threshold"],
+	[name: "slicewise",   iface: "Slicewise"]
 ]
 ```
 
@@ -204,6 +203,7 @@ namespace = "threshold"
 authors = ["Curtis Rueden"]
 ops = ```
 [
+	[name: "apply",         iface: "Apply"],
 	[name: "huang",         iface: "Huang"],
 	[name: "ij1",           iface: "IJ1"],
 	[name: "intermodes",    iface: "Intermodes"],
