@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.statistics;
+package net.imagej.ops.stats;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
