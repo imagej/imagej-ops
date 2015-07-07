@@ -33,8 +33,8 @@ package net.imagej.ops.math;
 import java.util.Random;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -58,9 +58,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the absolute value of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Abs.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Abs.NAME)
 	public static class Abs<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Abs
+		AbstractStrictFunction<I, O> implements Ops.Math.Abs
 	{
 
 		@Override
@@ -74,9 +74,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the addition of the
 	 * real component of an input real number with a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Add.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Add.NAME)
 	public static class Add<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Add
+		AbstractStrictFunction<I, O> implements Ops.Math.Add
 	{
 
 		@Parameter
@@ -93,9 +93,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the addition of the
 	 * real component of an input real number with an amount of Gaussian noise.
 	 */
-	@Plugin(type = Op.class, name = MathOps.AddNoise.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.AddNoise.NAME)
 	public static class AddNoise<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.AddNoise
+		extends AbstractStrictFunction<I, O> implements Ops.Math.AddNoise
 	{
 
 		@Parameter
@@ -131,9 +131,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the logical AND of the
 	 * real component of an input real number with a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.And.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.And.NAME)
 	public static class AndConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.And
+		extends AbstractStrictFunction<I, O> implements Ops.Math.And
 	{
 
 		@Parameter
@@ -150,9 +150,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse cosine of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccos.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccos.NAME)
 	public static class Arccos<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccos
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccos
 	{
 
 		@Override
@@ -166,9 +166,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * cosine of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccosh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccosh.NAME)
 	public static class Arccosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccosh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccosh
 	{
 
 		@Override
@@ -185,9 +185,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse cotangent
 	 * of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccot.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccot.NAME)
 	public static class Arccot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccot
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccot
 	{
 
 		@Override
@@ -203,9 +203,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * cotangent of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccoth.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccoth.NAME)
 	public static class Arccoth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccoth
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccoth
 	{
 
 		@Override
@@ -220,9 +220,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse cosecant of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccsc.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccsc.NAME)
 	public static class Arccsc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccsc
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccsc
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -252,9 +252,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * cosecant of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arccsch.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arccsch.NAME)
 	public static class Arccsch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arccsch
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccsch
 	{
 
 		@Override
@@ -270,9 +270,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse secant of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arcsec.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arcsec.NAME)
 	public static class Arcsec<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arcsec
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsec
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -304,9 +304,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * secant of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arcsech.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arcsech.NAME)
 	public static class Arcsech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arcsech
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsech
 	{
 
 		@Override
@@ -322,9 +322,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse sine of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arcsin.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arcsin.NAME)
 	public static class Arcsin<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arcsin
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsin
 	{
 
 		@Override
@@ -338,9 +338,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * sine of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arcsinh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arcsinh.NAME)
 	public static class Arcsinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arcsinh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsinh
 	{
 
 		@Override
@@ -356,9 +356,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse tangent of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arctan.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arctan.NAME)
 	public static class Arctan<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arctan
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arctan
 	{
 
 		@Override
@@ -372,9 +372,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inverse hyperbolic
 	 * tangent of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Arctanh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Arctanh.NAME)
 	public static class Arctanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Arctanh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Arctanh
 	{
 
 		@Override
@@ -389,9 +389,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the ceiling of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Ceil.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Ceil.NAME)
 	public static class Ceil<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Ceil
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Ceil
 	{
 
 		@Override
@@ -405,9 +405,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the real component of
 	 * an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Copy.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Copy.NAME)
 	public static class Copy<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Copy
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Copy
 	{
 
 		@Override
@@ -421,9 +421,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the cosine of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Cos.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Cos.NAME)
 	public static class Cos<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Cos
+		AbstractStrictFunction<I, O> implements Ops.Math.Cos
 	{
 
 		@Override
@@ -437,9 +437,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic cosine
 	 * of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Cosh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Cosh.NAME)
 	public static class Cosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Cosh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Cosh
 	{
 
 		@Override
@@ -453,9 +453,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the cotangent of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Cot.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Cot.NAME)
 	public static class Cot<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Cot
+		AbstractStrictFunction<I, O> implements Ops.Math.Cot
 	{
 
 		@Override
@@ -469,9 +469,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic
 	 * cotangent of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Coth.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Coth.NAME)
 	public static class Coth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Coth
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Coth
 	{
 
 		@Override
@@ -485,9 +485,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the cosecant of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Csc.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Csc.NAME)
 	public static class Csc<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Csc
+		AbstractStrictFunction<I, O> implements Ops.Math.Csc
 	{
 
 		@Override
@@ -501,9 +501,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic cosecant
 	 * of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Csch.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Csch.NAME)
 	public static class Csch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Csch
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Csch
 	{
 
 		@Override
@@ -517,9 +517,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the cube root of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.CubeRoot.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.CubeRoot.NAME)
 	public static class CubeRoot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.CubeRoot
+		extends AbstractStrictFunction<I, O> implements Ops.Math.CubeRoot
 	{
 
 		@Override
@@ -533,9 +533,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the division of the
 	 * real component of an input real number by a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Divide.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Divide.NAME)
 	public static class Divide<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Divide
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Divide
 	{
 
 		@Parameter
@@ -559,9 +559,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the exponentiation of
 	 * the real component of an input real number. (e raised to a power)
 	 */
-	@Plugin(type = Op.class, name = MathOps.Exp.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Exp.NAME)
 	public static class Exp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Exp
+		AbstractStrictFunction<I, O> implements Ops.Math.Exp
 	{
 
 		@Override
@@ -575,9 +575,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to e^x - 1. x is the input
 	 * argument to the operation.
 	 */
-	@Plugin(type = Op.class, name = MathOps.ExpMinusOne.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.ExpMinusOne.NAME)
 	public static class ExpMinusOne<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.ExpMinusOne
+		extends AbstractStrictFunction<I, O> implements Ops.Math.ExpMinusOne
 	{
 
 		@Override
@@ -591,9 +591,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the floor of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Floor.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Floor.NAME)
 	public static class Floor<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Floor
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Floor
 	{
 
 		@Override
@@ -607,9 +607,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the gamma value of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Gamma.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Gamma.NAME)
 	public static class GammaConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Gamma
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Gamma
 	{
 
 		@Parameter
@@ -630,9 +630,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the inversion of the
 	 * real component of an input real number about a range.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Invert.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Invert.NAME)
 	public static class Invert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Invert
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Invert
 	{
 
 		@Parameter
@@ -651,9 +651,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the natural log of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Log.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Log.NAME)
 	public static class Log<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Log
+		AbstractStrictFunction<I, O> implements Ops.Math.Log
 	{
 
 		@Override
@@ -667,9 +667,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the 10-based log of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Log10.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Log10.NAME)
 	public static class Log10<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Log10
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Log10
 	{
 
 		@Override
@@ -683,9 +683,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the base 2 log of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Log2.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Log2.NAME)
 	public static class Log2<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Log2
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Log2
 	{
 
 		@Override
@@ -700,9 +700,9 @@ public final class RealMath {
 	 * of the sum of the argument and 1. This calculation is more accurate than
 	 * explicitly calling log(1.0 + x).
 	 */
-	@Plugin(type = Op.class, name = MathOps.LogOnePlusX.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.LogOnePlusX.NAME)
 	public static class LogOnePlusX<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.LogOnePlusX
+		extends AbstractStrictFunction<I, O> implements Ops.Math.LogOnePlusX
 	{
 
 		@Override
@@ -717,9 +717,9 @@ public final class RealMath {
 	 * an input real number unless it exceeds a maximum value. If it exceeds the
 	 * maximum value then it sets the output real component to that maximum value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Max.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Max.NAME)
 	public static class MaxConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Max
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Max
 	{
 
 		@Parameter
@@ -740,9 +740,9 @@ public final class RealMath {
 	 * than the minimum value then it sets the output real component to that
 	 * minimum value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Min.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Min.NAME)
 	public static class MinConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Min
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Min
 	{
 
 		@Parameter
@@ -761,9 +761,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the multiplication of
 	 * the real component of an input real number with a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Multiply.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Multiply.NAME)
 	public static class Multiply<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Multiply
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Multiply
 	{
 
 		@Parameter
@@ -780,9 +780,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the nearest integral
 	 * value of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.NearestInt.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.NearestInt.NAME)
 	public static class NearestInt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.NearestInt
+		extends AbstractStrictFunction<I, O> implements Ops.Math.NearestInt
 	{
 
 		@Override
@@ -796,9 +796,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the negation of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Negate.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Negate.NAME)
 	public static class Negate<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Negate
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Negate
 	{
 
 		@Override
@@ -812,9 +812,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the logical OR of the
 	 * real component of an input real number with a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Or.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Or.NAME)
 	public static class OrConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Or
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Or
 	{
 
 		@Parameter
@@ -831,9 +831,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the raising of the real
 	 * component of an input real number to a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Power.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Power.NAME)
 	public static class PowerConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Power
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Power
 	{
 
 		@Parameter
@@ -852,9 +852,9 @@ public final class RealMath {
 	 * of the desired distribution and must be positive. The output value has mean
 	 * value 0.
 	 */
-	@Plugin(type = Op.class, name = MathOps.RandomGaussian.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.RandomGaussian.NAME)
 	public static class RandomGaussian<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.RandomGaussian
+		extends AbstractStrictFunction<I, O> implements Ops.Math.RandomGaussian
 	{
 
 		@Parameter(required = false)
@@ -882,9 +882,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to a random value between
 	 * 0 and (input real number).
 	 */
-	@Plugin(type = Op.class, name = MathOps.RandomUniform.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.RandomUniform.NAME)
 	public static class RandomUniform<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.RandomUniform
+		extends AbstractStrictFunction<I, O> implements Ops.Math.RandomUniform
 	{
 
 		@Parameter(required = false)
@@ -913,9 +913,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the reciprocal of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Reciprocal.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Reciprocal.NAME)
 	public static class Reciprocal<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Reciprocal
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Reciprocal
 	{
 
 		@Parameter
@@ -934,9 +934,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the rounding of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Round.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Round.NAME)
 	public static class Round<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Round
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Round
 	{
 
 		@Override
@@ -950,9 +950,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the secant of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sec.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sec.NAME)
 	public static class Sec<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Sec
+		AbstractStrictFunction<I, O> implements Ops.Math.Sec
 	{
 
 		@Override
@@ -966,9 +966,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic secant
 	 * of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sech.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sech.NAME)
 	public static class Sech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Sech
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Sech
 	{
 
 		@Override
@@ -984,9 +984,9 @@ public final class RealMath {
 	 * than 0, it equals 1 if the input number is greater than 0, and it equals 0
 	 * if the input number equals 0.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Signum.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Signum.NAME)
 	public static class Signum<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Signum
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Signum
 	{
 
 		@Override
@@ -1000,9 +1000,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the sine of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sin.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sin.NAME)
 	public static class Sin<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Sin
+		AbstractStrictFunction<I, O> implements Ops.Math.Sin
 	{
 
 		@Override
@@ -1017,9 +1017,9 @@ public final class RealMath {
 	 * real component of an input real number. The sinc function is defined as
 	 * sin(x) / x.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sinc.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sinc.NAME)
 	public static class Sinc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Sinc
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Sinc
 	{
 
 		@Override
@@ -1038,9 +1038,9 @@ public final class RealMath {
 	 * of the real component of an input real number. The pi version of sinc is
 	 * defined as sin(x*pi) / (x*pi).
 	 */
-	@Plugin(type = Op.class, name = MathOps.SincPi.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.SincPi.NAME)
 	public static class SincPi<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.SincPi
+		extends AbstractStrictFunction<I, O> implements Ops.Math.SincPi
 	{
 
 		@Override
@@ -1058,9 +1058,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic sine of
 	 * the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sinh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sinh.NAME)
 	public static class Sinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Sinh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Sinh
 	{
 
 		@Override
@@ -1074,9 +1074,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the square of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sqr.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sqr.NAME)
 	public static class Sqr<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Sqr
+		AbstractStrictFunction<I, O> implements Ops.Math.Sqr
 	{
 
 		@Override
@@ -1091,9 +1091,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the square root of the
 	 * real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Sqrt.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Sqrt.NAME)
 	public static class Sqrt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Sqrt
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Sqrt
 	{
 
 		@Override
@@ -1109,9 +1109,9 @@ public final class RealMath {
 	 * similar to Mathematica's unitstep function. It is a Heaviside step function
 	 * with h(0) = 1 rather than 0.5.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Step.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Step.NAME)
 	public static class Step<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Step
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Step
 	{
 
 		@Override
@@ -1126,9 +1126,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the subtraction from
 	 * the real component of an input real number a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Subtract.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Subtract.NAME)
 	public static class Subtract<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Subtract
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Subtract
 	{
 
 		@Parameter
@@ -1145,9 +1145,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the tangent of the real
 	 * component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Tan.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Tan.NAME)
 	public static class Tan<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Tan
+		AbstractStrictFunction<I, O> implements Ops.Math.Tan
 	{
 
 		@Override
@@ -1161,9 +1161,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the hyperbolic tangent
 	 * of the real component of an input real number.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Tanh.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Tanh.NAME)
 	public static class Tanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Tanh
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Tanh
 	{
 
 		@Override
@@ -1179,9 +1179,9 @@ public final class RealMath {
 	 * distance between an input floating-point value and the floating point value
 	 * next larger in magnitude. Note that for non-NaN x, ulp(-x) == ulp(x).
 	 */
-	@Plugin(type = Op.class, name = MathOps.Ulp.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Ulp.NAME)
 	public static class Ulp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements MathOps.Ulp
+		AbstractStrictFunction<I, O> implements Ops.Math.Ulp
 	{
 
 		@Override
@@ -1195,9 +1195,9 @@ public final class RealMath {
 	 * Sets the real component of an output real number to the logical XOR of the
 	 * real component of an input real number with a constant value.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Xor.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Xor.NAME)
 	public static class XorConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Xor
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Xor
 	{
 
 		@Parameter
@@ -1213,9 +1213,9 @@ public final class RealMath {
 	/**
 	 * Sets the real component of an output real number to zero.
 	 */
-	@Plugin(type = Op.class, name = MathOps.Zero.NAME)
+	@Plugin(type = Op.class, name = Ops.Math.Zero.NAME)
 	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements MathOps.Zero
+		extends AbstractStrictFunction<I, O> implements Ops.Math.Zero
 	{
 
 		@Override

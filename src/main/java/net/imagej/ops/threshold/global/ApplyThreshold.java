@@ -31,7 +31,7 @@
 package net.imagej.ops.threshold.global;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.ThresholdOps;
+import net.imagej.ops.Ops;
 
 /**
  * An algorithm for applying a threshold value to an object.
@@ -40,7 +40,7 @@ import net.imagej.ops.ThresholdOps;
  * @author Curtis Rueden
  */
 public interface ApplyThreshold<I, O> extends Function<I, O>,
-	ThresholdOps.Apply
+	Ops.Threshold.Apply
 {
 	// NB: Marker interface.
 }

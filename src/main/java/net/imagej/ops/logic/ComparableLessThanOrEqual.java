@@ -30,8 +30,8 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
@@ -41,10 +41,10 @@ import org.scijava.plugin.Plugin;
  * Op that performs a less-than-or-equal (<=) comparison on two
  * {@link Comparable} objects.
  */
-@Plugin(type = Op.class, name = LogicOps.LessThanOrEqual.NAME, attrs = { @Attr(
-	name = "aliases", value = LogicOps.LessThanOrEqual.ALIASES) })
+@Plugin(type = Op.class, name = Ops.Logic.LessThanOrEqual.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Logic.LessThanOrEqual.ALIASES) })
 public class ComparableLessThanOrEqual<T> extends AbstractCondition<T>
-	implements LogicOps.LessThanOrEqual
+	implements Ops.Logic.LessThanOrEqual
 {
 
 	@Parameter

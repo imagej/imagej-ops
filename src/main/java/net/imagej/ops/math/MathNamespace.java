@@ -33,8 +33,8 @@ package net.imagej.ops.math;
 import java.util.Random;
 
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.MathOps;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -57,9 +57,9 @@ public class MathNamespace extends AbstractNamespace {
 
 	// -- Math namespace ops --
 
-	@OpMethod(op = net.imagej.ops.MathOps.Abs.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Abs.class)
 	public Object abs(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Abs.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Abs.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAbs.class)
@@ -101,9 +101,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Add.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Add.class)
 	public Object add(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Add.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Add.class, args);
 	}
 
 	@OpMethod(ops = {
@@ -114,7 +114,7 @@ public class MathNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<ByteType, ByteArray> result =
-			(ArrayImg<ByteType, ByteArray>) ops().run(MathOps.Add.NAME, image, value);
+			(ArrayImg<ByteType, ByteArray>) ops().run(Ops.Math.Add.NAME, image, value);
 		return result;
 	}
 
@@ -128,7 +128,7 @@ public class MathNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(MathOps.Add.NAME, image,
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Add.NAME, image,
 				value);
 		return result;
 	}
@@ -289,9 +289,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.AddNoise.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.AddNoise.class)
 	public Object addNoise(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.AddNoise.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.AddNoise.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.AddNoise.class)
@@ -306,9 +306,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.And.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.And.class)
 	public Object and(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.And.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.And.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerAnd.class)
@@ -337,9 +337,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccos.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccos.class)
 	public Object arccos(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccos.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccos.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleArccos.class)
@@ -360,9 +360,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccosh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccosh.class)
 	public Object arccosh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccosh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccosh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccosh.class)
@@ -375,9 +375,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccot.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccot.class)
 	public Object arccot(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccot.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccot.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccot.class)
@@ -390,9 +390,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccoth.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccoth.class)
 	public Object arccoth(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccoth.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccoth.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccoth.class)
@@ -405,9 +405,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccsc.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccsc.class)
 	public Object arccsc(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccsc.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccsc.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccsc.class)
@@ -420,9 +420,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arccsch.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arccsch.class)
 	public Object arccsch(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arccsch.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arccsch.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arccsch.class)
@@ -435,9 +435,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arcsec.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arcsec.class)
 	public Object arcsec(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arcsec.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arcsec.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsec.class)
@@ -450,9 +450,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arcsech.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arcsech.class)
 	public Object arcsech(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arcsech.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arcsech.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsech.class)
@@ -465,9 +465,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arcsin.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arcsin.class)
 	public Object arcsin(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arcsin.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arcsin.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleArcsin.class)
@@ -488,9 +488,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arcsinh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arcsinh.class)
 	public Object arcsinh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arcsinh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arcsinh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arcsinh.class)
@@ -503,9 +503,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arctan.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arctan.class)
 	public Object arctan(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arctan.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arctan.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleArctan.class)
@@ -526,9 +526,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Arctanh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Arctanh.class)
 	public Object arctanh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Arctanh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Arctanh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Arctanh.class)
@@ -541,9 +541,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Ceil.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Ceil.class)
 	public Object ceil(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Ceil.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Ceil.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCeil.class)
@@ -563,9 +563,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Complement.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Complement.class)
 	public Object complement(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Complement.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Complement.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerComplement.class)
@@ -584,9 +584,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Copy.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Copy.class)
 	public Object copy(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Copy.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Copy.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Copy.class)
@@ -599,9 +599,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Cos.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Cos.class)
 	public Object cos(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Cos.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Cos.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCos.class)
@@ -621,9 +621,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Cosh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Cosh.class)
 	public Object cosh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Cosh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Cosh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCosh.class)
@@ -643,9 +643,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Cot.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Cot.class)
 	public Object cot(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Cot.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Cot.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Cot.class)
@@ -658,9 +658,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Coth.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Coth.class)
 	public Object coth(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Coth.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Coth.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Coth.class)
@@ -673,9 +673,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Csc.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Csc.class)
 	public Object csc(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Csc.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Csc.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Csc.class)
@@ -688,9 +688,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Csch.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Csch.class)
 	public Object csch(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Csch.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Csch.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Csch.class)
@@ -703,9 +703,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.CubeRoot.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.CubeRoot.class)
 	public Object cubeRoot(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.CubeRoot.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.CubeRoot.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleCubeRoot.class)
@@ -726,9 +726,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Divide.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Divide.class)
 	public Object divide(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Divide.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Divide.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerDivide.class)
@@ -791,9 +791,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Exp.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Exp.class)
 	public Object exp(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Exp.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Exp.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleExp.class)
@@ -813,9 +813,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.ExpMinusOne.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.ExpMinusOne.class)
 	public Object expMinusOne(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.ExpMinusOne.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.ExpMinusOne.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.ExpMinusOne.class)
@@ -828,9 +828,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Floor.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Floor.class)
 	public Object floor(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Floor.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Floor.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleFloor.class)
@@ -851,9 +851,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Gamma.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Gamma.class)
 	public Object gamma(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Gamma.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Gamma.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.GammaConstant.class)
@@ -867,9 +867,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Invert.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Invert.class)
 	public Object invert(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Invert.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Invert.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Invert.class)
@@ -883,9 +883,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.LeftShift.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.LeftShift.class)
 	public Object leftShift(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.LeftShift.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.LeftShift.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerLeftShift.class)
@@ -904,9 +904,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Log.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Log.class)
 	public Object log(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Log.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Log.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleLog.class)
@@ -926,9 +926,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Log2.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Log2.class)
 	public Object log2(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Log2.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Log2.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Log2.class)
@@ -941,9 +941,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Log10.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Log10.class)
 	public Object log10(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Log10.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Log10.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleLog10.class)
@@ -964,9 +964,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.LogOnePlusX.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.LogOnePlusX.class)
 	public Object logOnePlusX(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.LogOnePlusX.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.LogOnePlusX.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleLogOnePlusX.class)
@@ -987,9 +987,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Max.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Max.class)
 	public Object max(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Max.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Max.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMax.class)
@@ -1033,9 +1033,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Min.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Min.class)
 	public Object min(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Min.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Min.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMin.class)
@@ -1079,9 +1079,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Multiply.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Multiply.class)
 	public Object multiply(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Multiply.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Multiply.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerMultiply.class)
@@ -1145,9 +1145,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.NearestInt.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.NearestInt.class)
 	public Object nearestInt(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.NearestInt.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.NearestInt.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.NearestInt.class)
@@ -1160,9 +1160,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Negate.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Negate.class)
 	public Object negate(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Negate.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Negate.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerNegate.class)
@@ -1205,9 +1205,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Or.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Or.class)
 	public Object or(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Or.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Or.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerOr.class)
@@ -1236,9 +1236,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Power.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Power.class)
 	public Object power(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Power.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Power.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoublePower.class)
@@ -1260,9 +1260,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.RandomGaussian.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.RandomGaussian.class)
 	public Object randomGaussian(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.RandomGaussian.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.RandomGaussian.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomGaussian.class)
@@ -1286,9 +1286,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.RandomUniform.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.RandomUniform.class)
 	public Object randomUniform(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.RandomUniform.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.RandomUniform.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.RandomUniform.class)
@@ -1312,9 +1312,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Reciprocal.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Reciprocal.class)
 	public Object reciprocal(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Reciprocal.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Reciprocal.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Reciprocal.class)
@@ -1328,9 +1328,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Remainder.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Remainder.class)
 	public Object remainder(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Remainder.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Remainder.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerRemainder.class)
@@ -1365,9 +1365,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.RightShift.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.RightShift.class)
 	public Object rightShift(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.RightShift.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.RightShift.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerRightShift.class)
@@ -1386,9 +1386,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Round.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Round.class)
 	public Object round(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Round.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Round.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatRound.class)
@@ -1416,9 +1416,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sec.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sec.class)
 	public Object sec(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sec.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sec.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sec.class)
@@ -1431,9 +1431,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sech.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sech.class)
 	public Object sech(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sech.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sech.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sech.class)
@@ -1446,9 +1446,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Signum.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Signum.class)
 	public Object signum(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Signum.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Signum.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.FloatSignum.class)
@@ -1476,9 +1476,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sin.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sin.class)
 	public Object sin(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sin.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sin.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleSin.class)
@@ -1498,9 +1498,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sinc.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sinc.class)
 	public Object sinc(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sinc.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sinc.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sinc.class)
@@ -1513,9 +1513,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.SincPi.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.SincPi.class)
 	public Object sincPi(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.SincPi.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.SincPi.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.SincPi.class)
@@ -1528,9 +1528,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sinh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sinh.class)
 	public Object sinh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sinh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sinh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleSinh.class)
@@ -1550,9 +1550,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sqr.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sqr.class)
 	public Object sqr(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sqr.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sqr.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Sqr.class)
@@ -1565,9 +1565,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Sqrt.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Sqrt.class)
 	public Object sqrt(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Sqrt.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Sqrt.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleSqrt.class)
@@ -1587,9 +1587,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Step.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Step.class)
 	public Object step(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Step.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Step.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Step.class)
@@ -1602,9 +1602,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Subtract.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Subtract.class)
 	public Object subtract(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Subtract.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Subtract.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerSubtract.class)
@@ -1668,9 +1668,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Tan.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Tan.class)
 	public Object tan(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Tan.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Tan.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleTan.class)
@@ -1690,9 +1690,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Tanh.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Tanh.class)
 	public Object tanh(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Tanh.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Tanh.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.DoubleTanh.class)
@@ -1712,9 +1712,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Ulp.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Ulp.class)
 	public Object ulp(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Ulp.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Ulp.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Ulp.class)
@@ -1727,9 +1727,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.UnsignedRightShift.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.UnsignedRightShift.class)
 	public Object unsignedRightShift(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.UnsignedRightShift.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.UnsignedRightShift.class, args);
 	}
 
 	@OpMethod(
@@ -1751,9 +1751,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Xor.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Xor.class)
 	public Object xor(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Xor.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Xor.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.PrimitiveMath.IntegerXor.class)
@@ -1782,9 +1782,9 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.MathOps.Zero.class)
+	@OpMethod(op = net.imagej.ops.Ops.Math.Zero.class)
 	public Object zero(final Object... args) {
-		return ops().run(net.imagej.ops.MathOps.Zero.class, args);
+		return ops().run(net.imagej.ops.Ops.Math.Zero.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Zero.class)

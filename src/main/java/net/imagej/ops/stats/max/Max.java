@@ -31,13 +31,13 @@
 package net.imagej.ops.stats.max;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "max" function.
  * 
  * @author Christian Dietz
  */
-public interface Max<T, V> extends StatsOps.Max, Function<Iterable<T>, V> {
+public interface Max<T, V> extends Ops.Stats.Max, Function<Iterable<T>, V> {
 	// NB: Marker interface.
 }

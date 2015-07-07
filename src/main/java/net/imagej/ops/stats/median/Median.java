@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.median;
 
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.stats.quantile.Quantile;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.stats.quantile.Quantile;
  * 
  * @author Christian Dietz
  */
-public interface Median<T, V> extends StatsOps.Median, Quantile<T, V> {
+public interface Median<T, V> extends Ops.Stats.Median, Quantile<T, V> {
 	// NB: Marker interface.
 }

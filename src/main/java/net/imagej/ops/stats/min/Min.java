@@ -31,13 +31,13 @@
 package net.imagej.ops.stats.min;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "min" function.
  * 
  * @author Christian Dietz
  */
-public interface Min<T, V> extends StatsOps.Min, Function<Iterable<T>, V> {
+public interface Min<T, V> extends Ops.Stats.Min, Function<Iterable<T>, V> {
 	// NB: Marker interface.
 }

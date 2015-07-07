@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.global.methods;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.ThresholdOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.global.image.AbstractApplyThresholdImg;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
@@ -48,9 +48,9 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = ThresholdOps.${name}.NAME)
+@Plugin(type = Op.class, name = Ops.Threshold.${name}.NAME)
 public class Apply${name}Threshold<T extends RealType<T>> extends
-	AbstractApplyThresholdImg<T, Img<T>> implements ThresholdOps.$name
+	AbstractApplyThresholdImg<T, Img<T>> implements Ops.Threshold.$name
 {
 
 	@Parameter

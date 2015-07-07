@@ -30,9 +30,9 @@
 
 package net.imagej.ops.create.imgFactory;
 
-import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.OutputOp;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
@@ -52,9 +52,9 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  * @param <T>
  */
-@Plugin(type = Op.class, name = CreateOps.ImgFactory.NAME)
+@Plugin(type = Op.class, name = Ops.Create.ImgFactory.NAME)
 public class DefaultCreateImgFactory<T extends NativeType<T>> implements
-	CreateOps.ImgFactory, OutputOp<ImgFactory<T>>
+	Ops.Create.ImgFactory, OutputOp<ImgFactory<T>>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

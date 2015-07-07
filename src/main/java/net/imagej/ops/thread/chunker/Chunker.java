@@ -30,7 +30,7 @@
 
 package net.imagej.ops.thread.chunker;
 
-import net.imagej.ops.ThreadOps;
+import net.imagej.ops.Ops;
 
 import org.scijava.Cancelable;
 
@@ -40,7 +40,7 @@ import org.scijava.Cancelable;
  * 
  * @author Christian Dietz
  */
-public interface Chunker extends ThreadOps.Chunker, Cancelable {
+public interface Chunker extends Ops.Thread.Chunker, Cancelable {
 
 	/** Sets the {@link Chunk} for which will be multithreaded. */
 	void setChunk(final Chunk executor);

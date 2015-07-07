@@ -44,9 +44,9 @@ public class ThreadNamespace extends AbstractNamespace {
 	// -- Thread namespace ops --
 
 	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.ThreadOps.Chunker.class)
+	@OpMethod(op = net.imagej.ops.Ops.Thread.Chunker.class)
 	public Object chunker(final Object... args) {
-		return ops().run(net.imagej.ops.ThreadOps.Chunker.class, args);
+		return ops().run(net.imagej.ops.Ops.Thread.Chunker.class, args);
 	}
 
 	/** Executes the "chunker" operation on the given arguments. */

@@ -30,9 +30,9 @@
 
 package net.imagej.ops.math.add;
 
-import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.thread.chunker.Chunk;
 import net.imagej.ops.thread.chunker.Chunker;
 import net.imglib2.img.array.ArrayImg;
@@ -50,8 +50,8 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = MathOps.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
-public class AddConstantToArrayDoubleImageP implements MathOps.Add {
+@Plugin(type = Op.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
+public class AddConstantToArrayDoubleImageP implements Ops.Math.Add {
 
 	@Parameter
 	private OpService opService;

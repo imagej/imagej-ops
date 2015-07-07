@@ -30,8 +30,8 @@
 
 package net.imagej.ops.create.nativeType;
 
-import net.imagej.ops.CreateOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = CreateOps.NativeType.NAME)
+@Plugin(type = Op.class, name = Ops.Create.NativeType.NAME)
 public class DefaultCreateNativeType<T extends NativeType<T>> implements
-	CreateOps.NativeType, OutputOp<T>
+	Ops.Create.NativeType, OutputOp<T>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

@@ -31,11 +31,11 @@
 package net.imagej.ops.stats.mean;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "mean" function.
  */
-public interface Mean<I, O> extends StatsOps.Mean, Function<I, O> {
+public interface Mean<I, O> extends Ops.Stats.Mean, Function<I, O> {
 	// NB: Marker interface.
 }

@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Future;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.ThreadOps;
+import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
 import org.scijava.log.LogService;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Michael Zinsmaier
  */
-@Plugin(type = Op.class, name = ThreadOps.Chunker.NAME,
+@Plugin(type = Op.class, name = Ops.Thread.Chunker.NAME,
 	priority = Priority.VERY_LOW_PRIORITY)
 public class ChunkerInterleaved extends AbstractChunker {
 

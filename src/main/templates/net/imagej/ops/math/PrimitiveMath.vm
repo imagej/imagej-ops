@@ -31,7 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.MathOps;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Attr;
@@ -51,7 +51,7 @@ public final class PrimitiveMath {
 #foreach ($type in $types)
 #foreach ($op in $ops)
 #if ($op.codes.contains($type.code))
-#set ($iface = "MathOps.$op.name")
+#set ($iface = "Ops.Math.$op.name")
 
 	/** Op that $op.verbs#if ($op.unary) a $type.primitive value#else two $type.primitive values#end. */
 	@Plugin(type = Op.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)

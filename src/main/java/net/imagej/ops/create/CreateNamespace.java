@@ -56,9 +56,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- img --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.Img.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.Img.class)
 	public Object img(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.Img.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.Img.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
@@ -101,9 +101,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- imgFactory --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.ImgFactory.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.ImgFactory.class)
 	public Object imgFactory(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.ImgFactory.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.ImgFactory.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
@@ -141,9 +141,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- imgLabeling --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.ImgLabeling.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.ImgLabeling.class)
 	public Object imgLabeling(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.ImgLabeling.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.ImgLabeling.class, args);
 	}
 
 	@OpMethod(
@@ -200,9 +200,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- imgPlus --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.ImgPlus.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.ImgPlus.class)
 	public Object imgPlus(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.ImgPlus.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.ImgPlus.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.imgPlus.DefaultCreateImgPlus.class)
@@ -228,9 +228,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- integerType --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.IntegerType.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.IntegerType.class)
 	public Object integerType(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.IntegerType.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.IntegerType.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.integerType.DefaultCreateIntegerType.class)
@@ -251,9 +251,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- labelingMapping --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.LabelingMapping.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.LabelingMapping.class)
 	public Object labelingMapping(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.LabelingMapping.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.LabelingMapping.class, args);
 	}
 
 	@OpMethod(
@@ -283,9 +283,9 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- nativeType --
 
-	@OpMethod(op = net.imagej.ops.CreateOps.NativeType.class)
+	@OpMethod(op = net.imagej.ops.Ops.Create.NativeType.class)
 	public Object nativeType(final Object... args) {
-		return ops().run(net.imagej.ops.CreateOps.NativeType.class, args);
+		return ops().run(net.imagej.ops.Ops.Create.NativeType.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)

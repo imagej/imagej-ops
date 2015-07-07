@@ -33,7 +33,7 @@ package net.imagej.ops.benchmark;
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
-import net.imagej.ops.MathOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
@@ -74,7 +74,7 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
 
-		addConstant = ops.op(MathOps.Add.class, null, NumericType.class, new ByteType((byte) 5));
+		addConstant = ops.op(Ops.Math.Add.class, null, NumericType.class, new ByteType((byte) 5));
 		addConstantInplace = ops.op(AddConstantInplace.class, NumericType.class, new ByteType((byte) 5));
 	}
 

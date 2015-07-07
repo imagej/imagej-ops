@@ -50,9 +50,9 @@ public class DeconvolveNamespace extends AbstractNamespace {
 
 	//-- Deconvolve namespace ops --
 
-	@OpMethod(op = net.imagej.ops.DeconvolveOps.RichardsonLucy.class)
+	@OpMethod(op = net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class)
 	public Object richardsonLucy(final Object... args) {
-		return ops().run(net.imagej.ops.DeconvolveOps.RichardsonLucy.class, args);
+		return ops().run(net.imagej.ops.Ops.Deconvolve.RichardsonLucy.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.deconvolve.RichardsonLucyImg.class)

@@ -34,13 +34,13 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StatsOps.Size.NAME,
+@Plugin(type = Op.class, name = Ops.Stats.Size.NAME,
 	priority = Priority.LAST_PRIORITY)
 public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
 	implements Size<Iterable<?>>

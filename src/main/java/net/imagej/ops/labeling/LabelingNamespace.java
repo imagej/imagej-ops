@@ -47,9 +47,9 @@ import net.imglib2.type.numeric.IntegerType;
  */
 public class LabelingNamespace extends AbstractNamespace {
 
-	@OpMethod(op = net.imagej.ops.LabelingOps.CCA.class)
+	@OpMethod(op = net.imagej.ops.Ops.Labeling.CCA.class)
 	public Object cca(final Object... args) {
-		return ops().run(net.imagej.ops.LabelingOps.CCA.class, args);
+		return ops().run(net.imagej.ops.Ops.Labeling.CCA.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.labeling.cca.DefaultCCA.class)

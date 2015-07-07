@@ -33,7 +33,7 @@ package net.imagej.ops.stats.stdDev;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.stats.variance.Variance;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -42,7 +42,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = StatsOps.StdDeviation.NAME,
+@Plugin(type = Op.class, name = Ops.Stats.StdDeviation.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements

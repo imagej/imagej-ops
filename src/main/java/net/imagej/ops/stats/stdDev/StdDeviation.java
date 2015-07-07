@@ -31,14 +31,14 @@
 package net.imagej.ops.stats.stdDev;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "stdDev" function.
  * 
  * @author Christian Dietz
  */
-public interface StdDeviation<T, V> extends StatsOps.StdDeviation,
+public interface StdDeviation<T, V> extends Ops.Stats.StdDeviation,
 	Function<Iterable<T>, V>
 {
 	// NB: Marker interface.

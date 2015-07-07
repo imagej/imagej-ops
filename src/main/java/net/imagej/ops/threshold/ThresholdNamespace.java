@@ -35,7 +35,7 @@ import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.ThresholdOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -56,9 +56,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- apply --
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Apply.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Apply.class)
 	public Object apply(final Object... args) {
-		return ops().run(ThresholdOps.Apply.NAME, args);
+		return ops().run(Ops.Threshold.Apply.NAME, args);
 	}
 
 	@OpMethod(
@@ -155,9 +155,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- huang --
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Huang.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Huang.class)
 	public Object huang(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Huang.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Huang.class, args);
 	}
 
 	@OpMethod(
@@ -206,9 +206,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.IJ1.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.IJ1.class)
 	public Object ij1(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.IJ1.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.IJ1.class, args);
 	}
 
 	@OpMethod(
@@ -232,9 +232,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Intermodes.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Intermodes.class)
 	public Object intermodes(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Intermodes.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Intermodes.class, args);
 	}
 
 	@OpMethod(
@@ -291,9 +291,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.IsoData.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.IsoData.class)
 	public Object isoData(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.IsoData.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.IsoData.class, args);
 	}
 
 	@OpMethod(
@@ -345,9 +345,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Li.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Li.class)
 	public Object li(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Li.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Li.class, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.global.methods.ApplyLiThreshold.class)
@@ -394,9 +394,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.MaxEntropy.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.MaxEntropy.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);
 	}
 
 	@OpMethod(
@@ -451,9 +451,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.MaxLikelihood.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxLikelihood.class)
 	public Object maxLikelihood(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.MaxLikelihood.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.MaxLikelihood.class, args);
 	}
 
 	@OpMethod(
@@ -513,9 +513,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Mean.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Mean.class)
 	public Object mean(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Mean.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Mean.class, args);
 	}
 
 	@OpMethod(
@@ -562,9 +562,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.MinError.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.MinError.class)
 	public Object minError(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.MinError.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.MinError.class, args);
 	}
 
 	@OpMethod(
@@ -617,9 +617,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Minimum.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Minimum.class)
 	public Object minimum(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Minimum.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Minimum.class, args);
 	}
 
 	@OpMethod(
@@ -671,9 +671,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Moments.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Moments.class)
 	public Object moments(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Moments.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Moments.class, args);
 	}
 
 	@OpMethod(
@@ -725,9 +725,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Otsu.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Otsu.class)
 	public Object otsu(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Otsu.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Otsu.class, args);
 	}
 
 	@OpMethod(
@@ -774,9 +774,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Percentile.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Percentile.class)
 	public Object percentile(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Percentile.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Percentile.class, args);
 	}
 
 	@OpMethod(
@@ -831,9 +831,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.RenyiEntropy.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.RenyiEntropy.class)
 	public Object renyiEntropy(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.RenyiEntropy.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.RenyiEntropy.class, args);
 	}
 
 	@OpMethod(
@@ -893,9 +893,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Shanbhag.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Shanbhag.class)
 	public Object shanbhag(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Shanbhag.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Shanbhag.class, args);
 	}
 
 	@OpMethod(
@@ -946,9 +946,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Triangle.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Triangle.class)
 	public Object triangle(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Triangle.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Triangle.class, args);
 	}
 
 	@OpMethod(
@@ -999,9 +999,9 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.ThresholdOps.Yen.class)
+	@OpMethod(op = net.imagej.ops.Ops.Threshold.Yen.class)
 	public Object yen(final Object... args) {
-		return ops().run(net.imagej.ops.ThresholdOps.Yen.class, args);
+		return ops().run(net.imagej.ops.Ops.Threshold.Yen.class, args);
 	}
 
 	@OpMethod(

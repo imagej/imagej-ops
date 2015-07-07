@@ -31,14 +31,14 @@
 package net.imagej.ops.stats.variance;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "variance" function.
  * 
  * @author Christian Dietz
  */
-public interface Variance<T, V> extends StatsOps.Variance,
+public interface Variance<T, V> extends Ops.Stats.Variance,
 	Function<Iterable<T>, V>
 {
 	// NB: Marker interface.

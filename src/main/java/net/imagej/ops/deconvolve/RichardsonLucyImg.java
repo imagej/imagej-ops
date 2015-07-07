@@ -30,9 +30,9 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.DeconvolveOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = DeconvolveOps.RichardsonLucy.NAME,
+@Plugin(type = Op.class, name = Ops.Deconvolve.RichardsonLucy.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterImg<I, O, K, C>

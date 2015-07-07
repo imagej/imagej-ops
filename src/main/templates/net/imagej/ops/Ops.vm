@@ -33,34 +33,28 @@ package net.imagej.ops;
 import net.imagej.ops.Op;
 
 /**
- * Static utility class containing built-in op interfaces of the
-#if ($namespace)
-#set ($prefix = "${namespace}.")
- * $namespace namespace.
-#else
-#set ($prefix = "")
- * global namespace.
-#end
+ * Static utility class containing built-in op interfaces.
  * <p>
  * These interfaces are intended to mark all ops using a particular name,
- * regardless of their exact functionality. For example, all ops called
- * "${ops.get(0).name}" would be marked by implementing the
- * {@code $className.${ops.get(0).iface}} interface, and annotating them with:
+ * regardless of their exact functionality. For example, all ops called "eval"
+ * would be marked by implementing the {@code Ops.Eval} interface, and
+ * annotating them with:
  * </p>
  * <pre>
- * @Plugin(type = Op.class, name = $className.${ops.get(0).iface}.NAME)
+ * @Plugin(type = Op.class, name = Ops.Eval.NAME)
  * </pre>
  *
 #foreach ($author in $authors)
  * @author $author
 #end
  */
-public final class $className {
+public final class Ops {
 
-	private $className() {
+	private Ops() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
+#set ($opClass = $op.iface)
 
 	/**
 	 * Base interface for "$op.name" operations.
@@ -70,25 +64,67 @@ public final class $className {
 	 *
 	 * <pre>
 #if ($op.aliases)
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = $className.${op.iface}.ALIASES) })
+	 * @Plugin(type = Op.class, name = Ops.${opClass}.NAME,
+	 *   attrs = { @Attr(name = "aliases", value = Ops.${opClass}.ALIASES) })
 #else
-	 * @Plugin(type = Op.class, name = $className.${op.iface}.NAME)
+	 * @Plugin(type = Op.class, name = Ops.${opClass}.NAME)
 #end
 	 * </pre>
 	 */
-	public interface $op.iface extends Op {
-		String NAME = "$prefix$op.name";
+	public interface $opClass extends Op {
+		String NAME = "$op.name";
 #if ($op.aliases)
 		String ALIASES = "##
 #set ($first = true)
 #foreach ($alias in $op.aliases)
 #if ($first)#set ($first = false)#else, #end
-$prefix$alias##
-#end
+$alias##
+#end##foreach ($alias in $op.aliases)
 ";
-#end
+#end##if ($op.aliases)
 	}
+#end##foreach ($op in $ops)
+#foreach ($ns in $namespaces)
+#set ($nsClass = $ns.iface)
+
+	/** Built-in op interfaces of the $ns.name namespace. */
+	public static final class $nsClass {
+
+		private $nsClass() {
+			// NB: Prevent instantiation of utility class.
+		}
+#foreach ($op in $ns.ops)
+#set ($opClass = $op.iface)
+
+		/**
+		 * Base interface for "$op.name" operations.
+		 * <p>
+		 * Implementing classes should be annotated with:
+		 * </p>
+		 *
+		 * <pre>
+#if ($op.aliases)
+		 * @Plugin(type = Op.class, name = Ops.${nsClass}.${opClass}.NAME,
+		 *   attrs = { @Attr(name = "aliases", value = Ops.${nsClass}.${opClass}.ALIASES) })
+#else
+		 * @Plugin(type = Op.class, name = Ops.${nsClass}.${opClass}.NAME)
 #end
+		 * </pre>
+		 */
+		public interface $opClass extends Op {
+			String NAME = "${ns.name}.$op.name";
+#if ($op.aliases)
+			String ALIASES = "##
+#set ($first = true)
+#foreach ($alias in $op.aliases)
+#if ($first)#set ($first = false)#else, #end
+${ns.name}.$alias##
+#end##foreach ($alias in $op.aliases)
+";
+#end##if ($op.aliases)
+		}
+#end##foreach ($op in $ns.ops)
+	}
+#end##foreach ($ns in $namespaces)
 
 }

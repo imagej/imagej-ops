@@ -30,14 +30,14 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.LogicOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = LogicOps.Or.NAME)
-public class OrCondition<T> extends AbstractCondition<T> implements LogicOps.Or
+@Plugin(type = Op.class, name = Ops.Logic.Or.NAME)
+public class OrCondition<T> extends AbstractCondition<T> implements Ops.Logic.Or
 {
 
 	@Parameter

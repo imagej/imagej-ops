@@ -33,7 +33,7 @@ package net.imagej.ops.math.add;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.MathOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.math.add.AddConstantToNumericType;
@@ -59,7 +59,7 @@ public class AddConstantToNumericTypeTest extends AbstractOpTest {
 	public void testAdd() {
 		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
 		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
-		final Op op = ops.op(MathOps.Add.class, a, a, b);
+		final Op op = ops.op(Ops.Math.Add.class, a, a, b);
 		assertSame(AddConstantToNumericType.class, op.getClass());
 
 		op.run();

@@ -31,7 +31,7 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.LogicOps;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Attr;
@@ -51,7 +51,7 @@ public final class PrimitiveLogic {
 #foreach ($type in $types)
 #foreach ($op in $ops)
 #if ($op.codes.contains($type.code))
-#set ($iface = "LogicOps.$op.name")
+#set ($iface = "Ops.Logic.$op.name")
 
 	/** Op that $op.verbs#if ($op.unary) a $type.primitive value#else two $type.primitive values#end. */
 	@Plugin(type = Op.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)

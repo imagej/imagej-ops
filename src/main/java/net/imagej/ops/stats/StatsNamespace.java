@@ -33,7 +33,7 @@ package net.imagej.ops.stats;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.misc.Size;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
 import net.imagej.ops.stats.sum.Sum;
@@ -53,7 +53,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- max --
 
 	public Object max(final Object... args) {
-		return ops().run(StatsOps.Max.NAME, args);
+		return ops().run(Ops.Stats.Max.NAME, args);
 	}
 
 	public <T extends RealType<T>> T max(final T out, final Iterable<T> in) {
@@ -66,7 +66,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- mean --
 
 	public Object mean(final Object... args) {
-		return ops().run(StatsOps.Mean.NAME, args);
+		return ops().run(Ops.Stats.Mean.NAME, args);
 	}
 
 	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
@@ -101,7 +101,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- median --
 
 	public Object median(final Object... args) {
-		return ops().run(StatsOps.Median.NAME, args);
+		return ops().run(Ops.Stats.Median.NAME, args);
 	}
 
 	public <T extends RealType<T>> T median(final T out, final Iterable<T> in) {
@@ -114,7 +114,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- min --
 
 	public Object min(final Object... args) {
-		return ops().run(StatsOps.Min.NAME, args);
+		return ops().run(Ops.Stats.Min.NAME, args);
 	}
 
 	public <T extends RealType<T>> T min(final T out, final Iterable<T> in) {
@@ -127,7 +127,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- minMax --
 
 	public Object minMax(final Object... args) {
-		return ops().run(StatsOps.MinMax.NAME, args);
+		return ops().run(Ops.Stats.MinMax.NAME, args);
 	}
 
 	public <T extends RealType<T>> List<T> minMax(final Iterable<T> img) {
@@ -140,13 +140,13 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- quantile --
 
 	public Object quantile(final Object... args) {
-		return ops().run(StatsOps.Quantile.NAME, args);
+		return ops().run(Ops.Stats.Quantile.NAME, args);
 	}
 
 	// -- size --
 
 	public Object size(final Object... args) {
-		return ops().run(StatsOps.Size.NAME, args);
+		return ops().run(Ops.Stats.Size.NAME, args);
 	}
 
 	public LongType size(final LongType out, final IterableInterval<?> in) {
@@ -164,7 +164,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- stdDev --
 
 	public Object stdDev(final Object... args) {
-		return ops().run(StatsOps.StdDeviation.NAME, args);
+		return ops().run(Ops.Stats.StdDeviation.NAME, args);
 	}
 
 	public <T extends RealType<T>> T stdDev(final T out, final Iterable<T> in) {
@@ -194,7 +194,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- sum --
 
 	public Object sum(final Object... args) {
-		return ops().run(StatsOps.Sum.NAME, args);
+		return ops().run(Ops.Stats.Sum.NAME, args);
 	}
 
 	public <T extends RealType<T>, V extends RealType<V>> V sum(final V out,
@@ -209,7 +209,7 @@ public class StatsNamespace extends AbstractNamespace {
 	// -- variance --
 
 	public Object variance(final Object... args) {
-		return ops().run(StatsOps.Variance.NAME, args);
+		return ops().run(Ops.Stats.Variance.NAME, args);
 	}
 
 	public <T extends RealType<T>> DoubleType variance(final DoubleType out,

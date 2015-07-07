@@ -33,7 +33,7 @@ package net.imagej.ops.threshold.global.image;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.ThresholdOps;
+import net.imagej.ops.Ops;
 import net.imagej.ops.map.MapIterableToIterable;
 import net.imagej.ops.threshold.global.pixel.ApplyThresholdComparable;
 import net.imglib2.type.logic.BitType;
@@ -50,11 +50,11 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = ThresholdOps.Apply.NAME,
+@Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, Iterable<BitType>> implements
-	ThresholdOps.Apply
+	Ops.Threshold.Apply
 {
 
 	@Parameter

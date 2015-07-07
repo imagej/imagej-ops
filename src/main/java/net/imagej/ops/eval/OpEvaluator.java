@@ -33,8 +33,6 @@ package net.imagej.ops.eval;
 import java.util.Deque;
 import java.util.HashMap;
 
-import net.imagej.ops.LogicOps;
-import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -71,53 +69,53 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 		// -- transpose, power --
 		//opMap.put(Operators.TRANSPOSE, "transpose");
 		//opMap.put(Operators.DOT_TRANSPOSE, "dotTranspose");
-		opMap.put(Operators.POW, MathOps.Power.NAME);
+		opMap.put(Operators.POW, Ops.Math.Power.NAME);
 		//opMap.put(Operators.DOT_POW, "dotPow");
 
 		// -- unary --
 		opMap.put(Operators.POS, Ops.Identity.NAME);
-		opMap.put(Operators.NEG, MathOps.Negate.NAME);
+		opMap.put(Operators.NEG, Ops.Math.Negate.NAME);
 		//opMap.put(Operators.COMPLEMENT, "complement");
 		//opMap.put(Operators.NOT, "not");
 
 		// -- multiplicative --
-		opMap.put(Operators.MUL, MathOps.Multiply.NAME);
-		opMap.put(Operators.DIV, MathOps.Divide.NAME);
-		opMap.put(Operators.MOD, MathOps.Remainder.NAME);
+		opMap.put(Operators.MUL, Ops.Math.Multiply.NAME);
+		opMap.put(Operators.DIV, Ops.Math.Divide.NAME);
+		opMap.put(Operators.MOD, Ops.Math.Remainder.NAME);
 		//opMap.put(Operators.RIGHT_DIV, "rightDiv");
 		//opMap.put(Operators.DOT_DIV, "dotDiv");
 		//opMap.put(Operators.DOT_RIGHT_DIV, "dotRightDiv");
 
 		// -- additive --
-		opMap.put(Operators.ADD, MathOps.Add.NAME);
-		opMap.put(Operators.SUB, MathOps.Subtract.NAME);
+		opMap.put(Operators.ADD, Ops.Math.Add.NAME);
+		opMap.put(Operators.SUB, Ops.Math.Subtract.NAME);
 
 		// -- shift --
-		opMap.put(Operators.LEFT_SHIFT, MathOps.LeftShift.NAME);
-		opMap.put(Operators.RIGHT_SHIFT, MathOps.RightShift.NAME);
-		opMap.put(Operators.UNSIGNED_RIGHT_SHIFT, MathOps.UnsignedRightShift.NAME);
+		opMap.put(Operators.LEFT_SHIFT, Ops.Math.LeftShift.NAME);
+		opMap.put(Operators.RIGHT_SHIFT, Ops.Math.RightShift.NAME);
+		opMap.put(Operators.UNSIGNED_RIGHT_SHIFT, Ops.Math.UnsignedRightShift.NAME);
 
 		// -- colon --
 		//opMap.put(Operators.COLON, "colon");
 
 		// -- relational --
-		opMap.put(Operators.LESS_THAN, LogicOps.LessThan.NAME);
-		opMap.put(Operators.GREATER_THAN, LogicOps.GreaterThan.NAME);
-		opMap.put(Operators.LESS_THAN_OR_EQUAL, LogicOps.LessThanOrEqual.NAME);
-		opMap.put(Operators.GREATER_THAN_OR_EQUAL, LogicOps.GreaterThanOrEqual.NAME);
+		opMap.put(Operators.LESS_THAN, Ops.Logic.LessThan.NAME);
+		opMap.put(Operators.GREATER_THAN, Ops.Logic.GreaterThan.NAME);
+		opMap.put(Operators.LESS_THAN_OR_EQUAL, Ops.Logic.LessThanOrEqual.NAME);
+		opMap.put(Operators.GREATER_THAN_OR_EQUAL, Ops.Logic.GreaterThanOrEqual.NAME);
 		//opMap.put(Operators.INSTANCEOF, "instanceof");
 
 		// -- equality --
-		opMap.put(Operators.EQUAL, LogicOps.Equal.NAME);
-		opMap.put(Operators.NOT_EQUAL, LogicOps.NotEqual.NAME);
+		opMap.put(Operators.EQUAL, Ops.Logic.Equal.NAME);
+		opMap.put(Operators.NOT_EQUAL, Ops.Logic.NotEqual.NAME);
 
 		// -- bitwise --
-		opMap.put(Operators.BITWISE_AND, MathOps.And.NAME);
-		opMap.put(Operators.BITWISE_OR, MathOps.Or.NAME);
+		opMap.put(Operators.BITWISE_AND, Ops.Math.And.NAME);
+		opMap.put(Operators.BITWISE_OR, Ops.Math.Or.NAME);
 
 		// -- logical --
-		opMap.put(Operators.LOGICAL_AND, LogicOps.And.NAME);
-		opMap.put(Operators.LOGICAL_OR, LogicOps.Or.NAME);
+		opMap.put(Operators.LOGICAL_AND, Ops.Logic.And.NAME);
+		opMap.put(Operators.LOGICAL_OR, Ops.Logic.Or.NAME);
 	}
 
 	// -- OpEvaluator methods --

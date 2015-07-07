@@ -31,8 +31,8 @@
 package net.imagej.ops.math.add;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.MathOps;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.planar.PlanarImg;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -41,8 +41,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = MathOps.Add.NAME)
-public class AddConstantToPlanarDoubleImage implements MathOps.Add, Contingent {
+@Plugin(type = Op.class, name = Ops.Math.Add.NAME)
+public class AddConstantToPlanarDoubleImage implements Ops.Math.Add, Contingent {
 
 	@Parameter(type = ItemIO.BOTH)
 	private PlanarImg<DoubleType, DoubleArray> image;

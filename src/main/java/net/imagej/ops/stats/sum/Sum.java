@@ -31,13 +31,13 @@
 package net.imagej.ops.stats.sum;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "sum" function.
  * 
  * @author Christian Dietz
  */
-public interface Sum<I, O> extends StatsOps.Sum, Function<I, O> {
+public interface Sum<I, O> extends Ops.Stats.Sum, Function<I, O> {
 	// NB: Marker interface.
 }

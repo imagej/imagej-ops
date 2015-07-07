@@ -31,13 +31,13 @@
 package net.imagej.ops.stats.quantile;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.StatsOps;
+import net.imagej.ops.Ops;
 
 /**
  * A typed "quantile" function.
  * 
  * @author Christian Dietz
  */
-public interface Quantile<T, V> extends StatsOps.Quantile, Function<T, V> {
+public interface Quantile<T, V> extends Ops.Stats.Quantile, Function<T, V> {
 	// NB: Marker interface.
 }
