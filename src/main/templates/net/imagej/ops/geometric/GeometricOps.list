@@ -1,0 +1,13 @@
+[GeometricOps.java]
+className = "GeometricOps"
+authors = ["Christian Dietz", "Daniel Seebacher", "Andreas Graumann"]
+ops = ```
+[
+	[name: "moore-contour", iface: "MooreContourOp"],
+	[name: "convex-hull", iface: "ConvexHullOp"],
+	[name: "bounding-box", iface: "BoundingBoxOp"],
+	[name: "center-of-gravity", iface: "CenterOfGravityOp"],
+	[name: "smallest-enclosing-rectangle", iface: "SmallestEnclosingRectangleOp"],
+	[name: "feret-result", iface: "FeretResultOp"]
+]
+```
