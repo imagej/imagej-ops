@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel;
+package net.imagej.ops.create;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
@@ -43,7 +43,7 @@ import org.junit.Test;
  * 
  * @author Brian Northan
  */
-public class KernelTest extends AbstractOpTest {
+public class CreateKernelTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
