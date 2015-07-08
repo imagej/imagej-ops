@@ -28,21 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.convolve;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
-import net.imglib2.Cursor;
+import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convolve op for (@link RandomAccessibleInterval)
+ * Convolve op for (@link Img)
  * 
  * @author Brian Northan
  * @param <I>
@@ -50,26 +55,33 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Convolve.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends LinearFFTFilterRAI<I, O, K, C>
+@Plugin(type = Op.class, name = Ops.Filter.Convolve.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve,
+	Contingent
 {
 
+	@Parameter
+	private OpService ops;
+
 	/**
-	 * Perform convolution by multiplying the FFTs in the frequency domain TODO
-	 * use an op here??
+	 * run the filter (ConvolveFFTRAI) on the rais
 	 */
 	@Override
-	protected void frequencyOperation(Img<C> a, Img<C> b) {
-		final Cursor<C> cursorA = a.cursor();
-		final Cursor<C> cursorB = b.cursor();
-
-		while (cursorA.hasNext()) {
-			cursorA.fwd();
-			cursorB.fwd();
-
-			cursorA.get().mul(cursorB.get());
-		}
+	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
+		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+	{
+		ops.filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
+			fftKernel, output);
 	}
+
+	@Override
+	public boolean conforms() {
+		// TODO: only conforms if the kernel is sufficiently large (else the
+		// naive approach should be used) -> what is a good heuristic??
+		return Intervals.numElements(getKernel()) > 9;
+	}
+
 }

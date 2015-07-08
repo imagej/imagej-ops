@@ -28,12 +28,13 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.convolve;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
@@ -63,13 +64,13 @@ public class ConvolveTest extends AbstractOpTest {
 		Img<FloatType> kernel =
 			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
 
-		Op op = ops.op("convolve", in, kernel);
+		Op op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// we should get ConvolveNaive
 		assertSame(ConvolveNaiveImg.class, op.getClass());
 
 		// make sure it runs
-		Img<FloatType> out = ops.convolve(in, kernel);
+		Img<FloatType> out = ops.filter().convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
@@ -78,13 +79,13 @@ public class ConvolveTest extends AbstractOpTest {
 		kernel =
 			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
 
-		op = ops.op("convolve", in, kernel);
+		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// this time we should get ConvolveFFT
 		assertSame(ConvolveFFTImg.class, op.getClass());
 
 		// make sure it runs
-		out = ops.convolve(in, kernel);
+		out = ops.filter().convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
@@ -121,7 +122,7 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> out = ops.convolve(null, in, kernel, borderSize);
+		Img<FloatType> out = ops.filter().convolve(null, in, kernel, borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 =
@@ -139,11 +140,11 @@ public class ConvolveTest extends AbstractOpTest {
 		createMemory.run();
 
 		// run convolve using the rai version with the memory created above
-		ops.convolve(createMemory.getRAIExtendedInput(),
+		ops.filter().convolve(createMemory.getRAIExtendedInput(),
 			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
 			createMemory.getFFTKernel(), out2);
 
-		ops.convolve(createMemory.getRAIExtendedInput(), null,
+		ops.filter().convolve(createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
 		ops.stats().sum(outSum, out);

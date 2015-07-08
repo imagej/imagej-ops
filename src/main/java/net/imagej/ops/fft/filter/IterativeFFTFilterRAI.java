@@ -152,8 +152,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops.convolve(raiExtendedEstimate, null, getFFTInput(), getFFTKernel(),
-			raiExtendedReblurred, true, false);
+		ops.filter().convolve(raiExtendedEstimate, null, getFFTInput(),
+			getFFTKernel(), raiExtendedReblurred, true, false);
 	}
 
 	abstract protected void performIteration();

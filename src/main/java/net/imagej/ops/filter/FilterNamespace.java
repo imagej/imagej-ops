@@ -36,8 +36,13 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
+import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -49,6 +54,257 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Namespace.class)
 public class FilterNamespace extends AbstractNamespace {
+
+	// -- convolve --
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = Ops.Filter.Convolve.class)
+	public Object convolve(final Object... args) {
+		return ops().run(Ops.Filter.Convolve.NAME, args);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<I> in, final RandomAccessibleInterval<K> kernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, in, kernel);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long... borderSize)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel, borderSize);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel, borderSize,
+				obfInput);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel, borderSize,
+				obfInput, obfKernel);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel, borderSize,
+				obfInput, obfKernel, outType);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
+	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(Ops.Filter.Convolve.NAME, out, in, kernel, borderSize,
+				obfInput, obfKernel, outType, outFactory);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> convolve(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType, fftFactory);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveNaive.class)
+	public <I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
+		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,
+			final RandomAccessible<I> in, final RandomAccessibleInterval<K> kernel)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveNaive.class, out, in, kernel);
+		return result;
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void
+		convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
+			performInputFFT);
+	}
+
+	/** Executes the "convolve" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT)
+	{
+		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
+			performInputFFT, performKernelFFT);
+	}
+
+	// -- gauss --
 
 	/** Executes the "gauss" operation on the given arguments. */
 	@OpMethod(op = Ops.Filter.Gauss.class)

@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
@@ -51,10 +51,10 @@ import org.scijava.plugin.Plugin;
 /**
  * Convolves an image naively (no FFTs).
  */
-@Plugin(type = Op.class, name = Ops.Convolve.NAME,
+@Plugin(type = Op.class, name = Ops.Filter.Convolve.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractFilterImg<I, O, K> implements Contingent, Ops.Convolve
+	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
 	@Parameter
@@ -84,7 +84,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 		RandomAccessibleInterval<O> extendedOut =
 			Views.interval(Views.extend(out, obfOutput), out);
 
-		ops.convolve(extendedOut, extendedIn, getKernel());
+		ops.filter().convolve(extendedOut, extendedIn, getKernel());
 	}
 
 	@Override

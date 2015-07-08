@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
@@ -49,11 +49,11 @@ import org.scijava.plugin.Plugin;
 /**
  * Convolves an image naively.
  */
-@Plugin(type = Op.class, name = Ops.Convolve.NAME)
+@Plugin(type = Op.class, name = Ops.Filter.Convolve.NAME)
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
 	AbstractStrictFunction<RandomAccessible<I>, RandomAccessibleInterval<O>>
-	implements Contingent, Ops.Convolve
+	implements Ops.Filter.Convolve, Contingent
 {
 
 	@Parameter
