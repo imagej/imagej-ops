@@ -9,32 +9,22 @@ authors = ```
 ```
 ops = ```
 [
-	[name: "ascii",       iface: "ASCII"],
 	[name: "convert",     iface: "Convert"],
 	[name: "convolve",    iface: "Convolve"],
 	[name: "correlate",   iface: "Correlate"],
-	[name: "crop",        iface: "Crop",           aliases: ["slice"]],
-	[name: "equation",    iface: "Equation"],
 	[name: "eval",        iface: "Eval"],
 	[name: "fft",         iface: "FFT"],
 	[name: "fftSize",     iface: "FFTSize"],
 	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],
-	[name: "gaussKernel", iface: "GaussKernel"],
 	[name: "help",        iface: "Help"],
-	[name: "histogram",   iface: "Histogram"],
 	[name: "identity",    iface: "Identity"],
 	[name: "ifft",        iface: "IFFT"],
-	[name: "invert",      iface: "Invert"],
 	[name: "join",        iface: "Join"],
 	[name: "log",         iface: "Log"],
-	[name: "logKernel",   iface: "LogKernel"],
 	[name: "loop",        iface: "Loop"],
 	[name: "map",         iface: "Map"],
-	[name: "normalize",   iface: "Normalize",      aliases: ["norm"]],
 	[name: "op",          iface: "Lookup"],
-	[name: "project",     iface: "Project"],
 	[name: "run",         iface: "Run"],
-	[name: "scale",       iface: "Scale",          aliases: ["resize"]],
 	[name: "slicewise",   iface: "Slicewise"]
 ]
 ```
@@ -45,6 +35,8 @@ namespaces = ```
 		[name: "imgLabeling",        iface: "ImgLabeling"],
 		[name: "imgPlus",            iface: "ImgPlus"],
 		[name: "integerType",        iface: "IntegerType"],
+		[name: "kernelGauss",        iface: "KernelGauss"],
+		[name: "kernelLog",          iface: "KernelLog"],
 		[name: "labelingMapping",    iface: "LabelingMapping"],
 		[name: "type",               iface: "Type"],
 		[name: "imgFactory",         iface: "ImgFactory"],
@@ -53,6 +45,16 @@ namespaces = ```
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [
 		[name: "richardsonLucy",     iface: "RichardsonLucy"]
+	]],
+	[name: "image",      iface: "Image", ops: [
+		[name: "ascii",              iface: "ASCII"],
+		[name: "crop",               iface: "Crop",                aliases: ["slice"]],
+		[name: "equation",           iface: "Equation"],
+		[name: "histogram",          iface: "Histogram"],
+		[name: "invert",             iface: "Invert"],
+		[name: "normalize",          iface: "Normalize",           aliases: ["norm"]],
+		[name: "project",            iface: "Project"],
+		[name: "scale",              iface: "Scale",               aliases: ["resize"]]
 	]],
 	[name: "labeling",   iface: "Labeling", ops: [
 		[name: "cca",                iface: "CCA",                 aliases: ["connected-components", "connected-component-analysis"]]

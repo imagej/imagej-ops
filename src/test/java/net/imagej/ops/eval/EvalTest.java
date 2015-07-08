@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Eval;
+import net.imagej.ops.Ops;
 
 import org.junit.Test;
 

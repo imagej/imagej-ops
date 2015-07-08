@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
@@ -50,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = ComputeThreshold.class, name = Ops.Threshold.Minimum.NAME)
+@Plugin(type = Op.class, name = Ops.Threshold.Minimum.NAME)
 public class ComputeMinimumThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

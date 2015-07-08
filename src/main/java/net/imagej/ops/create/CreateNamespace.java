@@ -34,12 +34,15 @@ import net.imagej.ImgPlus;
 import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
+import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 
 /**
@@ -246,6 +249,237 @@ public class CreateNamespace extends AbstractNamespace {
 			(IntegerType) ops().run(
 				net.imagej.ops.create.integerType.DefaultCreateIntegerType.class,
 				maxValue);
+		return result;
+	}
+
+	// -- kernelGauss --
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(op = Ops.Create.KernelGauss.class)
+	public Object kernelGauss(final Object... args) {
+		return ops().run(Ops.Create.KernelGauss.NAME, args);
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final int numDimensions,
+		final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
+		final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				outType, numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				outType, fac, numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
+	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
+		final ImgFactory<T> fac, final int numDimensions, final double sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
+				outType, fac, numDimensions, sigma, calibration);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
+		final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
+		final Type<T> outType, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
+				sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
+				fac, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelGauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
+				fac, sigma, calibration);
+		return result;
+	}
+
+	// -- kernelLog --
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = Ops.Create.KernelLog.class)
+	public Object kernelLog(final Object... args) {
+		return ops().run(Ops.Create.KernelLog.NAME, args);
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
+	public
+		<T extends ComplexType<T>> Img<T> kernelLog(final int numDimensions,
+			final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
+	public
+		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
+			final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				outType, numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
+	public
+		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
+			final ImgFactory<T> fac, final int numDimensions, final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				outType, fac, numDimensions, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
+	public
+		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
+			final ImgFactory<T> fac, final int numDimensions, final double sigma,
+			final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(
+				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
+				outType, fac, numDimensions, sigma, calibration);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
+		final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+				sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
+		final Type<T> outType, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+				outType, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
+		final Type<T> outType, final ImgFactory<T> fac, final double... sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+				outType, fac, sigma);
+		return result;
+	}
+
+	/** Executes the "kernelLog" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
+	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
+		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
+		final double... calibration)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
+				outType, fac, sigma, calibration);
 		return result;
 	}
 

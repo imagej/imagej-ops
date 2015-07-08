@@ -30,7 +30,8 @@
 
 package net.imagej.ops.fft.size;
 
-import net.imagej.ops.Ops.FFTSize;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.FinalDimensions;
 import net.imglib2.algorithm.fft2.FFTMethods;
 
@@ -41,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  */
-@Plugin(type = FFTSize.class, name = FFTSize.NAME)
+@Plugin(type = Op.class, name = Ops.FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {
 
 	@Override

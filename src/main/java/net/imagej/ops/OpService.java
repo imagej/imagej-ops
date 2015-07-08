@@ -35,27 +35,23 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ImageJService;
-import net.imagej.ImgPlus;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -190,24 +186,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Collection<String> ops();
 
 	// -- Operation shortcuts - global namespace --
-
-	/** Executes the "ascii" operation on the given arguments. */
-	@OpMethod(op = Ops.ASCII.class)
-	Object ascii(Object... args);
-
-	/** Executes the "ascii" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(IterableInterval<T> image);
-
-	/** Executes the "ascii" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(IterableInterval<T> image,
-		RealType<T> min);
-
-	/** Executes the "ascii" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.ascii.DefaultASCII.class)
-	<T extends RealType<T>> String ascii(IterableInterval<T> image,
-		RealType<T> min, RealType<T> max);
 
 	/** Executes the "convert" operation on the given arguments. */
 	@OpMethod(op = Ops.Convert.class)
@@ -480,42 +458,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
 			final boolean performKernelFFT);
 
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = Ops.Crop.class)
-	Object crop(Object... args);
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(ImgPlus<T> in, Interval interval);
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.crop.CropImgPlus.class)
-	<T extends Type<T>> ImgPlus<T> crop(ImgPlus<T> in, Interval interval,
-		boolean dropSingleDimensions);
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in,
-		Interval interval);
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.crop.CropRAI.class)
-	<T> RandomAccessibleInterval<T> crop(RandomAccessibleInterval<T> in,
-		Interval interval, boolean dropSingleDimensions);
-
-	/** Executes the "equation" operation on the given arguments. */
-	@OpMethod(op = Ops.Equation.class)
-	Object equation(Object... args);
-
-	/** Executes the "equation" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
-	<T extends RealType<T>> IterableInterval<T> equation(String in);
-
-	/** Executes the "equation" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.equation.DefaultEquation.class)
-	<T extends RealType<T>> IterableInterval<T> equation(IterableInterval<T> out,
-		String in);
-
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)
 	Object eval(Object... args);
@@ -595,60 +537,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in,
 		double sigma);
 
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(op = Ops.GaussKernel.class)
-	Object gaussKernel(Object... args);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gaussKernel(int numDimensions,
-			double sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gaussKernel(Type<T> outType,
-			int numDimensions, double sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>> Img<T> gaussKernel(Type<T> outType,
-			ImgFactory<T> fac, int numDimensions, double sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricGaussianKernel.class)
-		<T extends ComplexType<T>>
-		Img<T>
-		gaussKernel(Type<T> outType, ImgFactory<T> fac, int numDimensions,
-			double sigma, double... calibration);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T>
-		gaussKernel(double... sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
-		Type<T> outType, double... sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
-		Type<T> outType, ImgFactory<T> fac, double... sigma);
-
-	/** Executes the "gaussKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateGaussianKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> gaussKernel(
-		Type<T> outType, ImgFactory<T> fac, double[] sigma, double... calibration);
-
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = Ops.Help.class)
 	Object help(Object... args);
@@ -668,18 +556,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
 	String help(String name, Class<? extends Op> opType);
-
-	/** Executes the "histogram" operation on the given arguments. */
-	@OpMethod(op = Ops.Histogram.class)
-	Object histogram(Object... args);
-
-	/** Executes the "histogram" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
-	<T extends RealType<T>> Histogram1d<T> histogram(Iterable<T> in);
-
-	/** Executes the "histogram" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.histogram.HistogramCreate.class)
-	<T extends RealType<T>> Histogram1d<T> histogram(Iterable<T> in, int numBins);
 
 	/** Executes the "identity" operation on the given arguments. */
 	@OpMethod(op = Ops.Identity.class)
@@ -702,15 +578,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.fft.methods.IFFTRAI.class)
 	<C extends ComplexType<C>, T extends RealType<T>> RandomAccessibleInterval<T>
 		ifft(RandomAccessibleInterval<T> out, RandomAccessibleInterval<C> in);
-
-	/** Executes the "invert" operation on the given arguments. */
-	@OpMethod(op = Ops.Invert.class)
-	Object invert(Object... args);
-
-	/** Executes the "invert" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.invert.InvertIterableInterval.class)
-	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
-		IterableInterval<O> out, IterableInterval<I> in);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = Ops.Join.class)
@@ -759,52 +626,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "log" operation on the given arguments. */
 	@OpMethod(op = Ops.Log.class)
 	Object log(Object... args);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(op = Ops.LogKernel.class)
-	Object logKernel(Object... args);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logKernel(int numDimensions, double sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
-		int numDimensions, double sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
-		ImgFactory<T> fac, int numDimensions, double sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.convolve.kernel.create.CreateSymmetricLogKernel.class)
-	<T extends ComplexType<T>> Img<T> logKernel(Type<T> outType,
-		ImgFactory<T> fac, int numDimensions, double sigma, double... calibration);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(double... sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
-		double... sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
-		ImgFactory<T> fac, double... sigma);
-
-	/** Executes the "logKernel" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convolve.kernel.create.CreateLogKernel.class)
-	<T extends ComplexType<T> & NativeType<T>> Img<T> logKernel(Type<T> outType,
-		ImgFactory<T> fac, double[] sigma, double... calibration);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = Ops.Loop.class)
@@ -872,39 +693,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
 	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, Function<A, B> func);
 
-	/** Executes the "normalize" operation on the given arguments. */
-	@OpMethod(op = Ops.Normalize.class)
-	Object normalize(Object... args);
-
-	/** Executes the "normalize" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.normalize.NormalizeRealType.class)
-	<T extends RealType<T>> T normalize(T out, T in, double oldMin,
-		double newMin, double newMax, double factor);
-
-	@OpMethod(op = net.imagej.ops.normalize.NormalizeIterableInterval.class)
-	<T extends RealType<T>> IterableInterval<T> normalize(
-		IterableInterval<T> out, IterableInterval<T> in);
-
-	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(op = Ops.Project.class)
-	Object project(Object... args);
-
-	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(ops = {
-		net.imagej.ops.project.parallel.DefaultProjectParallel.class,
-		net.imagej.ops.project.ProjectRAIToIterableInterval.class })
-	<T, V> IterableInterval<V> project(IterableInterval<V> out,
-		RandomAccessibleInterval<T> in, Function<Iterable<T>, V> method, int dim);
-
-	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = Ops.Scale.class)
-	Object scale(Object... args);
-
-	/** Executes the "scale" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.scale.ScaleImg.class)
-	<T extends RealType<T>> Img<T> scale(Img<T> in, double[] scaleFactors,
-		InterpolatorFactory<T, RandomAccessible<T>> interpolator);
-
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = Ops.Slicewise.class)
 	Object slicewise(Object... args);
@@ -927,6 +715,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
+
+	/** Gateway into ops of the "image" namespace. */
+	ImageNamespace image();
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();

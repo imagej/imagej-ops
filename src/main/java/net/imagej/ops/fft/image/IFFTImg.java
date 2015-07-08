@@ -34,7 +34,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.IFFT;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
@@ -50,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <I>
  */
-@Plugin(type = IFFT.class, name = IFFT.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.IFFT.NAME, priority = Priority.HIGH_PRIORITY)
 public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
 {

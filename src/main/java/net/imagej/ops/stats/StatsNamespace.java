@@ -35,9 +35,9 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.misc.Size;
 import net.imagej.ops.stats.mean.Mean;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
+import net.imagej.ops.stats.size.Size;
 import net.imagej.ops.stats.sum.Sum;
 import net.imagej.ops.stats.variance.Variance;
 import net.imglib2.IterableInterval;
@@ -143,11 +143,11 @@ public class StatsNamespace extends AbstractNamespace {
 		return ops().run(Ops.Stats.MinMax.NAME, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.misc.MinMaxRealType.class)
+	@OpMethod(op = net.imagej.ops.stats.minMax.MinMaxRealType.class)
 	public <T extends RealType<T>> List<T> minMax(final Iterable<T> img) {
 		@SuppressWarnings("unchecked")
 		final List<T> result =
-			(List<T>) ops().run(net.imagej.ops.misc.MinMaxRealType.class, img);
+			(List<T>) ops().run(net.imagej.ops.stats.minMax.MinMaxRealType.class, img);
 		return result;
 	}
 
@@ -202,17 +202,17 @@ public class StatsNamespace extends AbstractNamespace {
 		return ops().run(Ops.Stats.Size.NAME, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.misc.SizeIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.stats.size.SizeIterableInterval.class)
 	public LongType size(final LongType out, final IterableInterval<?> in) {
 		final LongType result =
-			(LongType) ops().run(net.imagej.ops.misc.SizeIterableInterval.class, out, in);
+			(LongType) ops().run(net.imagej.ops.stats.size.SizeIterableInterval.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.misc.SizeIterable.class)
+	@OpMethod(op = net.imagej.ops.stats.size.SizeIterable.class)
 	public LongType size(final LongType out, final Iterable<?> in) {
 		final LongType result =
-			(LongType) ops().run(net.imagej.ops.misc.SizeIterable.class, out, in);
+			(LongType) ops().run(net.imagej.ops.stats.size.SizeIterable.class, out, in);
 		return result;
 	}
 

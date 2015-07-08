@@ -30,7 +30,7 @@
 
 package net.imagej.ops.fft.size;
 
-import net.imagej.ops.Ops.FFTSize;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Brian Northan
  */
-public abstract class AbstractFFTSize implements FFTSize {
+public abstract class AbstractFFTSize implements Ops.FFTSize {
 
 	@Parameter
 	protected long[] inputSize;

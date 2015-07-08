@@ -34,7 +34,6 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.TypedAxis;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Project;
 import net.imagej.ops.stats.mean.Mean;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -71,7 +70,7 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 			out = new ImgPlus<T>(img, in);
 		}
 		int axisIndex = in.dimensionIndex(axis.type());
-		ops.project(out, in, method, axisIndex);
+		ops.image().project(out, in, method, axisIndex);
 	}
 
 	/* -- Wrapper classes to mark certain operations as projection methods --*/
