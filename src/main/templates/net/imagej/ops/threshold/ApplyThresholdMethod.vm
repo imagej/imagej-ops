@@ -3,7 +3,7 @@
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,55 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.commands.threshold;
+package net.imagej.ops.threshold;
 
-import net.imagej.ImgPlus;
+import java.util.List;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.Slicewise;
-import net.imagej.ops.threshold.ComputeThreshold;
-import net.imglib2.Axis;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.Ops;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)#
+ * Ops which computes and apply a global threshold to an {@link Img}.
  * 
- * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @author Brian Northan
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Op {
+public final class ApplyThresholdMethod {
 
-    @Parameter
-    private ComputeThreshold<ImgPlus<T>,T> method;
+	private ApplyThresholdMethod() {
+		// NB: Prevent instantiation of utility class.
+	}
 
-    @Parameter
-    private OpService ops;
+	/**
+	 * Dirty hack to coerce {@code Compute*Threshold} methods which have an extra
+	 * {@code errMsg} output. Eventually it might be nice to redesign how error
+	 * messages work for thresholding, to avoid polluting the output objects.
+	 */
+	private static <T> T unwrap(final List<Object> list) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) list.get(0);
+		return result;
+	}
+#foreach ($method in $methods)
 
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> in;
+	@Plugin(type = Op.class, name = Ops.Threshold.${method.iface}.NAME)
+	public static class ${method.iface}<T extends RealType<T>>
+		extends AbstractApplyThresholdImg<T, Img<T>>
+		implements Ops.Threshold.${method.iface}
+	{
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private ImgPlus<BitType> out;
+		@Parameter
+		private OpService ops;
 
-    // we need another widget for this!!
-    @Parameter(required=false)
-    private Axis[] axes;
+		@Override
+		public T getThreshold(final Img<T> input) {
+			final Histogram1d<T> hist = ops.image().histogram(input);
+#if ($method.list)
+			return unwrap(ops.threshold().${method.name}(hist));
+#else
+			return ops.threshold().${method.name}(hist);
+#end
+		}
+	}
+#end
 
-    @Override
-    public void run() {
-        Op threshold = ops.op("threshold", out, in, method);
-
-        // TODO actually map axes to int array
-        ops.slicewise(out, in, threshold, new int[]{0, 1});
-    }
-    
-    // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).
 }

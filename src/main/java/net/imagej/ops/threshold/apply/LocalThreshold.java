@@ -28,55 +28,62 @@
  * #L%
  */
 
-package net.imagej.ops.commands.threshold;
+package net.imagej.ops.threshold.apply;
 
-import net.imagej.ImgPlus;
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.Slicewise;
-import net.imagej.ops.threshold.ComputeThreshold;
-import net.imglib2.Axis;
+import net.imagej.ops.Ops;
+import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
+import net.imglib2.Cursor;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)#
- * 
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Op {
+@Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME)
+public class LocalThreshold<T extends RealType<T>>
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Ops.Threshold.Apply
+{
 
-    @Parameter
-    private ComputeThreshold<ImgPlus<T>,T> method;
+	@Parameter
+	private LocalThresholdMethod<T> method;
 
-    @Parameter
-    private OpService ops;
+	@Parameter
+	private Shape shape;
 
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> in;
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private ImgPlus<BitType> out;
-
-    // we need another widget for this!!
-    @Parameter(required=false)
-    private Axis[] axes;
-
-    @Override
-    public void run() {
-        Op threshold = ops.op("threshold", out, in, method);
-
-        // TODO actually map axes to int array
-        ops.slicewise(out, in, threshold, new int[]{0, 1});
-    }
-    
-    // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).
+	@Override
+	public RandomAccessibleInterval<BitType>
+		compute(RandomAccessibleInterval<T> input,
+			RandomAccessibleInterval<BitType> output)
+	{
+		// TODO: provide threaded implementation and specialized ones for
+		// rectangular neighborhoods (using integral images)
+		RandomAccessibleInterval<T> extInput =
+			Views.interval(Views.extend(input, outOfBounds), input);
+		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
+		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
+		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
+		Pair<T> pair = new Pair<T>();
+		for (final Neighborhood<T> neighborhood : neighborhoods) {
+			pair.neighborhood = neighborhood;
+			pair.pixel = inCursor.next();
+			method.compute(pair, outCursor.next());
+		}
+		return output;
+	}
 }

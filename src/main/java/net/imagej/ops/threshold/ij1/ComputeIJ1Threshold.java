@@ -28,40 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.local;
+package net.imagej.ops.threshold.ij1;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.stats.mean.Mean;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.Ops;
+import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
+// plugin found in Fiji (version 1.14). The method was ported from IJ1 by
+// Gabriel and somewhat enhanced ("re-implemented so we can ignore black/white
+// and set the bright or dark objects")
+
 /**
- * @author Martin Horn (University of Konstanz)
+ * Implements the default threshold method from ImageJ 1.x.
+ * 
+ * @author Barry DeZonia
+ * @author Gabriel Landini
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
-
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private Mean<Iterable<T>, DoubleType> mean;
+@Plugin(type = Op.class, name = Ops.Threshold.IJ1.NAME)
+public class ComputeIJ1Threshold<T extends RealType<T>> extends
+		AbstractComputeThresholdHistogram<T> {
 
 	@Override
-	public BitType compute(Pair<T> input, BitType output) {
-		if (mean == null) {
-			mean = ops.op(Mean.class, DoubleType.class, input.neighborhood);
+	public long computeBin(final Histogram1d<T> hist) {
+		long[] histogram = hist.toLongArray();
+		// Original IJ implementation for compatibility.
+		int level;
+		int maxValue = histogram.length - 1;
+		double result, sum1, sum2, sum3, sum4;
+
+		int min = 0;
+		while (histogram[min] == 0 && min < maxValue)
+			min++;
+		int max = maxValue;
+		while (histogram[max] == 0 && max > 0)
+			max--;
+		if (min >= max) {
+			level = histogram.length / 2;
+			return level;
 		}
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-		return output;
+
+		int movingIndex = min;
+		do {
+			sum1 = sum2 = sum3 = sum4 = 0.0;
+			for (int i = min; i <= movingIndex; i++) {
+				sum1 += i * histogram[i];
+				sum2 += histogram[i];
+			}
+			for (int i = movingIndex + 1; i <= max; i++) {
+				sum3 += i * histogram[i];
+				sum4 += histogram[i];
+			}
+			result = (sum1 / sum2 + sum3 / sum4) / 2.0;
+			movingIndex++;
+		} while (movingIndex + 1 <= result && movingIndex < max - 1);
+
+		level = (int) Math.round(result);
+		return level;
 	}
+
 }

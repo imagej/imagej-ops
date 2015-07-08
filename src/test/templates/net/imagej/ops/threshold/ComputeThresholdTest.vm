@@ -3,7 +3,7 @@
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -28,40 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.local;
+package net.imagej.ops.threshold;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.stats.mean.Mean;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * @author Martin Horn (University of Konstanz)
+ * Tests {@link ComputeThresholdHistogram} implementations.
+ * 
+ * @author Brian Northan
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+public class ComputeThresholdTest extends AbstractThresholdTest {
+#foreach ($method in $methods)
 
-	@Parameter
-	private double c;
-
-	@Parameter
-	private OpService ops;
-
-	private Mean<Iterable<T>, DoubleType> mean;
-
-	@Override
-	public BitType compute(Pair<T> input, BitType output) {
-		if (mean == null) {
-			mean = ops.op(Mean.class, DoubleType.class, input.neighborhood);
-		}
-		final DoubleType m = mean.compute(input.neighborhood, new DoubleType());
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
-		return output;
+	/** Tests {@link net.imagej.ops.threshold.${method.name}.Compute${method.name}Threshold}. */
+	@Test
+	public void test${method.iface}() {
+		final Object actual = ops.threshold().${method.name}(histogram());
+		assertThreshold($method.expected, actual);
 	}
+#end
+
 }
