@@ -41,8 +41,6 @@ import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.filter.FilterNamespace;
-import net.imagej.ops.filter.gauss.DefaultGaussRAI;
-import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;

@@ -33,14 +33,14 @@ package net.imagej.ops.benchmark;
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
-import net.imagej.ops.Ops;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
 import net.imagej.ops.map.MapIterableIntervalToRAI;
-import net.imagej.ops.map.MapParallel;
 import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableToRAIParallel;
+import net.imagej.ops.map.MapParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;

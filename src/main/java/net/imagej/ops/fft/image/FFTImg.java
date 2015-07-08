@@ -33,8 +33,6 @@ package net.imagej.ops.fft.image;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.methods.FFTRAI;
-import net.imagej.ops.fft.size.ComputeFFTSize;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
