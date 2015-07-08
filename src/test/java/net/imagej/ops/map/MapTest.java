@@ -253,24 +253,27 @@ public class MapTest extends AbstractOpTest {
 			assertEquals(inputC.get().get() + 1, outputRA.get().get());
 		}
 	}
-}
 
-// Helper classes
-class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	// -- Helper classes --
+	private static class AddOneInplace extends AbstractInplaceFunction<ByteType> {
 
-	@Override
-	public ByteType compute(final ByteType arg) {
-		arg.inc();
-		return arg;
+		@Override
+		public ByteType compute(final ByteType arg) {
+			arg.inc();
+			return arg;
+		}
 	}
-}
 
-class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
+	private static class AddOneFunctional extends
+		AbstractStrictFunction<ByteType, ByteType>
+	{
 
-	@Override
-	public ByteType compute(final ByteType input, final ByteType output) {
-		output.set(input);
-		output.inc();
-		return output;
+		@Override
+		public ByteType compute(final ByteType input, final ByteType output) {
+			output.set(input);
+			output.inc();
+			return output;
+		}
 	}
+
 }

@@ -891,7 +891,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "project" operation on the given arguments. */
 	@OpMethod(ops = {
-		net.imagej.ops.project.parallel.DefaultProjectParallel.class,
+		net.imagej.ops.project.DefaultProjectParallel.class,
 		net.imagej.ops.project.ProjectRAIToIterableInterval.class })
 	<T, V> IterableInterval<V> project(IterableInterval<V> out,
 		RandomAccessibleInterval<T> in, Function<Iterable<T>, V> method, int dim);

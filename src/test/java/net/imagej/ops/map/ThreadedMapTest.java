@@ -28,18 +28,13 @@
  * #L%
  */
 
-package net.imagej.ops.map.parallel;
+package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractInplaceFunction;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
-import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
-import net.imagej.ops.map.MapIterableIntervalToRAI;
-import net.imagej.ops.map.MapParallel;
-import net.imagej.ops.map.MapIterableToIterableParallel;
-import net.imagej.ops.map.MapIterableToRAIParallel;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -133,24 +128,26 @@ public class ThreadedMapTest extends AbstractOpTest {
 		}
 	}
 
-}
+	// Helper classes
+	private static class AddOneInplace extends AbstractInplaceFunction<ByteType> {
 
-// Helper classes
-class AddOneInplace extends AbstractInplaceFunction<ByteType> {
-
-	@Override
-	public ByteType compute(final ByteType arg) {
-		arg.inc();
-		return arg;
+		@Override
+		public ByteType compute(final ByteType arg) {
+			arg.inc();
+			return arg;
+		}
 	}
-}
 
-class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
+	private static class AddOneFunctional extends
+		AbstractStrictFunction<ByteType, ByteType>
+	{
 
-	@Override
-	public ByteType compute(final ByteType input, final ByteType output) {
-		output.set(input);
-		output.inc();
-		return output;
+		@Override
+		public ByteType compute(final ByteType input, final ByteType output) {
+			output.set(input);
+			output.inc();
+			return output;
+		}
 	}
+
 }

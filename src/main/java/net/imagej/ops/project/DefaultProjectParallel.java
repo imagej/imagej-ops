@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.project.parallel;
+package net.imagej.ops.project;
 
 import java.util.Iterator;
 
