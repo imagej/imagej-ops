@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Random;
@@ -85,12 +86,11 @@ public class AbstractThresholdTest extends AbstractOpTest {
 		return ops.image().histogram(in);
 	}
 
-	protected void assertThreshold(final Class<? extends Op> opClass,
-		final int expected)
-	{
-		Object result = ops.run(opClass, histogram());
-		if (result instanceof List) result = ListUtils.first((List<?>) result);
-		final UnsignedShortType threshold = (UnsignedShortType) result;
+	protected void assertThreshold(final int expected, final Object actual) {
+		final Object value =
+			actual instanceof List ? ListUtils.first((List<?>) actual) : actual;
+		assertTrue(value instanceof UnsignedShortType);
+		final UnsignedShortType threshold = (UnsignedShortType) value;
 		assertEquals(expected, threshold.get());
 	}
 

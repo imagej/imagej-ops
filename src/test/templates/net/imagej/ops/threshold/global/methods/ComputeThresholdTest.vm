@@ -35,16 +35,20 @@ import net.imagej.ops.threshold.AbstractThresholdTest;
 import org.junit.Test;
 
 /**
- * Tests {@link Compute${name}Threshold}.
+ * Tests {@link ComputeThresholdHistogram} implementations.
  * 
  * @author Brian Northan
  * @author Curtis Rueden
  */
-public class Compute${name}ThresholdTest extends AbstractThresholdTest {
+public class ComputeThresholdTest extends AbstractThresholdTest {
+#foreach ($method in $methods)
 
+	/** Tests {@link net.imagej.ops.threshold.${method.name}.Compute${method.name}Threshold}. */
 	@Test
-	public void testCompute${name}Threshold() {
-		assertThreshold(Compute${name}Threshold.class, $expected);
+	public void test${method.iface}() {
+		final Object actual = ops.threshold().${method.name}(histogram());
+		assertThreshold($method.expected, actual);
 	}
+#end
 
 }

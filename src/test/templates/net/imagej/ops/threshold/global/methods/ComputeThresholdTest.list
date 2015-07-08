@@ -1,63 +1,22 @@
-[ComputeHuangThresholdTest.java]
-name = "Huang"
-expected = 36874
-
-[ComputeIntermodesThresholdTest.java]
-name = "Intermodes"
-expected = 34859
-
-[ComputeIsoDataThresholdTest.java]
-name = "IsoData"
-expected = 33095
-
-[ComputeLiThresholdTest.java]
-name = "Li"
-expected = 26798
-
-[ComputeMaxEntropyThresholdTest.java]
-name = "MaxEntropy"
-expected = 28309
-
-[ComputeMaxLikelihoodThresholdTest.java]
-name = "MaxLikelihood"
-expected = 46698
-
-[ComputeMeanThresholdTest.java]
-name = "Mean"
-expected = 32591
-
-[ComputeMinErrorThresholdTest.java]
-name = "MinError"
-expected = 32843
-
-[ComputeMinimumThresholdTest.java]
-name = "Minimum"
-expected = 44935
-
-[ComputeMomentsThresholdTest.java]
-name = "Moments"
-expected = 34355
-
-[ComputeOtsuThresholdTest.java]
-name = "Otsu"
-expected = 34103
-
-[ComputePercentileThresholdTest.java]
-name = "Percentile"
-expected = 32088
-
-[ComputeRenyiEntropyThresholdTest.java]
-name = "RenyiEntropy"
-expected = 26546
-
-[ComputeShanbhagThresholdTest.java]
-name = "Shanbhag"
-expected = 27553
-
-[ComputeTriangleThresholdTest.java]
-name = "Triangle"
-expected = 34607
-
-[ComputeYenThresholdTest.java]
-name = "Yen"
-expected = 24531
+[ComputeThresholdTest.java]
+methods = ```
+[
+	[name: "huang",         iface: "Huang",         expected: 36874],
+	[name: "ij1",           iface: "IJ1",           expected: 31836],
+	[name: "intermodes",    iface: "Intermodes",    expected: 34859],
+	[name: "isoData",       iface: "IsoData",       expected: 33095],
+	[name: "li",            iface: "Li",            expected: 26798],
+	[name: "maxEntropy",    iface: "MaxEntropy",    expected: 28309],
+	[name: "maxLikelihood", iface: "MaxLikelihood", expected: 46698],
+	[name: "mean",          iface: "Mean",          expected: 32591],
+	[name: "minError",      iface: "MinError",      expected: 32843],
+	[name: "minimum",       iface: "Minimum",       expected: 44935],
+	[name: "moments",       iface: "Moments",       expected: 34355],
+	[name: "otsu",          iface: "Otsu",          expected: 34103],
+	[name: "percentile",    iface: "Percentile",    expected: 32088],
+	[name: "renyiEntropy",  iface: "RenyiEntropy",  expected: 26546],
+	[name: "shanbhag",      iface: "Shanbhag",      expected: 27553],
+	[name: "triangle",      iface: "Triangle",      expected: 34607],
+	[name: "yen",           iface: "Yen",           expected: 24531]
+]
+```
