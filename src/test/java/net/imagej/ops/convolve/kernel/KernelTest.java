@@ -97,12 +97,12 @@ public class KernelTest extends AbstractOpTest {
 		}
 
 		/*Img<FloatType> gaussianKernel =
-			(Img<FloatType>) ops.gaussKernel(sigmas, null, new FloatType(),
+			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType(),
 				new ArrayImgFactory());
 
 		// no factory
 		Img<FloatType> gaussianKernel2 =
-			(Img<FloatType>) ops.gaussKernel(sigmas, null, new FloatType());
+			(Img<FloatType>) ops.create().kernelGauss(sigmas, null, new FloatType());
 		*/
 		final Img<FloatType> gaussianKernel =
 			ops.create().kernelGauss(new FloatType(),
