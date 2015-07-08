@@ -28,68 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.crop;
+package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Crop;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
-import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.ItemIO;
-import org.scijava.Priority;
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import java.util.List;
+
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+
+import org.junit.Test;
 
 /**
- * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Crop.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Crop.ALIASES) },
-	priority = Priority.LOW_PRIORITY)
-public class CropRAI<T> implements Crop {
+public class NormalizeTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private RandomAccessibleInterval<T> out;
+	@Test
+	public void testNormalize() {
 
-	@Parameter
-	private RandomAccessibleInterval<T> in;
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-	@Parameter
-	protected Interval interval;
+		ops.image().normalize(out, in);
 
-	@Parameter(required = false)
-	private boolean dropSingleDimensions = true;
+		List<ByteType> minMax1 = ops.stats().minMax(in);
+		List<ByteType> minMax2 = ops.stats().minMax(out);
 
-	@Override
-	public void run() {
-		boolean oneSizedDims = false;
+		assertEquals(minMax2.get(0).get(), Byte.MIN_VALUE);
+		assertEquals(minMax2.get(1).get(), Byte.MAX_VALUE);
 
-		if (dropSingleDimensions) {
-			for (int d = 0; d < interval.numDimensions(); d++) {
-				if (interval.dimension(d) == 1) {
-					oneSizedDims = true;
-					break;
-				}
-			}
-		}
-
-		if (Intervals.equals(in, interval) && !oneSizedDims) {
-			out = in;
-		}
-		else {
-			IntervalView<T> res;
-			if (Intervals.contains(in, interval)) res =
-				Views.offsetInterval(in, interval);
-			else {
-				throw new RuntimeException("Intervals don't match!");
-			}
-			out = oneSizedDims ? Views.dropSingletonDimensions(res) : res;
-		}
 	}
 }

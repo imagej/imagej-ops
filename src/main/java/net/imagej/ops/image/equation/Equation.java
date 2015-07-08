@@ -28,57 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.crop;
+package net.imagej.ops.image.equation;
 
-import net.imagej.ImgPlus;
-import net.imagej.ops.MetadataUtil;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
+import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Crop;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.ImgView;
-import net.imglib2.type.Type;
-
-import org.scijava.ItemIO;
-import org.scijava.Priority;
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imglib2.IterableInterval;
 
 /**
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * An "equation" operation which computes image
+ * values from interval coordinates using an equation.
+ * 
+ * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Crop.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Crop.ALIASES) },
-	priority = Priority.LOW_PRIORITY + 1)
-public class CropImgPlus<T extends Type<T>> implements Crop {
-
-	@Parameter
-	private OpService ops;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> out;
-
-	@Parameter
-	private ImgPlus<T> in;
-
-	@Parameter
-	protected Interval interval;
-
-	@Parameter(required = false)
-	private boolean dropSingleDimensions = true;
-
-	@Override
-	public void run() {
-		final RandomAccessibleInterval<T> rai = in;
-		out =
-			new ImgPlus<T>(ImgView.wrap(
-				ops.crop(rai, interval, dropSingleDimensions), in.factory()));
-
-		// TODO remove metadata-util
-		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
-	}
+public interface Equation<T> extends Ops.Image.Equation, Function<String,
+	IterableInterval<T>>
+{
+	// NB: Marker interface.
 }

@@ -28,47 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.histogram;
+package net.imagej.ops.image.scale;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.RandomAccess;
+import net.imglib2.img.Img;
+import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.histogram.Real1dBinMapper;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements Ops.Histogram {
+public class ScaleImgTest extends AbstractOpTest {
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Histogram1d<T> out;
+	@Test
+	public void test() {
+		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		double[] scaleFactors = new double[] { 2, 2 };
+		Img<ByteType> out =
+			ops.image().scale(in, scaleFactors,
+				new NLinearInterpolatorFactory<ByteType>());
 
-	@Parameter
-	private Iterable<T> in;
+		assertEquals(out.dimension(0), 20);
+		assertEquals(out.dimension(1), 20);
 
-	@Parameter(required = false)
-	private int numBins = 256;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void run() {
-		final List<T> res = ops.stats().minMax(in);
-
-		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
-				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
-
-		out.countData(in);
+		RandomAccess<ByteType> inRA = in.randomAccess();
+		RandomAccess<ByteType> outRA = out.randomAccess();
+		inRA.setPosition(new long[] { 5, 5 });
+		outRA.setPosition(new long[] { 10, 10 });
+		assertEquals(inRA.get().get(), outRA.get().get());
 
 	}
 }

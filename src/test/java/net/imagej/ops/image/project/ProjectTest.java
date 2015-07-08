@@ -28,36 +28,61 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.image.project;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
+import net.imagej.ops.stats.sum.Sum;
+import net.imglib2.Cursor;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 
+import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author Martin Horn (University of Konstanz)
- */
-public class NormalizeTest extends AbstractOpTest {
+public class ProjectTest extends AbstractOpTest {
+
+	private final int PROJECTION_DIM = 2;
+
+	private Img<ByteType> in;
+	private Img<ByteType> out1;
+	private Img<ByteType> out2;
+	private Op op;
+
+	@Before
+	public void initImg() {
+		in = generateByteTestImg(false, 10, 10, 10);
+
+		// fill in with ones
+		final Cursor<ByteType> cursor = in.cursor();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			cursor.get().set((byte) 1);
+		}
+
+		out1 = generateByteTestImg(false, 10, 10);
+		out2 = generateByteTestImg(false, 10, 10);
+
+		op = ops.op(Sum.class, RealType.class, out1);
+	}
 
 	@Test
-	public void testNormalize() {
+	public void testProjector() {
+		ops.image().project(out1, in, op, PROJECTION_DIM);
+		ops.image().project(out2, in, op, PROJECTION_DIM);
 
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
-		Img<ByteType> out = in.factory().create(in, new ByteType());
+		// test
+		final Cursor<ByteType> out1Cursor = out1.cursor();
+		final Cursor<ByteType> out2Cursor = out2.cursor();
 
-		ops.normalize(out, in);
+		while (out1Cursor.hasNext()) {
+			out1Cursor.fwd();
+			out2Cursor.fwd();
 
-		List<ByteType> minMax1 = ops.stats().minMax(in);
-		List<ByteType> minMax2 = ops.stats().minMax(out);
-
-		assertEquals(minMax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minMax2.get(1).get(), Byte.MAX_VALUE);
-
+			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM));
+			assertEquals(out2Cursor.get().get(), in.dimension(PROJECTION_DIM));
+		}
 	}
 }

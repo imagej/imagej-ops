@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.equation;
+package net.imagej.ops.image.equation;
 
 import javax.script.Bindings;
 import javax.script.Compilable;
@@ -65,7 +65,7 @@ import org.scijava.script.ScriptService;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Equation.NAME)
+@Plugin(type = Op.class, name = Ops.Image.Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
 	AbstractOutputFunction<String, IterableInterval<T>> implements Equation<T>
 {

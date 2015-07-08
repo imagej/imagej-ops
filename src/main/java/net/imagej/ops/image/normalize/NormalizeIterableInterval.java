@@ -28,37 +28,52 @@
  * #L%
  */
 
-package net.imagej.ops.scale;
+package net.imagej.ops.image.normalize;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.RandomAccess;
-import net.imglib2.img.Img;
-import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory;
-import net.imglib2.type.numeric.integer.ByteType;
+import java.util.List;
 
-import org.junit.Test;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-/**
- * @author Martin Horn (University of Konstanz)
- */
-public class ScaleImgTest extends AbstractOpTest {
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	@Test
-	public void test() {
-		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
-		double[] scaleFactors = new double[] { 2, 2 };
-		Img<ByteType> out =
-			ops.scale(in, scaleFactors, new NLinearInterpolatorFactory<ByteType>());
+@Plugin(type = Op.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+public class NormalizeIterableInterval<T extends RealType<T>> extends
+	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
+	Ops.Image.Normalize
+{
 
-		assertEquals(out.dimension(0), 20);
-		assertEquals(out.dimension(1), 20);
+	@Parameter
+	private OpService ops;
 
-		RandomAccess<ByteType> inRA = in.randomAccess();
-		RandomAccess<ByteType> outRA = out.randomAccess();
-		inRA.setPosition(new long[] { 5, 5 });
-		outRA.setPosition(new long[] { 10, 10 });
-		assertEquals(inRA.get().get(), outRA.get().get());
+	@Override
+	public IterableInterval<T> compute(IterableInterval<T> input,
+		IterableInterval<T> output)
+	{
 
+		T outType = output.firstElement().createVariable();
+		List<T> minMax = ops.stats().minMax(input);
+		double factor =
+			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
+				minMax.get(1).getRealDouble(), outType.getMinValue(), outType
+					.getMaxValue());
+
+		// lookup the pixel-wise normalize function
+		final Op normalize =
+			ops.op(Ops.Image.Normalize.class, outType, outType, minMax.get(0)
+				.getRealDouble(), outType.getMinValue(), outType.getMaxValue(), factor);
+
+		// run normalize for each pixel
+		ops.map(output, input, normalize);
+
+		return output;
 	}
+
 }

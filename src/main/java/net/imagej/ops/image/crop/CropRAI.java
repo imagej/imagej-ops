@@ -28,20 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.equation;
+package net.imagej.ops.image.crop;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
+import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * An "equation" operation which computes image
- * values from interval coordinates using an equation.
- * 
- * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
-public interface Equation<T> extends Ops.Equation, Function<String,
-	IterableInterval<T>>
-{
-	// NB: Marker interface.
+@Plugin(type = Op.class, name = Ops.Image.Crop.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Image.Crop.ALIASES) },
+	priority = Priority.LOW_PRIORITY)
+public class CropRAI<T> implements Ops.Image.Crop {
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private RandomAccessibleInterval<T> out;
+
+	@Parameter
+	private RandomAccessibleInterval<T> in;
+
+	@Parameter
+	protected Interval interval;
+
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
+
+	@Override
+	public void run() {
+		boolean oneSizedDims = false;
+
+		if (dropSingleDimensions) {
+			for (int d = 0; d < interval.numDimensions(); d++) {
+				if (interval.dimension(d) == 1) {
+					oneSizedDims = true;
+					break;
+				}
+			}
+		}
+
+		if (Intervals.equals(in, interval) && !oneSizedDims) {
+			out = in;
+		}
+		else {
+			IntervalView<T> res;
+			if (Intervals.contains(in, interval)) res =
+				Views.offsetInterval(in, interval);
+			else {
+				throw new RuntimeException("Intervals don't match!");
+			}
+			out = oneSizedDims ? Views.dropSingletonDimensions(res) : res;
+		}
+	}
 }

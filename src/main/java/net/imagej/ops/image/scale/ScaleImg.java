@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.scale;
+package net.imagej.ops.image.scale;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -52,9 +52,9 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Scale.NAME, attrs = { @Attr(name = "aliases",
-	value = Ops.Scale.ALIASES) })
-public class ScaleImg<T extends RealType<T>> implements Ops.Scale {
+@Plugin(type = Op.class, name = Ops.Image.Scale.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Image.Scale.ALIASES) })
+public class ScaleImg<T extends RealType<T>> implements Ops.Image.Scale {
 
 	@Parameter
 	private Img<T> in;

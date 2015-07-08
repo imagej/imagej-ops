@@ -28,51 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.invert;
+package net.imagej.ops.image.normalize;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imglib2.type.numeric.RealType;
 
-import org.junit.Test;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-/**
- * @author Martin Horn (University of Konstanz)
- */
-public class InvertTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+public class NormalizeRealType<T extends RealType<T>> extends
+	AbstractStrictFunction<T, T> implements Ops.Image.Normalize
+{
 
-	@Test
-	public void testInvertSigned() {
+	@Parameter
+	private double oldMin;
 
-		// signed type test
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
-		Img<ByteType> out = in.factory().create(in, new ByteType());
+	@Parameter
+	private double newMin;
 
-		ops.invert(out, in);
+	@Parameter
+	private double newMax;
 
-		ByteType firstIn = in.firstElement();
-		ByteType firstOut = out.firstElement();
+	@Parameter
+	private double factor;
 
-		assertEquals(firstIn.get() * -1 - 1, firstOut.get());
-
+	@Override
+	public T compute(T input, T output) {
+		output.setReal(Math.min(newMax, Math.max(newMin,
+			(input.getRealDouble() - oldMin) * factor + newMin)));
+		return output;
 	}
 
-	@Test
-	public void testInvertUnsigned() {
-
-		// unsigned type test
-		Img<UnsignedByteType> in = generateUnsignedByteTestImg(true, 5, 5);
-		Img<UnsignedByteType> out = in.factory().create(in, new UnsignedByteType());
-
-		ops.invert(out, in);
-
-		UnsignedByteType firstIn = in.firstElement();
-		UnsignedByteType firstOut = out.firstElement();
-
-		assertEquals((int) firstIn.getMaxValue() - firstIn.getInteger(), firstOut
-			.getInteger());
-
+	/**
+	 * Determines the factor to map the interval [oldMin, oldMax] to
+	 * [newMin,newMax].
+	 * 
+	 * @param oldMin
+	 * @param oldMax
+	 * @param newMin
+	 * @param newMax
+	 * @return the normalization factor
+	 */
+	public static double normalizationFactor(double oldMin, double oldMax,
+		double newMin, double newMax)
+	{
+		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
 	}
+
 }

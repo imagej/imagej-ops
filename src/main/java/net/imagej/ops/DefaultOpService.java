@@ -37,25 +37,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.ImgPlus;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
@@ -98,6 +95,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	private CreateNamespace create;
 	private DeconvolveNamespace deconvolve;
+	private ImageNamespace image;
 	private LabelingNamespace labeling;
 	private LogicNamespace logic;
 	private MathNamespace math;
@@ -184,36 +182,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	// -- Operation shortcuts - global namespace --
-
-	@Override
-	public Object ascii(final Object... args) {
-		return run(Ops.ASCII.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image) {
-		final String result =
-			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min)
-	{
-		final String result =
-			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min, final RealType<T> max)
-	{
-		final String result =
-			(String) run(net.imagej.ops.ascii.DefaultASCII.class, image, min, max);
-		return result;
-	}
 
 	@Override
 	public Object convert(final Object... args) {
@@ -673,80 +641,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object crop(final Object... args) {
-		return run(Ops.Crop.NAME, args);
-	}
-
-	@Override
-	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-		final Interval interval)
-	{
-		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result =
-			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, in, interval);
-		return result;
-	}
-
-	@Override
-	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-		final Interval interval, final boolean dropSingleDimensions)
-	{
-		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result =
-			(ImgPlus<T>) run(net.imagej.ops.crop.CropImgPlus.class, in, interval,
-				dropSingleDimensions);
-		return result;
-	}
-
-	@Override
-	public <T> RandomAccessibleInterval<T> crop(
-		final RandomAccessibleInterval<T> in, final Interval interval)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class, in,
-				interval);
-		return result;
-	}
-
-	@Override
-	public <T> RandomAccessibleInterval<T> crop(
-		final RandomAccessibleInterval<T> in, final Interval interval,
-		final boolean dropSingleDimensions)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) run(net.imagej.ops.crop.CropRAI.class, in,
-				interval, dropSingleDimensions);
-		return result;
-	}
-
-	@Override
-	public Object equation(final Object... args) {
-		return run(Ops.Equation.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) run(net.imagej.ops.equation.DefaultEquation.class,
-				in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> IterableInterval<T> equation(
-		final IterableInterval<T> out, final String in)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) run(net.imagej.ops.equation.DefaultEquation.class,
-				out, in);
-		return result;
-	}
-
-	@Override
 	public Object eval(final Object... args) {
 		return run(Ops.Eval.NAME, args);
 	}
@@ -1029,31 +923,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object histogram(final Object... args) {
-		return run(Ops.Histogram.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> result =
-			(Histogram1d<T>) run(net.imagej.ops.histogram.HistogramCreate.class, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
-		final int numBins)
-	{
-		@SuppressWarnings("unchecked")
-		final Histogram1d<T> result =
-			(Histogram1d<T>) run(net.imagej.ops.histogram.HistogramCreate.class, in,
-				numBins);
-		return result;
-	}
-
-	@Override
 	public Object identity(final Object... args) {
 		return run(Ops.Identity.NAME, args);
 	}
@@ -1090,21 +959,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) run(
 				net.imagej.ops.fft.methods.IFFTRAI.class, out, in);
-		return result;
-	}
-
-	@Override
-	public Object invert(final Object... args) {
-		return run(Ops.Invert.NAME, args);
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
-		invert(final IterableInterval<O> out, final IterableInterval<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) run(net.imagej.ops.invert.InvertIterableInterval.class, out, in);
 		return result;
 	}
 
@@ -1469,70 +1323,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object normalize(final Object... args) {
-		return run(Ops.Normalize.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> T normalize(final T out, final T in,
-		final double oldMin, final double newMin, final double newMax,
-		final double factor)
-	{
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) run(net.imagej.ops.normalize.NormalizeRealType.class, out, in,
-				oldMin, newMin, newMax, factor);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>> IterableInterval<T> normalize(
-		final IterableInterval<T> out, final IterableInterval<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) run(
-				net.imagej.ops.normalize.NormalizeIterableInterval.class, out, in);
-		return result;
-	}
-
-	@Override
-	public Object project(final Object... args) {
-		return run(Ops.Project.NAME, args);
-	}
-
-	@Override
-	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
-		final RandomAccessibleInterval<T> in,
-		final Function<Iterable<T>, V> method, final int dim)
-	{
-		// net.imagej.ops.project.parallel.DefaultProjectParallel.class
-		// net.imagej.ops.project.ProjectRAIToIterableInterval.class
-		@SuppressWarnings("unchecked")
-		final IterableInterval<V> result =
-			(IterableInterval<V>) run(net.imagej.ops.Ops.Project.class, out, in,
-				method, dim);
-		return result;
-	}
-
-	@Override
-	public Object scale(final Object... args) {
-		return run(Ops.Scale.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
-		final double[] scaleFactors,
-		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) run(net.imagej.ops.scale.ScaleImg.class, in, scaleFactors,
-				interpolator);
-		return result;
-	}
-
-	@Override
 	public Object slicewise(final Object... args) {
 		return run(Ops.Slicewise.NAME, args);
 	}
@@ -1577,6 +1367,12 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public DeconvolveNamespace deconvolve() {
 		if (!namespacesReady) initNamespaces();
 		return deconvolve;
+	}
+
+	@Override
+	public ImageNamespace image() {
+		if (!namespacesReady) initNamespaces();
+		return image;
 	}
 
 	@Override
@@ -1646,6 +1442,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		getContext().inject(create);
 		deconvolve = new DeconvolveNamespace();
 		getContext().inject(deconvolve);
+		image = new ImageNamespace();
+		getContext().inject(image);
 		labeling = new LabelingNamespace();
 		getContext().inject(labeling);
 		logic = new LogicNamespace();

@@ -52,13 +52,13 @@ blank = ij.op().create().img(dims)
 
 # fill in the image with a sinusoid using a formula
 formula = "10 * (Math.cos(0.3*p[0]) + Math.sin(0.3*p[1]))"
-sinusoid = ij.op().equation(blank, formula)
+sinusoid = ij.op().image().equation(blank, formula)
 
 # add a constant value to an image
 ij.op().math().add(sinusoid, 13.0)
 
 # generate a gradient image using a formula
-gradient = ij.op().equation(ij.op().create().img(dims), "p[0]+p[1]")
+gradient = ij.op().image().equation(ij.op().create().img(dims), "p[0]+p[1]")
 
 # add the two images
 composite = ij.op().create().img(dims)

@@ -28,14 +28,13 @@
  * #L%
  */
 
-package net.imagej.ops.invert;
+package net.imagej.ops.image.invert;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -46,10 +45,11 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Invert.NAME, priority = Priority.NORMAL_PRIORITY + 1)
-public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>> implements
-	Ops.Math.Invert
+@Plugin(type = Op.class, name = Ops.Image.Invert.NAME,
+	priority = Priority.NORMAL_PRIORITY + 1)
+public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>>
+	implements Ops.Image.Invert
 {
 
 	@Parameter

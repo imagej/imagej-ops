@@ -28,56 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.image.crop;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ImgPlus;
+import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.ImgView;
+import net.imglib2.type.Type;
 
+import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Normalize.ALIASES) })
-public class NormalizeRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<T, T> implements Ops.Normalize
-{
+/**
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ */
+@Plugin(type = Op.class, name = Ops.Image.Crop.NAME, attrs = { @Attr(
+	name = "aliases", value = Ops.Image.Crop.ALIASES) },
+	priority = Priority.LOW_PRIORITY + 1)
+public class CropImgPlus<T extends Type<T>> implements Ops.Image.Crop {
 
 	@Parameter
-	private double oldMin;
+	private OpService ops;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private ImgPlus<T> out;
 
 	@Parameter
-	private double newMin;
+	private ImgPlus<T> in;
 
 	@Parameter
-	private double newMax;
+	protected Interval interval;
 
-	@Parameter
-	private double factor;
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
 
 	@Override
-	public T compute(T input, T output) {
-		output.setReal(Math.min(newMax, Math.max(newMin,
-			(input.getRealDouble() - oldMin) * factor + newMin)));
-		return output;
-	}
+	public void run() {
+		final RandomAccessibleInterval<T> rai = in;
+		out =
+			new ImgPlus<T>(ImgView.wrap(
+				ops.image().crop(rai, interval, dropSingleDimensions), in.factory()));
 
-	/**
-	 * Determines the factor to map the interval [oldMin, oldMax] to
-	 * [newMin,newMax].
-	 * 
-	 * @param oldMin
-	 * @param oldMax
-	 * @param newMin
-	 * @param newMax
-	 * @return the normalization factor
-	 */
-	public static double normalizationFactor(double oldMin, double oldMax,
-		double newMin, double newMax)
-	{
-		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+		// TODO remove metadata-util
+		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
 	}
-
 }

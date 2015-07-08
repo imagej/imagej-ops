@@ -28,61 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.project;
+package net.imagej.ops.image.histogram;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
+import java.util.List;
+
 import net.imagej.ops.Op;
-import net.imagej.ops.stats.sum.Sum;
-import net.imglib2.Cursor;
-import net.imglib2.img.Img;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imglib2.histogram.Histogram1d;
+import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-public class ProjectTest extends AbstractOpTest {
+/**
+ * @author Martin Horn (University of Konstanz)
+ */
+@Plugin(type = Op.class, name = Ops.Image.Histogram.NAME)
+public class HistogramCreate<T extends RealType<T>> implements
+	Ops.Image.Histogram
+{
 
-	private final int PROJECTION_DIM = 2;
+	@Parameter(type = ItemIO.OUTPUT)
+	private Histogram1d<T> out;
 
-	private Img<ByteType> in;
-	private Img<ByteType> out1;
-	private Img<ByteType> out2;
-	private Op op;
+	@Parameter
+	private Iterable<T> in;
 
-	@Before
-	public void initImg() {
-		in = generateByteTestImg(false, 10, 10, 10);
+	@Parameter(required = false)
+	private int numBins = 256;
 
-		// fill in with ones
-		final Cursor<ByteType> cursor = in.cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.get().set((byte) 1);
-		}
+	@Parameter
+	private OpService ops;
 
-		out1 = generateByteTestImg(false, 10, 10);
-		out2 = generateByteTestImg(false, 10, 10);
+	@Override
+	public void run() {
+		final List<T> res = ops.stats().minMax(in);
 
-		op = ops.op(Sum.class, RealType.class, out1);
-	}
+		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
+				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
 
-	@Test
-	public void testProjector() {
-		ops.project(out1, in, op, PROJECTION_DIM);
-		ops.project(out2, in, op, PROJECTION_DIM);
+		out.countData(in);
 
-		// test
-		final Cursor<ByteType> out1Cursor = out1.cursor();
-		final Cursor<ByteType> out2Cursor = out2.cursor();
-
-		while (out1Cursor.hasNext()) {
-			out1Cursor.fwd();
-			out2Cursor.fwd();
-
-			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM));
-			assertEquals(out2Cursor.get().get(), in.dimension(PROJECTION_DIM));
-		}
 	}
 }

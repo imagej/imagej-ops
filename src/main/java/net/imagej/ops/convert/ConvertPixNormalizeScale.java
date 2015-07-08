@@ -35,7 +35,7 @@ import java.util.List;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.normalize.NormalizeRealType;
+import net.imagej.ops.image.normalize.NormalizeRealType;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.project;
+package net.imagej.ops.image.project;
 
 import java.util.Iterator;
 
@@ -36,7 +36,11 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -46,11 +50,15 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Project.NAME, priority = Priority.LOW_PRIORITY)
-public class ProjectRAIToIterableInterval<T, V> extends
+@Plugin(type = Op.class, name = Ops.Image.Project.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
+public class DefaultProjectParallel<T, V> extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
-	implements Contingent, Ops.Project
+	implements Contingent, Parallel, Ops.Image.Project
 {
+
+	@Parameter
+	private OpService opService;
 
 	@Parameter
 	private Function<Iterable<T>, V> method;
@@ -63,21 +71,34 @@ public class ProjectRAIToIterableInterval<T, V> extends
 	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
+		opService.run(Chunker.class, new CursorBasedChunk() {
 
-		final Cursor<V> cursor = output.localizingCursor();
-		final RandomAccess<T> access = input.randomAccess();
+			@Override
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
+			{
+				final RandomAccess<T> access = input.randomAccess();
+				final Cursor<V> cursor = output.localizingCursor();
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			for (int d = 0; d < input.numDimensions(); d++) {
-				if (d != dim) {
-					access.setPosition(cursor.getIntPosition(d - d > dim ? -1 : 0), d);
+				setToStart(cursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					for (int d = 0; d < input.numDimensions(); d++) {
+						if (d != dim) {
+							access
+								.setPosition(cursor.getIntPosition(d - d > dim ? -1 : 0), d);
+						}
+					}
+
+					method.compute(new DimensionIterable(input.dimension(dim), access),
+						cursor.get());
+
+					cursor.jumpFwd(stepSize);
+					ctr++;
 				}
 			}
-
-			method.compute(new DimensionIterable(input.dimension(dim), access),
-				cursor.get());
-		}
+		}, output.size());
 
 		return output;
 	}

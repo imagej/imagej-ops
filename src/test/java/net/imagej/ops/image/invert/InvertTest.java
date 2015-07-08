@@ -28,52 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.normalize;
+package net.imagej.ops.image.invert;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import org.junit.Test;
 
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * @author Martin Horn (University of Konstanz)
+ */
+public class InvertTest extends AbstractOpTest {
 
-@Plugin(type = Op.class, name = Ops.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Normalize.ALIASES) })
-public class NormalizeIterableInterval<T extends RealType<T>> extends
-	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements
-	Ops.Normalize
-{
+	@Test
+	public void testInvertSigned() {
 
-	@Parameter
-	private OpService ops;
+		// signed type test
+		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> out = in.factory().create(in, new ByteType());
 
-	@Override
-	public IterableInterval<T> compute(IterableInterval<T> input,
-		IterableInterval<T> output)
-	{
+		ops.image().invert(out, in);
 
-		T outType = output.firstElement().createVariable();
-		List<T> minMax = ops.stats().minMax(input);
-		double factor =
-			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
-				minMax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue());
+		ByteType firstIn = in.firstElement();
+		ByteType firstOut = out.firstElement();
 
-		// lookup the pixel-wise normalize function
-		Op normalize =
-			ops.op(Ops.Normalize.class, outType, outType, minMax.get(0).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue(), factor);
+		assertEquals(firstIn.get() * -1 - 1, firstOut.get());
 
-		// run normalize for each pixel
-		ops.map(output, input, normalize);
-
-		return output;
 	}
 
+	@Test
+	public void testInvertUnsigned() {
+
+		// unsigned type test
+		Img<UnsignedByteType> in = generateUnsignedByteTestImg(true, 5, 5);
+		Img<UnsignedByteType> out = in.factory().create(in, new UnsignedByteType());
+
+		ops.image().invert(out, in);
+
+		UnsignedByteType firstIn = in.firstElement();
+		UnsignedByteType firstOut = out.firstElement();
+
+		assertEquals((int) firstIn.getMaxValue() - firstIn.getInteger(), firstOut
+			.getInteger());
+
+	}
 }
