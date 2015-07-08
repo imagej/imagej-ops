@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.threading;
+package net.imagej.ops.thread;
 
 import static org.junit.Assume.assumeTrue;
 

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.threading;
+package net.imagej.ops.thread;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
