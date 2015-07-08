@@ -188,24 +188,24 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyHuangThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Huang.class)
 	public <T extends RealType<T>> Img<BitType> huang(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyHuangThreshold.class, in);
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Huang.class, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyHuangThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Huang.class)
 	public <T extends RealType<T>> Img<BitType> huang(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyHuangThreshold.class, out,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Huang.class, out,
 				in);
 		return result;
 	}
@@ -233,6 +233,32 @@ public class ThresholdNamespace extends AbstractNamespace {
 			(T) ops().run(
 				net.imagej.ops.threshold.global.methods.ComputeIJ1Threshold.class, out,
 				in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IJ1.class)
+	public
+		<T extends RealType<T>> Img<BitType> ij1(final Img<T> in) {
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) ops().run(
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IJ1.class,
+				in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IJ1.class)
+	public
+		<T extends RealType<T>> Img<BitType> ij1(final Img<BitType> out,
+			final Img<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result =
+			(Img<BitType>) ops().run(
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IJ1.class,
+				out, in);
 		return result;
 	}
 
@@ -270,19 +296,19 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyIntermodesThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Intermodes.class)
 	public
 		<T extends RealType<T>> Img<BitType> intermodes(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyIntermodesThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Intermodes.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyIntermodesThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Intermodes.class)
 	public
 		<T extends RealType<T>> Img<BitType> intermodes(final Img<BitType> out,
 			final Img<T> in)
@@ -290,7 +316,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyIntermodesThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Intermodes.class,
 				out, in);
 		return result;
 	}
@@ -301,26 +327,26 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IsoData.class)
 	public <T extends RealType<T>> Img<BitType> isoData(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IsoData.class,
 					in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IsoData.class)
 	public <T extends RealType<T>> Img<BitType> isoData(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyIsoDataThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.IsoData.class,
 				out, in);
 		return result;
 	}
@@ -354,17 +380,17 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Threshold.Li.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.global.methods.ApplyLiThreshold.class)
+	@OpMethod(op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Li.class)
 	public
 		<T extends RealType<T>> Img<BitType> li(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyLiThreshold.class, in);
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Li.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.global.methods.ApplyLiThreshold.class)
+	@OpMethod(op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Li.class)
 	public
 		<T extends RealType<T>> Img<BitType> li(final Img<BitType> out,
 			final Img<T> in)
@@ -372,7 +398,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
-				.run(net.imagej.ops.threshold.global.methods.ApplyLiThreshold.class,
+				.run(net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Li.class,
 					out, in);
 		return result;
 	}
@@ -404,19 +430,19 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMaxEntropyThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxEntropy.class)
 	public
 		<T extends RealType<T>> Img<BitType> maxEntropy(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMaxEntropyThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxEntropy.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMaxEntropyThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxEntropy.class)
 	public
 		<T extends RealType<T>> Img<BitType> maxEntropy(final Img<BitType> out,
 			final Img<T> in)
@@ -424,7 +450,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMaxEntropyThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxEntropy.class,
 				out, in);
 		return result;
 	}
@@ -461,20 +487,20 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxLikelihood.class)
 	public
 		<T extends RealType<T>> Img<BitType> maxLikelihood(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxLikelihood.class,
 					in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxLikelihood.class)
 	public
 		<T extends RealType<T>> Img<BitType> maxLikelihood(final Img<BitType> out,
 			final Img<T> in)
@@ -483,7 +509,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyMaxLikelihoodThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MaxLikelihood.class,
 					out, in);
 		return result;
 	}
@@ -523,24 +549,24 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMeanThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Mean.class)
 	public <T extends RealType<T>> Img<BitType> mean(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMeanThreshold.class, in);
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Mean.class, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMeanThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Mean.class)
 	public <T extends RealType<T>> Img<BitType> mean(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMeanThreshold.class, out,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Mean.class, out,
 				in);
 		return result;
 	}
@@ -572,25 +598,25 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MinError.class)
 	public <T extends RealType<T>> Img<BitType> minError(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MinError.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MinError.class)
 	public <T extends RealType<T>> Img<BitType> minError(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMinErrorThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.MinError.class,
 				out, in);
 		return result;
 	}
@@ -627,26 +653,26 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMinimumThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Minimum.class)
 	public <T extends RealType<T>> Img<BitType> minimum(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyMinimumThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Minimum.class,
 					in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMinimumThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Minimum.class)
 	public <T extends RealType<T>> Img<BitType> minimum(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMinimumThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Minimum.class,
 				out, in);
 		return result;
 	}
@@ -705,26 +731,26 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMomentsThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Moments.class)
 	public <T extends RealType<T>> Img<BitType> moments(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyMomentsThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Moments.class,
 					in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyMomentsThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Moments.class)
 	public <T extends RealType<T>> Img<BitType> moments(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyMomentsThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Moments.class,
 				out, in);
 		return result;
 	}
@@ -756,24 +782,24 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyOtsuThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Otsu.class)
 	public <T extends RealType<T>> Img<BitType> otsu(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyOtsuThreshold.class, in);
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Otsu.class, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyOtsuThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Otsu.class)
 	public <T extends RealType<T>> Img<BitType> otsu(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyOtsuThreshold.class, out,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Otsu.class, out,
 				in);
 		return result;
 	}
@@ -784,19 +810,19 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyPercentileThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Percentile.class)
 	public
 		<T extends RealType<T>> Img<BitType> percentile(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyPercentileThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Percentile.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyPercentileThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Percentile.class)
 	public
 		<T extends RealType<T>> Img<BitType> percentile(final Img<BitType> out,
 			final Img<T> in)
@@ -804,7 +830,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyPercentileThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Percentile.class,
 				out, in);
 		return result;
 	}
@@ -841,20 +867,20 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.RenyiEntropy.class)
 	public
 		<T extends RealType<T>> Img<BitType> renyiEntropy(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.RenyiEntropy.class,
 					in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.RenyiEntropy.class)
 	public
 		<T extends RealType<T>> Img<BitType> renyiEntropy(final Img<BitType> out,
 			final Img<T> in)
@@ -863,7 +889,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final Img<BitType> result =
 			(Img<BitType>) ops()
 				.run(
-					net.imagej.ops.threshold.global.methods.ApplyRenyiEntropyThreshold.class,
+					net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.RenyiEntropy.class,
 					out, in);
 		return result;
 	}
@@ -903,25 +929,25 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyShanbhagThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Shanbhag.class)
 	public <T extends RealType<T>> Img<BitType> shanbhag(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyShanbhagThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Shanbhag.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyShanbhagThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Shanbhag.class)
 	public <T extends RealType<T>> Img<BitType> shanbhag(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyShanbhagThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Shanbhag.class,
 				out, in);
 		return result;
 	}
@@ -956,25 +982,25 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyTriangleThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Triangle.class)
 	public <T extends RealType<T>> Img<BitType> triangle(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyTriangleThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Triangle.class,
 				in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyTriangleThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Triangle.class)
 	public <T extends RealType<T>> Img<BitType> triangle(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyTriangleThreshold.class,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Triangle.class,
 				out, in);
 		return result;
 	}
@@ -1030,24 +1056,24 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyYenThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Yen.class)
 	public <T extends RealType<T>> Img<BitType> yen(final Img<T> in) {
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyYenThreshold.class, in);
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Yen.class, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.threshold.global.methods.ApplyYenThreshold.class)
+		op = net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Yen.class)
 	public <T extends RealType<T>> Img<BitType> yen(final Img<BitType> out,
 		final Img<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<BitType> result =
 			(Img<BitType>) ops().run(
-				net.imagej.ops.threshold.global.methods.ApplyYenThreshold.class, out,
+				net.imagej.ops.threshold.global.methods.ApplyThresholdMethod.Yen.class, out,
 				in);
 		return result;
 	}

@@ -1,47 +1,22 @@
-[ApplyHuangThreshold.java]
-name = "Huang"
-
-[ApplyIntermodesThreshold.java]
-name = "Intermodes"
-
-[ApplyIsoDataThreshold.java]
-name = "IsoData"
-
-[ApplyLiThreshold.java]
-name = "Li"
-
-[ApplyMaxEntropyThreshold.java]
-name = "MaxEntropy"
-
-[ApplyMaxLikelihoodThreshold.java]
-name = "MaxLikelihood"
-
-[ApplyMeanThreshold.java]
-name = "Mean"
-
-[ApplyMinErrorThreshold.java]
-name = "MinError"
-
-[ApplyMinimumThreshold.java]
-name = "Minimum"
-
-[ApplyMomentsThreshold.java]
-name = "Moments"
-
-[ApplyOtsuThreshold.java]
-name = "Otsu"
-
-[ApplyPercentileThreshold.java]
-name = "Percentile"
-
-[ApplyRenyiEntropyThreshold.java]
-name = "RenyiEntropy"
-
-[ApplyShanbhagThreshold.java]
-name = "Shanbhag"
-
-[ApplyTriangleThreshold.java]
-name = "Triangle"
-
-[ApplyYenThreshold.java]
-name = "Yen"
+[ApplyThresholdMethod.java]
+methods = ```
+[
+	[name: "huang",         iface: "Huang"],
+	[name: "ij1",           iface: "IJ1"],
+	[name: "intermodes",    iface: "Intermodes",    list: true],
+	[name: "isoData",       iface: "IsoData",       list: true],
+	[name: "li",            iface: "Li"],
+	[name: "maxEntropy",    iface: "MaxEntropy"],
+	[name: "maxLikelihood", iface: "MaxLikelihood", list: true],
+	[name: "mean",          iface: "Mean"],
+	[name: "minError",      iface: "MinError",      list: true],
+	[name: "minimum",       iface: "Minimum",       list: true],
+	[name: "moments",       iface: "Moments"],
+	[name: "otsu",          iface: "Otsu"],
+	[name: "percentile",    iface: "Percentile"],
+	[name: "renyiEntropy",  iface: "RenyiEntropy"],
+	[name: "shanbhag",      iface: "Shanbhag"],
+	[name: "triangle",      iface: "Triangle"],
+	[name: "yen",           iface: "Yen"]
+]
+```

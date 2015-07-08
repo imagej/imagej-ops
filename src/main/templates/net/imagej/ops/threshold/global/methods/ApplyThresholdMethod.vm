@@ -30,6 +30,8 @@
 
 package net.imagej.ops.threshold.global.methods;
 
+import java.util.List;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -42,26 +44,49 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Computes and applies a $name threshold to an {@link Img}.
+ * Ops which computes and apply a global threshold to an {@link Img}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = Ops.Threshold.${name}.NAME)
-public class Apply${name}Threshold<T extends RealType<T>> extends
-	AbstractApplyThresholdImg<T, Img<T>> implements Ops.Threshold.$name
-{
+public final class ApplyThresholdMethod {
 
-	@Parameter
-	private OpService ops;
+	private ApplyThresholdMethod() {
+		// NB: Prevent instantiation of utility class.
+	}
 
-	@Override
-	public T getThreshold(final Img<T> input) {
-		final Histogram1d<T> hist = ops.image().histogram(input);
+	/**
+	 * Dirty hack to coerce {@code Compute*Threshold} methods which have an extra
+	 * {@code errMsg} output. Eventually it might be nice to redesign how error
+	 * messages work for thresholding, to avoid polluting the output objects.
+	 */
+	private static <T> T unwrap(final List<Object> list) {
 		@SuppressWarnings("unchecked")
-		final T result = (T) ops.run(Compute${name}Threshold.class, hist);
+		final T result = (T) list.get(0);
 		return result;
 	}
+#foreach ($method in $methods)
+
+	@Plugin(type = Op.class, name = Ops.Threshold.${method.iface}.NAME)
+	public static class ${method.iface}<T extends RealType<T>>
+		extends AbstractApplyThresholdImg<T, Img<T>>
+		implements Ops.Threshold.${method.iface}
+	{
+
+		@Parameter
+		private OpService ops;
+
+		@Override
+		public T getThreshold(final Img<T> input) {
+			final Histogram1d<T> hist = ops.image().histogram(input);
+#if ($method.list)
+			return unwrap(ops.threshold().${method.name}(hist));
+#else
+			return ops.threshold().${method.name}(hist);
+#end
+		}
+	}
+#end
 
 }
