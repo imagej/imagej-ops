@@ -41,7 +41,7 @@ import org.junit.Test;
 public class XorConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testXor() {
+	public void test() {
 		@SuppressWarnings("unchecked")
 		final Condition<Double> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);

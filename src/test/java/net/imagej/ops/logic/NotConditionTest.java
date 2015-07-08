@@ -41,7 +41,7 @@ import org.junit.Test;
 public class NotConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
+	public void test() {
 		final Condition<?> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
 

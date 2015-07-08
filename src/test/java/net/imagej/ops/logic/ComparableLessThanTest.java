@@ -41,7 +41,7 @@ import org.junit.Test;
 public class ComparableLessThanTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionLesser() {
+	public void test() {
 		final BoolType result = ops.logic().lessThan(5.0, (Comparable<Double>) 3.0);
 		assertFalse(result.get());
 

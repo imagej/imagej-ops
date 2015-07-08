@@ -41,7 +41,7 @@ import org.junit.Test;
 public class ComparableGreaterThanOrEqualTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionGreater() {
+	public void test() {
 		final BoolType result =
 			ops.logic().greaterThanOrEqual(5.0, (Comparable<Double>) 3.0);
 		assertTrue(result.get());

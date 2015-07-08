@@ -41,7 +41,7 @@ import org.junit.Test;
 public class AndConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
+	public void test() {
 		@SuppressWarnings("unchecked")
 		final Condition<Double> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);

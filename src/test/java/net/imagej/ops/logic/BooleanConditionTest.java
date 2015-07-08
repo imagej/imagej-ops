@@ -41,7 +41,7 @@ import org.junit.Test;
 public class BooleanConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testBoolean() {
+	public void test() {
 		final BoolType result = ops.logic().bool(true);
 		assertTrue(result.get());
 
