@@ -41,17 +41,17 @@ import org.junit.Test;
 public class ComparableGreaterThanOrEqualTest extends AbstractOpTest {
 
 	@Test
-	public void testFunctionGreater() {
+	public void test() {
 		final BoolType result =
-			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 3.0);
+			ops.logic().greaterThanOrEqual(5.0, (Comparable<Double>) 3.0);
 		assertTrue(result.get());
 
 		final BoolType result3 =
-			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 5.0);
+			ops.logic().greaterThanOrEqual(5.0, (Comparable<Double>) 5.0);
 		assertTrue(result3.get());
 
 		final BoolType result2 =
-			(BoolType) ops.run(ComparableGreaterThanOrEqual.class, 5.0, 6.0);
+			ops.logic().greaterThanOrEqual(5.0, (Comparable<Double>) 6.0);
 		assertFalse(result2.get());
 	}
 }

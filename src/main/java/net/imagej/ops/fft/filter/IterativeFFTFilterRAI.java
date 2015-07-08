@@ -31,7 +31,6 @@
 package net.imagej.ops.fft.filter;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.convolve.ConvolveFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -153,8 +152,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops.run(ConvolveFFTRAI.class, raiExtendedEstimate, null, getFFTInput(),
-			getFFTKernel(), raiExtendedReblurred, true, false);
+		ops.convolve(raiExtendedEstimate, null, getFFTInput(), getFFTKernel(),
+			raiExtendedReblurred, true, false);
 	}
 
 	abstract protected void performIteration();

@@ -71,12 +71,12 @@ public class CropImgPlus<T extends Type<T>> implements Crop {
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
-	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	public void run() {
+		final RandomAccessibleInterval<T> rai = in;
 		out =
-			new ImgPlus<T>(ImgView.wrap((RandomAccessibleInterval<T>) ops.run(CropRAI.class, in,
-				interval, dropSingleDimensions), in.factory()));
+			new ImgPlus<T>(ImgView.wrap(
+				ops.crop(rai, interval, dropSingleDimensions), in.factory()));
 
 		// TODO remove metadata-util
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);

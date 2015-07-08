@@ -41,25 +41,27 @@ import org.junit.Test;
 public class OrConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testOr() {
-
-		final Condition<?> c1 =
+	public void test() {
+		@SuppressWarnings("unchecked")
+		final Condition<Object> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
-		final Condition<?> c2 =
+		@SuppressWarnings("unchecked")
+		final Condition<Object> c2 =
 			ops.op(ComparableLessThan.class, Double.class, 6.0);
-		final Condition<?> c3 =
+		final Condition<Object> c3 =
 			ops.op(ObjectsEqual.class, Double.class, 13.0);
 
-		final BoolType result = (BoolType) ops.run(OrCondition.class, 5.0, c1, c2);
+		final BoolType result = ops.logic().or(5.0, c1, c2);
 		assertTrue(result.get());
 
-		final BoolType result2 = (BoolType) ops.run(OrCondition.class, 2.0, c1, c2);
+		final BoolType result2 = ops.logic().or(2.0, c1, c2);
 		assertTrue(result2.get());
 
-		final BoolType result3 = (BoolType) ops.run(OrCondition.class, 7.0, c1, c2);
+		final BoolType result3 = ops.logic().or(7.0, c1, c2);
 		assertTrue(result3.get());
 
-		final BoolType result4 = (BoolType) ops.run(OrCondition.class, 2.0, c1, c3);
+		final BoolType result4 = ops.logic().or(2.0, c1, c3);
 		assertFalse(result4.get());
 	}
+
 }

@@ -430,6 +430,56 @@ public interface OpService extends PTService<Op>, ImageJService {
 			Type<O> outType, ImgFactory<O> outFactory, ComplexType<C> fftType,
 			ImgFactory<C> fftFactory);
 
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void
+		correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT);
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.convolve.CorrelateFFTRAI.class)
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT);
+
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = Ops.Crop.class)
 	Object crop(Object... args);

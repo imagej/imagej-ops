@@ -36,7 +36,6 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
-import net.imglib2.RandomAccess;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -63,7 +62,6 @@ public class ConvolveTest extends AbstractOpTest {
 		int[] kernelSize = new int[] { 3, 3 };
 		Img<FloatType> kernel =
 			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
-		RandomAccess<FloatType> kernelRa = kernel.randomAccess();
 
 		Op op = ops.op("convolve", in, kernel);
 
@@ -79,7 +77,6 @@ public class ConvolveTest extends AbstractOpTest {
 		kernelSize = new int[] { 30, 30 };
 		kernel =
 			new ArrayImgFactory<FloatType>().create(kernelSize, new FloatType());
-		kernelRa = kernel.randomAccess();
 
 		op = ops.op("convolve", in, kernel);
 
@@ -142,11 +139,11 @@ public class ConvolveTest extends AbstractOpTest {
 		createMemory.run();
 
 		// run convolve using the rai version with the memory created above
-		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(),
+		ops.convolve(createMemory.getRAIExtendedInput(),
 			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
 			createMemory.getFFTKernel(), out2);
 
-		ops.run(ConvolveFFTRAI.class, createMemory.getRAIExtendedInput(), null,
+		ops.convolve(createMemory.getRAIExtendedInput(), null,
 			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
 
 		ops.stats().sum(outSum, out);

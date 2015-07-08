@@ -41,14 +41,14 @@ import org.junit.Test;
 public class NotConditionTest extends AbstractOpTest {
 
 	@Test
-	public void testAnd() {
+	public void test() {
 		final Condition<?> c1 =
 			ops.op(ComparableGreaterThan.class, Double.class, 3.0);
 
-		final BoolType result = (BoolType) ops.run(NotCondition.class, 5.0, c1);
+		final BoolType result = ops.logic().not(5.0, c1);
 		assertFalse(result.get());
 
-		final BoolType result2 = (BoolType) ops.run(NotCondition.class, 2.0, c1);
+		final BoolType result2 = ops.logic().not(2.0, c1);
 		assertTrue(result2.get());
 	}
 

@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Correlate.NAME,
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent
+	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent, Ops.Correlate
 {
 
 	@Parameter
@@ -73,8 +73,8 @@ public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K ext
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.run(CorrelateFFTRAI.class, raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		ops.correlate(raiExtendedInput, raiExtendedKernel, fftImg, fftKernel,
+			output);
 
 	}
 

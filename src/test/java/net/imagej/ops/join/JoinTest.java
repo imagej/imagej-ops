@@ -123,8 +123,7 @@ public class JoinTest extends AbstractOpTest {
 				}
 			};
 
-		ops.run(DefaultJoinFunctionAndFunction.class, out, in, functionalOp,
-			functionalOp, bufferFactory);
+		ops.join(out, in, functionalOp, functionalOp, bufferFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -154,7 +153,7 @@ public class JoinTest extends AbstractOpTest {
 				}
 			};
 
-		ops.run(DefaultJoinFunctions.class, out, in, functions, bufferFactory);
+		ops.join(out, in, functions, bufferFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();

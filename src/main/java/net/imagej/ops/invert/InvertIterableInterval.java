@@ -67,7 +67,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		else {
 			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
 		}
-		ops.run(Map.class, output, input, invert);
+		ops.map(output, input, invert);
 		return output;
 	}
 

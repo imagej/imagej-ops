@@ -69,7 +69,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.run(ComputeFFTSize.class, inputSize, paddedSize, fftSize, true, true);
+		ops.fftSize(inputSize, paddedSize, fftSize, true, true);
 
 	}
 
@@ -79,7 +79,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.run(ComputeFFTSize.class, inputSize, paddedSize, fftSize, true, false);
+		ops.fftSize(inputSize, paddedSize, fftSize, true, false);
 
 	}
 
@@ -98,6 +98,6 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 
 	@Override
 	public void safeCompute(final I input, final Img<ComplexFloatType> output) {
-		ops.run(FFTRAI.class, output, input, getOBF(), paddedSize);
+		ops.fft(output, input, getOBF(), paddedSize);
 	}
 }

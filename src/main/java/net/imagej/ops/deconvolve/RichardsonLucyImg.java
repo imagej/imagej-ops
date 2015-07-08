@@ -76,10 +76,9 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-
-		ops.run(RichardsonLucyRAI.class, raiExtendedInput, raiExtendedKernel,
+		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel,
 			fftImg, fftKernel, output, true, true, maxIterations,
 			imgConvolutionInterval, output.factory());
-
 	}
+
 }

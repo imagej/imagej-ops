@@ -32,8 +32,6 @@ package net.imagej.ops.fft;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
-import net.imagej.ops.create.img.DefaultCreateImg;
-import net.imagej.ops.fft.size.ComputeFFTSize;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
@@ -98,19 +96,19 @@ public class FFTTest extends AbstractOpBenchmark {
 			long[] fftDimensions = new long[3];
 
 			// compute the dimensions that will result in the fastest FFT time
-			ops.run(ComputeFFTSize.class, originalDimensions, fastDimensions,
-					fftDimensions, true, true);
+			ops
+				.fftSize(originalDimensions, fastDimensions, fftDimensions, true, true);
 
 			// create an input with a small sphere at the center
-			Img<FloatType> inOriginal = (Img<FloatType>) ops.run(
-					DefaultCreateImg.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-					originalDimensions);
+			Img<FloatType> inOriginal =
+				(Img<FloatType>) ops.create().img(new FloatType(),
+					new ArrayImgFactory<FloatType>(), originalDimensions);
 			placeSphereInCenter(inOriginal);
 
 			// create a similar input using the fast size
-			Img<FloatType> inFast = (Img<FloatType>) ops.run(
-					DefaultCreateImg.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-					fastDimensions);
+			Img<FloatType> inFast =
+				(Img<FloatType>) ops.create().img(new FloatType(),
+					new ArrayImgFactory<FloatType>(), fastDimensions);
 			placeSphereInCenter(inFast);
 
 			// call FFT passing false for "fast" (in order to pass the optional
@@ -131,22 +129,22 @@ public class FFTTest extends AbstractOpBenchmark {
 
 			// create an image to be used for the inverse, using the original
 			// size
-			Img<FloatType> inverseOriginalSmall = (Img<FloatType>) ops.run(
-					DefaultCreateImg.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-					originalDimensions);
+			Img<FloatType> inverseOriginalSmall =
+				(Img<FloatType>) ops.create().img(new FloatType(),
+					new ArrayImgFactory<FloatType>(), originalDimensions);
 
 			// create an inverse image to be used for the inverse, using the
 			// original
 			// size
-			Img<FloatType> inverseOriginalFast = (Img<FloatType>) ops.run(
-					DefaultCreateImg.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-					originalDimensions);
+			Img<FloatType> inverseOriginalFast =
+				(Img<FloatType>) ops.create().img(new FloatType(),
+					new ArrayImgFactory<FloatType>(), originalDimensions);
 
 			// create an inverse image to be used for the inverse, using the
 			// fast size
-			Img<FloatType> inverseFast = (Img<FloatType>) ops.run(
-					DefaultCreateImg.class, new FloatType(), new ArrayImgFactory<FloatType>(),
-					fastDimensions);
+			Img<FloatType> inverseFast =
+				(Img<FloatType>) ops.create().img(new FloatType(),
+					new ArrayImgFactory<FloatType>(), fastDimensions);
 
 			// invert the "small" FFT
 			ops.ifft(inverseOriginalSmall, fft1);
