@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.arithmetic.add;
+package net.imagej.ops.math.add;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Contingent;

@@ -266,25 +266,25 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	@OpMethod(op = net.imagej.ops.math.add.AddIterableIntervalToImg.class)
 	public <T extends NumericType<T>> Img<T> add(final Img<T> in,
 		final IterableInterval<T> ii)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, in, ii);
+				net.imagej.ops.math.add.AddIterableIntervalToImg.class, in, ii);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class)
+	@OpMethod(op = net.imagej.ops.math.add.AddIterableIntervalToImg.class)
 	public <T extends NumericType<T>> Img<T> add(final Img<T> out,
 		final Img<T> in, final IterableInterval<T> ii)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.arithmetic.add.AddIterableIntervalToImg.class, out, in,
+				net.imagej.ops.math.add.AddIterableIntervalToImg.class, out, in,
 				ii);
 		return result;
 	}
