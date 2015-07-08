@@ -41,7 +41,7 @@ import org.junit.Test;
 public class ComputeThresholdTest extends AbstractThresholdTest {
 #foreach ($method in $methods)
 
-	/** Tests {@link net.imagej.ops.threshold.${method.name}.Compute${method.name}Threshold}. */
+	/** Tests {@link net.imagej.ops.threshold.${method.name}.Compute${method.iface}Threshold}. */
 	@Test
 	public void test${method.iface}() {
 		final Object actual = ops.threshold().${method.name}(histogram());
