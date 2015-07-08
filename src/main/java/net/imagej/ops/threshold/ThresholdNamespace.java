@@ -37,6 +37,7 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
+import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
@@ -420,6 +421,16 @@ public class ThresholdNamespace extends AbstractNamespace {
 			(T) ops().run(
 				net.imagej.ops.threshold.li.ComputeLiThreshold.class, out,
 				in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
+	public <T extends RealType<T>> BitType localMean(final BitType out,
+		final Pair<T> in, final double c)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
+				out, in, c);
 		return result;
 	}
 

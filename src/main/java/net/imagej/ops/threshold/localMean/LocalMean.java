@@ -28,9 +28,10 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.local;
+package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.OpService;
 import net.imagej.ops.stats.mean.Mean;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -44,8 +45,10 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T> {
+@Plugin(type = Op.class, name = Ops.Threshold.LocalMean.NAME)
+public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
+	implements Ops.Threshold.LocalMean
+{
 
 	@Parameter
 	private double c;
