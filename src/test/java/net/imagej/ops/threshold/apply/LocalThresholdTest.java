@@ -28,55 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.commands.threshold;
+package net.imagej.ops.threshold.apply;
 
-import net.imagej.ImgPlus;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.Slicewise;
-import net.imagej.ops.threshold.ComputeThreshold;
-import net.imglib2.Axis;
+import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
+import net.imagej.ops.threshold.localMean.LocalMean;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.ByteType;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)#
+ * Tests {@link LocalThreshold}.
  * 
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Op {
+public class LocalThresholdTest extends AbstractOpTest {
 
-    @Parameter
-    private ComputeThreshold<ImgPlus<T>,T> method;
+	@Test
+	public void test() throws IncompatibleTypeException {
+		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		Img<BitType> out =
+			in.factory().imgFactory(new BitType()).create(in, new BitType());
 
-    @Parameter
-    private OpService ops;
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalMean.class, BitType.class, LocalThresholdMethod.Pair.class,
+				0.0), new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> in;
+		assertEquals(out.firstElement().get(), true);
+	}
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private ImgPlus<BitType> out;
-
-    // we need another widget for this!!
-    @Parameter(required=false)
-    private Axis[] axes;
-
-    @Override
-    public void run() {
-        Op threshold = ops.op("threshold", out, in, method);
-
-        // TODO actually map axes to int array
-        ops.slicewise(out, in, threshold, new int[]{0, 1});
-    }
-    
-    // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).
 }

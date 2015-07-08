@@ -1,0 +1,22 @@
+[ComputeThresholdTest.java]
+methods = ```
+[
+	[name: "huang",         iface: "Huang",         expected: 36874],
+	[name: "ij1",           iface: "IJ1",           expected: 31836],
+	[name: "intermodes",    iface: "Intermodes",    expected: 34859],
+	[name: "isoData",       iface: "IsoData",       expected: 33095],
+	[name: "li",            iface: "Li",            expected: 26798],
+	[name: "maxEntropy",    iface: "MaxEntropy",    expected: 28309],
+	[name: "maxLikelihood", iface: "MaxLikelihood", expected: 46698],
+	[name: "mean",          iface: "Mean",          expected: 32591],
+	[name: "minError",      iface: "MinError",      expected: 32843],
+	[name: "minimum",       iface: "Minimum",       expected: 44935],
+	[name: "moments",       iface: "Moments",       expected: 34355],
+	[name: "otsu",          iface: "Otsu",          expected: 34103],
+	[name: "percentile",    iface: "Percentile",    expected: 32088],
+	[name: "renyiEntropy",  iface: "RenyiEntropy",  expected: 26546],
+	[name: "shanbhag",      iface: "Shanbhag",      expected: 27553],
+	[name: "triangle",      iface: "Triangle",      expected: 34607],
+	[name: "yen",           iface: "Yen",           expected: 24531]
+]
+```

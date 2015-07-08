@@ -28,55 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.commands.threshold;
+package net.imagej.ops.threshold;
 
-import net.imagej.ImgPlus;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.Slicewise;
-import net.imagej.ops.threshold.ComputeThreshold;
-import net.imglib2.Axis;
+import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.ItemIO;
-import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * TODO: should actually live in a different package!! OR: can this be
- * auto-generated?? (e.g. based on other plugin annotations)#
- * 
- * @author Martin Horn (University of Konstanz)
+ * Abstract superclass of {@link ApplyThresholdIterable} implementations that
+ * operate on {@link Img} objects.
+ *
+ * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Op {
+public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
+	AbstractApplyThresholdIterable<T, I, Img<BitType>>
+{
 
-    @Parameter
-    private ComputeThreshold<ImgPlus<T>,T> method;
+	@Parameter
+	private OpService ops;
 
-    @Parameter
-    private OpService ops;
+	// -- OutputFunction methods --
 
-    // should not be Dataset, DisplayService, ...
-    @Parameter
-    private ImgPlus<T> in;
+	@Override
+	public Img<BitType> createOutput(final I input) {
+		final BitType type = new BitType();
+		try {
+			return input.factory().imgFactory(type).create(input, type);
+		}
+		catch (final IncompatibleTypeException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+	}
 
-    @Parameter(type = ItemIO.OUTPUT)
-    private ImgPlus<BitType> out;
-
-    // we need another widget for this!!
-    @Parameter(required=false)
-    private Axis[] axes;
-
-    @Override
-    public void run() {
-        Op threshold = ops.op("threshold", out, in, method);
-
-        // TODO actually map axes to int array
-        ops.slicewise(out, in, threshold, new int[]{0, 1});
-    }
-    
-    // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).
 }
