@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Maps values of a {@link RandomAccessible} in View.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * 
  * @param <A>
  * @param <B>

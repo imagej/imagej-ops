@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Create a LabelingMapping which can store at least maxNumSets different Sets
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <L> label type
  */
 @Plugin(type = Op.class, name = Ops.Create.LabelingMapping.NAME)

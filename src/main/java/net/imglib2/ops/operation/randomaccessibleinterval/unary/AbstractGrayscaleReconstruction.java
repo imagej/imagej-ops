@@ -48,7 +48,7 @@ import net.imglib2.type.Type;
  * Vincent in his paper Morphological Grayscale Reconstruction in Image
  * Analysis: Application and Efficient Algorithms.<br>
  * 
- * @author Clemens Muehting (University of Konstanz)
+ * @author Clemens Muething (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Correlate op for (@link Img)
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

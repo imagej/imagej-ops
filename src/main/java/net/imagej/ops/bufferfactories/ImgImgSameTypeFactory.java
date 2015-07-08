@@ -38,7 +38,7 @@ import net.imglib2.type.Type;
  * {@link BufferFactory} used to create an empty output {@link Img} of same type
  * and dimensionality as the input {@link Img}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <L>
  */
 public class ImgImgSameTypeFactory<T extends Type<T>> implements

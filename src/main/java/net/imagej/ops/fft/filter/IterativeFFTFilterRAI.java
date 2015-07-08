@@ -49,7 +49,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for iterative FFT filters that perform on RAI
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

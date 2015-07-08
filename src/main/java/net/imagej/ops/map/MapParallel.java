@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Parallelized {@link MapIterableInplace}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A> mapped on <A>
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 5)

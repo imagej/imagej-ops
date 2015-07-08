@@ -51,7 +51,7 @@ import org.scijava.thread.ThreadService;
  * Default Implementation wrapping {@link ConnectedComponents} of
  * ImgLib2-algorithms.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = CCA.class, name = CCA.NAME, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>

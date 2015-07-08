@@ -33,8 +33,8 @@ package net.imagej.ops;
 /**
  * Abstract superclass for {@link Function} ops.
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
 public abstract class AbstractFunction<I, O> implements Function<I, O> {

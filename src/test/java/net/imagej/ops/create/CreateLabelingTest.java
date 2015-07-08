@@ -48,8 +48,8 @@ import org.junit.Test;
 /**
  * Tests several ways to create an image
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  */
 
 public class CreateLabelingTest extends AbstractOpTest {

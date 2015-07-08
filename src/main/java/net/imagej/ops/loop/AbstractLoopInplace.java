@@ -38,7 +38,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract implementation of a {@link LoopInplace}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
 	implements LoopInplace<I>

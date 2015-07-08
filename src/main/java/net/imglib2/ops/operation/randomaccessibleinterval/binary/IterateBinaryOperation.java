@@ -55,6 +55,7 @@ import net.imglib2.type.Type;
  * Applies a given Operation to each interval Separately.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Clemens Muething (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
@@ -230,9 +231,6 @@ public final class IterateBinaryOperation< T extends Type< T >, V extends Type< 
 
 	/**
 	 * Future task
-	 * 
-	 * @author dietzc, muethingc
-	 * 
 	 */
 	private class OperationTask implements Runnable
 	{

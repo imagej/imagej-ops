@@ -37,7 +37,7 @@ import net.imagej.ops.Ops;
  * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
  * maps values from <A> to <B>.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Map<A, B, F extends Function<A, B>> extends Ops.Map {
 

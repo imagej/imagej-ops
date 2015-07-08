@@ -46,9 +46,9 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of the "create.imgLabeling" op.
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
- * @author Christian Dietz, University of Konstanz
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.Create.ImgLabeling.NAME)

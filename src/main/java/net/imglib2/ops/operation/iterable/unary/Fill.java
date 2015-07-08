@@ -35,7 +35,7 @@ import net.imglib2.ops.operation.UnaryOperation;
 import net.imglib2.type.Type;
 
 /**
- * @author Felix Schonenberger (University of Konstanz)
+ * @author Felix Schoenenberger (University of Konstanz)
  * @author Jonathan Hale (University of Konstanz)
  * @param <T>
  * @deprecated Use net.imagej.ops instead.

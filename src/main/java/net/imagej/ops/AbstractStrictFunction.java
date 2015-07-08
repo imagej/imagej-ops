@@ -37,8 +37,8 @@ import org.scijava.plugin.Parameter;
  * Abstract superclass for strict {@link Function} ops, which require the "out"
  * parameter to be explicitly specified.
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  * @see AbstractOutputFunction
  */

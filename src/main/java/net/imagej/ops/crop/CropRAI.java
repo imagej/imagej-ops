@@ -46,8 +46,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Christian Dietz, University of Konstanz
- * @author Martin Horn, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Crop.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Crop.ALIASES) },

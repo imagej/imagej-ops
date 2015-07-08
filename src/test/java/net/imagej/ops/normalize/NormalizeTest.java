@@ -41,7 +41,7 @@ import net.imglib2.type.numeric.integer.ByteType;
 import org.junit.Test;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public class NormalizeTest extends AbstractOpTest {
 

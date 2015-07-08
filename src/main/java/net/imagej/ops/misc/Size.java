@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.integer.LongType;
 /**
  * A typed "size" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Size<I> extends Ops.Stats.Size, Function<I, LongType> {
 	// NB: Marker interface.

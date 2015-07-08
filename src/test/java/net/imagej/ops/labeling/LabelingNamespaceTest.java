@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Tests {@link LabelingNamespace}.
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 public class LabelingNamespaceTest extends AbstractNamespaceTest {

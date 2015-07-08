@@ -42,7 +42,7 @@ import org.junit.Test;
 /**
  * A test of {@link ConvertIterableInterval}.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public class ConvertIITest extends AbstractOpTest {
 

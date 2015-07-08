@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Joins two {@link InplaceFunction}s.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Join.NAME)
 public class DefaultJoinInplaceAndInplace<A> extends

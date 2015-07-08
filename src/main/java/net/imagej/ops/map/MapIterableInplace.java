@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * Default (slower) implementation of an {@link MapIterableInplace}.
  * 
  * @author Curtis Rueden
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A>
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME,

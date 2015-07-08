@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * chunks, which are processed in parallel. The stepSize is set to one, i.e.
  * each chunk consists of consecutive elements.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Thread.Chunker.NAME)
 public class DefaultChunker extends AbstractChunker {

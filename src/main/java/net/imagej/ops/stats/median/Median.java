@@ -36,7 +36,7 @@ import net.imagej.ops.stats.quantile.Quantile;
 /**
  * A typed "median" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Median<T, V> extends Ops.Stats.Median, Quantile<T, V> {
 	// NB: Marker interface.

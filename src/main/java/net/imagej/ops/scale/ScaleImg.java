@@ -50,7 +50,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Scale.NAME, attrs = { @Attr(name = "aliases",
 	value = Ops.Scale.ALIASES) })

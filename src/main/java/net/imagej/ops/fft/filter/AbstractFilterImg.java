@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for filters that operate on Img.
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

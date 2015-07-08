@@ -39,7 +39,7 @@ import net.imglib2.type.Type;
  * {@link BufferFactory} used to create an empty output {@link Img} of type <V>
  * and the dimensionality of the input {@link Img}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
 	BufferFactory<Img<T>, Img<V>>

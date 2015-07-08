@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract superclass of {@link JoinFunctions}s.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>

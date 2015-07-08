@@ -36,7 +36,7 @@ import org.scijava.thread.ThreadService;
 /**
  * Abstract {@link Chunker}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractChunker implements Chunker {
 

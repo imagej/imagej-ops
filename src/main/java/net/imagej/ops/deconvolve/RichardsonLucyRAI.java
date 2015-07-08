@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval)
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

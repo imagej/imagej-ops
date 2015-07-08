@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  * This class is used to extend the image and kernel for an FFT filter and
  * create the corresponding (@Link Img) buffers to store the FFTs
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

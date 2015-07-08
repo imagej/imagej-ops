@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract superclass of {@link ApplyThresholdIterable} implementations.
  *
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */

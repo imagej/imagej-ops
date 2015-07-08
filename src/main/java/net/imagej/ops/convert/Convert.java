@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed conversion operation.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public interface Convert<I, O> extends Ops.Convert, Function<I, O> {
 	// NB: Marker interface.

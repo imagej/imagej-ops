@@ -36,7 +36,7 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public abstract class LocalThresholdMethod<T extends RealType<T>> extends
 	AbstractStrictFunction<Pair<T>, BitType>

@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract convenience op for generating a symmetric kernel
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <T>
  */
 public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {

@@ -38,7 +38,7 @@ import net.imglib2.util.ValuePair;
 
 /**
  * 
- * @author dietzc (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * 
  * @param <T>
  * @deprecated Use net.imagej.ops instead.

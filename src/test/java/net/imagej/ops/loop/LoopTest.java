@@ -46,7 +46,7 @@ import org.junit.Test;
 /**
  * Testing functional and inplace loops
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class LoopTest extends AbstractOpTest {
 

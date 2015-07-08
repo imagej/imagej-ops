@@ -32,7 +32,7 @@ package net.imglib2.ops.operation;
 
 /**
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

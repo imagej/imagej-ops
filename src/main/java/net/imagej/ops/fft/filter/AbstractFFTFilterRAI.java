@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for FFT based filters that operate on RAI
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

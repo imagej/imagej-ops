@@ -45,11 +45,11 @@ import org.scijava.plugin.Plugin;
  * Gaussian filter ported from
  * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
  *
- * @author Christian Dietz
- * @Author Martin Horn
- * @Author Michael Zinsmaier
- * @Author Stephan Sellien
- * @author bnorthan
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @author Michael Zinsmaier (University of Konstanz)
+ * @author Stephan Sellien (University of Konstanz)
+ * @author Brian Northan
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.GaussKernel.NAME)

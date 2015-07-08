@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
  * Abstract implementation of a {@link Map} which virtually converts entries in
  * I and V from A to B.
  *
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A> type to be converted to <B>
  * @param <B> result of conversion
  * @param <I> holding <A>s

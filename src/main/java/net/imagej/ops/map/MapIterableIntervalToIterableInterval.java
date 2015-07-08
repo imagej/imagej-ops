@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
  * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
  * Conforms if the {@link IterableInterval}s have the same IterationOrder.
  * 
- * @author Martin Horn
- * @author Christian Dietz
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class MapIterableIntervalToIterableInterval<A, B> extends

@@ -53,8 +53,8 @@ import org.scijava.ItemIO;
  * be reused across multiple threads of a {@link Parallel} op.
  * </p>
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
 public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable,

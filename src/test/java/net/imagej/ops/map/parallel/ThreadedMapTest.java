@@ -52,7 +52,7 @@ import org.junit.Test;
  * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
  * {@link MapIterableIntervalToRAI} works fine.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class ThreadedMapTest extends AbstractOpTest {
 

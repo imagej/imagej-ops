@@ -45,7 +45,7 @@ import org.junit.Test;
 /**
  * Tests {@link LocalThreshold}.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public class LocalThresholdTest extends AbstractOpTest {
 

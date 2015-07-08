@@ -46,7 +46,7 @@ import org.junit.Test;
 /**
  * Tests several ways to create an IntegerType
  *
- * @author Christian Dietz, University of Konstanz.
+ * @author Christian Dietz (University of Konstanz)
  */
 
 public class CreateIntegerTypeTest extends AbstractOpTest {

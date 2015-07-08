@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Create an IntegerType with at least maxValue maximum
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> any IntegerType
  */
 @SuppressWarnings("rawtypes")

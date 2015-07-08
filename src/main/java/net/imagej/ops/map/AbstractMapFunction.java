@@ -38,7 +38,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract implementation of a {@link Map}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  * @param <C> provides {@code <A>}s

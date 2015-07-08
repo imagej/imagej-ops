@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "variance" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Variance<T, V> extends Ops.Stats.Variance,
 	Function<Iterable<T>, V>

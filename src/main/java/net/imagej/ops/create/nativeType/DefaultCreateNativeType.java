@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of the "create.nativeType" op.
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Op.class, name = Ops.Create.NativeType.NAME)

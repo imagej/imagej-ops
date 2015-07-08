@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of a {@link AbstractLoopInplace}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Loop.NAME)
 public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {

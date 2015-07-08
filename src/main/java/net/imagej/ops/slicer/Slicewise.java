@@ -41,8 +41,8 @@ import net.imagej.ops.Ops;
  * the {@link Function} will be executed.
  * </p>
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
 public interface Slicewise<I, O> extends Ops.Slicewise, Function<I, O> {
 	// NB: Marker interface.

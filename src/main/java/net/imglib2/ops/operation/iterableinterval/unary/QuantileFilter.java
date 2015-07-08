@@ -40,9 +40,12 @@ import net.imglib2.view.Views;
  * 
  * Deprecation: is going to be replaced by a revised version soon from the KNIME image processing project.
  * 
- * @author dietzc, hornm, zinsmaierm, seebacherd, riesst (University of
- *         Konstanz)
- *         @deprecated Use net.imagej.ops instead.
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @author Michael Zinsmaier (University of Konstanz)
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author riesst (University of Konstanz)
+ * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
 public class QuantileFilter< T extends RealType< T >> implements UnaryOperation< RandomAccessibleInterval< T >, RandomAccessibleInterval< T >>
@@ -358,7 +361,7 @@ public class QuantileFilter< T extends RealType< T >> implements UnaryOperation<
 	}
 
 	/**
-	 * @author tcriess, University of Konstanz
+	 * @author tcriess (University of Konstanz)
 	 */
 	private class QuantileHistogram
 	{

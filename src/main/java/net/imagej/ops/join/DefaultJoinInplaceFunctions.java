@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Joins a list of {@link InplaceFunction}s.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Join.NAME)
 public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>

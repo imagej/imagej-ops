@@ -36,7 +36,7 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStrictFunction<I, O> implements Convert<I, O>, Contingent

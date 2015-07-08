@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract implementation of a {@link LoopFunction}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 	AbstractStrictFunction<I, I> implements LoopFunction<I>

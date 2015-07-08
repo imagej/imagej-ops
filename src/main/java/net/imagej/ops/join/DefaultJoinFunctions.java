@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Joins a list of {@link Function}s.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Op.class, name = Ops.Join.NAME)

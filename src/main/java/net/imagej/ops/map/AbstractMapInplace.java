@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract implementation of an {@link MapIterableInplace}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A> type of values to be mapped
  * @param <I> {@link Iterable} of <A>s
  */

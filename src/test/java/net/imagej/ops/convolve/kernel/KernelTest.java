@@ -42,7 +42,7 @@ import org.junit.Test;
 /**
  * Kernel generation test class.
  * 
- * @author bnorthan
+ * @author Brian Northan
  */
 public class KernelTest extends AbstractOpTest {
 

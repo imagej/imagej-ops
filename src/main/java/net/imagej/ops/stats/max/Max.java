@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "max" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Max<T, V> extends Ops.Stats.Max, Function<Iterable<T>, V> {
 	// NB: Marker interface.

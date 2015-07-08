@@ -38,7 +38,7 @@ import net.imagej.ops.InplaceFunction;
  * function will take the input of the first {@link Function} as input and the
  * output of the second {@link Function} as the output;
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface JoinInplaceAndInplace<A> extends
 	JoinFunctionAndFunction<A, A, A, InplaceFunction<A>, InplaceFunction<A>>

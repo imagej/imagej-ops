@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Parallelized {@link Map}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  */

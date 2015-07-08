@@ -42,7 +42,8 @@ import net.imglib2.type.Type;
 /**
  * Crops an image.
  * 
- * @author dietzc, hornm, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
  * Abstract class for creating an image from a factory and a type. Derived
  * classes will contain logic to determine size and values of the image.
  *
- * @author bnorthan
+ * @author Brian Northan
  * @param <V>
  */
 abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>

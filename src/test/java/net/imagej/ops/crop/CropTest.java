@@ -48,7 +48,7 @@ import org.junit.Test;
 /**
  * Tests {@link Crop}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class CropTest extends AbstractOpTest {
 

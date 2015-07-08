@@ -154,11 +154,7 @@ public class CCA< T extends RealType< T >> extends AbstractRegionGrowing< T, Int
 		return new CCA< T >( m_structuringElement.clone(), m_background.copy(), m_synchronizer );
 	}
 
-	/**
-	 * Simple helper class
-	 *
-	 * @author Christian Dietz (University of Konstanz)
-	 */
+	/** Simple helper class */
 	private class ThreadSafeLabelNumbers
 	{
 

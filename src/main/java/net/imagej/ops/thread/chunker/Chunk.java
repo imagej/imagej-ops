@@ -40,7 +40,7 @@ import net.imagej.ops.Parallel;
  * identified by enumerating the original problem.
  * </p>
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @see Chunker
  * @see Parallel
  */

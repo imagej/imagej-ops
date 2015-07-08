@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * and {@link RandomAccessibleInterval} output.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class SlicewiseRAI2RAI<I, O>

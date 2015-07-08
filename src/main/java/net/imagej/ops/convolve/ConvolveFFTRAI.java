@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Convolve op for (@link RandomAccessibleInterval)
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

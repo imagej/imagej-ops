@@ -40,7 +40,7 @@ import net.imglib2.ops.operation.iterableinterval.unary.MakeCooccurrenceMatrix.H
  * {@link MakeCooccurrenceMatrix}. It's features are ordered according to
  * {@link HaralickFeature}
  * 
- * @author Stephan Sellien, University of Konstanz
+ * @author Stephan Sellien (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

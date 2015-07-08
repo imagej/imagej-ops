@@ -41,7 +41,9 @@ import net.imglib2.util.ValuePair;
 /**
  * TODO
  * 
- * @author dietzc, hornm, zinsmaierm (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @author Michael Zinsmaier (University of Konstanz)
  * 
  * @param <T>
  *            TODO

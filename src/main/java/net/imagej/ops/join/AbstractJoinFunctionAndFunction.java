@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
 	extends AbstractStrictFunction<A, C> implements

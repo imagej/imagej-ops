@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * Applies the given threshold value to every element along the given
  * {@link Iterable} input.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME,

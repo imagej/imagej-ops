@@ -50,7 +50,7 @@ import net.imglib2.util.Intervals;
  * Helper class to iterate through subsets of {@link RandomAccessibleInterval}s
  * (e.g. {@link Img}s)
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class Hyperslice extends AbstractInterval implements
 	IterableInterval<RandomAccessibleInterval<?>>
@@ -163,7 +163,7 @@ public class Hyperslice extends AbstractInterval implements
 	/**
 	 * Help class.
 	 * 
-	 * @author Christian Dietz
+	 * @author Christian Dietz (University of Konstanz)
 	 */
 	private class HyperSliceCursor extends IntervalIterator implements
 		Cursor<RandomAccessibleInterval<?>>

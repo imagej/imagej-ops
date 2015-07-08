@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 /**
- * @author Felix Schonenberger (University of Konstanz)
+ * @author Felix Schoenenberger (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated
@@ -239,8 +239,7 @@ public final class BinaryKernelFilter< T extends RealType< T > > implements Unar
 
 	/**
 	 * Kernel queue.
-	 * 
-	 * @author schoenen
+	 *
 	 * @param <Q>
 	 */
 	final class Queue< Q extends RealType< Q >>

@@ -40,7 +40,8 @@ import net.imglib2.type.Type;
  * Helper class to create a {@link ImgPlusView} on an
  * {@link RandomAccessibleInterval} which behaves exactly as an {@link ImgPlus}.
  * 
- * @author dietzc, hornm University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

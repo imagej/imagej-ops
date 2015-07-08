@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * Create an {@link Img} from another {@link Img} implementation using its
  * {@link Type} and {@link ImgFactory}.
  *
- * @author Christian Dietz, University of Konstanz.
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.Create.Img.NAME,

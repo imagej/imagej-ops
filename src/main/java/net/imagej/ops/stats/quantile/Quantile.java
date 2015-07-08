@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "quantile" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Quantile<T, V> extends Ops.Stats.Quantile, Function<T, V> {
 	// NB: Marker interface.

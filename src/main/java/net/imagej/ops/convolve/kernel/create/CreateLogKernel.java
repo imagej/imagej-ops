@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * to determine the dimensionality of the kernel and to map it on a pixel grid.
  *
  * @author Jean-Yves Tinevez
- * @author bnorthan
+ * @author Brian Northan
  */
 @Plugin(type = Op.class, name = Ops.LogKernel.NAME)
 public class CreateLogKernel<T extends ComplexType<T> & NativeType<T>> extends

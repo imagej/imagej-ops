@@ -48,8 +48,8 @@ import org.scijava.plugin.Plugin;
  * Evaluates an {@link Function} for each {@link Neighborhood} on the in
  * {@link RandomAccessibleInterval}.
  * 
- * @author Christian Dietz
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends

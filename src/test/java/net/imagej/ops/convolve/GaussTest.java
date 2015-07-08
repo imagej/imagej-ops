@@ -40,7 +40,7 @@ import org.junit.Test;
 /**
  * Tests involving Gaussian convolution.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public class GaussTest extends AbstractOpTest {
 

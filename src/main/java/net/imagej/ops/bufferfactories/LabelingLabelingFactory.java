@@ -37,7 +37,7 @@ import net.imglib2.labeling.Labeling;
  * {@link BufferFactory} used to create an empty output {@link Labeling} of same
  * type and dimensionality as the input {@link Labeling}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @param <L>
  */
 public class LabelingLabelingFactory<L extends Comparable<L>> implements

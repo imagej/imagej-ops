@@ -41,8 +41,8 @@ import org.scijava.plugin.Plugin;
 /**
  * {@link Map} from {@link Iterable} to {@link Iterable}.
  * 
- * @author Martin Horn
- * @author Christian Dietz
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapIterableToIterable<A, B> extends

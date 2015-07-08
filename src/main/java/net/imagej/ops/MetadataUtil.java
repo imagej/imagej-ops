@@ -44,9 +44,9 @@ import org.scijava.Named;
  * user to ensure that the source and target spaces have the correct
  * dimensionality.
  * 
- * @author Christian Dietz
- * @author Michael Zinsmaier
- * @author Martin Horn
+ * @author Christian Dietz (University of Konstanz)
+ * @author Michael Zinsmaier (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
 
 // TODO Move to ImgLib2?

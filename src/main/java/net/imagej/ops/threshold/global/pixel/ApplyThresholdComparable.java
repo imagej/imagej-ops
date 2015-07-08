@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * Applies a threshold value to the given comparable object, producing a
  * {@link BitType} set to 1 iff the object compares above the threshold.
  *
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME)
 public class ApplyThresholdComparable<T> extends

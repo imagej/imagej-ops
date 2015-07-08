@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * TODO: should actually live in a different package!! OR: can this be
  * auto-generated?? (e.g. based on other plugin annotations)#
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
 public class GlobalThresholder<T extends RealType<T>> implements Op {

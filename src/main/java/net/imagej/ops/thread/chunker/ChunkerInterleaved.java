@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * first one will process the elements 1, k+1, 2k+1, ... the second chunk
  * executable 2, k+2, 2k+2 and so on.
  * 
- * @author Michael Zinsmaier
+ * @author Michael Zinsmaier (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Thread.Chunker.NAME,
 	priority = Priority.VERY_LOW_PRIORITY)

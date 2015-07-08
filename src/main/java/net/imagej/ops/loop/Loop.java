@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "loop" operation.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Loop<A> extends Ops.Loop {
 

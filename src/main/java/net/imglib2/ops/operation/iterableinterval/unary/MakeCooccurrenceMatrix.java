@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.RealType;
  * is based on http://www.fp.ucalgary.ca/mhallbey/the_glcm.htm. Other formulas
  * are from Textural Features for Image Classification[Haralick73].
  * 
- * @author Stephan Sellien, University of Konstanz
+ * @author Stephan Sellien (University of Konstanz)
  * 
  * @param <T>
  * @deprecated Use net.imagej.ops instead.

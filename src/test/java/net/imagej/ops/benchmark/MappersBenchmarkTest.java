@@ -55,7 +55,7 @@ import org.junit.rules.TestRule;
  * {@link MapIterableIntervalToRAI}, {@link MapIterableIntervalToIterableInterval},
  * {@link MapIterableToRAIParallel}, {@link MapIterableToIterableParallel}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class MappersBenchmarkTest extends AbstractOpBenchmark {

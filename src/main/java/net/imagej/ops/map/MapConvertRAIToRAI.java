@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Map values of {@link RandomAccessibleInterval} to a View
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * 
  * @param <A>
  * @param <B>

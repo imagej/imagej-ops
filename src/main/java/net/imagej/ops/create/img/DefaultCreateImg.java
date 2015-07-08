@@ -47,8 +47,8 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of the "create.img" op.
  *
- * @author Daniel Seebacher, University of Konstanz.
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Daniel Seebacher (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.Create.Img.NAME)

@@ -38,7 +38,7 @@ import net.imagej.ops.Ops;
  * will take the input of the first {@link Function} as input and the output of
  * the second {@link Function} as the output.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>

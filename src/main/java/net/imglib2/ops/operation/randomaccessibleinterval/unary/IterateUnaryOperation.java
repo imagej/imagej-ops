@@ -178,9 +178,6 @@ public final class IterateUnaryOperation< T extends Type< T >, V extends Type< V
 
 	/**
 	 * Future task
-	 * 
-	 * @author dietzc, muethingc
-	 * 
 	 */
 	private class OperationTask implements Runnable
 	{

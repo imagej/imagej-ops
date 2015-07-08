@@ -37,8 +37,10 @@ import net.imglib2.ops.operation.metadata.unary.CopyMetadata;
 import net.imglib2.type.Type;
 
 /**
+ * TODO
  * 
- * @author hornm, dietzc University of Konstanz
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

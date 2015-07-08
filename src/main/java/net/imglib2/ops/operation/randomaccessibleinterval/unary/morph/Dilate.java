@@ -37,7 +37,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 
 /**
- * @author Felix Schonenberger (University of Konstanz)
+ * @author Felix Schoenenberger (University of Konstanz)
  * 
  * @param <I>
  * @deprecated Use net.imagej.ops instead.

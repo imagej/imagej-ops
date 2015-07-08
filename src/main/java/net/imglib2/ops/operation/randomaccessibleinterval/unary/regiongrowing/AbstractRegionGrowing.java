@@ -74,10 +74,6 @@ public abstract class AbstractRegionGrowing< T extends Type< T >, L extends Comp
 
     protected final long[][] m_structuringElement;
 
-    /**
-     *
-     * @author hornm, University of Konstanz
-     */
     public enum GrowingMode
     {
         /**

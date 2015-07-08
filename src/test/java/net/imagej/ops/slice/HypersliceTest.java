@@ -58,7 +58,7 @@ import org.scijava.Context;
 /**
  * Testing functionality of SlicingIterableIntervals
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @author Brian Northan
  */
 public class HypersliceTest extends AbstractOpTest {

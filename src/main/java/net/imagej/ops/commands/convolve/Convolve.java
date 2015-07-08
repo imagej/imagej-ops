@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Command.class, menuPath = "Image > Convolve")
 public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>

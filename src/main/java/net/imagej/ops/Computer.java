@@ -33,7 +33,7 @@ package net.imagej.ops;
 /**
  * Computer can compute the output given some input. 
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * 
  * @param <I> type of input
  * @param <O> type of output

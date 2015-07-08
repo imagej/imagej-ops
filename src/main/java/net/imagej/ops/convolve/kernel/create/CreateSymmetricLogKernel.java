@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Convenience op for generating a symmetric LOG kernel
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.LogKernel.NAME,

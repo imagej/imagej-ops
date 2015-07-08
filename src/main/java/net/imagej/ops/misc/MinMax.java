@@ -34,7 +34,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "minMax" operation.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface MinMax<T> extends Ops.Stats.MinMax {
 	// NB: Marker interface.

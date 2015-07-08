@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Invert.NAME, priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends

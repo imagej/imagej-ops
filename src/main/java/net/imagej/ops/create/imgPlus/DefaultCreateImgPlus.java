@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Default implementation of the "create.imgPlus" op.
  *
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Op.class, name = Ops.Create.ImgPlus.NAME)

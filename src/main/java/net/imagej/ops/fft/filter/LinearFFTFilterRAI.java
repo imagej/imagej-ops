@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract class for linear filters that operate on RAIs
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

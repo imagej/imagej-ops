@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "min" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Min<T, V> extends Ops.Stats.Min, Function<Iterable<T>, V> {
 	// NB: Marker interface.

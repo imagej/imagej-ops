@@ -48,7 +48,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class MapTest extends AbstractOpTest {
 

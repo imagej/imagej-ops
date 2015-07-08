@@ -46,7 +46,7 @@ import org.junit.rules.TestRule;
 /**
  * Tests the {@link Chunker}.
  *
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 // make sure that the data structure initialisation is not benchmarked
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)

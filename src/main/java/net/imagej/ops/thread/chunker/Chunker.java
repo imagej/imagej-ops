@@ -38,7 +38,7 @@ import org.scijava.Cancelable;
  * A "chunker" operation which executes code across
  * chunks of data using multiple threads.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Chunker extends Ops.Thread.Chunker, Cancelable {
 

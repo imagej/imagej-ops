@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * {@link Map} using a {@link Function} on {@link IterableInterval} and
  * {@link RandomAccessibleInterval}
  *
- * @author Martin Horn
- * @author Christian Dietz
- * @author Tim-Oliver Buchholz
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */

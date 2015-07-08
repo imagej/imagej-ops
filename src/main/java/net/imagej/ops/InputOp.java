@@ -34,7 +34,7 @@ package net.imagej.ops;
  * An {@code InputOp} is an {@link Op} that has a typed input parameter.
  * 
  * @author Curtis Rueden
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface InputOp<I> extends Op {
 

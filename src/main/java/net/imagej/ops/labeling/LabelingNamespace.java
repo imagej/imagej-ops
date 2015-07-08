@@ -43,7 +43,7 @@ import net.imglib2.type.numeric.IntegerType;
 /**
  * Namespace for {@link Op}s related to labelings.
  * 
- * @author Christian Dietz, University of Konstanz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class LabelingNamespace extends AbstractNamespace {
 

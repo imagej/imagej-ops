@@ -36,7 +36,7 @@ import net.imagej.ops.Ops;
 /**
  * A typed "sum" function.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface Sum<I, O> extends Ops.Stats.Sum, Function<I, O> {
 	// NB: Marker interface.

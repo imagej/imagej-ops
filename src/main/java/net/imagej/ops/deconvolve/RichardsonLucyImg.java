@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Richardson Lucy op that operates on (@link Img)
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>

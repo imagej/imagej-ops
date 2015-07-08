@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
  * {@link ByteType}
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 10)
 public class AddConstantToArrayByteImageP implements Ops.Math.Add {

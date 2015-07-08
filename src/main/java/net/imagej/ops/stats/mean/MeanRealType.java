@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Computes the mean of values for the input {@link Iterable}.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Stats.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)

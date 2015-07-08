@@ -40,7 +40,7 @@ import net.imagej.ops.Ops.Join;
 /**
  * A join operation which joins a list of {@link Function}s.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 public interface JoinFunctions<A, F extends Function<A, A>> extends

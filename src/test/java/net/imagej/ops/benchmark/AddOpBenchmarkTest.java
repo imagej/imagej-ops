@@ -53,7 +53,7 @@ import org.junit.rules.TestRule;
 /**
  * Benchmarks the pixel-wise add operation.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class AddOpBenchmarkTest extends AbstractOpBenchmark {

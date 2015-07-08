@@ -49,7 +49,8 @@ import net.imglib2.view.Views;
  * Converts complete images from one type into another
  * TODO: Can now convert RandomAccessibleIntervals from one type into another.
  * 
- * @author hornm, dietzc, University of Konstanz
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  * @deprecated Use net.imagej.ops instead.
  */
 @Deprecated

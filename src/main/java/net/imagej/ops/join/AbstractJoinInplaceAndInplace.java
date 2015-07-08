@@ -38,7 +38,7 @@ import org.scijava.plugin.Parameter;
 /**
  * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
 	implements JoinInplaceAndInplace<A>

@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * Ops of the {@code math} namespace which operate on {@link RealType}s.
  *
  * @author Barry DeZonia
- * @author Jonathan Hale
+ * @author Jonathan Hale (University of Konstanz)
  * @author Curtis Rueden
  */
 public final class RealMath {

@@ -37,7 +37,7 @@ import net.imglib2.type.numeric.RealType;
  * Interface marking functions that can be used within the
  * {@link ProjectCommand}.
  * 
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 public interface ProjectMethod<T extends RealType<T>> extends
 	Function<Iterable<T>, T>

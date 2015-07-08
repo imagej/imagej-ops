@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Applies a {@link Function} multiple times to an image.
  * 
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Op.class, name = Ops.Loop.NAME)
 public class DefaultLoopFunction<A> extends

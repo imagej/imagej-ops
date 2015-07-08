@@ -37,7 +37,7 @@ import org.junit.Before;
 import org.scijava.module.Module;
 
 /**
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public class AbstractOpBenchmark extends AbstractOpTest {
 

@@ -34,7 +34,7 @@ package net.imagej.ops;
  * An {@code OutputOp} is an {@link Op} that has a typed output parameter.
  * 
  * @author Curtis Rueden
- * @author Christian Dietz
+ * @author Christian Dietz (University of Konstanz)
  */
 public interface OutputOp<O> extends Op {
 

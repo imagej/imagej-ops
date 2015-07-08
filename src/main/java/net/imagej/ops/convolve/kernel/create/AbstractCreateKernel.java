@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
  * </b>. The specified sigma and calibration is used to determine the
  * dimensionality of the kernel and to map it on a pixel grid.
  *
- * @author bnorthan
+ * @author Brian Northan
  * @param <T>
  */
 public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType<T>>

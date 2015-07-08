@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn
+ * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Command.class, menuPath = "Image > Convert")
 public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
