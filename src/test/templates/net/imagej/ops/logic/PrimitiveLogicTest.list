@@ -1,6 +1,6 @@
 # Unit tests for the unary and binary logical ops with primitive args.
 
-[TestPrimitiveLogic.java]
+[PrimitiveLogicTest.java]
 types = ```
 [
 	B: [name: "Boolean", primitive: "boolean"],

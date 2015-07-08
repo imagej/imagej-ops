@@ -54,7 +54,7 @@ import org.junit.Test;
  * @author Aparna Pal
  * @author Curtis Rueden
  */
-public class TestRealBinaryMath extends AbstractOpTest {
+public class RealBinaryMathTest extends AbstractOpTest {
 
 	final double aValue = 6.0;
 	final double bValue = 2.0;

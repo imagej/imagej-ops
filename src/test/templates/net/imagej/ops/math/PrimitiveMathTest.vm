@@ -41,7 +41,7 @@ import org.junit.Test;
  *
  * @author Curtis Rueden
  */
-public class TestPrimitiveMath extends AbstractOpTest {
+public class PrimitiveMathTest extends AbstractOpTest {
 #foreach ($test in $tests)
 #if ($types.containsKey($test.code))
 #set ($type = $types.get($test.code))
