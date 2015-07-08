@@ -31,29 +31,50 @@
 package net.imagej.ops.convolve;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.algorithm.gauss3.Gauss3;
+import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
 import org.junit.Test;
 
 /**
- * Tests involving Gaussian convolution.
+ * Tests Gaussian convolution.
  * 
  * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 public class GaussTest extends AbstractOpTest {
 
 	/** Tests the Gaussian. */
 	@Test
-	public void test() {
+	public void gaussRegressionTest() {
 
-		final Img<ByteType> in =
-			new ArrayImgFactory<ByteType>().create(new int[] { 20, 20 },
-				new ByteType());
-		final Img<ByteType> out = in.copy();
+		final Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		final Img<ByteType> out1 =
+			ops.create().img(in, Util.getTypeFromInterval(in));
 		final double sigma = 5;
+		final Img<ByteType> out2 =
+			ops.create().img(in, Util.getTypeFromInterval(in));
 
-		ops.gauss(out, in, sigma);
+		ops.gauss(out1, in, sigma);
+		try {
+			Gauss3.gauss(sigma, Views.extendMirrorSingle(in), out2);
+		}
+		catch (IncompatibleTypeException e) {
+			throw new RuntimeException(e);
+		}
+
+		// compare outputs
+		final Cursor<ByteType> c1 = out1.cursor();
+		final Cursor<ByteType> c2 = out2.cursor();
+
+		while (c1.hasNext()) {
+			org.junit.Assert.assertEquals(c1.next().getRealDouble(), c2.next()
+				.getRealDouble(), 0);
+		}
 	}
 }
