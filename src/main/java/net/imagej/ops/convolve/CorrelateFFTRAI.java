@@ -31,6 +31,7 @@
 package net.imagej.ops.convolve;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -48,9 +49,9 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class)
+@Plugin(type = Op.class, name = Ops.Correlate.NAME)
 public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends LinearFFTFilterRAI<I, O, K, C>
+	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Correlate
 {
 
 	/**

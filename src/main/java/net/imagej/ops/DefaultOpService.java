@@ -596,6 +596,83 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	void correlate(final RandomAccessibleInterval<I> raiExtendedInput) {
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void
+		correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftInput);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftInput, fftKernel);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftInput, fftKernel, output);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT);
+	}
+
+	@Override
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT)
+	{
+		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
+			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
+			performKernelFFT);
+	}
+
+	@Override
 	public Object crop(final Object... args) {
 		return run(Ops.Crop.NAME, args);
 	}
