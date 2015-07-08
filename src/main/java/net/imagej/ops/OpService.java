@@ -38,6 +38,7 @@ import net.imagej.ImageJService;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -748,6 +749,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
+
+	/** Gateway into ops of the "filter" namespace. */
+	FilterNamespace filter();
 
 	/** Gateway into ops of the "image" namespace. */
 	ImageNamespace image();

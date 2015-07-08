@@ -40,6 +40,7 @@ import java.util.Map;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.gauss.DefaultGaussRAI;
 import net.imagej.ops.gauss.GaussRAISingleSigma;
 import net.imagej.ops.image.ImageNamespace;
@@ -1220,6 +1221,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public DeconvolveNamespace deconvolve() {
 		return namespace(DeconvolveNamespace.class);
+	}
+
+	@Override
+	public FilterNamespace filter() {
+		return namespace(FilterNamespace.class);
 	}
 
 	@Override
