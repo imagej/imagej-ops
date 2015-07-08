@@ -30,13 +30,11 @@
 
 package net.imagej.ops.gauss;
 
-import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Gauss;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -47,49 +45,67 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
 
+/**
+ * {@link Gauss}, wrapping {@link Gauss3} of imglib2-algorithms.
+ * 
+ * @author Christian Dietz, University of Konstanz
+ * @param <T> type of input
+ * @param <V> type of output
+ */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@Plugin(type = Op.class, name = "gauss")
-public class GaussRAIToRAI<T extends RealType<T>> extends
-	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+@Plugin(type = Op.class, name = Gauss.NAME)
+public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
+	extends
+	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Gauss
 {
 
 	@Parameter
-	private double sigma;
+	private OpService ops;
 
-	// TODO: make that selectable by the user/programmer
-	private final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds =
-		new OutOfBoundsMirrorFactory(Boundary.SINGLE);
+	@Parameter
+	private ThreadService threads;
+
+	@Parameter
+	private double[] sigmas;
+
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(
-		final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<T> output)
+	public void safeCompute(final RandomAccessibleInterval<T> input,
+		final RandomAccessibleInterval<V> output)
 	{
+
+		if (outOfBounds == null) outOfBounds =
+			new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+				Boundary.SINGLE);
+
 		final RandomAccessible<FloatType> eIn =
 			(RandomAccessible) Views.extend(input, outOfBounds);
 
-		final double[] sigmas = new double[input.numDimensions()];
-		Arrays.fill(sigmas, sigma);
-
 		try {
-			final int numThreads = Runtime.getRuntime().availableProcessors();
-			final ExecutorService executorService =
-				Executors.newFixedThreadPool(numThreads);
 			SeparableSymmetricConvolution.convolve(Gauss3.halfkernels(sigmas), eIn,
-				output, executorService);
+				output, threads.getExecutorService());
 		}
-		catch (final IncompatibleTypeException e) {
-			// TODO: better error handling
+		catch (IncompatibleTypeException e) {
 			throw new RuntimeException(e);
 		}
+	}
 
-		return output;
+	@Override
+	public RandomAccessibleInterval<V> createOutput(
+		final RandomAccessibleInterval<T> input)
+	{
+		return (RandomAccessibleInterval<V>) ops.create().img(input,
+			Util.getTypeFromInterval(input));
 	}
 
 }
