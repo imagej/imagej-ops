@@ -27,57 +27,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.slicewise;
 
-package net.imagej.ops.slicer;
+import net.imagej.axis.AxisType;
+import net.imagej.space.TypedSpace;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
+public class SlicewiseUtils {
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+	/**
+	 * @param input
+	 *            for which the {@link AxisType}s indices will be determined
+	 * @param axisTypes
+	 *            which will be used to determine the indices
+	 * @return
+	 */
+	public static synchronized int[] getAxesIndices(final TypedSpace<?> input,
+			final AxisType[] axisTypes) {
+		if (axisTypes == null)
+			return null;
 
-/**
- * {@link Slicewise} implementation fo {@link RandomAccessibleInterval} input
- * and {@link RandomAccessibleInterval} output.
- * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- */
-@Plugin(type = Op.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class SlicewiseRAI2RAI<I, O>
-	extends
-	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements
-	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-{
+		int[] indices = new int[axisTypes.length];
 
-	@Parameter
-	private OpService opService;
+		for (int i = 0; i < axisTypes.length; i++) {
+			indices[i] = input.dimensionIndex(axisTypes[i]);
 
-	@Parameter
-	private Function<I, O> func;
+			if (indices[i] == -1) {
+				// TODO nicer exception handling
+				throw new IllegalArgumentException(
+						"AxisType not available in TypedSpace<?>");
+			}
+		}
 
-	@Parameter
-	private int[] axisIndices;
-	
-	@Parameter(required = false)
-	private boolean dropSingleDimensions = true;
-
-	@Override
-	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
-		RandomAccessibleInterval<O> output)
-	{
-
-		opService.run(Ops.Map.class, new Hyperslice(opService,
-				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
-				input, axisIndices, dropSingleDimensions), func);
-
-		return output;
+		return indices;
 	}
 
 }

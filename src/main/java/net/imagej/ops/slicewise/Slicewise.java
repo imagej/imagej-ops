@@ -27,38 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.slicer;
 
-import net.imagej.axis.AxisType;
-import net.imagej.space.TypedSpace;
+package net.imagej.ops.slicewise;
 
-public class SlicewiseUtils {
+import net.imagej.ops.Function;
+import net.imagej.ops.Ops;
 
-	/**
-	 * @param input
-	 *            for which the {@link AxisType}s indices will be determined
-	 * @param axisTypes
-	 *            which will be used to determine the indices
-	 * @return
-	 */
-	public static synchronized int[] getAxesIndices(final TypedSpace<?> input,
-			final AxisType[] axisTypes) {
-		if (axisTypes == null)
-			return null;
-
-		int[] indices = new int[axisTypes.length];
-
-		for (int i = 0; i < axisTypes.length; i++) {
-			indices[i] = input.dimensionIndex(axisTypes[i]);
-
-			if (indices[i] == -1) {
-				// TODO nicer exception handling
-				throw new IllegalArgumentException(
-						"AxisType not available in TypedSpace<?>");
-			}
-		}
-
-		return indices;
-	}
-
+/**
+ * A typed "slicewise" function.
+ * <p>
+ * Allows running {@link Function}s on orthogonal subsets of the <I>. The
+ * subsets can for example be defined by the axes of an image. For each subset
+ * the {@link Function} will be executed.
+ * </p>
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ */
+public interface Slicewise<I, O> extends Ops.Slicewise, Function<I, O> {
+	// NB: Marker interface.
 }

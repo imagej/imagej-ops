@@ -28,22 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.slicer;
+package net.imagej.ops.slicewise;
 
+import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imglib2.RandomAccessibleInterval;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "slicewise" function.
- * <p>
- * Allows running {@link Function}s on orthogonal subsets of the <I>. The
- * subsets can for example be defined by the axes of an image. For each subset
- * the {@link Function} will be executed.
- * </p>
+ * {@link Slicewise} implementation fo {@link RandomAccessibleInterval} input
+ * and {@link RandomAccessibleInterval} output.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-public interface Slicewise<I, O> extends Ops.Slicewise, Function<I, O> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O>
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements
+	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+{
+
+	@Parameter
+	private OpService opService;
+
+	@Parameter
+	private Function<I, O> func;
+
+	@Parameter
+	private int[] axisIndices;
+	
+	@Parameter(required = false)
+	private boolean dropSingleDimensions = true;
+
+	@Override
+	public RandomAccessibleInterval<O> compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
+	{
+
+		opService.run(Ops.Map.class, new Hyperslice(opService,
+				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
+				input, axisIndices, dropSingleDimensions), func);
+
+		return output;
+	}
+
 }

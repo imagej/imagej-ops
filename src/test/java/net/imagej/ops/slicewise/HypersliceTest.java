@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.slice;
+package net.imagej.ops.slicewise;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +37,7 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.slicer.Hyperslice;
+import net.imagej.ops.slicewise.Hyperslice;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;

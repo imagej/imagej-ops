@@ -897,7 +897,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices);
 		return result;
 	}
@@ -911,7 +911,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices, dropSingleDimensions);
 		return result;
 	}

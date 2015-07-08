@@ -560,12 +560,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object slicewise(Object... args);
 
 	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.slicer.SlicewiseRAI2RAI.class)
+	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, Function<I, O> func, int... axisIndices);
 
 	/** Executes the "slicewise" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.slicer.SlicewiseRAI2RAI.class)
+	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, Function<I, O> func, int[] axisIndices,
 		boolean dropSingleDimensions);

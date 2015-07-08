@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.slicer;
+package net.imagej.ops.slicewise;
 
 import java.util.Iterator;
 
