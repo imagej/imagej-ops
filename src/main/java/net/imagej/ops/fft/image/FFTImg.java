@@ -30,8 +30,9 @@
 
 package net.imagej.ops.fft.image;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.FFT;
+import net.imagej.ops.Ops;
 import net.imagej.ops.fft.methods.FFTRAI;
 import net.imagej.ops.fft.size.ComputeFFTSize;
 import net.imglib2.exception.IncompatibleTypeException;
@@ -51,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <I>
  */
-@Plugin(type = FFT.class, name = FFT.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.FFT.NAME, priority = Priority.HIGH_PRIORITY)
 public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
 {

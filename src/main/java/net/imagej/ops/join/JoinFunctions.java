@@ -35,7 +35,6 @@ import java.util.List;
 import net.imagej.ops.BufferFactory;
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Join;
 
 /**
  * A join operation which joins a list of {@link Function}s.

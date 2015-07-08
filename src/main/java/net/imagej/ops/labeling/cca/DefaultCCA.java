@@ -34,8 +34,9 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Labeling.CCA;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
@@ -53,11 +54,11 @@ import org.scijava.thread.ThreadService;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = CCA.class, name = CCA.NAME, priority = 1.0)
+@Plugin(type = Op.class, name = Ops.Labeling.CCA.NAME, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	extends
 	AbstractOutputFunction<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
-	implements Contingent, CCA
+	implements Contingent, Ops.Labeling.CCA
 {
 
 	@Parameter

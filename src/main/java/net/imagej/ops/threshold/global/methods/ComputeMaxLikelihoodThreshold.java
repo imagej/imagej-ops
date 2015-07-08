@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.global.methods;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.global.ComputeThreshold;
@@ -51,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  */
-@Plugin(type = ComputeThreshold.class, name = Ops.Threshold.MaxLikelihood.NAME)
+@Plugin(type = Op.class, name = Ops.Threshold.MaxLikelihood.NAME)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

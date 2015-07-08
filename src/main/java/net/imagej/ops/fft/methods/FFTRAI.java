@@ -34,7 +34,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Ops.FFT;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -57,7 +58,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <C>
  */
-@Plugin(type = FFT.class, name = FFT.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.FFT.NAME, priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
