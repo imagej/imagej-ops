@@ -28,26 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.correlate;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
+import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
+import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Correlate op for (@link Img)
+ * Correlate op for (@link RandomAccessibleInterval)
  * 
  * @author Brian Northan
  * @param <I>
@@ -55,34 +49,29 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Correlate.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent, Ops.Correlate
+@Plugin(type = Op.class, name = Ops.Filter.Correlate.NAME)
+public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Correlate
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
-	 * run the filter (CorrelateFFTRAI) on the rais
+	 * Perform correlation by conjugate multiplying the FFTs in the frequency
+	 * domain TODO use an op here??
 	 */
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
+	protected void frequencyOperation(Img<C> a, Img<C> b) {
+		final Cursor<C> cursorA = a.cursor();
+		final Cursor<C> cursorB = b.cursor();
 
-		ops.correlate(raiExtendedInput, raiExtendedKernel, fftImg, fftKernel,
-			output);
+		while (cursorA.hasNext()) {
+			cursorA.fwd();
+			cursorB.fwd();
 
+			C temp = a.firstElement().createVariable();
+			temp.set(cursorB.get());
+			temp.complexConjugate();
+
+			cursorA.get().mul(temp);
+		}
 	}
-
-	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
-	}
-
 }

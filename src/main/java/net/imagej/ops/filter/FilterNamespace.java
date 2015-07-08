@@ -304,6 +304,245 @@ public class FilterNamespace extends AbstractNamespace {
 			performInputFFT, performKernelFFT);
 	}
 
+	// -- correlate --
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = Ops.Filter.Correlate.class)
+	public Object correlate(final Object... args) {
+		return ops().run(Ops.Filter.Correlate.NAME, args);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<I> in, final RandomAccessibleInterval<K> kernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				in, kernel);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long... borderSize)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		Img<O> correlate(final Img<O> out, final Img<I> in,
+			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
+			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
+			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
+			final Type<O> outType, final ImgFactory<O> outFactory,
+			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<O> result =
+			(Img<O>) ops().run(net.imagej.ops.filter.correlate.CorrelateFFTImg.class,
+				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
+				fftType, fftFactory);
+		return result;
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void
+		correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
+			performInputFFT);
+	}
+
+	/** Executes the "correlate" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
+	public
+		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+			final RandomAccessibleInterval<K> raiExtendedKernel,
+			final Img<C> fftInput, final Img<C> fftKernel,
+			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
+			final boolean performKernelFFT)
+	{
+		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
+			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
+			performInputFFT, performKernelFFT);
+	}
+
 	// -- gauss --
 
 	/** Executes the "gauss" operation on the given arguments. */

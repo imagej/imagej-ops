@@ -10,7 +10,6 @@ authors = ```
 ops = ```
 [
 	[name: "convert",     iface: "Convert"],
-	[name: "correlate",   iface: "Correlate"],
 	[name: "eval",        iface: "Eval"],
 	[name: "fft",         iface: "FFT"],
 	[name: "fftSize",     iface: "FFTSize"],
@@ -46,6 +45,7 @@ namespaces = ```
 	]],
 	[name: "filter", iface: "Filter", ops: [
 		[name: "convolve",           iface: "Convolve"],
+		[name: "correlate",          iface: "Correlate"],
 		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]]
 	]],
 	[name: "image",      iface: "Image", ops: [
