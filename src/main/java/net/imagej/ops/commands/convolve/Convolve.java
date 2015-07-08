@@ -118,10 +118,8 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 		final Op op = ops.op("convolve", out, in, kernel);
 		if (in.numDimensions() > kernel.numDimensions()) {
 			if (op instanceof Function) {
-				// if the selected convolve op is a function and the kernel
-				// dimensions
-				// doesn't match the input image dimensions, than we can still
-				// convolve
+				// if the selected convolve op is a function and the kernel dimensions
+				// doesn't match the input image dimensions, than we can still convolve
 				// each slice individually
 				ops.run(Slicewise.class, out, in, op, axisIndices);
 			} else {
