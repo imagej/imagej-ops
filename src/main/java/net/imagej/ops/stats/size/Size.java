@@ -27,15 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.misc;
 
+package net.imagej.ops.stats.size;
+
+import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * A typed "minMax" operation.
+ * A typed "size" function.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MinMax<T> extends Ops.Stats.MinMax {
+public interface Size<I> extends Ops.Stats.Size, Function<I, LongType> {
 	// NB: Marker interface.
 }

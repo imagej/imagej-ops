@@ -28,17 +28,29 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.stats.size;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.integer.LongType;
 
-/**
- * A typed "size" function.
- * 
- * @author Christian Dietz (University of Konstanz)
- */
-public interface Size<I> extends Ops.Stats.Size, Function<I, LongType> {
-	// NB: Marker interface.
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+@Plugin(type = Op.class, name = Ops.Stats.Size.NAME,
+	priority = Priority.LOW_PRIORITY)
+public class SizeIterableInterval extends
+	AbstractStrictFunction<IterableInterval<?>, LongType> implements
+	Size<IterableInterval<?>>
+{
+
+	@Override
+	public LongType
+		compute(final IterableInterval<?> input, final LongType output)
+	{
+		output.set(input.size());
+		return output;
+	}
 }

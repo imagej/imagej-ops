@@ -27,36 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.stats.minMax;
 
-package net.imagej.ops.misc;
-
-import java.util.Iterator;
-
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Op.class, name = Ops.Stats.Size.NAME,
-	priority = Priority.LAST_PRIORITY)
-public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
-{
-
-	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
-		final Iterator<?> iterator = input.iterator();
-
-		long numElements = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			numElements++;
-		}
-
-		output.set(numElements);
-		return output;
-	}
+/**
+ * A typed "minMax" operation.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ */
+public interface MinMax<T> extends Ops.Stats.MinMax {
+	// NB: Marker interface.
 }

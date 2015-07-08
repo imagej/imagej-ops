@@ -34,7 +34,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.misc.Size;
+import net.imagej.ops.stats.size.Size;
 import net.imagej.ops.stats.sum.Sum;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;

@@ -28,29 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.stats.size;
+
+import java.util.Iterator;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.integer.LongType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = Ops.Stats.Size.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractStrictFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
+	priority = Priority.LAST_PRIORITY)
+public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
+	implements Size<Iterable<?>>
 {
 
 	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
-		output.set(input.size());
+	public LongType compute(final Iterable<?> input, final LongType output) {
+		final Iterator<?> iterator = input.iterator();
+
+		long numElements = 0;
+		while (iterator.hasNext()) {
+			iterator.next();
+			numElements++;
+		}
+
+		output.set(numElements);
 		return output;
 	}
 }

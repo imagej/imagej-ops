@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.misc;
+package net.imagej.ops.stats.minMax;
 
 import java.util.Iterator;
 
