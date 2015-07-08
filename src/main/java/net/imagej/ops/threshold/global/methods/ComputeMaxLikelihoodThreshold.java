@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.global.methods;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.global.AbstractComputeThresholdHistogram;
-import net.imagej.ops.threshold.global.ComputeThreshold;
 import net.imagej.ops.threshold.global.ThresholdUtils;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
