@@ -1,5 +1,5 @@
 /*
-* #%L
+ * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
@@ -28,75 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create;
 
-import net.imagej.ops.Contingent;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.NativeType;
+import net.imagej.ops.OpService;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.complex.ComplexDoubleType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
-import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.type.numeric.real.FloatType;
 
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for kernel generation from sigma and <b> calibrated units
- * </b>. The specified sigma and calibration is used to determine the
- * dimensionality of the kernel and to map it on a pixel grid.
- *
+ * Abstract convenience op for generating a symmetric kernel
+ * 
  * @author Brian Northan
  * @param <T>
  */
-public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>>
-	implements Contingent
-{
-
-	@Parameter
-	double[] sigma;
+public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {
 
 	@Parameter(required = false)
-	double[] calibration;
+	protected Type<T> outType;
 
-	int numDimensions;
+	@Parameter(required = false)
+	protected ImgFactory<T> fac;
 
-	public void run() {
+	@Parameter
+	protected OpService ops;
 
-		numDimensions = sigma.length;
+	@Parameter(type = ItemIO.OUTPUT)
+	protected Img<T> output;
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
+	@Parameter
+	protected int numDimensions;
 
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
-			}
-		}
+	@Parameter
+	protected double sigma;
 
-		createKernel();
-	}
+	@Parameter(required = false)
+	protected double[] calibration;
 
-	@Override
-	public boolean conforms() {
-
-		if (calibration != null) {
-			if (calibration.length != sigma.length) {
-				return false;
-			}
-		}
-
-		// if outType is not null make sure it is a supported type
-		if (getOutType() != null) {
-			final Object tmp = getOutType();
-			if ((tmp instanceof FloatType) || (tmp instanceof DoubleType) ||
-				(tmp instanceof ComplexFloatType) || (tmp instanceof ComplexDoubleType)) return true;
-			return false;
-		}
-
-		return true;
-	}
-
-	abstract void createKernel();
-
+	public abstract void run();
 }

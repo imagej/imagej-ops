@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create;
 
 import net.imagej.ops.OpService;
 import net.imglib2.img.Img;

@@ -28,45 +28,47 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create.kernelGauss;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.create.AbstractCreateSymmetricKernel;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract convenience op for generating a symmetric kernel
+ * Convenience op for generating a symmetric Gaussian kernel
  * 
  * @author Brian Northan
  * @param <T>
  */
-public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {
+@Plugin(type = Op.class, name = Ops.Create.KernelGauss.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
+	AbstractCreateSymmetricKernel<T> implements Ops.Create.KernelGauss
+{
 
-	@Parameter(required = false)
-	Type<T> outType;
+	@Override
+	public void run() {
 
-	@Parameter(required = false)
-	ImgFactory<T> fac;
+		double[] sigmas = new double[numDimensions];
 
-	@Parameter
-	OpService ops;
+		for (int d = 0; d < numDimensions; d++) {
+			sigmas[d] = sigma;
+		}
 
-	@Parameter(type = ItemIO.OUTPUT)
-	protected Img<T> output;
+		if (calibration == null) {
+			calibration = new double[numDimensions];
 
-	@Parameter
-	int numDimensions;
+			for (int i = 0; i < numDimensions; i++) {
+				calibration[i] = 1.0;
+			}
+		}
 
-	@Parameter
-	double sigma;
-
-	@Parameter(required = false)
-	double[] calibration;
-
-	abstract public void run();
+		output =
+			(Img<T>) ops.create().kernelGauss(outType, fac, sigmas, calibration);
+	}
 }

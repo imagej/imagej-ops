@@ -28,10 +28,11 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create.kernelLog;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.AbstractCreateSymmetricKernel;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
 
@@ -44,10 +45,10 @@ import org.scijava.plugin.Plugin;
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.LogKernel.NAME,
+@Plugin(type = Op.class, name = Ops.Create.KernelLog.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class CreateSymmetricLogKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateSymmetricKernel<T> implements Ops.LogKernel
+public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
+	extends AbstractCreateSymmetricKernel<T> implements Ops.Create.KernelLog
 {
 
 	@Override
@@ -67,6 +68,6 @@ public class CreateSymmetricLogKernel<T extends ComplexType<T> & NativeType<T>>
 			}
 		}
 
-		output = ops.logKernel(outType, fac, sigmas, calibration);
+		output = ops.create().kernelLog(outType, fac, sigmas, calibration);
 	}
 }

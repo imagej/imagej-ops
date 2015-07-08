@@ -1,5 +1,5 @@
 /*
- * #%L
+* #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
  * Copyright (C) 2014 - 2015 Board of Regents of the University of
@@ -28,63 +28,75 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
+import net.imagej.ops.Contingent;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.complex.ComplexDoubleType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Util;
+import net.imglib2.type.numeric.real.FloatType;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Gaussian filter ported from
- * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ * Abstract class for kernel generation from sigma and <b> calibrated units
+ * </b>. The specified sigma and calibration is used to determine the
+ * dimensionality of the kernel and to map it on a pixel grid.
  *
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Michael Zinsmaier (University of Konstanz)
- * @author Stephan Sellien (University of Konstanz)
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.GaussKernel.NAME)
-public class CreateGaussianKernel<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateKernel<T> implements Ops.GaussKernel
+public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType<T>>
+	extends AbstractCreateKernelImg<T, DoubleType, ArrayImgFactory<DoubleType>>
+	implements Contingent
 {
 
-	@Override
-	void createKernel() {
-		final double[] sigmaPixels = new double[numDimensions];
+	@Parameter
+	protected double[] sigma;
 
-		final long[] dims = new long[numDimensions];
-		final double[][] kernelArrays = new double[numDimensions][];
+	@Parameter(required = false)
+	protected double[] calibration;
 
-		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d] / calibration[d];
+	protected int numDimensions;
 
-			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
-			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
-		}
+	public void run() {
 
-		createOutputImg(dims, getFac(), getOutType(),
-			new ArrayImgFactory<DoubleType>(), new DoubleType());
+		numDimensions = sigma.length;
 
-		final Cursor<T> cursor = getOutput().cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			double result = 1.0f;
-			for (int d = 0; d < numDimensions; d++) {
-				result *= kernelArrays[d][cursor.getIntPosition(d)];
+		if (calibration == null) {
+			calibration = new double[numDimensions];
+
+			for (int i = 0; i < numDimensions; i++) {
+				calibration[i] = 1.0;
 			}
-
-			cursor.get().setReal(result);
 		}
 
+		createKernel();
 	}
+
+	@Override
+	public boolean conforms() {
+
+		if (calibration != null) {
+			if (calibration.length != sigma.length) {
+				return false;
+			}
+		}
+
+		// if outType is not null make sure it is a supported type
+		if (getOutType() != null) {
+			final Object tmp = getOutType();
+			if ((tmp instanceof FloatType) || (tmp instanceof DoubleType) ||
+				(tmp instanceof ComplexFloatType) || (tmp instanceof ComplexDoubleType)) return true;
+			return false;
+		}
+
+		return true;
+	}
+
+	protected abstract void createKernel();
 
 }

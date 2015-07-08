@@ -28,10 +28,11 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create.kernelLog;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.create.AbstractCreateKernel;
 import net.imglib2.Cursor;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
@@ -51,13 +52,13 @@ import org.scijava.plugin.Plugin;
  * @author Jean-Yves Tinevez
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = Ops.LogKernel.NAME)
-public class CreateLogKernel<T extends ComplexType<T> & NativeType<T>> extends
-	AbstractCreateKernel<T> implements Ops.LogKernel
+@Plugin(type = Op.class, name = Ops.Create.KernelLog.NAME)
+public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
+	AbstractCreateKernel<T> implements Ops.Create.KernelLog
 {
 
 	@Override
-	void createKernel() {
+	protected void createKernel() {
 		final double[] sigmaPixels = new double[numDimensions];
 		for (int i = 0; i < sigmaPixels.length; i++) {
 			// Optimal sigma for LoG approach and dimensionality.

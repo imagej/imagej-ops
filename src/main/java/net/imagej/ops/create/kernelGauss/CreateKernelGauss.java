@@ -28,45 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.convolve.kernel.create;
+package net.imagej.ops.create.kernelGauss;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.img.Img;
+import net.imagej.ops.create.AbstractCreateKernel;
+import net.imglib2.Cursor;
+import net.imglib2.img.array.ArrayImgFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Util;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convenience op for generating a symmetric Gaussian kernel
- * 
+ * Gaussian filter ported from
+ * org.knime.knip.core.algorithm.convolvers.filter.linear.Gaussian;
+ *
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
+ * @author Michael Zinsmaier (University of Konstanz)
+ * @author Stephan Sellien (University of Konstanz)
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.GaussKernel.NAME,
-	priority = Priority.HIGH_PRIORITY)
-public class CreateSymmetricGaussianKernel<T extends ComplexType<T>> extends
-	AbstractCreateSymmetricKernel<T> implements Ops.GaussKernel
+@Plugin(type = Op.class, name = Ops.Create.KernelGauss.NAME)
+public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
+	extends AbstractCreateKernel<T> implements Ops.Create.KernelGauss
 {
 
 	@Override
-	public void run() {
+	protected void createKernel() {
+		final double[] sigmaPixels = new double[numDimensions];
 
-		double[] sigmas = new double[numDimensions];
+		final long[] dims = new long[numDimensions];
+		final double[][] kernelArrays = new double[numDimensions][];
 
 		for (int d = 0; d < numDimensions; d++) {
-			sigmas[d] = sigma;
+			sigmaPixels[d] = sigma[d] / calibration[d];
+
+			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
+			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);
 		}
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
+		createOutputImg(dims, getFac(), getOutType(),
+			new ArrayImgFactory<DoubleType>(), new DoubleType());
 
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
+		final Cursor<T> cursor = getOutput().cursor();
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			double result = 1.0f;
+			for (int d = 0; d < numDimensions; d++) {
+				result *= kernelArrays[d][cursor.getIntPosition(d)];
 			}
+
+			cursor.get().setReal(result);
 		}
 
-		output = (Img<T>) ops.gaussKernel(outType, fac, sigmas, calibration);
 	}
+
 }
