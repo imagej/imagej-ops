@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.convolve;
+package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
@@ -54,6 +54,6 @@ public class GaussTest extends AbstractOpTest {
 		final Img<ByteType> out = in.copy();
 		final double sigma = 5;
 
-		ops.gauss(out, in, sigma);
+		ops.filter().gauss(out, in, sigma);
 	}
 }

@@ -32,6 +32,13 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
+import net.imagej.ops.OpMethod;
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.gauss.DefaultGaussRAI;
+import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
@@ -42,6 +49,91 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Namespace.class)
 public class FilterNamespace extends AbstractNamespace {
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = Ops.Filter.Gauss.class)
+	public Object gauss(final Object... args) {
+		return ops().run(Ops.Filter.Gauss.NAME, args);
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double[] sigmas,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(DefaultGaussRAI.class, out, in,
+				sigmas, outOfBounds);
+		return result;
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double... sigmas)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(DefaultGaussRAI.class, out, in,
+				sigmas);
+		return result;
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.DefaultGaussRAI.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
+			final double... sigmas)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops()
+				.run(DefaultGaussRAI.class, in, sigmas);
+		return result;
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
+			RandomAccessibleInterval<T> in, double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(GaussRAISingleSigma.class, out,
+				in, sigma);
+		return result;
+	}
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
+			RandomAccessibleInterval<T> in, double sigma,
+			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(GaussRAISingleSigma.class, out,
+				in, sigma, outOfBounds);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.gauss.GaussRAISingleSigma.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
+			final double sigma)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.gauss.GaussRAISingleSigma.class, in, sigma);
+		return result;
+	}
 
 	// -- Namespace methods --
 

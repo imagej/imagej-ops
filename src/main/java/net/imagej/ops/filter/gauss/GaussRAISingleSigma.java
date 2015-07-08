@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.gauss;
+package net.imagej.ops.filter.gauss;
 
 import java.util.Arrays;
 
@@ -36,7 +36,6 @@ import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Gauss;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -46,7 +45,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Gauss} which can be called with single sigma, i.e. the sigma is the
+ * Gaussian filter which can be called with single sigma, i.e. the sigma is the
  * same in each dimension.
  * 
  * @author Christian Dietz, University of Konstanz
@@ -54,11 +53,11 @@ import org.scijava.plugin.Plugin;
  * @param <V> type of output
  */
 @SuppressWarnings({ "unchecked" })
-@Plugin(type = Op.class, name = Gauss.NAME)
+@Plugin(type = Op.class, name = Ops.Filter.Gauss.NAME)
 public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 	extends
 	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
-	implements Ops.Gauss
+	implements Ops.Filter.Gauss
 {
 
 	@Parameter
@@ -78,7 +77,7 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 		final double[] sigmas = new double[input.numDimensions()];
 		Arrays.fill(sigmas, sigma);
 
-		ops.run(Gauss.class, output, input, sigmas, outOfBounds);
+		ops.filter().gauss(output, input, sigmas, outOfBounds);
 	}
 
 	@Override

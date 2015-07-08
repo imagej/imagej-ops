@@ -41,8 +41,8 @@ import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.filter.FilterNamespace;
-import net.imagej.ops.gauss.DefaultGaussRAI;
-import net.imagej.ops.gauss.GaussRAISingleSigma;
+import net.imagej.ops.filter.gauss.DefaultGaussRAI;
+import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -765,83 +765,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final List<long[]> result =
 			(List<long[]>) run(net.imagej.ops.fft.size.ComputeFFTSize.class,
 				inputSize, paddedSize, fftSize, forward, fast);
-		return result;
-	}
-
-	@Override
-	public Object gauss(final Object... args) {
-		return run(Ops.Gauss.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
-			final RandomAccessibleInterval<T> in, final double[] sigmas,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, out, in, sigmas,
-				outOfBounds);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
-			final RandomAccessibleInterval<T> in, final double... sigmas)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, out, in, sigmas);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
-			final double... sigmas)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, in, sigmas);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(GaussRAISingleSigma.class, out, in,
-				sigma);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(GaussRAISingleSigma.class, out, in,
-				sigma, outOfBounds);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
-			final double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(
-				net.imagej.ops.gauss.GaussRAISingleSigma.class, in, sigma);
 		return result;
 	}
 

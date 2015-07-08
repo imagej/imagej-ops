@@ -28,13 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.gauss;
+package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Gauss;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -53,18 +52,18 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * {@link Gauss}, wrapping {@link Gauss3} of imglib2-algorithms.
+ * Gaussian filter, wrapping {@link Gauss3} of imglib2-algorithms.
  * 
  * @author Christian Dietz, University of Konstanz
  * @param <T> type of input
  * @param <V> type of output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@Plugin(type = Op.class, name = Gauss.NAME)
+@Plugin(type = Op.class, name = Ops.Filter.Gauss.NAME)
 public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	extends
 	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
-	implements Ops.Gauss
+	implements Ops.Filter.Gauss
 {
 
 	@Parameter

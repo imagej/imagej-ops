@@ -15,7 +15,6 @@ ops = ```
 	[name: "eval",        iface: "Eval"],
 	[name: "fft",         iface: "FFT"],
 	[name: "fftSize",     iface: "FFTSize"],
-	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
 	[name: "ifft",        iface: "IFFT"],
@@ -45,6 +44,9 @@ namespaces = ```
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [
 		[name: "richardsonLucy",     iface: "RichardsonLucy"]
+	]],
+	[name: "filter", iface: "Filter", ops: [
+		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]]
 	]],
 	[name: "image",      iface: "Image", ops: [
 		[name: "ascii",              iface: "ASCII"],
