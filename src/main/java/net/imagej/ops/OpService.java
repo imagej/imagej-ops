@@ -535,10 +535,40 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object gauss(Object... args);
 
 	/** Executes the "gauss" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.gauss.GaussRAIToRAI.class)
-	<T extends RealType<T>> RandomAccessibleInterval<T> gauss(
-		RandomAccessibleInterval<T> out, RandomAccessibleInterval<T> in,
-		double sigma);
+	@OpMethod(op = net.imagej.ops.gauss.DefaultGaussRAI.class)
+	<T extends RealType<T>, V extends RealType<V>> RandomAccessibleInterval<V>
+		gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double[] sigmas,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.gauss.DefaultGaussRAI.class)
+	<T extends RealType<T>, V extends RealType<V>> RandomAccessibleInterval<V>
+		gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double... sigmas);
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.gauss.DefaultGaussRAI.class)
+	<T extends RealType<T>, V extends RealType<V>> RandomAccessibleInterval<V>
+		gauss(final RandomAccessibleInterval<T> in, final double... sigmas);
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.gauss.GaussRAISingleSigma.class)
+	<T extends RealType<T>, V extends RealType<V>> RandomAccessibleInterval<V>
+		gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma);
+
+	/** Executes the "gauss" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.gauss.GaussRAISingleSigma.class)
+	<T extends RealType<T>, V extends RealType<V>> RandomAccessibleInterval<V>
+		gauss(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds);
+
+	@OpMethod(op = net.imagej.ops.gauss.GaussRAISingleSigma.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
+			final double sigma);
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = Ops.Help.class)
