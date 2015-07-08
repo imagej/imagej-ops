@@ -185,6 +185,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the names of all available operations. */
 	Collection<String> ops();
 
+	/** Gets the namespace of the given class. */
+	<NS extends Namespace> NS namespace(final Class<NS> nsClass);
+
 	// -- Operation shortcuts - global namespace --
 
 	/** Executes the "convert" operation on the given arguments. */

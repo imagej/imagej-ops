@@ -31,6 +31,7 @@
 package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -41,11 +42,14 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The deconvolve namespace contains deconvolution operations.
  *
  * @author Alison Walter
  */
+@Plugin(type = Namespace.class)
 public class DeconvolveNamespace extends AbstractNamespace {
 
 	//-- Deconvolve namespace ops --

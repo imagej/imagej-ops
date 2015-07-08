@@ -33,6 +33,7 @@ package net.imagej.ops.create;
 import net.imagej.ImgPlus;
 import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
@@ -45,11 +46,14 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The create namespace contains ops that create objects.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class CreateNamespace extends AbstractNamespace {
 
 	@Override

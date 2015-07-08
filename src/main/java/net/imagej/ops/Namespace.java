@@ -32,16 +32,21 @@ package net.imagej.ops;
 
 import org.scijava.Contextual;
 import org.scijava.Named;
+import org.scijava.plugin.Plugin;
+import org.scijava.plugin.SingletonPlugin;
 
 /**
  * A namespace is a collection of ops with related functions.
+ * <p>
+ * Namespaces discoverable at runtime must implement this interface and be
+ * annotated with @{@link Plugin} with attribute {@link Plugin#type()} =
+ * {@link Namespace}.class.
+ * </p>
  * 
  * @author Curtis Rueden
  */
-public interface Namespace extends Contextual, Named {
+public interface Namespace extends Contextual, Named, SingletonPlugin {
 
-	// -- Namespace methods --
-
-	public OpService ops();
+	OpService ops();
 
 }

@@ -90,20 +90,10 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	private OpMatchingService matcher;
 
 	@Parameter
+	private NamespaceService namespaceService;
+
+	@Parameter
 	private LogService log;
-
-	private CreateNamespace create;
-	private DeconvolveNamespace deconvolve;
-	private ImageNamespace image;
-	private LabelingNamespace labeling;
-	private LogicNamespace logic;
-	private MathNamespace math;
-	private StatsNamespace stats;
-	private ThreadNamespace thread;
-	private ThresholdNamespace threshold;
-
-	private boolean namespacesReady;
-
 
 	// -- OpService methods --
 
@@ -178,6 +168,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final ArrayList<String> sorted = new ArrayList<String>(operations);
 		Collections.sort(sorted);
 		return sorted;
+	}
+
+	@Override
+	public <NS extends Namespace> NS namespace(final Class<NS> nsClass) {
+		return namespaceService.getInstance(nsClass);
 	}
 
 	// -- Operation shortcuts - global namespace --
@@ -1157,56 +1152,47 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public CreateNamespace create() {
-		if (!namespacesReady) initNamespaces();
-		return create;
+		return namespace(CreateNamespace.class);
 	}
 
 	@Override
 	public DeconvolveNamespace deconvolve() {
-		if (!namespacesReady) initNamespaces();
-		return deconvolve;
+		return namespace(DeconvolveNamespace.class);
 	}
 
 	@Override
 	public ImageNamespace image() {
-		if (!namespacesReady) initNamespaces();
-		return image;
+		return namespace(ImageNamespace.class);
 	}
 
 	@Override
 	public LabelingNamespace labeling() {
-		if (!namespacesReady) initNamespaces();
-		return labeling;
+		return namespace(LabelingNamespace.class);
 	}
 
 	@Override
 	public LogicNamespace logic() {
-		if (!namespacesReady) initNamespaces();
-		return logic;
+		return namespace(LogicNamespace.class);
 	}
 
 	@Override
 	public MathNamespace math() {
-		if (!namespacesReady) initNamespaces();
-		return math;
+		return namespace(MathNamespace.class);
 	}
 
 	@Override
 	public StatsNamespace stats() {
-		if (!namespacesReady) initNamespaces();
-		return stats;
+		return namespace(StatsNamespace.class);
 	}
 
 	@Override
 	public ThreadNamespace thread() {
-		if (!namespacesReady) initNamespaces();
-		return thread;
+		return namespace(ThreadNamespace.class);
 	}
 
 	@Override
 	public ThresholdNamespace threshold() {
-		if (!namespacesReady) initNamespaces();
-		return threshold;
+		return namespace(ThresholdNamespace.class);
 	}
 
 	// -- SingletonService methods --
@@ -1230,31 +1216,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
-
-	// -- Helper methods - lazy initialization --
-
-	private synchronized void initNamespaces() {
-		if (namespacesReady) return;
-		create = new CreateNamespace();
-		getContext().inject(create);
-		deconvolve = new DeconvolveNamespace();
-		getContext().inject(deconvolve);
-		image = new ImageNamespace();
-		getContext().inject(image);
-		labeling = new LabelingNamespace();
-		getContext().inject(labeling);
-		logic = new LogicNamespace();
-		getContext().inject(logic);
-		math = new MathNamespace();
-		getContext().inject(math);
-		stats = new StatsNamespace();
-		getContext().inject(stats);
-		thread = new ThreadNamespace();
-		getContext().inject(thread);
-		threshold = new ThresholdNamespace();
-		getContext().inject(threshold);
-		namespacesReady = true;
 	}
 
 }

@@ -33,14 +33,18 @@ package net.imagej.ops.logic;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imglib2.type.logic.BoolType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * The logic namespace contains logical (i.e., boolean) operations.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class LogicNamespace extends AbstractNamespace {
 
 	// -- and --

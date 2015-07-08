@@ -34,6 +34,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.local.LocalThresholdMethod;
@@ -45,11 +46,14 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The threshold namespace contains operations related to binary thresholding.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class ThresholdNamespace extends AbstractNamespace {
 
 	// -- Threshold namespace ops --

@@ -28,44 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.thread;
+package net.imagej.ops;
 
-import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.Namespace;
-import net.imagej.ops.OpMethod;
-import net.imagej.ops.thread.chunker.Chunk;
-
+import org.scijava.plugin.AbstractSingletonService;
 import org.scijava.plugin.Plugin;
+import org.scijava.service.Service;
 
 /**
- * The thread namespace contains operations related to multithreading.
+ * Interface for services that manage OPS {@link Namespace}s.
  *
  * @author Curtis Rueden
  */
-@Plugin(type = Namespace.class)
-public class ThreadNamespace extends AbstractNamespace {
+@Plugin(type = Service.class)
+public class DefaultNamespaceService extends
+	AbstractSingletonService<Namespace> implements NamespaceService
+{
 
-	// -- Thread namespace ops --
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.Ops.Thread.Chunker.class)
-	public Object chunker(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Thread.Chunker.class, args);
-	}
-
-	/** Executes the "chunker" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.thread.chunker.DefaultChunker.class,
-		net.imagej.ops.thread.chunker.ChunkerInterleaved.class })
-	public void chunker(final Chunk chunkable, final long numberOfElements) {
-		ops().run(net.imagej.ops.thread.chunker.DefaultChunker.class, chunkable,
-			numberOfElements);
-	}
-
-	// -- Named methods --
+	// -- PTService methods --
 
 	@Override
-	public String getName() {
-		return "thread";
+	public Class<Namespace> getPluginType() {
+		return Namespace.class;
 	}
 
 }

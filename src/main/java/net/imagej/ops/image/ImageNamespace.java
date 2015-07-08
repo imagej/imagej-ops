@@ -33,6 +33,7 @@ package net.imagej.ops.image;
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Function;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.Interval;
@@ -45,11 +46,14 @@ import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The image namespace contains operations relating to images.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class ImageNamespace extends AbstractNamespace {
 
 	// -- ascii --

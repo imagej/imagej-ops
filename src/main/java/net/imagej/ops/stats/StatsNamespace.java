@@ -33,6 +33,7 @@ package net.imagej.ops.stats;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.mean.Mean;
@@ -45,11 +46,14 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The stats namespace contains operations related to numerical statistics.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class StatsNamespace extends AbstractNamespace {
 
 	// -- max --

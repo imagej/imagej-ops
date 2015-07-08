@@ -33,6 +33,7 @@ package net.imagej.ops.labeling;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpMethod;
 import net.imglib2.RandomAccessibleInterval;
@@ -40,11 +41,14 @@ import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * Namespace for {@link Op}s related to labelings.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
+@Plugin(type = Namespace.class)
 public class LabelingNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.Ops.Labeling.CCA.class)

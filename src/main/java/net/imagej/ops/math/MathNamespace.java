@@ -33,6 +33,7 @@ package net.imagej.ops.math;
 import java.util.Random;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
@@ -48,11 +49,14 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.plugin.Plugin;
+
 /**
  * The math namespace contains arithmetic operations.
  *
  * @author Curtis Rueden
  */
+@Plugin(type = Namespace.class)
 public class MathNamespace extends AbstractNamespace {
 
 	// -- Math namespace ops --
