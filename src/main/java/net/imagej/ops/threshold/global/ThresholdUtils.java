@@ -30,13 +30,11 @@
 
 package net.imagej.ops.threshold.global;
 
-import net.imagej.threshold.ThresholdMethod;
-
 // Ported from Antti Niemisto's HistThresh Matlab toolbox
 //   Relicensed BSD 2-12-13
 
 /**
- * Utility methods used by the various {@link ThresholdMethod}s.
+ * Utility methods used by the various threshold methods.
  * 
  * @author Barry DeZonia
  * @author Gabriel Landini
