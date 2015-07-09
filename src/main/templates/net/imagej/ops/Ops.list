@@ -14,7 +14,6 @@ ops = ```
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
 	[name: "join",        iface: "Join"],
-	[name: "log",         iface: "Log"],
 	[name: "loop",        iface: "Loop"],
 	[name: "map",         iface: "Map"],
 	[name: "op",          iface: "Lookup"],

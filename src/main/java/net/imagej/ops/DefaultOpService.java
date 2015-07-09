@@ -367,11 +367,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object log(final Object... args) {
-		return run(Ops.Log.NAME, args);
-	}
-
-	@Override
 	public Object loop(final Object... args) {
 		return run(Ops.Loop.NAME, args);
 	}
