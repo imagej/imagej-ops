@@ -63,8 +63,8 @@ public class DoGTest extends AbstractOpTest {
 		ops.filter().dog(out1, in, sigmas1, sigmas2);
 
 		// test against native imglib2 implementation
-		net.imglib2.algorithm.dog.DifferenceOfGaussian.DoG(sigmas1, sigmas2, Views
-			.extendMirrorSingle(in), out2, Executors.newFixedThreadPool(10));
+		DifferenceOfGaussian.DoG(sigmas1, sigmas2, Views.extendMirrorSingle(in),
+			out2, Executors.newFixedThreadPool(10));
 
 		final Cursor<ByteType> out1Cursor = out1.cursor();
 		final Cursor<ByteType> out2Cursor = out2.cursor();
