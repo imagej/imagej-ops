@@ -28,47 +28,45 @@
  * #L%
  */
 
-package net.imagej.ops.fft.methods;
+package net.imagej.ops.filter.ifft;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Inverse fft that operates on an RAI and wraps FFTMethods.
+ * Inverse FFT op implemented by wrapping FFTMethods.
  * 
  * @author Brian Northan
- * @param <C>
  * @param <T>
+ * @param <I>
  */
-@Plugin(type = Op.class, name = Ops.IFFT.NAME)
-public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
-	extends
-	AbstractStrictFunction<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
+@Plugin(type = Op.class, name = Ops.Filter.IFFT.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
+	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
 {
 
+	@Parameter
+	private OpService ops;
+
 	@Override
-	public RandomAccessibleInterval<T> compute(RandomAccessibleInterval<C> input,
-		RandomAccessibleInterval<T> output)
-	{
+	public O compute(Img<ComplexFloatType> input, O output) {
+
 		// TODO: proper use of Executor service
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
+		final ExecutorService service = Executors.newFixedThreadPool(4);
 
-		for (int d = input.numDimensions() - 1; d > 0; d--)
-			FFTMethods.complexToComplex(input, d, false, true, service);
-
-		FFTMethods.complexToReal(input, output, FFTMethods
-			.unpaddingIntervalCentered(input, output), 0, true, service);
+		ops.filter().ifft(output, input);
 
 		return output;
 	}

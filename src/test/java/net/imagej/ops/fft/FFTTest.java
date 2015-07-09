@@ -73,7 +73,7 @@ public class FFTTest extends AbstractOpBenchmark {
 					dimensions, new FloatType());
 
 			Img<ComplexFloatType> out = (Img<ComplexFloatType>) ops.filter().fft(in);
-			ops.ifft(inverse, out);
+			ops.filter().ifft(inverse, out);
 
 			assertImagesEqual(in, inverse, .00005f);
 		}
@@ -148,18 +148,18 @@ public class FFTTest extends AbstractOpBenchmark {
 					new ArrayImgFactory<FloatType>(), fastDimensions);
 
 			// invert the "small" FFT
-			ops.ifft(inverseOriginalSmall, fft1);
+			ops.filter().ifft(inverseOriginalSmall, fft1);
 
 			// invert the "fast" FFT. The inverse will should be the original
 			// size.
-			ops.ifft(inverseOriginalFast, fft2);
+			ops.filter().ifft(inverseOriginalFast, fft2);
 
 			// invert the "fast" FFT that was acheived by explicitly using an
 			// image
 			// that had "fast" dimensions. The inverse will be the fast size
 			// this
 			// time.
-			ops.ifft(inverseFast, fft3);
+			ops.filter().ifft(inverseFast, fft3);
 
 			// assert that the inverse images are equal to the original
 			assertImagesEqual(inverseOriginalSmall, inOriginal, .0001f);

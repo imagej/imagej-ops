@@ -28,19 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops.filter.ifft;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.AbstractIFFTIterable;
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.fft2.FFTMethods;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for inverse fft implementations that operate on Img<C>.
+ * Inverse fft that operates on an RAI and wraps FFTMethods.
  * 
  * @author Brian Northan
+ * @param <C>
+ * @param <T>
  */
-public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
-	extends AbstractIFFTIterable<C, T, I, O> implements Ops.IFFT
+@Plugin(type = Op.class, name = Ops.Filter.IFFT.NAME)
+public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
+	extends
+	AbstractStrictFunction<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
+	implements Ops.Filter.IFFT
 {
 
+	@Override
+	public RandomAccessibleInterval<T> compute(RandomAccessibleInterval<C> input,
+		RandomAccessibleInterval<T> output)
+	{
+		// TODO: proper use of Executor service
+		final int numThreads = Runtime.getRuntime().availableProcessors();
+		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
+
+		for (int d = input.numDimensions() - 1; d > 0; d--)
+			FFTMethods.complexToComplex(input, d, false, true, service);
+
+		FFTMethods.complexToReal(input, output, FFTMethods
+			.unpaddingIntervalCentered(input, output), 0, true, service);
+
+		return output;
+	}
 }

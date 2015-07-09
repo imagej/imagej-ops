@@ -255,20 +255,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	@OpMethod(op = net.imagej.ops.identity.DefaultIdentity.class)
 	<A> A identity(A arg);
 
-	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = Ops.IFFT.class)
-	Object ifft(Object... args);
-
-	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.IFFTImg.class)
-	<T extends RealType<T>, O extends Img<T>> Img<O> ifft(Img<O> out,
-		Img<ComplexFloatType> in);
-
-	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.methods.IFFTRAI.class)
-	<C extends ComplexType<C>, T extends RealType<T>> RandomAccessibleInterval<T>
-		ifft(RandomAccessibleInterval<T> out, RandomAccessibleInterval<C> in);
-
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = Ops.Join.class)
 	Object join(Object... args);

@@ -72,7 +72,7 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 		frequencyOperation(getFFTInput(), getFFTKernel());
 
 		// inverse fft
-		ops.ifft(getOutput(), getFFTInput());
+		ops.filter().ifft(getOutput(), getFFTInput());
 	}
 
 	// abstract function that implements an operation in frequency domain (ie

@@ -28,23 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.fft;
+package net.imagej.ops.filter.ifft;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.OpService;
-
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.Ops;
+import net.imglib2.img.Img;
 
 /**
- * Abstract superclass for inverse fft implementations.
+ * Abstract superclass for inverse fft implementations that operate on Img<C>.
  * 
  * @author Brian Northan
  */
-public abstract class AbstractIFFTIterable<T, C, I extends Iterable<T>, O extends Iterable<C>>
-	extends AbstractStrictFunction<I, O>
+public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
+	extends AbstractIFFTIterable<C, T, I, O> implements Ops.Filter.IFFT
 {
-
-	@Parameter
-	private OpService ops;
 
 }

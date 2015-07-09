@@ -14,7 +14,6 @@ ops = ```
 	[name: "fftSize",     iface: "FFTSize"],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
-	[name: "ifft",        iface: "IFFT"],
 	[name: "join",        iface: "Join"],
 	[name: "log",         iface: "Log"],
 	[name: "loop",        iface: "Loop"],
@@ -46,7 +45,8 @@ namespaces = ```
 		[name: "convolve",           iface: "Convolve"],
 		[name: "correlate",          iface: "Correlate"],
 		[name: "fft",                iface: "FFT"],
-		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]]
+		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]],
+		[name: "ifft",               iface: "IFFT"]
 	]],
 	[name: "image",      iface: "Image", ops: [
 		[name: "ascii",              iface: "ASCII"],
