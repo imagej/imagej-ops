@@ -41,6 +41,7 @@ namespaces = ```
 		[name: "richardsonLucy",     iface: "RichardsonLucy"]
 	]],
 	[name: "filter", iface: "Filter", ops: [
+		[name: "addNoise",           iface: "AddNoise"],
 		[name: "convolve",           iface: "Convolve"],
 		[name: "correlate",          iface: "Correlate"],
 		[name: "fft",                iface: "FFT"],
@@ -77,7 +78,6 @@ namespaces = ```
 	[name: "math", iface: "Math", ops: [
 		[name: "abs",                iface: "Abs"],
 		[name: "add",                iface: "Add",                 aliases: ["sum"]],
-		[name: "addNoise",           iface: "AddNoise"],
 		[name: "and",                iface: "And"],
 		[name: "arccos",             iface: "Arccos"],
 		[name: "arccosh",            iface: "Arccosh"],

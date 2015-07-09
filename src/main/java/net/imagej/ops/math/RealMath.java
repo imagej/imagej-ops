@@ -90,44 +90,6 @@ public final class RealMath {
 	}
 
 	/**
-	 * Sets the real component of an output real number to the addition of the
-	 * real component of an input real number with an amount of Gaussian noise.
-	 */
-	@Plugin(type = Op.class, name = Ops.Math.AddNoise.NAME)
-	public static class AddNoise<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.AddNoise
-	{
-
-		@Parameter
-		private double rangeMin;
-		@Parameter
-		private double rangeMax;
-		@Parameter
-		private double rangeStdDev;
-		@Parameter
-		private Random rng;
-
-		@Override
-		public O compute(final I input, final O output) {
-			if (rng == null) {
-				rng = new Random(System.currentTimeMillis());
-			}
-			int i = 0;
-			do {
-				final double newVal =
-					input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
-				if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
-					output.setReal(newVal);
-					return output;
-				}
-				if (i++ > 100) throw new IllegalArgumentException(
-					"noise function failing to terminate. probably misconfigured.");
-			}
-			while (true);
-		}
-	}
-
-	/**
 	 * Sets the real component of an output real number to the logical AND of the
 	 * real component of an input real number with a constant value.
 	 */

@@ -31,6 +31,7 @@
 package net.imagej.ops.filter;
 
 import java.util.List;
+import java.util.Random;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
@@ -57,6 +58,25 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Namespace.class)
 public class FilterNamespace extends AbstractNamespace {
+
+	// -- addNoise --
+
+	@OpMethod(op = net.imagej.ops.Ops.Filter.AddNoise.class)
+	public Object addNoise(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Filter.AddNoise.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
+		final I in, final double rangeMin, final double rangeMax,
+		final double rangeStdDev, final Random rng)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out, in,
+				rangeMin, rangeMax, rangeStdDev, rng);
+		return result;
+	}
 
 	// -- convolve --
 

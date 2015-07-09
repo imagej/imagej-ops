@@ -30,8 +30,6 @@
 
 package net.imagej.ops.math;
 
-import java.util.Random;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -290,23 +288,6 @@ public class MathNamespace extends AbstractNamespace {
 			(Img<T>) ops().run(
 				net.imagej.ops.math.add.AddIterableIntervalToImg.class, out, in,
 				ii);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Math.AddNoise.class)
-	public Object addNoise(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Math.AddNoise.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.math.RealMath.AddNoise.class)
-	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
-		final I in, final double rangeMin, final double rangeMax,
-		final double rangeStdDev, final Random rng)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.math.RealMath.AddNoise.class, out, in,
-				rangeMin, rangeMax, rangeStdDev, rng);
 		return result;
 	}
 
