@@ -73,8 +73,8 @@ public class FilterNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
-			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out, in,
-				rangeMin, rangeMax, rangeStdDev, rng);
+			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out,
+				in, rangeMin, rangeMax, rangeStdDev, rng);
 		return result;
 	}
 
@@ -697,6 +697,95 @@ public class FilterNamespace extends AbstractNamespace {
 			(List<long[]>) ops().run(
 				net.imagej.ops.filter.fftSize.ComputeFFTSize.class, inputSize,
 				paddedSize, fftSize, forward, fast);
+		return result;
+	}
+
+	// -- dog --
+
+	@OpMethod(op = Ops.Filter.DoG.class)
+	public Object dog(Object... args) {
+		return ops().run(Ops.Filter.DoG.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double[] sigmas1,
+			final double[] sigmas2,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, sigmas1, sigmas2,
+				outOfBounds);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double[] sigmas1,
+			final double... sigmas2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, sigmas1, sigmas2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<T> in,
+			final double[] sigmas1, final double... sigmas2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, in, sigmas1, sigmas2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma1,
+			final double sigma2,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class, out, in,
+				sigma1, sigma2, outOfBounds);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<V> out,
+			final RandomAccessibleInterval<T> in, final double sigma1,
+			final double sigma2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class, out, in,
+				sigma1, sigma2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class)
+	public <T extends RealType<T>, V extends RealType<V>>
+		RandomAccessibleInterval<V> dog(final RandomAccessibleInterval<T> in,
+			final double sigma1, final double sigma2)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<V> result =
+			(RandomAccessibleInterval<V>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoGSingleSigmas.class, null, in,
+				sigma1, sigma2);
 		return result;
 	}
 

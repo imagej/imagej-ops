@@ -46,6 +46,7 @@ namespaces = ```
 		[name: "fft",                iface: "FFT"],
 		[name: "fftSize",            iface: "FFTSize"],
 		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]],
+		[name: "dog",                iface: "DoG",                 aliases: ["differenceOfGaussian"]],
 		[name: "ifft",               iface: "IFFT"]
 	]],
 	[name: "image",      iface: "Image", ops: [
@@ -59,7 +60,7 @@ namespaces = ```
 		[name: "scale",              iface: "Scale",               aliases: ["resize"]]
 	]],
 	[name: "labeling",   iface: "Labeling", ops: [
-		[name: "cca",                iface: "CCA",                 aliases: ["connected-components", "connected-component-analysis"]]
+		[name: "cca",                iface: "CCA",                 aliases: ["connectedComponents", "connectedComponentAnalysis"]]
 	]],
 	[name: "logic", iface: "Logic", ops: [
 		[name: "and",                iface: "And"],
