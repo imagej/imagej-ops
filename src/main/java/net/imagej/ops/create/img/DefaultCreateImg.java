@@ -79,7 +79,6 @@ public class DefaultCreateImg<T> implements
 			// HACK: For Java 6 compiler.
 			@SuppressWarnings("rawtypes")
 			final NativeType o = ops.create().nativeType();
-			@SuppressWarnings("unchecked")
 			final T result = (T) o;
 			outType = result;
 		}
@@ -94,7 +93,6 @@ public class DefaultCreateImg<T> implements
 					try {
 						// HACK: For Java 6 compiler.
 						final Object o = inImg.factory().imgFactory(outType);
-						@SuppressWarnings("unchecked")
 						final ImgFactory<T> result = (ImgFactory<T>) o;
 						fac = result;
 					}
