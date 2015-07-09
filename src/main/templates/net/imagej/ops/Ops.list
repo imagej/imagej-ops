@@ -151,7 +151,7 @@ namespaces = ```
 		[name: "minMax",             iface: "MinMax"],
 		[name: "quantile",           iface: "Quantile"],
 		[name: "size",               iface: "Size"],
-		[name: "stdDev",             iface: "StdDeviation"],
+		[name: "stdDev",             iface: "StdDev"],
 		[name: "sum",                iface: "Sum"],
 		[name: "variance",           iface: "Variance"]
 	]],

@@ -42,11 +42,11 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.StdDeviation.NAME,
+@Plugin(type = Op.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	StdDeviation<T, DoubleType>
+	StdDev<T, DoubleType>
 {
 
 	@Parameter(required = false)

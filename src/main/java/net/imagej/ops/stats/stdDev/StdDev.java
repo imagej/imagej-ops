@@ -38,7 +38,7 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface StdDeviation<T, V> extends Ops.Stats.StdDeviation,
+public interface StdDev<T, V> extends Ops.Stats.StdDev,
 	Function<Iterable<T>, V>
 {
 	// NB: Marker interface.

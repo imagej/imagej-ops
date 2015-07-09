@@ -222,9 +222,9 @@ public class StatsNamespace extends AbstractNamespace {
 
 	// -- stdDev --
 
-	@OpMethod(op = net.imagej.ops.Ops.Stats.StdDeviation.class)
+	@OpMethod(op = net.imagej.ops.Ops.Stats.StdDev.class)
 	public Object stdDev(final Object... args) {
-		return ops().run(Ops.Stats.StdDeviation.NAME, args);
+		return ops().run(Ops.Stats.StdDev.NAME, args);
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.stdDev.StdDevRealTypeDirect.class)
