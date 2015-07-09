@@ -33,7 +33,7 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.IterativeFFTFilterRAI;
+import net.imagej.ops.filter.IterativeFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;

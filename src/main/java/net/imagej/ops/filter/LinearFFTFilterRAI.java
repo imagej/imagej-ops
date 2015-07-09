@@ -28,20 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.filter.correlate;
+package net.imagej.ops.filter;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.LinearFFTFilterRAI;
-import net.imglib2.Cursor;
+import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Correlate op for (@link RandomAccessibleInterval)
+ * Abstract class for linear filters that operate on RAIs
  * 
  * @author Brian Northan
  * @param <I>
@@ -49,29 +46,37 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Filter.Correlate.NAME)
-public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Correlate
+public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterRAI<I, O, K, C>
 {
 
-	/**
-	 * Perform correlation by conjugate multiplying the FFTs in the frequency
-	 * domain TODO use an op here??
-	 */
+	@Parameter
+	private OpService ops;
+
 	@Override
-	protected void frequencyOperation(Img<C> a, Img<C> b) {
-		final Cursor<C> cursorA = a.cursor();
-		final Cursor<C> cursorB = b.cursor();
+	public void run() {
 
-		while (cursorA.hasNext()) {
-			cursorA.fwd();
-			cursorB.fwd();
-
-			C temp = a.firstElement().createVariable();
-			temp.set(cursorB.get());
-			temp.complexConjugate();
-
-			cursorA.get().mul(temp);
+		// perform input FFT if needed
+		if (getPerformInputFFT()) {
+			ops.filter().fft(getFFTInput(), getRAIExtendedInput());
 		}
+
+		// perform kernel FFT if needed
+		if (getPerformKernelFFT()) {
+			ops.filter().fft(getFFTKernel(), getRAIExtendedKernel());
+		}
+
+		// perform the operation in frequency domain (ie multiplication for
+		// convolution, complex conjugate multiplication for correlation,
+		// etc.) Wiener Filter,
+		frequencyOperation(getFFTInput(), getFFTKernel());
+
+		// inverse fft
+		ops.filter().ifft(getOutput(), getFFTInput());
 	}
+
+	// abstract function that implements an operation in frequency domain (ie
+	// multiplication for convolution,
+	// complex conjugate multiplication for correlation, Wiener Filter, etc.)
+	protected abstract void frequencyOperation(final Img<C> a, final Img<C> b);
 }

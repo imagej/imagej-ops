@@ -35,7 +35,7 @@ import static org.junit.Assert.assertSame;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.CreateFFTFilterMemory;
+import net.imagej.ops.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;

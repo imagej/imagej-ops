@@ -32,7 +32,7 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.filter.LinearFFTFilterRAI;
+import net.imagej.ops.filter.LinearFFTFilterRAI;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;

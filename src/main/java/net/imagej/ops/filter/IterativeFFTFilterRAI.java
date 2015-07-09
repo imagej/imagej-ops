@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft.filter;
+package net.imagej.ops.filter;
 
 import net.imagej.ops.OpService;
 import net.imglib2.Cursor;

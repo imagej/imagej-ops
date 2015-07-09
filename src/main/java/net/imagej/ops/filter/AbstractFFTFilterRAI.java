@@ -28,20 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.fft.filter;
+package net.imagej.ops.filter;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for FFT based filters that operate on Img.
+ * Abstract class for FFT based filters that operate on RAI
  * 
  * @author Brian Northan
  * @param <I>
@@ -49,57 +48,86 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFilterImg<I, O, K>
+public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	implements Op
 {
 
 	@Parameter
 	private OpService ops;
 
 	/**
-	 * FFT type
+	 * input rai. If extension is desired it needs to be done before passing the
+	 * rai to the op
 	 */
-	@Parameter(required = false)
-	private ComplexType<C> fftType;
+	@Parameter
+	private RandomAccessibleInterval<I> raiExtendedInput;
 
 	/**
-	 * Factory to create ffts Imgs
+	 * kernel rai. Needs to be the same size as the input rai
 	 */
 	@Parameter(required = false)
-	private ImgFactory<C> fftFactory;
+	private RandomAccessibleInterval<K> raiExtendedKernel;
 
 	/**
-	 * 
+	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
+	 * the fft size of raiExtendedInput
 	 */
-	@Override
-	public void safeCompute(final Img<I> input, final Img<O> output) {
+	@Parameter(required = false)
+	private Img<C> fftInput;
 
-		// run the op that extends the input and kernel and creates the Imgs
-		// required for the fft algorithm
-		final CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
+	/**
+	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
+	 * to the fft size of raiExtendedKernel
+	 */
+	@Parameter(required = false)
+	private Img<C> fftKernel;
 
-		createMemory.run();
+	/**
+	 * RAI to store output
+	 */
+	@Parameter(required = false)
+	private RandomAccessibleInterval<O> output;
 
-		// run the filter, pass in the memory created above
-		runFilter(createMemory.getRAIExtendedInput(), createMemory
-			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
-			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
+	/**
+	 * Boolean indicating that the input FFT has allready been calculated (use
+	 * when re-using an input with the same kernel size)
+	 */
+	@Parameter(required = false)
+	private boolean performInputFFT = true;
+
+	/**
+	 * Boolean indicating that the kernel FFT has allready been calculated (use
+	 * when re-using an input with the same kernel size)
+	 */
+	@Parameter(required = false)
+	private boolean performKernelFFT = true;
+
+	protected RandomAccessibleInterval<I> getRAIExtendedInput() {
+		return raiExtendedInput;
 	}
 
-	/**
-	 * This function is called after the rais and ffts are set up and implements a
-	 * frequency filter.
-	 * 
-	 * @param raiExtendedInput
-	 * @param raiExtendedKernel
-	 * @param fftImg
-	 * @param fftKernel
-	 * @param output
-	 * @param imgConvolutionInterval
-	 */
-	abstract public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval);
+	protected RandomAccessibleInterval<K> getRAIExtendedKernel() {
+		return raiExtendedKernel;
+	}
+
+	protected Img<C> getFFTInput() {
+		return fftInput;
+	}
+
+	protected Img<C> getFFTKernel() {
+		return fftKernel;
+	}
+
+	protected RandomAccessibleInterval<O> getOutput() {
+		return output;
+	}
+
+	protected boolean getPerformInputFFT() {
+		return performInputFFT;
+	}
+
+	protected boolean getPerformKernelFFT() {
+		return performKernelFFT;
+	}
 
 }

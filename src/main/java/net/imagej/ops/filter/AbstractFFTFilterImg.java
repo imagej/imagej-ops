@@ -28,17 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.fft.filter;
+package net.imagej.ops.filter;
 
 import net.imagej.ops.OpService;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for linear filters that operate on RAIs
+ * Abstract class for FFT based filters that operate on Img.
  * 
  * @author Brian Northan
  * @param <I>
@@ -46,37 +49,57 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  * @param <C>
  */
-public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C>
+public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFilterImg<I, O, K>
 {
 
 	@Parameter
 	private OpService ops;
 
+	/**
+	 * FFT type
+	 */
+	@Parameter(required = false)
+	private ComplexType<C> fftType;
+
+	/**
+	 * Factory to create ffts Imgs
+	 */
+	@Parameter(required = false)
+	private ImgFactory<C> fftFactory;
+
+	/**
+	 * 
+	 */
 	@Override
-	public void run() {
+	public void safeCompute(final Img<I> input, final Img<O> output) {
 
-		// perform input FFT if needed
-		if (getPerformInputFFT()) {
-			ops.filter().fft(getFFTInput(), getRAIExtendedInput());
-		}
+		// run the op that extends the input and kernel and creates the Imgs
+		// required for the fft algorithm
+		final CreateFFTFilterMemory<I, O, K, C> createMemory =
+			ops.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
 
-		// perform kernel FFT if needed
-		if (getPerformKernelFFT()) {
-			ops.filter().fft(getFFTKernel(), getRAIExtendedKernel());
-		}
+		createMemory.run();
 
-		// perform the operation in frequency domain (ie multiplication for
-		// convolution, complex conjugate multiplication for correlation,
-		// etc.) Wiener Filter,
-		frequencyOperation(getFFTInput(), getFFTKernel());
-
-		// inverse fft
-		ops.filter().ifft(getOutput(), getFFTInput());
+		// run the filter, pass in the memory created above
+		runFilter(createMemory.getRAIExtendedInput(), createMemory
+			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
+			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
 	}
 
-	// abstract function that implements an operation in frequency domain (ie
-	// multiplication for convolution,
-	// complex conjugate multiplication for correlation, Wiener Filter, etc.)
-	protected abstract void frequencyOperation(final Img<C> a, final Img<C> b);
+	/**
+	 * This function is called after the rais and ffts are set up and implements a
+	 * frequency filter.
+	 * 
+	 * @param raiExtendedInput
+	 * @param raiExtendedKernel
+	 * @param fftImg
+	 * @param fftKernel
+	 * @param output
+	 * @param imgConvolutionInterval
+	 */
+	abstract public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
+		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval);
+
 }
