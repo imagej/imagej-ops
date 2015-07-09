@@ -43,7 +43,7 @@ import net.imglib2.view.Views;
 import org.junit.Test;
 
 /**
- * Tests implementations of {@link DifferenceOfGaussian}
+ * Tests Difference of Gaussians (DoG) implementations.
  * 
  * @author Christian Dietz, University of Konstanz
  */

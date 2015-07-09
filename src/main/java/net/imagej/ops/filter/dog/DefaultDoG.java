@@ -37,7 +37,6 @@ import net.imagej.ops.Ops.Filter.DoG;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.dog.DifferenceOfGaussian;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
@@ -52,7 +51,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * Default implementation of {@link DifferenceOfGaussian}.
+ * Default Difference of Gaussians (DoG) implementation.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <T>

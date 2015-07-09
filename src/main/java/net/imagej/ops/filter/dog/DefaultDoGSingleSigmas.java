@@ -36,7 +36,6 @@ import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Filter.DoG;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.dog.DifferenceOfGaussian;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
@@ -46,8 +45,8 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * Implementation of {@link DifferenceOfGaussian} where all sigmas are the same
- * in each dimension. Internally running {@link DifferenceOfGaussian} on arrays.
+ * Difference of Gaussians (DoG) implementation where all sigmas are the same in each
+ * dimension. Internally running DoG on arrays.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
