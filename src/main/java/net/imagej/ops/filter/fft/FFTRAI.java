@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft.methods;
+package net.imagej.ops.filter.fft;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -58,10 +58,12 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.FFT.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Filter.FFT.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
+	implements Ops.Filter.FFT
 {
 
 	/**

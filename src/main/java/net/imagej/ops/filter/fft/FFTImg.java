@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
@@ -50,7 +50,8 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <I>
  */
-@Plugin(type = Op.class, name = Ops.FFT.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Filter.FFT.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
 {
@@ -97,6 +98,6 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 
 	@Override
 	public void safeCompute(final I input, final Img<ComplexFloatType> output) {
-		ops.fft(output, input, getOBF(), paddedSize);
+		ops.filter().fft(output, input, getOBF(), paddedSize);
 	}
 }

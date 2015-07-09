@@ -121,10 +121,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				.interval(Views.extend(reblurred, obfOutput), imgConvolutionInterval);
 
 		// perform fft of input
-		ops.fft(getFFTInput(), getRAIExtendedInput());
+		ops.filter().fft(getFFTInput(), getRAIExtendedInput());
 
 		// perform fft of psf
-		ops.fft(getFFTKernel(), getRAIExtendedKernel());
+		ops.filter().fft(getFFTKernel(), getRAIExtendedKernel());
 
 		// set first guess of estimate
 		// TODO: implement logic for various first guesses.

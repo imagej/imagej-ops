@@ -51,8 +51,6 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -219,54 +217,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
 	Object eval(String expression, Map<String, Object> vars);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = Ops.FFT.class)
-	Object fft(Object... args);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType>
-		fft(Img<I> in);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		Img<ComplexFloatType> out, Img<I> in);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		Img<ComplexFloatType> out, Img<I> in, long... borderSize);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		Img<ComplexFloatType> out, Img<I> in, long[] borderSize, Boolean fast);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.image.FFTImg.class)
-	<T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		Img<ComplexFloatType> out, Img<I> in, long[] borderSize, Boolean fast,
-		OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
-	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
-	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf);
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.methods.FFTRAI.class)
-	<T extends RealType<T>, C extends ComplexType<C>> RandomAccessibleInterval<C>
-		fft(RandomAccessibleInterval<C> out, RandomAccessibleInterval<T> in,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			long... paddedSize);
 
 	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = Ops.FFTSize.class)

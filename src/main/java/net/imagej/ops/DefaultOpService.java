@@ -53,8 +53,6 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -220,107 +218,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object eval(final String expression, final Map<String, Object> vars) {
 		final Object result =
 			run(net.imagej.ops.eval.DefaultEval.class, expression, vars);
-		return result;
-	}
-
-	@Override
-	public Object fft(final Object... args) {
-		return run(Ops.FFT.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize, fast);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize, fast, obf);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in, obf);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			final long... paddedSize)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in, obf, paddedSize);
 		return result;
 	}
 

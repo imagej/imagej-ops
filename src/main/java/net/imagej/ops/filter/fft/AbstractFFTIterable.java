@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft;
+package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.OpService;

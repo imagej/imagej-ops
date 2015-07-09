@@ -28,10 +28,9 @@
  * #L%
  */
 
-package net.imagej.ops.fft.image;
+package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.fft.AbstractFFTIterable;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -45,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  */
 public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
-	extends AbstractFFTIterable<T, C, I, O> implements Ops.FFT
+	extends AbstractFFTIterable<T, C, I, O> implements Ops.Filter.FFT
 {
 
 	/**

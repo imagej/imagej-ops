@@ -44,6 +44,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.plugin.Plugin;
 
@@ -541,6 +542,119 @@ public class FilterNamespace extends AbstractNamespace {
 		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
 			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
 			performInputFFT, performKernelFFT);
+	}
+
+	// -- fft --
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = Ops.Filter.FFT.class)
+	public Object fft(final Object... args) {
+		return ops().run(Ops.Filter.FFT.NAME, args);
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
+	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result =
+			(Img<ComplexFloatType>) ops().run(net.imagej.ops.filter.fft.FFTImg.class,
+				in);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
+	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result =
+			(Img<ComplexFloatType>) ops().run(net.imagej.ops.filter.fft.FFTImg.class,
+				out, in);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
+	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result =
+			(Img<ComplexFloatType>) ops().run(net.imagej.ops.filter.fft.FFTImg.class,
+				out, in, borderSize);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
+	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Boolean fast)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result =
+			(Img<ComplexFloatType>) ops().run(net.imagej.ops.filter.fft.FFTImg.class,
+				out, in, borderSize, fast);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTImg.class)
+	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
+		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
+		final Boolean fast,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result =
+			(Img<ComplexFloatType>) ops().run(net.imagej.ops.filter.fft.FFTImg.class,
+				out, in, borderSize, fast, obf);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTRAI.class)
+	public <T extends RealType<T>, C extends ComplexType<C>>
+		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<C> result =
+			(RandomAccessibleInterval<C>) ops().run(
+				net.imagej.ops.filter.fft.FFTRAI.class, out, in);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTRAI.class)
+	public <T extends RealType<T>, C extends ComplexType<C>>
+		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<C> result =
+			(RandomAccessibleInterval<C>) ops().run(
+				net.imagej.ops.filter.fft.FFTRAI.class, out, in, obf);
+		return result;
+	}
+
+	/** Executes the "fft" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.FFTRAI.class)
+	public <T extends RealType<T>, C extends ComplexType<C>>
+		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
+			final RandomAccessibleInterval<T> in,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
+			final long... paddedSize)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<C> result =
+			(RandomAccessibleInterval<C>) ops().run(
+				net.imagej.ops.filter.fft.FFTRAI.class, out, in, obf, paddedSize);
+		return result;
 	}
 
 	// -- gauss --
