@@ -10,17 +10,10 @@ authors = ```
 ops = ```
 [
 	[name: "convert",     iface: "Convert"],
-	[name: "convolve",    iface: "Convolve"],
-	[name: "correlate",   iface: "Correlate"],
 	[name: "eval",        iface: "Eval"],
-	[name: "fft",         iface: "FFT"],
-	[name: "fftSize",     iface: "FFTSize"],
-	[name: "gauss",       iface: "Gauss",          aliases: ["smooth"]],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
-	[name: "ifft",        iface: "IFFT"],
 	[name: "join",        iface: "Join"],
-	[name: "log",         iface: "Log"],
 	[name: "loop",        iface: "Loop"],
 	[name: "map",         iface: "Map"],
 	[name: "op",          iface: "Lookup"],
@@ -45,6 +38,15 @@ namespaces = ```
 	]],
 	[name: "deconvolve", iface: "Deconvolve", ops: [
 		[name: "richardsonLucy",     iface: "RichardsonLucy"]
+	]],
+	[name: "filter", iface: "Filter", ops: [
+		[name: "addNoise",           iface: "AddNoise"],
+		[name: "convolve",           iface: "Convolve"],
+		[name: "correlate",          iface: "Correlate"],
+		[name: "fft",                iface: "FFT"],
+		[name: "fftSize",            iface: "FFTSize"],
+		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]],
+		[name: "ifft",               iface: "IFFT"]
 	]],
 	[name: "image",      iface: "Image", ops: [
 		[name: "ascii",              iface: "ASCII"],
@@ -75,7 +77,6 @@ namespaces = ```
 	[name: "math", iface: "Math", ops: [
 		[name: "abs",                iface: "Abs"],
 		[name: "add",                iface: "Add",                 aliases: ["sum"]],
-		[name: "addNoise",           iface: "AddNoise"],
 		[name: "and",                iface: "And"],
 		[name: "arccos",             iface: "Arccos"],
 		[name: "arccosh",            iface: "Arccosh"],

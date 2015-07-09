@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.exception.IncompatibleTypeException;

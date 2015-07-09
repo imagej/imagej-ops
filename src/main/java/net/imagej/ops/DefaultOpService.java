@@ -40,8 +40,7 @@ import java.util.Map;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
-import net.imagej.ops.gauss.DefaultGaussRAI;
-import net.imagej.ops.gauss.GaussRAISingleSigma;
+import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
@@ -53,13 +52,8 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -206,437 +200,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object convolve(final Object... args) {
-		return run(Ops.Convolve.NAME, args);
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<I> in, final RandomAccessibleInterval<K> kernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result = (Img<O>) run(Ops.Convolve.NAME, in, kernel);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result = (Img<O>) run(Ops.Convolve.NAME, out, in, kernel);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long... borderSize)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize, obfInput);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize, obfInput,
-				obfKernel);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize, obfInput,
-				obfKernel, outType);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(Ops.Convolve.NAME, out, in, kernel, borderSize, obfInput,
-				obfKernel, outType, outFactory);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.ConvolveFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> convolve(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.ConvolveFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType,
-				fftFactory);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
-		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<O> out,
-			final RandomAccessible<I> in, final RandomAccessibleInterval<K> kernel)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.convolve.ConvolveNaive.class, out, in, kernel);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void
-		convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT)
-	{
-		run(net.imagej.ops.convolve.ConvolveFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
-			performKernelFFT);
-	}
-
-	@Override
-	public Object correlate(final Object... args) {
-		return run(Ops.Correlate.NAME, args);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<I> in, final RandomAccessibleInterval<K> kernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, in, kernel);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long... borderSize)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType, outFactory);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		Img<O> correlate(final Img<O> out, final Img<I> in,
-			final RandomAccessibleInterval<K> kernel, final long[] borderSize,
-			final OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput,
-			final OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel,
-			final Type<O> outType, final ImgFactory<O> outFactory,
-			final ComplexType<C> fftType, final ImgFactory<C> fftFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.convolve.CorrelateFFTImg.class, out, in,
-				kernel, borderSize, obfInput, obfKernel, outType, outFactory, fftType,
-				fftFactory);
-		return result;
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	void correlate(final RandomAccessibleInterval<I> raiExtendedInput) {
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void
-		correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel, final Img<C> fftInput)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT);
-	}
-
-	@Override
-	public
-		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
-			final RandomAccessibleInterval<K> raiExtendedKernel,
-			final Img<C> fftInput, final Img<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT)
-	{
-		run(net.imagej.ops.convolve.CorrelateFFTRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftInput, fftKernel, output, performInputFFT,
-			performKernelFFT);
-	}
-
-	@Override
 	public Object eval(final Object... args) {
 		return run(Ops.Eval.NAME, args);
 	}
@@ -652,195 +215,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object eval(final String expression, final Map<String, Object> vars) {
 		final Object result =
 			run(net.imagej.ops.eval.DefaultEval.class, expression, vars);
-		return result;
-	}
-
-	@Override
-	public Object fft(final Object... args) {
-		return run(Ops.FFT.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long... borderSize)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize, fast);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, I extends Img<T>> Img<ComplexFloatType> fft(
-		final Img<ComplexFloatType> out, final Img<I> in, final long[] borderSize,
-		final Boolean fast,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<ComplexFloatType> result =
-			(Img<ComplexFloatType>) run(net.imagej.ops.fft.image.FFTImg.class, out,
-				in, borderSize, fast, obf);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in, obf);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			final long... paddedSize)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) run(
-				net.imagej.ops.fft.methods.FFTRAI.class, out, in, obf, paddedSize);
-		return result;
-	}
-
-	@Override
-	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
-		final long[] fftSize, final Boolean forward, final Boolean fast)
-	{
-		@SuppressWarnings("unchecked")
-		final List<long[]> result =
-			(List<long[]>) run(net.imagej.ops.fft.size.ComputeFFTSize.class,
-				inputSize, paddedSize, fftSize, forward, fast);
-		return result;
-	}
-
-	@Override
-	public Object gauss(final Object... args) {
-		return run(Ops.Gauss.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
-			final RandomAccessibleInterval<T> in, final double[] sigmas,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, out, in, sigmas,
-				outOfBounds);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<V> out,
-			final RandomAccessibleInterval<T> in, final double... sigmas)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, out, in, sigmas);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
-			final double... sigmas)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(DefaultGaussRAI.class, in, sigmas);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(GaussRAISingleSigma.class, out, in,
-				sigma);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(RandomAccessibleInterval<V> out,
-			RandomAccessibleInterval<T> in, double sigma,
-			OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(GaussRAISingleSigma.class, out, in,
-				sigma, outOfBounds);
-		return result;
-	}
-
-	@Override
-	public <T extends RealType<T>, V extends RealType<V>>
-		RandomAccessibleInterval<V> gauss(final RandomAccessibleInterval<T> in,
-			final double sigma)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<V> result =
-			(RandomAccessibleInterval<V>) run(
-				net.imagej.ops.gauss.GaussRAISingleSigma.class, in, sigma);
 		return result;
 	}
 
@@ -886,33 +260,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final A result =
 			(A) run(net.imagej.ops.identity.DefaultIdentity.class, arg);
-		return result;
-	}
-
-	@Override
-	public Object ifft(final Object... args) {
-		return run(Ops.IFFT.NAME, args);
-	}
-
-	@Override
-	public <T extends RealType<T>, O extends Img<T>> Img<O> ifft(
-		final Img<O> out, final Img<ComplexFloatType> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) run(net.imagej.ops.fft.image.IFFTImg.class, out, in);
-		return result;
-	}
-
-	@Override
-	public <C extends ComplexType<C>, T extends RealType<T>>
-		RandomAccessibleInterval<T> ifft(final RandomAccessibleInterval<T> out,
-			final RandomAccessibleInterval<C> in)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) run(
-				net.imagej.ops.fft.methods.IFFTRAI.class, out, in);
 		return result;
 	}
 
@@ -1020,11 +367,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public Object log(final Object... args) {
-		return run(Ops.Log.NAME, args);
-	}
-
-	@Override
 	public Object loop(final Object... args) {
 		return run(Ops.Loop.NAME, args);
 	}
@@ -1046,11 +388,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(A) run(net.imagej.ops.loop.DefaultLoopFunction.class, out, in, function,
 				bufferFactory, n);
 		return result;
-	}
-
-	@Override
-	public Object fftSize(final Object... args) {
-		return run(Ops.FFTSize.NAME, args);
 	}
 
 	@Override
@@ -1191,7 +528,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices);
 		return result;
 	}
@@ -1205,7 +542,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicer.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
 				axisIndices, dropSingleDimensions);
 		return result;
 	}
@@ -1220,6 +557,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public DeconvolveNamespace deconvolve() {
 		return namespace(DeconvolveNamespace.class);
+	}
+
+	@Override
+	public FilterNamespace filter() {
+		return namespace(FilterNamespace.class);
 	}
 
 	@Override

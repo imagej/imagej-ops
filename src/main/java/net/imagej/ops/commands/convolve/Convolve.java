@@ -34,6 +34,7 @@ import net.imagej.ImgPlus;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imglib2.Axis;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -114,7 +115,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 					in.firstElement().createVariable());
 		}
 
-		final Op op = ops.op("convolve", out, in, kernel);
+		final Op op = ops.op(Ops.Filter.Convolve.class, out, in, kernel);
 		if (in.numDimensions() > kernel.numDimensions()) {
 			if (op instanceof Function) {
 				// if the selected convolve op is a function and the kernel dimensions
