@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft;
+package net.imagej.ops.filter;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
