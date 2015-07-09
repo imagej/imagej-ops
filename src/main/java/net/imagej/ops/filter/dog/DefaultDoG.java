@@ -83,7 +83,8 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<T>) ops.create().img(input);
+		// HACK: Make Java 6 javac compiler happy.
+		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
 	}
 
 	@Override
