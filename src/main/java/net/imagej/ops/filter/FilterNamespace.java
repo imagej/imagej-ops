@@ -700,7 +700,8 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	// -- difference of gaussian --
+	// -- dog --
+
 	@OpMethod(op = Ops.Filter.DoG.class)
 	public Object dog(Object... args) {
 		return ops().run(Ops.Filter.DoG.class, args);
