@@ -30,6 +30,8 @@
 
 package net.imagej.ops.filter;
 
+import java.util.List;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -654,6 +656,27 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
 				net.imagej.ops.filter.fft.FFTRAI.class, out, in, obf, paddedSize);
+		return result;
+	}
+
+	// -- fftSize --
+
+	/** Executes the "fftSize" operation on the given arguments. */
+	@OpMethod(op = Ops.Filter.FFTSize.class)
+	public Object fftSize(final Object... args) {
+		return ops().run(Ops.Filter.FFTSize.NAME, args);
+	}
+
+	/** Executes the "fftSize" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTSize.class)
+	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
+		final long[] fftSize, final Boolean forward, final Boolean fast)
+	{
+		@SuppressWarnings("unchecked")
+		final List<long[]> result =
+			(List<long[]>) ops().run(
+				net.imagej.ops.filter.fftSize.ComputeFFTSize.class, inputSize,
+				paddedSize, fftSize, forward, fast);
 		return result;
 	}
 

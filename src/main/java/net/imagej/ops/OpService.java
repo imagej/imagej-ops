@@ -50,11 +50,8 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.img.Img;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
@@ -217,15 +214,6 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
 	Object eval(String expression, Map<String, Object> vars);
-
-	/** Executes the "fftSize" operation on the given arguments. */
-	@OpMethod(op = Ops.FFTSize.class)
-	Object fftSize(Object... args);
-
-	/** Executes the "fftSize" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.fft.size.ComputeFFTSize.class)
-	List<long[]> fftSize(long[] inputSize, long[] paddedSize, long[] fftSize,
-		Boolean forward, Boolean fast);
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = Ops.Help.class)

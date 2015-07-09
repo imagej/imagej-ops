@@ -96,8 +96,8 @@ public class FFTTest extends AbstractOpBenchmark {
 			long[] fftDimensions = new long[3];
 
 			// compute the dimensions that will result in the fastest FFT time
-			ops
-				.fftSize(originalDimensions, fastDimensions, fftDimensions, true, true);
+			ops.filter().fftSize(originalDimensions, fastDimensions, fftDimensions,
+				true, true);
 
 			// create an input with a small sphere at the center
 			Img<FloatType> inOriginal =

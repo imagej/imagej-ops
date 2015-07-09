@@ -69,7 +69,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.fftSize(inputSize, paddedSize, fftSize, true, true);
+		ops.filter().fftSize(inputSize, paddedSize, fftSize, true, true);
 
 	}
 
@@ -79,7 +79,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.fftSize(inputSize, paddedSize, fftSize, true, false);
+		ops.filter().fftSize(inputSize, paddedSize, fftSize, true, false);
 
 	}
 

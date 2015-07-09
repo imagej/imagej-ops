@@ -11,7 +11,6 @@ ops = ```
 [
 	[name: "convert",     iface: "Convert"],
 	[name: "eval",        iface: "Eval"],
-	[name: "fftSize",     iface: "FFTSize"],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
 	[name: "join",        iface: "Join"],
@@ -45,6 +44,7 @@ namespaces = ```
 		[name: "convolve",           iface: "Convolve"],
 		[name: "correlate",          iface: "Correlate"],
 		[name: "fft",                iface: "FFT"],
+		[name: "fftSize",            iface: "FFTSize"],
 		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]],
 		[name: "ifft",               iface: "IFFT"]
 	]],

@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.fft.size;
+package net.imagej.ops.filter.fftSize;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = Ops.FFTSize.NAME)
+@Plugin(type = Op.class, name = Ops.Filter.FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {
 
 	@Override

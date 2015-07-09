@@ -52,11 +52,8 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.img.Img;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
@@ -218,17 +215,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Object eval(final String expression, final Map<String, Object> vars) {
 		final Object result =
 			run(net.imagej.ops.eval.DefaultEval.class, expression, vars);
-		return result;
-	}
-
-	@Override
-	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
-		final long[] fftSize, final Boolean forward, final Boolean fast)
-	{
-		@SuppressWarnings("unchecked")
-		final List<long[]> result =
-			(List<long[]>) run(net.imagej.ops.fft.size.ComputeFFTSize.class,
-				inputSize, paddedSize, fftSize, forward, fast);
 		return result;
 	}
 
@@ -407,11 +393,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 			(A) run(net.imagej.ops.loop.DefaultLoopFunction.class, out, in, function,
 				bufferFactory, n);
 		return result;
-	}
-
-	@Override
-	public Object fftSize(final Object... args) {
-		return run(Ops.FFTSize.NAME, args);
 	}
 
 	@Override
