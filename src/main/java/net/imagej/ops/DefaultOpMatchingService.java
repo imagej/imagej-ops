@@ -281,7 +281,17 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	/** Helper method of {@link #isCandidate}. */
 	private boolean nameMatches(final ModuleInfo info, final String name) {
-		if (name == null || name.equals(info.getName())) return true;
+		if (name == null) return true; // not filtering on name
+
+		// check if name matches exactly
+		final String infoName = info.getName();
+		if (name.equals(infoName)) return true;
+
+		// check if name matches w/o namespace (e.g., 'add' matches 'math.add')
+		if (infoName != null) {
+			final int dot = infoName.lastIndexOf(".");
+			if (dot >= 0 && name.equals(infoName.substring(dot + 1))) return true;
+		}
 
 		// check for an alias
 		final String alias = info.get("alias");
