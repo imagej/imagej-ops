@@ -46,6 +46,7 @@ namespaces = ```
 		[name: "fft",                iface: "FFT"],
 		[name: "fftSize",            iface: "FFTSize"],
 		[name: "gauss",              iface: "Gauss",               aliases: ["smooth"]],
+		[name: "dog",                iface: "DoG",                 aliases: ["differenceofgaussian"]],
 		[name: "ifft",               iface: "IFFT"]
 	]],
 	[name: "image",      iface: "Image", ops: [
