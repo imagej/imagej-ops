@@ -116,7 +116,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 		ops.filter().gauss(tmpInterval, input, sigmas1);
 		ops.filter().gauss(output, input, sigmas2);
 
-		// TODO: Use SUbtractOp as soon as available (see issue
+		// TODO: Use SubtractOp as soon as available (see issue
 		// https://github.com/imagej/imagej-ops/issues/161).
 		final Cursor<T> tmpCursor = Views.flatIterable(tmpInterval).cursor();
 		final Cursor<T> outputCursor = Views.flatIterable(output).cursor();
