@@ -32,8 +32,9 @@ package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.AbstractOutputFunction;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Filter.DoG;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -56,11 +57,11 @@ import org.scijava.thread.ThreadService;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = DoG.class, name = DoG.NAME)
+@Plugin(type = Op.class, name = Ops.Filter.DoG.NAME)
 public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	extends
 	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements DoG, Contingent
+	implements Ops.Filter.DoG, Contingent
 {
 
 	@Parameter
