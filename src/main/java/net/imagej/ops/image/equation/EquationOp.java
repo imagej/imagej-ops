@@ -28,16 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.identity;
+package net.imagej.ops.image.equation;
 
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
+import net.imglib2.IterableInterval;
 
 /**
- * A typed "identity" function.
+ * An "equation" operation which computes image
+ * values from interval coordinates using an equation.
  * 
  * @author Curtis Rueden
  */
-public interface Identity<A> extends Ops.Identity, InplaceFunction<A> {
+public interface EquationOp<T> extends Ops.Image.Equation, Function<String,
+	IterableInterval<T>>
+{
 	// NB: Marker interface.
 }

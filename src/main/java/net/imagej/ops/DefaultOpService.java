@@ -225,7 +225,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public String help(final Op op) {
-		final String result = (String) run(net.imagej.ops.help.HelpOp.class, op);
+		final String result = (String) run(net.imagej.ops.help.HelpForOp.class, op);
 		return result;
 	}
 

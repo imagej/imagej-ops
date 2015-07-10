@@ -35,7 +35,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -60,7 +60,7 @@ public class MapParallel<A> extends
 
 	@Override
 	public IterableInterval<A> compute(final IterableInterval<A> arg) {
-		opService.run(Chunker.class, new CursorBasedChunk() {
+		opService.run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,

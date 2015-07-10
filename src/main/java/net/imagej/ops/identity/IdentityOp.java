@@ -28,14 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats.mean;
+package net.imagej.ops.identity;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.InplaceFunction;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "mean" function.
+ * A typed "identity" function.
+ * 
+ * @author Curtis Rueden
  */
-public interface Mean<I, O> extends Ops.Stats.Mean, Function<I, O> {
+public interface IdentityOp<A> extends Ops.Identity, InplaceFunction<A> {
 	// NB: Marker interface.
 }

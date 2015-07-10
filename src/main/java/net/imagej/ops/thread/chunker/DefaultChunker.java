@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Simple default implementation of a {@link Chunker}. The list of
+ * Simple default implementation of a {@link ChunkerOp}. The list of
  * elements is chunked into equally sized (besides the last one), disjoint
  * chunks, which are processed in parallel. The stepSize is set to one, i.e.
  * each chunk consists of consecutive elements.

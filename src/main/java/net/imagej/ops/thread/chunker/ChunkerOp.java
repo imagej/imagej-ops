@@ -28,16 +28,24 @@
  * #L%
  */
 
-package net.imagej.ops.stats.min;
+package net.imagej.ops.thread.chunker;
 
-import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
+import org.scijava.Cancelable;
+
 /**
- * A typed "min" function.
+ * A "chunker" operation which executes code across
+ * chunks of data using multiple threads.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Min<T, V> extends Ops.Stats.Min, Function<Iterable<T>, V> {
-	// NB: Marker interface.
+public interface ChunkerOp extends Ops.Thread.Chunker, Cancelable {
+
+	/** Sets the {@link Chunk} for which will be multithreaded. */
+	void setChunk(final Chunk executor);
+
+	/** Sets the total number of elements which should be processed in parallel. */
+	void setNumberOfElements(final int numberOfElements);
+
 }

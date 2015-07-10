@@ -34,7 +34,7 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.TypedAxis;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
-import net.imagej.ops.stats.mean.Mean;
+import net.imagej.ops.stats.mean.MeanOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
@@ -79,12 +79,12 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 		implements ProjectMethod<T>
 	{
 
-		private Mean<Iterable<T>, T> mean;
+		private MeanOp<Iterable<T>, T> mean;
 
 		@Override
 		public T compute(Iterable<T> input, T output) {
 			if (mean == null) {
-				mean = ops.op(Mean.class, output, input);
+				mean = ops.op(MeanOp.class, output, input);
 			}
 			return mean.compute(input, output);
 		}

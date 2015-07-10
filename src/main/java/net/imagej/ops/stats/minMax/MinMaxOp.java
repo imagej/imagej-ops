@@ -27,36 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.stats.minMax;
 
-package net.imagej.ops.help;
-
-import java.util.Collections;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * Gets documentation for the given op.
- *
- * @author Curtis Rueden
+ * A typed "minMax" operation.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Help.NAME,
-	description = "Gets documentation for the given op.")
-public class HelpOp extends AbstractHelp {
-
-	@Parameter
-	private OpService ops;
-
-	@Parameter
-	private Op op;
-
-	@Override
-	public void run() {
-		help(Collections.singleton(ops.info(op)));
-	}
-
+public interface MinMaxOp<T> extends Ops.Stats.MinMax {
+	// NB: Marker interface.
 }

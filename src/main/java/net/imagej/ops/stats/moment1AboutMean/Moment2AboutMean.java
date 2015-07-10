@@ -35,8 +35,8 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.Mean;
-import net.imagej.ops.stats.size.Size;
+import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.size.SizeOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -49,10 +49,10 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType>
 {
 	@Parameter
-	private Mean<Iterable<T>, DoubleType> mean;
+	private MeanOp<Iterable<T>, DoubleType> mean;
 
 	@Parameter
-	private Size<Iterable<T>> size;
+	private SizeOp<Iterable<T>> size;
 
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {

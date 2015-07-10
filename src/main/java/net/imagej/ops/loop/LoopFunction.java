@@ -38,6 +38,6 @@ import net.imagej.ops.Function;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopFunction<I> extends Function<I, I>, Loop<I> {
+public interface LoopFunction<I> extends Function<I, I>, LoopOp<I> {
 	// NB: Marker interface
 }

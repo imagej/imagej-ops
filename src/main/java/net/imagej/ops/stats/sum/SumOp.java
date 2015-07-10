@@ -28,17 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats.size;
+package net.imagej.ops.stats.sum;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * A typed "size" function.
+ * A typed "sum" function.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Size<I> extends Ops.Stats.Size, Function<I, LongType> {
+public interface SumOp<I, O> extends Ops.Stats.Sum, Function<I, O> {
 	// NB: Marker interface.
 }

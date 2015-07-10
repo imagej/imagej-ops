@@ -28,20 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.image.equation;
+package net.imagej.ops.loop;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
 
 /**
- * An "equation" operation which computes image
- * values from interval coordinates using an equation.
+ * A typed "loop" operation.
  * 
- * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface Equation<T> extends Ops.Image.Equation, Function<String,
-	IterableInterval<T>>
-{
-	// NB: Marker interface.
+public interface LoopOp<A> extends Ops.Loop {
+
+	/**
+	 * @return the {@link Function} used for looping
+	 */
+	Function<A, A> getFunction();
+
+	/**
+	 * @param func the {@link Function} used for looping
+	 */
+	void setFunction(Function<A, A> func);
+	
+	/**
+	 * @param n number how often {@link Function} is looped
+	 */
+	void setLoopCount(int n);
+	
+	/**
+	 * @return number how often the {@link Function} is looped
+	 */
+	int getLoopCount();
+
 }

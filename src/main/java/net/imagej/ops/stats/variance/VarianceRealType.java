@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.LOW_PRIORITY)
 public class VarianceRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
+	VarianceOp<T, DoubleType>
 {
 
 	@Parameter(required = false)

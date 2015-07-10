@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Slicewise} implementation fo {@link RandomAccessibleInterval} input
+ * {@link SlicewiseOp} implementation fo {@link RandomAccessibleInterval} input
  * and {@link RandomAccessibleInterval} output.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -53,7 +53,7 @@ public class SlicewiseRAI2RAI<I, O>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements
-	Slicewise<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	SlicewiseOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter

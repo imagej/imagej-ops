@@ -39,7 +39,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} from {@link Iterable} to {@link Iterable}.
+ * {@link MapOp} from {@link Iterable} to {@link Iterable}.
  * 
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)

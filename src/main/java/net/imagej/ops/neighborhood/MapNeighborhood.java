@@ -35,7 +35,7 @@ import net.imagej.ops.Function;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.Map;
+import net.imagej.ops.map.MapOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
 	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements Map<Iterable<I>, O, Function<Iterable<I>, O>>
+	implements MapOp<Iterable<I>, O, Function<Iterable<I>, O>>
 {
 
 	@Parameter

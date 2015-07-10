@@ -28,26 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.stats.min;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * Interface for {@link Map}s. A {@link Map} provides a {@link Function} which
- * maps values from <A> to <B>.
+ * A typed "min" function.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Map<A, B, F extends Function<A, B>> extends Ops.Map {
-
-	/**
-	 * @return the {@link Function} used for mapping
-	 */
-	F getFunction();
-
-	/**
-	 * @param function the {@link Function} used for mapping
-	 */
-	void setFunction(F function);
+public interface MinOp<T, V> extends Ops.Stats.Min, Function<Iterable<T>, V> {
+	// NB: Marker interface.
 }

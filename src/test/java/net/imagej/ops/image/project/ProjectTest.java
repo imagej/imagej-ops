@@ -33,7 +33,7 @@ package net.imagej.ops.image.project;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.stats.sum.Sum;
+import net.imagej.ops.stats.sum.SumOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -65,7 +65,7 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateByteTestImg(false, 10, 10);
 		out2 = generateByteTestImg(false, 10, 10);
 
-		op = ops.op(Sum.class, RealType.class, out1);
+		op = ops.op(SumOp.class, RealType.class, out1);
 	}
 
 	@Test

@@ -35,7 +35,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link Map}.
+ * Parallelized {@link MapOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <A> mapped on {@code <B>}
@@ -66,7 +66,7 @@ public class MapIterableToRAIParallel<A, B> extends
 	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
-		opService.run(Chunker.class, new CursorBasedChunk() {
+		opService.run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,

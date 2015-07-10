@@ -39,7 +39,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -71,7 +71,7 @@ public class DefaultProjectParallel<T, V> extends
 	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
-		opService.run(Chunker.class, new CursorBasedChunk() {
+		opService.run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void

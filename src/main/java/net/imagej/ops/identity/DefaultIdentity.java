@@ -35,7 +35,7 @@ import net.imagej.ops.Op;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the {@link Identity} op.
+ * Default implementation of the {@link IdentityOp} op.
  * 
  * @author Curtis Rueden
  */

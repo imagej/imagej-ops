@@ -42,7 +42,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Implementation of a {@link Chunker} that interleaves the chunks. In a
+ * Implementation of a {@link ChunkerOp} that interleaves the chunks. In a
  * element enumeration from 1..n with <b>k</b> {@link Chunk}s the
  * first one will process the elements 1, k+1, 2k+1, ... the second chunk
  * executable 2, k+2, 2k+2 and so on.

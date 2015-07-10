@@ -34,7 +34,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.variance.Variance;
+import net.imagej.ops.stats.variance.VarianceOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -50,7 +50,7 @@ public class StdDevRealType<T extends RealType<T>> extends
 {
 
 	@Parameter(required = false)
-	private Variance<T, DoubleType> variance;
+	private VarianceOp<T, DoubleType> variance;
 
 	@Parameter
 	private OpService ops;
@@ -58,7 +58,7 @@ public class StdDevRealType<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (variance == null) {
-			variance = ops.op(Variance.class, output, input);
+			variance = ops.op(VarianceOp.class, output, input);
 		}
 		output.set(Math.sqrt(variance.compute(input, output).get()));
 		return output;

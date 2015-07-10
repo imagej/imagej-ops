@@ -220,7 +220,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object help(Object... args);
 
 	/** Executes the "help" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.help.HelpOp.class)
+	@OpMethod(op = net.imagej.ops.help.HelpForOp.class)
 	String help(Op op);
 
 	/** Executes the "help" operation on the given arguments. */

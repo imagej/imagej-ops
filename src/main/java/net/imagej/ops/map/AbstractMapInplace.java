@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @param <I> {@link Iterable} of <A>s
  */
 public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements Map<A, A, InplaceFunction<A>>
+	AbstractInplaceFunction<I> implements MapOp<A, A, InplaceFunction<A>>
 {
 
 	/**

@@ -28,16 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats.max;
+package net.imagej.ops.convert;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "max" function.
+ * A typed conversion operation.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
-public interface Max<T, V> extends Ops.Stats.Max, Function<Iterable<T>, V> {
+public interface ConvertOp<I, O> extends Ops.Convert, Function<I, O> {
 	// NB: Marker interface.
 }

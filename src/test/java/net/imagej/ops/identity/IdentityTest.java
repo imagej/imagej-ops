@@ -36,7 +36,7 @@ import net.imagej.ops.AbstractOpTest;
 import org.junit.Test;
 
 /**
- * Tests {@link Identity}.
+ * Tests {@link IdentityOp}.
  * 
  * @author Curtis Rueden
  */

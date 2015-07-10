@@ -28,36 +28,18 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.stats.variance;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "loop" operation.
+ * A typed "variance" function.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Loop<A> extends Ops.Loop {
-
-	/**
-	 * @return the {@link Function} used for looping
-	 */
-	Function<A, A> getFunction();
-
-	/**
-	 * @param func the {@link Function} used for looping
-	 */
-	void setFunction(Function<A, A> func);
-	
-	/**
-	 * @param n number how often {@link Function} is looped
-	 */
-	void setLoopCount(int n);
-	
-	/**
-	 * @return number how often the {@link Function} is looped
-	 */
-	int getLoopCount();
-
+public interface VarianceOp<T, V> extends Ops.Stats.Variance,
+	Function<Iterable<T>, V>
+{
+	// NB: Marker interface.
 }

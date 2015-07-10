@@ -28,16 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.stats.size;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * A typed conversion operation.
+ * A typed "size" function.
  * 
- * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface Convert<I, O> extends Ops.Convert, Function<I, O> {
+public interface SizeOp<I> extends Ops.Stats.Size, Function<I, LongType> {
 	// NB: Marker interface.
 }

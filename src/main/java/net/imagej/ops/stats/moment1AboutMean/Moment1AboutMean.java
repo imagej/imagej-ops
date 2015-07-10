@@ -36,8 +36,8 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.Mean;
-import net.imagej.ops.stats.size.Size;
+import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.size.SizeOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,10 +51,10 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 {
 
 	@Parameter(required = false)
-	private Mean<Iterable<T>, DoubleType> mean;
+	private MeanOp<Iterable<T>, DoubleType> mean;
 
 	@Parameter(required = false)
-	private Size<Iterable<T>> size;
+	private SizeOp<Iterable<T>> size;
 
 	@Parameter
 	private OpService ops;
@@ -62,10 +62,10 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 	@Override
 	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
 		if (mean == null) {
-			mean = ops.op(Mean.class, output, input);
+			mean = ops.op(MeanOp.class, output, input);
 		}
 		if (size == null) {
-			size = ops.op(Size.class, output, input);
+			size = ops.op(SizeOp.class, output, input);
 		}
 
 		final double mean = this.mean.compute(input, new DoubleType()).get();

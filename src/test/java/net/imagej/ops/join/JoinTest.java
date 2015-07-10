@@ -41,7 +41,7 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
 import net.imagej.ops.Function;
 import net.imagej.ops.Op;
-import net.imagej.ops.map.Map;
+import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -61,9 +61,9 @@ public class JoinTest extends AbstractOpTest {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
-		inplaceOp = ops.op(Map.class, Img.class, new AddOneInplace());
+		inplaceOp = ops.op(MapOp.class, Img.class, new AddOneInplace());
 		functionalOp =
-			ops.op(Map.class, Img.class, Img.class, new AddOneFunctional());
+			ops.op(MapOp.class, Img.class, Img.class, new AddOneFunctional());
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class JoinTest extends AbstractOpTest {
 		public Img<ByteType> compute(final Img<ByteType> input,
 			final Img<ByteType> output)
 		{
-			ops.run(Map.class, output, input, new AddOneFunctional());
+			ops.run(MapOp.class, output, input, new AddOneFunctional());
 			return output;
 		}
 	}

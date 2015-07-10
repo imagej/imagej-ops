@@ -27,15 +27,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.stats.minMax;
 
+package net.imagej.ops.map;
+
+import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "minMax" operation.
+ * Typed interface for "map" ops. A {@link MapOp} is a {@link Function} which
+ * maps values from <A> to <B>.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MinMax<T> extends Ops.Stats.MinMax {
-	// NB: Marker interface.
+public interface MapOp<A, B, F extends Function<A, B>> extends Ops.Map {
+
+	/**
+	 * @return the {@link Function} used for mapping
+	 */
+	F getFunction();
+
+	/**
+	 * @param function the {@link Function} used for mapping
+	 */
+	void setFunction(F function);
 }

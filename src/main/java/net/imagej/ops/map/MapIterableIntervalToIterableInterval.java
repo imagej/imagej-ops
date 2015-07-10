@@ -40,7 +40,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} from {@link IterableInterval} to {@link IterableInterval}.
+ * {@link MapOp} from {@link IterableInterval} to {@link IterableInterval}.
  * Conforms if the {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Martin Horn (University of Konstanz)

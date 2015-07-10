@@ -33,7 +33,7 @@ package net.imagej.ops.identity;
 import net.imagej.ops.AbstractInplaceFunction;
 
 /**
- * Abstract superclass of {@link Identity} implementations.
+ * Abstract superclass of {@link IdentityOp} implementations.
  * 
  * @author Curtis Rueden
  */

@@ -44,7 +44,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Map} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link MapOp} using a {@link Function} on {@link RandomAccessibleInterval} and
  * {@link IterableInterval}
  *
  * @author Martin Horn (University of Konstanz)

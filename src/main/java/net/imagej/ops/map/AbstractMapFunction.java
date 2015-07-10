@@ -36,7 +36,7 @@ import net.imagej.ops.Function;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link Map}.
+ * Abstract implementation of a {@link MapOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <A> mapped on {@code <B>}
@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
  * @param <D> provides {@code <B>}s
  */
 public abstract class AbstractMapFunction<A, B, C, D> extends
-	AbstractStrictFunction<C, D> implements Map<A, B, Function<A, B>>
+	AbstractStrictFunction<C, D> implements MapOp<A, B, Function<A, B>>
 {
 
 	/** {@link Function} to be used for mapping. */

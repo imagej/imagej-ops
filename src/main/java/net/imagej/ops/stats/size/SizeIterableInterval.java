@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.LOW_PRIORITY)
 public class SizeIterableInterval extends
 	AbstractStrictFunction<IterableInterval<?>, LongType> implements
-	Size<IterableInterval<?>>
+	SizeOp<IterableInterval<?>>
 {
 
 	@Override

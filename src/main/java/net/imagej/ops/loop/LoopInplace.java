@@ -38,6 +38,6 @@ import net.imagej.ops.InplaceFunction;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopInplace<I> extends InplaceFunction<I>, Loop<I> {
+public interface LoopInplace<I> extends InplaceFunction<I>, LoopOp<I> {
 	// NB: Marker interface
 }

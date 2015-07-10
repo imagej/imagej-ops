@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Median.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MedianRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Median<Iterable<T>, T>
+	AbstractStrictFunction<Iterable<T>, T> implements MedianOp<Iterable<T>, T>
 {
 
 	@Override

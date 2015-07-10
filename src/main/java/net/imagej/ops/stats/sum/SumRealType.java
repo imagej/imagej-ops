@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Sum.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractStrictFunction<Iterable<T>, V> implements Sum<Iterable<T>, V>
+	AbstractStrictFunction<Iterable<T>, V> implements SumOp<Iterable<T>, V>
 {
 
 	@Override

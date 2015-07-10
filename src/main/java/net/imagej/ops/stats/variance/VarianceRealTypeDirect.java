@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.LOW_PRIORITY + 1)
 public class VarianceRealTypeDirect<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements
-	Variance<T, DoubleType>
+	VarianceOp<T, DoubleType>
 {
 
 	@Override

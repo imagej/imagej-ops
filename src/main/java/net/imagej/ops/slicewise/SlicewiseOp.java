@@ -28,18 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.stats.variance;
+package net.imagej.ops.slicewise;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "variance" function.
+ * A typed "slicewise" function.
+ * <p>
+ * Allows running {@link Function}s on orthogonal subsets of the <I>. The
+ * subsets can for example be defined by the axes of an image. For each subset
+ * the {@link Function} will be executed.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  */
-public interface Variance<T, V> extends Ops.Stats.Variance,
-	Function<Iterable<T>, V>
-{
+public interface SlicewiseOp<I, O> extends Ops.Slicewise, Function<I, O> {
 	// NB: Marker interface.
 }

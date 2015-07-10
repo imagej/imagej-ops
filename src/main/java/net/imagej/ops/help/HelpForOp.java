@@ -28,16 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.stats.median;
+package net.imagej.ops.help;
 
+import java.util.Collections;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.quantile.Quantile;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A typed "median" function.
- * 
- * @author Christian Dietz (University of Konstanz)
+ * Gets documentation for the given op.
+ *
+ * @author Curtis Rueden
  */
-public interface Median<T, V> extends Ops.Stats.Median, Quantile<T, V> {
-	// NB: Marker interface.
+@Plugin(type = Op.class, name = Ops.Help.NAME,
+	description = "Gets documentation for the given op.")
+public class HelpForOp extends AbstractHelp {
+
+	@Parameter
+	private OpService ops;
+
+	@Parameter
+	private Op op;
+
+	@Override
+	public void run() {
+		help(Collections.singleton(ops.info(op)));
+	}
+
 }

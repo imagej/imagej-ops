@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Min.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MinRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Min<T, T>
+	AbstractStrictFunction<Iterable<T>, T> implements MinOp<T, T>
 {
 
 	@Override

@@ -36,11 +36,11 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.Mean;
+import net.imagej.ops.stats.mean.MeanOp;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
-import net.imagej.ops.stats.size.Size;
-import net.imagej.ops.stats.sum.Sum;
-import net.imagej.ops.stats.variance.Variance;
+import net.imagej.ops.stats.size.SizeOp;
+import net.imagej.ops.stats.sum.SumOp;
+import net.imagej.ops.stats.variance.VarianceOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -90,7 +90,7 @@ public class StatsNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.stats.mean.MeanRealType.class)
 	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc)
+		final Iterable<I> in, final SumOp<Iterable<I>, O> sumFunc)
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
@@ -100,8 +100,8 @@ public class StatsNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.stats.mean.MeanRealType.class)
 	public <I extends RealType<I>, O extends RealType<O>> O mean(final O out,
-		final Iterable<I> in, final Sum<Iterable<I>, O> sumFunc,
-		final Size<Iterable<I>> sizeFunc)
+		final Iterable<I> in, final SumOp<Iterable<I>, O> sumFunc,
+		final SizeOp<Iterable<I>> sizeFunc)
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
@@ -170,7 +170,7 @@ public class StatsNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.stats.moment1AboutMean.Moment1AboutMean.class)
 	public <T extends RealType<T>> DoubleType moment1AboutMean(
 		final DoubleType out, final Iterable<T> in,
-		final Mean<Iterable<T>, DoubleType> mean)
+		final MeanOp<Iterable<T>, DoubleType> mean)
 	{
 		final DoubleType result =
 			(DoubleType) ops().run(
@@ -184,7 +184,7 @@ public class StatsNamespace extends AbstractNamespace {
 		net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean.class })
 	public <T extends RealType<T>> DoubleType moment1AboutMean(
 		final DoubleType out, final Iterable<T> in,
-		final Mean<Iterable<T>, DoubleType> mean, final Size<Iterable<T>> size)
+		final MeanOp<Iterable<T>, DoubleType> mean, final SizeOp<Iterable<T>> size)
 	{
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.Ops.Stats.Moment1AboutMean.class,
@@ -246,7 +246,7 @@ public class StatsNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.stats.stdDev.StdDevRealType.class)
 	public <T extends RealType<T>> DoubleType stdDev(final DoubleType out,
-		final Iterable<T> in, final Variance<T, DoubleType> variance)
+		final Iterable<T> in, final VarianceOp<T, DoubleType> variance)
 	{
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.stats.stdDev.StdDevRealType.class, out, in,

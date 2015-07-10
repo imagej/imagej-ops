@@ -28,16 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats.sum;
+package net.imagej.ops.stats.max;
 
 import net.imagej.ops.Function;
 import net.imagej.ops.Ops;
 
 /**
- * A typed "sum" function.
+ * A typed "max" function.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Sum<I, O> extends Ops.Stats.Sum, Function<I, O> {
+public interface MaxOp<T, V> extends Ops.Stats.Max, Function<Iterable<T>, V> {
 	// NB: Marker interface.
 }

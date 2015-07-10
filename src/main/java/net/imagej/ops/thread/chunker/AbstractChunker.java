@@ -34,11 +34,11 @@ import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
 /**
- * Abstract {@link Chunker}.
+ * Abstract {@link ChunkerOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractChunker implements Chunker {
+public abstract class AbstractChunker implements ChunkerOp {
 
 	/**
 	 * ThreadService used for multi-threading

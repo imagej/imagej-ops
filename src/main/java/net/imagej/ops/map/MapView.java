@@ -38,7 +38,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link Map} which virtually converts entries in
+ * Abstract implementation of a {@link MapOp} which virtually converts entries in
  * I and V from A to B.
  *
  * @author Christian Dietz (University of Konstanz)
@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class MapView<A, B, I, O> implements Map<A, B, Function<A, B>>,
+public abstract class MapView<A, B, I, O> implements MapOp<A, B, Function<A, B>>,
 	InputOp<I>, OutputOp<O>
 {
 

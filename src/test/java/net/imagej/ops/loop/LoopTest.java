@@ -35,7 +35,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
-import net.imagej.ops.map.Map;
+import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -63,8 +63,8 @@ public class LoopTest extends AbstractOpTest {
 		in = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
 		numIterations = 10;
-		functionalOp = ops.op(Map.class, out, in, new AddOneFunctional());
-		inplaceOp = ops.op(Map.class, in, new AddOneInplace());
+		functionalOp = ops.op(MapOp.class, out, in, new AddOneFunctional());
+		inplaceOp = ops.op(MapOp.class, in, new AddOneInplace());
 	}
 
 	@Test

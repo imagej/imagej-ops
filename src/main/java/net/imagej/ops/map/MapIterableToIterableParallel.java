@@ -36,7 +36,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunker;
+import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link Map}, which is specialized for the case, that the two
+ * Parallelized {@link MapOp}, which is specialized for the case, that the two
  * incoming {@link IterableInterval}s have the same IterationOrder.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -82,7 +82,7 @@ public class MapIterableToIterableParallel<A, B> extends
 				"Input and Output do not have the same iteration order!");
 		}
 
-		opService.run(Chunker.class, new CursorBasedChunk() {
+		opService.run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,

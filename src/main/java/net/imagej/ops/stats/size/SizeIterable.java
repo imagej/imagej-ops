@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Size.NAME,
 	priority = Priority.LAST_PRIORITY)
 public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
-	implements Size<Iterable<?>>
+	implements SizeOp<Iterable<?>>
 {
 
 	@Override

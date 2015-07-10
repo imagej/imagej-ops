@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * Calculates the minimum and maximum value of an image.
  */
 @Plugin(type = Op.class, name = Ops.Stats.MinMax.NAME)
-public class MinMaxRealType<T extends RealType<T>> implements MinMax<T> {
+public class MinMaxRealType<T extends RealType<T>> implements MinMaxOp<T> {
 
 	@Parameter
 	private Iterable<T> img;

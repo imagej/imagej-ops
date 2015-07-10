@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Max.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MaxRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements Max<T, T>
+	AbstractStrictFunction<Iterable<T>, T> implements MaxOp<T, T>
 {
 
 	@Override

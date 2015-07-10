@@ -34,8 +34,8 @@ import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.size.Size;
-import net.imagej.ops.stats.sum.Sum;
+import net.imagej.ops.stats.size.SizeOp;
+import net.imagej.ops.stats.sum.SumOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -52,14 +52,14 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Stats.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<Iterable<I>, O> implements Mean<Iterable<I>, O>
+	AbstractStrictFunction<Iterable<I>, O> implements MeanOp<Iterable<I>, O>
 {
 
 	@Parameter(required = false)
-	private Sum<Iterable<I>, O> sumFunc;
+	private SumOp<Iterable<I>, O> sumFunc;
 
 	@Parameter(required = false)
-	private Size<Iterable<I>> sizeFunc;
+	private SizeOp<Iterable<I>> sizeFunc;
 
 	@Parameter
 	private OpService ops;
@@ -68,10 +68,10 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	public O compute(final Iterable<I> input, final O output) {
 
 		if (sumFunc == null) {
-			sumFunc = ops.op(Sum.class, LongType.class, input);
+			sumFunc = ops.op(SumOp.class, LongType.class, input);
 		}
 		if (sizeFunc == null) {
-			sizeFunc = ops.op(Size.class, LongType.class, input);
+			sizeFunc = ops.op(SizeOp.class, LongType.class, input);
 		}
 
 		final O result;
