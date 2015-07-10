@@ -79,7 +79,6 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
