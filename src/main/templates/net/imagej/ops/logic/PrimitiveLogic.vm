@@ -54,7 +54,7 @@ public final class PrimitiveLogic {
 #set ($iface = "Ops.Logic.$op.name")
 
 	/** Op that $op.verbs#if ($op.unary) a $type.primitive value#else two $type.primitive values#end. */
-	@Plugin(type = Op.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME#if ($type.priority), priority = $type.priority#end#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
 	public static class $type.name$op.name implements $iface {
 		@Parameter(type = ItemIO.OUTPUT)
 		private boolean result;

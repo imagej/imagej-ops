@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Image.Histogram.NAME)
+@Plugin(type = Ops.Image.Histogram.class, name = Ops.Image.Histogram.NAME)
 public class HistogramCreate<T extends RealType<T>> implements
 	Ops.Image.Histogram
 {

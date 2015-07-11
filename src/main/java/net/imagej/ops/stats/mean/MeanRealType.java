@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Stats.Mean.NAME,
+@Plugin(type = Ops.Stats.Mean.class, name = Ops.Stats.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStrictFunction<Iterable<I>, O> implements MeanOp<Iterable<I>, O>

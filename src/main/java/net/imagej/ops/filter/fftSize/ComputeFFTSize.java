@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = Ops.Filter.FFTSize.NAME)
+@Plugin(type = Ops.Filter.FFTSize.class, name = Ops.Filter.FFTSize.NAME)
 public class ComputeFFTSize extends AbstractFFTSize {
 
 	@Override

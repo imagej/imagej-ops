@@ -65,7 +65,7 @@ import org.scijava.script.ScriptService;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Image.Equation.NAME)
+@Plugin(type = Ops.Image.Equation.class, name = Ops.Image.Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
 	AbstractOutputFunction<String, IterableInterval<T>> implements EquationOp<T>
 {

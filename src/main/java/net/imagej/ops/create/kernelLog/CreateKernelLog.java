@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Jean-Yves Tinevez
  * @author Brian Northan
  */
-@Plugin(type = Op.class, name = Ops.Create.KernelLog.NAME)
+@Plugin(type = Ops.Create.KernelLog.class, name = Ops.Create.KernelLog.NAME)
 public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 	AbstractCreateKernel<T> implements Ops.Create.KernelLog
 {

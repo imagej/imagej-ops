@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
 	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements MapOp<Iterable<I>, O, Function<Iterable<I>, O>>

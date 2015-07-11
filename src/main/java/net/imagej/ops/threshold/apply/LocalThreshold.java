@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME)
+@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
 public class LocalThreshold<T extends RealType<T>>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>

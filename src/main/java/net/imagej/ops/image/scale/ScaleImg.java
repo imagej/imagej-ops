@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Image.Scale.NAME, attrs = { @Attr(
+@Plugin(type = Ops.Image.Scale.class, name = Ops.Image.Scale.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Image.Scale.ALIASES) })
 public class ScaleImg<T extends RealType<T>> implements Ops.Image.Scale {
 

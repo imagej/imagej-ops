@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Op.class, name = Ops.Threshold.Percentile.NAME)
+@Plugin(type = Ops.Threshold.Percentile.class, name = Ops.Threshold.Percentile.NAME)
 public class ComputePercentileThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

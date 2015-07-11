@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Median.NAME,
+@Plugin(type = Ops.Stats.Median.class, name = Ops.Stats.Median.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MedianRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, T> implements MedianOp<Iterable<T>, T>

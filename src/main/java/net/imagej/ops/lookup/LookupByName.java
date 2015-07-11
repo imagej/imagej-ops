@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Lookup.NAME)
+@Plugin(type = Ops.Lookup.class, name = Ops.Lookup.NAME)
 public class LookupByName implements Ops.Lookup {
 
 	@Parameter

@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Filter.Convolve.NAME,
+@Plugin(type = Ops.Filter.Convolve.class, name = Ops.Filter.Convolve.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Convolve

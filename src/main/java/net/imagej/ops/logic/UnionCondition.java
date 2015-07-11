@@ -38,7 +38,7 @@ import net.imagej.ops.Ops;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Logic.Or.NAME)
+@Plugin(type = Ops.Logic.Or.class, name = Ops.Logic.Or.NAME)
 public class UnionCondition<T> extends AbstractCondition<T> implements
 	Ops.Logic.Or
 {

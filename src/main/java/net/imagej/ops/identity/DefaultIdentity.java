@@ -31,6 +31,7 @@
 package net.imagej.ops.identity;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
@@ -39,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = "identity")
+@Plugin(type = Ops.Identity.class, name = Ops.Identity.NAME)
 public class DefaultIdentity<A> extends AbstractIdentity<A> {
 
 	@Override

@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * Op that performs a less-than-or-equal (<=) comparison on two
  * {@link Comparable} objects.
  */
-@Plugin(type = Op.class, name = Ops.Logic.LessThanOrEqual.NAME, attrs = { @Attr(
+@Plugin(type = Ops.Logic.LessThanOrEqual.class, name = Ops.Logic.LessThanOrEqual.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Logic.LessThanOrEqual.ALIASES) })
 public class ComparableLessThanOrEqual<T> extends AbstractCondition<T>
 	implements Ops.Logic.LessThanOrEqual

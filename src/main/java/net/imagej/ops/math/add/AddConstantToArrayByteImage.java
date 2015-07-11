@@ -41,7 +41,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY)
 public class AddConstantToArrayByteImage implements Ops.Math.Add {
 
 	@Parameter(type = ItemIO.BOTH)

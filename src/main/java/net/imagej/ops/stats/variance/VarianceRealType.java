@@ -42,7 +42,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Variance.NAME,
+@Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class VarianceRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements

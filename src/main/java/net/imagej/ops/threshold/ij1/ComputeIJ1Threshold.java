@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Op.class, name = Ops.Threshold.IJ1.NAME)
+@Plugin(type = Ops.Threshold.IJ1.class, name = Ops.Threshold.IJ1.NAME)
 public class ComputeIJ1Threshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

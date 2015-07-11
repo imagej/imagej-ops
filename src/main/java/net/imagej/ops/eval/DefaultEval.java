@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  * @see OpEvaluator
  */
-@Plugin(type = Op.class, name = Ops.Eval.NAME)
+@Plugin(type = Ops.Eval.class, name = Ops.Eval.NAME)
 public class DefaultEval implements Ops.Eval {
 
 	@Parameter

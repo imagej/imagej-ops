@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Image.ASCII.NAME)
+@Plugin(type = Ops.Image.ASCII.class, name = Ops.Image.ASCII.NAME)
 public class DefaultASCII<T extends RealType<T>> implements Ops.Image.ASCII {
 
 	private static final String CHARS = " .,-+o*O#";

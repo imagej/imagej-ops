@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Barry DeZonia
  */
-@Plugin(type = Op.class, name = Ops.Threshold.MaxLikelihood.NAME)
+@Plugin(type = Ops.Threshold.MaxLikelihood.class, name = Ops.Threshold.MaxLikelihood.NAME)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

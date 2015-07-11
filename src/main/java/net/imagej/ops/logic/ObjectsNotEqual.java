@@ -37,7 +37,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /** Op that tests for inequality between two objects. */
-@Plugin(type = Op.class, name = Ops.Logic.NotEqual.NAME)
+@Plugin(type = Ops.Logic.NotEqual.class, name = Ops.Logic.NotEqual.NAME)
 public class ObjectsNotEqual extends AbstractCondition<Object> implements
 	Ops.Logic.NotEqual
 {

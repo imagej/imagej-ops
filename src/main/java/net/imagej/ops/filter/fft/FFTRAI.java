@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <C>
  */
-@Plugin(type = Op.class, name = Ops.Filter.FFT.NAME,
+@Plugin(type = Ops.Filter.FFT.class, name = Ops.Filter.FFT.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	extends

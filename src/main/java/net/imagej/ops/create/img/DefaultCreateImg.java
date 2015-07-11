@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.Create.Img.NAME)
+@Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME)
 public class DefaultCreateImg<T> implements
 	Ops.Create.Img, OutputOp<Img<T>>
 {

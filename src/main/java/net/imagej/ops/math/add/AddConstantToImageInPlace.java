@@ -39,7 +39,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 public class AddConstantToImageInPlace<T extends NumericType<T>> implements
 	Ops.Math.Add
 {

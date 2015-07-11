@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * {@link Comparable} objects.
  */
 @Plugin(
-	type = Op.class,
+	type = Ops.Logic.GreaterThanOrEqual.class,
 	name = Ops.Logic.GreaterThanOrEqual.NAME,
 	attrs = { @Attr(name = "aliases", value = Ops.Logic.GreaterThanOrEqual.ALIASES) })
 public class ComparableGreaterThanOrEqual<T> extends AbstractCondition<T>

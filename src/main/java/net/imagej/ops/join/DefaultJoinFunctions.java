@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Join.NAME)
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctions<A> extends
 	AbstractJoinFunctions<A, Function<A, A>>
 {

@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Op.class, name = Ops.Threshold.Shanbhag.NAME)
+@Plugin(type = Ops.Threshold.Shanbhag.class, name = Ops.Threshold.Shanbhag.NAME)
 public class ComputeShanbhagThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

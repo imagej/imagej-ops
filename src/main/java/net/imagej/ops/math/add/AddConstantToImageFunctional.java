@@ -43,7 +43,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME,
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME,
 	priority = Priority.VERY_LOW_PRIORITY)
 public class AddConstantToImageFunctional<T extends NumericType<T>> extends
 	AbstractStrictFunction<IterableInterval<T>, RandomAccessibleInterval<T>>

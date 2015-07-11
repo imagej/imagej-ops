@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Threshold.LocalMean.NAME)
+@Plugin(type = Ops.Threshold.LocalMean.class, name = Ops.Threshold.LocalMean.NAME)
 public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalMean
 {

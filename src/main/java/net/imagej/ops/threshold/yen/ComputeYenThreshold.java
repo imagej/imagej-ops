@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Op.class, name = Ops.Threshold.Yen.NAME)
+@Plugin(type = Ops.Threshold.Yen.class, name = Ops.Threshold.Yen.NAME)
 public class ComputeYenThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

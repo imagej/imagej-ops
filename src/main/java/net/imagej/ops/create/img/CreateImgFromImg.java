@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.Create.Img.NAME,
+@Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class CreateImgFromImg<T extends NativeType<T>> implements
 	Ops.Create.Img, OutputOp<Img<T>>

@@ -41,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Variance.NAME,
+@Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class VarianceRealTypeDirect<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType> implements

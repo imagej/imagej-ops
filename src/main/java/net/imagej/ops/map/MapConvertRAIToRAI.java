@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME)
+@Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
 public class MapConvertRAIToRAI<A, B extends Type<B>> extends
 	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {

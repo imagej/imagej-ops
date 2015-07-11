@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Max.NAME,
+@Plugin(type = Ops.Stats.Max.class, name = Ops.Stats.Max.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MaxRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, T> implements MaxOp<T, T>

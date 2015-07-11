@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Threshold.Apply.NAME)
+@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
 public class ApplyThresholdComparator<T> extends AbstractStrictFunction<T, BitType>
 	implements ApplyThreshold<T, BitType>
 {

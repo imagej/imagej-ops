@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.Filter.IFFT.NAME)
+@Plugin(type = Ops.Filter.IFFT.class, name = Ops.Filter.IFFT.NAME)
 public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 	extends
 	AbstractStrictFunction<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>

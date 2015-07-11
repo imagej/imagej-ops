@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.StdDev.NAME,
+@Plugin(type = Ops.Stats.StdDev.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, T> implements StdDev<T, T>

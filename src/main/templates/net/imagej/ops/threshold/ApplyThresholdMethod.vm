@@ -66,11 +66,12 @@ public final class ApplyThresholdMethod {
 		return result;
 	}
 #foreach ($method in $methods)
+#set ($iface = "Ops.Threshold.${method.iface}")
 
-	@Plugin(type = Op.class, name = Ops.Threshold.${method.iface}.NAME)
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME)
 	public static class ${method.iface}<T extends RealType<T>>
 		extends AbstractApplyThresholdImg<T, Img<T>>
-		implements Ops.Threshold.${method.iface}
+		implements ${iface}
 	{
 
 		@Parameter

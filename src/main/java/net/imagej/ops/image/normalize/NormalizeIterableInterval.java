@@ -43,7 +43,7 @@ import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
+@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
 public class NormalizeIterableInterval<T extends RealType<T>> extends
 	AbstractStrictFunction<IterableInterval<T>, IterableInterval<T>> implements

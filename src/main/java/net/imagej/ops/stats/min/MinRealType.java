@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Min.NAME,
+@Plugin(type = Ops.Stats.Min.class, name = Ops.Stats.Min.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MinRealType<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, T> implements MinOp<T, T>

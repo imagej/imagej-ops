@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> any IntegerType
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Op.class, name = Ops.Create.IntegerType.NAME)
+@Plugin(type = Ops.Create.IntegerType.class, name = Ops.Create.IntegerType.NAME)
 public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
 	OutputOp<IntegerType>
 {

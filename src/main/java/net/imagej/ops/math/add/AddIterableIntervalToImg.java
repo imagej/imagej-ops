@@ -44,7 +44,7 @@ import net.imglib2.util.Intervals;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 public class AddIterableIntervalToImg<T extends NumericType<T>> extends
 	AbstractOutputFunction<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
 {

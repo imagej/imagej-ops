@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
+@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapIterableToIterable<A, B> extends
 	AbstractMapFunction<A, B, Iterable<A>, Iterable<B>>
 {

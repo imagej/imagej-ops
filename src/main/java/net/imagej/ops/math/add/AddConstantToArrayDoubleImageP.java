@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 11)
 public class AddConstantToArrayDoubleImageP implements Ops.Math.Add {
 
 	@Parameter

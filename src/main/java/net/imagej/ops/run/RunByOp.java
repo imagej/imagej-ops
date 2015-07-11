@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Op.class, name = Ops.Run.NAME)
+@Plugin(type = Ops.Run.class, name = Ops.Run.NAME)
 public class RunByOp implements Ops.Run {
 
 	@Parameter

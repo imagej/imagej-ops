@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @param <V> type of output
  */
 @SuppressWarnings({ "unchecked" })
-@Plugin(type = Op.class, name = Ops.Filter.Gauss.NAME)
+@Plugin(type = Ops.Filter.Gauss.class, name = Ops.Filter.Gauss.NAME)
 public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 	extends
 	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>

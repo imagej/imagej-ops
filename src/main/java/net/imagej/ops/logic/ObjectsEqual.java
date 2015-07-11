@@ -37,7 +37,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /** Op that tests for equality between two objects. */
-@Plugin(type = Op.class, name = Ops.Logic.Equal.NAME)
+@Plugin(type = Ops.Logic.Equal.class, name = Ops.Logic.Equal.NAME)
 public class ObjectsEqual extends AbstractCondition<Object> implements
 	Ops.Logic.Equal
 {

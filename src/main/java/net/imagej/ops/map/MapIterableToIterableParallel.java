@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
+@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
 public class MapIterableToIterableParallel<A, B> extends
 	AbstractMapFunction<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel

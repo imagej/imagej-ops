@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.Create.KernelGauss.NAME)
+@Plugin(type = Ops.Create.KernelGauss.class, name = Ops.Create.KernelGauss.NAME)
 public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
 	extends AbstractCreateKernel<T> implements Ops.Create.KernelGauss
 {

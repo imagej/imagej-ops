@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 10)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 10)
 public class AddConstantToArrayByteImageP implements Ops.Math.Add {
 
 	@Parameter

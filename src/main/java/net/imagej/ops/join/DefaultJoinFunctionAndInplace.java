@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Op.class, name = Ops.Join.NAME)
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctionAndInplace<A, B> extends
 	AbstractJoinFunctionAndFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
 {

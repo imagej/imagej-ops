@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Brian Northan
  * @param <T>
  */
-@Plugin(type = Op.class, name = Ops.Create.KernelLog.NAME,
+@Plugin(type = Ops.Create.KernelLog.class, name = Ops.Create.KernelLog.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
 	extends AbstractCreateSymmetricKernel<T> implements Ops.Create.KernelLog

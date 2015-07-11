@@ -46,7 +46,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Image.Project.NAME,
+@Plugin(type = Ops.Image.Project.class, name = Ops.Image.Project.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class ProjectRAIToIterableInterval<T, V> extends
 	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>

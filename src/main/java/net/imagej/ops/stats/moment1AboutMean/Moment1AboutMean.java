@@ -45,7 +45,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = Ops.Stats.Moment1AboutMean.NAME)
+@Plugin(type = Ops.Stats.Moment1AboutMean.class, name = Ops.Stats.Moment1AboutMean.NAME)
 public class Moment1AboutMean<T extends RealType<T>> extends
 	AbstractStrictFunction<Iterable<T>, DoubleType>
 {
