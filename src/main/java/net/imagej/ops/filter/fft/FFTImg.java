@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.exception.IncompatibleTypeException;

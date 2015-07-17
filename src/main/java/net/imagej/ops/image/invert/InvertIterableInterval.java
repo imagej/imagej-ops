@@ -32,7 +32,6 @@ package net.imagej.ops.image.invert;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Function;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;

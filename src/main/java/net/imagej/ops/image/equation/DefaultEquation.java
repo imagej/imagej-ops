@@ -38,7 +38,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;

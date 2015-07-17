@@ -35,7 +35,6 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Function;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;

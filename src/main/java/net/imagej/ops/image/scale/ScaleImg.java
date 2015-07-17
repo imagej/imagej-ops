@@ -30,7 +30,6 @@
 
 package net.imagej.ops.image.scale;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;

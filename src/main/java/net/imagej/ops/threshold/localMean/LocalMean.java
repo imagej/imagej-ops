@@ -30,7 +30,6 @@
 
 package net.imagej.ops.threshold.localMean;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.mean.MeanOp;

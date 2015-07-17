@@ -32,7 +32,6 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;

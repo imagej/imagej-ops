@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.threshold.yen;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
 import net.imglib2.histogram.Histogram1d;

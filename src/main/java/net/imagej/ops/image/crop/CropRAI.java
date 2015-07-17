@@ -30,7 +30,6 @@
 
 package net.imagej.ops.image.crop;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;

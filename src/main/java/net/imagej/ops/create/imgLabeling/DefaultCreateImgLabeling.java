@@ -30,7 +30,6 @@
 
 package net.imagej.ops.create.imgLabeling;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.OutputOp;

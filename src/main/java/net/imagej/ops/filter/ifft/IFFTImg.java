@@ -33,7 +33,6 @@ package net.imagej.ops.filter.ifft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;

@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;

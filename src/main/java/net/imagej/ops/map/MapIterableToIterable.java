@@ -32,7 +32,6 @@ package net.imagej.ops.map;
 
 import java.util.Iterator;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;

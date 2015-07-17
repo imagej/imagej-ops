@@ -33,7 +33,6 @@ package net.imagej.ops.math;
 import java.util.Random;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

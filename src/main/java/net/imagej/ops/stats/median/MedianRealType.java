@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 

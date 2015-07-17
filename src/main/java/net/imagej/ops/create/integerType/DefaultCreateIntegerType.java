@@ -30,7 +30,6 @@
 
 package net.imagej.ops.create.integerType;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.OutputOp;
 import net.imglib2.type.logic.BitType;

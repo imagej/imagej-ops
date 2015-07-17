@@ -31,7 +31,6 @@
 package net.imagej.ops.math.add;
 
 import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.NumericType;
 

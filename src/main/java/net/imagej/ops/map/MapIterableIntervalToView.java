@@ -30,7 +30,6 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;

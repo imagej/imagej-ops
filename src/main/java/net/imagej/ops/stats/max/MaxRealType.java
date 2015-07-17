@@ -33,7 +33,6 @@ package net.imagej.ops.stats.max;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 

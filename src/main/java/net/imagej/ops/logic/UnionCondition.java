@@ -32,7 +32,6 @@ package net.imagej.ops.logic;
 
 import java.util.List;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;

@@ -30,7 +30,6 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Attr;

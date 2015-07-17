@@ -31,7 +31,6 @@
 package net.imagej.ops.math.add;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;

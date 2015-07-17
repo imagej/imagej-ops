@@ -32,7 +32,6 @@ package net.imagej.ops.image.histogram;
 
 import java.util.List;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.histogram.Histogram1d;

@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;

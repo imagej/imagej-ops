@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter.fftSize;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.FinalDimensions;
 import net.imglib2.algorithm.fft2.FFTMethods;

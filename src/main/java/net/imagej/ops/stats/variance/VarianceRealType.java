@@ -31,7 +31,6 @@
 package net.imagej.ops.stats.variance;
 
 import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
