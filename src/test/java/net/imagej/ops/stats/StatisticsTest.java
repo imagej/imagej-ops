@@ -125,14 +125,14 @@ public class StatisticsTest extends AbstractOpTest {
 		float std1 = (float) Math.sqrt(variance);
 
 		// calculate mean using ops
-		DoubleType mean2 = new DoubleType();
-		mean2 = (DoubleType) ops.stats().mean(DoubleType.class, img);
+		final DoubleType mean2 = new DoubleType();
+		ops.stats().mean(mean2, img);
 
 		// check that the ratio between mean1 and mean2 is 1.0
 		Assert.assertEquals(1.0, mean1 / mean2.getRealFloat(), delta);
 
 		// calculate standard deviation using ops
-		DoubleType std2 = new DoubleType();
+		final DoubleType std2 = new DoubleType();
 		ops.stats().stdDev(std2, img);
 
 		// check that the ratio between std1 and std2 is 1.0

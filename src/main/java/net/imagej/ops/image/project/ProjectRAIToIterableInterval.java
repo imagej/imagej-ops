@@ -60,10 +60,9 @@ public class ProjectRAIToIterableInterval<T, V> extends
 	private int dim;
 
 	@Override
-	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
-
 		final Cursor<V> cursor = output.localizingCursor();
 		final RandomAccess<T> access = input.randomAccess();
 
@@ -78,8 +77,6 @@ public class ProjectRAIToIterableInterval<T, V> extends
 			method.compute(new DimensionIterable(input.dimension(dim), access),
 				cursor.get());
 		}
-
-		return output;
 	}
 
 	@Override

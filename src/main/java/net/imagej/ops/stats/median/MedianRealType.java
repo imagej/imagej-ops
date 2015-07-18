@@ -48,8 +48,7 @@ public class MedianRealType<T extends RealType<T>> extends
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
+	public void compute(final Iterable<T> input, final T output) {
 		final ArrayList<Double> statistics = new ArrayList<Double>();
 
 		final Iterator<T> it = input.iterator();
@@ -59,8 +58,6 @@ public class MedianRealType<T extends RealType<T>> extends
 
 		output.setReal(select(statistics, 0, statistics.size() - 1, statistics
 			.size() / 2));
-
-		return output;
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 	private double outMin;
 
 	@Override
-	public O compute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		final double v = input.getRealDouble();
 		if (v > outMax) {
 			output.setReal(outMax);
@@ -60,7 +60,6 @@ public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 		else {
 			output.setReal(v);
 		}
-		return output;
 	}
 
 	@Override

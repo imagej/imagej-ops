@@ -269,10 +269,9 @@ public class MapTest extends AbstractOpTest {
 	{
 
 		@Override
-		public ByteType compute(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
-			return output;
 		}
 	}
 

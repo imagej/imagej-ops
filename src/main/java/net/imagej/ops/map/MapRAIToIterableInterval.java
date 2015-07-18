@@ -59,7 +59,7 @@ public class MapRAIToIterableInterval<A, B> extends
 {
 
 	@Override
-	public IterableInterval<B> compute(final RandomAccessibleInterval<A> input,
+	public void compute(final RandomAccessibleInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		final Cursor<B> cursor = output.localizingCursor();
@@ -70,8 +70,6 @@ public class MapRAIToIterableInterval<A, B> extends
 			rndAccess.setPosition(cursor);
 			func.compute(rndAccess.get(), cursor.get());
 		}
-
-		return output;
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class MapIterableIntervalToRAI<A, B> extends
 {
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
 		final Cursor<A> cursor = input.localizingCursor();
@@ -70,8 +70,6 @@ public class MapIterableIntervalToRAI<A, B> extends
 			rndAccess.setPosition(cursor);
 			func.compute(cursor.get(), rndAccess.get());
 		}
-
-		return output;
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable,
 	Converter<I, O>
 {
 
-	O compute(I input, O output);
+	void compute(I input, O output);
 
 	@Override
 	Function<I, O> getIndependentInstance();

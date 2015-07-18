@@ -55,10 +55,10 @@ public class VarianceRealType<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		if (moment2 == null) {
 			moment2 = ops.op(Moment2AboutMean.class, output, input);
 		}
-		return moment2.compute(input, output);
+		moment2.compute(input, output);
 	}
 }

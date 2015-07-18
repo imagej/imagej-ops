@@ -57,10 +57,9 @@ public class NormalizeRealType<T extends RealType<T>> extends
 	private double factor;
 
 	@Override
-	public T compute(T input, T output) {
+	public void compute(final T input, final T output) {
 		output.setReal(Math.min(newMax, Math.max(newMin,
 			(input.getRealDouble() - oldMin) * factor + newMin)));
-		return output;
 	}
 
 	/**

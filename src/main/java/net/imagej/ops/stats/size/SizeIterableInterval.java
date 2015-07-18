@@ -46,10 +46,8 @@ public class SizeIterableInterval extends
 {
 
 	@Override
-	public LongType
-		compute(final IterableInterval<?> input, final LongType output)
-	{
+	public void compute(final IterableInterval<?> input, final LongType output) {
 		output.set(input.size());
-		return output;
 	}
+
 }

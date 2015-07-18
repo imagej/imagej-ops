@@ -59,8 +59,8 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 	private RandomAccessibleInterval<K> kernel;
 
 	@Override
-	public RandomAccessibleInterval<O> compute(RandomAccessible<I> input,
-		RandomAccessibleInterval<O> output)
+	public void compute(final RandomAccessible<I> input,
+		final RandomAccessibleInterval<O> output)
 	{
 		// TODO: try a decomposition of the kernel into n 1-dim kernels
 
@@ -113,7 +113,6 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 
 			outC.get().setReal(val);
 		}
-		return output;
 	}
 
 	@Override

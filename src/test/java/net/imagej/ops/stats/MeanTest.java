@@ -35,7 +35,6 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.stats.mean.MeanOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,7 +50,8 @@ public class MeanTest extends AbstractOpTest {
 	@Test
 	public void testMean() {
 		final Img<ByteType> image = generateByteTestImg(true, 40, 50);
-		DoubleType mean = (DoubleType) ops.stats().mean(RealType.class, image);
+		final DoubleType mean = new DoubleType();
+		ops.stats().mean(mean, image);
 
 		assertEquals(1.0 / 15.625, mean.get(), 0.0);
 
@@ -63,7 +63,7 @@ public class MeanTest extends AbstractOpTest {
 			c.get().setReal(100.0);
 		}
 
-		mean = (DoubleType) ops.stats().mean(RealType.class, image);
+		ops.stats().mean(mean, image);
 
 		// the mean should be 100
 		assertEquals(100.0, mean.get(), 0.0);

@@ -59,9 +59,8 @@ public class ApplyThresholdComparator<T> extends AbstractStrictFunction<T, BitTy
 	private Comparator<? super T> comparator;
 
 	@Override
-	public BitType compute(final T input, final BitType output) {
+	public void compute(final T input, final BitType output) {
 		output.set(comparator.compare(input, threshold) > 0);
-		return output;
 	}
 
 }

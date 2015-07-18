@@ -50,9 +50,7 @@ public class RunDefaultChunkerArray<A> extends AbstractStrictFunction<A[], A[]>
 	private OpService opService;
 	
 	@Override
-	public A[] compute(final A[] input,
-			final A[] output) {
-		
+	public void compute(final A[] input, final A[] output) {
 		opService.run(DefaultChunker.class, new Chunk() {
 
 			@Override
@@ -68,8 +66,5 @@ public class RunDefaultChunkerArray<A> extends AbstractStrictFunction<A[], A[]>
 				}
 			}
 		}, input.length);
-	
-		return output;
-		
 	}
 }

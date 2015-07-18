@@ -46,7 +46,7 @@ public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
 {
 
 	@Override
-	public LongType compute(final Iterable<?> input, final LongType output) {
+	public void compute(final Iterable<?> input, final LongType output) {
 		final Iterator<?> iterator = input.iterator();
 
 		long numElements = 0;
@@ -56,6 +56,6 @@ public class SizeIterable extends AbstractStrictFunction<Iterable<?>, LongType>
 		}
 
 		output.set(numElements);
-		return output;
 	}
+
 }

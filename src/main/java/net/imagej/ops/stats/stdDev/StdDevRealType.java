@@ -55,12 +55,12 @@ public class StdDevRealType<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		if (variance == null) {
 			variance = ops.op(VarianceOp.class, output, input);
 		}
-		output.set(Math.sqrt(variance.compute(input, output).get()));
-		return output;
+		variance.compute(input, output);
+		output.set(Math.sqrt(output.get()));
 	}
 
 }

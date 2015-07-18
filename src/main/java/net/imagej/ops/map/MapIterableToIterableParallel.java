@@ -73,7 +73,7 @@ public class MapIterableToIterableParallel<A, B> extends
 	}
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		if (!isValid(input, output)) {
@@ -104,7 +104,5 @@ public class MapIterableToIterableParallel<A, B> extends
 				}
 			}
 		}, input.size());
-
-		return output;
 	}
 }

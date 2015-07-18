@@ -72,11 +72,11 @@ public abstract class AbstractInplaceFunction<A> extends AbstractFunction<A, A>
 	// -- Function methods --
 
 	@Override
-	public A compute(final A input, final A output) {
+	public void compute(final A input, final A output) {
 		if (input != output) {
 			throw new IllegalArgumentException("Input and output must match");
 		}
-		return compute(input);
+		compute(input);
 	}
 
 	// -- Runnable methods --

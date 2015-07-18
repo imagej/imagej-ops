@@ -176,10 +176,9 @@ public class JoinTest extends AbstractOpTest {
 	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
-			return output;
 		}
 	}
 
@@ -188,11 +187,10 @@ public class JoinTest extends AbstractOpTest {
 	{
 
 		@Override
-		public Img<ByteType> compute(final Img<ByteType> input,
+		public void compute(final Img<ByteType> input,
 			final Img<ByteType> output)
 		{
 			ops.run(MapOp.class, output, input, new AddOneFunctional());
-			return output;
 		}
 	}
 

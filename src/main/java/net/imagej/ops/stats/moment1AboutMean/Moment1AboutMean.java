@@ -59,7 +59,7 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		if (mean == null) {
 			mean = ops.op(MeanOp.class, output, input);
 		}
@@ -67,16 +67,22 @@ public class Moment1AboutMean<T extends RealType<T>> extends
 			size = ops.op(SizeOp.class, output, input);
 		}
 
-		final double mean = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
+		final DoubleType meanOutput = new DoubleType();
+		mean.compute(input, meanOutput);
+		final double meanValue = meanOutput.get();
+
+		final LongType sizeOutput = new LongType();
+		size.compute(input, sizeOutput);
+		final double area = sizeOutput.get();
+
 		double res = 0.0;
 
 		final Iterator<T> it = input.iterator();
 		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - mean;
+			final double val = it.next().getRealDouble() - meanValue;
 			res += val;
 		}
 		output.set(res / area);
-		return output;
 	}
+
 }

@@ -54,10 +54,10 @@ public class RunInterleavedChunker<A extends RealType<A>> extends
 	private OpService opService;
 	
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> input,
-			final IterableInterval<A> output) {
-		
-			opService.run(ChunkerInterleaved.class, new CursorBasedChunk() {
+	public void compute(final IterableInterval<A> input,
+		final IterableInterval<A> output)
+	{
+		opService.run(ChunkerInterleaved.class, new CursorBasedChunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)
@@ -78,8 +78,5 @@ public class RunInterleavedChunker<A extends RealType<A>> extends
 				}
 			}
 		}, input.size());
-	
-		return output;
-		
 	}
 }

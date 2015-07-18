@@ -63,7 +63,7 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 	}
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		if (!isValid(input, output)) {
@@ -77,7 +77,6 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 		while (inCursor.hasNext()) {
 			func.compute(inCursor.next(), outCursor.next());
 		}
-
-		return output;
 	}
+
 }

@@ -203,15 +203,15 @@ public class HypersliceTest extends AbstractOpTest {
 			AbstractStrictFunction<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public Iterable<ByteType> compute(final Iterable<ByteType> input,
-				final Iterable<ByteType> output) {
+		public void compute(final Iterable<ByteType> input,
+			final Iterable<ByteType> output)
+		{
 			final Iterator<ByteType> itA = input.iterator();
 			final Iterator<ByteType> itB = output.iterator();
 
 			while (itA.hasNext() && itB.hasNext()) {
 				itB.next().set(itA.next().get());
 			}
-			return output;
 		}
 
 	}

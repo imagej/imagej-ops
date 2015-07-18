@@ -46,8 +46,7 @@ public class MinRealType<T extends RealType<T>> extends
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
+	public void compute(final Iterable<T> input, final T output) {
 		final Iterator<T> it = input.iterator();
 		T min = it.next().copy();
 
@@ -58,6 +57,6 @@ public class MinRealType<T extends RealType<T>> extends
 			}
 		}
 		output.set(min);
-		return output;
 	}
+
 }

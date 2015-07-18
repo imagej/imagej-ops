@@ -75,10 +75,9 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	private long[] paddedSize;
 
 	@Override
-	public RandomAccessibleInterval<C> compute(RandomAccessibleInterval<T> input,
-		RandomAccessibleInterval<C> output)
+	public void compute(final RandomAccessibleInterval<T> input,
+		final RandomAccessibleInterval<C> output)
 	{
-
 		RandomAccessibleInterval<T> inputRAI;
 
 		if (paddedSize == null) {
@@ -118,7 +117,6 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
-
-		return output;
 	}
+
 }

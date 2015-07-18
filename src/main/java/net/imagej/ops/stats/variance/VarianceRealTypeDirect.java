@@ -48,8 +48,7 @@ public class VarianceRealTypeDirect<T extends RealType<T>> extends
 {
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
-
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
@@ -63,6 +62,6 @@ public class VarianceRealTypeDirect<T extends RealType<T>> extends
 		}
 
 		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
-		return output;
 	}
+
 }

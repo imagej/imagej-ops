@@ -51,13 +51,14 @@ public class DefaultJoinFunctions<A> extends
 {
 
 	@Override
-	public A compute(final A input, final A output) {
+	public void compute(final A input, final A output) {
 		final List<? extends Function<A, A>> functions = getFunctions();
 		final Iterator<? extends Function<A, A>> it = functions.iterator();
 		final Function<A, A> first = it.next();
 
 		if (functions.size() == 1) {
-			return first.compute(input, output);
+			first.compute(input, output);
+			return;
 		}
 
 		final A buffer = getBuffer(input);
@@ -79,8 +80,6 @@ public class DefaultJoinFunctions<A> extends
 			tmpOutput = tmp;
 			it.next().compute(tmpInput, tmpOutput);
 		}
-
-		return output;
 	}
 
 	@Override

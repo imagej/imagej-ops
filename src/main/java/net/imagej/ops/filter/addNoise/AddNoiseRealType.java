@@ -61,14 +61,14 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>> exte
 	private Random rng;
 
 	@Override
-	public O compute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		int i = 0;
 		do {
 			final double newVal =
 				input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
 			if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
 				output.setReal(newVal);
-				return output;
+				return;
 			}
 			if (i++ > 100) throw new IllegalArgumentException(
 				"noise function failing to terminate. probably misconfigured.");

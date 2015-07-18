@@ -67,7 +67,7 @@ public class DefaultProjectParallel<T, V> extends
 	private int dim;
 
 	@Override
-	public IterableInterval<V> compute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
 		opService.run(ChunkerOp.class, new CursorBasedChunk() {
@@ -98,8 +98,6 @@ public class DefaultProjectParallel<T, V> extends
 				}
 			}
 		}, output.size());
-
-		return output;
 	}
 
 	@Override

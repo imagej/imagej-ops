@@ -54,20 +54,23 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 	private SizeOp<Iterable<T>> size;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
+		final DoubleType meanOutput = new DoubleType();
+		mean.compute(input, meanOutput);
+		final double meanValue = meanOutput.get();
 
-		final double meanVal = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
+		final LongType sizeOutput = new LongType();
+		size.compute(input, sizeOutput);
+		final double area = sizeOutput.get();
 
 		double res = 0.0;
 
 		final Iterator<T> it = input.iterator();
 		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - meanVal;
+			final double val = it.next().getRealDouble() - meanValue;
 			res += val * val;
 		}
 
 		output.setReal(res / area);
-		return output;
 	}
 }

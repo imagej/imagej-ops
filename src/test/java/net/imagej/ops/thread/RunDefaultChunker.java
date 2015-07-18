@@ -55,10 +55,10 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 
 
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> input,
-			final IterableInterval<A> output) {
-		
-			opService.run(DefaultChunker.class, new CursorBasedChunk() {
+	public void compute(final IterableInterval<A> input,
+		final IterableInterval<A> output)
+	{
+		opService.run(DefaultChunker.class, new CursorBasedChunk() {
 
 			@Override
 			public void	execute(int startIndex, final int stepSize, final int numSteps)
@@ -79,8 +79,5 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 				}
 			}
 		}, input.size());
-	
-		return output;
-		
 	}
 }

@@ -54,10 +54,9 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public IterableInterval<T> compute(IterableInterval<T> input,
-		IterableInterval<T> output)
+	public void compute(final IterableInterval<T> input,
+		final IterableInterval<T> output)
 	{
-
 		T outType = output.firstElement().createVariable();
 		List<T> minMax = ops.stats().minMax(input);
 		double factor =
@@ -72,8 +71,6 @@ public class NormalizeIterableInterval<T extends RealType<T>> extends
 
 		// run normalize for each pixel
 		ops.map(output, input, normalize);
-
-		return output;
 	}
 
 }

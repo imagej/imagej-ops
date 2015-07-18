@@ -53,16 +53,20 @@ public abstract class AbstractOutputFunction<I, O> extends
 
 	@Override
 	public O compute(final I input) {
-		return compute(input, createOutput(input));
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
 	}
 
 	// -- Function methods --
 
 	@Override
-	public O compute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		final O result = output == null ? createOutput(input) : output;
 		safeCompute(input, result);
-		return result;
+
+		// TEMP HACK: Not clean! Will be fixed with function restructuring.
+		out = result;
 	}
 
 	// -- InputOp methods --

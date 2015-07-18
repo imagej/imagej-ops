@@ -66,15 +66,13 @@ public class MapNeighborhood<I, O> extends
 	private Function<Iterable<I>, O> func;
 
 	@Override
-	public RandomAccessibleInterval<O> compute(
-		final RandomAccessibleInterval<I> input,
+	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
 		ops.map(output, shape.neighborhoodsSafe(input), func);
 		// TODO: threaded map neighborhood
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood
-		return output;
 	}
 
 	@Override

@@ -50,9 +50,7 @@ public class RunInterleavedChunkerArray<A> extends
 	private OpService opService;
 	
 	@Override
-	public A[] compute(final A[] input,
-			final A[] output) {
-		
+	public void compute(final A[] input, final A[] output) {
 		opService.run(ChunkerInterleaved.class, new Chunk() {
 
 			@Override
@@ -68,8 +66,5 @@ public class RunInterleavedChunkerArray<A> extends
 				}
 			}
 		}, input.length);
-	
-		return output;
-		
 	}
 }

@@ -46,8 +46,7 @@ public class StdDevRealTypeDirect<T extends RealType<T>> extends
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
+	public void compute(final Iterable<T> input, final T output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
@@ -61,6 +60,6 @@ public class StdDevRealTypeDirect<T extends RealType<T>> extends
 		}
 
 		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
-		return output;
 	}
+
 }

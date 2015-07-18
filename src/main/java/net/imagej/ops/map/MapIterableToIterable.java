@@ -49,15 +49,13 @@ public class MapIterableToIterable<A, B> extends
 {
 
 	@Override
-	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
-	{
+	public void compute(final Iterable<A> input, final Iterable<B> output) {
 		final Iterator<A> inCursor = input.iterator();
 		final Iterator<B> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
 			func.compute(inCursor.next(), outCursor.next());
 		}
-
-		return output;
 	}
+
 }

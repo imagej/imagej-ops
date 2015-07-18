@@ -55,8 +55,8 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	private OpService ops;
 
 	@Override
-	public IterableInterval<O> compute(IterableInterval<I> input,
-		IterableInterval<O> output)
+	public void compute(final IterableInterval<I> input,
+		final IterableInterval<O> output)
 	{
 		I inType = input.firstElement().createVariable();
 		Function<I, O> invert;
@@ -67,7 +67,6 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
 		}
 		ops.map(output, input, invert);
-		return output;
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
@@ -75,10 +74,9 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	{
 
 		@Override
-		public OO compute(final II x, final OO output) {
+		public void compute(final II x, final OO output) {
 			final double value = x.getRealDouble() * -1.0 - 1;
 			output.setReal(value);
-			return output;
 		}
 
 	}
@@ -97,10 +95,9 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		}
 
 		@Override
-		public OO compute(final II x, final OO output) {
+		public void compute(final II x, final OO output) {
 			final double value = max - x.getRealDouble();
 			output.setReal(value);
-			return output;
 		}
 
 	}

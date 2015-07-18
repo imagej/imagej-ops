@@ -66,9 +66,8 @@ public class LocalThreshold<T extends RealType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public RandomAccessibleInterval<BitType>
-		compute(RandomAccessibleInterval<T> input,
-			RandomAccessibleInterval<BitType> output)
+	public void compute(final RandomAccessibleInterval<T> input,
+		final RandomAccessibleInterval<BitType> output)
 	{
 		// TODO: provide threaded implementation and specialized ones for
 		// rectangular neighborhoods (using integral images)
@@ -83,6 +82,6 @@ public class LocalThreshold<T extends RealType<T>>
 			pair.pixel = inCursor.next();
 			method.compute(pair, outCursor.next());
 		}
-		return output;
 	}
+
 }

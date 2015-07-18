@@ -62,7 +62,7 @@ public class MapIterableToRAIParallel<A, B> extends
 	private OpService opService;
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
 		opService.run(ChunkerOp.class, new CursorBasedChunk() {
@@ -87,7 +87,6 @@ public class MapIterableToRAIParallel<A, B> extends
 				}
 			}
 		}, input.size());
-
-		return output;
 	}
+
 }

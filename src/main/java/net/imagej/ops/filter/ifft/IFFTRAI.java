@@ -57,8 +57,8 @@ public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 {
 
 	@Override
-	public RandomAccessibleInterval<T> compute(RandomAccessibleInterval<C> input,
-		RandomAccessibleInterval<T> output)
+	public void compute(final RandomAccessibleInterval<C> input,
+		final RandomAccessibleInterval<T> output)
 	{
 		// TODO: proper use of Executor service
 		final int numThreads = Runtime.getRuntime().availableProcessors();
@@ -69,7 +69,6 @@ public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 
 		FFTMethods.complexToReal(input, output, FFTMethods
 			.unpaddingIntervalCentered(input, output), 0, true, service);
-
-		return output;
 	}
+
 }

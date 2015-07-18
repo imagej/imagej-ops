@@ -49,8 +49,7 @@ public class DefaultLoopFunction<A> extends
 {
 
 	@Override
-	public A compute(final A input, final A output) {
-
+	public void compute(final A input, final A output) {
 		final int n = getLoopCount();
 
 		final ArrayList<Function<A, A>> functions =
@@ -63,7 +62,7 @@ public class DefaultLoopFunction<A> extends
 		functionJoiner.setFunctions(functions);
 		functionJoiner.setBufferFactory(getBufferFactory());
 
-		return functionJoiner.compute(input, output);
+		functionJoiner.compute(input, output);
 	}
 
 	@Override

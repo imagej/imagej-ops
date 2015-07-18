@@ -53,7 +53,7 @@ public class AddConstantToImageFunctional<T extends NumericType<T>> extends
 	private T value;
 
 	@Override
-	public RandomAccessibleInterval<T> compute(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		final Cursor<T> c = input.localizingCursor();
@@ -65,7 +65,6 @@ public class AddConstantToImageFunctional<T extends NumericType<T>> extends
 			out.set(in);
 			out.add(value);
 		}
-
-		return output;
 	}
+
 }

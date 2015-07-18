@@ -45,9 +45,8 @@ public class ConvertPixCopy<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public O compute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		output.setReal(input.getRealDouble());
-		return output;
 	}
 
 	@Override
