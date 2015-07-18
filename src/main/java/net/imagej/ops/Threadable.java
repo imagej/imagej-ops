@@ -71,6 +71,6 @@ public interface Threadable {
 	 * typing difficulties.
 	 * </p>
 	 */
-	Object getIndependentInstance();
+	Threadable getIndependentInstance();
 
 }
