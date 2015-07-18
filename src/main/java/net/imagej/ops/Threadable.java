@@ -31,19 +31,19 @@
 package net.imagej.ops;
 
 /**
- * Interface for {@link Op}s intended to be reused across multiple threads
+ * Interface for objects intended to be reused across multiple threads
  * simultaneously.
  * <p>
- * In contrast to a {@link Parallel} Op, which marks an op that executes across
- * multiple threads, a {@code Threadable} op knows how to provide multiple
+ * In contrast to a {@link Parallel} op, which marks an op that executes across
+ * multiple threads, a {@code Threadable} object knows how to provide multiple
  * independent versions of itself, each of which will be used from a separate
  * concurrent thread. Note that these versions may be deep copies, shallow
  * copies, or even the same instance every time, depending on the nature of the
  * object.
  * </p>
  * <p>
- * In a nutshell: {@link Parallel} ops make use of {@code Threadable} ops for
- * doing their work in a multithreaded way.
+ * In a nutshell: {@link Parallel} ops make use of {@code Threadable} objects
+ * for doing their work in a multithreaded way.
  * </p>
  * <p>
  * The requirement is merely that two threads using their respective object
