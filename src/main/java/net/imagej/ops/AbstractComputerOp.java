@@ -42,6 +42,8 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 
+	// -- Parameters --
+
 	@Parameter(type = ItemIO.BOTH)
 	private O out;
 

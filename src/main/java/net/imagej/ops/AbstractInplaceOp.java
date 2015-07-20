@@ -40,6 +40,8 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 
+	// -- Parameters --
+
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 

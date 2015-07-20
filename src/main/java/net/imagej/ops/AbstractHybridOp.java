@@ -41,6 +41,8 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 
+	// -- Parameters --
+
 	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
 
