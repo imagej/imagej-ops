@@ -44,8 +44,8 @@ import org.scijava.plugin.Plugin;
  * component of an input real number with an amount of Gaussian noise.
  */
 @Plugin(type = Ops.Filter.AddNoise.class, name = Ops.Filter.AddNoise.NAME)
-public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
+public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
 {
 
 	@Parameter
@@ -70,8 +70,10 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>> exte
 				output.setReal(newVal);
 				return;
 			}
-			if (i++ > 100) throw new IllegalArgumentException(
-				"noise function failing to terminate. probably misconfigured.");
+			if (i++ > 100) {
+				throw new IllegalArgumentException(
+					"noise function failing to terminate. probably misconfigured.");
+			}
 		}
 		while (true);
 	}
