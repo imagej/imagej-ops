@@ -42,7 +42,7 @@ package net.imagej.ops;
  */
 public interface InplaceOp<A> extends ComputerOp<A, A> {
 
-	A compute(A arg);
+	void compute(A arg);
 
 	@Override
 	InplaceOp<A> getIndependentInstance();

@@ -132,9 +132,8 @@ public class ThreadedMapTest extends AbstractOpTest {
 	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType arg) {
+		public void compute(final ByteType arg) {
 			arg.inc();
-			return arg;
 		}
 	}
 

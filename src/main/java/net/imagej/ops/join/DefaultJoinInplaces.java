@@ -47,11 +47,10 @@ import org.scijava.plugin.Plugin;
 public class DefaultJoinInplaces<A> extends AbstractJoinInplaces<A> {
 
 	@Override
-	public A compute(final A input) {
+	public void compute(final A input) {
 		for (final InplaceOp<A> inplace : getOps()) {
 			inplace.compute(input);
 		}
-		return input;
 	}
 
 	@Override

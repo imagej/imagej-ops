@@ -58,7 +58,7 @@ public class MapParallel<A> extends
 	private OpService opService;
 
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> arg) {
+	public void compute(final IterableInterval<A> arg) {
 		opService.run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
@@ -79,7 +79,6 @@ public class MapParallel<A> extends
 				}
 			}
 		}, arg.size());
-
-		return arg;
 	}
+
 }

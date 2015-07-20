@@ -137,9 +137,8 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	public static class NaNOp extends AbstractInplaceOp<DoubleType> {
 
 		@Override
-		public DoubleType compute(final DoubleType argument) {
+		public void compute(final DoubleType argument) {
 			argument.set(Double.NaN);
-			return argument;
 		}
 
 	}

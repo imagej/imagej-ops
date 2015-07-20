@@ -44,13 +44,12 @@ import org.scijava.plugin.Plugin;
 public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override
-	public I compute(final I arg) {
+	public void compute(final I arg) {
 		final int n = getLoopCount();
 		final ComputerOp<I, I> func = getOp();
 		for (int i = 0; i < n; i++) {
 			func.compute(arg, arg);
 		}
-		return arg;
 	}
 
 	@Override

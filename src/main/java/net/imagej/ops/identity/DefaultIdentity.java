@@ -43,8 +43,8 @@ import org.scijava.plugin.Plugin;
 public class DefaultIdentity<A> extends AbstractIdentity<A> {
 
 	@Override
-	public A compute(final A input) {
-		return input;
+	public void compute(final A input) {
+		// NB: No implementation needed.
 	}
 
 }
