@@ -30,48 +30,14 @@
 
 package net.imagej.ops.loop;
 
-import java.util.ArrayList;
-
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.join.DefaultJoinComputers;
-
-import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link ComputerOp} multiple times to an image.
+ * Loops over an injected {@link ComputerOp}. A {@link LoopComputer} applies a
+ * {@link ComputerOp} n-times to an input.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<ComputerOp<A, A>, A>
-{
-
-	@Override
-	public void compute(final A input, final A output) {
-		final int n = getLoopCount();
-
-		final ArrayList<ComputerOp<A, A>> functions =
-			new ArrayList<ComputerOp<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(getFunction());
-
-		final DefaultJoinComputers<A> functionJoiner =
-			new DefaultJoinComputers<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(getBufferFactory());
-
-		functionJoiner.compute(input, output);
-	}
-
-	@Override
-	public DefaultLoopFunction<A> getIndependentInstance() {
-		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
-
-		looper.setFunction(getFunction().getIndependentInstance());
-		looper.setBufferFactory(getBufferFactory());
-
-		return looper;
-	}
+public interface LoopComputer<I> extends ComputerOp<I, I>, LoopOp<I> {
+	// NB: Marker interface
 }

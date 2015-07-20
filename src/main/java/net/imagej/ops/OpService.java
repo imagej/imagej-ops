@@ -296,7 +296,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<I> I loop(I arg, ComputerOp<I, I> function, int n);
 
 	/** Executes the "loop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.loop.DefaultLoopFunction.class)
+	@OpMethod(op = net.imagej.ops.loop.DefaultLoopComputer.class)
 	<A> A loop(A out, A in, ComputerOp<A, A> function,
 		BufferFactory<A, A> bufferFactory, int n);
 

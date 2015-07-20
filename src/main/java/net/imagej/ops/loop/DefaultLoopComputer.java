@@ -30,58 +30,48 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
-import net.imagej.ops.ComputerOp;
+import java.util.ArrayList;
 
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.join.DefaultJoinComputers;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of a {@link LoopFunction}.
+ * Applies a {@link ComputerOp} multiple times to an image.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopFunction<F extends ComputerOp<I, I>, I> extends
-	AbstractComputerOp<I, I> implements LoopFunction<I>
+@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
+public class DefaultLoopComputer<A> extends
+	AbstractLoopComputer<ComputerOp<A, A>, A>
 {
 
-	/** Function to loop. */
-	@Parameter
-	private ComputerOp<I, I> function;
+	@Override
+	public void compute(final A input, final A output) {
+		final int n = getLoopCount();
 
-	/** Buffer for intermediate results. */
-	@Parameter
-	private BufferFactory<I, I> bufferFactory;
+		final ArrayList<ComputerOp<A, A>> functions =
+			new ArrayList<ComputerOp<A, A>>(n);
+		for (int i = 0; i < n; i++)
+			functions.add(getFunction());
 
-	/** Number of iterations. */
-	@Parameter
-	private int n;
+		final DefaultJoinComputers<A> functionJoiner =
+			new DefaultJoinComputers<A>();
+		functionJoiner.setFunctions(functions);
+		functionJoiner.setBufferFactory(getBufferFactory());
 
-	public BufferFactory<I, I> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	public void setBufferFactory(final BufferFactory<I, I> bufferFactory) {
-		this.bufferFactory = bufferFactory;
+		functionJoiner.compute(input, output);
 	}
 
 	@Override
-	public ComputerOp<I, I> getFunction() {
-		return function;
-	}
+	public DefaultLoopComputer<A> getIndependentInstance() {
+		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
 
-	@Override
-	public void setFunction(final ComputerOp<I, I> function) {
-		this.function = function;
-	}
-	
-	@Override
-	public int getLoopCount() {
-		return n;
-	}
+		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
 
-	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
+		return looper;
 	}
 }

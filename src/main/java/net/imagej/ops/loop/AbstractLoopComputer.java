@@ -30,14 +30,58 @@
 
 package net.imagej.ops.loop;
 
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
 
+import org.scijava.plugin.Parameter;
+
 /**
- * Loops over an injected {@link ComputerOp}. A {@link LoopFunction} applies a
- * {@link ComputerOp} n-times to an input.
+ * Abstract implementation of a {@link LoopComputer}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopFunction<I> extends ComputerOp<I, I>, LoopOp<I> {
-	// NB: Marker interface
+public abstract class AbstractLoopComputer<F extends ComputerOp<I, I>, I> extends
+	AbstractComputerOp<I, I> implements LoopComputer<I>
+{
+
+	/** Function to loop. */
+	@Parameter
+	private ComputerOp<I, I> function;
+
+	/** Buffer for intermediate results. */
+	@Parameter
+	private BufferFactory<I, I> bufferFactory;
+
+	/** Number of iterations. */
+	@Parameter
+	private int n;
+
+	public BufferFactory<I, I> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final BufferFactory<I, I> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public ComputerOp<I, I> getFunction() {
+		return function;
+	}
+
+	@Override
+	public void setFunction(final ComputerOp<I, I> function) {
+		this.function = function;
+	}
+	
+	@Override
+	public int getLoopCount() {
+		return n;
+	}
+
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
+	}
 }

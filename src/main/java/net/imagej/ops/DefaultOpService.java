@@ -385,7 +385,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.loop.DefaultLoopFunction.class, out, in, function,
+			(A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out, in, function,
 				bufferFactory, n);
 		return result;
 	}
