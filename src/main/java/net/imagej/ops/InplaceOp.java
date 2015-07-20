@@ -31,13 +31,14 @@
 package net.imagej.ops;
 
 /**
- * Interface for in-place ops.
- * <p>
- * An in-place function is a special function whose sole argument is both its
- * input and its output.
- * </p>
+ * An <em>inplace</em> operation is a {@link ComputerOp} whose input and output
+ * are the same object. In other words: the given input object is mutated.
  * 
  * @author Curtis Rueden
+ * @param <A> type of argument
+ * @see ComputerOp
+ * @see FunctionOp
+ * @see HybridOp
  */
 public interface InplaceOp<A> extends ComputerOp<A, A> {
 

@@ -31,12 +31,18 @@
 package net.imagej.ops;
 
 /**
- * An {@link HybridOp} is a {@link ComputerOp} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * A <em>hybrid</em> operation can be used as either a {@link FunctionOp} or as
+ * a {@link ComputerOp}. To compute a new output object, call
+ * {@link FunctionOp#compute}; to populate a preexisting output object, call
+ * {@link ComputerOp#compute}.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see ComputerOp
+ * @see FunctionOp
+ * @see InplaceOp
  */
 public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 

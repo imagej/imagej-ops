@@ -31,12 +31,16 @@
 package net.imagej.ops;
 
 /**
- * A function can compute the output given some input. 
+ * A <em>function</em> computes a result from the given input, returning it as a
+ * new object. The contents of the input are not affected.
  * 
  * @author Christian Dietz (University of Konstanz)
- * 
+ * @author Curtis Rueden
  * @param <I> type of input
  * @param <O> type of output
+ * @see ComputerOp
+ * @see HybridOp
+ * @see InplaceOp
  */
 public interface FunctionOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
