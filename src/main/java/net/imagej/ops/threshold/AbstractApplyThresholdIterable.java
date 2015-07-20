@@ -52,7 +52,7 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 	private OpService ops;
 
 	@Override
-	protected void safeCompute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		ops.threshold().apply(output, input, getThreshold(input));
 	}
 

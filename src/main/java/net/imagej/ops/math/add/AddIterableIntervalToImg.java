@@ -69,7 +69,7 @@ public class AddIterableIntervalToImg<T extends NumericType<T>> extends
 	}
 
 	@Override
-	protected void safeCompute(final Img<T> input, final Img<T> output) {
+	public void compute(final Img<T> input, final Img<T> output) {
 		final Cursor<T> cursor = ii.localizingCursor();
 		final RandomAccess<T> iRA = input.randomAccess();
 		final RandomAccess<T> oRA = output.randomAccess();

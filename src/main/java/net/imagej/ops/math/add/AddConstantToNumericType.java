@@ -53,10 +53,10 @@ public class AddConstantToNumericType<T extends NumericType<T>> extends
 		return input.createVariable();
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final T input, final T output) {
+	public void compute(final T input, final T output) {
 		output.set(input);
 		output.add(value);
 	}

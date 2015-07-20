@@ -86,10 +86,10 @@ public class DefaultEquation<T extends RealType<T>> extends
 		return newImage;
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final String input,
+	public void compute(final String input,
 		final IterableInterval<T> output)
 	{
 		final String equation = input + ";";

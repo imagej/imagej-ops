@@ -49,10 +49,10 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 		return input.firstDataValue().createVariable();
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final Histogram1d<T> input, final T output) {
+	public void compute(final Histogram1d<T> input, final T output) {
 		final long binPos = computeBin(input);
 
 		// convert bin number to corresponding gray level

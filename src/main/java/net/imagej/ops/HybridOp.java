@@ -47,17 +47,6 @@ package net.imagej.ops;
 public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 
 	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link HybridOp}
-	 * 
-	 * @return output
-	 */
-	@Override
-	O compute(I input);
-
-	/**
 	 * Creates an output object of type O, given some input. The output can then
 	 * be used to call {@link ComputerOp#compute}, which will fill the output with
 	 * the result.

@@ -74,8 +74,8 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void safeCompute(RandomAccessibleInterval<T> input,
-		ImgLabeling<L, I> output)
+	public void compute(final RandomAccessibleInterval<T> input,
+		final ImgLabeling<L, I> output)
 	{
 		if (labelGenerator == null) {
 			labelGenerator = (Iterator<L>) new DefaultLabelIterator();

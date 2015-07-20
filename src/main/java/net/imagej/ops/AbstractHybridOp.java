@@ -58,22 +58,12 @@ public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 		return output;
 	}
 
-	// -- ComputerOp methods --
-
-	@Override
-	public void compute(final I input, final O output) {
-		final O result = output == null ? createOutput(input) : output;
-		safeCompute(input, result);
-
-		// TEMP HACK: Not clean! Will be fixed with function restructuring.
-		out = result;
-	}
-
 	// -- Runnable methods --
 
 	@Override
 	public void run() {
-		compute(getInput(), getOutput());
+		if (getOutput() == null) out = compute(getInput());
+		else compute(getInput(), getOutput());
 	}
 
 	// -- Input methods --
@@ -104,15 +94,5 @@ public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 		// have state (such as buffers) that cannot be shared across threads.
 		return this;
 	}
-
-	// -- Internal methods --
-
-	/**
-	 * Does the work of computing the function.
-	 * 
-	 * @param input Non-null input value.
-	 * @param output Non-null output value.
-	 */
-	protected abstract void safeCompute(I input, O output);
 
 }

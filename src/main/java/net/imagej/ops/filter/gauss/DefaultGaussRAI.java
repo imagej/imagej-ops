@@ -78,7 +78,7 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public void safeCompute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<V> output)
 	{
 

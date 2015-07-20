@@ -47,13 +47,8 @@ public class DefaultJoinInplaceAndInplace<A> extends
 
 	@Override
 	public void compute(final A arg) {
-		compute(arg, arg);
-	}
-
-	@Override
-	public void compute(final A input, final A output) {
-		getFirst().compute(input, output);
-		getSecond().compute(input, output);
+		getFirst().compute(arg);
+		getSecond().compute(arg);
 	}
 
 	@Override

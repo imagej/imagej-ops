@@ -87,7 +87,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	}
 
 	@Override
-	protected void safeCompute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
 
