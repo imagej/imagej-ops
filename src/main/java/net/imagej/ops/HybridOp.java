@@ -57,4 +57,8 @@ public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 	 *         fill the output with the result.
 	 */
 	O createOutput(I input);
+
+	@Override
+	HybridOp<I, O> getIndependentInstance();
+
 }
