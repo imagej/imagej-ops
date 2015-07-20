@@ -291,8 +291,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A> A join(final A arg, final InplaceFunction<A> first,
-		final InplaceFunction<A> second)
+	public <A> A join(final A arg, final InplaceOp<A> first,
+		final InplaceOp<A> second)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
@@ -314,7 +314,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A> A join(final A arg, final List<InplaceFunction<A>> functions) {
+	public <A> A join(final A arg, final List<InplaceOp<A>> functions) {
 		@SuppressWarnings("unchecked")
 		final A result =
 			(A) run(net.imagej.ops.join.DefaultJoinInplaceFunctions.class, arg,
@@ -323,7 +323,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+	public <A, B> B join(final B out, final A in, final InplaceOp<A> first,
 		final Function<A, B> second)
 	{
 		@SuppressWarnings("unchecked")
@@ -334,7 +334,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B> B join(final B out, final A in, final InplaceFunction<A> first,
+	public <A, B> B join(final B out, final A in, final InplaceOp<A> first,
 		final Function<A, B> second, final BufferFactory<A, A> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
@@ -346,7 +346,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> B join(final B out, final A in, final Function<A, B> first,
-		final InplaceFunction<B> second)
+		final InplaceOp<B> second)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -357,7 +357,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> B join(final B out, final A in, final Function<A, B> first,
-		final InplaceFunction<B> second, final BufferFactory<A, B> bufferFactory)
+		final InplaceOp<B> second, final BufferFactory<A, B> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -435,7 +435,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A> IterableInterval<A> map(final IterableInterval<A> arg,
-		final InplaceFunction<A> func)
+		final InplaceOp<A> func)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result =
@@ -471,7 +471,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A> Iterable<A> map(final Iterable<A> arg,
-		final InplaceFunction<A> func)
+		final InplaceOp<A> func)
 	{
 		@SuppressWarnings("unchecked")
 		final Iterable<A> result =

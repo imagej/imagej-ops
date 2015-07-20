@@ -34,12 +34,12 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link InplaceFunction} ops.
+ * Abstract superclass for {@link InplaceOp} ops.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceFunction<A> extends AbstractFunction<A, A>
-	implements InplaceFunction<A>
+public abstract class AbstractInplaceOp<A> extends AbstractFunction<A, A>
+	implements InplaceOp<A>
 {
 
 	@Parameter(type = ItemIO.BOTH)
@@ -89,7 +89,7 @@ public abstract class AbstractInplaceFunction<A> extends AbstractFunction<A, A>
 	// -- Threadable methods --
 
 	@Override
-	public InplaceFunction<A> getIndependentInstance() {
+	public InplaceOp<A> getIndependentInstance() {
 		// NB: We assume the function instance is thread-safe by default.
 		// Individual function implementations can override this assumption if
 		// they have state (such as buffers) that cannot be shared across threads.

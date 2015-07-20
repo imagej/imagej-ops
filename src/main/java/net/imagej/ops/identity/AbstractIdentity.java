@@ -30,13 +30,13 @@
 
 package net.imagej.ops.identity;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 
 /**
  * Abstract superclass of {@link IdentityOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractIdentity<T> extends AbstractInplaceFunction<T> {
+public abstract class AbstractIdentity<T> extends AbstractInplaceOp<T> {
 	// NB: No implementation needed.
 }

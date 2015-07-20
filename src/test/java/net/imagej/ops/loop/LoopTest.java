@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
@@ -105,7 +105,7 @@ public class LoopTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
 		public ByteType compute(final ByteType arg) {

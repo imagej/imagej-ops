@@ -33,39 +33,39 @@ package net.imagej.ops.join;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link InplaceFunction}s.
+ * Joins a list of {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
+public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceOp<A>
 	implements Ops.Join
 {
 
 	// list of functions to be joined
 	@Parameter
-	private List<InplaceFunction<A>> functions;
+	private List<InplaceOp<A>> functions;
 
-	public void setFunctions(final List<InplaceFunction<A>> functions) {
+	public void setFunctions(final List<InplaceOp<A>> functions) {
 		this.functions = functions;
 	}
 
-	public List<InplaceFunction<A>> getFunctions() {
+	public List<InplaceOp<A>> getFunctions() {
 		return functions;
 	}
 
 	@Override
 	public A compute(final A input) {
 
-		for (final InplaceFunction<A> inplace : functions) {
+		for (final InplaceOp<A> inplace : functions) {
 			inplace.compute(input);
 		}
 
@@ -78,9 +78,9 @@ public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
 		final DefaultJoinInplaceFunctions<A> joiner =
 			new DefaultJoinInplaceFunctions<A>();
 
-		final ArrayList<InplaceFunction<A>> funcs =
-			new ArrayList<InplaceFunction<A>>();
-		for (final InplaceFunction<A> func : getFunctions()) {
+		final ArrayList<InplaceOp<A>> funcs =
+			new ArrayList<InplaceOp<A>>();
+		for (final InplaceOp<A> func : getFunctions()) {
 			funcs.add(func.getIndependentInstance());
 		}
 

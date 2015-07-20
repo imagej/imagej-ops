@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
@@ -164,7 +164,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
 		public ByteType compute(final ByteType arg) {

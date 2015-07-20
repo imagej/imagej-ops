@@ -30,8 +30,8 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -40,33 +40,33 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceFunction<A>
+public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceOp<A>
 	implements JoinInplaceAndInplace<A>
 {
 
 	@Parameter
-	protected InplaceFunction<A> first;
+	protected InplaceOp<A> first;
 
 	@Parameter
-	protected InplaceFunction<A> second;
+	protected InplaceOp<A> second;
 
 	@Override
-	public InplaceFunction<A> getFirst() {
+	public InplaceOp<A> getFirst() {
 		return first;
 	}
 
 	@Override
-	public void setFirst(final InplaceFunction<A> first) {
+	public void setFirst(final InplaceOp<A> first) {
 		this.first = first;
 	}
 
 	@Override
-	public InplaceFunction<A> getSecond() {
+	public InplaceOp<A> getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final InplaceFunction<A> second) {
+	public void setSecond(final InplaceOp<A> second) {
 		this.second = second;
 	}
 

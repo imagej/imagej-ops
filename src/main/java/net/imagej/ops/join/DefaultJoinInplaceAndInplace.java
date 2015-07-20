@@ -30,13 +30,13 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link InplaceFunction}s.
+ * Joins two {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */

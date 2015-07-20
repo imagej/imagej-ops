@@ -32,7 +32,7 @@ package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
@@ -255,7 +255,7 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	// -- Helper classes --
-	private static class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
 		public ByteType compute(final ByteType arg) {

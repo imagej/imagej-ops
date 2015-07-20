@@ -258,7 +258,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndInplace.class)
-	<A> A join(A arg, InplaceFunction<A> first, InplaceFunction<A> second);
+	<A> A join(A arg, InplaceOp<A> first, InplaceOp<A> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctions.class)
@@ -267,24 +267,24 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceFunctions.class)
-	<A> A join(A arg, List<InplaceFunction<A>> functions);
+	<A> A join(A arg, List<InplaceOp<A>> functions);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
-	<A, B> B join(B out, A in, InplaceFunction<A> first, Function<A, B> second);
+	<A, B> B join(B out, A in, InplaceOp<A> first, Function<A, B> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
-	<A, B> B join(B out, A in, InplaceFunction<A> first, Function<A, B> second,
+	<A, B> B join(B out, A in, InplaceOp<A> first, Function<A, B> second,
 		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
-	<A, B> B join(B out, A in, Function<A, B> first, InplaceFunction<B> second);
+	<A, B> B join(B out, A in, Function<A, B> first, InplaceOp<B> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
-	<A, B> B join(B out, A in, Function<A, B> first, InplaceFunction<B> second,
+	<A, B> B join(B out, A in, Function<A, B> first, InplaceOp<B> second,
 		BufferFactory<A, B> bufferFactory);
 
 	/** Executes the "loop" operation on the given arguments. */
@@ -321,7 +321,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapParallel.class)
-	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceFunction<A> func);
+	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceOp<A> func);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.map.MapIterableToIterableParallel.class,
@@ -337,7 +337,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
-	<A> Iterable<A> map(Iterable<A> arg, InplaceFunction<A> func);
+	<A> Iterable<A> map(Iterable<A> arg, InplaceOp<A> func);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapRAIToIterableInterval.class)

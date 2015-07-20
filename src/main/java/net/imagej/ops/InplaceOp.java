@@ -39,11 +39,11 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface InplaceFunction<A> extends Function<A, A> {
+public interface InplaceOp<A> extends Function<A, A> {
 
 	A compute(A arg);
 
 	@Override
-	InplaceFunction<A> getIndependentInstance();
+	InplaceOp<A> getIndependentInstance();
 
 }

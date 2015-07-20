@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.Function;
 
 import org.scijava.plugin.Parameter;
@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
+public abstract class AbstractLoopInplace<I> extends AbstractInplaceOp<I>
 	implements LoopInplace<I>
 {
 

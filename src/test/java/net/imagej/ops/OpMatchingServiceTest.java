@@ -134,7 +134,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.nan")
-	public static class NaNOp extends AbstractInplaceFunction<DoubleType> {
+	public static class NaNOp extends AbstractInplaceOp<DoubleType> {
 
 		@Override
 		public DoubleType compute(final DoubleType argument) {

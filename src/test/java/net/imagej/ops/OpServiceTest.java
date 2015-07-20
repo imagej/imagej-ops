@@ -212,7 +212,7 @@ public class OpServiceTest extends AbstractOpTest {
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
-	public static class InfinityOp extends AbstractInplaceFunction<DoubleType> {
+	public static class InfinityOp extends AbstractInplaceOp<DoubleType> {
 
 		@Override
 		public DoubleType compute(final DoubleType arg) {
