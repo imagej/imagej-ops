@@ -31,12 +31,13 @@
 package net.imagej.ops;
 
 /**
- * An {@code Output} is an {@link Op} that has a typed output parameter.
+ * Interface for objects with a typed output parameter.
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @see Input
  */
-public interface Output<O> extends Op {
+public interface Output<O> {
 
 	O getOutput();
 

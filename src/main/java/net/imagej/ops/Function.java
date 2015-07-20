@@ -57,7 +57,7 @@ import org.scijava.ItemIO;
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface Function<I, O> extends Input<I>, Output<O>, Threadable,
+public interface Function<I, O> extends Op, Input<I>, Output<O>, Threadable,
 	Converter<I, O>
 {
 

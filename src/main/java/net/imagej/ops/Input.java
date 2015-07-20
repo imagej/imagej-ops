@@ -31,12 +31,13 @@
 package net.imagej.ops;
 
 /**
- * An {@code Input} is an {@link Op} that has a typed input parameter.
+ * Interface for objects with a typed input parameter.
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @see Output
  */
-public interface Input<I> extends Op {
+public interface Input<I> {
 
 	I getInput();
 
