@@ -28,50 +28,66 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.join;
 
-import java.util.ArrayList;
-
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.join.DefaultJoinComputers;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Applies a {@link ComputerOp} multiple times to an image.
+ * Abstract superclass of {@link JoinComputerAndComputer} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<ComputerOp<A, A>, A>
+public abstract class AbstractJoinComputerAndComputer<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
+	extends AbstractComputerOp<A, C> implements
+	JoinComputerAndComputer<A, B, C, F1, F2>
 {
 
-	@Override
-	public void compute(final A input, final A output) {
-		final int n = getLoopCount();
+	@Parameter
+	private F1 first;
 
-		final ArrayList<ComputerOp<A, A>> functions =
-			new ArrayList<ComputerOp<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(getFunction());
+	@Parameter
+	private F2 second;
 
-		final DefaultJoinComputers<A> functionJoiner =
-			new DefaultJoinComputers<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(getBufferFactory());
+	@Parameter(required = false)
+	private BufferFactory<A, B> bufferFactory;
 
-		functionJoiner.compute(input, output);
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.createBuffer(input);
+		return buffer;
+	}
+
+	public BufferFactory<A, B> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
 	}
 
 	@Override
-	public DefaultLoopFunction<A> getIndependentInstance() {
-		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
-
-		looper.setFunction(getFunction().getIndependentInstance());
-		looper.setBufferFactory(getBufferFactory());
-
-		return looper;
+	public F1 getFirst() {
+		return first;
 	}
+
+	@Override
+	public void setFirst(final F1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public F2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final F2 second) {
+		this.second = second;
+	}
+
 }

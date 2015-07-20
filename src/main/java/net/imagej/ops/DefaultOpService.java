@@ -274,7 +274,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
-			(C) run(net.imagej.ops.join.DefaultJoinFunctionAndFunction.class, out,
+			(C) run(net.imagej.ops.join.DefaultJoinComputerAndComputer.class, out,
 				in, first, second);
 		return result;
 	}
@@ -285,7 +285,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
-			(C) run(net.imagej.ops.join.DefaultJoinFunctionAndFunction.class, out,
+			(C) run(net.imagej.ops.join.DefaultJoinComputerAndComputer.class, out,
 				in, first, second, bufferFactory);
 		return result;
 	}
@@ -308,7 +308,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinFunctions.class, out, in,
+			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
 				functions, bufferFactory);
 		return result;
 	}
@@ -317,7 +317,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public <A> A join(final A arg, final List<InplaceOp<A>> functions) {
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinInplaceFunctions.class, arg,
+			(A) run(net.imagej.ops.join.DefaultJoinInplaces.class, arg,
 				functions);
 		return result;
 	}
@@ -328,7 +328,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndFunction.class, out, in,
+			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in,
 				first, second);
 		return result;
 	}
@@ -339,7 +339,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndFunction.class, out, in,
+			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in,
 				first, second, bufferFactory);
 		return result;
 	}
@@ -350,7 +350,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinFunctionAndInplace.class, out, in,
+			(B) run(net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in,
 				first, second);
 		return result;
 	}
@@ -361,7 +361,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinFunctionAndInplace.class, out, in,
+			(B) run(net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in,
 				first, second, bufferFactory);
 		return result;
 	}

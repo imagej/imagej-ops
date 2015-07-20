@@ -83,7 +83,7 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testFunctionInplaceJoin() {
 		final Op op =
-			ops.op(DefaultJoinFunctionAndInplace.class, out, in, functionalOp,
+			ops.op(DefaultJoinComputerAndInplace.class, out, in, functionalOp,
 				inplaceOp);
 		op.run();
 
@@ -98,7 +98,7 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testInplaceFunctionJoin() {
 		final Op op =
-			ops.op(DefaultJoinInplaceAndFunction.class, out, in, inplaceOp,
+			ops.op(DefaultJoinInplaceAndComputer.class, out, in, inplaceOp,
 				functionalOp);
 		op.run();
 

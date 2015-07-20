@@ -30,36 +30,69 @@
 
 package net.imagej.ops.join;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link ComputerOp}s.
+ * Joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctionAndFunction<A, B, C> extends
-	AbstractJoinFunctionAndFunction<A, B, C, ComputerOp<A, B>, ComputerOp<B, C>>
+public class DefaultJoinComputers<A> extends
+	AbstractJoinComputers<A, ComputerOp<A, A>>
 {
 
 	@Override
-	public void compute(final A input, final C output) {
-		final B buffer = getBuffer(input);
-		getFirst().compute(input, buffer);
-		getSecond().compute(buffer, output);
+	public void compute(final A input, final A output) {
+		final List<? extends ComputerOp<A, A>> functions = getFunctions();
+		final Iterator<? extends ComputerOp<A, A>> it = functions.iterator();
+		final ComputerOp<A, A> first = it.next();
+
+		if (functions.size() == 1) {
+			first.compute(input, output);
+			return;
+		}
+
+		final A buffer = getBuffer(input);
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
 	}
 
 	@Override
-	public DefaultJoinFunctionAndFunction<A, B, C> getIndependentInstance() {
+	public DefaultJoinComputers<A> getIndependentInstance() {
 
-		final DefaultJoinFunctionAndFunction<A, B, C> joiner =
-			new DefaultJoinFunctionAndFunction<A, B, C>();
+		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
 
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
+		final ArrayList<ComputerOp<A, A>> funcs = new ArrayList<ComputerOp<A, A>>();
+		for (final ComputerOp<A, A> func : getFunctions()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setFunctions(funcs);
 		joiner.setBufferFactory(getBufferFactory());
 
 		return joiner;

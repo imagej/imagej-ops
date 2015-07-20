@@ -30,47 +30,36 @@
 
 package net.imagej.ops.join;
 
-import java.util.List;
-
-import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Join;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * A join operation which joins a list of {@link ComputerOp}s.
+ * Joins an {@link InplaceOp} with a {@link ComputerOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
  */
-public interface JoinFunctions<A, F extends ComputerOp<A, A>> extends
-	ComputerOp<A, A>, Ops.Join
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinInplaceAndComputer<A, B> extends
+	AbstractJoinComputerAndComputer<A, A, B, InplaceOp<A>, ComputerOp<A, B>>
 {
 
-	/**
-	 * @return {@link BufferFactory} used to create intermediate results
-	 */
-	BufferFactory<A, A> getBufferFactory();
+	@Override
+	public void compute(final A input, final B output) {
+		getFirst().compute(input);
+		getSecond().compute(input, output);
+	}
 
-	/**
-	 * Sets the {@link BufferFactory} which is used to create intermediate
-	 * results.
-	 * 
-	 * @param bufferFactory used to create intermediate results
-	 */
-	void setBufferFactory(BufferFactory<A, A> bufferFactory);
+	@Override
+	public DefaultJoinInplaceAndComputer<A, B> getIndependentInstance() {
+		final DefaultJoinInplaceAndComputer<A, B> joiner =
+			new DefaultJoinInplaceAndComputer<A, B>();
 
-	/**
-	 * @return {@link List} of {@link ComputerOp}s which are joined in this
-	 *         {@link Join}
-	 */
-	List<? extends F> getFunctions();
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
 
-	/**
-	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
-	 * 
-	 * @param functions joined in this {@link Join}
-	 */
-	void setFunctions(List<? extends F> functions);
-
+		return joiner;
+	}
 }

@@ -248,11 +248,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 	Object join(Object... args);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
 	<A, B, C> C join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndFunction.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
 	<A, B, C> C join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second,
 		BufferFactory<A, B> bufferFactory);
 
@@ -261,29 +261,29 @@ public interface OpService extends PTService<Op>, ImageJService {
 	<A> A join(A arg, InplaceOp<A> first, InplaceOp<A> second);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctions.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputers.class)
 	<A> A join(A out, A in, List<? extends ComputerOp<A, A>> functions,
 		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceFunctions.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaces.class)
 	<A> A join(A arg, List<InplaceOp<A>> functions);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
 	<A, B> B join(B out, A in, InplaceOp<A> first, ComputerOp<A, B> second);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndFunction.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
 	<A, B> B join(B out, A in, InplaceOp<A> first, ComputerOp<A, B> second,
 		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
 	<A, B> B join(B out, A in, ComputerOp<A, B> first, InplaceOp<B> second);
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinFunctionAndInplace.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
 	<A, B> B join(B out, A in, ComputerOp<A, B> first, InplaceOp<B> second,
 		BufferFactory<A, B> bufferFactory);
 

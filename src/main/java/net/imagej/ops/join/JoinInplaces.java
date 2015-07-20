@@ -30,64 +30,21 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
-import net.imagej.ops.ComputerOp;
+import java.util.List;
 
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Ops;
 
 /**
- * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
+ * A join operation which joins a list of {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
-	extends AbstractComputerOp<A, C> implements
-	JoinFunctionAndFunction<A, B, C, F1, F2>
-{
+public interface JoinInplaces<A> extends InplaceOp<A>, Ops.Join {
 
-	@Parameter
-	private F1 first;
+	void setOps(List<InplaceOp<A>> ops);
 
-	@Parameter
-	private F2 second;
-
-	@Parameter(required = false)
-	private BufferFactory<A, B> bufferFactory;
-
-	private B buffer;
-
-	public B getBuffer(final A input) {
-		if (buffer == null) buffer = bufferFactory.createBuffer(input);
-		return buffer;
-	}
-
-	public BufferFactory<A, B> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
-	@Override
-	public F1 getFirst() {
-		return first;
-	}
-
-	@Override
-	public void setFirst(final F1 first) {
-		this.first = first;
-	}
-
-	@Override
-	public F2 getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
+	List<InplaceOp<A>> getOps();
 
 }

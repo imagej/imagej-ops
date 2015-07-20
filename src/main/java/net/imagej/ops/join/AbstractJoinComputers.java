@@ -30,38 +30,62 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.InplaceOp;
-import net.imagej.ops.Ops;
+import java.util.List;
 
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.BufferFactory;
+import net.imagej.ops.ComputerOp;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Joins a {@link ComputerOp} with an {@link InplaceOp}.
+ * Abstract superclass of {@link JoinComputers}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctionAndInplace<A, B> extends
-	AbstractJoinFunctionAndFunction<A, B, B, ComputerOp<A, B>, InplaceOp<B>>
+public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
+	extends AbstractComputerOp<A, A> implements JoinComputers<A, F>
 {
 
+	/** List of functions to be joined. */
+	@Parameter
+	private List<? extends F> functions;
+
+	@Parameter
+	private BufferFactory<A, A> bufferFactory;
+
+	private A buffer;
+
 	@Override
-	public void compute(final A input, final B output) {
-		getFirst().compute(input, output);
-		getSecond().compute(output);
+	public BufferFactory<A, A> getBufferFactory() {
+		return bufferFactory;
 	}
 
 	@Override
-	public DefaultJoinFunctionAndInplace<A, B> getIndependentInstance() {
-
-		final DefaultJoinFunctionAndInplace<A, B> joiner =
-			new DefaultJoinFunctionAndInplace<A, B>();
-
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
-		joiner.setBufferFactory(getBufferFactory());
-
-		return joiner;
+	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
 	}
+
+	@Override
+	public List<? extends F> getFunctions() {
+		return functions;
+	}
+
+	@Override
+	public void setFunctions(final List<? extends F> functions) {
+		this.functions = functions;
+	}
+
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.createBuffer(input);
+		}
+		return buffer;
+	}
+
 }

@@ -30,39 +30,44 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.ComputerOp;
+import java.util.ArrayList;
+
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
+import org.scijava.plugin.Plugin;
+
 /**
- * A join operation which joins two {@link ComputerOp}s. The resulting function
- * will take the input of the first {@link ComputerOp} as input and the output of
- * the second {@link ComputerOp} as the output.
+ * Joins a list of {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinFunctionAndFunction<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
-	extends ComputerOp<A, C>, Ops.Join
-{
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinInplaces<A> extends AbstractJoinInplaces<A> {
 
-	/**
-	 * @return first {@link ComputerOp} to be joined
-	 */
-	F1 getFirst();
+	@Override
+	public A compute(final A input) {
+		for (final InplaceOp<A> inplace : getOps()) {
+			inplace.compute(input);
+		}
+		return input;
+	}
 
-	/**
-	 * @param first {@link ComputerOp} to be joined
-	 */
-	void setFirst(F1 first);
+	@Override
+	public DefaultJoinInplaces<A> getIndependentInstance() {
+		final DefaultJoinInplaces<A> joiner =
+			new DefaultJoinInplaces<A>();
 
-	/**
-	 * @return second {@link ComputerOp} to be joined
-	 */
-	F2 getSecond();
+		final ArrayList<InplaceOp<A>> funcs =
+			new ArrayList<InplaceOp<A>>();
+		for (final InplaceOp<A> func : getOps()) {
+			funcs.add(func.getIndependentInstance());
+		}
 
-	/**
-	 * @param second {@link ComputerOp} to be joined
-	 */
-	void setSecond(F2 second);
+		joiner.setOps(funcs);
+
+		return joiner;
+	}
 
 }

@@ -41,7 +41,7 @@ import net.imagej.ops.InplaceOp;
  * @author Christian Dietz (University of Konstanz)
  */
 public interface JoinInplaceAndInplace<A> extends
-	JoinFunctionAndFunction<A, A, A, InplaceOp<A>, InplaceOp<A>>
+	JoinComputerAndComputer<A, A, A, InplaceOp<A>, InplaceOp<A>>
 {
 	// NB: Marker interface.
 }

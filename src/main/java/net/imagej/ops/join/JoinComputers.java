@@ -28,50 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.join;
 
-import java.util.ArrayList;
+import java.util.List;
 
+import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.join.DefaultJoinComputers;
-
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.Ops.Join;
 
 /**
- * Applies a {@link ComputerOp} multiple times to an image.
+ * A join operation which joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<ComputerOp<A, A>, A>
+public interface JoinComputers<A, F extends ComputerOp<A, A>> extends
+	ComputerOp<A, A>, Ops.Join
 {
 
-	@Override
-	public void compute(final A input, final A output) {
-		final int n = getLoopCount();
+	/**
+	 * @return {@link BufferFactory} used to create intermediate results
+	 */
+	BufferFactory<A, A> getBufferFactory();
 
-		final ArrayList<ComputerOp<A, A>> functions =
-			new ArrayList<ComputerOp<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(getFunction());
+	/**
+	 * Sets the {@link BufferFactory} which is used to create intermediate
+	 * results.
+	 * 
+	 * @param bufferFactory used to create intermediate results
+	 */
+	void setBufferFactory(BufferFactory<A, A> bufferFactory);
 
-		final DefaultJoinComputers<A> functionJoiner =
-			new DefaultJoinComputers<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(getBufferFactory());
+	/**
+	 * @return {@link List} of {@link ComputerOp}s which are joined in this
+	 *         {@link Join}
+	 */
+	List<? extends F> getFunctions();
 
-		functionJoiner.compute(input, output);
-	}
+	/**
+	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
+	 * 
+	 * @param functions joined in this {@link Join}
+	 */
+	void setFunctions(List<? extends F> functions);
 
-	@Override
-	public DefaultLoopFunction<A> getIndependentInstance() {
-		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
-
-		looper.setFunction(getFunction().getIndependentInstance());
-		looper.setBufferFactory(getBufferFactory());
-
-		return looper;
-	}
 }

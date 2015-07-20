@@ -30,63 +30,38 @@
 
 package net.imagej.ops.join;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link InplaceOp}s.
+ * Joins two {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceOp<A>
-	implements Ops.Join
+public class DefaultJoinComputerAndComputer<A, B, C> extends
+	AbstractJoinComputerAndComputer<A, B, C, ComputerOp<A, B>, ComputerOp<B, C>>
 {
 
-	// list of functions to be joined
-	@Parameter
-	private List<InplaceOp<A>> functions;
-
-	public void setFunctions(final List<InplaceOp<A>> functions) {
-		this.functions = functions;
-	}
-
-	public List<InplaceOp<A>> getFunctions() {
-		return functions;
+	@Override
+	public void compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		getFirst().compute(input, buffer);
+		getSecond().compute(buffer, output);
 	}
 
 	@Override
-	public A compute(final A input) {
+	public DefaultJoinComputerAndComputer<A, B, C> getIndependentInstance() {
 
-		for (final InplaceOp<A> inplace : functions) {
-			inplace.compute(input);
-		}
+		final DefaultJoinComputerAndComputer<A, B, C> joiner =
+			new DefaultJoinComputerAndComputer<A, B, C>();
 
-		return input;
-	}
-
-	@Override
-	public DefaultJoinInplaceFunctions<A> getIndependentInstance() {
-
-		final DefaultJoinInplaceFunctions<A> joiner =
-			new DefaultJoinInplaceFunctions<A>();
-
-		final ArrayList<InplaceOp<A>> funcs =
-			new ArrayList<InplaceOp<A>>();
-		for (final InplaceOp<A> func : getFunctions()) {
-			funcs.add(func.getIndependentInstance());
-		}
-
-		joiner.setFunctions(funcs);
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
 
 		return joiner;
 	}
-
 }

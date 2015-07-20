@@ -30,71 +30,34 @@
 
 package net.imagej.ops.join;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Joins a list of {@link ComputerOp}s.
+ * Abstract superclass of {@link JoinInplaces} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctions<A> extends
-	AbstractJoinFunctions<A, ComputerOp<A, A>>
+public abstract class AbstractJoinInplaces<A> extends AbstractInplaceOp<A>
+	implements JoinInplaces<A>
 {
 
+	@Parameter
+	private List<InplaceOp<A>> ops;
+
 	@Override
-	public void compute(final A input, final A output) {
-		final List<? extends ComputerOp<A, A>> functions = getFunctions();
-		final Iterator<? extends ComputerOp<A, A>> it = functions.iterator();
-		final ComputerOp<A, A> first = it.next();
-
-		if (functions.size() == 1) {
-			first.compute(input, output);
-			return;
-		}
-
-		final A buffer = getBuffer(input);
-
-		A tmpOutput = output;
-		A tmpInput = buffer;
-		A tmp;
-
-		if (functions.size() % 2 == 0) {
-			tmpOutput = buffer;
-			tmpInput = output;
-		}
-
-		first.compute(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
+	public void setOps(final List<InplaceOp<A>> ops) {
+		this.ops = ops;
 	}
 
 	@Override
-	public DefaultJoinFunctions<A> getIndependentInstance() {
-
-		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
-
-		final ArrayList<ComputerOp<A, A>> funcs = new ArrayList<ComputerOp<A, A>>();
-		for (final ComputerOp<A, A> func : getFunctions()) {
-			funcs.add(func.getIndependentInstance());
-		}
-
-		joiner.setFunctions(funcs);
-		joiner.setBufferFactory(getBufferFactory());
-
-		return joiner;
+	public List<InplaceOp<A>> getOps() {
+		return ops;
 	}
+
 }

@@ -30,62 +30,39 @@
 
 package net.imagej.ops.join;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
-
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.Ops;
 
 /**
- * Abstract superclass of {@link JoinFunctions}s.
+ * A join operation which joins two {@link ComputerOp}s. The resulting function
+ * will take the input of the first {@link ComputerOp} as input and the output of
+ * the second {@link ComputerOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinFunctions<A, F extends ComputerOp<A, A>>
-	extends AbstractComputerOp<A, A> implements JoinFunctions<A, F>
+public interface JoinComputerAndComputer<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
+	extends ComputerOp<A, C>, Ops.Join
 {
 
-	/** List of functions to be joined. */
-	@Parameter
-	private List<? extends F> functions;
-
-	@Parameter
-	private BufferFactory<A, A> bufferFactory;
-
-	private A buffer;
-
-	@Override
-	public BufferFactory<A, A> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	@Override
-	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
-	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
-	}
-
-	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
-	}
+	/**
+	 * @return first {@link ComputerOp} to be joined
+	 */
+	F1 getFirst();
 
 	/**
-	 * @param input helping to create the buffer
-	 * @return the buffer which can be used for the join.
+	 * @param first {@link ComputerOp} to be joined
 	 */
-	protected A getBuffer(final A input) {
-		if (buffer == null) {
-			buffer = bufferFactory.createBuffer(input);
-		}
-		return buffer;
-	}
+	void setFirst(F1 first);
+
+	/**
+	 * @return second {@link ComputerOp} to be joined
+	 */
+	F2 getSecond();
+
+	/**
+	 * @param second {@link ComputerOp} to be joined
+	 */
+	void setSecond(F2 second);
 
 }

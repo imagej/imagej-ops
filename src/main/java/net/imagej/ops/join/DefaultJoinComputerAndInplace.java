@@ -37,28 +37,30 @@ import net.imagej.ops.Ops;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins an {@link InplaceOp} with a {@link ComputerOp}.
+ * Joins a {@link ComputerOp} with an {@link InplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinInplaceAndFunction<A, B> extends
-	AbstractJoinFunctionAndFunction<A, A, B, InplaceOp<A>, ComputerOp<A, B>>
+public class DefaultJoinComputerAndInplace<A, B> extends
+	AbstractJoinComputerAndComputer<A, B, B, ComputerOp<A, B>, InplaceOp<B>>
 {
 
 	@Override
 	public void compute(final A input, final B output) {
-		getFirst().compute(input);
-		getSecond().compute(input, output);
+		getFirst().compute(input, output);
+		getSecond().compute(output);
 	}
 
 	@Override
-	public DefaultJoinInplaceAndFunction<A, B> getIndependentInstance() {
-		final DefaultJoinInplaceAndFunction<A, B> joiner =
-			new DefaultJoinInplaceAndFunction<A, B>();
+	public DefaultJoinComputerAndInplace<A, B> getIndependentInstance() {
+
+		final DefaultJoinComputerAndInplace<A, B> joiner =
+			new DefaultJoinComputerAndInplace<A, B>();
 
 		joiner.setFirst(getFirst().getIndependentInstance());
 		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
 
 		return joiner;
 	}
