@@ -68,9 +68,6 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
-	/**
-	 * 
-	 */
 	@Override
 	public void safeCompute(final Img<I> input, final Img<O> output) {
 
