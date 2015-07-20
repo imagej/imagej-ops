@@ -71,7 +71,10 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 *
 	 * @param name The operation to execute. If multiple {@link Op}s share this
 	 *          name, then the best {@link Op} implementation to use will be
-	 *          selected automatically from the name and arguments.
+	 *          selected automatically from the name and arguments. If a name
+	 *          without namespace is given, then ops from all namespaces with that
+	 *          name will be included in the match; e.g., {@code "and"} will match
+	 *          both {@code "logic.and"} and {@code "math.and"} ops.
 	 * @param args The operation's arguments.
 	 * @return The result of the execution. If the {@link Op} has no outputs, this
 	 *         will return {@code null}. If exactly one output, it will be
