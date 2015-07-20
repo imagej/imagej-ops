@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @see AbstractOutputFunction
+ * @see AbstractHybridOp
  */
 public abstract class AbstractStrictFunction<I, O> extends
 	AbstractFunction<I, O>

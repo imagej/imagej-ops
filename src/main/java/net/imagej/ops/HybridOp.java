@@ -30,77 +30,31 @@
 
 package net.imagej.ops;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link OutputFunction} ops.
+ * An {@link HybridOp} is a {@link Function} which is able to create the
+ * output object itself. Hence, the "out" parameter is marked optional (i.e.,
+ * "required = false") and may be omitted, in which case it will be created
+ * based on the given "in" parameter.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
  */
-public abstract class AbstractOutputFunction<I, O> extends
-	AbstractFunction<I, O> implements OutputFunction<I, O>
-{
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- OutputFunction methods --
-
-	@Override
-	public O compute(final I input) {
-		final O output = createOutput(input);
-		compute(input, output);
-		return output;
-	}
-
-	// -- Function methods --
-
-	@Override
-	public void compute(final I input, final O output) {
-		final O result = output == null ? createOutput(input) : output;
-		safeCompute(input, result);
-
-		// TEMP HACK: Not clean! Will be fixed with function restructuring.
-		out = result;
-	}
-
-	// -- InputOp methods --
-
-	@Override
-	public I getInput() {
-		return in;
-	}
-
-	@Override
-	public O getOutput() {
-		return out;
-	}
-
-	// -- OutputOp methods --
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
-	// -- Internal methods --
+public interface HybridOp<I, O> extends Function<I, O>, Computer<I, O> {
 
 	/**
-	 * Does the work of computing the function.
+	 * Compute the output of a function, given some input.
 	 * 
-	 * @param input Non-null input value.
-	 * @param output Non-null output value.
+	 * @param input
+	 *            of the {@link HybridOp}
+	 * 
+	 * @return output
 	 */
-	protected abstract void safeCompute(I input, O output);
+	@Override
+	O compute(I input);
 
+	/**
+	 * @return create an output object of type O, given some input. The output
+	 *         can then be used to call compute(I input, O output), which will
+	 *         fill the output with the result.
+	 */
+	O createOutput(I input);
 }

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
 
 import org.scijava.plugin.Parameter;
@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  */
 public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends Iterable<T>>
-	extends AbstractOutputFunction<I, O>
+	extends AbstractHybridOp<I, O>
 {
 
 	@Parameter

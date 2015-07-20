@@ -30,7 +30,7 @@
 
 package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 public class AddIterableIntervalToImg<T extends NumericType<T>> extends
-	AbstractOutputFunction<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
+	AbstractHybridOp<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
 {
 
 	// TODO: extend common abstract base class which implements Contingent

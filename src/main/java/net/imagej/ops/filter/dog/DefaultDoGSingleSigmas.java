@@ -32,7 +32,7 @@ package net.imagej.ops.filter.dog;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
@@ -54,7 +54,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME, priority = 1.0)
 public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
-	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 

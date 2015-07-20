@@ -30,31 +30,77 @@
 
 package net.imagej.ops;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Abstract superclass for {@link HybridOp} ops.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O>, Computer<I, O> {
+public abstract class AbstractHybridOp<I, O> extends
+	AbstractFunction<I, O> implements HybridOp<I, O>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- HybridOp methods --
+
 	@Override
-	O compute(I input);
+	public O compute(final I input) {
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
+	}
+
+	// -- Function methods --
+
+	@Override
+	public void compute(final I input, final O output) {
+		final O result = output == null ? createOutput(input) : output;
+		safeCompute(input, result);
+
+		// TEMP HACK: Not clean! Will be fixed with function restructuring.
+		out = result;
+	}
+
+	// -- InputOp methods --
+
+	@Override
+	public I getInput() {
+		return in;
+	}
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- OutputOp methods --
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
+
+	// -- Internal methods --
 
 	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
+	 * Does the work of computing the function.
+	 * 
+	 * @param input Non-null input value.
+	 * @param output Non-null output value.
 	 */
-	O createOutput(I input);
+	protected abstract void safeCompute(I input, O output);
+
 }

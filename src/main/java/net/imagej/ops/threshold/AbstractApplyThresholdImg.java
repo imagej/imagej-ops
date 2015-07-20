@@ -51,7 +51,7 @@ public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
 	@Parameter
 	private OpService ops;
 
-	// -- OutputFunction methods --
+	// -- HybridOp methods --
 
 	@Override
 	public Img<BitType> createOutput(final I input) {

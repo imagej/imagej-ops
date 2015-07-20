@@ -32,7 +32,7 @@ package net.imagej.ops.labeling.cca;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -56,7 +56,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Labeling.CCA.class, name = Ops.Labeling.CCA.NAME, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	extends
-	AbstractOutputFunction<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
+	AbstractHybridOp<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
 	implements Contingent, Ops.Labeling.CCA
 {
 
