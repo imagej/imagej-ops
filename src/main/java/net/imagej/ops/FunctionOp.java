@@ -38,7 +38,7 @@ package net.imagej.ops;
  * @param <I> type of input
  * @param <O> type of output
  */
-public interface FunctionOp<I, O> {
+public interface FunctionOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
 	/**
 	 * Compute the output given some input.
@@ -47,5 +47,8 @@ public interface FunctionOp<I, O> {
 	 * @return output
 	 */
 	O compute(I input);
+
+	@Override
+	FunctionOp<I, O> getIndependentInstance();
 
 }
