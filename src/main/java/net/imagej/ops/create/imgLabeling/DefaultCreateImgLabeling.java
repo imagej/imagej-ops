@@ -89,9 +89,4 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 		return output;
 	}
 
-	@Override
-	public void setOutput(final ImgLabeling<L, T> output) {
-		this.output = output;
-	}
-
 }

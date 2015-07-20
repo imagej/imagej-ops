@@ -94,7 +94,6 @@ public abstract class MapView<A, B, I, O> implements MapOp<A, B, ComputerOp<A, B
 	 *
 	 * @param output
 	 */
-	@Override
 	public void setOutput(final O output) {
 		this.output = output;
 	}

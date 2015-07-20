@@ -71,11 +71,6 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 		return arg;
 	}
 
-	@Override
-	public void setOutput(final A output) {
-		arg = output;
-	}
-
 	// -- ComputerOp methods --
 
 	@Override

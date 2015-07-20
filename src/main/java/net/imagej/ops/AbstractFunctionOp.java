@@ -74,11 +74,6 @@ public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
 		return out;
 	}
 
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
 	// -- Threadable methods --
 
 	@Override

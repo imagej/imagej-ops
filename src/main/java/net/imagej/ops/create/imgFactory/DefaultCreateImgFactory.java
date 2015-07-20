@@ -84,8 +84,4 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> implements
 		return output;
 	}
 
-	@Override
-	public void setOutput(final ImgFactory<T> output) {
-		this.output = output;
-	}
 }

@@ -115,9 +115,4 @@ public class DefaultCreateImg<T> implements
 		return output;
 	}
 
-	@Override
-	public void setOutput(final Img<T> output) {
-		this.output = output;
-	}
-
 }

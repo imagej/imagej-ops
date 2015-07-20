@@ -69,9 +69,4 @@ public class DefaultCreateLabelingMapping<L> implements
 		return output;
 	}
 
-	@Override
-	public void setOutput(final LabelingMapping<L> output) {
-		this.output = output;
-	}
-
 }

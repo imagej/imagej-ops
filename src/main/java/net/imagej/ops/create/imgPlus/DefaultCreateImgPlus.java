@@ -87,8 +87,4 @@ public class DefaultCreateImgPlus<T> implements Ops.Create.ImgPlus,
 		return output;
 	}
 
-	@Override
-	public void setOutput(final ImgPlus<T> output) {
-		this.output = output;
-	}
 }

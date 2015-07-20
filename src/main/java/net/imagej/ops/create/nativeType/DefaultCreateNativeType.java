@@ -68,11 +68,6 @@ public class DefaultCreateNativeType<T extends NativeType<T>> implements
 		return output;
 	}
 
-	@Override
-	public void setOutput(final T output) {
-		this.output = output;
-	}
-
 	// -- Helper methods --
 
 	private T createTypeFromClass() {

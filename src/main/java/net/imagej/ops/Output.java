@@ -32,6 +32,10 @@ package net.imagej.ops;
 
 /**
  * Interface for objects with a typed output parameter.
+ * <p>
+ * At the interface level, no API is provided to set the output value, since the
+ * feasibility of such an operation depends on the implementation.
+ * </p>
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
@@ -40,7 +44,5 @@ package net.imagej.ops;
 public interface Output<O> {
 
 	O getOutput();
-
-	void setOutput(O output);
 
 }

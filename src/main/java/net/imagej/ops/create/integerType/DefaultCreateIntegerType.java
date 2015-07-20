@@ -102,9 +102,4 @@ public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
 		return output;
 	}
 
-	@Override
-	public void setOutput(final IntegerType output) {
-		this.output = output;
-	}
-
 }
