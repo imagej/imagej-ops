@@ -31,7 +31,6 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.InplaceOp;
 
 import org.scijava.plugin.Parameter;
@@ -47,9 +46,6 @@ public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
 	AbstractInplaceOp<I> implements MapOp<A, A, InplaceOp<A>>
 {
 
-	/**
-	 * {@link ComputerOp} to be used for mapping
-	 */
 	@Parameter
 	protected InplaceOp<A> op;
 

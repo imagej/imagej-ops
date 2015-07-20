@@ -45,15 +45,12 @@ public abstract class AbstractLoopComputer<C extends ComputerOp<I, I>, I>
 	extends AbstractComputerOp<I, I> implements LoopComputer<I>
 {
 
-	/** Function to loop. */
 	@Parameter
 	private ComputerOp<I, I> op;
 
-	/** Buffer for intermediate results. */
 	@Parameter
 	private BufferFactory<I, I> bufferFactory;
 
-	/** Number of iterations. */
 	@Parameter
 	private int n;
 

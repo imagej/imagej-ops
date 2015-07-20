@@ -48,7 +48,6 @@ public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
 	extends AbstractComputerOp<A, A> implements JoinComputers<A, F>
 {
 
-	/** List of functions to be joined. */
 	@Parameter
 	private List<? extends F> ops;
 

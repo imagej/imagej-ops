@@ -48,7 +48,6 @@ public abstract class AbstractMapComputer<A, B, C, D> extends
 	AbstractComputerOp<C, D> implements MapOp<A, B, ComputerOp<A, B>>
 {
 
-	/** {@link ComputerOp} to be used for mapping. */
 	@Parameter
 	protected ComputerOp<A, B> op;
 
