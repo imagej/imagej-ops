@@ -95,6 +95,8 @@ public class ConvolveTest extends AbstractOpTest {
 	@Test
 	public void testConvolve() {
 
+		float delta = 0.0001f;
+
 		int[] size = new int[] { 225, 167 };
 		int[] kernelSize = new int[] { 27, 39 };
 
@@ -153,9 +155,9 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// multiply input sum by kernelSum and assert it is the same as outSum
 		inSum.mul(kernelSum);
-		assertEquals(inSum, outSum);
-		assertEquals(inSum, outSum2);
-		assertEquals(inSum, outSum3);
+		assertEquals(inSum.get(), outSum.get(), delta);
+		assertEquals(inSum.get(), outSum2.get(), delta);
+		assertEquals(inSum.get(), outSum3.get(), delta);
 
 		assertEquals(size[0], out.dimension(0));
 		assertEquals(size[0], out2.dimension(0));
