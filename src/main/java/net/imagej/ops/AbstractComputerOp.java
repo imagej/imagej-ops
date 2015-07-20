@@ -42,9 +42,7 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  * @see AbstractHybridOp
  */
-public abstract class AbstractComputerOp<I, O> extends
-	AbstractInputOutput<I, O>
-{
+public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 
 	@Parameter(type = ItemIO.BOTH)
 	private O out;
@@ -74,6 +72,30 @@ public abstract class AbstractComputerOp<I, O> extends
 	@Override
 	public void setOutput(final O output) {
 		out = output;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		compute(getInput(), getOutput());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public ComputerOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
+	// -- Converter methods --
+
+	@Override
+	public void convert(final I input, final O output) {
+		compute(input, output);
 	}
 
 }

@@ -38,9 +38,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceOp<A> extends AbstractInputOutput<A, A>
-	implements InplaceOp<A>
-{
+public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
@@ -90,10 +88,17 @@ public abstract class AbstractInplaceOp<A> extends AbstractInputOutput<A, A>
 
 	@Override
 	public InplaceOp<A> getIndependentInstance() {
-		// NB: We assume the function instance is thread-safe by default.
-		// Individual function implementations can override this assumption if
-		// they have state (such as buffers) that cannot be shared across threads.
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
 		return this;
+	}
+
+	// -- Converter methods --
+
+	@Override
+	public void convert(final A input, final A output) {
+		compute(input, output);
 	}
 
 }

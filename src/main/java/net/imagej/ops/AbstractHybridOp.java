@@ -39,9 +39,7 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractHybridOp<I, O> extends
-	AbstractInputOutput<I, O> implements HybridOp<I, O>
-{
+public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 
 	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
@@ -49,7 +47,7 @@ public abstract class AbstractHybridOp<I, O> extends
 	@Parameter
 	private I in;
 
-	// -- HybridOp methods --
+	// -- FunctionOp methods --
 
 	@Override
 	public O compute(final I input) {
@@ -91,6 +89,30 @@ public abstract class AbstractHybridOp<I, O> extends
 	@Override
 	public void setOutput(final O output) {
 		out = output;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		compute(getInput(), getOutput());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public HybridOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
+	// -- Converter methods --
+
+	@Override
+	public void convert(final I input, final O output) {
+		compute(input, output);
 	}
 
 	// -- Internal methods --
