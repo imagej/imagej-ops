@@ -34,7 +34,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link HybridOp} ops.
+ * Abstract superclass for {@link HybridOp} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden

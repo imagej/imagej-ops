@@ -34,7 +34,7 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link InplaceOp} ops.
+ * Abstract superclass for {@link InplaceOp} implementations.
  * 
  * @author Curtis Rueden
  */

@@ -34,13 +34,11 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for strict {@link ComputerOp} ops, which require the "out"
- * parameter to be explicitly specified.
+ * Abstract superclass for {@link ComputerOp} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @see AbstractHybridOp
  */
 public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 
