@@ -31,15 +31,15 @@
 package net.imagej.ops;
 
 /**
- * An {@code InputOp} is an {@link Op} that has a typed input parameter.
+ * An {@code Output} is an {@link Op} that has a typed output parameter.
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  */
-public interface InputOp<I> extends Op {
+public interface Output<O> extends Op {
 
-	I getInput();
+	O getOutput();
 
-	void setInput(I input);
+	void setOutput(O output);
 
 }

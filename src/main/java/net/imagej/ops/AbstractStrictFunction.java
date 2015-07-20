@@ -52,7 +52,7 @@ public abstract class AbstractStrictFunction<I, O> extends
 	@Parameter
 	private I in;
 
-	// -- InputOp methods --
+	// -- Input methods --
 
 	@Override
 	public I getInput() {
@@ -64,7 +64,7 @@ public abstract class AbstractStrictFunction<I, O> extends
 		return out;
 	}
 
-	// -- OutputOp methods --
+	// -- Output methods --
 
 	@Override
 	public void setInput(final I input) {

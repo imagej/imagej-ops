@@ -45,7 +45,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractFunction<A, A>
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- InputOp methods --
+	// -- Input methods --
 
 	@Override
 	public A getInput() {
@@ -57,7 +57,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractFunction<A, A>
 		arg = input;
 	}
 
-	// -- OutputOp methods --
+	// -- Output methods --
 
 	@Override
 	public A getOutput() {

@@ -35,7 +35,7 @@ import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.img.Img;
 
 import org.scijava.ItemIO;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.ImgPlus.class, name = Ops.Create.ImgPlus.NAME)
 public class DefaultCreateImgPlus<T> implements Ops.Create.ImgPlus,
-	OutputOp<ImgPlus<T>>, Contingent
+	Output<ImgPlus<T>>, Contingent
 {
 
 	@Parameter

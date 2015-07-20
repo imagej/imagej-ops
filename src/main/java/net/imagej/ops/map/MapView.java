@@ -31,8 +31,8 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Function;
-import net.imagej.ops.InputOp;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Input;
+import net.imagej.ops.Output;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Parameter;
  * @param <O> type of resulting output
  */
 public abstract class MapView<A, B, I, O> implements MapOp<A, B, Function<A, B>>,
-	InputOp<I>, OutputOp<O>
+	Input<I>, Output<O>
 {
 
 	@Parameter

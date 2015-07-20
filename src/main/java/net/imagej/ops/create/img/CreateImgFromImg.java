@@ -32,7 +32,7 @@ package net.imagej.ops.create.img;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class CreateImgFromImg<T extends NativeType<T>> implements
-	Ops.Create.Img, OutputOp<Img<T>>
+	Ops.Create.Img, Output<Img<T>>
 {
 
 	@Parameter

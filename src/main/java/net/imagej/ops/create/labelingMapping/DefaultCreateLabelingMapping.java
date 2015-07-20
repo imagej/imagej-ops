@@ -32,7 +32,7 @@ package net.imagej.ops.create.labelingMapping;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.roi.labeling.LabelingMapping;
 
 import org.scijava.ItemIO;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.LabelingMapping.class, name = Ops.Create.LabelingMapping.NAME)
 public class DefaultCreateLabelingMapping<L> implements
-	Ops.Create.LabelingMapping, OutputOp<LabelingMapping<L>>
+	Ops.Create.LabelingMapping, Output<LabelingMapping<L>>
 {
 
 	@Parameter

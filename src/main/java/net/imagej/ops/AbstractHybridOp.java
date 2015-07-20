@@ -69,7 +69,7 @@ public abstract class AbstractHybridOp<I, O> extends
 		out = result;
 	}
 
-	// -- InputOp methods --
+	// -- Input methods --
 
 	@Override
 	public I getInput() {
@@ -81,7 +81,7 @@ public abstract class AbstractHybridOp<I, O> extends
 		return out;
 	}
 
-	// -- OutputOp methods --
+	// -- Output methods --
 
 	@Override
 	public void setInput(final I input) {

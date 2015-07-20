@@ -32,7 +32,7 @@ package net.imagej.ops.create.imgFactory;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.ImgFactory.class, name = Ops.Create.ImgFactory.NAME)
 public class DefaultCreateImgFactory<T extends NativeType<T>> implements
-	Ops.Create.ImgFactory, OutputOp<ImgFactory<T>>
+	Ops.Create.ImgFactory, Output<ImgFactory<T>>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

@@ -31,7 +31,7 @@
 package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.NativeType.class, name = Ops.Create.NativeType.NAME)
 public class DefaultCreateNativeType<T extends NativeType<T>> implements
-	Ops.Create.NativeType, OutputOp<T>
+	Ops.Create.NativeType, Output<T>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
