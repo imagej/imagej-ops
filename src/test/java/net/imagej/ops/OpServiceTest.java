@@ -39,6 +39,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.junit.Test;
 import org.scijava.InstantiableException;
 import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.module.Module;
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
@@ -152,6 +153,34 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(value.get()));
 	}
 
+	@Test
+	public void testModuleByContextualOp() {
+		final DoubleType value = new DoubleType(123.456);
+
+		final Module module = ops.module(new LogServiceOp(), value);
+		assertSame(LogServiceOp.class, module.getDelegateObject().getClass());
+		assertSame(value, module.getInput("arg"));
+
+		assertFalse(0 == Double.compare(0,  value.get()));
+		module.run();
+		assertTrue(0 == Double.compare(0,  value.get()));
+	}
+
+	@Test
+	public void testModuleByInjectedContextualOp() {
+		final DoubleType value = new DoubleType(123.456);
+
+		final LogServiceOp op = new LogServiceOp();
+		context.inject(op);
+		final Module module = ops.module(op, value);
+		assertSame(LogServiceOp.class, module.getDelegateObject().getClass());
+		assertSame(value, module.getInput("arg"));
+
+		assertFalse(0 == Double.compare(1,  value.get()));
+		module.run();
+		assertTrue(0 == Double.compare(1,  value.get()));
+	}
+
 	/** Tests {@link OpService#run(String, Object...)}. */
 	@Test
 	public void testAliases() {
@@ -217,6 +246,21 @@ public class OpServiceTest extends AbstractOpTest {
 		@Override
 		public DoubleType compute(final DoubleType arg) {
 			arg.set(Double.POSITIVE_INFINITY);
+			return arg;
+		}
+	}
+
+	/** A test {@link Op}. */
+	@Plugin(type = Op.class, name = "test.logservice",
+		attrs = { @Attr(name = "aliases", value = "log, logsrv") })
+	public static class LogServiceOp extends AbstractInplaceFunction<DoubleType> {
+
+		@Parameter
+		private LogService logService;
+
+		@Override
+		public DoubleType compute(final DoubleType arg) {
+			arg.set(logService == null ? 0 : 1);
 			return arg;
 		}
 	}

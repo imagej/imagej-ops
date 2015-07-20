@@ -55,6 +55,7 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Contextual;
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.log.LogService;
@@ -142,7 +143,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public Module module(final Op op, final Object... args) {
 		final Module module = info(op).createModule(op);
-		getContext().inject(module.getDelegateObject());
+
+		// Inject context if necessary
+		if (((Contextual) module.getDelegateObject()).getContext() == null) getContext()
+			.inject(module.getDelegateObject());
+
 		return matcher.assignInputs(module, args);
 	}
 
