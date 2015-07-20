@@ -50,7 +50,7 @@ public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
 
 	/** List of functions to be joined. */
 	@Parameter
-	private List<? extends F> functions;
+	private List<? extends F> ops;
 
 	@Parameter
 	private BufferFactory<A, A> bufferFactory;
@@ -68,13 +68,13 @@ public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
 	}
 
 	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
+	public List<? extends F> getOps() {
+		return ops;
 	}
 
 	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
+	public void setOps(final List<? extends F> ops) {
+		this.ops = ops;
 	}
 
 	/**

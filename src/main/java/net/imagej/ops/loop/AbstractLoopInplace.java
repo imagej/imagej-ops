@@ -53,12 +53,12 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceOp<I>
 	private int n;
 
 	@Override
-	public ComputerOp<I, I> getFunction() {
+	public ComputerOp<I, I> getOp() {
 		return function;
 	}
 
 	@Override
-	public void setFunction(final ComputerOp<I, I> function) {
+	public void setOp(final ComputerOp<I, I> function) {
 		this.function = function;
 	}
 

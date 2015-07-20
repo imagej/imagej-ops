@@ -43,12 +43,12 @@ public interface LoopOp<A> extends Ops.Loop {
 	/**
 	 * @return the {@link ComputerOp} used for looping
 	 */
-	ComputerOp<A, A> getFunction();
+	ComputerOp<A, A> getOp();
 
 	/**
-	 * @param func the {@link ComputerOp} used for looping
+	 * @param op the {@link ComputerOp} used for looping
 	 */
-	void setFunction(ComputerOp<A, A> func);
+	void setOp(ComputerOp<A, A> op);
 	
 	/**
 	 * @param n number how often {@link ComputerOp} is looped

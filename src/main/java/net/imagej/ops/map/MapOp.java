@@ -39,15 +39,15 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MapOp<A, B, F extends ComputerOp<A, B>> extends Ops.Map {
+public interface MapOp<A, B, C extends ComputerOp<A, B>> extends Ops.Map {
 
 	/**
 	 * @return the {@link ComputerOp} used for mapping
 	 */
-	F getFunction();
+	C getOp();
 
 	/**
-	 * @param function the {@link ComputerOp} used for mapping
+	 * @param op the {@link ComputerOp} used for mapping
 	 */
-	void setFunction(F function);
+	void setOp(C op);
 }

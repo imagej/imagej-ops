@@ -55,11 +55,11 @@ public class DefaultLoopComputer<A> extends
 		final ArrayList<ComputerOp<A, A>> functions =
 			new ArrayList<ComputerOp<A, A>>(n);
 		for (int i = 0; i < n; i++)
-			functions.add(getFunction());
+			functions.add(getOp());
 
 		final DefaultJoinComputers<A> functionJoiner =
 			new DefaultJoinComputers<A>();
-		functionJoiner.setFunctions(functions);
+		functionJoiner.setOps(functions);
 		functionJoiner.setBufferFactory(getBufferFactory());
 
 		functionJoiner.compute(input, output);
@@ -69,7 +69,7 @@ public class DefaultLoopComputer<A> extends
 	public DefaultLoopComputer<A> getIndependentInstance() {
 		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
 
-		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setOp(getOp().getIndependentInstance());
 		looper.setBufferFactory(getBufferFactory());
 
 		return looper;

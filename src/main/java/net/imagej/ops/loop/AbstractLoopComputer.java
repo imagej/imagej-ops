@@ -41,13 +41,13 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopComputer<F extends ComputerOp<I, I>, I> extends
-	AbstractComputerOp<I, I> implements LoopComputer<I>
+public abstract class AbstractLoopComputer<C extends ComputerOp<I, I>, I>
+	extends AbstractComputerOp<I, I> implements LoopComputer<I>
 {
 
 	/** Function to loop. */
 	@Parameter
-	private ComputerOp<I, I> function;
+	private ComputerOp<I, I> op;
 
 	/** Buffer for intermediate results. */
 	@Parameter
@@ -66,13 +66,13 @@ public abstract class AbstractLoopComputer<F extends ComputerOp<I, I>, I> extend
 	}
 
 	@Override
-	public ComputerOp<I, I> getFunction() {
-		return function;
+	public ComputerOp<I, I> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(final ComputerOp<I, I> function) {
-		this.function = function;
+	public void setOp(final ComputerOp<I, I> op) {
+		this.op = op;
 	}
 	
 	@Override

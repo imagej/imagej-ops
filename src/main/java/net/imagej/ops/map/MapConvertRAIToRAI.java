@@ -53,6 +53,6 @@ public class MapConvertRAIToRAI<A, B extends Type<B>> extends
 	@Override
 	public void run() {
 		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getFunction(), getType()));
+			getOp(), getType()));
 	}
 }

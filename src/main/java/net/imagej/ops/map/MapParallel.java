@@ -65,7 +65,7 @@ public class MapParallel<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, A> safe = func.getIndependentInstance();
+				final ComputerOp<A, A> safe = op.getIndependentInstance();
 				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);

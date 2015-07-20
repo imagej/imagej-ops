@@ -54,7 +54,7 @@ public class MapIterableToIterable<A, B> extends
 		final Iterator<B> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
+			op.compute(inCursor.next(), outCursor.next());
 		}
 	}
 

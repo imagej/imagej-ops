@@ -46,7 +46,7 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 	@Override
 	public I compute(final I arg) {
 		final int n = getLoopCount();
-		final ComputerOp<I, I> func = getFunction();
+		final ComputerOp<I, I> func = getOp();
 		for (int i = 0; i < n; i++) {
 			func.compute(arg, arg);
 		}
@@ -56,7 +56,7 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 	@Override
 	public DefaultLoopInplace<I> getIndependentInstance() {
 		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<I>();
-		looper.setFunction(getFunction().getIndependentInstance());
+		looper.setOp(getOp().getIndependentInstance());
 		looper.setLoopCount(getLoopCount());
 		return looper;
 	}

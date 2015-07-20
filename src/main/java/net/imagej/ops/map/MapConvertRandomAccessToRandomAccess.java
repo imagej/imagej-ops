@@ -52,7 +52,7 @@ public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getFunction(),
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getOp(),
 			getType()));
 	}
 }

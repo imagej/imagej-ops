@@ -55,7 +55,7 @@ public abstract class MapView<A, B, I, O> implements MapOp<A, B, ComputerOp<A, B
 	private I input;
 
 	@Parameter
-	private ComputerOp<A, B> function;
+	private ComputerOp<A, B> op;
 
 	@Parameter
 	private B type;
@@ -64,13 +64,13 @@ public abstract class MapView<A, B, I, O> implements MapOp<A, B, ComputerOp<A, B
 	private O output;
 
 	@Override
-	public ComputerOp<A, B> getFunction() {
-		return function;
+	public ComputerOp<A, B> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(final ComputerOp<A, B> function) {
-		this.function = function;
+	public void setOp(final ComputerOp<A, B> op) {
+		this.op = op;
 	}
 
 	/**

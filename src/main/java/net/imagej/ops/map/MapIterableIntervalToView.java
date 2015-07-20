@@ -44,7 +44,7 @@ public class MapIterableIntervalToView<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getFunction(),
+		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getOp(),
 			getType()));
 	}
 }

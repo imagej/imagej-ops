@@ -63,25 +63,25 @@ public class MapNeighborhood<I, O> extends
 	private OpService ops;
 
 	@Parameter
-	private ComputerOp<Iterable<I>, O> func;
+	private ComputerOp<Iterable<I>, O> op;
 
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		ops.map(output, shape.neighborhoodsSafe(input), func);
+		ops.map(output, shape.neighborhoodsSafe(input), op);
 		// TODO: threaded map neighborhood
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood
 	}
 
 	@Override
-	public ComputerOp<Iterable<I>, O> getFunction() {
-		return func;
+	public ComputerOp<Iterable<I>, O> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(ComputerOp<Iterable<I>, O> function) {
-		func = function;
+	public void setOp(ComputerOp<Iterable<I>, O> op) {
+		this.op = op;
 	}
 }

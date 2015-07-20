@@ -51,16 +51,16 @@ public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
 	 * {@link ComputerOp} to be used for mapping
 	 */
 	@Parameter
-	protected InplaceOp<A> func;
+	protected InplaceOp<A> op;
 
 	@Override
-	public InplaceOp<A> getFunction() {
-		return func;
+	public InplaceOp<A> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(final InplaceOp<A> func) {
-		this.func = func;
+	public void setOp(final InplaceOp<A> op) {
+		this.op = op;
 	}
 
 }

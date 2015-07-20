@@ -43,7 +43,7 @@ import net.imagej.ops.Ops.Join;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinComputers<A, F extends ComputerOp<A, A>> extends
+public interface JoinComputers<A, C extends ComputerOp<A, A>> extends
 	ComputerOp<A, A>, Ops.Join
 {
 
@@ -64,13 +64,13 @@ public interface JoinComputers<A, F extends ComputerOp<A, A>> extends
 	 * @return {@link List} of {@link ComputerOp}s which are joined in this
 	 *         {@link Join}
 	 */
-	List<? extends F> getFunctions();
+	List<? extends C> getOps();
 
 	/**
 	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
 	 * 
-	 * @param functions joined in this {@link Join}
+	 * @param ops joined in this {@link Join}
 	 */
-	void setFunctions(List<? extends F> functions);
+	void setOps(List<? extends C> ops);
 
 }

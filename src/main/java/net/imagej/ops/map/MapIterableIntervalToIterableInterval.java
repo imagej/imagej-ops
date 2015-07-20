@@ -75,7 +75,7 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 		final Cursor<B> outCursor = output.cursor();
 
 		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
+			op.compute(inCursor.next(), outCursor.next());
 		}
 	}
 

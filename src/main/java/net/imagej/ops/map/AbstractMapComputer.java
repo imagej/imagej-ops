@@ -50,15 +50,15 @@ public abstract class AbstractMapComputer<A, B, C, D> extends
 
 	/** {@link ComputerOp} to be used for mapping. */
 	@Parameter
-	protected ComputerOp<A, B> func;
+	protected ComputerOp<A, B> op;
 
 	@Override
-	public ComputerOp<A, B> getFunction() {
-		return func;
+	public ComputerOp<A, B> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(final ComputerOp<A, B> func) {
-		this.func = func;
+	public void setOp(final ComputerOp<A, B> op) {
+		this.op = op;
 	}
 }

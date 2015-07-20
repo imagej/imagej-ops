@@ -87,7 +87,7 @@ public class MapIterableToIterableParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = func.getIndependentInstance();
+				final ComputerOp<A, B> safe = op.getIndependentInstance();
 				
 				final Cursor<A> inCursor = input.cursor();
 				final Cursor<B> outCursor = output.cursor();
