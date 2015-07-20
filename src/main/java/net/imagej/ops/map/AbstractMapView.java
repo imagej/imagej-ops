@@ -30,32 +30,48 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerConverter;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessible;
-import net.imglib2.converter.read.ConvertedRandomAccessible;
-import net.imglib2.type.Type;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractFunctionOp;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * Maps values of a {@link RandomAccessible} in View.
- * 
+ * Abstract base class for {@link MapView} implementations.
+ *
  * @author Christian Dietz (University of Konstanz)
- * 
- * @param <A>
- * @param <B>
+ * @param <A> type to be converted to <B>
+ * @param <B> result of conversion
+ * @param <I> holding <A>s
+ * @param <O> type of resulting output
  */
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
-public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
-	AbstractMapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
+public abstract class AbstractMapView<A, B, I, O> extends
+	AbstractFunctionOp<I, O> implements MapView<A, B, I, O>
 {
 
+	@Parameter
+	private ComputerOp<A, B> op;
+
+	@Parameter
+	private B type;
+
 	@Override
-	public RandomAccessible<B> compute(final RandomAccessible<A> input) {
-		final ComputerConverter<A, B> converter =
-			new ComputerConverter<A, B>(getOp());
-		return new ConvertedRandomAccessible<A, B>(input, converter, getType());
+	public ComputerOp<A, B> getOp() {
+		return op;
+	}
+
+	@Override
+	public void setOp(final ComputerOp<A, B> op) {
+		this.op = op;
+	}
+
+	@Override
+	public B getType() {
+		return type;
+	}
+
+	@Override
+	public void setType(final B type) {
+		this.type = type;
 	}
 
 }

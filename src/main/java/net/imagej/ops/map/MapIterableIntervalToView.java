@@ -40,15 +40,14 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
 public class MapIterableIntervalToView<A, B extends Type<B>> extends
-	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
+	AbstractMapView<A, B, IterableInterval<A>, IterableInterval<B>>
 {
 
 	@Override
-	public void run() {
+	public IterableInterval<B> compute(final IterableInterval<A> input) {
 		final ComputerConverter<A, B> converter =
 			new ComputerConverter<A, B>(getOp());
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), converter,
-			getType()));
+		return new ConvertedIterableInterval<A, B>(input, converter, getType());
 	}
 
 }

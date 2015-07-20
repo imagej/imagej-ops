@@ -47,16 +47,19 @@ import org.scijava.plugin.Plugin;
  * @param <B>
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
-public class MapConvertRAIToRAI<A, B extends Type<B>> extends
-	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
+public class MapConvertRAIToRAI<A, B extends Type<B>>
+	extends
+	AbstractMapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public void run() {
+	public RandomAccessibleInterval<B> compute(
+		final RandomAccessibleInterval<A> input)
+	{
 		final ComputerConverter<A, B> converter =
 			new ComputerConverter<A, B>(getOp());
-		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			converter, getType()));
+		return new ConvertedRandomAccessibleInterval<A, B>(input, converter,
+			getType());
 	}
 
 }

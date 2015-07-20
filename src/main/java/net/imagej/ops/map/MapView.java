@@ -31,15 +31,10 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Input;
-import net.imagej.ops.Output;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.FunctionOp;
 
 /**
- * Abstract implementation of a {@link MapOp} which virtually converts entries in
- * I and V from A to B.
+ * A {@link MapOp} which virtually converts entries in I and O from A to B.
  *
  * @author Christian Dietz (University of Konstanz)
  * @param <A> type to be converted to <B>
@@ -47,76 +42,18 @@ import org.scijava.plugin.Parameter;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class MapView<A, B, I, O> implements MapOp<A, B, ComputerOp<A, B>>,
-	Input<I>, Output<O>
+public interface MapView<A, B, I, O> extends MapOp<A, B, ComputerOp<A, B>>,
+	FunctionOp<I, O>
 {
-
-	@Parameter
-	private I input;
-
-	@Parameter
-	private ComputerOp<A, B> op;
-
-	@Parameter
-	private B type;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private O output;
-
-	@Override
-	public ComputerOp<A, B> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(final ComputerOp<A, B> op) {
-		this.op = op;
-	}
-
-	/**
-	 * @return input which will be converted to a converted output
-	 */
-	@Override
-	public I getInput() {
-		return input;
-	}
-
-	/**
-	 * @param input which will be converted to a converted output
-	 */
-	@Override
-	public void setInput(final I input) {
-		this.input = input;
-	}
-
-	/**
-	 * Set the resulting output
-	 *
-	 * @param output
-	 */
-	public void setOutput(final O output) {
-		this.output = output;
-	}
-
-	/**
-	 * @return the resulting converted output
-	 */
-	@Override
-	public O getOutput() {
-		return output;
-	}
 
 	/**
 	 * @return type of resulting converted output
 	 */
-	public B getType() {
-		return type;
-	}
+	B getType();
 
 	/**
 	 * @param type of resulting converted output
 	 */
-	public void setType(final B type) {
-		this.type = type;
-	}
+	void setType(B type);
+
 }
