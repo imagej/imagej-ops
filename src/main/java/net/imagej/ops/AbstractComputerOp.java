@@ -50,6 +50,13 @@ public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 	@Parameter
 	private I in;
 
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		compute(getInput(), getOutput());
+	}
+
 	// -- Input methods --
 
 	@Override
@@ -58,27 +65,20 @@ public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 	}
 
 	@Override
-	public O getOutput() {
-		return out;
+	public void setInput(final I input) {
+		in = input;
 	}
 
 	// -- Output methods --
 
 	@Override
-	public void setInput(final I input) {
-		in = input;
+	public O getOutput() {
+		return out;
 	}
 
 	@Override
 	public void setOutput(final O output) {
 		out = output;
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute(getInput(), getOutput());
 	}
 
 	// -- Threadable methods --

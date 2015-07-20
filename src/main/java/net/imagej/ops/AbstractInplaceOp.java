@@ -45,6 +45,13 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		compute(getInput());
+	}
+
 	// -- Input methods --
 
 	@Override
@@ -77,13 +84,6 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 			throw new IllegalArgumentException("Input and output must match");
 		}
 		compute(input);
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute(getInput());
 	}
 
 	// -- Threadable methods --
