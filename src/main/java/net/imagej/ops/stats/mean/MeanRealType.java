@@ -76,7 +76,8 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 		final O sum = output.createVariable();
 		sumFunc.compute(input, sum);
 
-		// TODO: Better way to go LongType -> O without going through double?
+		// FIXME: Better way to go LongType -> O without going through double?
+		// Once convert namespace is fleshed out, use that.
 		final double mean = sum.getRealDouble() / size.getRealDouble();
 
 		output.setReal(mean);
