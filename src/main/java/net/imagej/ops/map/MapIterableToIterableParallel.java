@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
 public class MapIterableToIterableParallel<A, B> extends
-	AbstractMapFunction<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel
 {
 

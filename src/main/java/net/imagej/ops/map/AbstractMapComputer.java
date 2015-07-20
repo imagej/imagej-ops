@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @param <C> provides {@code <A>}s
  * @param <D> provides {@code <B>}s
  */
-public abstract class AbstractMapFunction<A, B, C, D> extends
+public abstract class AbstractMapComputer<A, B, C, D> extends
 	AbstractComputerOp<C, D> implements MapOp<A, B, ComputerOp<A, B>>
 {
 

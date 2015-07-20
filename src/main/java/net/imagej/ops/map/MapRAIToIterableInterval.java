@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapRAIToIterableInterval<A, B> extends
-	AbstractMapFunction<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+	AbstractMapComputer<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
 	implements Contingent
 {
 

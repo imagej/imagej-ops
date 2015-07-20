@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapIterableToIterable<A, B> extends
-	AbstractMapFunction<A, B, Iterable<A>, Iterable<B>>
+	AbstractMapComputer<A, B, Iterable<A>, Iterable<B>>
 {
 
 	@Override
