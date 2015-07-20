@@ -78,7 +78,7 @@ public class DefaultEquation<T extends RealType<T>> extends
 	// -- HybridOp methods --
 
 	@Override
-	public IterableInterval<T> createOutput(String input) {
+	public IterableInterval<T> createOutput(final String input) {
 		// produce a 256x256 float64 array-backed image by default
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IterableInterval<T> newImage =
