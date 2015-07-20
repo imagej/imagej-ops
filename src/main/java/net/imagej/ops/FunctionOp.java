@@ -31,19 +31,19 @@
 package net.imagej.ops;
 
 /**
- * Computer can compute the output given some input. 
+ * A function can compute the output given some input. 
  * 
  * @author Christian Dietz (University of Konstanz)
  * 
  * @param <I> type of input
  * @param <O> type of output
  */
-public interface Whizbang<I, O> {
+public interface FunctionOp<I, O> {
 
 	/**
 	 * Compute the output given some input.
 	 * 
-	 * @param input of the {@link Whizbang}
+	 * @param input of the {@link FunctionOp}
 	 * @return output
 	 */
 	O compute(I input);
