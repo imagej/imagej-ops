@@ -54,14 +54,15 @@ public class RunDefaultChunkerArray<A> extends AbstractComputerOp<A[], A[]>
 		opService.run(DefaultChunker.class, new Chunk() {
 
 			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				int i = startIndex;
-				
+
 				int ctr = 0;
 				while (ctr < numSteps) {
 					output[i] = input[i];
-				    i += stepSize;
+					i += stepSize;
 					ctr++;
 				}
 			}

@@ -61,18 +61,19 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 		opService.run(DefaultChunker.class, new CursorBasedChunk() {
 
 			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				final Cursor<A> cursor = input.localizingCursor();
 				final Cursor<A> cursorOut = output.localizingCursor();
-			
+
 				setToStart(cursor, startIndex);
 				setToStart(cursorOut, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
 					cursorOut.get().set(cursor.get());
-					
+
 					cursorOut.jumpFwd(stepSize);
 					cursor.jumpFwd(stepSize);
 					ctr++;
