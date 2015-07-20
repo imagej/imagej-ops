@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  * @param <T>
- * @param <I>
+ * @param <O>
  */
 @Plugin(type = Ops.Filter.IFFT.class, name = Ops.Filter.IFFT.NAME,
 	priority = Priority.HIGH_PRIORITY)
