@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,27 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops;
 
-import net.imagej.ops.ComputerConverter;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.type.Type;
+import net.imglib2.converter.Converter;
 
-import org.scijava.plugin.Plugin;
+/**
+ * A {@link Converter} backed by a {@link ComputerOp}.
+ * 
+ * @author Curtis Rueden
+ */
+public class ComputerConverter<A, B> implements Converter<A, B> {
 
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
-public class MapIterableIntervalToView<A, B extends Type<B>> extends
-	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
-{
+	private final ComputerOp<A, B> op;
+
+	public ComputerConverter(final ComputerOp<A, B> op) {
+		this.op = op;
+	}
 
 	@Override
-	public void run() {
-		final ComputerConverter<A, B> converter =
-			new ComputerConverter<A, B>(getOp());
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), converter,
-			getType()));
+	public void convert(final A input, final B output) {
+		op.compute(input, output);
 	}
 
 }

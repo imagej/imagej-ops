@@ -30,6 +30,7 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.converter.read.ConvertedRandomAccessible;
@@ -52,7 +53,10 @@ public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getOp(),
+		final ComputerConverter<A, B> converter =
+			new ComputerConverter<A, B>(getOp());
+		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), converter,
 			getType()));
 	}
+
 }

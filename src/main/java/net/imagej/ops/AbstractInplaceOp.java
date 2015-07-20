@@ -94,11 +94,4 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 		return this;
 	}
 
-	// -- Converter methods --
-
-	@Override
-	public void convert(final A input, final A output) {
-		compute(input, output);
-	}
-
 }

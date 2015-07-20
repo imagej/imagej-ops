@@ -89,11 +89,4 @@ public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 		return this;
 	}
 
-	// -- Converter methods --
-
-	@Override
-	public void convert(final I input, final O output) {
-		compute(input, output);
-	}
-
 }

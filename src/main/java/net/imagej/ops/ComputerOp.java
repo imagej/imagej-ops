@@ -30,8 +30,6 @@
 
 package net.imagej.ops;
 
-import net.imglib2.converter.Converter;
-
 import org.scijava.ItemIO;
 
 /**
@@ -57,9 +55,7 @@ import org.scijava.ItemIO;
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface ComputerOp<I, O> extends Op, Input<I>, Output<O>, Threadable,
-	Converter<I, O>
-{
+public interface ComputerOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
 	void compute(I input, O output);
 

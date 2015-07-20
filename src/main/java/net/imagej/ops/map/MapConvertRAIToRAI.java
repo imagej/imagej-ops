@@ -30,6 +30,7 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
@@ -52,7 +53,10 @@ public class MapConvertRAIToRAI<A, B extends Type<B>> extends
 
 	@Override
 	public void run() {
+		final ComputerConverter<A, B> converter =
+			new ComputerConverter<A, B>(getOp());
 		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getOp(), getType()));
+			converter, getType()));
 	}
+
 }
