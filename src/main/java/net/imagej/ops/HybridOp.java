@@ -58,9 +58,9 @@ public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 	O compute(I input);
 
 	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
+	 * Creates an output object of type O, given some input. The output can then
+	 * be used to call {@link ComputerOp#compute}, which will fill the output with
+	 * the result.
 	 */
 	O createOutput(I input);
 
