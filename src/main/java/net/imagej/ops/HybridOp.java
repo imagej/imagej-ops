@@ -38,7 +38,7 @@ package net.imagej.ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface HybridOp<I, O> extends Function<I, O>, Computer<I, O> {
+public interface HybridOp<I, O> extends Function<I, O>, Whizbang<I, O> {
 
 	/**
 	 * Compute the output of a function, given some input.

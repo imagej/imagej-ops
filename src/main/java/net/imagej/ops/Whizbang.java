@@ -38,12 +38,12 @@ package net.imagej.ops;
  * @param <I> type of input
  * @param <O> type of output
  */
-public interface Computer<I, O> {
+public interface Whizbang<I, O> {
 
 	/**
 	 * Compute the output given some input.
 	 * 
-	 * @param input of the {@link Computer}
+	 * @param input of the {@link Whizbang}
 	 * @return output
 	 */
 	O compute(I input);
