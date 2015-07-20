@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.ifft;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 
 import org.scijava.plugin.Parameter;
@@ -41,7 +41,7 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  */
 public abstract class AbstractIFFTIterable<T, C, I extends Iterable<T>, O extends Iterable<C>>
-	extends AbstractStrictFunction<I, O>
+	extends AbstractComputerOp<I, O>
 {
 
 	@Parameter

@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW_PRIORITY)
 public class RunDefaultChunker<A extends RealType<A>> extends
-	AbstractStrictFunction<IterableInterval<A>, IterableInterval<A>> implements
+	AbstractComputerOp<IterableInterval<A>, IterableInterval<A>> implements
 	Parallel
 {
 

@@ -32,7 +32,7 @@ package net.imagej.ops.stats.variance;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	AbstractComputerOp<Iterable<T>, DoubleType> implements
 	VarianceOp<T, DoubleType>
 {
 

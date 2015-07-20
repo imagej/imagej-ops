@@ -33,7 +33,7 @@ package net.imagej.ops.filter.ifft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.IFFT.class, name = Ops.Filter.IFFT.NAME)
 public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 	extends
-	AbstractStrictFunction<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
+	AbstractComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.IFFT
 {
 

@@ -269,8 +269,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final Function<A, B> first,
-		final Function<B, C> second)
+	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
+		final ComputerOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -280,8 +280,8 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final Function<A, B> first,
-		final Function<B, C> second, final BufferFactory<A, B> bufferFactory)
+	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
+		final ComputerOp<B, C> second, final BufferFactory<A, B> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -303,7 +303,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A> A join(final A out, final A in,
-		final List<? extends Function<A, A>> functions,
+		final List<? extends ComputerOp<A, A>> functions,
 		final BufferFactory<A, A> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
@@ -324,7 +324,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final Function<A, B> second)
+		final ComputerOp<A, B> second)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -335,7 +335,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final Function<A, B> second, final BufferFactory<A, A> bufferFactory)
+		final ComputerOp<A, B> second, final BufferFactory<A, A> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -345,7 +345,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B> B join(final B out, final A in, final Function<A, B> first,
+	public <A, B> B join(final B out, final A in, final ComputerOp<A, B> first,
 		final InplaceOp<B> second)
 	{
 		@SuppressWarnings("unchecked")
@@ -356,7 +356,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A, B> B join(final B out, final A in, final Function<A, B> first,
+	public <A, B> B join(final B out, final A in, final ComputerOp<A, B> first,
 		final InplaceOp<B> second, final BufferFactory<A, B> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
@@ -372,7 +372,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <I> I loop(final I arg, final Function<I, I> function, final int n) {
+	public <I> I loop(final I arg, final ComputerOp<I, I> function, final int n) {
 		@SuppressWarnings("unchecked")
 		final I result =
 			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, function, n);
@@ -380,7 +380,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <A> A loop(final A out, final A in, final Function<A, A> function,
+	public <A> A loop(final A out, final A in, final ComputerOp<A, A> function,
 		final BufferFactory<A, A> bufferFactory, final int n)
 	{
 		@SuppressWarnings("unchecked")
@@ -397,7 +397,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B extends Type<B>> RandomAccessibleInterval<B> map(
-		final RandomAccessibleInterval<A> input, final Function<A, B> function,
+		final RandomAccessibleInterval<A> input, final ComputerOp<A, B> function,
 		final B type)
 	{
 		@SuppressWarnings("unchecked")
@@ -409,7 +409,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B extends Type<B>> RandomAccessible<B>
-		map(final RandomAccessible<A> input, final Function<A, B> function,
+		map(final RandomAccessible<A> input, final ComputerOp<A, B> function,
 			final B type)
 	{
 		@SuppressWarnings("unchecked")
@@ -422,7 +422,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B extends Type<B>> IterableInterval<B>
-		map(final IterableInterval<A> input, final Function<A, B> function,
+		map(final IterableInterval<A> input, final ComputerOp<A, B> function,
 			final B type)
 	{
 		@SuppressWarnings("unchecked")
@@ -445,7 +445,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final IterableInterval<A> in, final Function<A, B> func)
+		final IterableInterval<A> in, final ComputerOp<A, B> func)
 	{
 		// net.imagej.ops.map.MapIterableToIterableParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToIterableInterval.class
@@ -458,7 +458,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <A, B> RandomAccessibleInterval<B> map(
 		final RandomAccessibleInterval<B> out, final IterableInterval<A> in,
-		final Function<A, B> func)
+		final ComputerOp<A, B> func)
 	{
 		// net.imagej.ops.map.MapIterableToRAIParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToRAI.class
@@ -481,7 +481,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final RandomAccessibleInterval<A> in, final Function<A, B> func)
+		final RandomAccessibleInterval<A> in, final ComputerOp<A, B> func)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
@@ -494,7 +494,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public <I, O> RandomAccessibleInterval<O> map(
 		final RandomAccessibleInterval<O> out,
 		final RandomAccessibleInterval<I> in, final Shape shape,
-		final Function<Iterable<I>, O> func)
+		final ComputerOp<Iterable<I>, O> func)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -505,7 +505,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in,
-		final Function<A, B> func)
+		final ComputerOp<A, B> func)
 	{
 		@SuppressWarnings("unchecked")
 		final Iterable<B> result =
@@ -522,7 +522,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final Function<I, O> func,
+		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> func,
 		final int... axisIndices)
 	{
 		@SuppressWarnings("unchecked")
@@ -536,7 +536,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final Function<I, O> func,
+		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> func,
 		final int[] axisIndices, final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")

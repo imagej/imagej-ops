@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.variance;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -39,7 +39,7 @@ import net.imagej.ops.Ops;
  * @author Christian Dietz (University of Konstanz)
  */
 public interface VarianceOp<T, V> extends Ops.Stats.Variance,
-	Function<Iterable<T>, V>
+	ComputerOp<Iterable<T>, V>
 {
 	// NB: Marker interface.
 }

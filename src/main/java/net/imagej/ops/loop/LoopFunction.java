@@ -30,14 +30,14 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 
 /**
- * Loops over an injected {@link Function}. A {@link LoopFunction} applies a
- * {@link Function} n-times to an input.
+ * Loops over an injected {@link ComputerOp}. A {@link LoopFunction} applies a
+ * {@link ComputerOp} n-times to an input.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopFunction<I> extends Function<I, I>, LoopOp<I> {
+public interface LoopFunction<I> extends ComputerOp<I, I>, LoopOp<I> {
 	// NB: Marker interface
 }

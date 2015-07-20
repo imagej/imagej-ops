@@ -30,20 +30,20 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link Function} with an {@link InplaceOp}.
+ * Joins a {@link ComputerOp} with an {@link InplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctionAndInplace<A, B> extends
-	AbstractJoinFunctionAndFunction<A, B, B, Function<A, B>, InplaceOp<B>>
+	AbstractJoinFunctionAndFunction<A, B, B, ComputerOp<A, B>, InplaceOp<B>>
 {
 
 	@Override

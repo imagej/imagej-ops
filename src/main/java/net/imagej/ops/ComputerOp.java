@@ -30,50 +30,40 @@
 
 package net.imagej.ops;
 
+import net.imglib2.converter.Converter;
+
 import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for strict {@link Function} ops, which require the "out"
- * parameter to be explicitly specified.
+ * A {@code Function} is an {@link Op} that has a typed input parameter, and a
+ * typed output parameter.
+ * <p>
+ * The function provides a {@link #compute} method to compute the function for
+ * different input and output parameters.
+ * </p>
+ * <p>
+ * Note that the typed output is actually considered both an input <em>and</em>
+ * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
+ * This fact is critical so that a preallocated data structure may be passed in
+ * and filled by the function. It is <em>required</em> that if an output value
+ * is given in this way, it will be populated with the function's result.
+ * </p>
+ * <p>
+ * Lastly, functions implement the {@link Threadable} interface, and hence can
+ * be reused across multiple threads of a {@link Parallel} op.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @see AbstractHybridOp
  */
-public abstract class AbstractStrictFunction<I, O> extends
-	AbstractFunction<I, O>
+public interface ComputerOp<I, O> extends Op, Input<I>, Output<O>, Threadable,
+	Converter<I, O>
 {
 
-	@Parameter(type = ItemIO.BOTH)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- Input methods --
+	void compute(I input, O output);
 
 	@Override
-	public I getInput() {
-		return in;
-	}
-
-	@Override
-	public O getOutput() {
-		return out;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
+	ComputerOp<I, O> getIndependentInstance();
 
 }

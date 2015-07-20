@@ -34,27 +34,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link Function}s.
+ * Joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctions<A> extends
-	AbstractJoinFunctions<A, Function<A, A>>
+	AbstractJoinFunctions<A, ComputerOp<A, A>>
 {
 
 	@Override
 	public void compute(final A input, final A output) {
-		final List<? extends Function<A, A>> functions = getFunctions();
-		final Iterator<? extends Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
+		final List<? extends ComputerOp<A, A>> functions = getFunctions();
+		final Iterator<? extends ComputerOp<A, A>> it = functions.iterator();
+		final ComputerOp<A, A> first = it.next();
 
 		if (functions.size() == 1) {
 			first.compute(input, output);
@@ -87,8 +87,8 @@ public class DefaultJoinFunctions<A> extends
 
 		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
 
-		final ArrayList<Function<A, A>> funcs = new ArrayList<Function<A, A>>();
-		for (final Function<A, A> func : getFunctions()) {
+		final ArrayList<ComputerOp<A, A>> funcs = new ArrayList<ComputerOp<A, A>>();
+		for (final ComputerOp<A, A> func : getFunctions()) {
 			funcs.add(func.getIndependentInstance());
 		}
 

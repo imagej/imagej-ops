@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.variance;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class VarianceRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	AbstractComputerOp<Iterable<T>, DoubleType> implements
 	VarianceOp<T, DoubleType>
 {
 

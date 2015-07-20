@@ -31,14 +31,14 @@
 package net.imagej.ops;
 
 /**
- * An {@link HybridOp} is a {@link Function} which is able to create the
+ * An {@link HybridOp} is a {@link ComputerOp} which is able to create the
  * output object itself. Hence, the "out" parameter is marked optional (i.e.,
  * "required = false") and may be omitted, in which case it will be created
  * based on the given "in" parameter.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface HybridOp<I, O> extends Function<I, O>, Whizbang<I, O> {
+public interface HybridOp<I, O> extends ComputerOp<I, O>, Whizbang<I, O> {
 
 	/**
 	 * Compute the output of a function, given some input.

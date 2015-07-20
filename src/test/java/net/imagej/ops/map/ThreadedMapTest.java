@@ -33,7 +33,7 @@ package net.imagej.ops.map;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -139,7 +139,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	}
 
 	private static class AddOneFunctional extends
-		AbstractStrictFunction<ByteType, ByteType>
+		AbstractComputerOp<ByteType, ByteType>
 	{
 
 		@Override

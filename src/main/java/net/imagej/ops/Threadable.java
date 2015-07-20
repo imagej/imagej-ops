@@ -53,7 +53,7 @@ package net.imagej.ops;
  * </p>
  * 
  * @author Curtis Rueden
- * @see Function
+ * @see ComputerOp
  * @see Parallel
  */
 public interface Threadable {

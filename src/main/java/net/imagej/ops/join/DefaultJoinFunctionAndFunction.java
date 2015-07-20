@@ -30,19 +30,19 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link Function}s.
+ * Joins two {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
 public class DefaultJoinFunctionAndFunction<A, B, C> extends
-	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
+	AbstractJoinFunctionAndFunction<A, B, C, ComputerOp<A, B>, ComputerOp<B, C>>
 {
 
 	@Override

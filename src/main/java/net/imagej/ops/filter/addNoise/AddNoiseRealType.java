@@ -32,7 +32,7 @@ package net.imagej.ops.filter.addNoise;
 
 import java.util.Random;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.AddNoise.class, name = Ops.Filter.AddNoise.NAME)
 public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<I, O> implements Ops.Filter.AddNoise
+	AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
 {
 
 	@Parameter

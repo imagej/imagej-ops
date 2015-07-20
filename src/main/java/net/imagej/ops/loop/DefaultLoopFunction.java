@@ -32,28 +32,28 @@ package net.imagej.ops.loop;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.join.DefaultJoinFunctions;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link Function} multiple times to an image.
+ * Applies a {@link ComputerOp} multiple times to an image.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
 public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<Function<A, A>, A>
+	AbstractLoopFunction<ComputerOp<A, A>, A>
 {
 
 	@Override
 	public void compute(final A input, final A output) {
 		final int n = getLoopCount();
 
-		final ArrayList<Function<A, A>> functions =
-			new ArrayList<Function<A, A>>(n);
+		final ArrayList<ComputerOp<A, A>> functions =
+			new ArrayList<ComputerOp<A, A>>(n);
 		for (int i = 0; i < n; i++)
 			functions.add(getFunction());
 

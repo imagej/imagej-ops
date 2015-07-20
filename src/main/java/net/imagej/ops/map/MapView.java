@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Input;
 import net.imagej.ops.Output;
 
@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public abstract class MapView<A, B, I, O> implements MapOp<A, B, Function<A, B>>,
+public abstract class MapView<A, B, I, O> implements MapOp<A, B, ComputerOp<A, B>>,
 	Input<I>, Output<O>
 {
 
@@ -55,7 +55,7 @@ public abstract class MapView<A, B, I, O> implements MapOp<A, B, Function<A, B>>
 	private I input;
 
 	@Parameter
-	private Function<A, B> function;
+	private ComputerOp<A, B> function;
 
 	@Parameter
 	private B type;
@@ -64,12 +64,12 @@ public abstract class MapView<A, B, I, O> implements MapOp<A, B, Function<A, B>>
 	private O output;
 
 	@Override
-	public Function<A, B> getFunction() {
+	public ComputerOp<A, B> getFunction() {
 		return function;
 	}
 
 	@Override
-	public void setFunction(final Function<A, B> function) {
+	public void setFunction(final ComputerOp<A, B> function) {
 		this.function = function;
 	}
 

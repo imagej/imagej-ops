@@ -32,7 +32,7 @@ package net.imagej.ops.stats.stdDev;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.StdDev.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements StdDev<T, T>
+	AbstractComputerOp<Iterable<T>, T> implements StdDev<T, T>
 {
 
 	@Override

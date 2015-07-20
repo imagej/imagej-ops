@@ -30,7 +30,7 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
 public class NormalizeRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<T, T> implements Ops.Image.Normalize
+	AbstractComputerOp<T, T> implements Ops.Image.Normalize
 {
 
 	@Parameter

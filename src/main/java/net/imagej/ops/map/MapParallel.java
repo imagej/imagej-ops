@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
@@ -65,7 +65,7 @@ public class MapParallel<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Function<A, A> safe = func.getIndependentInstance();
+				final ComputerOp<A, A> safe = func.getIndependentInstance();
 				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);

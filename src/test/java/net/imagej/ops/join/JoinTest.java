@@ -37,9 +37,9 @@ import java.util.List;
 
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
@@ -136,8 +136,8 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testJoinFunctions() {
 
-		final List<Function<Img<ByteType>, Img<ByteType>>> functions =
-			new ArrayList<Function<Img<ByteType>, Img<ByteType>>>();
+		final List<ComputerOp<Img<ByteType>, Img<ByteType>>> functions =
+			new ArrayList<ComputerOp<Img<ByteType>, Img<ByteType>>>();
 
 		for (int i = 0; i < 5; i++) {
 			functions.add(new AddOneFunctionalImg());
@@ -173,7 +173,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractComputerOp<ByteType, ByteType> {
 
 		@Override
 		public void compute(final ByteType input, final ByteType output) {
@@ -183,7 +183,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	class AddOneFunctionalImg extends
-		AbstractStrictFunction<Img<ByteType>, Img<ByteType>>
+		AbstractComputerOp<Img<ByteType>, Img<ByteType>>
 	{
 
 		@Override

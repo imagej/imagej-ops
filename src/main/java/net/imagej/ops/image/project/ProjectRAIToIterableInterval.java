@@ -32,9 +32,9 @@ package net.imagej.ops.image.project;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -48,12 +48,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Project.class, name = Ops.Image.Project.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class ProjectRAIToIterableInterval<T, V> extends
-	AbstractStrictFunction<RandomAccessibleInterval<T>, IterableInterval<V>>
+	AbstractComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
 	implements Contingent, Ops.Image.Project
 {
 
 	@Parameter
-	private Function<Iterable<T>, V> method;
+	private ComputerOp<Iterable<T>, V> method;
 
 	// dimension which will be projected
 	@Parameter

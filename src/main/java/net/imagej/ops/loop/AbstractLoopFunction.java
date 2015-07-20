@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -41,13 +41,13 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
-	AbstractStrictFunction<I, I> implements LoopFunction<I>
+public abstract class AbstractLoopFunction<F extends ComputerOp<I, I>, I> extends
+	AbstractComputerOp<I, I> implements LoopFunction<I>
 {
 
 	/** Function to loop. */
 	@Parameter
-	private Function<I, I> function;
+	private ComputerOp<I, I> function;
 
 	/** Buffer for intermediate results. */
 	@Parameter
@@ -66,12 +66,12 @@ public abstract class AbstractLoopFunction<F extends Function<I, I>, I> extends
 	}
 
 	@Override
-	public Function<I, I> getFunction() {
+	public ComputerOp<I, I> getFunction() {
 		return function;
 	}
 
 	@Override
-	public void setFunction(final Function<I, I> function) {
+	public void setFunction(final ComputerOp<I, I> function) {
 		this.function = function;
 	}
 	

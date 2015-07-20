@@ -31,7 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -43,7 +43,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapOp} using a {@link Function} on {@link RandomAccessibleInterval} and
+ * {@link MapOp} using a {@link ComputerOp} on {@link RandomAccessibleInterval} and
  * {@link IterableInterval}
  *
  * @author Martin Horn (University of Konstanz)

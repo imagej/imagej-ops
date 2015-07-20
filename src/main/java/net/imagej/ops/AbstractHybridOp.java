@@ -40,7 +40,7 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class AbstractHybridOp<I, O> extends
-	AbstractFunction<I, O> implements HybridOp<I, O>
+	AbstractInputOutput<I, O> implements HybridOp<I, O>
 {
 
 	@Parameter(type = ItemIO.BOTH, required = false)
@@ -58,7 +58,7 @@ public abstract class AbstractHybridOp<I, O> extends
 		return output;
 	}
 
-	// -- Function methods --
+	// -- ComputerOp methods --
 
 	@Override
 	public void compute(final I input, final O output) {

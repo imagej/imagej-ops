@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.min;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MinOp<T, V> extends Ops.Stats.Min, Function<Iterable<T>, V> {
+public interface MinOp<T, V> extends Ops.Stats.Min, ComputerOp<Iterable<T>, V> {
 	// NB: Marker interface.
 }

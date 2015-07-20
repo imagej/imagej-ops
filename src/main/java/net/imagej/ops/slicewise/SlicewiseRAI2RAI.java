@@ -30,8 +30,8 @@
 
 package net.imagej.ops.slicewise;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Slicewise.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class SlicewiseRAI2RAI<I, O>
 	extends
-	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements
 	SlicewiseOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
@@ -59,7 +59,7 @@ public class SlicewiseRAI2RAI<I, O>
 	private OpService opService;
 
 	@Parameter
-	private Function<I, O> func;
+	private ComputerOp<I, O> func;
 
 	@Parameter
 	private int[] axisIndices;

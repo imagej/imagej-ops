@@ -39,7 +39,7 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface InplaceOp<A> extends Function<A, A> {
+public interface InplaceOp<A> extends ComputerOp<A, A> {
 
 	A compute(A arg);
 

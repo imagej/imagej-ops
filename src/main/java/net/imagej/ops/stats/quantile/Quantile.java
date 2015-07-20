@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.quantile;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface Quantile<T, V> extends Ops.Stats.Quantile, Function<T, V> {
+public interface Quantile<T, V> extends Ops.Stats.Quantile, ComputerOp<T, V> {
 	// NB: Marker interface.
 }

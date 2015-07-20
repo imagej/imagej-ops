@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.stdDev;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.variance.VarianceOp;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.StdDev.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	AbstractComputerOp<Iterable<T>, DoubleType> implements
 	StdDev<T, DoubleType>
 {
 

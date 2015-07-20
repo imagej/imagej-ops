@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.mean;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.size.SizeOp;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Mean.class, name = Ops.Stats.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<Iterable<I>, O> implements MeanOp<Iterable<I>, O>
+	AbstractComputerOp<Iterable<I>, O> implements MeanOp<Iterable<I>, O>
 {
 
 	@Parameter(required = false)

@@ -30,13 +30,13 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.InplaceOp;
 
 /**
  * A join operation which joins two {@link InplaceOp}s. The resulting
- * function will take the input of the first {@link Function} as input and the
- * output of the second {@link Function} as the output;
+ * function will take the input of the first {@link ComputerOp} as input and the
+ * output of the second {@link ComputerOp} as the output;
  * 
  * @author Christian Dietz (University of Konstanz)
  */

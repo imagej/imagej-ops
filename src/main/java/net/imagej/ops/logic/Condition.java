@@ -30,7 +30,7 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imglib2.type.logic.BoolType;
 
 /**
@@ -39,7 +39,7 @@ import net.imglib2.type.logic.BoolType;
  * @author Barry DeZonia
  * @author Aparna Pal
  */
-public interface Condition<T> extends Function<T, BoolType> {
+public interface Condition<T> extends ComputerOp<T, BoolType> {
 
 	boolean isTrue(T val);
 

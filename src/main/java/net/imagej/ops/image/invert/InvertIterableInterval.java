@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.invert;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Invert.class, name = Ops.Image.Invert.NAME,
 	priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStrictFunction<IterableInterval<I>, IterableInterval<O>>
+	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
 	implements Ops.Image.Invert
 {
 
@@ -59,7 +59,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		final IterableInterval<O> output)
 	{
 		I inType = input.firstElement().createVariable();
-		Function<I, O> invert;
+		ComputerOp<I, O> invert;
 		if (inType.getMinValue() < 0) {
 			invert = new SignedRealInvert<I, O>();
 		}
@@ -70,7 +70,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractStrictFunction<II, OO>
+		extends AbstractComputerOp<II, OO>
 	{
 
 		@Override
@@ -82,7 +82,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	}
 
 	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractStrictFunction<II, OO>
+		extends AbstractComputerOp<II, OO>
 	{
 
 		private final double max;

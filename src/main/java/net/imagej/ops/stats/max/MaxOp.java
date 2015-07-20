@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.max;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MaxOp<T, V> extends Ops.Stats.Max, Function<Iterable<T>, V> {
+public interface MaxOp<T, V> extends Ops.Stats.Max, ComputerOp<Iterable<T>, V> {
 	// NB: Marker interface.
 }

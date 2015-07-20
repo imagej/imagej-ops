@@ -30,8 +30,8 @@
 
 package net.imagej.ops.neighborhood;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.MapOp;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates an {@link Function} for each {@link Neighborhood} on the in
+ * Evaluates an {@link ComputerOp} for each {@link Neighborhood} on the in
  * {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -52,8 +52,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
-	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements MapOp<Iterable<I>, O, Function<Iterable<I>, O>>
+	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	implements MapOp<Iterable<I>, O, ComputerOp<Iterable<I>, O>>
 {
 
 	@Parameter
@@ -63,7 +63,7 @@ public class MapNeighborhood<I, O> extends
 	private OpService ops;
 
 	@Parameter
-	private Function<Iterable<I>, O> func;
+	private ComputerOp<Iterable<I>, O> func;
 
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
@@ -76,12 +76,12 @@ public class MapNeighborhood<I, O> extends
 	}
 
 	@Override
-	public Function<Iterable<I>, O> getFunction() {
+	public ComputerOp<Iterable<I>, O> getFunction() {
 		return func;
 	}
 
 	@Override
-	public void setFunction(Function<Iterable<I>, O> function) {
+	public void setFunction(ComputerOp<Iterable<I>, O> function) {
 		func = function;
 	}
 }

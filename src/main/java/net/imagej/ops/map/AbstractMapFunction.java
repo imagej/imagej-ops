@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -45,20 +45,20 @@ import org.scijava.plugin.Parameter;
  * @param <D> provides {@code <B>}s
  */
 public abstract class AbstractMapFunction<A, B, C, D> extends
-	AbstractStrictFunction<C, D> implements MapOp<A, B, Function<A, B>>
+	AbstractComputerOp<C, D> implements MapOp<A, B, ComputerOp<A, B>>
 {
 
-	/** {@link Function} to be used for mapping. */
+	/** {@link ComputerOp} to be used for mapping. */
 	@Parameter
-	protected Function<A, B> func;
+	protected ComputerOp<A, B> func;
 
 	@Override
-	public Function<A, B> getFunction() {
+	public ComputerOp<A, B> getFunction() {
 		return func;
 	}
 
 	@Override
-	public void setFunction(final Function<A, B> func) {
+	public void setFunction(final ComputerOp<A, B> func) {
 		this.func = func;
 	}
 }

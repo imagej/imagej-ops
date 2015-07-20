@@ -33,18 +33,18 @@ package net.imagej.ops.join;
 import java.util.List;
 
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Join;
 
 /**
- * A join operation which joins a list of {@link Function}s.
+ * A join operation which joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinFunctions<A, F extends Function<A, A>> extends
-	Function<A, A>, Ops.Join
+public interface JoinFunctions<A, F extends ComputerOp<A, A>> extends
+	ComputerOp<A, A>, Ops.Join
 {
 
 	/**
@@ -61,13 +61,13 @@ public interface JoinFunctions<A, F extends Function<A, A>> extends
 	void setBufferFactory(BufferFactory<A, A> bufferFactory);
 
 	/**
-	 * @return {@link List} of {@link Function}s which are joined in this
+	 * @return {@link List} of {@link ComputerOp}s which are joined in this
 	 *         {@link Join}
 	 */
 	List<? extends F> getFunctions();
 
 	/**
-	 * Sets the {@link Function}s which are joined in this {@link Join}.
+	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
 	 * 
 	 * @param functions joined in this {@link Join}
 	 */

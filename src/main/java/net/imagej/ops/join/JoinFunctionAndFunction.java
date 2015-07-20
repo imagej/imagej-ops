@@ -30,38 +30,38 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * A join operation which joins two {@link Function}s. The resulting function
- * will take the input of the first {@link Function} as input and the output of
- * the second {@link Function} as the output.
+ * A join operation which joins two {@link ComputerOp}s. The resulting function
+ * will take the input of the first {@link ComputerOp} as input and the output of
+ * the second {@link ComputerOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends Function<A, C>, Ops.Join
+public interface JoinFunctionAndFunction<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
+	extends ComputerOp<A, C>, Ops.Join
 {
 
 	/**
-	 * @return first {@link Function} to be joined
+	 * @return first {@link ComputerOp} to be joined
 	 */
 	F1 getFirst();
 
 	/**
-	 * @param first {@link Function} to be joined
+	 * @param first {@link ComputerOp} to be joined
 	 */
 	void setFirst(F1 first);
 
 	/**
-	 * @return second {@link Function} to be joined
+	 * @return second {@link ComputerOp} to be joined
 	 */
 	F2 getSecond();
 
 	/**
-	 * @param second {@link Function} to be joined
+	 * @param second {@link ComputerOp} to be joined
 	 */
 	void setSecond(F2 second);
 

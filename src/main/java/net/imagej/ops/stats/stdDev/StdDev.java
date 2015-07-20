@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.stdDev;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -39,7 +39,7 @@ import net.imagej.ops.Ops;
  * @author Christian Dietz (University of Konstanz)
  */
 public interface StdDev<T, V> extends Ops.Stats.StdDev,
-	Function<Iterable<T>, V>
+	ComputerOp<Iterable<T>, V>
 {
 	// NB: Marker interface.
 }

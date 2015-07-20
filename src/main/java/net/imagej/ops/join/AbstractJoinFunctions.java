@@ -32,9 +32,9 @@ package net.imagej.ops.join;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -44,8 +44,8 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
-	extends AbstractStrictFunction<A, A> implements JoinFunctions<A, F>
+public abstract class AbstractJoinFunctions<A, F extends ComputerOp<A, A>>
+	extends AbstractComputerOp<A, A> implements JoinFunctions<A, F>
 {
 
 	/** List of functions to be joined. */

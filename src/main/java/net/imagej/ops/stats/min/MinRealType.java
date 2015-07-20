@@ -32,7 +32,7 @@ package net.imagej.ops.stats.min;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Min.class, name = Ops.Stats.Min.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MinRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements MinOp<T, T>
+	AbstractComputerOp<Iterable<T>, T> implements MinOp<T, T>
 {
 
 	@Override
