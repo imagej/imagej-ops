@@ -45,7 +45,7 @@ public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
 	BufferFactory<Img<T>, Img<V>>
 {
 
-	private V resType;
+	private final V resType;
 
 	/**
 	 * @param resType type of resulting {@link Img}
