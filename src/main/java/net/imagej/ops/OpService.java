@@ -349,8 +349,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapNeighborhood.class)
-	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
-		RandomAccessibleInterval<I> in, Shape shape, ComputerOp<Iterable<I>, O> func);
+	<I, O> RandomAccessibleInterval<O>
+		map(RandomAccessibleInterval<O> out, RandomAccessibleInterval<I> in,
+			ComputerOp<Iterable<I>, O> func, Shape shape);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)

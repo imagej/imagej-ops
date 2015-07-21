@@ -493,13 +493,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <I, O> RandomAccessibleInterval<O> map(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final Shape shape,
-		final ComputerOp<Iterable<I>, O> func)
+		final RandomAccessibleInterval<I> in,
+		final ComputerOp<Iterable<I>, O> func, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.MapNeighborhood.class, out, in, shape, func);
+				net.imagej.ops.map.MapNeighborhood.class, out, in, func, shape);
 		return result;
 	}
 
