@@ -41,16 +41,16 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractJoinComputerAndComputer<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
+public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
 	extends AbstractComputerOp<A, C> implements
-	JoinComputerAndComputer<A, B, C, F1, F2>
+	JoinComputerAndComputer<A, B, C, C1, C2>
 {
 
 	@Parameter
-	private F1 first;
+	private C1 first;
 
 	@Parameter
-	private F2 second;
+	private C2 second;
 
 	@Parameter(required = false)
 	private BufferFactory<A, B> bufferFactory;
@@ -71,22 +71,22 @@ public abstract class AbstractJoinComputerAndComputer<A, B, C, F1 extends Comput
 	}
 
 	@Override
-	public F1 getFirst() {
+	public C1 getFirst() {
 		return first;
 	}
 
 	@Override
-	public void setFirst(final F1 first) {
+	public void setFirst(final C1 first) {
 		this.first = first;
 	}
 
 	@Override
-	public F2 getSecond() {
+	public C2 getSecond() {
 		return second;
 	}
 
 	@Override
-	public void setSecond(final F2 second) {
+	public void setSecond(final C2 second) {
 		this.second = second;
 	}
 

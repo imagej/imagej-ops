@@ -41,28 +41,28 @@ import net.imagej.ops.Ops;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinComputerAndComputer<A, B, C, F1 extends ComputerOp<A, B>, F2 extends ComputerOp<B, C>>
+public interface JoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
 	extends ComputerOp<A, C>, Ops.Join
 {
 
 	/**
 	 * @return first {@link ComputerOp} to be joined
 	 */
-	F1 getFirst();
+	C1 getFirst();
 
 	/**
 	 * @param first {@link ComputerOp} to be joined
 	 */
-	void setFirst(F1 first);
+	void setFirst(C1 first);
 
 	/**
 	 * @return second {@link ComputerOp} to be joined
 	 */
-	F2 getSecond();
+	C2 getSecond();
 
 	/**
 	 * @param second {@link ComputerOp} to be joined
 	 */
-	void setSecond(F2 second);
+	void setSecond(C2 second);
 
 }

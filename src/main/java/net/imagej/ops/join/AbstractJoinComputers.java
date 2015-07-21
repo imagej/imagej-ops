@@ -44,12 +44,12 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
-	extends AbstractComputerOp<A, A> implements JoinComputers<A, F>
+public abstract class AbstractJoinComputers<A, C extends ComputerOp<A, A>>
+	extends AbstractComputerOp<A, A> implements JoinComputers<A, C>
 {
 
 	@Parameter
-	private List<? extends F> ops;
+	private List<? extends C> ops;
 
 	@Parameter
 	private BufferFactory<A, A> bufferFactory;
@@ -67,12 +67,12 @@ public abstract class AbstractJoinComputers<A, F extends ComputerOp<A, A>>
 	}
 
 	@Override
-	public List<? extends F> getOps() {
+	public List<? extends C> getOps() {
 		return ops;
 	}
 
 	@Override
-	public void setOps(final List<? extends F> ops) {
+	public void setOps(final List<? extends C> ops) {
 		this.ops = ops;
 	}
 
