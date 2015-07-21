@@ -27,45 +27,58 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.thread;
+
+package net.imagej.ops.loop;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunk;
-import net.imagej.ops.thread.chunker.DefaultChunker;
+import net.imagej.ops.BufferFactory;
+import net.imagej.ops.ComputerOp;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkerArray<A> extends AbstractComputerOp<A[], A[]>
-	implements Parallel
+/**
+ * Abstract implementation of a {@link LoopComputer}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ */
+public abstract class AbstractLoopComputer<C extends ComputerOp<I, I>, I>
+	extends AbstractComputerOp<I, I> implements LoopComputer<I>
 {
 
 	@Parameter
-	private OpService opService;
+	private ComputerOp<I, I> op;
+
+	@Parameter
+	private BufferFactory<I, I> bufferFactory;
+
+	@Parameter
+	private int n;
+
+	public BufferFactory<I, I> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final BufferFactory<I, I> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public ComputerOp<I, I> getOp() {
+		return op;
+	}
+
+	@Override
+	public void setOp(final ComputerOp<I, I> op) {
+		this.op = op;
+	}
 	
 	@Override
-	public void compute(final A[] input, final A[] output) {
-		opService.run(DefaultChunker.class, new Chunk() {
+	public int getLoopCount() {
+		return n;
+	}
 
-			@Override
-			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				int i = startIndex;
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					output[i] = input[i];
-					i += stepSize;
-					ctr++;
-				}
-			}
-		}, input.length);
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
 	}
 }

@@ -32,60 +32,45 @@ package net.imagej.ops.join;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
-
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Join;
 
 /**
- * Abstract superclass of {@link JoinFunctions}s.
+ * A join operation which joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinFunctions<A, F extends Function<A, A>>
-	extends AbstractStrictFunction<A, A> implements JoinFunctions<A, F>
+public interface JoinComputers<A, C extends ComputerOp<A, A>> extends
+	ComputerOp<A, A>, Ops.Join
 {
 
-	/** List of functions to be joined. */
-	@Parameter
-	private List<? extends F> functions;
-
-	@Parameter
-	private BufferFactory<A, A> bufferFactory;
-
-	private A buffer;
-
-	@Override
-	public BufferFactory<A, A> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	@Override
-	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
-		this.bufferFactory = bufferFactory;
-	}
-
-	@Override
-	public List<? extends F> getFunctions() {
-		return functions;
-	}
-
-	@Override
-	public void setFunctions(final List<? extends F> functions) {
-		this.functions = functions;
-	}
+	/**
+	 * @return {@link BufferFactory} used to create intermediate results
+	 */
+	BufferFactory<A, A> getBufferFactory();
 
 	/**
-	 * @param input helping to create the buffer
-	 * @return the buffer which can be used for the join.
+	 * Sets the {@link BufferFactory} which is used to create intermediate
+	 * results.
+	 * 
+	 * @param bufferFactory used to create intermediate results
 	 */
-	protected A getBuffer(final A input) {
-		if (buffer == null) {
-			buffer = bufferFactory.createBuffer(input);
-		}
-		return buffer;
-	}
+	void setBufferFactory(BufferFactory<A, A> bufferFactory);
+
+	/**
+	 * @return {@link List} of {@link ComputerOp}s which are joined in this
+	 *         {@link Join}
+	 */
+	List<? extends C> getOps();
+
+	/**
+	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
+	 * 
+	 * @param ops joined in this {@link Join}
+	 */
+	void setOps(List<? extends C> ops);
 
 }

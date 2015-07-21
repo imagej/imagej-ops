@@ -30,15 +30,13 @@
 
 package net.imagej.ops.stats.mean;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.size.SizeOp;
 import net.imagej.ops.stats.sum.SumOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -52,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Mean.class, name = Ops.Stats.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStrictFunction<Iterable<I>, O> implements MeanOp<Iterable<I>, O>
+	AbstractComputerOp<Iterable<I>, O> implements MeanOp<Iterable<I>, O>
 {
 
 	@Parameter(required = false)
@@ -65,8 +63,7 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	private OpService ops;
 
 	@Override
-	public O compute(final Iterable<I> input, final O output) {
-
+	public void compute(final Iterable<I> input, final O output) {
 		if (sumFunc == null) {
 			sumFunc = ops.op(SumOp.class, LongType.class, input);
 		}
@@ -74,25 +71,16 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 			sizeFunc = ops.op(SizeOp.class, LongType.class, input);
 		}
 
-		final O result;
-		if (output == null) {
-			// HACK: Need to cast through Object to satisfy javac.
-			final Object o = new DoubleType();
-			@SuppressWarnings("unchecked")
-			final O newOutput = (O) o;
-			result = newOutput;
-		}
-		else result = output;
+		final LongType size = new LongType();
+		sizeFunc.compute(input, size);
+		final O sum = output.createVariable();
+		sumFunc.compute(input, sum);
 
-		final LongType size = sizeFunc.compute(input, new LongType());
-		final O sum = sumFunc.compute(input, result.createVariable());
+		// FIXME: Better way to go LongType -> O without going through double?
+		// Once convert namespace is fleshed out, use that.
+		final double mean = sum.getRealDouble() / size.getRealDouble();
 
-		// TODO: Better way to go LongType -> O without going through double?
-		double mean = sum.getRealDouble() / size.getRealDouble();
-
-		result.setReal(mean);
-
-		return result;
+		output.setReal(mean);
 	}
 
 }

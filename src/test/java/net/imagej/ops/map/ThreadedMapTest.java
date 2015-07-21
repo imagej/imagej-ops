@@ -31,9 +31,9 @@
 package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -129,24 +129,22 @@ public class ThreadedMapTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	private static class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType arg) {
+		public void compute(final ByteType arg) {
 			arg.inc();
-			return arg;
 		}
 	}
 
 	private static class AddOneFunctional extends
-		AbstractStrictFunction<ByteType, ByteType>
+		AbstractComputerOp<ByteType, ByteType>
 	{
 
 		@Override
-		public ByteType compute(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
-			return output;
 		}
 	}
 

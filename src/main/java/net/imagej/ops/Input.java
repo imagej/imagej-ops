@@ -31,36 +31,16 @@
 package net.imagej.ops;
 
 /**
- * Abstract superclass for {@link Function} ops.
+ * Interface for objects with a typed input parameter.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @see Output
  */
-public abstract class AbstractFunction<I, O> implements Function<I, O> {
+public interface Input<I> {
 
-	// -- Runnable methods --
+	I getInput();
 
-	@Override
-	public void run() {
-		setOutput(compute(getInput(), getOutput()));
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public Function<I, O> getIndependentInstance() {
-		// NB: We assume the function instance is thread-safe by default.
-		// Individual function implementations can override this assumption if
-		// they have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
-
-	// -- Converter methods --
-
-	@Override
-	public void convert(final I input, final O output) {
-		compute(input, output);
-	}
+	void setInput(I input);
 
 }

@@ -30,47 +30,64 @@
 
 package net.imagej.ops.join;
 
-import java.util.List;
-
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Join;
+import net.imagej.ops.ComputerOp;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * A join operation which joins a list of {@link Function}s.
+ * Abstract superclass of {@link JoinComputerAndComputer} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
  */
-public interface JoinFunctions<A, F extends Function<A, A>> extends
-	Function<A, A>, Ops.Join
+public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
+	extends AbstractComputerOp<A, C> implements
+	JoinComputerAndComputer<A, B, C, C1, C2>
 {
 
-	/**
-	 * @return {@link BufferFactory} used to create intermediate results
-	 */
-	BufferFactory<A, A> getBufferFactory();
+	@Parameter
+	private C1 first;
 
-	/**
-	 * Sets the {@link BufferFactory} which is used to create intermediate
-	 * results.
-	 * 
-	 * @param bufferFactory used to create intermediate results
-	 */
-	void setBufferFactory(BufferFactory<A, A> bufferFactory);
+	@Parameter
+	private C2 second;
 
-	/**
-	 * @return {@link List} of {@link Function}s which are joined in this
-	 *         {@link Join}
-	 */
-	List<? extends F> getFunctions();
+	@Parameter(required = false)
+	private BufferFactory<A, B> bufferFactory;
 
-	/**
-	 * Sets the {@link Function}s which are joined in this {@link Join}.
-	 * 
-	 * @param functions joined in this {@link Join}
-	 */
-	void setFunctions(List<? extends F> functions);
+	private B buffer;
+
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.createBuffer(input);
+		return buffer;
+	}
+
+	public BufferFactory<A, B> getBufferFactory() {
+		return bufferFactory;
+	}
+
+	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public C1 getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final C1 first) {
+		this.first = first;
+	}
+
+	@Override
+	public C2 getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final C2 second) {
+		this.second = second;
+	}
 
 }

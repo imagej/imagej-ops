@@ -30,14 +30,14 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.InplaceOp;
 
 /**
- * Loops over an injected {@link InplaceFunction}. A {@link LoopInplace} applies
- * a {@link InplaceFunction} n-times to an input. Note: input will be modified!
+ * Loops over an injected {@link InplaceOp}. A {@link LoopInplace} applies
+ * an {@link InplaceOp} n-times to an input. Note: input will be modified!
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopInplace<I> extends InplaceFunction<I>, LoopOp<I> {
+public interface LoopInplace<I> extends InplaceOp<I>, LoopOp<I> {
 	// NB: Marker interface
 }

@@ -30,9 +30,8 @@
 
 package net.imagej.ops.filter.dog;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -60,7 +59,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
 public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	extends
-	AbstractOutputFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG, Contingent
 {
 
@@ -88,7 +87,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	}
 
 	@Override
-	protected void safeCompute(final RandomAccessibleInterval<T> input,
+	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
 

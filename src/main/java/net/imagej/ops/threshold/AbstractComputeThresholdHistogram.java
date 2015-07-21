@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Curtis Rueden
  */
 public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
-	extends AbstractOutputFunction<Histogram1d<T>, T> implements
+	extends AbstractHybridOp<Histogram1d<T>, T> implements
 	ComputeThresholdHistogram<T>
 {
 
@@ -49,10 +49,10 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 		return input.firstDataValue().createVariable();
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final Histogram1d<T> input, final T output) {
+	public void compute(final Histogram1d<T> input, final T output) {
 		final long binPos = computeBin(input);
 
 		// convert bin number to corresponding gray level

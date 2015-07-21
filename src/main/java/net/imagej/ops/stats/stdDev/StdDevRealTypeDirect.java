@@ -32,8 +32,7 @@ package net.imagej.ops.stats.stdDev;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -43,12 +42,11 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.StdDev.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
 public class StdDevRealTypeDirect<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, T> implements StdDev<T, T>
+	AbstractComputerOp<Iterable<T>, T> implements StdDev<T, T>
 {
 
 	@Override
-	public T compute(final Iterable<T> input, final T output) {
-
+	public void compute(final Iterable<T> input, final T output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;
@@ -62,6 +60,6 @@ public class StdDevRealTypeDirect<T extends RealType<T>> extends
 		}
 
 		output.setReal(Math.sqrt((sumSqr - (sum * sum / n)) / (n - 1)));
-		return output;
 	}
+
 }

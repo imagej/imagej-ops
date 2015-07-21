@@ -28,52 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.loop;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import java.util.ArrayList;
+
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.join.DefaultJoinComputers;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for strict {@link Function} ops, which require the "out"
- * parameter to be explicitly specified.
+ * Applies a {@link ComputerOp} multiple times to an image.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Curtis Rueden
- * @see AbstractOutputFunction
  */
-public abstract class AbstractStrictFunction<I, O> extends
-	AbstractFunction<I, O>
+@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
+public class DefaultLoopComputer<A> extends
+	AbstractLoopComputer<ComputerOp<A, A>, A>
 {
 
-	@Parameter(type = ItemIO.BOTH)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- InputOp methods --
-
 	@Override
-	public I getInput() {
-		return in;
+	public void compute(final A input, final A output) {
+		final int n = getLoopCount();
+
+		final ArrayList<ComputerOp<A, A>> functions =
+			new ArrayList<ComputerOp<A, A>>(n);
+		for (int i = 0; i < n; i++)
+			functions.add(getOp());
+
+		final DefaultJoinComputers<A> functionJoiner =
+			new DefaultJoinComputers<A>();
+		functionJoiner.setOps(functions);
+		functionJoiner.setBufferFactory(getBufferFactory());
+
+		functionJoiner.compute(input, output);
 	}
 
 	@Override
-	public O getOutput() {
-		return out;
+	public DefaultLoopComputer<A> getIndependentInstance() {
+		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
+
+		looper.setOp(getOp().getIndependentInstance());
+		looper.setBufferFactory(getBufferFactory());
+
+		return looper;
 	}
-
-	// -- OutputOp methods --
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
 }

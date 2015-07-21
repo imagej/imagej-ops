@@ -28,33 +28,73 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.join;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+
+import org.scijava.plugin.Plugin;
 
 /**
- * An {@link OutputFunction} is a {@link Function} which is able to create the
- * output object itself. Hence, the "out" parameter is marked optional (i.e.,
- * "required = false") and may be omitted, in which case it will be created
- * based on the given "in" parameter.
+ * Joins a list of {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputFunction<I, O> extends Function<I, O>, Computer<I, O> {
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinComputers<A> extends
+	AbstractJoinComputers<A, ComputerOp<A, A>>
+{
 
-	/**
-	 * Compute the output of a function, given some input.
-	 * 
-	 * @param input
-	 *            of the {@link OutputFunction}
-	 * 
-	 * @return output
-	 */
 	@Override
-	O compute(I input);
+	public void compute(final A input, final A output) {
+		final List<? extends ComputerOp<A, A>> functions = getOps();
+		final Iterator<? extends ComputerOp<A, A>> it = functions.iterator();
+		final ComputerOp<A, A> first = it.next();
 
-	/**
-	 * @return create an output object of type O, given some input. The output
-	 *         can then be used to call compute(I input, O output), which will
-	 *         fill the output with the result.
-	 */
-	O createOutput(I input);
+		if (functions.size() == 1) {
+			first.compute(input, output);
+			return;
+		}
+
+		final A buffer = getBuffer(input);
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (functions.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute(tmpInput, tmpOutput);
+		}
+	}
+
+	@Override
+	public DefaultJoinComputers<A> getIndependentInstance() {
+
+		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
+
+		final ArrayList<ComputerOp<A, A>> funcs = new ArrayList<ComputerOp<A, A>>();
+		for (final ComputerOp<A, A> func : getOps()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setOps(funcs);
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
+	}
 }

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.commands.project;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Martin Horn (University of Konstanz)
  */
 public interface ProjectMethod<T extends RealType<T>> extends
-	Function<Iterable<T>, T>
+	ComputerOp<Iterable<T>, T>
 {
 	// NB: Marker interface.
 }

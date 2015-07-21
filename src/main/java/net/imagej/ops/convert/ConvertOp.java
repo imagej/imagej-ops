@@ -30,7 +30,7 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Martin Horn (University of Konstanz)
  */
-public interface ConvertOp<I, O> extends Ops.Convert, Function<I, O> {
+public interface ConvertOp<I, O> extends Ops.Convert, ComputerOp<I, O> {
 	// NB: Marker interface.
 }

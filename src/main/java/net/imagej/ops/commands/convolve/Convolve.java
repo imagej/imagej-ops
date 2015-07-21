@@ -31,7 +31,7 @@
 package net.imagej.ops.commands.convolve;
 
 import net.imagej.ImgPlus;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -117,7 +117,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 
 		final Op op = ops.op(Ops.Filter.Convolve.class, out, in, kernel);
 		if (in.numDimensions() > kernel.numDimensions()) {
-			if (op instanceof Function) {
+			if (op instanceof ComputerOp) {
 				// if the selected convolve op is a function and the kernel dimensions
 				// doesn't match the input image dimensions, than we can still convolve
 				// each slice individually

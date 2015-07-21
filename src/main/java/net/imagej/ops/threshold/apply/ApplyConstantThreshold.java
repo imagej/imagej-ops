@@ -30,8 +30,7 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.type.logic.BitType;
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, Iterable<BitType>> implements
+	AbstractComputerOp<Iterable<T>, Iterable<BitType>> implements
 	Ops.Threshold.Apply
 {
 
@@ -62,18 +61,13 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public Iterable<BitType> compute(final Iterable<T> input,
-		final Iterable<BitType> output)
-	{
-
+	public void compute(final Iterable<T> input, final Iterable<BitType> output) {
 		final Object applyThreshold =
 			ops.op(ApplyThresholdComparable.class, BitType.class, threshold
 				.getClass(), threshold);
 
 		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
 		ops.map(output, input, applyThreshold);
-
-		return output;
 	}
 
 }

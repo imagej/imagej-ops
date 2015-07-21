@@ -28,41 +28,60 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Ops;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * A join operation which joins two {@link Function}s. The resulting function
- * will take the input of the first {@link Function} as input and the output of
- * the second {@link Function} as the output.
+ * Abstract superclass for {@link FunctionOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends Function<A, C>, Ops.Join
-{
+public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
 
-	/**
-	 * @return first {@link Function} to be joined
-	 */
-	F1 getFirst();
+	// -- Parameters --
 
-	/**
-	 * @param first {@link Function} to be joined
-	 */
-	void setFirst(F1 first);
+	@Parameter(type = ItemIO.OUTPUT)
+	private O out;
 
-	/**
-	 * @return second {@link Function} to be joined
-	 */
-	F2 getSecond();
+	@Parameter
+	private I in;
 
-	/**
-	 * @param second {@link Function} to be joined
-	 */
-	void setSecond(F2 second);
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		out = compute(getInput());
+	}
+
+	// -- Input methods --
+
+	@Override
+	public I getInput() {
+		return in;
+	}
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public FunctionOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

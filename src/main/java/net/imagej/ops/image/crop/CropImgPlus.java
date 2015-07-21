@@ -32,7 +32,6 @@ package net.imagej.ops.image.crop;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Interval;

@@ -30,16 +30,14 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -53,34 +51,17 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromImg<T extends NativeType<T>> implements
-	Ops.Create.Img, OutputOp<Img<T>>
+public class CreateImgFromImg<T extends NativeType<T>> extends
+	AbstractFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
 
 	@Parameter
 	private OpService ops;
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
-
-	@Parameter
-	private Img<T> input;
-
 	@Override
-	public void run() {
-		output =
-			ops.create().img(input, input.firstElement().createVariable(),
-				input.factory());
-	}
-
-	@Override
-	public Img<T> getOutput() {
-		return output;
-	}
-
-	@Override
-	public void setOutput(final Img<T> output) {
-		this.output = output;
+	public Img<T> compute(final Img<T> input) {
+		return ops.create().img(getInput(),
+			getInput().firstElement().createVariable(), getInput().factory());
 	}
 
 }

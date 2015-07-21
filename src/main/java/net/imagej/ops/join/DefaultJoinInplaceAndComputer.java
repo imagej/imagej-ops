@@ -28,37 +28,38 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract implementation of a {@link MapOp}.
+ * Joins an {@link InplaceOp} with a {@link ComputerOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
- * @param <C> provides {@code <A>}s
- * @param <D> provides {@code <B>}s
  */
-public abstract class AbstractMapFunction<A, B, C, D> extends
-	AbstractStrictFunction<C, D> implements MapOp<A, B, Function<A, B>>
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinInplaceAndComputer<A, B> extends
+	AbstractJoinComputerAndComputer<A, A, B, InplaceOp<A>, ComputerOp<A, B>>
 {
 
-	/** {@link Function} to be used for mapping. */
-	@Parameter
-	protected Function<A, B> func;
-
 	@Override
-	public Function<A, B> getFunction() {
-		return func;
+	public void compute(final A input, final B output) {
+		getFirst().compute(input);
+		getSecond().compute(input, output);
 	}
 
 	@Override
-	public void setFunction(final Function<A, B> func) {
-		this.func = func;
+	public DefaultJoinInplaceAndComputer<A, B> getIndependentInstance() {
+		final DefaultJoinInplaceAndComputer<A, B> joiner =
+			new DefaultJoinInplaceAndComputer<A, B>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+
+		return joiner;
 	}
 }

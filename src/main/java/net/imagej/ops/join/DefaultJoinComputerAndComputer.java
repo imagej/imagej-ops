@@ -28,52 +28,40 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.join;
 
-import java.util.ArrayList;
-
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.join.DefaultJoinFunctions;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link Function} multiple times to an image.
+ * Joins two {@link ComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
-public class DefaultLoopFunction<A> extends
-	AbstractLoopFunction<Function<A, A>, A>
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinComputerAndComputer<A, B, C> extends
+	AbstractJoinComputerAndComputer<A, B, C, ComputerOp<A, B>, ComputerOp<B, C>>
 {
 
 	@Override
-	public A compute(final A input, final A output) {
-
-		final int n = getLoopCount();
-
-		final ArrayList<Function<A, A>> functions =
-			new ArrayList<Function<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			functions.add(getFunction());
-
-		final DefaultJoinFunctions<A> functionJoiner =
-			new DefaultJoinFunctions<A>();
-		functionJoiner.setFunctions(functions);
-		functionJoiner.setBufferFactory(getBufferFactory());
-
-		return functionJoiner.compute(input, output);
+	public void compute(final A input, final C output) {
+		final B buffer = getBuffer(input);
+		getFirst().compute(input, buffer);
+		getSecond().compute(buffer, output);
 	}
 
 	@Override
-	public DefaultLoopFunction<A> getIndependentInstance() {
-		final DefaultLoopFunction<A> looper = new DefaultLoopFunction<A>();
+	public DefaultJoinComputerAndComputer<A, B, C> getIndependentInstance() {
 
-		looper.setFunction(getFunction().getIndependentInstance());
-		looper.setBufferFactory(getBufferFactory());
+		final DefaultJoinComputerAndComputer<A, B, C> joiner =
+			new DefaultJoinComputerAndComputer<A, B, C>();
 
-		return looper;
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setBufferFactory(getBufferFactory());
+
+		return joiner;
 	}
 }

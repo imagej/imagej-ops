@@ -28,16 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
-
-import net.imagej.ops.Function;
+package net.imagej.ops;
 
 /**
- * Loops over an injected {@link Function}. A {@link LoopFunction} applies a
- * {@link Function} n-times to an input.
+ * An <em>inplace</em> operation is a {@link ComputerOp} whose input and output
+ * are the same object. In other words: the given input object is mutated.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @param <A> type of argument
+ * @see ComputerOp
+ * @see FunctionOp
+ * @see HybridOp
  */
-public interface LoopFunction<I> extends Function<I, I>, LoopOp<I> {
-	// NB: Marker interface
+public interface InplaceOp<A> extends ComputerOp<A, A> {
+
+	void compute(A arg);
+
+	@Override
+	InplaceOp<A> getIndependentInstance();
+
 }

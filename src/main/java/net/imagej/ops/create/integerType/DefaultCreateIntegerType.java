@@ -30,9 +30,8 @@
 
 package net.imagej.ops.create.integerType;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -56,7 +55,7 @@ import org.scijava.plugin.Plugin;
 @SuppressWarnings("rawtypes")
 @Plugin(type = Ops.Create.IntegerType.class, name = Ops.Create.IntegerType.NAME)
 public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
-	OutputOp<IntegerType>
+	Output<IntegerType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
@@ -101,11 +100,6 @@ public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
 	@Override
 	public IntegerType getOutput() {
 		return output;
-	}
-
-	@Override
-	public void setOutput(final IntegerType output) {
-		this.output = output;
 	}
 
 }

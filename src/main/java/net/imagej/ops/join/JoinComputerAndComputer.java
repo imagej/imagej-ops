@@ -28,72 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.join;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
 
 /**
- * Abstract superclass for {@link InplaceFunction} ops.
+ * A join operation which joins two {@link ComputerOp}s. The resulting operation
+ * will take the input of the first {@link ComputerOp} as input and the output
+ * of the second {@link ComputerOp} as the output.
  * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceFunction<A> extends AbstractFunction<A, A>
-	implements InplaceFunction<A>
+public interface JoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
+	extends ComputerOp<A, C>, Ops.Join
 {
 
-	@Parameter(type = ItemIO.BOTH)
-	private A arg;
+	/**
+	 * @return first {@link ComputerOp} to be joined
+	 */
+	C1 getFirst();
 
-	// -- InputOp methods --
+	/**
+	 * @param first {@link ComputerOp} to be joined
+	 */
+	void setFirst(C1 first);
 
-	@Override
-	public A getInput() {
-		return arg;
-	}
+	/**
+	 * @return second {@link ComputerOp} to be joined
+	 */
+	C2 getSecond();
 
-	@Override
-	public void setInput(final A input) {
-		arg = input;
-	}
-
-	// -- OutputOp methods --
-
-	@Override
-	public A getOutput() {
-		return arg;
-	}
-
-	@Override
-	public void setOutput(final A output) {
-		arg = output;
-	}
-
-	// -- Function methods --
-
-	@Override
-	public A compute(final A input, final A output) {
-		if (input != output) {
-			throw new IllegalArgumentException("Input and output must match");
-		}
-		return compute(input);
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute(getInput());
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public InplaceFunction<A> getIndependentInstance() {
-		// NB: We assume the function instance is thread-safe by default.
-		// Individual function implementations can override this assumption if
-		// they have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
+	/**
+	 * @param second {@link ComputerOp} to be joined
+	 */
+	void setSecond(C2 second);
 
 }

@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
@@ -105,22 +105,20 @@ public class LoopTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType arg) {
+		public void compute(final ByteType arg) {
 			arg.inc();
-			return arg;
 		}
 	}
 
-	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractComputerOp<ByteType, ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
-			return output;
 		}
 	}
 }

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,41 +28,26 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
+import net.imglib2.converter.Converter;
 
 /**
- * Joins two {@link Function}s.
+ * A {@link Converter} backed by a {@link ComputerOp}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctionAndFunction<A, B, C> extends
-	AbstractJoinFunctionAndFunction<A, B, C, Function<A, B>, Function<B, C>>
-{
+public class ComputerConverter<A, B> implements Converter<A, B> {
 
-	@Override
-	public C compute(final A input, final C output) {
-		final B buffer = getBuffer(input);
-		getFirst().compute(input, buffer);
-		return getSecond().compute(buffer, output);
+	private final ComputerOp<A, B> op;
+
+	public ComputerConverter(final ComputerOp<A, B> op) {
+		this.op = op;
 	}
 
 	@Override
-	public DefaultJoinFunctionAndFunction<A, B, C> getIndependentInstance() {
-
-		final DefaultJoinFunctionAndFunction<A, B, C> joiner =
-			new DefaultJoinFunctionAndFunction<A, B, C>();
-
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
-		joiner.setBufferFactory(getBufferFactory());
-
-		return joiner;
+	public void convert(final A input, final B output) {
+		op.compute(input, output);
 	}
+
 }

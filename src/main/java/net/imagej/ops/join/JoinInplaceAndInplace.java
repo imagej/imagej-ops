@@ -30,18 +30,17 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.InplaceOp;
 
 /**
- * A join operation which joins two {@link InplaceFunction}s. The resulting
- * function will take the input of the first {@link Function} as input and the
- * output of the second {@link Function} as the output;
+ * A join operation which joins two {@link InplaceOp}s. The resulting operation
+ * will take the input of the first {@link InplaceOp} as input and the output of
+ * the second {@link InplaceOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 public interface JoinInplaceAndInplace<A> extends
-	JoinFunctionAndFunction<A, A, A, InplaceFunction<A>, InplaceFunction<A>>
+	JoinComputerAndComputer<A, A, A, InplaceOp<A>, InplaceOp<A>>
 {
 	// NB: Marker interface.
 }

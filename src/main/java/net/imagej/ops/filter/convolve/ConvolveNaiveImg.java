@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFilterImg;
@@ -61,7 +60,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 	private OpService ops;
 
 	@Override
-	protected void safeCompute(final Img<I> img, final Img<O> out) {
+	public void compute(final Img<I> img, final Img<O> out) {
 		if (getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
 				Util.getTypeFromInterval(img).createVariable()));

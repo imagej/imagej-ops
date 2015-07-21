@@ -32,8 +32,7 @@ package net.imagej.ops.stats.moment1AboutMean;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.mean.MeanOp;
 import net.imagej.ops.stats.size.SizeOp;
@@ -46,7 +45,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Stats.Moment1AboutMean.class, name = Ops.Stats.Moment1AboutMean.NAME)
 public class Moment2AboutMean<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType>
+	AbstractComputerOp<Iterable<T>, DoubleType>
 {
 	@Parameter
 	private MeanOp<Iterable<T>, DoubleType> mean;
@@ -55,20 +54,23 @@ public class Moment2AboutMean<T extends RealType<T>> extends
 	private SizeOp<Iterable<T>> size;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
+		final DoubleType meanOutput = new DoubleType();
+		mean.compute(input, meanOutput);
+		final double meanValue = meanOutput.get();
 
-		final double meanVal = this.mean.compute(input, new DoubleType()).get();
-		final double area = this.size.compute(input, new LongType()).get();
+		final LongType sizeOutput = new LongType();
+		size.compute(input, sizeOutput);
+		final double area = sizeOutput.get();
 
 		double res = 0.0;
 
 		final Iterator<T> it = input.iterator();
 		while (it.hasNext()) {
-			final double val = it.next().getRealDouble() - meanVal;
+			final double val = it.next().getRealDouble() - meanValue;
 			res += val * val;
 		}
 
 		output.setReal(res / area);
-		return output;
 	}
 }

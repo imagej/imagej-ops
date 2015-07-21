@@ -27,45 +27,46 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunk;
-import net.imagej.ops.thread.chunker.DefaultChunker;
+package net.imagej.ops.join;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
+import java.util.ArrayList;
+
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Ops;
+
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkerArray<A> extends AbstractComputerOp<A[], A[]>
-	implements Parallel
-{
+/**
+ * Joins a list of {@link InplaceOp}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ */
+@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+public class DefaultJoinInplaces<A> extends AbstractJoinInplaces<A> {
 
-	@Parameter
-	private OpService opService;
-	
 	@Override
-	public void compute(final A[] input, final A[] output) {
-		opService.run(DefaultChunker.class, new Chunk() {
-
-			@Override
-			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				int i = startIndex;
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					output[i] = input[i];
-					i += stepSize;
-					ctr++;
-				}
-			}
-		}, input.length);
+	public void compute(final A input) {
+		for (final InplaceOp<A> inplace : getOps()) {
+			inplace.compute(input);
+		}
 	}
+
+	@Override
+	public DefaultJoinInplaces<A> getIndependentInstance() {
+		final DefaultJoinInplaces<A> joiner =
+			new DefaultJoinInplaces<A>();
+
+		final ArrayList<InplaceOp<A>> funcs =
+			new ArrayList<InplaceOp<A>>();
+		for (final InplaceOp<A> func : getOps()) {
+			funcs.add(func.getIndependentInstance());
+		}
+
+		joiner.setOps(funcs);
+
+		return joiner;
+	}
+
 }

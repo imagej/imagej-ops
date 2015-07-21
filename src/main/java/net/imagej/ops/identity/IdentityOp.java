@@ -30,7 +30,7 @@
 
 package net.imagej.ops.identity;
 
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Curtis Rueden
  */
-public interface IdentityOp<A> extends Ops.Identity, InplaceFunction<A> {
+public interface IdentityOp<A> extends Ops.Identity, InplaceOp<A> {
 	// NB: Marker interface.
 }

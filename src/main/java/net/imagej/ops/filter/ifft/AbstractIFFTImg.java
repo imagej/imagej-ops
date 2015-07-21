@@ -41,5 +41,5 @@ import net.imglib2.img.Img;
 public abstract class AbstractIFFTImg<C, I extends Img<C>, T, O extends Img<T>>
 	extends AbstractIFFTIterable<C, T, I, O> implements Ops.Filter.IFFT
 {
-
+	// NB: No implementation needed.
 }

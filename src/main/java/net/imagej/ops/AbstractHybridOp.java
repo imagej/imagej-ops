@@ -28,41 +28,71 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.InplaceFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * Joins a {@link Function} with an {@link InplaceFunction}.
+ * Abstract superclass for {@link HybridOp} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctionAndInplace<A, B> extends
-	AbstractJoinFunctionAndFunction<A, B, B, Function<A, B>, InplaceFunction<B>>
-{
+public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
+
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- FunctionOp methods --
 
 	@Override
-	public B compute(final A input, final B output) {
-		getFirst().compute(input, output);
-		return getSecond().compute(output);
+	public O compute(final I input) {
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		if (getOutput() == null) out = compute(getInput());
+		else compute(getInput(), getOutput());
+	}
+
+	// -- Input methods --
+
+	@Override
+	public I getInput() {
+		return in;
 	}
 
 	@Override
-	public DefaultJoinFunctionAndInplace<A, B> getIndependentInstance() {
-
-		final DefaultJoinFunctionAndInplace<A, B> joiner =
-			new DefaultJoinFunctionAndInplace<A, B>();
-
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
-		joiner.setBufferFactory(getBufferFactory());
-
-		return joiner;
+	public void setInput(final I input) {
+		in = input;
 	}
+
+	// -- Output methods --
+
+	@Override
+	public O getOutput() {
+		return out;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public HybridOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
 }

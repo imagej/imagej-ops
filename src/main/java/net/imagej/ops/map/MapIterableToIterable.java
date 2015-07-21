@@ -32,7 +32,6 @@ package net.imagej.ops.map;
 
 import java.util.Iterator;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
@@ -46,19 +45,16 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY - 1)
 public class MapIterableToIterable<A, B> extends
-	AbstractMapFunction<A, B, Iterable<A>, Iterable<B>>
+	AbstractMapComputer<A, B, Iterable<A>, Iterable<B>>
 {
 
 	@Override
-	public Iterable<B> compute(final Iterable<A> input, final Iterable<B> output)
-	{
+	public void compute(final Iterable<A> input, final Iterable<B> output) {
 		final Iterator<A> inCursor = input.iterator();
 		final Iterator<B> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
+			getOp().compute(inCursor.next(), outCursor.next());
 		}
-
-		return output;
 	}
 }

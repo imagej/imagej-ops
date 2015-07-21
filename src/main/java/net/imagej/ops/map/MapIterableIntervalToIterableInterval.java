@@ -31,7 +31,6 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -48,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 1)
 public class MapIterableIntervalToIterableInterval<A, B> extends
-	AbstractMapFunction<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent
 {
 
@@ -64,7 +63,7 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 	}
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		if (!isValid(input, output)) {
@@ -76,9 +75,7 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 		final Cursor<B> outCursor = output.cursor();
 
 		while (inCursor.hasNext()) {
-			func.compute(inCursor.next(), outCursor.next());
+			getOp().compute(inCursor.next(), outCursor.next());
 		}
-
-		return output;
 	}
 }

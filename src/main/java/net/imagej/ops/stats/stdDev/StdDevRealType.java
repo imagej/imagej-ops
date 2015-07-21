@@ -30,8 +30,7 @@
 
 package net.imagej.ops.stats.stdDev;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.variance.VarianceOp;
@@ -45,7 +44,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.StdDev.class, name = Ops.Stats.StdDev.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class StdDevRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	AbstractComputerOp<Iterable<T>, DoubleType> implements
 	StdDev<T, DoubleType>
 {
 
@@ -56,12 +55,12 @@ public class StdDevRealType<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		if (variance == null) {
 			variance = ops.op(VarianceOp.class, output, input);
 		}
-		output.set(Math.sqrt(variance.compute(input, output).get()));
-		return output;
+		variance.compute(input, output);
+		output.set(Math.sqrt(output.get()));
 	}
 
 }

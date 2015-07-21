@@ -28,63 +28,62 @@
  * #L%
  */
 
-package net.imagej.ops.neighborhood;
+package net.imagej.ops;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.Neighborhood;
-import net.imglib2.algorithm.neighborhood.Shape;
-
-import org.scijava.Priority;
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates an {@link Function} for each {@link Neighborhood} on the in
- * {@link RandomAccessibleInterval}.
+ * Abstract superclass for {@link ComputerOp} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
-public class MapNeighborhood<I, O> extends
-	AbstractStrictFunction<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
-	implements MapOp<Iterable<I>, O, Function<Iterable<I>, O>>
-{
+public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
+
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH)
+	private O out;
 
 	@Parameter
-	private Shape shape;
+	private I in;
 
-	@Parameter
-	private OpService ops;
-
-	@Parameter
-	private Function<Iterable<I>, O> func;
+	// -- Runnable methods --
 
 	@Override
-	public RandomAccessibleInterval<O> compute(
-		final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
-	{
-		ops.map(output, shape.neighborhoodsSafe(input), func);
-		// TODO: threaded map neighborhood
-		// TODO: optimization with integral images, if there is a rectangular
-		// neighborhood
-		return output;
+	public void run() {
+		compute(getInput(), getOutput());
+	}
+
+	// -- Input methods --
+
+	@Override
+	public I getInput() {
+		return in;
 	}
 
 	@Override
-	public Function<Iterable<I>, O> getFunction() {
-		return func;
+	public void setInput(final I input) {
+		in = input;
 	}
 
+	// -- Output methods --
+
 	@Override
-	public void setFunction(Function<Iterable<I>, O> function) {
-		func = function;
+	public O getOutput() {
+		return out;
 	}
+
+	// -- Threadable methods --
+
+	@Override
+	public ComputerOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
 }

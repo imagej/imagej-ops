@@ -28,60 +28,46 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.apply;
+package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
-import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * Evaluates an {@link ComputerOp} for each {@link Neighborhood} on the in
+ * {@link RandomAccessibleInterval}.
+ * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
-public class LocalThreshold<T extends RealType<T>>
+@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
+public class MapNeighborhood<I, O>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-	implements Ops.Threshold.Apply
+	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
-
-	@Parameter
-	private LocalThresholdMethod<T> method;
 
 	@Parameter
 	private Shape shape;
 
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
+	@Parameter
+	private OpService ops;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<BitType> output)
+	public void compute(final RandomAccessibleInterval<I> input,
+		final RandomAccessibleInterval<O> output)
 	{
-		// TODO: provide threaded implementation and specialized ones for
-		// rectangular neighborhoods (using integral images)
-		RandomAccessibleInterval<T> extInput =
-			Views.interval(Views.extend(input, outOfBounds), input);
-		Iterable<Neighborhood<T>> neighborhoods = shape.neighborhoodsSafe(extInput);
-		final Cursor<T> inCursor = Views.flatIterable(input).cursor();
-		final Cursor<BitType> outCursor = Views.flatIterable(output).cursor();
-		Pair<T> pair = new Pair<T>();
-		for (final Neighborhood<T> neighborhood : neighborhoods) {
-			pair.neighborhood = neighborhood;
-			pair.pixel = inCursor.next();
-			method.compute(pair, outCursor.next());
-		}
+		ops.map(output, shape.neighborhoodsSafe(input), getOp());
+		// TODO: threaded map neighborhood
+		// TODO: optimization with integral images, if there is a rectangular
+		// neighborhood
 	}
 
 }

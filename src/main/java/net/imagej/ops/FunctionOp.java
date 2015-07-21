@@ -31,15 +31,28 @@
 package net.imagej.ops;
 
 /**
- * An {@code InputOp} is an {@link Op} that has a typed input parameter.
+ * A <em>function</em> computes a result from the given input, returning it as a
+ * new object. The contents of the input are not affected.
  * 
- * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see ComputerOp
+ * @see HybridOp
+ * @see InplaceOp
  */
-public interface InputOp<I> extends Op {
+public interface FunctionOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
-	I getInput();
+	/**
+	 * Compute the output given some input.
+	 * 
+	 * @param input of the {@link FunctionOp}
+	 * @return output
+	 */
+	O compute(I input);
 
-	void setInput(I input);
+	@Override
+	FunctionOp<I, O> getIndependentInstance();
 
 }

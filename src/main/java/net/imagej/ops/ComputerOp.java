@@ -30,40 +30,24 @@
 
 package net.imagej.ops;
 
-import net.imglib2.converter.Converter;
-
-import org.scijava.ItemIO;
-
 /**
- * A {@code Function} is an {@link Op} that has a typed input parameter, and a
- * typed output parameter.
- * <p>
- * The function provides a {@link #compute} method to compute the function for
- * different input and output parameters.
- * </p>
- * <p>
- * Note that the typed output is actually considered both an input <em>and</em>
- * an output parameter; in ImageJ module terms, its type is {@link ItemIO#BOTH}.
- * This fact is critical so that a preallocated data structure may be passed in
- * and filled by the function. It is <em>required</em> that if an output value
- * is given in this way, it will be populated with the function's result.
- * </p>
- * <p>
- * Lastly, functions implement the {@link Threadable} interface, and hence can
- * be reused across multiple threads of a {@link Parallel} op.
- * </p>
+ * A <em>computer</em> calculates a result from the given input, storing it into
+ * the specified output reference.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see FunctionOp
+ * @see HybridOp
+ * @see InplaceOp
  */
-public interface Function<I, O> extends InputOp<I>, OutputOp<O>, Threadable,
-	Converter<I, O>
-{
+public interface ComputerOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
-	O compute(I input, O output);
+	void compute(I input, O output);
 
 	@Override
-	Function<I, O> getIndependentInstance();
+	ComputerOp<I, O> getIndependentInstance();
 
 }

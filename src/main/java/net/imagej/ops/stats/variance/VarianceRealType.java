@@ -30,8 +30,7 @@
 
 package net.imagej.ops.stats.variance;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.moment1AboutMean.Moment2AboutMean;
@@ -45,7 +44,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class VarianceRealType<T extends RealType<T>> extends
-	AbstractStrictFunction<Iterable<T>, DoubleType> implements
+	AbstractComputerOp<Iterable<T>, DoubleType> implements
 	VarianceOp<T, DoubleType>
 {
 
@@ -56,10 +55,10 @@ public class VarianceRealType<T extends RealType<T>> extends
 	private OpService ops;
 
 	@Override
-	public DoubleType compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final DoubleType output) {
 		if (moment2 == null) {
 			moment2 = ops.op(Moment2AboutMean.class, output, input);
 		}
-		return moment2.compute(input, output);
+		moment2.compute(input, output);
 	}
 }

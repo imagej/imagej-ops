@@ -30,7 +30,6 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -52,9 +51,8 @@ public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
 	protected double factor = 0;
 
 	@Override
-	public O compute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
-		return output;
 	}
 
 	@Override

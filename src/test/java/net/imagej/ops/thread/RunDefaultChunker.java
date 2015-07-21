@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW_PRIORITY)
 public class RunDefaultChunker<A extends RealType<A>> extends
-	AbstractStrictFunction<IterableInterval<A>, IterableInterval<A>> implements
+	AbstractComputerOp<IterableInterval<A>, IterableInterval<A>> implements
 	Parallel
 {
 
@@ -55,32 +55,30 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 
 
 	@Override
-	public IterableInterval<A> compute(final IterableInterval<A> input,
-			final IterableInterval<A> output) {
-		
-			opService.run(DefaultChunker.class, new CursorBasedChunk() {
+	public void compute(final IterableInterval<A> input,
+		final IterableInterval<A> output)
+	{
+		opService.run(DefaultChunker.class, new CursorBasedChunk() {
 
 			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				final Cursor<A> cursor = input.localizingCursor();
 				final Cursor<A> cursorOut = output.localizingCursor();
-			
+
 				setToStart(cursor, startIndex);
 				setToStart(cursorOut, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
 					cursorOut.get().set(cursor.get());
-					
+
 					cursorOut.jumpFwd(stepSize);
 					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
 		}, input.size());
-	
-		return output;
-		
 	}
 }

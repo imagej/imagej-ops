@@ -30,7 +30,6 @@
 
 package net.imagej.ops.create.kernelLog;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.create.AbstractCreateSymmetricKernel;
 import net.imglib2.type.NativeType;

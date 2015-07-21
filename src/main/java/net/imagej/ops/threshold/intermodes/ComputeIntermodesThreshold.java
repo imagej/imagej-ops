@@ -30,7 +30,6 @@
 
 package net.imagej.ops.threshold.intermodes;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
 import net.imagej.ops.threshold.ThresholdUtils;

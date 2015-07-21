@@ -30,9 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.Function;
-import net.imagej.ops.InplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -44,23 +43,20 @@ import org.scijava.plugin.Parameter;
  * @param <I> {@link Iterable} of <A>s
  */
 public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
-	AbstractInplaceFunction<I> implements MapOp<A, A, InplaceFunction<A>>
+	AbstractInplaceOp<I> implements MapOp<A, A, InplaceOp<A>>
 {
 
-	/**
-	 * {@link Function} to be used for mapping
-	 */
 	@Parameter
-	protected InplaceFunction<A> func;
+	private InplaceOp<A> op;
 
 	@Override
-	public InplaceFunction<A> getFunction() {
-		return func;
+	public InplaceOp<A> getOp() {
+		return op;
 	}
 
 	@Override
-	public void setFunction(final InplaceFunction<A> func) {
-		this.func = func;
+	public void setOp(final InplaceOp<A> op) {
+		this.op = op;
 	}
 
 }

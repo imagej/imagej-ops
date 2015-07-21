@@ -32,8 +32,7 @@ package net.imagej.ops.threshold.apply;
 
 import java.util.Comparator;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
-public class ApplyThresholdComparator<T> extends AbstractStrictFunction<T, BitType>
+public class ApplyThresholdComparator<T> extends AbstractComputerOp<T, BitType>
 	implements ApplyThreshold<T, BitType>
 {
 
@@ -60,9 +59,8 @@ public class ApplyThresholdComparator<T> extends AbstractStrictFunction<T, BitTy
 	private Comparator<? super T> comparator;
 
 	@Override
-	public BitType compute(final T input, final BitType output) {
+	public void compute(final T input, final BitType output) {
 		output.set(comparator.compare(input, threshold) > 0);
-		return output;
 	}
 
 }

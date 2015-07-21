@@ -30,20 +30,20 @@
 
 package net.imagej.ops.slicewise;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
  * A typed "slicewise" function.
  * <p>
- * Allows running {@link Function}s on orthogonal subsets of the <I>. The
+ * Allows running {@link ComputerOp}s on orthogonal subsets of the <I>. The
  * subsets can for example be defined by the axes of an image. For each subset
- * the {@link Function} will be executed.
+ * the {@link ComputerOp} will be executed.
  * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-public interface SlicewiseOp<I, O> extends Ops.Slicewise, Function<I, O> {
+public interface SlicewiseOp<I, O> extends Ops.Slicewise, ComputerOp<I, O> {
 	// NB: Marker interface.
 }

@@ -28,66 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link JoinFunctionAndFunction} implementations.
+ * Abstract implementation of a {@link MapOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
+ * @param <C> provides {@code <A>}s
+ * @param <D> provides {@code <B>}s
  */
-public abstract class AbstractJoinFunctionAndFunction<A, B, C, F1 extends Function<A, B>, F2 extends Function<B, C>>
-	extends AbstractStrictFunction<A, C> implements
-	JoinFunctionAndFunction<A, B, C, F1, F2>
+public abstract class AbstractMapComputer<A, B, C, D> extends
+	AbstractComputerOp<C, D> implements MapOp<A, B, ComputerOp<A, B>>
 {
 
 	@Parameter
-	private F1 first;
+	private ComputerOp<A, B> op;
 
-	@Parameter
-	private F2 second;
-
-	@Parameter(required = false)
-	private BufferFactory<A, B> bufferFactory;
-
-	private B buffer;
-
-	public B getBuffer(final A input) {
-		if (buffer == null) buffer = bufferFactory.createBuffer(input);
-		return buffer;
-	}
-
-	public BufferFactory<A, B> getBufferFactory() {
-		return bufferFactory;
-	}
-
-	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
-		this.bufferFactory = bufferFactory;
+	@Override
+	public ComputerOp<A, B> getOp() {
+		return op;
 	}
 
 	@Override
-	public F1 getFirst() {
-		return first;
+	public void setOp(final ComputerOp<A, B> op) {
+		this.op = op;
 	}
-
-	@Override
-	public void setFirst(final F1 first) {
-		this.first = first;
-	}
-
-	@Override
-	public F2 getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final F2 second) {
-		this.second = second;
-	}
-
 }

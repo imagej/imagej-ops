@@ -30,7 +30,6 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
@@ -48,11 +47,9 @@ import org.scijava.plugin.Plugin;
 public class MapIterableInplace<A> extends AbstractMapInplace<A, Iterable<A>> {
 
 	@Override
-	public Iterable<A> compute(final Iterable<A> arg) {
+	public void compute(final Iterable<A> arg) {
 		for (final A t : arg) {
-			func.compute(t, t);
+			getOp().compute(t, t);
 		}
-
-		return arg;
 	}
 }

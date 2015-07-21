@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.converter.read.ConvertedRandomAccessible;
@@ -48,12 +48,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
 public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
-	MapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
+	AbstractMapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
 {
 
 	@Override
-	public void run() {
-		setOutput(new ConvertedRandomAccessible<A, B>(getInput(), getFunction(),
-			getType()));
+	public RandomAccessible<B> compute(final RandomAccessible<A> input) {
+		final ComputerConverter<A, B> converter =
+			new ComputerConverter<A, B>(getOp());
+		return new ConvertedRandomAccessible<A, B>(input, converter, getType());
 	}
+
 }

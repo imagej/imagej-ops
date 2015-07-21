@@ -33,8 +33,7 @@ package net.imagej.ops.filter.fft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
@@ -62,7 +61,7 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	extends
-	AbstractStrictFunction<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
+	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.FFT
 {
 
@@ -76,10 +75,9 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	private long[] paddedSize;
 
 	@Override
-	public RandomAccessibleInterval<C> compute(RandomAccessibleInterval<T> input,
-		RandomAccessibleInterval<C> output)
+	public void compute(final RandomAccessibleInterval<T> input,
+		final RandomAccessibleInterval<C> output)
 	{
-
 		RandomAccessibleInterval<T> inputRAI;
 
 		if (paddedSize == null) {
@@ -119,7 +117,6 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
-
-		return output;
 	}
+
 }

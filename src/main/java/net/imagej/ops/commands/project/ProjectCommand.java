@@ -32,7 +32,7 @@ package net.imagej.ops.commands.project;
 
 import net.imagej.ImgPlus;
 import net.imagej.axis.TypedAxis;
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.stats.mean.MeanOp;
 import net.imglib2.img.Img;
@@ -75,18 +75,18 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	/* -- Wrapper classes to mark certain operations as projection methods --*/
 
-	private class ProjectMean extends AbstractStrictFunction<Iterable<T>, T>
+	private class ProjectMean extends AbstractComputerOp<Iterable<T>, T>
 		implements ProjectMethod<T>
 	{
 
 		private MeanOp<Iterable<T>, T> mean;
 
 		@Override
-		public T compute(Iterable<T> input, T output) {
+		public void compute(final Iterable<T> input, final T output) {
 			if (mean == null) {
 				mean = ops.op(MeanOp.class, output, input);
 			}
-			return mean.compute(input, output);
+			mean.compute(input, output);
 		}
 
 	}

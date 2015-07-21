@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
@@ -47,13 +47,19 @@ import org.scijava.plugin.Plugin;
  * @param <B>
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
-public class MapConvertRAIToRAI<A, B extends Type<B>> extends
-	MapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
+public class MapConvertRAIToRAI<A, B extends Type<B>>
+	extends
+	AbstractMapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
 {
 
 	@Override
-	public void run() {
-		setOutput(new ConvertedRandomAccessibleInterval<A, B>(getInput(),
-			getFunction(), getType()));
+	public RandomAccessibleInterval<B> compute(
+		final RandomAccessibleInterval<A> input)
+	{
+		final ComputerConverter<A, B> converter =
+			new ComputerConverter<A, B>(getOp());
+		return new ConvertedRandomAccessibleInterval<A, B>(input, converter,
+			getType());
 	}
+
 }

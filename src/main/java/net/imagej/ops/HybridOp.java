@@ -27,45 +27,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.Chunk;
-import net.imagej.ops.thread.chunker.DefaultChunker;
+package net.imagej.ops;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+/**
+ * A <em>hybrid</em> operation can be used as either a {@link FunctionOp} or as
+ * a {@link ComputerOp}. To compute a new output object, call
+ * {@link FunctionOp#compute}; to populate a preexisting output object, call
+ * {@link ComputerOp#compute}.
+ * 
+ * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see ComputerOp
+ * @see FunctionOp
+ * @see InplaceOp
+ */
+public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 
-@Plugin(type = Op.class, name = "test.chunker",
-	priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkerArray<A> extends AbstractComputerOp<A[], A[]>
-	implements Parallel
-{
+	/**
+	 * Creates an output object of type O, given some input. The output can then
+	 * be used to call {@link ComputerOp#compute}, which will fill the output with
+	 * the result.
+	 */
+	O createOutput(I input);
 
-	@Parameter
-	private OpService opService;
-	
 	@Override
-	public void compute(final A[] input, final A[] output) {
-		opService.run(DefaultChunker.class, new Chunk() {
+	HybridOp<I, O> getIndependentInstance();
 
-			@Override
-			public void
-				execute(int startIndex, final int stepSize, final int numSteps)
-			{
-				int i = startIndex;
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					output[i] = input[i];
-					i += stepSize;
-					ctr++;
-				}
-			}
-		}, input.length);
-	}
 }

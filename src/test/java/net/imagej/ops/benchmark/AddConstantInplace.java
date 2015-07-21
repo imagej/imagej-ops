@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.benchmark;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.Op;
 import net.imglib2.type.numeric.NumericType;
 
@@ -37,14 +37,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceFunction<T> {
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceOp<T> {
 
 	@Parameter
 	private T value;
 
 	@Override
-	public T compute(T arg) {
+	public void compute(final T arg) {
 		arg.add(value);
-		return arg;
 	}
+
 }

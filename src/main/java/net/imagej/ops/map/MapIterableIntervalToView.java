@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
@@ -40,12 +40,14 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
 public class MapIterableIntervalToView<A, B extends Type<B>> extends
-	MapView<A, B, IterableInterval<A>, IterableInterval<B>>
+	AbstractMapView<A, B, IterableInterval<A>, IterableInterval<B>>
 {
 
 	@Override
-	public void run() {
-		setOutput(new ConvertedIterableInterval<A, B>(getInput(), getFunction(),
-			getType()));
+	public IterableInterval<B> compute(final IterableInterval<A> input) {
+		final ComputerConverter<A, B> converter =
+			new ComputerConverter<A, B>(getOp());
+		return new ConvertedIterableInterval<A, B>(input, converter, getType());
 	}
+
 }

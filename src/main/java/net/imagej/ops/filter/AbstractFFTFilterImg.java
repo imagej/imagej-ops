@@ -68,11 +68,8 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
-	/**
-	 * 
-	 */
 	@Override
-	public void safeCompute(final Img<I> input, final Img<O> output) {
+	public void compute(final Img<I> input, final Img<O> output) {
 
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats.sum;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface SumOp<I, O> extends Ops.Stats.Sum, Function<I, O> {
+public interface SumOp<I, O> extends Ops.Stats.Sum, ComputerOp<I, O> {
 	// NB: Marker interface.
 }

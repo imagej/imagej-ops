@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.exception.IncompatibleTypeException;
@@ -97,7 +96,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	public void safeCompute(final I input, final Img<ComplexFloatType> output) {
+	public void compute(final I input, final Img<ComplexFloatType> output) {
 		ops.filter().fft(output, input, getOBF(), paddedSize);
 	}
 }

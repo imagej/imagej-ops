@@ -33,7 +33,6 @@ package net.imagej.ops.filter.ifft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Brian Northan
  * @param <T>
- * @param <I>
+ * @param <O>
  */
 @Plugin(type = Ops.Filter.IFFT.class, name = Ops.Filter.IFFT.NAME,
 	priority = Priority.HIGH_PRIORITY)
@@ -61,13 +60,10 @@ public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 	private OpService ops;
 
 	@Override
-	public O compute(Img<ComplexFloatType> input, O output) {
-
+	public void compute(final Img<ComplexFloatType> input, final O output) {
 		// TODO: proper use of Executor service
 		final ExecutorService service = Executors.newFixedThreadPool(4);
 
 		ops.filter().ifft(output, input);
-
-		return output;
 	}
 }

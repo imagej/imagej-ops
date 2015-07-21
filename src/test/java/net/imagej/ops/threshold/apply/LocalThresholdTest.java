@@ -53,8 +53,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	@Test
 	public void test() throws IncompatibleTypeException {
-		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
-		Img<BitType> out =
+		final Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		final Img<BitType> out =
 			in.factory().imgFactory(new BitType()).create(in, new BitType());
 
 		ops.threshold().apply(

@@ -35,11 +35,84 @@ import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;
 
 /**
- * Ops are what all the cool kids are doing these days. They're the bee's knees!
+ * An <em>op</em> is an operation that computes a result in a deterministic and
+ * consistent way.
+ * <p>
  * <p>
  * Ops discoverable at runtime must implement this interface and be annotated
  * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class.
  * </p>
+ * <h2>Naming and matching</h2>
+ * <p>
+ * Each op has a name (provided in the {@link Plugin#name()} attribute, which is
+ * not necessarily unique. This allows multiple "overloaded" ops with different
+ * combinations of parameter types, similar to the method overloading feature of
+ * Java and other programming languages. The
+ * {@link OpService#op(String, Object...)} and
+ * {@link OpService#run(String, Object...)} methods can be used to obtain and
+ * execute (respectively) the best matching op instances for a given name and
+ * set of input arguments.
+ * <p>
+ * An op may optionally have a namespace. This is analogous to packages in Java
+ * and similar features in other languages. The namespace is expressed as a
+ * prefix; such ops are referenced by their namespace, followed by a dot,
+ * followed by the op name. Ops without a namespace belong to the "global"
+ * namespace, with no prefix or dot. Two ops with the same name but different
+ * namespaces only partially "overload" or "override" one other; see
+ * {@link OpService#run(String, Object...)} for details.
+ * </p>
+ * <p>
+ * The naming convention for both namespaces and op names is to use an
+ * alphameric string, in lower camel case.
+ * </p>
+ * <h2>Comparison with {@link Command}</h2>
+ * <p>
+ * Every op is a {@link Command}. And like {@link Command}s, ops may have
+ * multiple inputs and multiple outputs. However, ops impose some additional
+ * requirements beyond those of regular {@link Command}s:
+ * </p>
+ * <ul>
+ * <li>Op arguments are fixed: an op may not dynamically alter the number or
+ * types of its arguments.</li>
+ * <li>Calling the same op twice with the same argument values must result in
+ * the same result (for a given set of available ops).</li>
+ * </ul>
+ * <h2>Most common types of ops</h2>
+ * <p>
+ * Four common patterns for ops are:
+ * </p>
+ * <table style="border: 1px solid black; border-collapse: collapse">
+ * <tr>
+ * <th>Name</th>
+ * <th>Summary</th>
+ * <th>Output type</th>
+ * <th>Methods</th>
+ * </tr>
+ * <tr>
+ * <th>{@link FunctionOp}</th>
+ * <td>&nbsp;</td>
+ * <td>OUTPUT</td>
+ * <td>{@code compute(I)}</td>
+ * </tr>
+ * <tr>
+ * <th>{@link ComputerOp}</th>
+ * <td>&nbsp;</td>
+ * <td>BOTH</td>
+ * <td>{@code compute(I, O)}</td>
+ * </tr>
+ * <tr>
+ * <th>{@link HybridOp}</th>
+ * <td>&nbsp;</td>
+ * <td>BOTH (optional)</td>
+ * <td>{@code compute(I, O)} and {@code compute(I)}</td>
+ * </tr>
+ * <tr>
+ * <th>{@link InplaceOp}</th>
+ * <td>&nbsp;</td>
+ * <td>BOTH</td>
+ * <td>{@code compute(A)}</td>
+ * </tr>
+ * </table>
  * 
  * @author Curtis Rueden
  * @see Plugin

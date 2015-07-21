@@ -30,8 +30,7 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -55,7 +54,7 @@ public final class RealBinaryMath {
 	/** Op that $op.verbs two RealType values. */
 	@Plugin(type = ${iface}.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
 	public static class $op.name<T extends RealType<T>>
-		extends AbstractOutputFunction<T, T> implements $iface
+		extends AbstractHybridOp<T, T> implements $iface
 	{
 
 		@Parameter
@@ -67,7 +66,7 @@ public final class RealBinaryMath {
 		}
 
 		@Override
-		protected void safeCompute(T input, T output) {
+		public void compute(final T input, final T output) {
 			if(output== b)
 			{
 				output.$!{op.function}(input);

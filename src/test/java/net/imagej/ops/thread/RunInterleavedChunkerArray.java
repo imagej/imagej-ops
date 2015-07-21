@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractStrictFunction;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
@@ -43,33 +43,29 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW_PRIORITY)
 public class RunInterleavedChunkerArray<A> extends
-	AbstractStrictFunction<A[], A[]> implements Parallel
+	AbstractComputerOp<A[], A[]> implements Parallel
 {
 
 	@Parameter
 	private OpService opService;
 	
 	@Override
-	public A[] compute(final A[] input,
-			final A[] output) {
-		
+	public void compute(final A[] input, final A[] output) {
 		opService.run(ChunkerInterleaved.class, new Chunk() {
 
 			@Override
-			public void	execute(int startIndex, final int stepSize, final int numSteps)
+			public void
+				execute(int startIndex, final int stepSize, final int numSteps)
 			{
 				int i = startIndex;
-				
+
 				int ctr = 0;
 				while (ctr < numSteps) {
 					output[i] = input[i];
-				    i += stepSize;
+					i += stepSize;
 					ctr++;
 				}
 			}
 		}, input.length);
-	
-		return output;
-		
 	}
 }

@@ -30,8 +30,7 @@
 
 package net.imagej.ops.stats.sum;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -41,14 +40,14 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Sum.class, name = Ops.Stats.Sum.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractStrictFunction<Iterable<T>, V> implements SumOp<Iterable<T>, V>
+	AbstractComputerOp<Iterable<T>, V> implements SumOp<Iterable<T>, V>
 {
 
 	@Override
-	public V compute(final Iterable<T> input, final V output) {
+	public void compute(final Iterable<T> input, final V output) {
 		for (final T t : input) {
 			output.setReal(output.getRealDouble() + t.getRealDouble());
 		}
-		return output;
 	}
+
 }

@@ -28,75 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.join;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
+package net.imagej.ops;
 
 /**
- * Joins a list of {@link Function}s.
+ * Interface for objects with a typed output parameter.
+ * <p>
+ * At the interface level, no API is provided to set the output value, since the
+ * feasibility of such an operation depends on the implementation.
+ * </p>
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @see Input
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinFunctions<A> extends
-	AbstractJoinFunctions<A, Function<A, A>>
-{
+public interface Output<O> {
 
-	@Override
-	public A compute(final A input, final A output) {
-		final List<? extends Function<A, A>> functions = getFunctions();
-		final Iterator<? extends Function<A, A>> it = functions.iterator();
-		final Function<A, A> first = it.next();
+	O getOutput();
 
-		if (functions.size() == 1) {
-			return first.compute(input, output);
-		}
-
-		final A buffer = getBuffer(input);
-
-		A tmpOutput = output;
-		A tmpInput = buffer;
-		A tmp;
-
-		if (functions.size() % 2 == 0) {
-			tmpOutput = buffer;
-			tmpInput = output;
-		}
-
-		first.compute(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
-		}
-
-		return output;
-	}
-
-	@Override
-	public DefaultJoinFunctions<A> getIndependentInstance() {
-
-		final DefaultJoinFunctions<A> joiner = new DefaultJoinFunctions<A>();
-
-		final ArrayList<Function<A, A>> funcs = new ArrayList<Function<A, A>>();
-		for (final Function<A, A> func : getFunctions()) {
-			funcs.add(func.getIndependentInstance());
-		}
-
-		joiner.setFunctions(funcs);
-		joiner.setBufferFactory(getBufferFactory());
-
-		return joiner;
-	}
 }

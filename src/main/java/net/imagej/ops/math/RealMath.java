@@ -32,8 +32,7 @@ package net.imagej.ops.math;
 
 import java.util.Random;
 
-import net.imagej.ops.AbstractStrictFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -60,13 +59,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Abs.class, name = Ops.Math.Abs.NAME)
 	public static class Abs<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Abs
+		AbstractComputerOp<I, O> implements Ops.Math.Abs
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.abs(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -76,16 +74,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 	public static class Add<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Add
+		AbstractComputerOp<I, O> implements Ops.Math.Add
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() + constant);
-			return output;
 		}
 	}
 
@@ -95,16 +92,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.And.class, name = Ops.Math.And.NAME)
 	public static class AndConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.And
+		extends AbstractComputerOp<I, O> implements Ops.Math.And
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant & (long) input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -114,13 +110,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccos.class, name = Ops.Math.Arccos.NAME)
 	public static class Arccos<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccos
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccos
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.acos(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -130,16 +125,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccosh.class, name = Ops.Math.Arccosh.NAME)
 	public static class Arccosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccosh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccosh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			double delta = Math.sqrt(xt * xt - 1);
 			if (xt <= -1) delta = -delta;
 			output.setReal(Math.log(xt + delta));
-			return output;
 		}
 	}
 
@@ -149,15 +143,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccot.class, name = Ops.Math.Arccot.NAME)
 	public static class Arccot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccot
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccot
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			double value = Math.atan(1.0 / input.getRealDouble());
 			if (input.getRealDouble() < 0) value += Math.PI;
 			output.setReal(value);
-			return output;
 		}
 	}
 
@@ -167,14 +160,13 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccoth.class, name = Ops.Math.Arccoth.NAME)
 	public static class Arccoth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccoth
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccoth
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((xt + 1) / (xt - 1)));
-			return output;
 		}
 	}
 
@@ -184,7 +176,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsc.class, name = Ops.Math.Arccsc.NAME)
 	public static class Arccsc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccsc
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsc
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -195,7 +187,7 @@ public final class RealMath {
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arccsc(x) : x out of range");
@@ -206,7 +198,6 @@ public final class RealMath {
 				asin.compute(tmp, angle);
 				output.setReal(angle.getRealDouble());
 			}
-			return output;
 		}
 	}
 
@@ -216,15 +207,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsch.class, name = Ops.Math.Arccsch.NAME)
 	public static class Arccsch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arccsch
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsch
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(1 + (1 / (xt * xt)));
 			output.setReal(Math.log((1 / xt) + delta));
-			return output;
 		}
 	}
 
@@ -234,7 +224,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsec.class, name = Ops.Math.Arcsec.NAME)
 	public static class Arcsec<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsec
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsec
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -245,7 +235,7 @@ public final class RealMath {
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arcsec(x) : x out of range");
@@ -258,7 +248,6 @@ public final class RealMath {
 				if (xt < -1) value += Math.PI;
 				output.setReal(value);
 			}
-			return output;
 		}
 	}
 
@@ -268,15 +257,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsech.class, name = Ops.Math.Arcsech.NAME)
 	public static class Arcsech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsech
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsech
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double numer = 1 + Math.sqrt(1 - xt * xt);
 			output.setReal(Math.log(numer / xt));
-			return output;
 		}
 	}
 
@@ -286,13 +274,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsin.class, name = Ops.Math.Arcsin.NAME)
 	public static class Arcsin<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsin
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsin
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.asin(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -302,15 +289,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsinh.class, name = Ops.Math.Arcsinh.NAME)
 	public static class Arcsinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arcsinh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsinh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(xt * xt + 1);
 			output.setReal(Math.log(xt + delta));
-			return output;
 		}
 	}
 
@@ -320,13 +306,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctan.class, name = Ops.Math.Arctan.NAME)
 	public static class Arctan<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arctan
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arctan
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.atan(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -336,14 +321,13 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctanh.class, name = Ops.Math.Arctanh.NAME)
 	public static class Arctanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Arctanh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arctanh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((1 + xt) / (1 - xt)));
-			return output;
 		}
 	}
 
@@ -353,13 +337,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ceil.class, name = Ops.Math.Ceil.NAME)
 	public static class Ceil<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Ceil
+		extends AbstractComputerOp<I, O> implements Ops.Math.Ceil
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ceil(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -369,13 +352,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Copy.class, name = Ops.Math.Copy.NAME)
 	public static class Copy<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Copy
+		extends AbstractComputerOp<I, O> implements Ops.Math.Copy
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -385,13 +367,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cos.class, name = Ops.Math.Cos.NAME)
 	public static class Cos<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Cos
+		AbstractComputerOp<I, O> implements Ops.Math.Cos
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cos(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -401,13 +382,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cosh.class, name = Ops.Math.Cosh.NAME)
 	public static class Cosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Cosh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Cosh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cosh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -417,13 +397,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cot.class, name = Ops.Math.Cot.NAME)
 	public static class Cot<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Cot
+		AbstractComputerOp<I, O> implements Ops.Math.Cot
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tan(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -433,13 +412,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Coth.class, name = Ops.Math.Coth.NAME)
 	public static class Coth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Coth
+		extends AbstractComputerOp<I, O> implements Ops.Math.Coth
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tanh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -449,13 +427,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csc.class, name = Ops.Math.Csc.NAME)
 	public static class Csc<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Csc
+		AbstractComputerOp<I, O> implements Ops.Math.Csc
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sin(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -465,13 +442,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csch.class, name = Ops.Math.Csch.NAME)
 	public static class Csch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Csch
+		extends AbstractComputerOp<I, O> implements Ops.Math.Csch
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sinh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -481,13 +457,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.CubeRoot.class, name = Ops.Math.CubeRoot.NAME)
 	public static class CubeRoot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.CubeRoot
+		extends AbstractComputerOp<I, O> implements Ops.Math.CubeRoot
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cbrt(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -497,7 +472,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Divide.class, name = Ops.Math.Divide.NAME)
 	public static class Divide<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Divide
+		extends AbstractComputerOp<I, O> implements Ops.Math.Divide
 	{
 
 		@Parameter
@@ -506,14 +481,13 @@ public final class RealMath {
 		private double dbzVal;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (constant == 0) {
 				output.setReal(dbzVal);
 			}
 			else {
 				output.setReal(input.getRealDouble() / constant);
 			}
-			return output;
 		}
 	}
 
@@ -523,13 +497,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Exp.class, name = Ops.Math.Exp.NAME)
 	public static class Exp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Exp
+		AbstractComputerOp<I, O> implements Ops.Math.Exp
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -539,13 +512,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.ExpMinusOne.class, name = Ops.Math.ExpMinusOne.NAME)
 	public static class ExpMinusOne<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.ExpMinusOne
+		extends AbstractComputerOp<I, O> implements Ops.Math.ExpMinusOne
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()) - 1);
-			return output;
 		}
 	}
 
@@ -555,13 +527,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Floor.class, name = Ops.Math.Floor.NAME)
 	public static class Floor<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Floor
+		extends AbstractComputerOp<I, O> implements Ops.Math.Floor
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.floor(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -571,20 +542,19 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Gamma.class, name = Ops.Math.Gamma.NAME)
 	public static class GammaConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Gamma
+		extends AbstractComputerOp<I, O> implements Ops.Math.Gamma
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal <= 0) output.setReal(0);
 			else {
 				output.setReal(Math.exp(this.constant * Math.log(inputVal)));
 			}
-			return output;
 		}
 	}
 
@@ -594,7 +564,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Invert.class, name = Ops.Math.Invert.NAME)
 	public static class Invert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Invert
+		extends AbstractComputerOp<I, O> implements Ops.Math.Invert
 	{
 
 		@Parameter
@@ -603,9 +573,8 @@ public final class RealMath {
 		private double specifiedMax;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(specifiedMax - (input.getRealDouble() - specifiedMin));
-			return output;
 		}
 	}
 
@@ -615,13 +584,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log.class, name = Ops.Math.Log.NAME)
 	public static class Log<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Log
+		AbstractComputerOp<I, O> implements Ops.Math.Log
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -631,13 +599,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log10.class, name = Ops.Math.Log10.NAME)
 	public static class Log10<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Log10
+		extends AbstractComputerOp<I, O> implements Ops.Math.Log10
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log10(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -647,13 +614,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log2.class, name = Ops.Math.Log2.NAME)
 	public static class Log2<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Log2
+		extends AbstractComputerOp<I, O> implements Ops.Math.Log2
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()) / Math.log(2));
-			return output;
 		}
 	}
 
@@ -664,13 +630,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.LogOnePlusX.class, name = Ops.Math.LogOnePlusX.NAME)
 	public static class LogOnePlusX<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.LogOnePlusX
+		extends AbstractComputerOp<I, O> implements Ops.Math.LogOnePlusX
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log1p(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -681,18 +646,17 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Max.class, name = Ops.Math.Max.NAME)
 	public static class MaxConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Max
+		extends AbstractComputerOp<I, O> implements Ops.Math.Max
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value < constant) output.setReal(value);
 			else output.setReal(constant);
-			return output;
 		}
 	}
 
@@ -704,18 +668,17 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Min.class, name = Ops.Math.Min.NAME)
 	public static class MinConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Min
+		extends AbstractComputerOp<I, O> implements Ops.Math.Min
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value > constant) output.setReal(value);
 			else output.setReal(constant);
-			return output;
 		}
 	}
 
@@ -725,16 +688,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Multiply.class, name = Ops.Math.Multiply.NAME)
 	public static class Multiply<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Multiply
+		extends AbstractComputerOp<I, O> implements Ops.Math.Multiply
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() * constant);
-			return output;
 		}
 	}
 
@@ -744,13 +706,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.NearestInt.class, name = Ops.Math.NearestInt.NAME)
 	public static class NearestInt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.NearestInt
+		extends AbstractComputerOp<I, O> implements Ops.Math.NearestInt
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.rint(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -760,13 +721,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Negate.class, name = Ops.Math.Negate.NAME)
 	public static class Negate<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Negate
+		extends AbstractComputerOp<I, O> implements Ops.Math.Negate
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(-input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -776,16 +736,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Or.class, name = Ops.Math.Or.NAME)
 	public static class OrConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Or
+		extends AbstractComputerOp<I, O> implements Ops.Math.Or
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant | (long) input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -795,16 +754,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Power.class, name = Ops.Math.Power.NAME)
 	public static class PowerConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Power
+		extends AbstractComputerOp<I, O> implements Ops.Math.Power
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.pow(input.getRealDouble(), constant));
-			return output;
 		}
 	}
 
@@ -816,7 +774,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomGaussian.class, name = Ops.Math.RandomGaussian.NAME)
 	public static class RandomGaussian<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.RandomGaussian
+		extends AbstractComputerOp<I, O> implements Ops.Math.RandomGaussian
 	{
 
 		@Parameter(required = false)
@@ -833,10 +791,9 @@ public final class RealMath {
 		}
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -846,7 +803,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomUniform.class, name = Ops.Math.RandomUniform.NAME)
 	public static class RandomUniform<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.RandomUniform
+		extends AbstractComputerOp<I, O> implements Ops.Math.RandomUniform
 	{
 
 		@Parameter(required = false)
@@ -863,11 +820,10 @@ public final class RealMath {
 		}
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			final double r = rng.nextDouble();
 			output.setReal(r * input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -877,18 +833,17 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Reciprocal.class, name = Ops.Math.Reciprocal.NAME)
 	public static class Reciprocal<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Reciprocal
+		extends AbstractComputerOp<I, O> implements Ops.Math.Reciprocal
 	{
 
 		@Parameter
 		private double dbzVal;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal == 0) output.setReal(dbzVal);
 			else output.setReal(1.0 / inputVal);
-			return output;
 		}
 	}
 
@@ -898,13 +853,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Round.class, name = Ops.Math.Round.NAME)
 	public static class Round<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Round
+		extends AbstractComputerOp<I, O> implements Ops.Math.Round
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.round(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -914,13 +868,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sec.class, name = Ops.Math.Sec.NAME)
 	public static class Sec<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Sec
+		AbstractComputerOp<I, O> implements Ops.Math.Sec
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cos(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -930,13 +883,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sech.class, name = Ops.Math.Sech.NAME)
 	public static class Sech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Sech
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sech
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cosh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -948,13 +900,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Signum.class, name = Ops.Math.Signum.NAME)
 	public static class Signum<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Signum
+		extends AbstractComputerOp<I, O> implements Ops.Math.Signum
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.signum(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -964,13 +915,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sin.class, name = Ops.Math.Sin.NAME)
 	public static class Sin<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Sin
+		AbstractComputerOp<I, O> implements Ops.Math.Sin
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sin(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -981,17 +931,16 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinc.class, name = Ops.Math.Sinc.NAME)
 	public static class Sinc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Sinc
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sinc
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
 			else value = Math.sin(x) / x;
 			output.setReal(value);
-			return output;
 		}
 	}
 
@@ -1002,17 +951,16 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.SincPi.class, name = Ops.Math.SincPi.NAME)
 	public static class SincPi<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.SincPi
+		extends AbstractComputerOp<I, O> implements Ops.Math.SincPi
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
 			else value = Math.sin(Math.PI * x) / (Math.PI * x);
 			output.setReal(value);
-			return output;
 		}
 	}
 
@@ -1022,13 +970,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinh.class, name = Ops.Math.Sinh.NAME)
 	public static class Sinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Sinh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sinh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sinh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -1038,14 +985,13 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqr.class, name = Ops.Math.Sqr.NAME)
 	public static class Sqr<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Sqr
+		AbstractComputerOp<I, O> implements Ops.Math.Sqr
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			output.setReal(value * value);
-			return output;
 		}
 	}
 
@@ -1055,13 +1001,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqrt.class, name = Ops.Math.Sqrt.NAME)
 	public static class Sqrt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Sqrt
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sqrt
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sqrt(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -1073,14 +1018,13 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Step.class, name = Ops.Math.Step.NAME)
 	public static class Step<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Step
+		extends AbstractComputerOp<I, O> implements Ops.Math.Step
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (input.getRealDouble() < 0) output.setZero();
 			else output.setOne();
-			return output;
 		}
 	}
 
@@ -1090,16 +1034,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Subtract.class, name = Ops.Math.Subtract.NAME)
 	public static class Subtract<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Subtract
+		extends AbstractComputerOp<I, O> implements Ops.Math.Subtract
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() - constant);
-			return output;
 		}
 	}
 
@@ -1109,13 +1052,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tan.class, name = Ops.Math.Tan.NAME)
 	public static class Tan<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Tan
+		AbstractComputerOp<I, O> implements Ops.Math.Tan
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tan(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -1125,13 +1067,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tanh.class, name = Ops.Math.Tanh.NAME)
 	public static class Tanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Tanh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Tanh
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tanh(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -1143,13 +1084,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ulp.class, name = Ops.Math.Ulp.NAME)
 	public static class Ulp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractStrictFunction<I, O> implements Ops.Math.Ulp
+		AbstractComputerOp<I, O> implements Ops.Math.Ulp
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ulp(input.getRealDouble()));
-			return output;
 		}
 	}
 
@@ -1159,16 +1099,15 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Xor.class, name = Ops.Math.Xor.NAME)
 	public static class XorConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Xor
+		extends AbstractComputerOp<I, O> implements Ops.Math.Xor
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant ^ (long) input.getRealDouble());
-			return output;
 		}
 	}
 
@@ -1177,13 +1116,12 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Zero.class, name = Ops.Math.Zero.NAME)
 	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractStrictFunction<I, O> implements Ops.Math.Zero
+		extends AbstractComputerOp<I, O> implements Ops.Math.Zero
 	{
 
 		@Override
-		public O compute(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setZero();
-			return output;
 		}
 	}
 

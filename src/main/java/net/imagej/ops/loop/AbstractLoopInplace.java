@@ -30,8 +30,8 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.Function;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -40,25 +40,25 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopInplace<I> extends AbstractInplaceFunction<I>
+public abstract class AbstractLoopInplace<I> extends AbstractInplaceOp<I>
 	implements LoopInplace<I>
 {
 
 	/** Function used for looping */
 	@Parameter
-	private Function<I, I> function;
+	private ComputerOp<I, I> function;
 
 	/** Number of loops */
 	@Parameter
 	private int n;
 
 	@Override
-	public Function<I, I> getFunction() {
+	public ComputerOp<I, I> getOp() {
 		return function;
 	}
 
 	@Override
-	public void setFunction(final Function<I, I> function) {
+	public void setOp(final ComputerOp<I, I> function) {
 		this.function = function;
 	}
 

@@ -28,18 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.join;
+
+import java.util.List;
+
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Ops;
 
 /**
- * An {@code OutputOp} is an {@link Op} that has a typed output parameter.
+ * A join operation which joins a list of {@link InplaceOp}s.
  * 
- * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface OutputOp<O> extends Op {
+public interface JoinInplaces<A> extends InplaceOp<A>, Ops.Join {
 
-	O getOutput();
+	void setOps(List<InplaceOp<A>> ops);
 
-	void setOutput(O output);
+	List<InplaceOp<A>> getOps();
 
 }

@@ -37,8 +37,7 @@ import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -67,7 +66,7 @@ import org.scijava.script.ScriptService;
  */
 @Plugin(type = Ops.Image.Equation.class, name = Ops.Image.Equation.NAME)
 public class DefaultEquation<T extends RealType<T>> extends
-	AbstractOutputFunction<String, IterableInterval<T>> implements EquationOp<T>
+	AbstractHybridOp<String, IterableInterval<T>> implements EquationOp<T>
 {
 
 	@Parameter
@@ -76,10 +75,10 @@ public class DefaultEquation<T extends RealType<T>> extends
 	@Parameter
 	private LogService log;
 
-	// -- OutputFunction methods --
+	// -- HybridOp methods --
 
 	@Override
-	public IterableInterval<T> createOutput(String input) {
+	public IterableInterval<T> createOutput(final String input) {
 		// produce a 256x256 float64 array-backed image by default
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final IterableInterval<T> newImage =
@@ -87,10 +86,10 @@ public class DefaultEquation<T extends RealType<T>> extends
 		return newImage;
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final String input,
+	public void compute(final String input,
 		final IterableInterval<T> output)
 	{
 		final String equation = input + ";";

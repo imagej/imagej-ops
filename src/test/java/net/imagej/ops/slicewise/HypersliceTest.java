@@ -34,8 +34,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.OpService;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -200,18 +200,18 @@ public class HypersliceTest extends AbstractOpTest {
 	}
 
 	class DummyOp extends
-			AbstractStrictFunction<Iterable<ByteType>, Iterable<ByteType>> {
+			AbstractComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public Iterable<ByteType> compute(final Iterable<ByteType> input,
-				final Iterable<ByteType> output) {
+		public void compute(final Iterable<ByteType> input,
+			final Iterable<ByteType> output)
+		{
 			final Iterator<ByteType> itA = input.iterator();
 			final Iterator<ByteType> itB = output.iterator();
 
 			while (itA.hasNext() && itB.hasNext()) {
 				itB.next().set(itA.next().get());
 			}
-			return output;
 		}
 
 	}

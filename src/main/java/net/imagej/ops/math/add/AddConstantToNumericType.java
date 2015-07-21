@@ -30,8 +30,7 @@
 
 package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractOutputFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.NumericType;
 
@@ -41,23 +40,23 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.LOW_PRIORITY)
 public class AddConstantToNumericType<T extends NumericType<T>> extends
-	AbstractOutputFunction<T, T> implements Ops.Math.Add
+	AbstractHybridOp<T, T> implements Ops.Math.Add
 {
 
 	@Parameter
 	private T value;
 
-	// -- OutputFunction methods --
+	// -- HybridOp methods --
 
 	@Override
 	public T createOutput(final T input) {
 		return input.createVariable();
 	}
 
-	// -- Internal methods --
+	// -- ComputerOp methods --
 
 	@Override
-	protected void safeCompute(final T input, final T output) {
+	public void compute(final T input, final T output) {
 		output.set(input);
 		output.add(value);
 	}

@@ -30,14 +30,13 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.InplaceFunction;
-import net.imagej.ops.Op;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link InplaceFunction}s.
+ * Joins two {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -47,14 +46,9 @@ public class DefaultJoinInplaceAndInplace<A> extends
 {
 
 	@Override
-	public A compute(final A arg) {
-		return compute(arg, arg);
-	}
-
-	@Override
-	public A compute(final A input, final A output) {
-		first.compute(input, output);
-		return second.compute(input, output);
+	public void compute(final A arg) {
+		getFirst().compute(arg);
+		getSecond().compute(arg);
 	}
 
 	@Override
@@ -62,8 +56,8 @@ public class DefaultJoinInplaceAndInplace<A> extends
 		final DefaultJoinInplaceAndInplace<A> joiner =
 			new DefaultJoinInplaceAndInplace<A>();
 
-		joiner.first = first;
-		joiner.second = second;
+		joiner.setFirst(getFirst());
+		joiner.setSecond(getSecond());
 
 		return joiner;
 	}

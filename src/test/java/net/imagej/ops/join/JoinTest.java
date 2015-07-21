@@ -35,11 +35,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractInplaceFunction;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractStrictFunction;
 import net.imagej.ops.BufferFactory;
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
@@ -83,7 +83,7 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testFunctionInplaceJoin() {
 		final Op op =
-			ops.op(DefaultJoinFunctionAndInplace.class, out, in, functionalOp,
+			ops.op(DefaultJoinComputerAndInplace.class, out, in, functionalOp,
 				inplaceOp);
 		op.run();
 
@@ -98,7 +98,7 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testInplaceFunctionJoin() {
 		final Op op =
-			ops.op(DefaultJoinInplaceAndFunction.class, out, in, inplaceOp,
+			ops.op(DefaultJoinInplaceAndComputer.class, out, in, inplaceOp,
 				functionalOp);
 		op.run();
 
@@ -136,8 +136,8 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testJoinFunctions() {
 
-		final List<Function<Img<ByteType>, Img<ByteType>>> functions =
-			new ArrayList<Function<Img<ByteType>, Img<ByteType>>>();
+		final List<ComputerOp<Img<ByteType>, Img<ByteType>>> functions =
+			new ArrayList<ComputerOp<Img<ByteType>, Img<ByteType>>>();
 
 		for (int i = 0; i < 5; i++) {
 			functions.add(new AddOneFunctionalImg());
@@ -164,35 +164,32 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	class AddOneInplace extends AbstractInplaceFunction<ByteType> {
+	class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType arg) {
+		public void compute(final ByteType arg) {
 			arg.inc();
-			return arg;
 		}
 	}
 
-	class AddOneFunctional extends AbstractStrictFunction<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractComputerOp<ByteType, ByteType> {
 
 		@Override
-		public ByteType compute(final ByteType input, final ByteType output) {
+		public void compute(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
-			return output;
 		}
 	}
 
 	class AddOneFunctionalImg extends
-		AbstractStrictFunction<Img<ByteType>, Img<ByteType>>
+		AbstractComputerOp<Img<ByteType>, Img<ByteType>>
 	{
 
 		@Override
-		public Img<ByteType> compute(final Img<ByteType> input,
+		public void compute(final Img<ByteType> input,
 			final Img<ByteType> output)
 		{
 			ops.run(MapOp.class, output, input, new AddOneFunctional());
-			return output;
 		}
 	}
 

@@ -30,64 +30,61 @@
 
 package net.imagej.ops.join;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractInplaceFunction;
-import net.imagej.ops.InplaceFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.BufferFactory;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link InplaceFunction}s.
+ * Abstract superclass of {@link JoinComputers} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinInplaceFunctions<A> extends AbstractInplaceFunction<A>
-	implements Ops.Join
+public abstract class AbstractJoinComputers<A, C extends ComputerOp<A, A>>
+	extends AbstractComputerOp<A, A> implements JoinComputers<A, C>
 {
 
-	// list of functions to be joined
 	@Parameter
-	private List<InplaceFunction<A>> functions;
+	private List<? extends C> ops;
 
-	public void setFunctions(final List<InplaceFunction<A>> functions) {
-		this.functions = functions;
-	}
+	@Parameter
+	private BufferFactory<A, A> bufferFactory;
 
-	public List<InplaceFunction<A>> getFunctions() {
-		return functions;
+	private A buffer;
+
+	@Override
+	public BufferFactory<A, A> getBufferFactory() {
+		return bufferFactory;
 	}
 
 	@Override
-	public A compute(final A input) {
-
-		for (final InplaceFunction<A> inplace : functions) {
-			inplace.compute(input);
-		}
-
-		return input;
+	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
+		this.bufferFactory = bufferFactory;
 	}
 
 	@Override
-	public DefaultJoinInplaceFunctions<A> getIndependentInstance() {
+	public List<? extends C> getOps() {
+		return ops;
+	}
 
-		final DefaultJoinInplaceFunctions<A> joiner =
-			new DefaultJoinInplaceFunctions<A>();
+	@Override
+	public void setOps(final List<? extends C> ops) {
+		this.ops = ops;
+	}
 
-		final ArrayList<InplaceFunction<A>> funcs =
-			new ArrayList<InplaceFunction<A>>();
-		for (final InplaceFunction<A> func : getFunctions()) {
-			funcs.add(func.getIndependentInstance());
+	/**
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
+	 */
+	protected A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = bufferFactory.createBuffer(input);
 		}
-
-		joiner.setFunctions(funcs);
-
-		return joiner;
+		return buffer;
 	}
 
 }

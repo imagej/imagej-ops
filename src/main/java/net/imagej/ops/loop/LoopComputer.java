@@ -28,24 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.loop;
+
+import net.imagej.ops.ComputerOp;
 
 /**
- * Computer can compute the output given some input. 
+ * Loops over an injected {@link ComputerOp}. A {@link LoopComputer} applies a
+ * {@link ComputerOp} n-times to an input.
  * 
  * @author Christian Dietz (University of Konstanz)
- * 
- * @param <I> type of input
- * @param <O> type of output
  */
-public interface Computer<I, O> {
-
-	/**
-	 * Compute the output given some input.
-	 * 
-	 * @param input of the {@link Computer}
-	 * @return output
-	 */
-	O compute(I input);
-
+public interface LoopComputer<I> extends ComputerOp<I, I>, LoopOp<I> {
+	// NB: Marker interface
 }

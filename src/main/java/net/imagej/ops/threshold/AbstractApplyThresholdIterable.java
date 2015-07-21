@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
 import net.imglib2.type.logic.BitType;
 
@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
  * @author Curtis Rueden
  */
 public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O extends Iterable<BitType>>
-	extends AbstractOutputFunction<I, O> implements
+	extends AbstractHybridOp<I, O> implements
 	ApplyThresholdIterable<T, I, O>
 {
 
@@ -52,7 +52,7 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 	private OpService ops;
 
 	@Override
-	protected void safeCompute(final I input, final O output) {
+	public void compute(final I input, final O output) {
 		ops.threshold().apply(output, input, getThreshold(input));
 	}
 

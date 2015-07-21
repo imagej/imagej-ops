@@ -30,24 +30,24 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Function;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * Typed interface for "map" ops. A {@link MapOp} is a {@link Function} which
+ * Typed interface for "map" ops. A {@link MapOp} is a {@link ComputerOp} which
  * maps values from <A> to <B>.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MapOp<A, B, F extends Function<A, B>> extends Ops.Map {
+public interface MapOp<A, B, C extends ComputerOp<A, B>> extends Ops.Map {
 
 	/**
-	 * @return the {@link Function} used for mapping
+	 * @return the {@link ComputerOp} used for mapping
 	 */
-	F getFunction();
+	C getOp();
 
 	/**
-	 * @param function the {@link Function} used for mapping
+	 * @param op the {@link ComputerOp} used for mapping
 	 */
-	void setFunction(F function);
+	void setOp(C op);
 }

@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.correlate;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;

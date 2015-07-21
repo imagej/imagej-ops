@@ -30,8 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
@@ -55,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 2)
 public class MapIterableToRAIParallel<A, B> extends
-	AbstractMapFunction<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 	implements Parallel
 {
 
@@ -63,7 +62,7 @@ public class MapIterableToRAIParallel<A, B> extends
 	private OpService opService;
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
 		opService.run(ChunkerOp.class, new CursorBasedChunk() {
@@ -72,7 +71,7 @@ public class MapIterableToRAIParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Function<A, B> safe = func.getIndependentInstance();
+				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
 				final Cursor<A> cursor = input.localizingCursor();
 
 				setToStart(cursor, startIndex);
@@ -88,7 +87,6 @@ public class MapIterableToRAIParallel<A, B> extends
 				}
 			}
 		}, input.size());
-
-		return output;
 	}
+
 }

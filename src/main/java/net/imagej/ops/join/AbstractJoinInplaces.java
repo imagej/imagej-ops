@@ -28,75 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.join;
 
-import org.scijava.ItemIO;
+import java.util.List;
+
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
+
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link OutputFunction} ops.
+ * Abstract superclass of {@link JoinInplaces} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractOutputFunction<I, O> extends
-	AbstractFunction<I, O> implements OutputFunction<I, O>
+public abstract class AbstractJoinInplaces<A> extends AbstractInplaceOp<A>
+	implements JoinInplaces<A>
 {
 
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
 	@Parameter
-	private I in;
-
-	// -- OutputFunction methods --
+	private List<InplaceOp<A>> ops;
 
 	@Override
-	public O compute(final I input) {
-		return compute(input, createOutput(input));
-	}
-
-	// -- Function methods --
-
-	@Override
-	public O compute(final I input, final O output) {
-		final O result = output == null ? createOutput(input) : output;
-		safeCompute(input, result);
-		return result;
-	}
-
-	// -- InputOp methods --
-
-	@Override
-	public I getInput() {
-		return in;
+	public void setOps(final List<InplaceOp<A>> ops) {
+		this.ops = ops;
 	}
 
 	@Override
-	public O getOutput() {
-		return out;
+	public List<InplaceOp<A>> getOps() {
+		return ops;
 	}
-
-	// -- OutputOp methods --
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
-	// -- Internal methods --
-
-	/**
-	 * Does the work of computing the function.
-	 * 
-	 * @param input Non-null input value.
-	 * @param output Non-null output value.
-	 */
-	protected abstract void safeCompute(I input, O output);
 
 }

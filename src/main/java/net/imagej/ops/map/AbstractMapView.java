@@ -28,22 +28,50 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.map;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.ComputerOp;
+
+import org.scijava.plugin.Parameter;
 
 /**
- * Interface for in-place ops.
- * <p>
- * An in-place function is a special function whose sole argument is both its
- * input and its output.
- * </p>
- * 
- * @author Curtis Rueden
+ * Abstract base class for {@link MapView} implementations.
+ *
+ * @author Christian Dietz (University of Konstanz)
+ * @param <A> type to be converted to <B>
+ * @param <B> result of conversion
+ * @param <I> holding <A>s
+ * @param <O> type of resulting output
  */
-public interface InplaceFunction<A> extends Function<A, A> {
+public abstract class AbstractMapView<A, B, I, O> extends
+	AbstractFunctionOp<I, O> implements MapView<A, B, I, O>
+{
 
-	A compute(A arg);
+	@Parameter
+	private ComputerOp<A, B> op;
+
+	@Parameter
+	private B type;
 
 	@Override
-	InplaceFunction<A> getIndependentInstance();
+	public ComputerOp<A, B> getOp() {
+		return op;
+	}
+
+	@Override
+	public void setOp(final ComputerOp<A, B> op) {
+		this.op = op;
+	}
+
+	@Override
+	public B getType() {
+		return type;
+	}
+
+	@Override
+	public void setType(final B type) {
+		this.type = type;
+	}
 
 }

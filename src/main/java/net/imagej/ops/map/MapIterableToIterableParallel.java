@@ -30,9 +30,8 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
@@ -55,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY + 3)
 public class MapIterableToIterableParallel<A, B> extends
-	AbstractMapFunction<A, B, IterableInterval<A>, IterableInterval<B>> implements
+	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel
 {
 
@@ -74,7 +73,7 @@ public class MapIterableToIterableParallel<A, B> extends
 	}
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		if (!isValid(input, output)) {
@@ -88,7 +87,7 @@ public class MapIterableToIterableParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Function<A, B> safe = func.getIndependentInstance();
+				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
 				
 				final Cursor<A> inCursor = input.cursor();
 				final Cursor<B> outCursor = output.cursor();
@@ -105,7 +104,5 @@ public class MapIterableToIterableParallel<A, B> extends
 				}
 			}
 		}, input.size());
-
-		return output;
 	}
 }

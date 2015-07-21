@@ -30,9 +30,8 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Function;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -44,7 +43,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapOp} using a {@link Function} on {@link IterableInterval} and
+ * {@link MapOp} using a {@link ComputerOp} on {@link IterableInterval} and
  * {@link RandomAccessibleInterval}
  *
  * @author Martin Horn (University of Konstanz)
@@ -55,12 +54,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapIterableIntervalToRAI<A, B> extends
-	AbstractMapFunction<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 	implements Contingent
 {
 
 	@Override
-	public RandomAccessibleInterval<B> compute(final IterableInterval<A> input,
+	public void compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
 		final Cursor<A> cursor = input.localizingCursor();
@@ -69,10 +68,8 @@ public class MapIterableIntervalToRAI<A, B> extends
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			func.compute(cursor.get(), rndAccess.get());
+			getOp().compute(cursor.get(), rndAccess.get());
 		}
-
-		return output;
 	}
 
 	@Override

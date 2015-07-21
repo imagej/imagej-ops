@@ -30,10 +30,9 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.OutputOp;
+import net.imagej.ops.Output;
 import net.imglib2.Dimensions;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
@@ -53,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME)
 public class DefaultCreateImg<T> implements
-	Ops.Create.Img, OutputOp<Img<T>>
+	Ops.Create.Img, Output<Img<T>>
 {
 
 	@Parameter
@@ -114,11 +113,6 @@ public class DefaultCreateImg<T> implements
 	@Override
 	public Img<T> getOutput() {
 		return output;
-	}
-
-	@Override
-	public void setOutput(final Img<T> output) {
-		this.output = output;
 	}
 
 }

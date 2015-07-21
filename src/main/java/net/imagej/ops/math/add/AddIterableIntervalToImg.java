@@ -30,9 +30,8 @@
 
 package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractOutputFunction;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -46,7 +45,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 public class AddIterableIntervalToImg<T extends NumericType<T>> extends
-	AbstractOutputFunction<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
+	AbstractHybridOp<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
 {
 
 	// TODO: extend common abstract base class which implements Contingent
@@ -70,7 +69,7 @@ public class AddIterableIntervalToImg<T extends NumericType<T>> extends
 	}
 
 	@Override
-	protected void safeCompute(final Img<T> input, final Img<T> output) {
+	public void compute(final Img<T> input, final Img<T> output) {
 		final Cursor<T> cursor = ii.localizingCursor();
 		final RandomAccess<T> iRA = input.randomAccess();
 		final RandomAccess<T> oRA = output.randomAccess();

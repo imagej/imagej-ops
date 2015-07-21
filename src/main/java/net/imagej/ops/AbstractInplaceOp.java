@@ -28,39 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.join;
+package net.imagej.ops;
 
-import net.imagej.ops.Function;
-import net.imagej.ops.InplaceFunction;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * Joins an {@link InplaceFunction} with a {@link Function}.
+ * Abstract superclass for {@link InplaceOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
-public class DefaultJoinInplaceAndFunction<A, B> extends
-	AbstractJoinFunctionAndFunction<A, A, B, InplaceFunction<A>, Function<A, B>>
-{
+public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
+
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH)
+	private A arg;
+
+	// -- Runnable methods --
 
 	@Override
-	public B compute(final A input, final B output) {
-		getFirst().compute(input);
-		return getSecond().compute(input, output);
+	public void run() {
+		compute(getInput());
+	}
+
+	// -- Input methods --
+
+	@Override
+	public A getInput() {
+		return arg;
 	}
 
 	@Override
-	public DefaultJoinInplaceAndFunction<A, B> getIndependentInstance() {
-		final DefaultJoinInplaceAndFunction<A, B> joiner =
-			new DefaultJoinInplaceAndFunction<A, B>();
-
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
-
-		return joiner;
+	public void setInput(final A input) {
+		arg = input;
 	}
+
+	// -- Output methods --
+
+	@Override
+	public A getOutput() {
+		return arg;
+	}
+
+	// -- ComputerOp methods --
+
+	@Override
+	public void compute(final A input, final A output) {
+		if (input != output) {
+			throw new IllegalArgumentException("Input and output must match");
+		}
+		compute(input);
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public InplaceOp<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
 }
