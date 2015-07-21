@@ -39,7 +39,7 @@ import net.imagej.ops.ComputerOp;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass of {@link JoinComputers}s.
+ * Abstract superclass of {@link JoinComputers} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
