@@ -28,13 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.neighborhood;
+package net.imagej.ops.map;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.MapOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
