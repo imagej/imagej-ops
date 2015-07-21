@@ -34,9 +34,9 @@ import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * A join operation which joins two {@link ComputerOp}s. The resulting function
- * will take the input of the first {@link ComputerOp} as input and the output of
- * the second {@link ComputerOp} as the output.
+ * A join operation which joins two {@link ComputerOp}s. The resulting operation
+ * will take the input of the first {@link ComputerOp} as input and the output
+ * of the second {@link ComputerOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
