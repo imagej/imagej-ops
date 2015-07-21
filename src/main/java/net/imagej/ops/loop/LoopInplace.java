@@ -34,7 +34,7 @@ import net.imagej.ops.InplaceOp;
 
 /**
  * Loops over an injected {@link InplaceOp}. A {@link LoopInplace} applies
- * a {@link InplaceOp} n-times to an input. Note: input will be modified!
+ * an {@link InplaceOp} n-times to an input. Note: input will be modified!
  * 
  * @author Christian Dietz (University of Konstanz)
  */
