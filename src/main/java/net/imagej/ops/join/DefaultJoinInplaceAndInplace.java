@@ -52,8 +52,8 @@ public class DefaultJoinInplaceAndInplace<A> extends
 
 	@Override
 	public void compute(final A input, final A output) {
-		first.compute(input, output);
-		second.compute(input, output);
+		getFirst().compute(input, output);
+		getSecond().compute(input, output);
 	}
 
 	@Override
@@ -61,8 +61,8 @@ public class DefaultJoinInplaceAndInplace<A> extends
 		final DefaultJoinInplaceAndInplace<A> joiner =
 			new DefaultJoinInplaceAndInplace<A>();
 
-		joiner.first = first;
-		joiner.second = second;
+		joiner.setFirst(getFirst());
+		joiner.setSecond(getSecond());
 
 		return joiner;
 	}

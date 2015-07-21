@@ -45,10 +45,10 @@ public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceOp
 {
 
 	@Parameter
-	protected InplaceOp<A> first;
+	private InplaceOp<A> first;
 
 	@Parameter
-	protected InplaceOp<A> second;
+	private InplaceOp<A> second;
 
 	@Override
 	public InplaceOp<A> getFirst() {
