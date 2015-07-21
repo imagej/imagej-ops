@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;

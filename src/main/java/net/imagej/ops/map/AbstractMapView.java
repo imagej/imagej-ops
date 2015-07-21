@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 

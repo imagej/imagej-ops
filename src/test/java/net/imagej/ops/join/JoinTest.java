@@ -35,9 +35,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;

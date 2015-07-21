@@ -33,8 +33,8 @@ package net.imagej.ops.image.project;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
