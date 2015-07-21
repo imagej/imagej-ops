@@ -49,7 +49,7 @@ public abstract class AbstractMapComputer<A, B, C, D> extends
 {
 
 	@Parameter
-	protected ComputerOp<A, B> op;
+	private ComputerOp<A, B> op;
 
 	@Override
 	public ComputerOp<A, B> getOp() {

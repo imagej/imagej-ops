@@ -47,7 +47,7 @@ public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
 {
 
 	@Parameter
-	protected InplaceOp<A> op;
+	private InplaceOp<A> op;
 
 	@Override
 	public InplaceOp<A> getOp() {

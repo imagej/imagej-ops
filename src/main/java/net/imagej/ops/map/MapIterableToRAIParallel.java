@@ -71,7 +71,7 @@ public class MapIterableToRAIParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = op.getIndependentInstance();
+				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
 				final Cursor<A> cursor = input.localizingCursor();
 
 				setToStart(cursor, startIndex);

@@ -68,7 +68,7 @@ public class MapIterableIntervalToRAI<A, B> extends
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			op.compute(cursor.get(), rndAccess.get());
+			getOp().compute(cursor.get(), rndAccess.get());
 		}
 	}
 

@@ -54,8 +54,7 @@ public class MapIterableToIterable<A, B> extends
 		final Iterator<B> outCursor = output.iterator();
 
 		while (inCursor.hasNext()) {
-			op.compute(inCursor.next(), outCursor.next());
+			getOp().compute(inCursor.next(), outCursor.next());
 		}
 	}
-
 }
