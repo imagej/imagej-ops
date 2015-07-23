@@ -34,12 +34,9 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.DeconvolveOps;
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.deconvolve.RichardsonLucyRAI;
-import net.imagej.ops.fft.filter.AbstractFFTFilterImg;
+import net.imagej.ops.OpService;
+import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -57,8 +54,8 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = DeconvolveOps.RichardsonLucyTV.NAME,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class, name = Ops.Deconvolve.RichardsonLucyTV.NAME,
+priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterImg<I, O, K, C>
 {
@@ -98,20 +95,11 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-		Img<I> input = this.getInput();
-
-		long[] k = new long[input.numDimensions()];
-		long[] l = new long[input.numDimensions()];
-
-		for (int i = 0; i < input.numDimensions(); i++) {
-			k[i] = input.dimension(i);
-			l[i] = getKernel().dimension(i);
-		}
 
 		ops.run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
 			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), k, l, nonCirculant, accelerate,
-			regularizationFactor);
+			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
+			nonCirculant, accelerate, regularizationFactor);
 
 	}
 }

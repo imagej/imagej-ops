@@ -88,19 +88,11 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-		Img<I> input = this.getInput();
 
-		long[] k = new long[input.numDimensions()];
-		long[] l = new long[input.numDimensions()];
-
-		for (int i = 0; i < input.numDimensions(); i++) {
-			k[i] = input.dimension(i);
-			l[i] = getKernel().dimension(i);
-		}
-
-		ops.deconvolve().richardsonLucy(RichardsonLucyRAI.class, raiExtendedInput,
-			raiExtendedKernel, fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), k, l, nonCirculant, accelerate);
+		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel,
+			fftImg, fftKernel, output, true, true, maxIterations,
+			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
+			nonCirculant, accelerate);
 
 	}
 
