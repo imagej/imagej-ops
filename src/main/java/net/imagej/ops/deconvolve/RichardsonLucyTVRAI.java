@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.deconvolve.RichardsonLucyRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -65,7 +66,8 @@ import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = "rltv", priority = Priority.NORMAL_PRIORITY)
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class, name = Ops.Deconvolve.RichardsonLucyTV.NAME,
+priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends RichardsonLucyRAI<I, O, K, C>
 {
