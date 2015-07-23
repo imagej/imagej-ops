@@ -38,7 +38,7 @@ import org.scijava.Context;
 import org.scijava.sjep.eval.EvaluatorConsole;
 
 /**
- * Launches a console-based, OPS-driven expression evaluator.
+ * Launches a console-based, Ops-driven expression evaluator.
  *
  * @author Curtis Rueden
  * @see EvaluatorConsole

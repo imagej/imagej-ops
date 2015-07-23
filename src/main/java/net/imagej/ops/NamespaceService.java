@@ -33,7 +33,7 @@ package net.imagej.ops;
 import org.scijava.plugin.SingletonService;
 
 /**
- * Interface for services that manage OPS {@link Namespace}s.
+ * Interface for services that manage Ops {@link Namespace}s.
  *
  * @author Curtis Rueden
  */

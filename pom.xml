@@ -12,8 +12,8 @@
 	<artifactId>imagej-ops</artifactId>
 	<version>0.16.1-SNAPSHOT</version>
 
-	<name>ImageJ Operations</name>
-	<description>ImageJ OPS: a framework for reusable algorithms.</description>
+	<name>ImageJ Ops</name>
+	<description>ImageJ Operations: a framework for reusable algorithms.</description>
 	<inceptionYear>2014</inceptionYear>
 
 	<developers>
@@ -127,7 +127,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/ImageJ-OPS/</url>
+		<url>http://jenkins.imagej.net/job/ImageJ-Ops/</url>
 	</ciManagement>
 
 	<properties>

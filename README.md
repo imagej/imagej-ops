@@ -1,11 +1,11 @@
-[![](http://jenkins.imagej.net/job/ImageJ-OPS/lastBuild/badge/icon)](http://jenkins.imagej.net/job/ImageJ-OPS/)
+[![](http://jenkins.imagej.net/job/ImageJ-Ops/lastBuild/badge/icon)](http://jenkins.imagej.net/job/ImageJ-Ops/)
 [![Join the chat at https://gitter.im/imagej/imagej-ops](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/imagej/imagej-ops?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-ImageJ OPS
+ImageJ Ops
 ==========
 
-ImageJ OPS is an extensible Java framework for algorithms, particularly image
-processing algorithms. OPS seeks to be a unifying library for scientific image
+ImageJ Ops is an extensible Java framework for algorithms, particularly image
+processing algorithms. Ops seeks to be a unifying library for scientific image
 processing. See the
 [Motivation](https://github.com/imagej/imagej-ops/wiki/Motivation) page for
 details.
@@ -33,7 +33,7 @@ output_image = map(input_image, add_op)
 ```
 
 For more details, see these tutorials:
-* [Using OPS](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
+* [Using Ops](https://github.com/imagej/imagej-tutorials/tree/master/using-ops)
 * [Create a new OP](https://github.com/imagej/imagej-tutorials/tree/master/create-a-new-op)
 
 Working example

@@ -53,7 +53,7 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	private final OpService ops;
 
-	/** Map of SJEP {@link Operator}s to OPS operation names. */
+	/** Map of SJEP {@link Operator}s to Ops operation names. */
 	private final HashMap<Operator, String> opMap;
 
 	public OpEvaluator(final OpService ops) {

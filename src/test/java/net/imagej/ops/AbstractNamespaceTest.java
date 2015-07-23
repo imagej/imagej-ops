@@ -91,7 +91,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * </p>
 	 * <p>
 	 * This method provides a general-purpose verification test which extensions
-	 * to OPS can also use to verify their own cache of type-safe methods provided
+	 * to Ops can also use to verify their own cache of type-safe methods provided
 	 * by their own service(s).
 	 * </p>
 	 * <p>

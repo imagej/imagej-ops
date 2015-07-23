@@ -59,7 +59,7 @@ import org.scijava.script.ScriptService;
  * </p>
  * <p>
  * Note that this op is rather slow; it is intended mainly for demonstration
- * purposes, and to easily generate small images for testing OPS workflows.
+ * purposes, and to easily generate small images for testing Ops workflows.
  * </p>
  * 
  * @author Curtis Rueden
