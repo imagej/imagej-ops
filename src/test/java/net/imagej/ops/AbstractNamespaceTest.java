@@ -308,24 +308,18 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	private boolean checkOpImpl(final Method method, final String qName,
 		final Class<? extends Op> opType, final OpCoverSet coverSet)
 	{
-		// TODO: Type matching needs to be type<->type instead of class<->type.
-		// That is, the "special class placeholder" also needs to work with Type.
-		// Then we can pass Types here instead of Class instances.
-		// final Object[] argTypes = method.getGenericParameterTypes();
-		final Object[] argTypes = method.getParameterTypes();
-		final OpRef<Op> ref = new OpRef<Op>(qName, null, argTypes);
 		final CommandInfo info = commandService.getCommand(opType);
-		final OpCandidate<Op> candidate = new OpCandidate<Op>(ref, info);
 
 		// check input types
-		if (!inputTypesMatch(candidate)) {
+		final Object[] argTypes = method.getParameterTypes();
+		if (!inputTypesMatch(qName, argTypes, info)) {
 			error("Mismatched inputs", opType, method);
 			return false;
 		}
 
 		// check output types
 		final Type returnType = method.getGenericReturnType();
-		if (!outputTypesMatch(returnType, candidate)) {
+		if (!outputTypesMatch(returnType, info)) {
 			error("Mismatched outputs", opType, method);
 			return false;
 		}
@@ -336,8 +330,16 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		return true;
 	}
 
-	private boolean inputTypesMatch(final OpCandidate<Op> candidate) {
+	private boolean inputTypesMatch(final String qName, final Object[] argTypes,
+		final ModuleInfo info)
+	{
 		// check for assignment compatibility, including generics
+		// TODO: Type matching needs to be type<->type instead of class<->type.
+		// That is, the "special class placeholder" also needs to work with Type.
+		// Then we can pass Types here instead of Class instances.
+		// final Object[] argTypes = method.getGenericParameterTypes();
+		final OpRef<Op> ref = new OpRef<Op>(qName, null, argTypes);
+		final OpCandidate<Op> candidate = new OpCandidate<Op>(ref, info);
 		if (!matcher.typesMatch(candidate)) return false;
 
 		// also check that raw types exactly match
@@ -360,10 +362,10 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	}
 
 	private boolean outputTypesMatch(final Type returnType,
-		final OpCandidate<Op> candidate)
+		final ModuleInfo info)
 	{
 		final List<Type> outTypes = new ArrayList<Type>();
-		for (final ModuleItem<?> output : candidate.getInfo().outputs()) {
+		for (final ModuleItem<?> output : info.outputs()) {
 			outTypes.add(output.getGenericType());
 		}
 		if (outTypes.size() == 0) return returnType == void.class;
