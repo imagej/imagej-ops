@@ -311,8 +311,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		final CommandInfo info = commandService.getCommand(opType);
 
 		// check input types
-		final Object[] argTypes = method.getParameterTypes();
-		if (!inputTypesMatch(qName, argTypes, info)) {
+		if (!inputTypesMatch(qName, method, info)) {
 			error("Mismatched inputs", opType, method);
 			return false;
 		}
@@ -325,12 +324,13 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		}
 
 		// mark this op as covered (w.r.t. the given number of args)
+		final Object[] argTypes = method.getParameterTypes();
 		coverSet.add(info, argTypes.length);
 
 		return true;
 	}
 
-	private boolean inputTypesMatch(final String qName, final Object[] argTypes,
+	private boolean inputTypesMatch(final String qName, final Method method,
 		final ModuleInfo info)
 	{
 		// check for assignment compatibility, including generics
@@ -338,14 +338,18 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// That is, the "special class placeholder" also needs to work with Type.
 		// Then we can pass Types here instead of Class instances.
 		// final Object[] argTypes = method.getGenericParameterTypes();
+		final Class<?>[] argTypes = method.getParameterTypes();
 		final OpRef<Op> ref = new OpRef<Op>(qName, null, argTypes);
 		final OpCandidate<Op> candidate = new OpCandidate<Op>(ref, info);
 		if (!matcher.typesMatch(candidate)) return false;
 
 		// also check that raw types exactly match
 		final Object[] paddedArgs = matcher.padArgs(candidate);
+		final java.lang.reflect.Parameter[] params = method.getParameters();
 		int i = 0;
 		for (final ModuleItem<?> input : candidate.getInfo().inputs()) {
+			final String name = params[i].getName();
+			if (!name.equals(input.getName())) throw new RuntimeException(name + " != " + input.getName());
 			final Object arg = paddedArgs[i++];
 			if (!typeMatches(arg, input.getType())) return false;
 		}
