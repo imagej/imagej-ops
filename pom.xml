@@ -183,13 +183,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.scijava</groupId>
-			<artifactId>junit-benchmarks</artifactId>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-ij</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.imglib2</groupId>
-			<artifactId>imglib2-ij</artifactId>
+			<groupId>org.scijava</groupId>
+			<artifactId>junit-benchmarks</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
