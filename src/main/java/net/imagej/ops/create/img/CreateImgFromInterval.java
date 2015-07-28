@@ -82,7 +82,7 @@ public class CreateImgFromInterval<T extends Type<T>> implements
 		interval.min(min);
 
 		for (int d = 0; d < min.length; d++) {
-			if (min[d] > 0) {
+			if (min[d] != 0) {
 				output = ImgView.wrap(Views.translate(output, min), output.factory());
 				break;
 			}
