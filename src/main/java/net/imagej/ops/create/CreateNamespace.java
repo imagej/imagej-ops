@@ -117,7 +117,9 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
-	public <T extends Type<T>> Img<T> img(final Interval interval, final T outType) {
+	public <T extends Type<T>> Img<T>
+		img(final Interval interval, final T outType)
+	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
@@ -126,8 +128,8 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
-	public <T extends Type<T>> Img<T> img(final Interval interval, final T outType,
-		final ImgFactory<T> fac)
+	public <T extends Type<T>> Img<T> img(final Interval interval,
+		final T outType, final ImgFactory<T> fac)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
@@ -232,6 +234,59 @@ public class CreateNamespace extends AbstractNamespace {
 			(ImgLabeling<L, T>) ops().run(
 				net.imagej.ops.create.imgLabeling.DefaultCreateImgLabeling.class, dims,
 				outType, fac, maxNumLabelSets);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class)
+	public <L, T extends IntegerType<T>> ImgLabeling<L, T> imgLabeling(
+		final Interval interval)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, T> result =
+			(ImgLabeling<L, T>) ops().run(
+				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				interval);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class)
+	public <L, T extends IntegerType<T>> ImgLabeling<L, T> imgLabeling(
+		final Interval interval, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, T> result =
+			(ImgLabeling<L, T>) ops().run(
+				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				interval, outType);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class)
+	public <L, T extends IntegerType<T>> ImgLabeling<L, T> imgLabeling(
+		final Interval interval, final T outType, final ImgFactory<T> fac)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, T> result =
+			(ImgLabeling<L, T>) ops().run(
+				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				interval, outType, fac);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class)
+	public <L, T extends IntegerType<T>> ImgLabeling<L, T> imgLabeling(
+		final Interval interval, final T outType, final ImgFactory<T> fac,
+		final int maxNumLabelSets)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgLabeling<L, T> result =
+			(ImgLabeling<L, T>) ops().run(
+				net.imagej.ops.create.imgLabeling.CreateImgLabelingFromInterval.class,
+				interval, outType, fac, maxNumLabelSets);
 		return result;
 	}
 
