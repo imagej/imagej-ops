@@ -37,6 +37,7 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -103,6 +104,35 @@ public class CreateNamespace extends AbstractNamespace {
 		final Img<T> result =
 			(Img<T>) ops().run(net.imagej.ops.create.img.DefaultCreateImg.class,
 				dims, outType, fac);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
+	public <T extends Type<T>> Img<T> img(final Interval interval) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
+				interval);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
+	public <T extends Type<T>> Img<T> img(final Interval interval, final T outType) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
+				interval, outType);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
+	public <T extends Type<T>> Img<T> img(final Interval interval, final T outType,
+		final ImgFactory<T> fac)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
+				interval, outType, fac);
 		return result;
 	}
 
@@ -240,14 +270,17 @@ public class CreateNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Create.IntegerType.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.create.integerType.DefaultCreateIntegerType.class)
+	@OpMethod(
+		op = net.imagej.ops.create.integerType.DefaultCreateIntegerType.class)
 	public IntegerType integerType() {
 		final IntegerType result =
-			(IntegerType) ops().run(net.imagej.ops.create.integerType.DefaultCreateIntegerType.class);
+			(IntegerType) ops().run(
+				net.imagej.ops.create.integerType.DefaultCreateIntegerType.class);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.integerType.DefaultCreateIntegerType.class)
+	@OpMethod(
+		op = net.imagej.ops.create.integerType.DefaultCreateIntegerType.class)
 	public IntegerType integerType(final long maxValue) {
 		final IntegerType result =
 			(IntegerType) ops().run(
