@@ -147,22 +147,22 @@ public class CreateImgTest extends AbstractOpTest {
 		final long[] dim = new long[] { 10, 10, 10 };
 
 		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(dim,
-			new BitType(), null)).firstElement().getClass());
+			new BitType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.create().img(
-			dim, new ByteType(), null)).firstElement().getClass());
+			dim, new ByteType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", UnsignedByteType.class, ((Img<?>) ops.create()
-			.img(dim, new UnsignedByteType(), null)).firstElement().getClass());
+			.img(dim, new UnsignedByteType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", IntType.class, ((Img<?>) ops.create().img(dim,
-			new IntType(), null)).firstElement().getClass());
+			new IntType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", FloatType.class, ((Img<?>) ops.create().img(
-			dim, new FloatType(), null)).firstElement().getClass());
+			dim, new FloatType())).firstElement().getClass());
 
 		assertEquals("Image Type: ", DoubleType.class, ((Img<?>) ops.create().img(
-			dim, new DoubleType(), null)).firstElement().getClass());
+			dim, new DoubleType())).firstElement().getClass());
 	}
 
 	@Test
