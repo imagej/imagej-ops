@@ -67,6 +67,31 @@ public class CreateImgTest extends AbstractOpTest {
 	private static final int TEST_SIZE = 100;
 
 	@Test
+	public void testImageMinimum() {
+
+		final Random randomGenerator = new Random();
+
+		for (int i = 0; i < TEST_SIZE; i++) {
+
+			// between 2 and 5 dimensions
+			final long[] max = new long[randomGenerator.nextInt(4) + 2];
+			final long[] min = new long[max.length];
+
+			// between 2 and 10 pixels per dimensions
+			for (int j = 0; j < max.length; j++) {
+				max[j] = randomGenerator.nextInt(9) + 2;
+				min[j] = Math.max(0, max[j] - randomGenerator.nextInt(4));
+			}
+
+			// create img
+			final Img<?> img = (Img<?>) ops.create().img(new FinalInterval(min, max));
+
+			assertArrayEquals("Image Minimum:", min, Intervals.minAsLongArray(img));
+			assertArrayEquals("Image Maximum:", max, Intervals.maxAsLongArray(img));
+		}
+	}
+
+	@Test
 	public void testImageDimensions() {
 
 		final Random randomGenerator = new Random();
@@ -121,8 +146,8 @@ public class CreateImgTest extends AbstractOpTest {
 
 		final long[] dim = new long[] { 10, 10, 10 };
 
-		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(
-			dim, new BitType(), null)).firstElement().getClass());
+		assertEquals("Image Type: ", BitType.class, ((Img<?>) ops.create().img(dim,
+			new BitType(), null)).firstElement().getClass());
 
 		assertEquals("Image Type: ", ByteType.class, ((Img<?>) ops.create().img(
 			dim, new ByteType(), null)).firstElement().getClass());
