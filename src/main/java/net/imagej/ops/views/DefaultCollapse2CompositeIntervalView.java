@@ -1,24 +1,21 @@
 package net.imagej.ops.views;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.Collapse;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.GenericComposite;
 
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = ViewOps.Collapse.class, name = ViewOps.Collapse.NAME)
+@Plugin(type = Ops.View.Collapse.class, name = Ops.View.Collapse.NAME)
 public class DefaultCollapse2CompositeIntervalView<T>
-		extends
-		AbstractView<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>>
-		implements
-		Collapse<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>> {
+		extends AbstractFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>>
+		implements Ops.View.Collapse {
 
 	@Override
-	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute(
-			RandomAccessibleInterval<T> input) {
+	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute(RandomAccessibleInterval<T> input) {
 		return Views.collapse(input);
 	}
 

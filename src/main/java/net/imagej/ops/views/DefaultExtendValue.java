@@ -4,17 +4,16 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.ExtendValue;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
-@Plugin(type = ViewOps.ExtendValue.class, name = ViewOps.ExtendValue.NAME)
+@Plugin(type = Ops.View.ExtendValue.class, name = Ops.View.ExtendValue.NAME)
 public class DefaultExtendValue<T extends Type<T>, F extends RandomAccessibleInterval<T>>
-		extends AbstractView<F, ExtendedRandomAccessibleInterval<T, F>>
-		implements ExtendValue<F, ExtendedRandomAccessibleInterval<T, F>> {
+		extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>implements Ops.View.ExtendValue {
 
 	@Parameter(type = ItemIO.INPUT)
 	private T value;

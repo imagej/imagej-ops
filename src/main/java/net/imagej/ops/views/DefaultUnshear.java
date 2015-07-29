@@ -1,18 +1,17 @@
 package net.imagej.ops.views;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.UnShear;
-import net.imglib2.RandomAccessible;
-import net.imglib2.view.TransformView;
-
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = ViewOps.UnShear.class, name = ViewOps.UnShear.NAME)
-public class DefaultUnshear<T> extends
-		AbstractView<RandomAccessible<T>, TransformView<T>> implements
-		UnShear<RandomAccessible<T>, TransformView<T>> {
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
+import net.imglib2.RandomAccessible;
+import net.imglib2.view.TransformView;
+
+@Plugin(type = Ops.View.UnShear.class, name = Ops.View.UnShear.NAME)
+public class DefaultUnshear<T> extends AbstractFunctionOp<RandomAccessible<T>, TransformView<T>>
+		implements Ops.View.UnShear {
 
 	@Parameter(type = ItemIO.INPUT)
 	private int shearDimension;

@@ -2,16 +2,15 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.ExtendMirrorDouble;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
-@Plugin(type = ViewOps.ExtendMirrorDouble.class, name = ViewOps.ExtendMirrorDouble.NAME)
+@Plugin(type = Ops.View.ExtendMirrorDouble.class, name = Ops.View.ExtendMirrorDouble.NAME)
 public class DefaultExtendMirrorDouble<T, F extends RandomAccessibleInterval<T>>
-		extends AbstractView<F, ExtendedRandomAccessibleInterval<T, F>>
-		implements ExtendMirrorDouble<F, ExtendedRandomAccessibleInterval<T, F>> {
+		extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>implements Ops.View.ExtendMirrorDouble {
 
 	@Override
 	public ExtendedRandomAccessibleInterval<T, F> compute(F input) {

@@ -2,23 +2,20 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.Raster;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RealRandomAccessible;
 import net.imglib2.type.Type;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
-@Plugin(type = ViewOps.Raster.class, name = ViewOps.Raster.NAME)
+@Plugin(type = Ops.View.Raster.class, name = Ops.View.Raster.NAME)
 public class DefaultRaster<T extends Type<T>>
-		extends
-		AbstractView<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>>
-		implements
-		Raster<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>> {
+		extends AbstractFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>>
+		implements Ops.View.Raster {
 
 	@Override
-	public RandomAccessibleOnRealRandomAccessible<T> compute(
-			RealRandomAccessible<T> input) {
+	public RandomAccessibleOnRealRandomAccessible<T> compute(RealRandomAccessible<T> input) {
 		return Views.raster(input);
 	}
 

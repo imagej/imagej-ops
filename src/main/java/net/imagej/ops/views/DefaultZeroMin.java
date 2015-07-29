@@ -2,16 +2,15 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.view.ViewOps;
-import net.imagej.ops.view.ViewOps.ZeroMin;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-@Plugin(type = ViewOps.ZeroMin.class, name = ViewOps.ZeroMin.NAME)
-public class DefaultZeroMin<T> extends
-		AbstractView<RandomAccessibleInterval<T>, IntervalView<T>> implements
-		ZeroMin<RandomAccessibleInterval<T>, IntervalView<T>> {
+@Plugin(type = Ops.View.ZeroMin.class, name = Ops.View.ZeroMin.NAME)
+public class DefaultZeroMin<T> extends AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
+		implements Ops.View.IsZeroMin {
 
 	@Override
 	public IntervalView<T> compute(RandomAccessibleInterval<T> input) {
