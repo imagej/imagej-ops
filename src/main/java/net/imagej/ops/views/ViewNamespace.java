@@ -1,5 +1,8 @@
 package net.imagej.ops.views;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractNamespace;
@@ -16,6 +19,8 @@ import net.imglib2.RealRandomAccessible;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.transform.integer.shear.InverseShearTransform;
+import net.imglib2.transform.integer.shear.ShearTransform;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
@@ -24,6 +29,8 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.IterableRandomAccessibleInterval;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
+import net.imglib2.view.StackView;
+import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.SubsampleView;
 import net.imglib2.view.TransformView;
 import net.imglib2.view.composite.CompositeIntervalView;
@@ -404,20 +411,61 @@ public class ViewNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Not supported right now, because imagej-ops uses an old version of
-	 * imglib2.
+	 * Inverse bijective permutation of the integer coordinates of one dimension
+	 * of a {@link RandomAccessibleInterval}.
+	 *
+	 * @param source
+	 *            must have dimension(dimension) == permutation.length
+	 * @param permutation
+	 *            must be a bijective permutation over its index set, i.e. for a
+	 *            lut of length n, the sorted content the array must be
+	 *            [0,...,n-1] which is the index set of the lut.
+	 * @param d
+	 *            dimension index to be permuted
+	 *
+	 * @return {@link IntervalView} of permuted source.
 	 */
-	@OpMethod(op = net.imagej.ops.views.DefaultPermuteCoordinatesInverse.class)
+	@OpMethod(op = net.imagej.ops.views.PermuteCoordinateInverseOfDimension.class)
 	public <T extends Type<T>> IntervalView<T> permuteCoordinatesInverse(
 			final RandomAccessibleInterval<T> input, final int[] permutation,
 			final int d) {
 		return (IntervalView<T>) ops().run(
-				DefaultPermuteCoordinatesInverse.class, input, permutation, d);
+				PermuteCoordinateInverseOfDimension.class, input, permutation, d);
 	}
-
+	
 	/**
-	 * Not supported right now, because imagej-ops uses an old version of
-	 * imglib2.
+	 * Inverse Bijective permutation of the integer coordinates in each
+	 * dimension of a {@link RandomAccessibleInterval}.
+	 *
+	 * @param source
+	 *            must be an <em>n</em>-dimensional hypercube with each
+	 *            dimension being of the same size as the permutation array
+	 * @param permutation
+	 *            must be a bijective permutation over its index set, i.e. for a
+	 *            LUT of length n, the sorted content the array must be
+	 *            [0,...,n-1] which is the index set of the LUT.
+	 *
+	 * @return {@link IntervalView} of permuted source.
+	 */
+	@OpMethod(op = net.imagej.ops.views.DefaultPermuteCoordinatesInverse.class)
+	public <T extends Type<T>> IntervalView<T> permuteCoordinatesInverse(final RandomAccessibleInterval<T> input,
+			final int... permutation) {
+		return (IntervalView<T>) ops().run(DefaultPermuteCoordinatesInverse.class, input, permutation);
+	}
+	
+	/**
+	 * Bijective permutation of the integer coordinates in each dimension of a
+	 * {@link RandomAccessibleInterval}.
+	 *
+	 * @param source
+	 *            must be an <em>n</em>-dimensional hypercube with each
+	 *            dimension being of the same size as the permutation array
+	 * @param permutation
+	 *            must be a bijective permutation over its index set, i.e. for a
+	 *            LUT of length n, the sorted content the array must be
+	 *            [0,...,n-1] which is the index set of the LUT.
+	 *
+	 * @return {@link IntervalView} of permuted source.
 	 */
 	@OpMethod(op = net.imagej.ops.views.DefaultPermuteCoordinates.class)
 	public <T extends Type<T>> IntervalView<T> permuteCoordinates(
@@ -425,7 +473,28 @@ public class ViewNamespace extends AbstractNamespace {
 		return (IntervalView<T>) ops().run(DefaultPermuteCoordinates.class,
 				input, permutation);
 	}
-
+	
+	/**
+	 * Bijective permutation of the integer coordinates of one dimension of a
+	 * {@link RandomAccessibleInterval}.
+	 *
+	 * @param source
+	 *            must have dimension(dimension) == permutation.length
+	 * @param permutation
+	 *            must be a bijective permutation over its index set, i.e. for a
+	 *            lut of length n, the sorted content the array must be
+	 *            [0,...,n-1] which is the index set of the lut.
+	 * @param d
+	 *            dimension index to be permuted
+	 *
+	 * @return {@link IntervalView} of permuted source.
+	 */
+	@OpMethod(op = net.imagej.ops.views.PermuteCoordinatesOfDimension.class)
+	public <T extends Type<T>> IntervalView<T> permuteCoordinates(final RandomAccessibleInterval<T> input,
+			final int[] permutation, int d) {
+		return (IntervalView<T>) ops().run(PermuteCoordinatesOfDimension.class, input, permutation, d);
+	}
+	
 	/**
 	 * Turns a {@link RealRandomAccessible} into a {@link RandomAccessible},
 	 * providing {@link RandomAccess} at integer coordinates.
@@ -484,8 +553,18 @@ public class ViewNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Not supported right now, because imagej-ops uses an old version of
-	 * imglib2.
+	 * Positive shear transform of a RandomAccessible using
+	 * {@link ShearTransform}, i.e. c[ shearDimension ] = c[ shearDimension ] +
+	 * c[ referenceDimension ]
+	 *
+	 * @param source
+	 *            input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param shearDimension
+	 *            dimension to be sheared
+	 * @param referenceDimension
+	 *            reference dimension for shear
+	 *
+	 * @return {@link TransformView} containing the result.
 	 */
 	@OpMethod(op = net.imagej.ops.views.DefaultShear.class)
 	public <T extends Type<T>> TransformView<T> shear(final RandomAccessible<T> input,
@@ -493,18 +572,71 @@ public class ViewNamespace extends AbstractNamespace {
 		return (TransformView<T>) ops().run(DefaultShear.class, input,
 				shearDimension, referenceDimension);
 	}
-
+	
 	/**
-	 * Not supported right now, because imagej-ops uses an old version of
-	 * imglib2.
+	 * Positive shear transform of a RandomAccessible using
+	 * {@link ShearTransform}, i.e. c[ shearDimension ] = c[ shearDimension ] +
+	 * c[ referenceDimension ]
+	 *
+	 * @param source
+	 *            input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param interval
+	 *            original interval
+	 * @param shearDimension
+	 *            dimension to be sheared
+	 * @param referenceDimension
+	 *            reference dimension for shear
+	 *
+	 * @return {@link IntervalView} containing the result. The returned
+	 *         interval's dimension are determined by applying the
+	 *         {@link ShearTransform#transform} method on the input interval.
+	 */
+	@OpMethod(op = net.imagej.ops.views.ShearInterval.class)
+	public <T extends Type<T>> IntervalView<T> shear(final RandomAccessible<T> input,
+			final Interval interval, final int shearDimension, final int referenceDimension) {
+		return (IntervalView<T>) ops().run(ShearInterval.class, input, interval,
+				shearDimension, referenceDimension);
+	}
+	
+	/**
+	 * Form a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} by
+	 * stacking <em>n</em>-dimensional {@link RandomAccessibleInterval}s.
+	 *
+	 * @param hyperslices
+	 *            a list of <em>n</em>-dimensional
+	 *            {@link RandomAccessibleInterval} of identical sizes.
+	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval}
+	 *         where the final dimension is the index of the hyperslice.
 	 */
 	@OpMethod(op = net.imagej.ops.views.DefaultStack.class)
 	public <T extends Type<T>> RandomAccessibleInterval<T> stack(
-			final EuclideanSpace... input) {
+			final List<RandomAccessibleInterval<T>> input) {
 		return (RandomAccessibleInterval<T>) ops().run(DefaultStack.class,
 				input);
 	}
-
+	
+	/**
+	 * Form a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval} by
+	 * stacking <em>n</em>-dimensional {@link RandomAccessibleInterval}s.
+	 *
+	 * @param stackAccessMode
+	 *            describes how a {@link RandomAccess} on the <em>(n+1)</em>
+	 *            -dimensional {@link StackView} maps position changes into
+	 *            position changes of the underlying <em>n</em>-dimensional
+	 *            {@link RandomAccess}es.
+	 * @param hyperslices
+	 *            a list of <em>n</em>-dimensional
+	 *            {@link RandomAccessibleInterval} of identical sizes.
+	 * @return a <em>(n+1)</em>-dimensional {@link RandomAccessibleInterval}
+	 *         where the final dimension is the index of the hyperslice.
+	 */
+	@OpMethod(op = net.imagej.ops.views.StackWithAccessMode.class)
+	public <T extends Type<T>> RandomAccessibleInterval<T> stack(
+			final List<RandomAccessibleInterval<T>> input, final StackAccessMode stackAccessMode) {
+		return (RandomAccessibleInterval<T>) ops().run(StackWithAccessMode.class,
+				input, stackAccessMode);
+	}
+	
 	/**
 	 * Sample only every <em>step</em><sup>th</sup> value of a source
 	 * {@link RandomAccessible}. This is effectively an integer scaling
@@ -544,13 +676,48 @@ public class ViewNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Not supported right now, because imagej-ops uses an old version of
-	 * imglib2.
+	 * Negative shear transform of a RandomAccessible using
+	 * {@link InverseShearTransform}, i.e. c[ shearDimension ] = c[
+	 * shearDimension ] - c[ referenceDimension ]
+	 *
+	 * @param source
+	 *            input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param shearDimension
+	 *            dimension to be sheared
+	 * @param referenceDimension
+	 *            reference dimension for shear
+	 *
+	 * @return {@link TransformView} containing the result.
 	 */
 	@OpMethod(op = net.imagej.ops.views.DefaultUnshear.class)
 	public <T extends Type<T>> TransformView<T> unshear(final RandomAccessible<T> input,
 			final int shearDimension, final int referenceDimension) {
 		return (TransformView<T>) ops().run(DefaultUnshear.class, input,
+				shearDimension, referenceDimension);
+	}
+	
+	/**
+	 * Negative shear transform of a RandomAccessible using
+	 * {@link InverseShearTransform}, i.e. c[ shearDimension ] = c[
+	 * shearDimension ] - c[ referenceDimension ]
+	 *
+	 * @param source
+	 *            input, e.g. extended {@link RandomAccessibleInterval}
+	 * @param interval
+	 *            original interval
+	 * @param shearDimension
+	 *            dimension to be sheared
+	 * @param referenceDimension
+	 *            reference dimension for shear
+	 *
+	 * @return {@link IntervalView} containing the result. The returned
+	 *         interval's dimension are determined by applying the
+	 *         {@link ShearTransform#transform} method on the input interval.
+	 */
+	@OpMethod(op = net.imagej.ops.views.UnshearInterval.class)
+	public <T extends Type<T>> IntervalView<T> unshear(final RandomAccessible<T> input,
+			final Interval interval, final int shearDimension, final int referenceDimension) {
+		return (IntervalView<T>) ops().run(UnshearInterval.class, input, interval,
 				shearDimension, referenceDimension);
 	}
 

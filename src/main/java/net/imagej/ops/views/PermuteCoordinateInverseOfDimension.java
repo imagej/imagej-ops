@@ -11,15 +11,18 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.PermuteCoordinatesInverse.class, name = Ops.View.PermuteCoordinatesInverse.NAME)
-public class DefaultPermuteCoordinatesInverse<T> extends
+public class PermuteCoordinateInverseOfDimension<T> extends
 		AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>implements Ops.View.PermuteCoordinatesInverse {
 
 	@Parameter(type = ItemIO.INPUT)
 	private int[] permutation;
 
+	@Parameter(type = ItemIO.INPUT)
+	private int d;
+
 	@Override
 	public IntervalView<T> compute(RandomAccessibleInterval<T> input) {
-		return Views.permuteCoordinatesInverse(input, permutation);
+		return Views.permuteCoordinateInverse(input, permutation, d);
 	}
 
 }

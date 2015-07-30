@@ -8,6 +8,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
+import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.PermuteCoordinates.class, name = Ops.View.PermuteCoordinates.NAME)
 public class DefaultPermuteCoordinates<T> extends AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
@@ -18,7 +19,7 @@ public class DefaultPermuteCoordinates<T> extends AbstractFunctionOp<RandomAcces
 
 	@Override
 	public IntervalView<T> compute(RandomAccessibleInterval<T> input) {
-		throw new UnsupportedOperationException();
+		return Views.permuteCoordinates(input, permutation);
 	}
 
 }
