@@ -42,6 +42,7 @@ import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
@@ -349,9 +350,16 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
-	<I, O> RandomAccessibleInterval<O>
+	<I, O> RandomAccessibleInterval<O> 
 		map(RandomAccessibleInterval<O> out, RandomAccessibleInterval<I> in,
 			ComputerOp<Iterable<I>, O> op, Shape shape);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
+	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
+		RandomAccessibleInterval<I> in, CenterAwareComputerOp<Iterable<I>, O> op,
+		Shape shape);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)

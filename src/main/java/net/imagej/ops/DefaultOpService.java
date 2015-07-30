@@ -44,6 +44,7 @@ import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
@@ -495,6 +496,19 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
 				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op, shape);
+		return result;
+	}
+	
+	@Override
+	public <I, O> RandomAccessibleInterval<O> map(
+		final RandomAccessibleInterval<O> out,
+		final RandomAccessibleInterval<I> in,
+		final CenterAwareComputerOp<Iterable<I>, O> func, final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) run(
+				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out, in, func, shape);
 		return result;
 	}
 
