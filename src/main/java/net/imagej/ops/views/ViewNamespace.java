@@ -1,6 +1,5 @@
 package net.imagej.ops.views;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.scijava.plugin.Plugin;
