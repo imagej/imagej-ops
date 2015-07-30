@@ -43,11 +43,16 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates an {@link ComputerOp} for each {@link Neighborhood} on the in
+ * Evaluates a {@link ComputerOp} for each {@link Neighborhood} on the input
  * {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @param <I> input type
+ * @param <O> output type
+ * @see OpService#map(RandomAccessibleInterval, RandomAccessibleInterval, Shape,
+ *      ComputerOp)
+ * @see ComputerOp
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
