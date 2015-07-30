@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -32,6 +32,10 @@ package net.imagej.ops.features.sets;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.OpRef;
 import net.imagej.ops.features.AbstractAutoResolvingFeatureSet;
@@ -58,18 +62,14 @@ import net.imagej.ops.features.haralick.helper.CooccurrenceMatrix2D;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
  * {@link FeatureSet} containing Haralick texture {@link Feature}s
- * 
+ *
  * @author Christian Dietz (University of Konstanz)
  * @author Andreas Graumann (University of Konstanz)
  * @param <I>
  */
-@Plugin(type = FeatureSet.class, label = "Haralick Features")
+@Plugin(type = FeatureSet.class, label = "2D Haralick Features")
 public class Haralick2DFeatureSet<T> extends
 	AbstractAutoResolvingFeatureSet<IterableInterval<T>, DoubleType>
 {
@@ -88,27 +88,27 @@ public class Haralick2DFeatureSet<T> extends
 		"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
 
-	public void setDistance(int distance) {
+	public void setDistance(final int distance) {
 		this.distance = distance;
 	}
 
 	public double getDistance() {
-		return distance;
+		return this.distance;
 	}
 
-	public void setOrientation(String orientation) {
+	public void setOrientation(final String orientation) {
 		this.orientation = orientation;
 	}
 
 	public String getOrientation() {
-		return orientation;
+		return this.orientation;
 	}
 
 	public double getNrGrayLevels() {
-		return nrGrayLevels;
+		return this.nrGrayLevels;
 	}
 
-	public void setNrGrayLevels(int nrGrayLevels) {
+	public void setNrGrayLevels(final int nrGrayLevels) {
 		this.nrGrayLevels = nrGrayLevels;
 	}
 
@@ -140,8 +140,8 @@ public class Haralick2DFeatureSet<T> extends
 	public Set<OpRef<?>> getHiddenOps() {
 		final HashSet<OpRef<?>> hiddenOps = new HashSet<OpRef<?>>();
 		hiddenOps.add(createOpRef(CooccurrenceMatrix2D.class,
-			IterableInterval.class, nrGrayLevels, distance, orientation,
-			MinFeature.class, MaxFeature.class));
+			IterableInterval.class, this.nrGrayLevels, this.distance,
+			this.orientation, MinFeature.class, MaxFeature.class));
 		return hiddenOps;
 	}
 }
