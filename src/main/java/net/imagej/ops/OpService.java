@@ -348,7 +348,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 		RandomAccessibleInterval<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.map.MapNeighborhood.class)
+	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
 	<I, O> RandomAccessibleInterval<O>
 		map(RandomAccessibleInterval<O> out, RandomAccessibleInterval<I> in,
 			ComputerOp<Iterable<I>, O> op, Shape shape);

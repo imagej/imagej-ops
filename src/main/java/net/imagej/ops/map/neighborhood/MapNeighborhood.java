@@ -28,11 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.AbstractMapComputer;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -49,8 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
-public class MapNeighborhood<I, O>
-	extends
+public class MapNeighborhood<I, O> extends
 	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
@@ -64,8 +64,9 @@ public class MapNeighborhood<I, O>
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
+		// Call map on the neighborhoods iterable interval. This may use a
+		// threaded implementation of map.
 		ops.map(output, shape.neighborhoodsSafe(input), getOp());
-		// TODO: threaded map neighborhood
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood
 	}

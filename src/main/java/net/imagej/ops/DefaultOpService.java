@@ -494,7 +494,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.MapNeighborhood.class, out, in, op, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op, shape);
 		return result;
 	}
 
