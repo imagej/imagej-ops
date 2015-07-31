@@ -56,7 +56,8 @@ import org.scijava.plugin.Plugin;
  *      CenterAwareComputerOp, Shape)
  * @see CenterAwareComputerOp
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, name = Ops.Map.NAME,
+	priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O>
 	extends
 	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
