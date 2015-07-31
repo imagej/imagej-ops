@@ -37,14 +37,19 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
+ * LocalThresholdMethod using mean.
+ * 
+ * @author Jonathan Hale (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMean.class, name = Ops.Threshold.LocalMean.NAME)
+@Plugin(type = Ops.Threshold.LocalMean.class,
+	name = Ops.Threshold.LocalMean.NAME)
 public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalMean
 {
@@ -58,13 +63,15 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private MeanOp<Iterable<T>, DoubleType> mean;
 
 	@Override
-	public void compute(final Pair<T> input, final BitType output) {
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.neighborhood);
+			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
 		}
+
 		final DoubleType m = new DoubleType();
-		mean.compute(input.neighborhood, m);
-		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
+
+		mean.compute(input.getB(), m);
+		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
 	}
 
 }

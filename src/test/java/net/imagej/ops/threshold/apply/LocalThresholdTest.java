@@ -35,33 +35,52 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
-import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.ValuePair;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link LocalThreshold}.
+ * Test for {@link LocalThreshold} and various {@link LocalThresholdMethod}s.
  * 
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale
+ * @author Martin Horn
+ * @see LocalThreshold
+ * @see LocalThresholdMethod
  */
 public class LocalThresholdTest extends AbstractOpTest {
 
-	@Test
-	public void test() throws IncompatibleTypeException {
-		final Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
-		final Img<BitType> out =
-			in.factory().imgFactory(new BitType()).create(in, new BitType());
+	Img<ByteType> in;
+	Img<BitType> out;
 
+	/**
+	 * Initialize images.
+	 * 
+	 * @throws Exception
+	 */
+	@Before
+	public void before() throws Exception {
+		in = generateByteTestImg(true, new long[] { 10, 10 });
+
+		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
+	}
+
+	/**
+	 * @see LocalMean
+	 */
+	@Test
+	public void testLocalMean() {
 		ops.threshold().apply(
 			out,
 			in,
-			ops.op(LocalMean.class, BitType.class, LocalThresholdMethod.Pair.class,
-				0.0), new RectangleShape(3, false),
+			ops.op(LocalMean.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0),
+			new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), true);

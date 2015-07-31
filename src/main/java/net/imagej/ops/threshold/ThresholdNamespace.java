@@ -37,7 +37,6 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
@@ -45,6 +44,7 @@ import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -426,7 +426,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
 	public <T extends RealType<T>> BitType localMean(final BitType out,
-		final Pair<T> in, final double c)
+		final Pair<T, Iterable<T>> in, final double c)
 	{
 		final BitType result =
 			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
