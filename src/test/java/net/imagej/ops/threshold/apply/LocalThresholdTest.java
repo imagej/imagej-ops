@@ -36,6 +36,7 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
@@ -113,6 +114,22 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out,
 			in,
 			ops.op(LocalMedian.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalMidGrey
+	 */
+	@Test
+	public void testLocalMidGrey() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalMidGrey.class, BitType.class,
 				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0),
 			new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
