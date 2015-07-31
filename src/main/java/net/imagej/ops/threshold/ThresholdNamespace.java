@@ -464,6 +464,17 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.threshold.localNiblack.LocalNiblack.class)
+	public <T extends RealType<T>> BitType localNiblack(final BitType out,
+		final Pair<T, Iterable<T>> in, final double c, final double k)
+	{
+		final BitType result =
+			(BitType) ops()
+				.run(net.imagej.ops.threshold.localNiblack.LocalNiblack.class, out, in,
+					c, k);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);

@@ -172,6 +172,7 @@ namespaces = ```
 		[name: "localMean",        iface: "LocalMean"],
 		[name: "localMedian",      iface: "LocalMedian"],
 		[name: "localMidGrey",     iface: "LocalMidGrey"],
+		[name: "localNiblack",     iface: "LocalNiblack"],
 		[name: "maxEntropy",       iface: "MaxEntropy"],
 		[name: "maxLikelihood",    iface: "MaxLikelihood"],
 		[name: "mean",             iface: "Mean"],
