@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
@@ -68,6 +69,22 @@ public class LocalThresholdTest extends AbstractOpTest {
 		in = generateByteTestImg(true, new long[] { 10, 10 });
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
+	}
+
+	/**
+	 * @see LocalContrast
+	 */
+	@Test
+	public void testLocalContrast() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalContrast.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, null)),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
 	}
 
 	/**
