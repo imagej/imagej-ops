@@ -474,6 +474,18 @@ public class ThresholdNamespace extends AbstractNamespace {
 					c, k);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsen.class)
+	public <T extends RealType<T>> BitType localBernsen(final BitType out,
+		final Pair<T, Iterable<T>> in, final double contrastThreshold,
+		final double halfMaxValue)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localBernsen.LocalBernsen.class, out, in,
+				contrastThreshold, halfMaxValue);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {

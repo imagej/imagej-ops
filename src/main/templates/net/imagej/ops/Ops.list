@@ -168,6 +168,7 @@ namespaces = ```
 		[name: "intermodes",       iface: "Intermodes"],
 		[name: "isoData",          iface: "IsoData"],
 		[name: "li",               iface: "Li"],
+		[name: "localBernsen",     iface: "LocalBernsen"],
 		[name: "localContrast",    iface: "LocalContrast"],
 		[name: "localMean",        iface: "LocalMean"],
 		[name: "localMedian",      iface: "LocalMedian"],

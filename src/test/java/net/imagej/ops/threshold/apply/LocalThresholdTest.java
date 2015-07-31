@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.localBernsen.LocalBernsen;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
@@ -72,6 +73,22 @@ public class LocalThresholdTest extends AbstractOpTest {
 		in = generateByteTestImg(true, new long[] { 10, 10 });
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
+	}
+
+	/**
+	 * @see LocalNiblack
+	 */
+	@Test
+	public void testLocalBernsen() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalBernsen.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 1.0,
+				Double.MAX_VALUE * 0.5), new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), true);
 	}
 
 	/**
