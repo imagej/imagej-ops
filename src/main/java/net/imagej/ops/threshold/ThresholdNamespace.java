@@ -444,6 +444,16 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.threshold.localMedian.LocalMedian.class)
+	public <T extends RealType<T>> BitType localMedian(final BitType out,
+		final Pair<T, Iterable<T>> in, final double c)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localMedian.LocalMedian.class, out, in, c);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);
