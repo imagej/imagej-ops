@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -41,8 +42,10 @@ import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Extend.class, name = Ops.View.Extend.NAME)
-public class DefaultExtend<T, F extends RandomAccessibleInterval<T>>
-		extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>implements Ops.View.Extend {
+public class DefaultExtend<T, F extends RandomAccessibleInterval<T>> extends
+	AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements
+	Ops.View.Extend
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private OutOfBoundsFactory<T, ? super F> factory;

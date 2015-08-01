@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,9 +41,12 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-@Plugin(type = Ops.View.PermuteCoordinates.class, name = Ops.View.PermuteCoordinates.NAME)
-public class PermuteCoordinatesOfDimension<T> extends AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements PermuteCoordinates {
+@Plugin(type = Ops.View.PermuteCoordinates.class,
+	name = Ops.View.PermuteCoordinates.NAME)
+public class PermuteCoordinatesOfDimension<T> extends
+	AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>> implements
+	PermuteCoordinates
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private int[] permutation;

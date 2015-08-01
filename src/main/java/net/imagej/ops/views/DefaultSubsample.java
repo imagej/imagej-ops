@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.SubsampleView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Subsample.class, name = Ops.View.Subsample.NAME)
-public class DefaultSubsample<T> extends AbstractFunctionOp<RandomAccessible<T>, SubsampleView<T>>
-		implements Ops.View.Subsample {
+public class DefaultSubsample<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, SubsampleView<T>> implements
+	Ops.View.Subsample
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private long step;

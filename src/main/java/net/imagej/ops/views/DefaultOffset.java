@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Offset.class, name = Ops.View.Offset.NAME)
-public class DefaultOffset<T> extends AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.Offset {
+public class DefaultOffset<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>> implements
+	Ops.View.Offset
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private long[] offset;

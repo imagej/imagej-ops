@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -41,8 +42,10 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Shear.class, name = Ops.View.Shear.NAME)
-public class ShearInterval<T> extends AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.Shear {
+public class ShearInterval<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements
+	Ops.View.Shear
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private Interval interval;

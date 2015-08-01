@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
@@ -38,8 +39,10 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.ZeroMin.class, name = Ops.View.ZeroMin.NAME)
-public class DefaultZeroMin<T> extends AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements Ops.View.IsZeroMin {
+public class DefaultZeroMin<T> extends
+	AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>> implements
+	Ops.View.IsZeroMin
+{
 
 	@Override
 	public IntervalView<T> compute(RandomAccessibleInterval<T> input) {

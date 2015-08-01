@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Interval.class, name = Ops.View.Interval.NAME)
-public class IntervalMinMax<T> extends AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.Interval {
+public class IntervalMinMax<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements
+	Ops.View.Interval
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private long[] min;

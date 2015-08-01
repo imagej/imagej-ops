@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.Translate.class, name = Ops.View.Translate.NAME)
-public class DefaultTranslate<T> extends AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.Translate {
+public class DefaultTranslate<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>> implements
+	Ops.View.Translate
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private long[] translation;

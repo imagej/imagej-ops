@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -42,7 +43,9 @@ import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.ExtendValue.class, name = Ops.View.ExtendValue.NAME)
 public class DefaultExtendValue<T extends Type<T>, F extends RandomAccessibleInterval<T>>
-		extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>implements Ops.View.ExtendValue {
+	extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>
+	implements Ops.View.ExtendValue
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private T value;

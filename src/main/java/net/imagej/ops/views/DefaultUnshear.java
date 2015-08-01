@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.TransformView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.UnShear.class, name = Ops.View.UnShear.NAME)
-public class DefaultUnshear<T> extends AbstractFunctionOp<RandomAccessible<T>, TransformView<T>>
-		implements Ops.View.UnShear {
+public class DefaultUnshear<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, TransformView<T>> implements
+	Ops.View.UnShear
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private int shearDimension;

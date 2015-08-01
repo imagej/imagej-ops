@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.AddDimension.class, name = Ops.View.AddDimension.NAME)
-public class AddDimensionMinMax<T> extends AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements Ops.View.AddDimension {
+public class AddDimensionMinMax<T> extends
+	AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>> implements
+	Ops.View.AddDimension
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private long minOfNewDim;

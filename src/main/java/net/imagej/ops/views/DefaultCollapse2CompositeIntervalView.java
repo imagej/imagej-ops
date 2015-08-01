@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
@@ -40,11 +41,15 @@ import net.imglib2.view.composite.GenericComposite;
 
 @Plugin(type = Ops.View.Collapse.class, name = Ops.View.Collapse.NAME)
 public class DefaultCollapse2CompositeIntervalView<T>
-		extends AbstractFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>>
-		implements Ops.View.Collapse {
+	extends
+	AbstractFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>>
+	implements Ops.View.Collapse
+{
 
 	@Override
-	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute(RandomAccessibleInterval<T> input) {
+	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute(
+		RandomAccessibleInterval<T> input)
+	{
 		return Views.collapse(input);
 	}
 

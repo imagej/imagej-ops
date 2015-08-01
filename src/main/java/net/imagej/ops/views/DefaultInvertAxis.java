@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.views;
 
 import org.scijava.ItemIO;
@@ -40,8 +41,10 @@ import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
 @Plugin(type = Ops.View.InvertAxis.class, name = Ops.View.InvertAxis.NAME)
-public class DefaultInvertAxis<T> extends AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.InvertAxis {
+public class DefaultInvertAxis<T> extends
+	AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>> implements
+	Ops.View.InvertAxis
+{
 
 	@Parameter(type = ItemIO.INPUT)
 	private int d;
