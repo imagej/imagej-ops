@@ -32,7 +32,7 @@ package net.imagej.ops.stats.max;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Stats.Max.class, name = Ops.Stats.Max.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class MaxRealType<T extends RealType<T>> extends
-	AbstractComputerOp<Iterable<T>, T> implements MaxOp<T, T>
+	AbstractHybridOp<Iterable<T>, T> implements MaxOp<T, T>
 {
 
 	@Override
@@ -57,6 +57,11 @@ public class MaxRealType<T extends RealType<T>> extends
 			}
 		}
 		output.set(max);
+	}
+
+	@Override
+	public T createOutput(Iterable<T> input) {
+		return input.iterator().next().createVariable();
 	}
 
 }
