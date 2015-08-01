@@ -50,13 +50,11 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 	AbstractComputerOp<T, T> implements Converter<T, T>
 {
 
-	@Parameter
-	private OpService ops;
-
 	private double targetMin, targetMax, sourceMin, factor;
 
-	public NormalizeRealTypeComputer(final T sourceMin, final T sourceMax,
-		final T targetMin, final T targetMax, final IterableInterval<T> input)
+	public NormalizeRealTypeComputer(final OpService ops, final T sourceMin,
+		final T sourceMax, final T targetMin, final T targetMax,
+		final IterableInterval<T> input)
 	{
 		double tmp = 0.0;
 

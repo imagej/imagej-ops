@@ -74,7 +74,7 @@ public class NormalizeIterableComputer<T extends RealType<T>> extends
 	public void compute(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		ops.map(output, input, new NormalizeRealTypeComputer<T>(sourceMin,
+		ops.map(output, input, new NormalizeRealTypeComputer<T>(ops, sourceMin,
 			sourceMax, targetMin, targetMax, input));
 	}
 }
