@@ -30,52 +30,87 @@
 
 package net.imagej.ops.image.normalize;
 
+import java.util.List;
+
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Ops;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.OpService;
+import net.imglib2.IterableInterval;
+import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
-public class NormalizeRealType<T extends RealType<T>> extends
-	AbstractComputerOp<T, T> implements Ops.Image.Normalize
+/**
+ * Simple {@link ComputerOp} and {@link Converter} to perform a normalization.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ */
+class NormalizeRealTypeComputer<T extends RealType<T>> extends
+	AbstractComputerOp<T, T> implements Converter<T, T>
 {
 
 	@Parameter
-	private double oldMin;
+	private OpService ops;
 
-	@Parameter
-	private double newMin;
+	private double targetMin, targetMax, sourceMin, factor;
 
-	@Parameter
-	private double newMax;
+	public NormalizeRealTypeComputer(final T sourceMin, final T sourceMax,
+		final T targetMin, final T targetMax, final IterableInterval<T> input)
+	{
+		double tmp = 0.0;
 
-	@Parameter
-	private double factor;
+		if (sourceMin == null || sourceMax == null) {
+			final List<T> minMax = ops.stats().minMax(input);
+			if (sourceMin == null) {
+				this.sourceMin = minMax.get(0).getRealDouble();
+			}
+			else {
+				this.sourceMin = sourceMin.getRealDouble();
+			}
+			if (sourceMax == null) {
+				tmp = minMax.get(1).getRealDouble();
+			}
+			else {
+				tmp = sourceMax.getRealDouble();
+			}
+		}
+		if (targetMax == null) {
+			this.targetMax = input.firstElement().getMaxValue();
+		}
+		else {
+			this.targetMax = targetMax.getRealDouble();
+		}
+
+		if (targetMin == null) {
+			this.targetMin = input.firstElement().getMinValue();
+		}
+		else {
+			this.targetMin = targetMin.getRealDouble();
+		}
+
+		this.factor =
+			1.0d / (tmp - this.sourceMin) * (this.targetMax - this.targetMin);
+	}
 
 	@Override
 	public void compute(final T input, final T output) {
-		output.setReal(Math.min(newMax, Math.max(newMin,
-			(input.getRealDouble() - oldMin) * factor + newMin)));
+
+		final double res = (input.getRealDouble() - sourceMin) * factor + targetMin;
+
+		if (res > targetMax) {
+			output.setReal(targetMax);
+		}
+		else if (res < targetMin) {
+			output.setReal(targetMin);
+		}
+		else {
+			output.setReal(res);
+		}
 	}
 
-	/**
-	 * Determines the factor to map the interval [oldMin, oldMax] to
-	 * [newMin,newMax].
-	 * 
-	 * @param oldMin
-	 * @param oldMax
-	 * @param newMin
-	 * @param newMax
-	 * @return the normalization factor
-	 */
-	public static double normalizationFactor(double oldMin, double oldMax,
-		double newMin, double newMax)
-	{
-		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
+	@Override
+	public void convert(T input, T output) {
+		compute(input, output);
 	}
-
 }

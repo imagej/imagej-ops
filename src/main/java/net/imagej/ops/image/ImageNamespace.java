@@ -241,20 +241,7 @@ public class ImageNamespace extends AbstractNamespace {
 		return ops().run(Ops.Image.Normalize.NAME, args);
 	}
 
-	/** Executes the "normalize" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeRealType.class)
-	public <T extends RealType<T>> T normalize(final T out, final T in,
-		final double oldMin, final double newMin, final double newMax,
-		final double factor)
-	{
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(net.imagej.ops.image.normalize.NormalizeRealType.class,
-				out, in, oldMin, newMin, newMax, factor);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableComputer.class)
 	public
 		<T extends RealType<T>> IterableInterval<T> normalize(
 			final IterableInterval<T> out, final IterableInterval<T> in)
@@ -262,8 +249,152 @@ public class ImageNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result =
 			(IterableInterval<T>) ops()
-				.run(net.imagej.ops.image.normalize.NormalizeIterableInterval.class,
+				.run(net.imagej.ops.image.normalize.NormalizeIterableComputer.class,
 					out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableComputer.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> out, final IterableInterval<T> in,
+			final T sourceMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableComputer.class, out,
+				in, sourceMin);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableComputer.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> out, final IterableInterval<T> in,
+			final T sourceMin, final T sourceMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableComputer.class, out,
+				in, sourceMin, sourceMax);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableComputer.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> out, final IterableInterval<T> in,
+			final T sourceMin, final T sourceMax, final T targetMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableComputer.class, out,
+				in, sourceMin, sourceMax, targetMin);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.image.normalize.NormalizeIterableComputer.class)
+	public
+		<T extends RealType<T>>
+		IterableInterval<T>
+		normalize(final IterableInterval<T> out, final IterableInterval<T> in,
+			final T sourceMin, final T sourceMax, final T targetMin, final T targetMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableComputer.class, out,
+				in, sourceMin, sourceMax, targetMin, targetMax);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in, final T sourceMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in, sourceMin);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in, final T sourceMin, final T sourceMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in, sourceMin, sourceMax);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+			final T targetMin)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in, sourceMin, sourceMax, targetMin);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+			final T targetMin, final T targetMax)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in, sourceMin, sourceMax, targetMin, targetMax);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class)
+	public
+		<T extends RealType<T>> IterableInterval<T> normalize(
+			final IterableInterval<T> in, final T sourceMin, final T sourceMax,
+			final T targetMin, final T targetMax, final boolean isLazy)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(
+				net.imagej.ops.image.normalize.NormalizeIterableIntervalFunction.class,
+				in, sourceMin, sourceMax, targetMin, targetMax, isLazy);
 		return result;
 	}
 

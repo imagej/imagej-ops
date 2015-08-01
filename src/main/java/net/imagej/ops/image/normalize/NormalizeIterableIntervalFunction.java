@@ -28,51 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.image.normalize;
 
-import java.util.List;
-
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * @author Martin Horn (University of Konstanz)
+ * Normalizes an {@link IterableInterval} given its minimum and maximum to
+ * another range defined by minimum and maximum.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @param <T>
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
+@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME,
+	attrs = { @Attr(name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
+	AbstractFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
+	Normalize
 {
 
 	@Parameter
 	private OpService ops;
 
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		outMin = outType.getMinValue();
-	}
+	@Parameter(required = false)
+	private T sourceMin;
+
+	@Parameter(required = false)
+	private T sourceMax;
+
+	@Parameter(required = false)
+	private T targetMin;
+
+	@Parameter(required = false)
+	private T targetMax;
+
+	@Parameter(required = false)
+	private boolean isLazy = true;
 
 	@Override
-	public void checkInput(IterableInterval<I> in) {
-		final List<I> minMax = ops.stats().minMax(in);
-		final I inType = in.firstElement().createVariable();
-		factor =
-			1.0 / (minMax.get(1).getRealDouble() - minMax.get(0).getRealDouble()) *
-				(inType.getMaxValue() - inType.getMinValue());
-
-		inMin = minMax.get(0).getRealDouble();
-
+	public IterableInterval<T> compute(final IterableInterval<T> input) {
+		if (isLazy) {
+			return new ConvertedIterableInterval<T, T>(input,
+				new NormalizeRealTypeComputer<T>(sourceMin, sourceMax, targetMin,
+					targetMax, input), input.firstElement().createVariable());
+		}
+		else {
+			final Img<T> output =
+				ops.create().img(input, input.firstElement().createVariable());
+			ops.image().normalize(output, input);
+			return output;
+		}
 	}
-
-	@Override
-	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
-	}
-
 }
