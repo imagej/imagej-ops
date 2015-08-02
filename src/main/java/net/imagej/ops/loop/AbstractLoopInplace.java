@@ -44,22 +44,22 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceOp<I>
 	implements LoopInplace<I>
 {
 
-	/** Function used for looping */
+	/** Op used for looping. */
 	@Parameter
-	private ComputerOp<I, I> function;
+	private ComputerOp<I, I> op;
 
-	/** Number of loops */
+	/** Number of loops. */
 	@Parameter
 	private int n;
 
 	@Override
 	public ComputerOp<I, I> getOp() {
-		return function;
+		return op;
 	}
 
 	@Override
-	public void setOp(final ComputerOp<I, I> function) {
-		this.function = function;
+	public void setOp(final ComputerOp<I, I> op) {
+		this.op = op;
 	}
 
 	@Override

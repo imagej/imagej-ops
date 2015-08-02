@@ -52,11 +52,11 @@ public class DefaultJoinComputers<A> extends
 
 	@Override
 	public void compute(final A input, final A output) {
-		final List<? extends ComputerOp<A, A>> functions = getOps();
-		final Iterator<? extends ComputerOp<A, A>> it = functions.iterator();
+		final List<? extends ComputerOp<A, A>> ops = getOps();
+		final Iterator<? extends ComputerOp<A, A>> it = ops.iterator();
 		final ComputerOp<A, A> first = it.next();
 
-		if (functions.size() == 1) {
+		if (ops.size() == 1) {
 			first.compute(input, output);
 			return;
 		}
@@ -67,7 +67,7 @@ public class DefaultJoinComputers<A> extends
 		A tmpInput = buffer;
 		A tmp;
 
-		if (functions.size() % 2 == 0) {
+		if (ops.size() % 2 == 0) {
 			tmpOutput = buffer;
 			tmpInput = output;
 		}
@@ -87,12 +87,12 @@ public class DefaultJoinComputers<A> extends
 
 		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
 
-		final ArrayList<ComputerOp<A, A>> funcs = new ArrayList<ComputerOp<A, A>>();
-		for (final ComputerOp<A, A> func : getOps()) {
-			funcs.add(func.getIndependentInstance());
+		final ArrayList<ComputerOp<A, A>> ops = new ArrayList<ComputerOp<A, A>>();
+		for (final ComputerOp<A, A> op : getOps()) {
+			ops.add(op.getIndependentInstance());
 		}
 
-		joiner.setOps(funcs);
+		joiner.setOps(ops);
 		joiner.setBufferFactory(getBufferFactory());
 
 		return joiner;

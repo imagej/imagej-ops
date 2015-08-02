@@ -47,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Slicewise.class, name = Ops.Slicewise.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class SlicewiseRAI2RAI<I, O>
-	extends
+@Plugin(type = Ops.Slicewise.class, name = Ops.Slicewise.NAME,
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class SlicewiseRAI2RAI<I, O> extends
 	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements
 	SlicewiseOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
@@ -59,7 +59,7 @@ public class SlicewiseRAI2RAI<I, O>
 	private OpService opService;
 
 	@Parameter
-	private ComputerOp<I, O> func;
+	private ComputerOp<I, O> op;
 
 	@Parameter
 	private int[] axisIndices;
@@ -73,7 +73,7 @@ public class SlicewiseRAI2RAI<I, O>
 	{
 		opService.run(Ops.Map.class, new Hyperslice(opService,
 				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
-				input, axisIndices, dropSingleDimensions), func);
+				input, axisIndices, dropSingleDimensions), op);
 	}
 
 }

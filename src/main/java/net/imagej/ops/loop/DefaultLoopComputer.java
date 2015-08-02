@@ -52,17 +52,15 @@ public class DefaultLoopComputer<A> extends
 	public void compute(final A input, final A output) {
 		final int n = getLoopCount();
 
-		final ArrayList<ComputerOp<A, A>> functions =
-			new ArrayList<ComputerOp<A, A>>(n);
+		final ArrayList<ComputerOp<A, A>> ops = new ArrayList<ComputerOp<A, A>>(n);
 		for (int i = 0; i < n; i++)
-			functions.add(getOp());
+			ops.add(getOp());
 
-		final DefaultJoinComputers<A> functionJoiner =
-			new DefaultJoinComputers<A>();
-		functionJoiner.setOps(functions);
-		functionJoiner.setBufferFactory(getBufferFactory());
+		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
+		joiner.setOps(ops);
+		joiner.setBufferFactory(getBufferFactory());
 
-		functionJoiner.compute(input, output);
+		joiner.compute(input, output);
 	}
 
 	@Override

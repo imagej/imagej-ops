@@ -265,12 +265,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputers.class)
-	<A> A join(A out, A in, List<? extends ComputerOp<A, A>> functions,
+	<A> A join(A out, A in, List<? extends ComputerOp<A, A>> ops,
 		BufferFactory<A, A> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaces.class)
-	<A> A join(A arg, List<InplaceOp<A>> functions);
+	<A> A join(A arg, List<InplaceOp<A>> ops);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
@@ -296,11 +296,11 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	<I> I loop(I arg, ComputerOp<I, I> function, int n);
+	<I> I loop(I arg, ComputerOp<I, I> op, int n);
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopComputer.class)
-	<A> A loop(A out, A in, ComputerOp<A, A> function,
+	<A> A loop(A out, A in, ComputerOp<A, A> op,
 		BufferFactory<A, A> bufferFactory, int n);
 
 	/** Executes the "map" operation on the given arguments. */
@@ -310,52 +310,52 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapConvertRAIToRAI.class)
 	<A, B extends Type<B>> RandomAccessibleInterval<B> map(
-		RandomAccessibleInterval<A> input, ComputerOp<A, B> function, B type);
+		RandomAccessibleInterval<A> input, ComputerOp<A, B> op, B type);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapConvertRandomAccessToRandomAccess.class)
-	<A, B extends Type<B>> RandomAccessible<B> map(RandomAccessible<A> input, ComputerOp<A, B> function,
-		B type);
+	<A, B extends Type<B>> RandomAccessible<B> map(RandomAccessible<A> input,
+		ComputerOp<A, B> op, B type);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalToView.class)
 	<A, B extends Type<B>> IterableInterval<B> map(IterableInterval<A> input,
-		ComputerOp<A, B> function, B type);
+		ComputerOp<A, B> op, B type);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapParallel.class)
-	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceOp<A> func);
+	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceOp<A> op);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.map.MapIterableToIterableParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
 	<A, B> IterableInterval<B> map(IterableInterval<B> out,
-		IterableInterval<A> in, ComputerOp<A, B> func);
+		IterableInterval<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = { net.imagej.ops.map.MapIterableToRAIParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToRAI.class })
 	<A, B> RandomAccessibleInterval<B> map(RandomAccessibleInterval<B> out,
-		IterableInterval<A> in, ComputerOp<A, B> func);
+		IterableInterval<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
-	<A> Iterable<A> map(Iterable<A> arg, InplaceOp<A> func);
+	<A> Iterable<A> map(Iterable<A> arg, InplaceOp<A> op);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapRAIToIterableInterval.class)
 	<A, B> IterableInterval<B> map(IterableInterval<B> out,
-		RandomAccessibleInterval<A> in, ComputerOp<A, B> func);
+		RandomAccessibleInterval<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapNeighborhood.class)
 	<I, O> RandomAccessibleInterval<O>
 		map(RandomAccessibleInterval<O> out, RandomAccessibleInterval<I> in,
-			ComputerOp<Iterable<I>, O> func, Shape shape);
+			ComputerOp<Iterable<I>, O> op, Shape shape);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
-	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, ComputerOp<A, B> func);
+	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = Ops.Slicewise.class)
@@ -364,12 +364,12 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
-		RandomAccessibleInterval<I> in, ComputerOp<I, O> func, int... axisIndices);
+		RandomAccessibleInterval<I> in, ComputerOp<I, O> op, int... axisIndices);
 
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	<I, O> RandomAccessibleInterval<O> slicewise(RandomAccessibleInterval<O> out,
-		RandomAccessibleInterval<I> in, ComputerOp<I, O> func, int[] axisIndices,
+		RandomAccessibleInterval<I> in, ComputerOp<I, O> op, int[] axisIndices,
 		boolean dropSingleDimensions);
 
 	// -- Operation shortcuts - other namespaces --

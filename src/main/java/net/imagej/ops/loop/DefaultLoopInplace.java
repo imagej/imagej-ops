@@ -46,9 +46,9 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 	@Override
 	public void compute(final I arg) {
 		final int n = getLoopCount();
-		final ComputerOp<I, I> func = getOp();
+		final ComputerOp<I, I> op = getOp();
 		for (int i = 0; i < n; i++) {
-			func.compute(arg, arg);
+			op.compute(arg, arg);
 		}
 	}
 

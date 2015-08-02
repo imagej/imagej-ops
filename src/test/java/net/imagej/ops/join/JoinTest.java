@@ -54,7 +54,7 @@ public class JoinTest extends AbstractOpTest {
 	private Img<ByteType> in;
 	private Img<ByteType> out;
 	private Op inplaceOp;
-	private Op functionalOp;
+	private Op computerOp;
 
 	@Before
 	public void init() {
@@ -62,8 +62,8 @@ public class JoinTest extends AbstractOpTest {
 		in = generateByteTestImg(false, dims);
 		out = generateByteTestImg(false, dims);
 		inplaceOp = ops.op(MapOp.class, Img.class, new AddOneInplace());
-		functionalOp =
-			ops.op(MapOp.class, Img.class, Img.class, new AddOneFunctional());
+		computerOp =
+			ops.op(MapOp.class, Img.class, Img.class, new AddOneComputer());
 	}
 
 	@Test
@@ -81,9 +81,9 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testFunctionInplaceJoin() {
+	public void testComputerInplaceJoin() {
 		final Op op =
-			ops.op(DefaultJoinComputerAndInplace.class, out, in, functionalOp,
+			ops.op(DefaultJoinComputerAndInplace.class, out, in, computerOp,
 				inplaceOp);
 		op.run();
 
@@ -96,10 +96,10 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testInplaceFunctionJoin() {
+	public void testInplaceComputerJoin() {
 		final Op op =
 			ops.op(DefaultJoinInplaceAndComputer.class, out, in, inplaceOp,
-				functionalOp);
+				computerOp);
 		op.run();
 
 		// test
@@ -111,8 +111,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testFunctionAndFunctionJoin() {
-
+	public void testComputerAndComputerJoin() {
 		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
 			new BufferFactory<Img<ByteType>, Img<ByteType>>() {
 
@@ -123,7 +122,7 @@ public class JoinTest extends AbstractOpTest {
 				}
 			};
 
-		ops.join(out, in, functionalOp, functionalOp, bufferFactory);
+		ops.join(out, in, computerOp, computerOp, bufferFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -134,13 +133,13 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testJoinFunctions() {
+	public void testJoinComputers() {
 
-		final List<ComputerOp<Img<ByteType>, Img<ByteType>>> functions =
+		final List<ComputerOp<Img<ByteType>, Img<ByteType>>> computers =
 			new ArrayList<ComputerOp<Img<ByteType>, Img<ByteType>>>();
 
 		for (int i = 0; i < 5; i++) {
-			functions.add(new AddOneFunctionalImg());
+			computers.add(new AddOneComputerImg());
 		}
 
 		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
@@ -153,7 +152,7 @@ public class JoinTest extends AbstractOpTest {
 				}
 			};
 
-		ops.join(out, in, functions, bufferFactory);
+		ops.join(out, in, computers, bufferFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -172,7 +171,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneFunctional extends AbstractComputerOp<ByteType, ByteType> {
+	class AddOneComputer extends AbstractComputerOp<ByteType, ByteType> {
 
 		@Override
 		public void compute(final ByteType input, final ByteType output) {
@@ -181,7 +180,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneFunctionalImg extends
+	class AddOneComputerImg extends
 		AbstractComputerOp<Img<ByteType>, Img<ByteType>>
 	{
 
@@ -189,7 +188,7 @@ public class JoinTest extends AbstractOpTest {
 		public void compute(final Img<ByteType> input,
 			final Img<ByteType> output)
 		{
-			ops.run(MapOp.class, output, input, new AddOneFunctional());
+			ops.run(MapOp.class, output, input, new AddOneComputer());
 		}
 	}
 

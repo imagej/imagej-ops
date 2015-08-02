@@ -303,22 +303,21 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A> A join(final A out, final A in,
-		final List<? extends ComputerOp<A, A>> functions,
+		final List<? extends ComputerOp<A, A>> ops,
 		final BufferFactory<A, A> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
 			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
-				functions, bufferFactory);
+				ops, bufferFactory);
 		return result;
 	}
 
 	@Override
-	public <A> A join(final A arg, final List<InplaceOp<A>> functions) {
+	public <A> A join(final A arg, final List<InplaceOp<A>> ops) {
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinInplaces.class, arg,
-				functions);
+			(A) run(net.imagej.ops.join.DefaultJoinInplaces.class, arg, ops);
 		return result;
 	}
 
@@ -372,20 +371,20 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
-	public <I> I loop(final I arg, final ComputerOp<I, I> function, final int n) {
+	public <I> I loop(final I arg, final ComputerOp<I, I> op, final int n) {
 		@SuppressWarnings("unchecked")
 		final I result =
-			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, function, n);
+			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, op, n);
 		return result;
 	}
 
 	@Override
-	public <A> A loop(final A out, final A in, final ComputerOp<A, A> function,
+	public <A> A loop(final A out, final A in, final ComputerOp<A, A> op,
 		final BufferFactory<A, A> bufferFactory, final int n)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out, in, function,
+			(A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out, in, op,
 				bufferFactory, n);
 		return result;
 	}
@@ -397,120 +396,116 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public <A, B extends Type<B>> RandomAccessibleInterval<B> map(
-		final RandomAccessibleInterval<A> input, final ComputerOp<A, B> function,
+		final RandomAccessibleInterval<A> input, final ComputerOp<A, B> op,
 		final B type)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<B> result =
 			(RandomAccessibleInterval<B>) run(
-				net.imagej.ops.map.MapConvertRAIToRAI.class, input, function, type);
+				net.imagej.ops.map.MapConvertRAIToRAI.class, input, op, type);
 		return result;
 	}
 
 	@Override
-	public <A, B extends Type<B>> RandomAccessible<B>
-		map(final RandomAccessible<A> input, final ComputerOp<A, B> function,
-			final B type)
+	public <A, B extends Type<B>> RandomAccessible<B> map(
+		final RandomAccessible<A> input, final ComputerOp<A, B> op, final B type)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessible<B> result =
 			(RandomAccessible<B>) run(
 				net.imagej.ops.map.MapConvertRandomAccessToRandomAccess.class, input,
-				function, type);
+				op, type);
 		return result;
 	}
 
 	@Override
-	public <A, B extends Type<B>> IterableInterval<B>
-		map(final IterableInterval<A> input, final ComputerOp<A, B> function,
-			final B type)
+	public <A, B extends Type<B>> IterableInterval<B> map(
+		final IterableInterval<A> input, final ComputerOp<A, B> op, final B type)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
 			(IterableInterval<B>) run(
-				net.imagej.ops.map.MapIterableIntervalToView.class, input, function,
+				net.imagej.ops.map.MapIterableIntervalToView.class, input, op,
 				type);
 		return result;
 	}
 
 	@Override
 	public <A> IterableInterval<A> map(final IterableInterval<A> arg,
-		final InplaceOp<A> func)
+		final InplaceOp<A> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result =
-			(IterableInterval<A>) run(net.imagej.ops.map.MapParallel.class, arg, func);
+			(IterableInterval<A>) run(net.imagej.ops.map.MapParallel.class, arg, op);
 		return result;
 	}
 
 	@Override
 	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final IterableInterval<A> in, final ComputerOp<A, B> func)
+		final IterableInterval<A> in, final ComputerOp<A, B> op)
 	{
 		// net.imagej.ops.map.MapIterableToIterableParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToIterableInterval.class
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
-			(IterableInterval<B>) run(net.imagej.ops.Ops.Map.class, out, in, func);
+			(IterableInterval<B>) run(net.imagej.ops.Ops.Map.class, out, in, op);
 		return result;
 	}
 
 	@Override
 	public <A, B> RandomAccessibleInterval<B> map(
 		final RandomAccessibleInterval<B> out, final IterableInterval<A> in,
-		final ComputerOp<A, B> func)
+		final ComputerOp<A, B> op)
 	{
 		// net.imagej.ops.map.MapIterableToRAIParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToRAI.class
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<B> result =
 			(RandomAccessibleInterval<B>) run(net.imagej.ops.Ops.Map.class, out, in,
-				func);
+				op);
 		return result;
 	}
 
 	@Override
-	public <A> Iterable<A> map(final Iterable<A> arg,
-		final InplaceOp<A> func)
-	{
+	public <A> Iterable<A> map(final Iterable<A> arg, final InplaceOp<A> op) {
 		@SuppressWarnings("unchecked")
 		final Iterable<A> result =
-			(Iterable<A>) run(net.imagej.ops.map.MapIterableInplace.class, arg, func);
+			(Iterable<A>) run(net.imagej.ops.map.MapIterableInplace.class, arg, op);
 		return result;
 	}
 
 	@Override
 	public <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final RandomAccessibleInterval<A> in, final ComputerOp<A, B> func)
+		final RandomAccessibleInterval<A> in, final ComputerOp<A, B> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
 			(IterableInterval<B>) run(
-				net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, func);
+				net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, op);
 		return result;
 	}
 
 	@Override
 	public <I, O> RandomAccessibleInterval<O> map(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in,
-		final ComputerOp<Iterable<I>, O> func, final Shape shape)
+		final RandomAccessibleInterval<I> in, final ComputerOp<Iterable<I>, O> op,
+		final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.MapNeighborhood.class, out, in, func, shape);
+				net.imagej.ops.map.MapNeighborhood.class, out, in, op, shape);
 		return result;
 	}
 
 	@Override
 	public <A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in,
-		final ComputerOp<A, B> func)
+		final ComputerOp<A, B> op)
 	{
 		@SuppressWarnings("unchecked")
 		final Iterable<B> result =
 			(Iterable<B>) run(net.imagej.ops.map.MapIterableToIterable.class, out,
-				in, func);
+				in, op);
 		return result;
 	}
 
@@ -522,13 +517,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> func,
+		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> op,
 		final int... axisIndices)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, op,
 				axisIndices);
 		return result;
 	}
@@ -536,13 +531,13 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> func,
+		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> op,
 		final int[] axisIndices, final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, func,
+				net.imagej.ops.slicewise.SlicewiseRAI2RAI.class, out, in, op,
 				axisIndices, dropSingleDimensions);
 		return result;
 	}
