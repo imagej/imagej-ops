@@ -31,8 +31,13 @@
 package net.imagej.ops.threshold.apply;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsen;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMean;
@@ -45,6 +50,7 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
 
 import org.junit.Before;
@@ -73,6 +79,25 @@ public class LocalThresholdTest extends AbstractOpTest {
 		in = generateByteTestImg(true, new long[] { 10, 10 });
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
+	}
+
+	/**
+	 * Test whether parameters for ops in {@link ThresholdNamespace} opmethods are
+	 * correctly set.
+	 */
+	@Test
+	public void testOpMethods() {
+		BitType out = new BitType();
+		Pair<ByteType, Iterable<ByteType>> in =
+			new ValuePair<ByteType, Iterable<ByteType>>(new ByteType(), Arrays
+				.asList(new ByteType(), new ByteType()));
+
+		ops.threshold().localBernsen(out, in, 1.0, Double.MAX_VALUE * 0.5);
+		ops.threshold().localContrast(out, in);
+		ops.threshold().localMean(out, in, 1.0);
+		ops.threshold().localMedian(out, in, 1.0);
+		ops.threshold().localMidGrey(out, in, 1.0);
+		ops.threshold().localNiblack(out, in, 1.0, 2.0);
 	}
 
 	/**
