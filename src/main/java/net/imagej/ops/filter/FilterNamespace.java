@@ -41,6 +41,7 @@ import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -905,6 +906,86 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.filter.ifft.IFFTRAI.class, out, in);
+		return result;
+	}
+
+	// -- non-linear filters --
+
+	/** Executes the "max" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.max.MaxFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		max(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.max.MaxFilterOp.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "min" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.min.MinFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		min(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.min.MinFilterOp.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "mean" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.mean.MeanFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		mean(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.mean.MeanFilterOp.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "median" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.median.MedianFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		median(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.median.MedianFilterOp.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "sigma" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.sigma.SigmaFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		sigma(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.sigma.SigmaFilterOp.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "variance" filter on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.variance.VarianceFilterOp.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T>
+		variance(final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in, Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.variance.VarianceFilterOp.class, out, in, shape);
 		return result;
 	}
 
