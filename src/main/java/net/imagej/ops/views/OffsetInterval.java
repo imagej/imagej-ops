@@ -41,6 +41,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Offset.class, name = Ops.View.Offset.NAME)
 public class OffsetInterval<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements

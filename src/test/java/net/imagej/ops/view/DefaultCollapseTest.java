@@ -44,6 +44,13 @@ import net.imglib2.view.composite.CompositeIntervalView;
 import net.imglib2.view.composite.CompositeView;
 import net.imglib2.view.composite.GenericComposite;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This test only checks if the op call works with all parameters and that the 
+ * result is equal to the Views.method() call. 
+ * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
+ */
 public class DefaultCollapseTest extends AbstractOpTest {
 
 	@Test

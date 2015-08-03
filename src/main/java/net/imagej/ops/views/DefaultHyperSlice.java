@@ -40,6 +40,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.HyperSlice.class, name = Ops.View.HyperSlice.NAME)
 public class DefaultHyperSlice<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>> implements

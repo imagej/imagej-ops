@@ -41,6 +41,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Shear.class, name = Ops.View.Shear.NAME)
 public class ShearInterval<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements

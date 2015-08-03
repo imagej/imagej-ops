@@ -39,6 +39,11 @@ import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Stack.class, name = Ops.View.Stack.NAME)
 public class DefaultStack<T>
 	extends

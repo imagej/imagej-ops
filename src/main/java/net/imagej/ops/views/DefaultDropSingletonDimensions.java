@@ -37,6 +37,11 @@ import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.DropSingletonDimensions.class,
 	name = Ops.View.DropSingletonDimensions.NAME)
 public class DefaultDropSingletonDimensions<T> extends

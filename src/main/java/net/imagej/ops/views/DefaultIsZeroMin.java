@@ -37,6 +37,11 @@ import net.imagej.ops.Ops;
 import net.imglib2.Interval;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.IsZeroMin.class, name = Ops.View.IsZeroMin.NAME)
 public class DefaultIsZeroMin extends AbstractFunctionOp<Interval, Boolean>
 	implements Ops.View.IsZeroMin

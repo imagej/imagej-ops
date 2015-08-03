@@ -41,6 +41,11 @@ import net.imglib2.type.Type;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.ExtendValue.class, name = Ops.View.ExtendValue.NAME)
 public class DefaultExtendValue<T extends Type<T>, F extends RandomAccessibleInterval<T>>
 	extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>

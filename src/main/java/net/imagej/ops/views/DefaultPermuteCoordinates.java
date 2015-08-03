@@ -40,6 +40,11 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.PermuteCoordinates.class,
 	name = Ops.View.PermuteCoordinates.NAME)
 public class DefaultPermuteCoordinates<T> extends

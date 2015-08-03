@@ -42,6 +42,11 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.StackView.StackAccessMode;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Stack.class, name = Ops.View.Stack.NAME)
 public class StackWithAccessMode<T>
 	extends

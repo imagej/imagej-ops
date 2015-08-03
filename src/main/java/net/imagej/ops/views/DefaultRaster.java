@@ -39,6 +39,11 @@ import net.imglib2.type.Type;
 import net.imglib2.view.RandomAccessibleOnRealRandomAccessible;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Raster.class, name = Ops.View.Raster.NAME)
 public class DefaultRaster<T extends Type<T>>
 	extends

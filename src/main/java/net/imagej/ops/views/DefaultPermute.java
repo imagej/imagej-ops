@@ -40,6 +40,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Permute.class, name = Ops.View.Permute.NAME)
 public class DefaultPermute<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>> implements

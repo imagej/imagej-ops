@@ -42,6 +42,11 @@ import net.imglib2.interpolation.InterpolatorFactory;
 import net.imglib2.type.Type;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Interpolate.class, name = Ops.View.Interpolate.NAME)
 public class DefaultInterpolate<I extends EuclideanSpace, T extends Type<T>>
 	extends AbstractFunctionOp<I, RealRandomAccessible<T>> implements

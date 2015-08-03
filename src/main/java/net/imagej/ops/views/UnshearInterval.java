@@ -41,6 +41,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.UnShear.class, name = Ops.View.UnShear.NAME)
 public class UnshearInterval<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements

@@ -37,14 +37,19 @@ import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessible;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.view.IntervalView;
 import net.imglib2.view.TransformView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This test only checks if the op call works with all parameters and that the 
+ * result is equal to the Views.method() call. 
+ * This is not a correctness test of {@linkplain net.imglib2.view.Views}.
+ */
 public class ShearTest extends AbstractOpTest {
 
 	@Test

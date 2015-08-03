@@ -41,6 +41,11 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.view.SubsampleView;
 import net.imglib2.view.Views;
 
+/**
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ * This op wraps functionality from {@link net.imglib2.view.Views}.
+ */
 @Plugin(type = Ops.View.Subsample.class, name = Ops.View.Subsample.NAME)
 public class SubsampleStepsForDims<T> extends
 	AbstractFunctionOp<RandomAccessible<T>, SubsampleView<T>> implements
