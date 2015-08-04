@@ -31,19 +31,19 @@
 package net.imagej.ops.image;
 
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.filter.FilterNamespace;
+import net.imagej.ops.image.ImageNamespace;
 
 import org.junit.Test;
 
 /**
- * Tests {@link FilterNamespace}.
+ * Tests {@link ImageNamespace}.
  *
  * @author Christian Dietz (University of Konstanz)
  */
 public class ImageNamespaceTest extends AbstractNamespaceTest {
 
 	/**
-	 * Tests that the ops of the {@code filter} namespace have corresponding
+	 * Tests that the ops of the {@code image} namespace have corresponding
 	 * type-safe Java method signatures declared in the {@link ImageNamespace}
 	 * class.
 	 */
