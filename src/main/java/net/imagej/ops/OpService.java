@@ -141,7 +141,7 @@ public interface OpService extends PTService<Op>, ImageJService {
 	 * @return An {@link Op} with populated inputs, ready to run.
 	 */
 	@OpMethod(op = net.imagej.ops.lookup.LookupByType.class)
-	<O extends Op> O op(Class<O> type, Object... args);
+	<OP extends Op> OP op(Class<OP> type, Object... args);
 
 	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
