@@ -71,6 +71,14 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.stats.max.MaxRealType.class)
+	public <T extends RealType<T>> T max(final Iterable<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.stats.max.MaxRealType.class, in);
+		return result;
+	}
+
 	// -- mean --
 
 	@OpMethod(op = net.imagej.ops.Ops.Stats.Mean.class)
@@ -94,7 +102,8 @@ public class StatsNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.mean.MeanRealType.class, out, in, sumFunc);
+			(O) ops().run(net.imagej.ops.stats.mean.MeanRealType.class, out, in,
+				sumFunc);
 		return result;
 	}
 
@@ -105,8 +114,8 @@ public class StatsNamespace extends AbstractNamespace {
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.mean.MeanRealType.class, out, in, sumFunc,
-				sizeFunc);
+			(O) ops().run(net.imagej.ops.stats.mean.MeanRealType.class, out, in,
+				sumFunc, sizeFunc);
 		return result;
 	}
 
@@ -140,6 +149,14 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.stats.min.MinRealType.class)
+	public <T extends RealType<T>> T min(final Iterable<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.stats.min.MinRealType.class, in);
+		return result;
+	}
+
 	// -- minMax --
 
 	@OpMethod(op = net.imagej.ops.Ops.Stats.MinMax.class)
@@ -151,7 +168,8 @@ public class StatsNamespace extends AbstractNamespace {
 	public <T extends RealType<T>> List<T> minMax(final Iterable<T> img) {
 		@SuppressWarnings("unchecked")
 		final List<T> result =
-			(List<T>) ops().run(net.imagej.ops.stats.minMax.MinMaxRealType.class, img);
+			(List<T>) ops()
+				.run(net.imagej.ops.stats.minMax.MinMaxRealType.class, img);
 		return result;
 	}
 
@@ -209,14 +227,16 @@ public class StatsNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.stats.size.SizeIterableInterval.class)
 	public LongType size(final LongType out, final IterableInterval<?> in) {
 		final LongType result =
-			(LongType) ops().run(net.imagej.ops.stats.size.SizeIterableInterval.class, out, in);
+			(LongType) ops().run(
+				net.imagej.ops.stats.size.SizeIterableInterval.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.size.SizeIterable.class)
 	public LongType size(final LongType out, final Iterable<?> in) {
 		final LongType result =
-			(LongType) ops().run(net.imagej.ops.stats.size.SizeIterable.class, out, in);
+			(LongType) ops().run(net.imagej.ops.stats.size.SizeIterable.class, out,
+				in);
 		return result;
 	}
 
@@ -231,7 +251,8 @@ public class StatsNamespace extends AbstractNamespace {
 	public <T extends RealType<T>> T stdDev(final T out, final Iterable<T> in) {
 		@SuppressWarnings("unchecked")
 		final T result =
-			(T) ops().run(net.imagej.ops.stats.stdDev.StdDevRealTypeDirect.class, out, in);
+			(T) ops().run(net.imagej.ops.stats.stdDev.StdDevRealTypeDirect.class,
+				out, in);
 		return result;
 	}
 
@@ -240,7 +261,8 @@ public class StatsNamespace extends AbstractNamespace {
 		final Iterable<T> in)
 	{
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.stats.stdDev.StdDevRealType.class, out, in);
+			(DoubleType) ops().run(net.imagej.ops.stats.stdDev.StdDevRealType.class,
+				out, in);
 		return result;
 	}
 
@@ -249,8 +271,8 @@ public class StatsNamespace extends AbstractNamespace {
 		final Iterable<T> in, final VarianceOp<T, DoubleType> variance)
 	{
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.stats.stdDev.StdDevRealType.class, out, in,
-				variance);
+			(DoubleType) ops().run(net.imagej.ops.stats.stdDev.StdDevRealType.class,
+				out, in, variance);
 		return result;
 	}
 
@@ -293,8 +315,8 @@ public class StatsNamespace extends AbstractNamespace {
 		final Iterable<T> in, final Moment2AboutMean<T> moment2)
 	{
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.stats.variance.VarianceRealType.class, out,
-				in, moment2);
+			(DoubleType) ops().run(
+				net.imagej.ops.stats.variance.VarianceRealType.class, out, in, moment2);
 		return result;
 	}
 
