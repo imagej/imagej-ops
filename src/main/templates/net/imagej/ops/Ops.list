@@ -51,6 +51,7 @@ namespaces = ```
 	]],
 	[name: "image",      iface: "Image", ops: [
 		[name: "ascii",              iface: "ASCII"],
+		[name: "cooccurrencematrix", iface:"CooccurrenceMatrix"],
 		[name: "crop",               iface: "Crop",                aliases: ["slice"]],
 		[name: "equation",           iface: "Equation"],
 		[name: "histogram",          iface: "Histogram"],
