@@ -36,6 +36,8 @@ import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
+import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -67,30 +69,41 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
 	public <T extends RealType<T>> String ascii(final IterableInterval<T> image) {
-		final String result =
-			(String) ops().run(net.imagej.ops.image.ascii.DefaultASCII.class, image);
+		final String result = (String) ops().run(
+				net.imagej.ops.image.ascii.DefaultASCII.class, image);
 		return result;
 	}
 
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min)
-	{
-		final String result =
-			(String) ops().run(net.imagej.ops.image.ascii.DefaultASCII.class, image,
-				min);
+	public <T extends RealType<T>> String ascii(
+			final IterableInterval<T> image, final RealType<T> min) {
+		final String result = (String) ops().run(
+				net.imagej.ops.image.ascii.DefaultASCII.class, image, min);
 		return result;
 	}
 
 	/** Executes the "ascii" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.ascii.DefaultASCII.class)
-	public <T extends RealType<T>> String ascii(final IterableInterval<T> image,
-		final RealType<T> min, final RealType<T> max)
-	{
-		final String result =
-			(String) ops().run(net.imagej.ops.image.ascii.DefaultASCII.class, image,
-				min, max);
+	public <T extends RealType<T>> String ascii(
+			final IterableInterval<T> image, final RealType<T> min,
+			final RealType<T> max) {
+		final String result = (String) ops().run(
+				net.imagej.ops.image.ascii.DefaultASCII.class, image, min, max);
+		return result;
+	}
+
+	// -- cooccurrence matrix --
+
+	@OpMethod(ops = {
+			net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix3D.class,
+			net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D.class })
+	public <T extends RealType<T>> double[][] cooccurrenceMatrix(
+			final IterableInterval<T> in, final int nrGreyLevels,
+			final int distance, final MatrixOrientation orientation) {
+		final double[][] result = (double[][]) ops().run(
+				CooccurrenceMatrix.class, in, nrGreyLevels, distance,
+				orientation);
 		return result;
 	}
 
@@ -105,50 +118,43 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.crop.CropImgPlus.class)
 	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-		final Interval interval)
-	{
+			final Interval interval) {
 		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result =
-			(ImgPlus<T>) ops().run(net.imagej.ops.image.crop.CropImgPlus.class, in,
-				interval);
+		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
+				net.imagej.ops.image.crop.CropImgPlus.class, in, interval);
 		return result;
 	}
 
 	/** Executes the "crop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.crop.CropImgPlus.class)
 	public <T extends Type<T>> ImgPlus<T> crop(final ImgPlus<T> in,
-		final Interval interval, final boolean dropSingleDimensions)
-	{
+			final Interval interval, final boolean dropSingleDimensions) {
 		@SuppressWarnings("unchecked")
-		final ImgPlus<T> result =
-			(ImgPlus<T>) ops().run(net.imagej.ops.image.crop.CropImgPlus.class, in,
-				interval, dropSingleDimensions);
-		return result;
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
-	public <T> RandomAccessibleInterval<T> crop(
-		final RandomAccessibleInterval<T> in, final Interval interval)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.image.crop.CropRAI.class, in, interval);
-		return result;
-	}
-
-	/** Executes the "crop" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
-	public <T> RandomAccessibleInterval<T> crop(
-		final RandomAccessibleInterval<T> in, final Interval interval,
-		final boolean dropSingleDimensions)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.image.crop.CropRAI.class, in, interval,
+		final ImgPlus<T> result = (ImgPlus<T>) ops().run(
+				net.imagej.ops.image.crop.CropImgPlus.class, in, interval,
 				dropSingleDimensions);
+		return result;
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
+	public <T> RandomAccessibleInterval<T> crop(
+			final RandomAccessibleInterval<T> in, final Interval interval) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.image.crop.CropRAI.class, in, interval);
+		return result;
+	}
+
+	/** Executes the "crop" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.image.crop.CropRAI.class)
+	public <T> RandomAccessibleInterval<T> crop(
+			final RandomAccessibleInterval<T> in, final Interval interval,
+			final boolean dropSingleDimensions) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.image.crop.CropRAI.class, in, interval,
+						dropSingleDimensions);
 		return result;
 	}
 
@@ -164,8 +170,7 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.image.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(final String in) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
 				net.imagej.ops.image.equation.DefaultEquation.class, in);
 		return result;
 	}
@@ -173,11 +178,9 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "equation" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.equation.DefaultEquation.class)
 	public <T extends RealType<T>> IterableInterval<T> equation(
-		final IterableInterval<T> out, final String in)
-	{
+			final IterableInterval<T> out, final String in) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<T> result =
-			(IterableInterval<T>) ops().run(
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
 				net.imagej.ops.image.equation.DefaultEquation.class, out, in);
 		return result;
 	}
@@ -192,24 +195,21 @@ public class ImageNamespace extends AbstractNamespace {
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.histogram.HistogramCreate.class)
-	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in)
-	{
+	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in) {
 		@SuppressWarnings("unchecked")
-		final Histogram1d<T> result =
-			(Histogram1d<T>) ops().run(
+		final Histogram1d<T> result = (Histogram1d<T>) ops().run(
 				net.imagej.ops.image.histogram.HistogramCreate.class, in);
 		return result;
 	}
 
 	/** Executes the "histogram" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.histogram.HistogramCreate.class)
-	public <T extends RealType<T>> Histogram1d<T> histogram(final Iterable<T> in,
-		final int numBins)
-	{
+	public <T extends RealType<T>> Histogram1d<T> histogram(
+			final Iterable<T> in, final int numBins) {
 		@SuppressWarnings("unchecked")
-		final Histogram1d<T> result =
-			(Histogram1d<T>) ops().run(
-				net.imagej.ops.image.histogram.HistogramCreate.class, in, numBins);
+		final Histogram1d<T> result = (Histogram1d<T>) ops().run(
+				net.imagej.ops.image.histogram.HistogramCreate.class, in,
+				numBins);
 		return result;
 	}
 
@@ -223,13 +223,12 @@ public class ImageNamespace extends AbstractNamespace {
 
 	/** Executes the "invert" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.invert.InvertIterableInterval.class)
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
-		invert(final IterableInterval<O> out, final IterableInterval<I> in)
-	{
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O> invert(
+			final IterableInterval<O> out, final IterableInterval<I> in) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) ops().run(
-				net.imagej.ops.image.invert.InvertIterableInterval.class, out, in);
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+				net.imagej.ops.image.invert.InvertIterableInterval.class, out,
+				in);
 		return result;
 	}
 
@@ -407,16 +406,15 @@ public class ImageNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "project" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.image.project.DefaultProjectParallel.class,
-		net.imagej.ops.image.project.ProjectRAIToIterableInterval.class })
+	@OpMethod(ops = {
+			net.imagej.ops.image.project.DefaultProjectParallel.class,
+			net.imagej.ops.image.project.ProjectRAIToIterableInterval.class })
 	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
-		final RandomAccessibleInterval<T> in,
-		final ComputerOp<Iterable<T>, V> method, final int dim)
-	{
+			final RandomAccessibleInterval<T> in,
+			final ComputerOp<Iterable<T>, V> method, final int dim) {
 		@SuppressWarnings("unchecked")
-		final IterableInterval<V> result =
-			(IterableInterval<V>) ops().run(net.imagej.ops.Ops.Image.Project.class,
-				out, in, method, dim);
+		final IterableInterval<V> result = (IterableInterval<V>) ops().run(
+				net.imagej.ops.Ops.Image.Project.class, out, in, method, dim);
 		return result;
 	}
 
@@ -431,13 +429,12 @@ public class ImageNamespace extends AbstractNamespace {
 	/** Executes the "scale" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.image.scale.ScaleImg.class)
 	public <T extends RealType<T>> Img<T> scale(final Img<T> in,
-		final double[] scaleFactors,
-		final InterpolatorFactory<T, RandomAccessible<T>> interpolator)
-	{
+			final double[] scaleFactors,
+			final InterpolatorFactory<T, RandomAccessible<T>> interpolator) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.image.scale.ScaleImg.class, in,
-				scaleFactors, interpolator);
+		final Img<T> result = (Img<T>) ops().run(
+				net.imagej.ops.image.scale.ScaleImg.class, in, scaleFactors,
+				interpolator);
 		return result;
 	}
 
