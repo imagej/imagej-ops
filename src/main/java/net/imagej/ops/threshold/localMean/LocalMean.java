@@ -63,7 +63,7 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 			mean = ops.op(MeanOp.class, DoubleType.class, input.neighborhood);
 		}
 		final DoubleType m = new DoubleType();
-		mean.compute(input.neighborhood, new DoubleType());
+		mean.compute(input.neighborhood, m);
 		output.set(input.pixel.getRealDouble() > m.getRealDouble() - c);
 	}
 
