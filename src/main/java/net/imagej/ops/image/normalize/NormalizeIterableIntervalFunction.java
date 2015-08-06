@@ -30,52 +30,63 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Image.Normalize;
+import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
-public class NormalizeRealType<T extends RealType<T>> extends
-	AbstractComputerOp<T, T> implements Ops.Image.Normalize
+/**
+ * Normalizes an {@link IterableInterval} given its minimum and maximum to
+ * another range defined by minimum and maximum.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @param <T>
+ */
+@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME,
+	attrs = { @Attr(name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
+	AbstractFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
+	Normalize
 {
 
 	@Parameter
-	private double oldMin;
+	private OpService ops;
 
-	@Parameter
-	private double newMin;
+	@Parameter(required = false)
+	private T sourceMin;
 
-	@Parameter
-	private double newMax;
+	@Parameter(required = false)
+	private T sourceMax;
 
-	@Parameter
-	private double factor;
+	@Parameter(required = false)
+	private T targetMin;
+
+	@Parameter(required = false)
+	private T targetMax;
+
+	@Parameter(required = false)
+	private boolean isLazy = true;
 
 	@Override
-	public void compute(final T input, final T output) {
-		output.setReal(Math.min(newMax, Math.max(newMin,
-			(input.getRealDouble() - oldMin) * factor + newMin)));
+	public IterableInterval<T> compute(final IterableInterval<T> input) {
+		if (isLazy) {
+			return new ConvertedIterableInterval<T, T>(input,
+				new NormalizeRealTypeComputer<T>(ops, sourceMin, sourceMax, targetMin,
+					targetMax, input), input.firstElement().createVariable());
+		}
+		else {
+			final Img<T> output =
+				ops.create().img(input, input.firstElement().createVariable());
+			ops.image().normalize(output, input);
+			return output;
+		}
 	}
-
-	/**
-	 * Determines the factor to map the interval [oldMin, oldMax] to
-	 * [newMin,newMax].
-	 * 
-	 * @param oldMin
-	 * @param oldMax
-	 * @param newMin
-	 * @param newMax
-	 * @return the normalization factor
-	 */
-	public static double normalizationFactor(double oldMin, double oldMax,
-		double newMin, double newMax)
-	{
-		return 1.0d / (oldMax - oldMin) * ((newMax - newMin));
-	}
-
 }

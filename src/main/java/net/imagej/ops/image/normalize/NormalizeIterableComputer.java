@@ -30,12 +30,10 @@
 
 package net.imagej.ops.image.normalize;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -43,34 +41,40 @@ import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Normalize.ALIASES) })
-public class NormalizeIterableInterval<T extends RealType<T>> extends
+/**
+ * Normalizes an {@link IterableInterval} given its minimum and maximum to
+ * another range defined by minimum and maximum.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @param <T>
+ */
+@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME,
+	attrs = { @Attr(name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+public class NormalizeIterableComputer<T extends RealType<T>> extends
 	AbstractComputerOp<IterableInterval<T>, IterableInterval<T>> implements
-	Ops.Image.Normalize
+	Normalize
 {
 
 	@Parameter
 	private OpService ops;
 
+	@Parameter(required = false)
+	private T sourceMin;
+
+	@Parameter(required = false)
+	private T sourceMax;
+
+	@Parameter(required = false)
+	private T targetMin;
+
+	@Parameter(required = false)
+	private T targetMax;
+
 	@Override
 	public void compute(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		T outType = output.firstElement().createVariable();
-		List<T> minMax = ops.stats().minMax(input);
-		double factor =
-			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
-				minMax.get(1).getRealDouble(), outType.getMinValue(), outType
-					.getMaxValue());
-
-		// lookup the pixel-wise normalize function
-		final Op normalize =
-			ops.op(Ops.Image.Normalize.class, outType, outType, minMax.get(0)
-				.getRealDouble(), outType.getMinValue(), outType.getMaxValue(), factor);
-
-		// run normalize for each pixel
-		ops.map(output, input, normalize);
+		ops.map(output, input, new NormalizeRealTypeComputer<T>(ops, sourceMin,
+			sourceMax, targetMin, targetMax, input));
 	}
-
 }

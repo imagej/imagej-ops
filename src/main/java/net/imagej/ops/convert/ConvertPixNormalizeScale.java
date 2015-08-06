@@ -34,7 +34,6 @@ import java.util.List;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.image.normalize.NormalizeRealType;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -62,9 +61,8 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 		final List<I> minMax = ops.stats().minMax(in);
 		final I inType = in.firstElement().createVariable();
 		factor =
-			NormalizeRealType.normalizationFactor(minMax.get(0).getRealDouble(),
-				minMax.get(1).getRealDouble(), inType.getMinValue(), inType
-					.getMaxValue());
+			1.0 / (minMax.get(1).getRealDouble() - minMax.get(0).getRealDouble()) *
+				(inType.getMaxValue() - inType.getMinValue());
 
 		inMin = minMax.get(0).getRealDouble();
 
