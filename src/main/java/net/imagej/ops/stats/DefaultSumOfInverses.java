@@ -46,8 +46,8 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = SumOfInverses.NAME,
 	label = "Statistics: Sum Of Inverses")
-public class DefaultSumOfInverses<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements SumOfInverses
+public class DefaultSumOfInverses<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements SumOfInverses
 {
 
 	@Override

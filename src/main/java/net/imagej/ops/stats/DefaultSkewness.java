@@ -39,7 +39,8 @@ import net.imagej.ops.Ops.Stats.StdDev;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Skewness} using {@link Moment3AboutMean} and {@link StdDev}
+ * {@link Op} to calculate the {@link Skewness} using {@link Moment3AboutMean}
+ * and {@link StdDev}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -48,13 +49,14 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = Skewness.NAME,
 	label = "Statistics: Skewness")
-public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Skewness
+public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements Skewness
 {
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double moment3 = this.ops.stats().moment3AboutMean(input).getRealDouble();
+		final double moment3 =
+			this.ops.stats().moment3AboutMean(input).getRealDouble();
 		final double std = this.ops.stats().stdDev(input).getRealDouble();
 
 		output.setReal(Double.NaN);

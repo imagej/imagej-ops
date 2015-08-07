@@ -51,12 +51,12 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = StatOp.class, name = Mean.NAME, label = "Statistics: Mean",
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Mean
+	AbstractStatOp<Iterable<I>, O> implements Mean
 {
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(this.ops.stats().sum(input).getRealDouble() / this.ops.stats().size(input)
-			.getRealDouble());
+		output.setReal(this.ops.stats().sum(input).getRealDouble() /
+			this.ops.stats().size(input).getRealDouble());
 	}
 }

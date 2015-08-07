@@ -74,8 +74,8 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 
 	/* -- Wrapper classes to mark certain operations as projection methods --*/
 
-	private class ProjectMean extends AbstractComputerOp<Iterable<T>, T>implements
-		ProjectMethod<T>
+	private class ProjectMean extends AbstractComputerOp<Iterable<T>, T>
+		implements ProjectMethod<T>
 	{
 
 		@Override

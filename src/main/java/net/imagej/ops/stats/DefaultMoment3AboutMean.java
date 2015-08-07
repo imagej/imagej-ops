@@ -39,7 +39,8 @@ import net.imagej.ops.Ops.Stats.Size;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Moment3AboutMean} using {@link Mean} and {@link Size}
+ * {@link Op} to calculate the {@link Moment3AboutMean} using {@link Mean} and
+ * {@link Size}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -48,9 +49,9 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = Moment3AboutMean.NAME,
 	label = "Statistics: Moment3AboutMean")
-public class DefaultMoment3AboutMean<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Moment3AboutMean
-{	
+public class DefaultMoment3AboutMean<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements Moment3AboutMean
+{
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {

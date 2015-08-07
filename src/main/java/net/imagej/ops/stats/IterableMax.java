@@ -45,9 +45,10 @@ import net.imglib2.type.numeric.RealType;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max",
+	priority = Priority.FIRST_PRIORITY)
 public class IterableMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Max
+	AbstractStatOp<Iterable<I>, O> implements Max
 {
 
 	@Override

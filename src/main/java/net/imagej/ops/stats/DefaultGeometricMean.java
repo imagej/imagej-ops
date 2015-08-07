@@ -50,7 +50,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = StatOp.class, name = GeometricMean.NAME,
 	label = "Statistics: GeometricMean")
 public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O>implements GeometricMean
+	extends AbstractStatOp<Iterable<I>, O> implements GeometricMean
 {
 
 	@Override

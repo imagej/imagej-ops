@@ -46,8 +46,8 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = SumOfSquares.NAME,
 	label = "Statistics: Sum Of Squares")
-public class DefaultSumOfSquares<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements SumOfSquares
+public class DefaultSumOfSquares<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements SumOfSquares
 {
 
 	@Override

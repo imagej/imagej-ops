@@ -49,8 +49,8 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = HarmonicMean.NAME,
 	label = "Statistics: Harmonic Mean")
-public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements HarmonicMean
+public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements HarmonicMean
 {
 
 	@Override

@@ -38,7 +38,7 @@ import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link StdDev} using {@link Variance} 
+ * {@link Op} to calculate the {@link StdDev} using {@link Variance}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -47,8 +47,8 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = StdDev.NAME,
 	label = "Statistics: Standard Deviation")
-public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements StdDev
+public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements StdDev
 {
 
 	@Override

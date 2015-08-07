@@ -52,7 +52,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = StatOp.class, name = Variance.NAME,
 	label = "Statistics: Variance", priority = Priority.FIRST_PRIORITY)
 public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O>implements Variance
+	extends AbstractStatOp<Iterable<I>, O> implements Variance
 {
 
 	@Override

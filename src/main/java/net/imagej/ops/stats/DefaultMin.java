@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = Min.NAME, label = "Statistics: Min")
 public class DefaultMin<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Min
+	AbstractStatOp<Iterable<I>, O> implements Min
 {
 
 	@Override

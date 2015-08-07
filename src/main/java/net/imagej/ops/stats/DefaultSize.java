@@ -48,7 +48,7 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = Size.NAME, label = "Statistics: Size")
 public class DefaultSize<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Size
+	AbstractStatOp<Iterable<I>, O> implements Size
 {
 
 	@Override

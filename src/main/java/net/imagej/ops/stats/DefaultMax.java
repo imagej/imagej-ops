@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max")
 public class DefaultMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Max
+	AbstractStatOp<Iterable<I>, O> implements Max
 {
 
 	@Override

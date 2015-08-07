@@ -48,7 +48,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = StatOp.class, name = Mean.NAME, label = "Statistics: Mean",
 	priority = Priority.FIRST_PRIORITY)
 public class IterableMean<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Mean
+	AbstractStatOp<Iterable<I>, O> implements Mean
 {
 
 	@Override

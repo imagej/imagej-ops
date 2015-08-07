@@ -76,7 +76,7 @@ public class DefaultMinMax<I extends RealType<I>> implements MinMax {
 
 		this.min = input.iterator().next().createVariable();
 		this.min.setReal(tmpMin);
-		
+
 		this.max = input.iterator().next().createVariable();
 		this.max.setReal(tmpMax);
 	}

@@ -47,11 +47,9 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = StatOp.class, name = StdDev.NAME,
 	label = "Statistics: Standard Deviation", priority = Priority.FIRST_PRIORITY)
-public class IterableStandardDeviation<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements StdDev
+public class IterableStandardDeviation<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements StdDev
 {
-
-
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {

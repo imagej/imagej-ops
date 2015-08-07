@@ -49,8 +49,8 @@ import net.imglib2.type.numeric.RealType;
  * @param <O> output type
  */
 @Plugin(type = StatOp.class, name = Median.NAME, label = "Statistics: Median")
-public class DefaultMedian<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Median
+public class DefaultMedian<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements Median
 {
 
 	@Override

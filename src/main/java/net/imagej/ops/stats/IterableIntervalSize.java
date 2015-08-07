@@ -49,7 +49,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = StatOp.class, name = Size.NAME, label = "Statistics: Size",
 	priority = Priority.FIRST_PRIORITY)
 public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<IterableInterval<I>, O>implements Size
+	extends AbstractStatOp<IterableInterval<I>, O> implements Size
 {
 
 	@Override
