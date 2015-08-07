@@ -98,7 +98,7 @@ public class ImageNamespace extends AbstractNamespace {
 	@OpMethod(ops = {
 			net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix3D.class,
 			net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D.class })
-	public <T extends RealType<T>> double[][] cooccurrenceMatrix(
+	public <T extends RealType<T>> double[][] cooccurrencematrix(
 			final IterableInterval<T> in, final int nrGreyLevels,
 			final int distance, final MatrixOrientation orientation) {
 		final double[][] result = (double[][]) ops().run(
