@@ -32,12 +32,14 @@ package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+<<<<<<< HEAD
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
+=======
+>>>>>>> add new statistic ops. old ones were rewritten to match the new style.
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -59,8 +61,6 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Parameter
 	private OpService ops;
-
-	private MeanOp<Iterable<T>, DoubleType> mean;
 
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
