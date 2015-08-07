@@ -38,33 +38,44 @@ import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Variance}
+ * {@link Op} to calculate the {@link Variance} Using the online algorithm from
+ * Knuth and Welford.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm">
+ *      Wikipedia</a>
  */
 @Plugin(type = StatOp.class, name = Variance.NAME,
 	label = "Statistics: Variance", priority = Priority.FIRST_PRIORITY)
-public class IterableVariance<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O>implements Variance
+public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O>implements Variance
 {
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		double sum = 0;
-		double sumSqr = 0;
 		int n = 0;
+		double mean = 0.0;
+		double M2 = 0.0;
 
 		for (final I in : input) {
-			final double px = in.getRealDouble();
-			++n;
-			sum += px;
-			sumSqr += px * px;
+			double x = in.getRealDouble();
+
+			n = n + 1;
+			double delta = x - mean;
+			mean = mean + delta / n;
+			M2 = M2 + delta * (x - mean);
 		}
 
-		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
+		if (n < 2) {
+			output.setReal(Double.NaN);
+		}
+		else {
+			output.setReal(M2 / (n - 1));
+		}
 	}
 
 }

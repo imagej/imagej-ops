@@ -38,12 +38,16 @@ import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Variance} using the {@link StdDev}
+ * {@link Op} to calculate the {@link Variance} using the {@link StdDev} Using
+ * the two-pass algorithm.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Two-pass_algorithm">
+ *      Wikipedia </a>
  */
 @Plugin(type = StatOp.class, name = Variance.NAME,
 	label = "Statistics: Variance")
@@ -53,7 +57,18 @@ public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(Math.pow(ops.stats().stdDev(input).getRealDouble(), 2));
-	}
 
+		double mean = ops.stats().mean(input).getRealDouble();
+
+		int n = 0;
+		double sum = 0d;
+
+		for (I in : input) {
+			n++;
+			double x = in.getRealDouble();
+			sum += (x - mean) * (x - mean);
+		}
+
+		output.setReal(sum / (n - 1));
+	}
 }
