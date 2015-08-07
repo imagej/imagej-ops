@@ -336,7 +336,7 @@ public class StatsNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.stats.DefaultSum.class)
 	public <T extends RealType<T>, O extends RealType<O>> O sum(
-		final Iterable<O> in)
+		final Iterable<T> in)
 	{
 		final O result = (O) ops().run(net.imagej.ops.stats.DefaultSum.class, in);
 		return result;

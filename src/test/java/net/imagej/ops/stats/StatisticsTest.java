@@ -31,8 +31,10 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
@@ -60,6 +62,8 @@ public class StatisticsTest extends AbstractOpTest {
 	float array[];
 	long arraySize;
 
+	private Img<UnsignedByteType> randomlyFilledImg;
+
 	@Override
 	@Before
 	public void setUp() {
@@ -74,6 +78,9 @@ public class StatisticsTest extends AbstractOpTest {
 		arraySize = 1;
 		for (int d = 0; d < img.numDimensions(); d++)
 			arraySize *= img.dimension(d);
+
+		randomlyFilledImg = generateRandomlyFilledUnsignedByteTestImgWithSeed(
+			new long[] { 100, 100 }, 1234567890L);
 	}
 
 	@Test
@@ -137,5 +144,113 @@ public class StatisticsTest extends AbstractOpTest {
 
 		// check that the ratio between std1 and std2 is 1.0
 		Assert.assertEquals(1.0, std1 / std2.getRealFloat(), delta);
+	}
+
+	@Test
+	public void testMax() {
+		Assert.assertEquals("Max", 254d, ops.stats().max(randomlyFilledImg)
+			.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMean() {
+		Assert.assertEquals("Mean", 127.7534, ops.stats().mean(randomlyFilledImg)
+			.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMedian() {
+		Assert.assertEquals("Median", 128d, ops.stats().median(randomlyFilledImg)
+			.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMin() {
+		Assert.assertEquals("Min", 0, ops.stats().min(randomlyFilledImg)
+			.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testStdDev() {
+		Assert.assertEquals("StdDev", 73.7460374274008, ops.stats().stdDev(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testSum() {
+		Assert.assertEquals("Sum", 1277534.0, ops.stats().sum(randomlyFilledImg)
+			.getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testVariance() {
+		Assert.assertEquals("Variance", 5438.4780362436, ops.stats().variance(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testGeometricMean() {
+		Assert.assertEquals("Geometric Mean", 0, ops.stats().geometricMean(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testHarmonicMean() {
+		Assert.assertEquals("Harmonic Mean", 0, ops.stats().harmonicMean(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testKurtosis() {
+		Assert.assertEquals("Kurtosis", 1.794289587623922, ops.stats().kurtosis(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMoment1AboutMean() {
+		Assert.assertEquals("Moment 1 About Mean", 0, ops.stats().moment1AboutMean(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMoment2AboutMean() {
+		Assert.assertEquals("Moment 2 About Mean", 5437.93418843998, ops.stats()
+			.moment2AboutMean(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMoment3AboutMean() {
+		Assert.assertEquals("Moment 3 About Mean", -507.810691261427, ops.stats()
+			.moment3AboutMean(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testMoment4AboutMean() {
+		Assert.assertEquals("Moment 4 About Mean", 53069780.9168701, ops.stats()
+			.moment4AboutMean(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testSkewness() {
+		Assert.assertEquals("Skewness", -0.0012661517853476312, ops.stats()
+			.skewness(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testSumOfInverses() {
+		Assert.assertEquals("Sum Of Inverses", Double.POSITIVE_INFINITY, ops.stats()
+			.sumOfInverses(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testSumOfLogs() {
+		Assert.assertEquals("Sum Of Logs", Double.NEGATIVE_INFINITY, ops.stats()
+			.sumOfLogs(randomlyFilledImg).getRealDouble(), 0.00001d);
+	}
+
+	@Test
+	public void testSumOfSquares() {
+		Assert.assertEquals("Sum Of Squares", 217588654, ops.stats().sumOfSquares(
+			randomlyFilledImg).getRealDouble(), 0.00001d);
 	}
 }
