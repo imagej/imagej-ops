@@ -30,8 +30,6 @@
 
 package net.imagej.ops.stats;
 
-import com.sun.jdi.DoubleType;
-
 import net.imagej.ops.HybridOp;
 
 /**
@@ -39,6 +37,6 @@ import net.imagej.ops.HybridOp;
  *
  * @author Daniel Seebacher, University of Konstanz
  */
-public interface StatOp<I> extends HybridOp<I, DoubleType> {
+public interface StatOp<I, O> extends HybridOp<I, O> {
 	// NB: marker interface
 }

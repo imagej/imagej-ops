@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <O> output type
  */
 public abstract class AbstractStatOp<I, O extends RealType<O>> extends
-	AbstractHybridOp<I, O>
+	AbstractHybridOp<I, O> implements StatOp<I, O>
 {
 
 	@Parameter(type = ItemIO.INPUT)
