@@ -34,10 +34,11 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Max;
+import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Max}
+ * {@link Op} to calculate the {@link Max} using {@link MinMax}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -51,14 +52,6 @@ public class DefaultMax<I extends RealType<I>, O extends RealType<O>> extends
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		double max = Double.MIN_VALUE;
-		for (final I in : input) {
-			final double n = in.getRealDouble();
-			if (max < n) {
-				max = n;
-			}
-		}
-
-		output.setReal(max);
+		output.setReal(ops.stats().minMax(input).get(1).getRealDouble());
 	}
 }

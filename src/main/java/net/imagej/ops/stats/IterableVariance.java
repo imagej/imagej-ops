@@ -30,15 +30,15 @@
 
 package net.imagej.ops.stats;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Variance} using the {@link StdDev}
+ * {@link Op} to calculate the {@link Variance}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -46,14 +46,25 @@ import net.imglib2.type.numeric.RealType;
  * @param <O> output type
  */
 @Plugin(type = StatOp.class, name = Variance.NAME,
-	label = "Statistics: Variance")
-public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O>implements Variance
+	label = "Statistics: Variance", priority = Priority.FIRST_PRIORITY)
+public class IterableVariance<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStatOp<Iterable<I>, O>implements Variance
 {
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(Math.pow(ops.stats().stdDev(input).getRealDouble(), 2));
+		double sum = 0;
+		double sumSqr = 0;
+		int n = 0;
+
+		for (final I in : input) {
+			final double px = in.getRealDouble();
+			++n;
+			sum += px;
+			sumSqr += px * px;
+		}
+
+		output.setReal((sumSqr - (sum * sum / n)) / (n - 1));
 	}
 
 }

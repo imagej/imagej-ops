@@ -30,30 +30,36 @@
 
 package net.imagej.ops.stats;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.StdDev;
-import net.imagej.ops.Ops.Stats.Variance;
+import net.imagej.ops.Ops.Stats.Max;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * {@link Op} to calculate the {@link Variance} using the {@link StdDev}
+ * {@link Op} to calculate the {@link Max}
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Variance.NAME,
-	label = "Statistics: Variance")
-public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O>implements Variance
+@Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max", priority = Priority.FIRST_PRIORITY)
+public class IterableMax<I extends RealType<I>, O extends RealType<O>> extends
+	AbstractStatOp<Iterable<I>, O>implements Max
 {
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(Math.pow(ops.stats().stdDev(input).getRealDouble(), 2));
-	}
+		double max = Double.MIN_VALUE;
+		for (final I in : input) {
+			final double n = in.getRealDouble();
+			if (max < n) {
+				max = n;
+			}
+		}
 
+		output.setReal(max);
+	}
 }

@@ -109,20 +109,21 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultMax.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultMax.class,
+		net.imagej.ops.stats.IterableMax.class })
 	public <T extends RealType<T>, O extends RealType<O>> O max(
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultMax.class, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Max.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultMax.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultMax.class,
+		net.imagej.ops.stats.IterableMax.class })
 	public <T extends RealType<T>, O extends RealType<O>> O max(final O out,
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultMax.class, out,
-			in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Max.class, out, in);
 		return result;
 	}
 
@@ -163,20 +164,22 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultMin.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultMin.class,
+		net.imagej.ops.stats.IterableMin.class })
 	public <T extends RealType<T>, O extends RealType<O>> O min(
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultMin.class, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Min.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultMin.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultMin.class,
+		net.imagej.ops.stats.IterableMin.class })
 	public <T extends RealType<T>, O extends RealType<O>> O min(final O out,
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultMin.class, out,
-			in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Min.class, out, in);
+
 		return result;
 	}
 
@@ -402,21 +405,22 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultVariance.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultVariance.class,
+		net.imagej.ops.stats.IterableVariance.class })
 	public <T extends RealType<T>, O extends RealType<O>> O variance(
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultVariance.class,
-			in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Variance.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.DefaultVariance.class)
+	@OpMethod(ops = { net.imagej.ops.stats.DefaultVariance.class,
+		net.imagej.ops.stats.IterableVariance.class })
 	public <T extends RealType<T>, O extends RealType<O>> O variance(final O out,
 		final Iterable<T> in)
 	{
-		final O result = (O) ops().run(net.imagej.ops.stats.DefaultVariance.class,
-			out, in);
+		final O result = (O) ops().run(net.imagej.ops.Ops.Stats.Variance.class, out,
+			in);
 		return result;
 	}
 
