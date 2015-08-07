@@ -40,6 +40,7 @@ import java.util.Map;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -557,6 +558,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	@Override
 	public FilterNamespace filter() {
 		return namespace(FilterNamespace.class);
+	}
+	
+	@Override
+	public HaralickNamespace haralick() {
+		return namespace(HaralickNamespace.class);
 	}
 
 	@Override
