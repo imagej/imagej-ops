@@ -42,6 +42,7 @@ import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
+import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.math.MathNamespace;
@@ -584,6 +585,11 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 		return namespace(StatsNamespace.class);
 	}
 
+	@Override
+	public ImageMomentsNamespace imagemoments() {
+		return namespace(ImageMomentsNamespace.class);
+	}
+	
 	@Override
 	public ThreadNamespace thread() {
 		return namespace(ThreadNamespace.class);

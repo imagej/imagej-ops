@@ -179,6 +179,36 @@ namespaces = ```
 		[name: "shanbhag",         iface: "Shanbhag"],
 		[name: "triangle",         iface: "Triangle"],
 		[name: "yen",              iface: "Yen"]
+	]],
+	[name: "imagemoments", iface: "ImageMoments", ops: [
+		[name: "moment00",	iface: "Moment00"],
+		[name: "moment01",	iface: "Moment01"],
+		[name: "moment10",	iface: "Moment10"],
+		[name: "moment11",	iface: "Moment11"],
+		[name: "centralMoment00",	iface: "CentralMoment00"],
+		[name: "centralMoment01",	iface: "CentralMoment01"],
+		[name: "centralMoment10",	iface: "CentralMoment10"],
+		[name: "centralMoment11",	iface: "CentralMoment11"],
+		[name: "centralMoment20",	iface: "CentralMoment20"],
+		[name: "centralMoment02",	iface: "CentralMoment02"],
+		[name: "centralMoment21",	iface: "CentralMoment21"],
+		[name: "centralMoment12",	iface: "CentralMoment12"],
+		[name: "centralMoment30",	iface: "CentralMoment30"],
+		[name: "centralMoment03",	iface: "CentralMoment03"],
+		[name: "normalizedCentralMoment11",	iface: "NormalizedCentralMoment11"],
+		[name: "normalizedCentralMoment20",	iface: "NormalizedCentralMoment20"],
+		[name: "normalizedCentralMoment02",	iface: "NormalizedCentralMoment02"],
+		[name: "normalizedCentralMoment21",	iface: "NormalizedCentralMoment21"],
+		[name: "normalizedCentralMoment12",	iface: "NormalizedCentralMoment12"],
+		[name: "normalizedCentralMoment30",	iface: "NormalizedCentralMoment30"],
+		[name: "normalizedCentralMoment03",	iface: "NormalizedCentralMoment03"],
+		[name: "huMoment1",	iface: "HuMoment1"],
+		[name: "huMoment2",	iface: "HuMoment2"],
+		[name: "huMoment3",	iface: "HuMoment3"],
+		[name: "huMoment4",	iface: "HuMoment4"],
+		[name: "huMoment5",	iface: "HuMoment5"],
+		[name: "huMoment6",	iface: "HuMoment6"],
+		[name: "huMoment7",	iface: "HuMoment7"]
 	]]
 ]
 ```
