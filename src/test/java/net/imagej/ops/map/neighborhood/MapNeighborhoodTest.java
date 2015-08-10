@@ -56,6 +56,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 		final Op mapOp =
 			ops.op(MapNeighborhood.class, out, in, new Increment(),
 				new RectangleShape(1, false));
+
 		// ClassCastException will be thrown
 		mapOp.run();
 	}
@@ -74,6 +75,10 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 		mapOp.run();
 
 		for (final ByteType t : out) {
+			assertEquals(9, t.get());
+		}
+
+		for (final ByteType t : in) {
 			assertEquals(9, t.get());
 		}
 	}
@@ -110,8 +115,14 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 		public void compute(final Pair<ByteType, Iterable<ByteType>> input,
 			final ByteType output)
 		{
+			ByteType a = input.getA();
+
+			a.set((byte) 0);
+			output.set((byte) 0);
+
 			for (final ByteType b : input.getB()) {
 				output.inc();
+				a.inc();
 			}
 		}
 	}

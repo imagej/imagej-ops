@@ -30,16 +30,23 @@
 
 package net.imagej.ops.map.neighborhood;
 
+import java.util.Iterator;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.Positionable;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.RealPositionable;
+import net.imglib2.Sampler;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -76,27 +83,335 @@ public class MapNeighborhoodWithCenter<I, O>
 		final IterableInterval<Neighborhood<I>> neighborhoods =
 			shape.neighborhoods(input);
 
-		final Cursor<Neighborhood<I>> cNeigh = neighborhoods.localizingCursor();
-
-		final RandomAccess<I> raIn = input.randomAccess();
-		final RandomAccess<O> raOut = output.randomAccess();
-
 		final CenterAwareComputerOp<I, O> op = getOp();
 
-		while (cNeigh.hasNext()) {
-			Neighborhood<I> neigh = cNeigh.next();
+		ops.map(Views.iterable(output), new NeighborhoodWithCenterIterableInterval(
+			neighborhoods, input), op);
+	}
 
-			raIn.setPosition(cNeigh);
-			raOut.setPosition(cNeigh);
+	/**
+	 * IterableInterval wrapping a {@link IterableInterval}<{@link Neighborhood}>
+	 * and a {@link RandomAccessibleInterval}. Depending on the iterator order of
+	 * both, a matching cursor will be chosen appropriately.
+	 * 
+	 * @author Jonathan Hale (University of Konstanz)
+	 */
+	class NeighborhoodWithCenterIterableInterval implements
+		IterableInterval<Pair<I, Iterable<I>>>
+	{
 
-			op.compute(new ValuePair<I, Iterable<I>>(raIn.get(), neigh), raOut.get());
+		private final IterableInterval<Neighborhood<I>> neighborhoods;
+		private final RandomAccessibleInterval<I> input;
+
+		public NeighborhoodWithCenterIterableInterval(
+			IterableInterval<Neighborhood<I>> neighborhoods,
+			RandomAccessibleInterval<I> input)
+		{
+			this.neighborhoods = neighborhoods;
+			this.input = input;
 		}
 
-		// TODO: threaded map neighborhood
-		// TODO: optimization with integral images, if there is a rectangular
-		// neighborhood
-		// TODO: provide threaded implementation and specialized ones for
-		// rectangular neighborhoods (using integral images)
+		@Override
+		public Iterator<Pair<I, Iterable<I>>> iterator() {
+			return cursor();
+		}
+
+		@Override
+		public long size() {
+			return neighborhoods.size();
+		}
+
+		@Override
+		public Pair<I, Iterable<I>> firstElement() {
+			return cursor().next();
+		}
+
+		@Override
+		public Object iterationOrder() {
+			return neighborhoods.iterationOrder();
+		}
+
+		@Override
+		public double realMin(int d) {
+			return neighborhoods.realMin(d);
+		}
+
+		@Override
+		public void realMin(double[] min) {
+			neighborhoods.realMin(min);
+		}
+
+		@Override
+		public void realMin(RealPositionable min) {
+			neighborhoods.realMin(min);
+		}
+
+		@Override
+		public double realMax(int d) {
+			return neighborhoods.realMax(d);
+		}
+
+		@Override
+		public void realMax(double[] max) {
+			neighborhoods.realMax(max);
+		}
+
+		@Override
+		public void realMax(RealPositionable max) {
+			neighborhoods.realMax(max);
+		}
+
+		@Override
+		public int numDimensions() {
+			return neighborhoods.numDimensions();
+		}
+
+		@Override
+		public long min(int d) {
+			return neighborhoods.min(d);
+		}
+
+		@Override
+		public void min(long[] min) {
+			neighborhoods.min(min);
+		}
+
+		@Override
+		public void min(Positionable min) {
+			neighborhoods.min(min);
+		}
+
+		@Override
+		public long max(int d) {
+			return neighborhoods.max(d);
+		}
+
+		@Override
+		public void max(long[] max) {
+			neighborhoods.max(max);
+		}
+
+		@Override
+		public void max(Positionable max) {
+			neighborhoods.max(max);
+		}
+
+		@Override
+		public void dimensions(long[] dimensions) {
+			neighborhoods.dimensions(dimensions);
+		}
+
+		@Override
+		public long dimension(int d) {
+			return neighborhoods.dimension(d);
+		}
+
+		@Override
+		public Cursor<Pair<I, Iterable<I>>> cursor() {
+			return localizingCursor();
+		}
+
+		@Override
+		public Cursor<Pair<I, Iterable<I>>> localizingCursor() {
+			final IterableInterval<I> inputIterable = Views.iterable(input);
+
+			if (inputIterable.iterationOrder().equals(neighborhoods.iterationOrder()))
+			{
+				// optimizable through cursor use.
+				return new NeighborhoodWithCenterCursorII(neighborhoods, inputIterable);
+			}
+
+			return new NeighborhoodWithCenterCursorRA(neighborhoods, input);
+		}
+	}
+
+	/**
+	 * Abstract implementation for NeighborhoodWithCenterCursors. Contains the
+	 * common implementations for methods of the Cursors specific for
+	 * {@link RandomAccessibleInterval} and {@link IterableInterval}.
+	 * 
+	 * @author Jonathan Hale (University of Konstanz)
+	 */
+	abstract class AbstractNeighborhoodWithCenterCursor implements
+		Cursor<Pair<I, Iterable<I>>>
+	{
+
+		protected final Cursor<Neighborhood<I>> cNeigh;
+
+		public AbstractNeighborhoodWithCenterCursor(
+			IterableInterval<Neighborhood<I>> neighborhoods)
+		{
+			cNeigh = neighborhoods.localizingCursor();
+		}
+
+		public AbstractNeighborhoodWithCenterCursor(
+			AbstractNeighborhoodWithCenterCursor c)
+		{
+			cNeigh = c.cNeigh.copyCursor();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return cNeigh.hasNext();
+		}
+
+		@Override
+		public Pair<I, Iterable<I>> next() {
+			fwd();
+			return get();
+		}
+
+		@Override
+		public void localize(float[] position) {
+			cNeigh.localize(position);
+		}
+
+		@Override
+		public void localize(double[] position) {
+			cNeigh.localize(position);
+		}
+
+		@Override
+		public float getFloatPosition(int d) {
+			return cNeigh.getFloatPosition(d);
+		}
+
+		@Override
+		public double getDoublePosition(int d) {
+			return cNeigh.getDoublePosition(d);
+		}
+
+		@Override
+		public int numDimensions() {
+			return cNeigh.numDimensions();
+		}
+
+		@Override
+		public Sampler<Pair<I, Iterable<I>>> copy() {
+			return copyCursor();
+		}
+
+		@Override
+		public void jumpFwd(long steps) {
+			cNeigh.jumpFwd(steps);
+		}
+
+		@Override
+		public void fwd() {
+			cNeigh.fwd();
+		}
+
+		@Override
+		public void reset() {
+			cNeigh.reset();
+		}
+
+		@Override
+		public void localize(int[] position) {
+			cNeigh.localize(position);
+		}
+
+		@Override
+		public void localize(long[] position) {
+			cNeigh.localize(position);
+		}
+
+		@Override
+		public int getIntPosition(int d) {
+			return cNeigh.getIntPosition(d);
+		}
+
+		@Override
+		public long getLongPosition(int d) {
+			return cNeigh.getLongPosition(d);
+		}
+
+	}
+
+	/**
+	 * Cursor implementation for a {@link RandomAccessibleInterval} input. Should
+	 * be used when iteration order of input and output are not equal.
+	 * 
+	 * @author Jonathan Hale (University of Konstanz)
+	 */
+	class NeighborhoodWithCenterCursorRA extends
+		AbstractNeighborhoodWithCenterCursor
+	{
+
+		private final RandomAccess<I> raIn;
+
+		public NeighborhoodWithCenterCursorRA(
+			IterableInterval<Neighborhood<I>> neighborhoods,
+			RandomAccessibleInterval<I> input)
+		{
+			super(neighborhoods);
+			raIn = input.randomAccess();
+		}
+
+		public NeighborhoodWithCenterCursorRA(NeighborhoodWithCenterCursorRA c) {
+			super(c);
+			raIn = c.raIn.copyRandomAccess();
+		}
+
+		@Override
+		public final Pair<I, Iterable<I>> get() {
+			raIn.setPosition(cNeigh);
+			return new ValuePair<I, Iterable<I>>(raIn.get(), cNeigh.get());
+		}
+
+		@Override
+		public Cursor<Pair<I, Iterable<I>>> copyCursor() {
+			return new NeighborhoodWithCenterCursorRA(this);
+		}
+	}
+
+	/**
+	 * Cursor implementation for a {@link IterableInterval} input. Should only be
+	 * used when iteration order of input and output are equal.
+	 * 
+	 * @author Jonathan Hale (University of Konstanz)
+	 */
+	class NeighborhoodWithCenterCursorII extends
+		AbstractNeighborhoodWithCenterCursor
+	{
+
+		private final Cursor<I> cIn;
+
+		public NeighborhoodWithCenterCursorII(
+			IterableInterval<Neighborhood<I>> neighborhoods, IterableInterval<I> input)
+		{
+			super(neighborhoods);
+			assert input.iterationOrder() == neighborhoods.iterationOrder();
+
+			cIn = input.cursor();
+		}
+
+		public NeighborhoodWithCenterCursorII(NeighborhoodWithCenterCursorII c) {
+			super(c);
+			cIn = c.cIn.copyCursor();
+		}
+
+		@Override
+		public final void fwd() {
+			super.fwd();
+			cIn.fwd();
+		}
+
+		@Override
+		public void jumpFwd(long steps) {
+			super.jumpFwd(steps);
+			cIn.jumpFwd(steps);
+		}
+
+		@Override
+		public final Pair<I, Iterable<I>> get() {
+			return new ValuePair<I, Iterable<I>>(cIn.get(), cNeigh.get());
+		}
+
+		@Override
+		public Cursor<Pair<I, Iterable<I>>> copyCursor() {
+			return new NeighborhoodWithCenterCursorII(this);
+		}
 	}
 
 }
