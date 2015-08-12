@@ -34,6 +34,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.DeconvolveOps;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -56,7 +57,8 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = "rltv", priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Op.class, name = DeconvolveOps.RichardsonLucyTV.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterImg<I, O, K, C>
 {
@@ -96,7 +98,6 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-
 		Img<I> input = this.getInput();
 
 		long[] k = new long[input.numDimensions()];
