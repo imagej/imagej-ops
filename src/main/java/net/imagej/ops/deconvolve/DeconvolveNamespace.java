@@ -613,7 +613,7 @@ public class DeconvolveNamespace extends AbstractNamespace {
 		final Img<O> result =
 			(Img<O>) ops().run(net.imagej.ops.deconvolve.RichardsonLucyTVImg.class,
 				out, in, kernel, borderSize, obfInput, obfKernel, outType, outFactory,
-				fftType, fftFactory, maxIterations, nonCirculant, accelerate);
+				fftType, fftFactory, maxIterations, regularizationFactor, nonCirculant, accelerate);
 		return result;
 	}
 
