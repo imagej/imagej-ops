@@ -33,7 +33,10 @@ package net.imagej.ops.filter;
 import net.imagej.ops.OpService;
 import net.imagej.ops.filter.convolve.ConvolveFFTRAI;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
+import net.imagej.ops.deconvolve.accelerate.Accelerator;
+import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imglib2.Cursor;
+import net.imglib2.Dimensions;
 import net.imglib2.Interval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccess;
@@ -52,7 +55,9 @@ import org.scijava.Context;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for iterative FFT filters that perform on RAI
+ * Abstract class for iterative FFT filters that perform on RAI. Boundary
+ * conditions are handled by the scheme described at:
+ * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
  * 
  * @author Brian Northan
  * @param <I>
@@ -86,19 +91,19 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private ImgFactory<O> imgFactory;
 
 	/**
-	 * TODO: review! - k is the size of the measurement window. That is the size
-	 * of the acquired image before extension k is required to calculate the
-	 * non-circulant normalization factor
+	 * TODO: review and document! - k is the size of the measurement window. That
+	 * is the size of the acquired image before extension k is required to
+	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
-	private long[] k;
+	private Dimensions k;
 
 	/**
-	 * TODO: review! - l is the size of the psf. l is required to calculate the
-	 * non-circulant normalization factor
+	 * TODO: review and document! - l is the size of the psf. l is required to
+	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
-	private long[] l;
+	private Dimensions l;
 
 	/**
 	 * TODO: review boolean which indicates whether to perform non-circulant
@@ -128,6 +133,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	// Normalization factor for edge handling (see
 	// http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
 	private Img<O> normalization = null;
+
+	private Accelerator<O> accelerator = null;
 
 	@Override
 	public void run() {
@@ -198,8 +205,11 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			// StaticFunctions.InPlaceMultiply(normalization, mask);
 			*/
 
-		//
 		createReblurred();
+
+		if (getAccelerate()) {
+			accelerator = new VectorAccelerator(this.getImgFactory());
+		}
 
 	}
 
@@ -207,6 +217,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		for (int i = 0; i < maxIterations; i++) {
 			performIteration();
 			createReblurred();
+			if (getAccelerate()) {
+				getAccelerator().Accelerate(getRAIExtendedEstimate());
+			}
+
 		}
 	}
 
@@ -226,7 +240,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			getRAIExtendedReblurred();
 
 		// k is the window size (valid image region)
-		int length = k.length;
+		int length = k.numDimensions();
 
 		long[] n = new long[length];
 
@@ -242,15 +256,15 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// size of the measurement window
 		Point size = new Point(3);
-		size.setPosition(k[0], 0);
-		size.setPosition(k[1], 1);
-		size.setPosition(k[2], 2);
+		size.setPosition(k.dimension(0), 0);
+		size.setPosition(k.dimension(1), 1);
+		size.setPosition(k.dimension(2), 2);
 
 		// starting point of the measurement window when it is centered in fft space
 		Point start = new Point(3);
-		start.setPosition((n[0] - k[0]) / 2, 0);
-		start.setPosition((n[1] - k[1]) / 2, 1);
-		start.setPosition((n[2] - k[2]) / 2, 2);
+		start.setPosition((n[0] - k.dimension(0)) / 2, 0);
+		start.setPosition((n[1] - k.dimension(1)) / 2, 1);
+		start.setPosition((n[2] - k.dimension(2)) / 2, 2);
 
 		// draw a cube the size of the measurement space
 		drawCube(normalization, start, size, 1.0);
@@ -363,11 +377,11 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		this.imgConvolutionInterval = imgConvolutionInterval;
 	}
 
-	public long[] getK() {
+	public Dimensions getK() {
 		return k;
 	}
 
-	public long[] getL() {
+	public Dimensions getL() {
 		return l;
 	}
 
@@ -381,6 +395,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	public boolean getAccelerate() {
 		return accelerate;
+	}
+
+	public Accelerator<O> getAccelerator() {
+		return accelerator;
 	}
 
 }
