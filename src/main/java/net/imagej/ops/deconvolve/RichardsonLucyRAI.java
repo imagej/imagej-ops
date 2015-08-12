@@ -33,6 +33,7 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
+import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -42,6 +43,9 @@ import net.imglib2.view.Views;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.deconvolve.accelerate.Accelerator;
+import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
@@ -63,18 +67,17 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	@Parameter
 	private OpService ops;
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+	}
+
 	/**
 	 * performs one iteration of the Richardson Lucy Algorithm
 	 */
 	@Override
 	protected void performIteration() {
-
-		// trouble shooting TODO: remove this
-		if (getK() != null) {
-			System.out.println("k: " + getK()[0]);
-			System.out.println("l: " + getL()[0]);
-		}
-		System.out.println("non-circulant: " + getNonCirculant());
 
 		// 1. Create Reblurred (this step will have already been done from the
 		// previous iteration in order to calculate error stats)
@@ -97,6 +100,10 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 			inPlaceDivide2(getNormalization(), getRAIExtendedEstimate());
 		}
 
+	}
+
+	public void ComputeEstimate() {
+		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
 	}
 
 	// TODO: replace this function with divide op
@@ -170,9 +177,4 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 			cursorInputOutput.get().mul(cursorInput.get());
 		}
 	}
-
-	public void ComputeEstimate() {
-		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
-
 }
