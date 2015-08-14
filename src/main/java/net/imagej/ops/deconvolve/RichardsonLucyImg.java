@@ -56,7 +56,8 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
 	name = Ops.Deconvolve.RichardsonLucy.NAME, priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>
+	extends AbstractFFTFilterImg<I, O, K, C>implements
+	Ops.Deconvolve.RichardsonLucy
 {
 
 	@Parameter
@@ -89,10 +90,9 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel,
-			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
-			nonCirculant, accelerate);
+		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
+			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
+			output.factory(), getInput(), getKernel(), nonCirculant, accelerate);
 
 	}
 

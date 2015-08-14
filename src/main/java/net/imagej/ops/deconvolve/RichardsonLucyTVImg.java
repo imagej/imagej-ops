@@ -54,10 +54,12 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class, name = Ops.Deconvolve.RichardsonLucyTV.NAME,
-priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+	name = Ops.Deconvolve.RichardsonLucyTV.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>
+	extends AbstractFFTFilterImg<I, O, K, C>implements
+	Ops.Deconvolve.RichardsonLucyTV
 {
 
 	@Parameter
