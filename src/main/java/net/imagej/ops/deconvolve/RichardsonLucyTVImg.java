@@ -28,78 +28,80 @@
  * #L%
  */
 
-package net.imagej.ops.filter;
+package net.imagej.ops.deconvolve;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Ops;
 import net.imagej.ops.OpService;
+import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract class for FFT based filters that operate on Img.
+ * Richardson Lucy with total variation op that operates on (@link Img)
+ * Richardson-Lucy algorithm with total variation regularization for 3D confocal
+ * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6
  * 
- * @author Brian Northan
+ * @author bnorthan
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFilterImg<I, O, K>
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+	name = Ops.Deconvolve.RichardsonLucyTV.NAME,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterImg<I, O, K, C>implements
+	Ops.Deconvolve.RichardsonLucyTV
 {
 
 	@Parameter
 	private OpService ops;
 
 	/**
-	 * FFT type
+	 * max number of iterations
 	 */
-	@Parameter(required = false)
-	private ComplexType<C> fftType;
+	@Parameter
+	int maxIterations;
 
 	/**
-	 * Factory to create ffts Imgs
+	 * the regularization factor determines smoothness of solution
 	 */
-	@Parameter(required = false)
-	private ImgFactory<C> fftFactory;
+	@Parameter
+	float regularizationFactor = 0.01f;
 
 	/**
-	 * compute output by extending the input(s) and running the filter
+	 * indicates whether to use non-circulant edge handling
+	 */
+	@Parameter(required = false)
+	private boolean nonCirculant = false;
+
+	/**
+	 * indicates whether to use acceleration
+	 */
+	@Parameter(required = false)
+	private boolean accelerate = false;
+
+	/**
+	 * run RichardsonLucyTVRAI
 	 */
 	@Override
-	public void compute(final Img<I> input, final Img<O> output) {
-
-		// run the op that extends the input and kernel and creates the Imgs
-		// required for the fft algorithm
-		final CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
-
-		createMemory.run();
-
-		// run the filter, pass in the memory created above
-		runFilter(createMemory.getRAIExtendedInput(), createMemory
-			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
-			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
-	}
-
-	/**
-	 * This function is called after the RAIs and FFTs are set up and implements a
-	 * frequency filter.
-	 * 
-	 * @param raiExtendedInput
-	 * @param raiExtendedKernel
-	 * @param fftImg
-	 * @param fftKernel
-	 * @param output
-	 * @param imgConvolutionInterval
-	 */
-	abstract public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
+	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval);
+		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+	{
 
+		ops.run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
+			fftImg, fftKernel, output, true, true, maxIterations,
+			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
+			nonCirculant, accelerate, regularizationFactor);
+
+	}
 }

@@ -28,26 +28,21 @@
  * #L%
  */
 
-package net.imagej.ops.deconvolve;
+package net.imagej.ops.deconvolve.accelerate;
 
-import net.imagej.ops.AbstractNamespaceTest;
-
-import org.junit.Test;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.img.Img;
 
 /**
- * @author Alison Walter
- * @author Curtis Rueden
+ * Interface for classes that are used to accelerate iterative algorithms. 
+ * 
+ * @author bnorthan
+ *
+ * @param <T>
  */
-public class DeconvolveNamespaceTest extends AbstractNamespaceTest {
+public interface Accelerator<T extends RealType<T>> {
 
-	/**
-	 * Tests that the ops of the {@code deconvolve} namespace have corresponding
-	 * type-safe Java method signatures declared in the
-	 * {@link DeconvolveNamespace} class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("deconvolve", DeconvolveNamespace.class);
-	}
+	public Img<T> Accelerate(RandomAccessibleInterval<T> estimate);
 
 }

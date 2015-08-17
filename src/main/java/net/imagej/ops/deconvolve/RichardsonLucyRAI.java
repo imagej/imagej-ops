@@ -33,6 +33,7 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
+import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -43,8 +44,13 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.deconvolve.accelerate.Accelerator;
+import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
+
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval)
+ * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
+ * L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -61,10 +67,14 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	@Parameter
 	private OpService ops;
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+	}
+
 	/**
-	 * performs one iteration of the Richardson Lucy Algorithm (Lucy, L. B.
-	 * (1974).
-	 * "An iterative technique for the rectification of observed distributions".)
+	 * performs one iteration of the Richardson Lucy Algorithm
 	 */
 	@Override
 	protected void performIteration() {
@@ -85,9 +95,15 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// (Note: ComputeEstimate can be overridden to achieve regularization)
 		ComputeEstimate();
 
-		// TODO
 		// normalize for non-circulant deconvolution
+		if (getNonCirculant()) {
+			inPlaceDivide2(getNormalization(), getRAIExtendedEstimate());
+		}
 
+	}
+
+	public void ComputeEstimate() {
+		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
 	}
 
 	// TODO: replace this function with divide op
@@ -118,6 +134,34 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		}
 	}
 
+	// TODO: replace this function with divide op
+	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
+		RandomAccessibleInterval<O> numeratorOutput)
+	{
+
+		final Cursor<O> cursorDenominator = Views.iterable(denominator).cursor();
+		final Cursor<O> cursorNumeratorOutput =
+			Views.iterable(numeratorOutput).cursor();
+
+		while (cursorDenominator.hasNext()) {
+			cursorDenominator.fwd();
+			cursorNumeratorOutput.fwd();
+
+			float num = cursorNumeratorOutput.get().getRealFloat();
+			float div = cursorDenominator.get().getRealFloat();
+			float res = 0;
+
+			if (div > 0) {
+				res = num / div;
+			}
+			else {
+				res = 0;
+			}
+
+			cursorNumeratorOutput.get().setReal(res);
+		}
+	}
+
 	// TODO replace with op
 	protected void inPlaceMultiply(RandomAccessibleInterval<O> inputOutput,
 		RandomAccessibleInterval<O> input)
@@ -133,9 +177,4 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 			cursorInputOutput.get().mul(cursorInput.get());
 		}
 	}
-
-	public void ComputeEstimate() {
-		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
-
 }
