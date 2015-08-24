@@ -69,6 +69,22 @@ public class CreateNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Create.Img.class, args);
 	}
 
+	/**
+	 * Helper method for {@link #img(Object...)} to ensure {@code int} varargs
+	 * are not expanded. See https://github.com/imagej/imagej-ops/pull/115
+	 */
+	public Object img(final int[] dims) {
+		return img((Object) dims);
+	}
+
+	/**
+	 * Helper method for {@link #img(Object...)} to ensure {@code long} varargs
+	 * are not expanded. See https://github.com/imagej/imagej-ops/pull/115
+	 */
+	public Object img(final long[] dims) {
+		return img((Object) dims);
+	}
+
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
 	public <T extends NativeType<T>> Img<T> img(final Img<T> input) {
 		@SuppressWarnings("unchecked")
