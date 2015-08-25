@@ -210,4 +210,38 @@ public class CreateImgTest extends AbstractOpTest {
 			.getClass());
 	}
 
+	/**
+	 * A simple test to ensure {@link Integer} arrays are not eaten by the varargs
+	 * when passed as the only argument.
+	 */
+	@Test
+	public void testCreateFromIntegerArray() {
+
+		final Integer[] dims = new Integer[] {25, 25, 10};
+
+		final Img<?> res = (Img<?>) ops.create().img(dims);
+
+		for (int i=0; i<dims.length; i++) {
+			assertEquals("Image Dimension " + i + ": ", dims[i].longValue(), res
+				.dimension(i));
+		}
+	}
+
+	/**
+	 * A simple test to ensure {@link Long} arrays are not eaten by the varargs
+	 * when passed as the only argument.
+	 */
+	@Test
+	public void testCreateFromLongArray() {
+
+		final Long[] dims = new Long[] {25l, 25l, 10l};
+
+		final Img<?> res = (Img<?>) ops.create().img(dims);
+
+		for (int i=0; i<dims.length; i++) {
+			assertEquals("Image Dimension " + i + ": ", dims[i].longValue(), res
+				.dimension(i));
+		}
+	}
+
 }
