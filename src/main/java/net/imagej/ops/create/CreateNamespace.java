@@ -48,6 +48,7 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.plugin.Plugin;
+import org.scijava.util.ArrayUtils;
 
 /**
  * The create namespace contains ops that create objects.
@@ -70,19 +71,25 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	/**
-	 * Helper method for {@link #img(Object...)} to ensure {@code int} varargs
-	 * are not expanded. See https://github.com/imagej/imagej-ops/pull/115
+	 * Helper method for {@link #img(Object...)} to ensure {@code int} varargs are
+	 * not expanded. Necessary because a {@code Long[]} is also an
+	 * {@code Object[]}. See https://github.com/imagej/imagej-ops/pull/115
 	 */
-	public Object img(final int[] dims) {
-		return img((Object) dims);
+	public Object img(final Integer... dims) {
+		int[] ints = new int[dims.length];
+		for (int i=0; i<ints.length; i++) ints[i] = dims[i];
+		return img(ints);
 	}
 
 	/**
 	 * Helper method for {@link #img(Object...)} to ensure {@code long} varargs
-	 * are not expanded. See https://github.com/imagej/imagej-ops/pull/115
+	 * are not expanded. Necessary because a {@code Long[]} is also an
+	 * {@code Object[]}. See https://github.com/imagej/imagej-ops/pull/115
 	 */
-	public Object img(final long[] dims) {
-		return img((Object) dims);
+	public Object img(final Long... dims) {
+		long[] longs = new long[dims.length];
+		for (int i=0; i<longs.length; i++) longs[i] = dims[i];
+		return img(longs);
 	}
 
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
