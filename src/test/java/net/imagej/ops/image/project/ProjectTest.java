@@ -31,13 +31,16 @@
 package net.imagej.ops.image.project;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.stats.max.MaxOp;
 import net.imagej.ops.stats.sum.SumOp;
 import net.imglib2.Cursor;
+import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,24 +49,29 @@ public class ProjectTest extends AbstractOpTest {
 
 	private final int PROJECTION_DIM = 2;
 
-	private Img<ByteType> in;
-	private Img<ByteType> out1;
-	private Img<ByteType> out2;
+	private Img<UnsignedByteType> in;
+	private Img<UnsignedByteType> out1;
+	private Img<UnsignedByteType> out2;
 	private Op op;
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(false, 10, 10, 10);
+		in = generateUnsignedByteTestImg(false, 10, 10, 10);
 
-		// fill in with ones
-		final Cursor<ByteType> cursor = in.cursor();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.get().set((byte) 1);
+		final RandomAccess<UnsignedByteType> randomAccess = in.randomAccess();
+
+		// at each x,y,z fill with x+y
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				for (int z = 0; z < 10; z++) {
+					randomAccess.setPosition(new long[] { x, y, z });
+					randomAccess.get().setReal(x + y);
+				}
+			}
 		}
 
-		out1 = generateByteTestImg(false, 10, 10);
-		out2 = generateByteTestImg(false, 10, 10);
+		out1 = generateUnsignedByteTestImg(false, 10, 10);
+		out2 = generateUnsignedByteTestImg(false, 10, 10);
 
 		op = ops.op(SumOp.class, RealType.class, out1);
 	}
@@ -73,16 +81,19 @@ public class ProjectTest extends AbstractOpTest {
 		ops.image().project(out1, in, op, PROJECTION_DIM);
 		ops.image().project(out2, in, op, PROJECTION_DIM);
 
-		// test
-		final Cursor<ByteType> out1Cursor = out1.cursor();
-		final Cursor<ByteType> out2Cursor = out2.cursor();
+		final RandomAccess<UnsignedByteType> out1RandomAccess = out1.randomAccess();
+		final RandomAccess<UnsignedByteType> out2RandomAccess = out2.randomAccess();
 
-		while (out1Cursor.hasNext()) {
-			out1Cursor.fwd();
-			out2Cursor.fwd();
+		// at each x,y position the sum projection should be (x+y) *size(z)
+		for (int x = 0; x < 10; x++) {
+			for (int y = 0; y < 10; y++) {
+				out1RandomAccess.setPosition(new long[] { x, y });
+				out2RandomAccess.setPosition(new long[] { x, y });
 
-			assertEquals(out1Cursor.get().get(), in.dimension(PROJECTION_DIM));
-			assertEquals(out2Cursor.get().get(), in.dimension(PROJECTION_DIM));
+				assertEquals(out1RandomAccess.get().get(), in.dimension(
+					PROJECTION_DIM) * (x + y));
+			}
 		}
+
 	}
 }
