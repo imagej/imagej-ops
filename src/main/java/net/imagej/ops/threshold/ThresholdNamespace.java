@@ -517,6 +517,16 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.threshold.sauvola.Sauvola.class)
+	public <T extends RealType<T>> BitType sauvola(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k, final double r, final boolean doIwhite)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.sauvola.Sauvola.class,
+				out, in, k, r, doIwhite);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);
@@ -1170,7 +1180,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 				in);
 		return result;
 	}
-
+	
 	// -- Named methods --
 
 	@Override
