@@ -326,6 +326,10 @@ public class MapNeighborhoodWithCenter<I, O>
 			return cNeigh.getLongPosition(d);
 		}
 
+		@Override
+		public void remove() {
+			// NB: no action.
+		}
 	}
 
 	/**
