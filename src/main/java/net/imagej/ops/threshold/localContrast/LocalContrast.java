@@ -28,50 +28,55 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localContrast;
 
+import java.util.List;
+
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.Ops.Stats.MinMax;
+import net.imagej.ops.stats.minMax.MinMaxOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using mean.
+ * LocalThresholdMethod which determines whether a pixel is closer to the
+ * maximum or minimum pixel of a neighborhood.
  * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale
  */
-@Plugin(type = Ops.Threshold.LocalMean.class,
-	name = Ops.Threshold.LocalMean.NAME)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMean
+@Plugin(type = Op.class)
+public class LocalContrast<T extends RealType<T>> extends
+	LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast
 {
-
-	@Parameter
-	private double c;
 
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
+	private MinMaxOp<T> minMax;
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
+	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+
+		if (minMax == null) {
+			minMax = ops.op(MinMaxOp.class, input.getB());
 		}
 
-		final DoubleType m = new DoubleType();
+		List<T> outputs = (List<T>) ops.run(MinMax.class, input.getB());
 
-		mean.compute(input.getB(), m);
-		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+		final double centerValue = input.getA().getRealDouble();
+		final double diffMin = centerValue - outputs.get(0).getRealDouble();
+		final double diffMax = outputs.get(1).getRealDouble() - centerValue;
+
+		// set to background (false) if pixel closer to min value,
+		// and to foreground (true) if pixel closer to max value.
+		// If diffMin and diffMax are equal, output will be set to fg.
+		output.set(diffMin <= diffMax);
 	}
-
 }

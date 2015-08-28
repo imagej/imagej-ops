@@ -37,7 +37,6 @@ import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.LocalThresholdMethod.Pair;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
@@ -45,6 +44,7 @@ import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -424,13 +424,66 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.threshold.localContrast.LocalContrast.class)
+	public <T extends RealType<T>> BitType localContrast(final BitType out,
+		final Pair<T, Iterable<T>> in)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localContrast.LocalContrast.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
 	public <T extends RealType<T>> BitType localMean(final BitType out,
-		final Pair<T> in, final double c)
+		final Pair<T, Iterable<T>> in, final double c)
 	{
 		final BitType result =
 			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
 				out, in, c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMedian.LocalMedian.class)
+	public <T extends RealType<T>> BitType localMedian(final BitType out,
+		final Pair<T, Iterable<T>> in, final double c)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localMedian.LocalMedian.class, out, in, c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class)
+	public <T extends RealType<T>> BitType localMidGrey(final BitType out,
+		final Pair<T, Iterable<T>> in, final double c)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class, out, in, c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localNiblack.LocalNiblack.class)
+	public <T extends RealType<T>> BitType localNiblack(final BitType out,
+		final Pair<T, Iterable<T>> in, final double c, final double k)
+	{
+		final BitType result =
+			(BitType) ops()
+				.run(net.imagej.ops.threshold.localNiblack.LocalNiblack.class, out, in,
+					c, k);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsen.class)
+	public <T extends RealType<T>> BitType localBernsen(final BitType out,
+		final Pair<T, Iterable<T>> in, final double contrastThreshold,
+		final double halfMaxValue)
+	{
+		final BitType result =
+			(BitType) ops().run(
+				net.imagej.ops.threshold.localBernsen.LocalBernsen.class, out, in,
+				contrastThreshold, halfMaxValue);
 		return result;
 	}
 

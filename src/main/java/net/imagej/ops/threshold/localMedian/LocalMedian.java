@@ -28,11 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localMedian;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.median.MedianOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -43,15 +44,13 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using mean.
+ * LocalThresholdMethod using median.
  * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale
  */
-@Plugin(type = Ops.Threshold.LocalMean.class,
-	name = Ops.Threshold.LocalMean.NAME)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMean
+@Plugin(type = Op.class)
+public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
+	implements Ops.Threshold.LocalMedian
 {
 
 	@Parameter
@@ -60,18 +59,16 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
+	private MedianOp<Iterable<T>, DoubleType> median;
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
+	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+		if (median == null) {
+			median = ops.op(MedianOp.class, DoubleType.class, input.getB());
 		}
 
 		final DoubleType m = new DoubleType();
-
-		mean.compute(input.getB(), m);
+		median.compute(input.getB(), m);
 		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
 	}
-
 }

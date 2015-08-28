@@ -28,11 +28,13 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localNiblack;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.stdDev.StdDev;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -43,35 +45,44 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using mean.
+ * LocalThresholdMethod using Niblacks thresholding method.
  * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale
  */
-@Plugin(type = Ops.Threshold.LocalMean.class,
-	name = Ops.Threshold.LocalMean.NAME)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMean
+@Plugin(type = Op.class)
+public class LocalNiblack<T extends RealType<T>> extends
+	LocalThresholdMethod<T> implements Ops.Threshold.LocalNiblack
 {
 
 	@Parameter
 	private double c;
 
 	@Parameter
+	private double k;
+
+	@Parameter
 	private OpService ops;
 
 	private MeanOp<Iterable<T>, DoubleType> mean;
 
+	private StdDev<T, DoubleType> stdDeviation;
+
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
+	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+
+		if (stdDeviation == null) {
+			// TODO: Ensure the mean is the mean used by stdDeviation
+			mean = ops.op(MeanOp.class, new DoubleType(), input.getB());
+			stdDeviation = ops.op(StdDev.class, new DoubleType(), input.getB());
 		}
 
 		final DoubleType m = new DoubleType();
-
 		mean.compute(input.getB(), m);
-		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
-	}
 
+		final DoubleType stdDev = new DoubleType();
+		stdDeviation.compute(input.getB(), stdDev);
+
+		output.set(input.getA().getRealDouble() > m.getRealDouble() + k *
+			stdDev.getRealDouble() - c);
+	}
 }

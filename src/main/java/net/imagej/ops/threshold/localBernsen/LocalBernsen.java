@@ -28,50 +28,64 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localMean;
+package net.imagej.ops.threshold.localBernsen;
 
+import java.util.List;
+
+import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.minMax.MinMaxOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using mean.
+ * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
+ * constant value rather than the value of the input pixel when the contrast in
+ * the neighborhood of that pixel is too small.
  * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale
+ * @param <T> input type
  */
-@Plugin(type = Ops.Threshold.LocalMean.class,
-	name = Ops.Threshold.LocalMean.NAME)
-public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMean
+@Plugin(type = Op.class)
+public class LocalBernsen<T extends RealType<T>> extends
+	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
 {
-
-	@Parameter
-	private double c;
 
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
+	@Parameter
+	private double constrastThreshold;
+	
+	@Parameter
+	private double halfMaxValue;
+
+	private MinMaxOp<T> minMax;
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
+	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+		if (minMax == null) {
+			minMax = ops.op(MinMaxOp.class, input.getB());
 		}
 
-		final DoubleType m = new DoubleType();
+		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
+		final double minValue = outputs.get(0).getRealDouble();
+		final double maxValue = outputs.get(1).getRealDouble();
+		final double midGrey = (maxValue + minValue) / 2.0;
 
-		mean.compute(input.getB(), m);
-		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+		if ((maxValue - minValue) < constrastThreshold) {
+			output.set(midGrey >= halfMaxValue);
+		}
+		else {
+			output.set(input.getA().getRealDouble() >= midGrey);
+		}
+
 	}
-
 }
