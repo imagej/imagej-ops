@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -58,7 +57,7 @@ import org.junit.Test;
 
 /**
  * Test for {@link LocalThreshold} and various {@link LocalThresholdMethod}s.
- * 
+ *
  * @author Jonathan Hale
  * @author Martin Horn
  * @see LocalThreshold
@@ -71,7 +70,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 	/**
 	 * Initialize images.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Before
@@ -87,8 +86,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testOpMethods() {
-		BitType out = new BitType();
-		Pair<ByteType, Iterable<ByteType>> in =
+		final BitType out = new BitType();
+		final Pair<ByteType, Iterable<ByteType>> in =
 			new ValuePair<ByteType, Iterable<ByteType>>(new ByteType(), Arrays
 				.asList(new ByteType(), new ByteType()));
 
@@ -101,7 +100,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalNiblack
+	 * @see LocalBernsen
 	 */
 	@Test
 	public void testLocalBernsen() {
