@@ -28,46 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.Neighborhood;
-import net.imglib2.algorithm.neighborhood.Shape;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractComputerOp;
+import net.imglib2.util.Pair;
 
 /**
- * Evaluates an {@link ComputerOp} for each {@link Neighborhood} on the in
- * {@link RandomAccessibleInterval}.
+ * Abstract superclass for {@link CenterAwareComputerOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ * @author Jonathan Hale (University of Konstanz)
  */
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
-public class MapNeighborhood<I, O>
-	extends
-	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+public abstract class AbstractCenterAwareComputerOp<I, O> extends
+	AbstractComputerOp<Pair<I, Iterable<I>>, O> implements
+	CenterAwareComputerOp<I, O>
 {
-
-	@Parameter
-	private Shape shape;
-
-	@Parameter
-	private OpService ops;
-
-	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
-	{
-		ops.map(output, shape.neighborhoodsSafe(input), getOp());
-		// TODO: threaded map neighborhood
-		// TODO: optimization with integral images, if there is a rectangular
-		// neighborhood
-	}
-
+	// NB: Empty.
 }
