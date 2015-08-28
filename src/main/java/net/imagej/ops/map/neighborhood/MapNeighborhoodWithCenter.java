@@ -381,7 +381,10 @@ public class MapNeighborhoodWithCenter<I, O>
 			IterableInterval<Neighborhood<I>> neighborhoods, IterableInterval<I> input)
 		{
 			super(neighborhoods);
-			assert input.iterationOrder() == neighborhoods.iterationOrder();
+			if (!input.iterationOrder().equals(neighborhoods.iterationOrder())) {
+				throw new IllegalArgumentException(
+					"Iteration order of neighborhood InterableInterval and input InterableInterval are not equal!");
+			}
 
 			cIn = input.cursor();
 		}
