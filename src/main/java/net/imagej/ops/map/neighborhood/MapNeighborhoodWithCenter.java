@@ -81,7 +81,7 @@ public class MapNeighborhoodWithCenter<I, O>
 		final RandomAccessibleInterval<O> output)
 	{
 		final IterableInterval<Neighborhood<I>> neighborhoods =
-			shape.neighborhoods(input);
+			shape.neighborhoodsSafe(input);
 
 		final CenterAwareComputerOp<I, O> op = getOp();
 
