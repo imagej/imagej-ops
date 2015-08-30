@@ -2,18 +2,18 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * Copyright (C) 2014 Board of Regents of the University of
+ * Wisconsin-Madison and University of Konstanz.
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -28,43 +28,27 @@
  * #L%
  */
 
-package net.imglib2.ops.condition;
+package net.imagej.ops.condition;
 
-/**
- * A {@link Condition} that combines two other Conditions in an XOR fashion.
- * The Condition is true if exactly one of the child conditions is true and
- * false otherwise.
- * 
- * @author Barry DeZonia
- * @deprecated Use net.imagej.ops instead.
- */
-@Deprecated
-public class XorCondition<T> implements Condition<T> {
+import net.imagej.ops.Op;
 
-	// -- instance variables --
-	
-	private final Condition<T> cond1;
-	private final Condition<T> cond2;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
-	// -- constructor --
-	
-	public XorCondition(Condition<T> cond1, Condition<T> cond2) {
-		this.cond1 = cond1;
-		this.cond2 = cond2;
-	}
-	
-	// -- Condition methods --
-	
+@Plugin(type = Op.class, name = And.NAME)
+public class XorCondition<T> extends AbstractCondition<T> implements And {
+
+	@Parameter
+	private Condition<T> c1;
+
+	@Parameter
+	private Condition<T> c2;
+
 	@Override
-	public boolean isTrue(T point) {
-		boolean one = cond1.isTrue(point)^cond2.isTrue(point);
-		boolean two = cond2.isTrue(point);
+	public boolean isTrue(final T val) {
+		final boolean one = c1.isTrue(val);
+		final boolean two = c2.isTrue(val);
 		return (one && !two) || (!one && two);
-	}
-	
-	@Override
-	public XorCondition<T> copy() {
-		return new XorCondition<T>(cond1.copy(), cond2.copy());
 	}
 
 }
