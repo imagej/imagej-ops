@@ -3,7 +3,7 @@ package net.imagej.ops.filter.min;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNonLinearFilter;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Min.class, name = Ops.Filter.Min.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMinFilter<T extends RealType<T>> extends
-	AbstractNonLinearFilter<T, T> implements
+	AbstractNeighborhoodBasedFilter<T, T> implements
 	MinFilterOp<RandomAccessibleInterval<T>>
 {
 
@@ -28,8 +28,8 @@ public class DefaultMinFilter<T extends RealType<T>> extends
 	protected ComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
 		Class<?> outClass)
 	{
-		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Min.class, Iterable.class,
-			inClass);
+		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Min.class,
+			Iterable.class, inClass);
 	}
 
 }

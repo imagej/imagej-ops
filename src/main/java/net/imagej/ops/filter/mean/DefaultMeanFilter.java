@@ -3,7 +3,7 @@ package net.imagej.ops.filter.mean;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNonLinearFilter;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Mean.class, name = Ops.Filter.Mean.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMeanFilter<T extends RealType<T>> extends
-	AbstractNonLinearFilter<T, T> implements
+	AbstractNeighborhoodBasedFilter<T, T> implements
 	MeanFilterOp<RandomAccessibleInterval<T>>
 {
 

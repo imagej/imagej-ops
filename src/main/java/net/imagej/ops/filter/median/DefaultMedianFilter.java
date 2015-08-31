@@ -3,7 +3,7 @@ package net.imagej.ops.filter.median;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNonLinearFilter;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Median.class, name = Ops.Filter.Median.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMedianFilter<T extends RealType<T>> extends
-	AbstractNonLinearFilter<T, T> implements
+	AbstractNeighborhoodBasedFilter<T, T> implements
 	MedianFilterOp<RandomAccessibleInterval<T>>
 {
 

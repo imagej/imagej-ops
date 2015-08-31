@@ -11,14 +11,8 @@ import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 
-/**
- * Abstract superclass of all non-linear filters.
- * 
- * @author Jonathan Hale (University of Konstanz)
- * @param <I> type of the input {@link RandomAccessibleInterval}
- * @param <O> type of the output {@link RandomAccessibleInterval}
- */
-public abstract class AbstractNonLinearFilter<I, O> extends
+public abstract class AbstractNeighborhoodBasedFilter<I, O>
+	extends
 	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
@@ -32,8 +26,8 @@ public abstract class AbstractNonLinearFilter<I, O> extends
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
+	public void compute(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<O> output)
 	{
 		// optionally extend input if outOfBoundsFactory is set
 		RandomAccessibleInterval<I> extInput = input;
@@ -47,6 +41,14 @@ public abstract class AbstractNonLinearFilter<I, O> extends
 		// map computer to neighborhoods
 		ops.map(output, extInput, getComputer(in.getClass(), out.getClass()),
 			getShape());
+
+	}
+
+	/**
+	 * @return the {@link OpService}
+	 */
+	protected OpService getOpService() {
+		return ops;
 	}
 
 	/**
@@ -68,10 +70,13 @@ public abstract class AbstractNonLinearFilter<I, O> extends
 	}
 
 	/**
-	 * @return the {@link ComputerOp} to evaluate for every neighborhood of every
-	 *         pixel
+	 * @param inClass Class of the type in the input
+	 *          {@link RandomAccessibleInterval}
+	 * @param outClass Class of the type in the output
+	 *          {@link RandomAccessibleInterval}
+	 * @return the Computer to map to all neighborhoods of input to output.
 	 */
-	protected abstract ComputerOp<Iterable<I>, O> getComputer(
-		final Class<?> inClass, final Class<?> outClass);
+	protected abstract ComputerOp<Iterable<I>, O> getComputer(final Class<?> inClass,
+		final Class<?> outClass);
 
 }

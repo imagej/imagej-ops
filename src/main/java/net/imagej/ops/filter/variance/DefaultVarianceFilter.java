@@ -3,7 +3,7 @@ package net.imagej.ops.filter.variance;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractNonLinearFilter;
+import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -19,7 +19,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Variance.class, name = Ops.Filter.Variance.NAME,
 	priority = Priority.LOW_PRIORITY)
 public class DefaultVarianceFilter<T extends RealType<T>> extends
-	AbstractNonLinearFilter<T, T> implements
+	AbstractNeighborhoodBasedFilter<T, T> implements
 	VarianceFilterOp<RandomAccessibleInterval<T>>
 {
 
