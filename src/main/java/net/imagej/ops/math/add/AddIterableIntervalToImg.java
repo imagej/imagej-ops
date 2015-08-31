@@ -40,10 +40,12 @@ import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.util.Intervals;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
+@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class AddIterableIntervalToImg<T extends NumericType<T>> extends
 	AbstractHybridOp<Img<T>, Img<T>> implements Ops.Math.Add, Contingent
 {
