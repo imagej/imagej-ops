@@ -101,14 +101,14 @@ public class FFTTest extends AbstractOpBenchmark {
 
 			// create an input with a small sphere at the center
 			Img<FloatType> inOriginal =
-				(Img<FloatType>) ops.create().img(new FloatType(),
-					new ArrayImgFactory<FloatType>(), originalDimensions);
+				(Img<FloatType>) ops.create().img(originalDimensions, new FloatType(),
+					new ArrayImgFactory<FloatType>());
 			placeSphereInCenter(inOriginal);
 
 			// create a similar input using the fast size
 			Img<FloatType> inFast =
-				(Img<FloatType>) ops.create().img(new FloatType(),
-					new ArrayImgFactory<FloatType>(), fastDimensions);
+				(Img<FloatType>) ops.create().img(fastDimensions, new FloatType(),
+					new ArrayImgFactory<FloatType>());
 			placeSphereInCenter(inFast);
 
 			// call FFT passing false for "fast" (in order to pass the optional
@@ -131,21 +131,21 @@ public class FFTTest extends AbstractOpBenchmark {
 			// create an image to be used for the inverse, using the original
 			// size
 			Img<FloatType> inverseOriginalSmall =
-				(Img<FloatType>) ops.create().img(new FloatType(),
-					new ArrayImgFactory<FloatType>(), originalDimensions);
+				(Img<FloatType>) ops.create().img(originalDimensions, new FloatType(),
+					new ArrayImgFactory<FloatType>());
 
 			// create an inverse image to be used for the inverse, using the
 			// original
 			// size
 			Img<FloatType> inverseOriginalFast =
-				(Img<FloatType>) ops.create().img(new FloatType(),
-					new ArrayImgFactory<FloatType>(), originalDimensions);
+				(Img<FloatType>) ops.create().img(originalDimensions, new FloatType(),
+					new ArrayImgFactory<FloatType>());
 
 			// create an inverse image to be used for the inverse, using the
 			// fast size
 			Img<FloatType> inverseFast =
-				(Img<FloatType>) ops.create().img(new FloatType(),
-					new ArrayImgFactory<FloatType>(), fastDimensions);
+				(Img<FloatType>) ops.create().img(fastDimensions, new FloatType(),
+					new ArrayImgFactory<FloatType>());
 
 			// invert the "small" FFT
 			ops.filter().ifft(inverseOriginalSmall, fft1);
