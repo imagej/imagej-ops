@@ -37,6 +37,7 @@ import net.imagej.ops.stats.size.SizeOp;
 import net.imagej.ops.stats.sum.SumOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -54,7 +55,7 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 {
 
 	@Parameter(required = false)
-	private SumOp<Iterable<I>, O> sumFunc;
+	private SumOp<Iterable<I>, DoubleType> sumFunc;
 
 	@Parameter(required = false)
 	private SizeOp<Iterable<I>> sizeFunc;
@@ -65,7 +66,7 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
 		if (sumFunc == null) {
-			sumFunc = ops.op(SumOp.class, LongType.class, input);
+			sumFunc = ops.op(SumOp.class, DoubleType.class, input);
 		}
 		if (sizeFunc == null) {
 			sizeFunc = ops.op(SizeOp.class, LongType.class, input);
@@ -73,11 +74,9 @@ public class MeanRealType<I extends RealType<I>, O extends RealType<O>> extends
 
 		final LongType size = new LongType();
 		sizeFunc.compute(input, size);
-		final O sum = output.createVariable();
+		final DoubleType sum = new DoubleType();
 		sumFunc.compute(input, sum);
 
-		// FIXME: Better way to go LongType -> O without going through double?
-		// Once convert namespace is fleshed out, use that.
 		final double mean = sum.getRealDouble() / size.getRealDouble();
 
 		output.setReal(mean);
