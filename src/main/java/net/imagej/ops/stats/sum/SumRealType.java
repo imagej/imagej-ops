@@ -45,6 +45,7 @@ public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
 
 	@Override
 	public void compute(final Iterable<T> input, final V output) {
+		output.setZero();
 		for (final T t : input) {
 			output.setReal(output.getRealDouble() + t.getRealDouble());
 		}
