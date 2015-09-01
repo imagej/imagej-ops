@@ -141,7 +141,7 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testSigmaFilter() {
-
+		ops.run(SigmaFilterOp.class, out, in, shape, oobFactory, 1.0, 0.0);
 	}
 
 	/**
