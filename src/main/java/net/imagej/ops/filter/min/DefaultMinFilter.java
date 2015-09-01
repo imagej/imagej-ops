@@ -29,7 +29,7 @@ public class DefaultMinFilter<T extends RealType<T>> extends
 		Class<?> outClass)
 	{
 		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Min.class,
-			Iterable.class, inClass);
+			outClass, Iterable.class);
 	}
 
 }

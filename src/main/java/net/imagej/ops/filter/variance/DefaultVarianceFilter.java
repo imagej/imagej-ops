@@ -28,8 +28,8 @@ public class DefaultVarianceFilter<T extends RealType<T>> extends
 	protected ComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
 		Class<?> outClass)
 	{
-		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Variance.class,
-			Iterable.class, inClass);
+		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Variance.class, outClass,
+			Iterable.class);
 	}
 
 }
