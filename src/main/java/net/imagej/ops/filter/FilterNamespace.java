@@ -908,6 +908,36 @@ public class FilterNamespace extends AbstractNamespace {
 				net.imagej.ops.filter.ifft.IFFTRAI.class, out, in);
 		return result;
 	}
+	
+	// -- mean filter --
+	
+	/** Executes the "mean" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> mean(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final Shape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape);
+		return result;
+	}
+
+	/** Executes the "mean" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> mean(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final OutOfBoundsFactory<T, T> outOfBoundsFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape,
+				outOfBoundsFactory);
+		return result;
+	}
 
 	// -- non-linear filters --
 
@@ -935,34 +965,6 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.filter.max.DefaultMaxFilter.class, out, in, shape,
-				outOfBoundsFactory);
-		return result;
-	}
-
-	/** Executes the "mean" filter operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> mean(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in, final Shape shape)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape);
-		return result;
-	}
-
-	/** Executes the "mean" filter operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.mean.DefaultMeanFilter.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<T> mean(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in, final Shape shape,
-		final OutOfBoundsFactory<T, T> outOfBoundsFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.mean.DefaultMeanFilter.class, out, in, shape,
 				outOfBoundsFactory);
 		return result;
 	}
