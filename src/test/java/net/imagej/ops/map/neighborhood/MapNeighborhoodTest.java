@@ -36,6 +36,8 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
@@ -110,6 +112,58 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 
 		for (final ByteType t : in) {
 			assertEquals(9, t.get());
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImage() {
+		final Op functional =
+			ops.op(MapNeighborhoodNativeType.class, out, in,
+				new CountNeighborsWithAccess(), 1);
+		functional.run();
+
+		final byte[] expected =
+			new byte[] { 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 9, 9, 9, 9, 9, 9, 9, 9,
+				9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6,
+				6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9,
+				9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9,
+				9, 9, 9, 9, 9, 9, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodWithCenterNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsWithCenterAccessArrayImage() {
+		final Op functional =
+			ops.op(MapNeighborhoodWithCenterNativeType.class, out, in,
+				new CountNeighborsWithAccessWithCenter(), 1);
+		functional.run();
+
+		final byte[] expected =
+			new byte[] { 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 9, 9, 9, 9, 9, 9, 9, 9,
+				9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6,
+				6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9,
+				9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9,
+				9, 9, 9, 9, 9, 9, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
 		}
 	}
 
