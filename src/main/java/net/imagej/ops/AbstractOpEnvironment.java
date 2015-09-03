@@ -55,6 +55,8 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
@@ -503,6 +505,32 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
 				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out, in, func, shape);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final CenterAwareComputerOp<I, O> op, final Integer span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class,
+				out, in, op, span);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final ComputerOp<Iterable<I>, O> op, final Integer span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
+				out, in, op, span);
 		return result;
 	}
 

@@ -51,7 +51,11 @@ import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
@@ -398,6 +402,20 @@ public interface OpEnvironment extends Contextual {
 	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, CenterAwareComputerOp<Iterable<I>, O> op,
 		Shape shape);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class)
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			ArrayImg<O, ?> out, ArrayImg<I, ?> in, CenterAwareComputerOp<I, O> op,
+			Integer span);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class)
+	<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+		Integer span);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
