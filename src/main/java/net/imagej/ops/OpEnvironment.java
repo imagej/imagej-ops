@@ -69,7 +69,11 @@ import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 
 import org.scijava.Contextual;
@@ -733,6 +737,32 @@ public interface OpEnvironment extends Contextual {
 		final IterableInterval<EO> result =
 			(IterableInterval<EO>) run(
 				net.imagej.ops.Ops.Map.class, out, in, func, shape);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class)
+	default <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final CenterAwareComputerOp<I, O> op, final Integer span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result = (ArrayImg<O, ?>) run(
+			net.imagej.ops.Ops.Map.class, out, in, op, span);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class)
+	default <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final UnaryComputerOp<Iterable<I>, O> op, final Integer span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result = (ArrayImg<O, ?>) run(
+			net.imagej.ops.Ops.Map.class, out, in, op, span);
 		return result;
 	}
 
