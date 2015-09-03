@@ -1023,6 +1023,37 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	/** Executes the "sigma" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.sigma.DefaultSigmaFilter.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> sigma(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final Double range, final Double minPixelFraction)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.sigma.DefaultSigmaFilter.class, out, in, shape,
+				range, minPixelFraction);
+		return result;
+	}
+
+	/** Executes the "sigma" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.sigma.DefaultSigmaFilter.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> sigma(
+		final RandomAccessibleInterval<T> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final OutOfBoundsFactory<T, T> outOfBoundsFactory, final Double range,
+		final Double minPixelFraction)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.sigma.DefaultSigmaFilter.class, out, in, shape,
+				outOfBoundsFactory, range, minPixelFraction);
+		return result;
+	}
+
 	/** Executes the "variance" filter operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.variance.DefaultVarianceFilter.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> variance(
