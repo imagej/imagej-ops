@@ -300,8 +300,7 @@ public class StatsNamespace extends AbstractNamespace {
 		return ops().run(Ops.Stats.Variance.NAME, args);
 	}
 
-	@OpMethod(ops = { net.imagej.ops.stats.variance.VarianceRealType.class,
-		net.imagej.ops.stats.variance.VarianceRealTypeDirect.class })
+	@OpMethod(ops = { net.imagej.ops.stats.variance.VarianceRealType.class })
 	public <T extends RealType<T>> DoubleType variance(final DoubleType out,
 		final Iterable<T> in)
 	{
@@ -317,6 +316,17 @@ public class StatsNamespace extends AbstractNamespace {
 		final DoubleType result =
 			(DoubleType) ops().run(
 				net.imagej.ops.stats.variance.VarianceRealType.class, out, in, moment2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.variance.VarianceRealTypeDirect.class)
+	public <I extends RealType<I>, O extends RealType<O>> O variance(final O out,
+		final Iterable<I> in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.variance.VarianceRealTypeDirect.class,
+				out, in);
 		return result;
 	}
 
