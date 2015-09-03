@@ -35,20 +35,19 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Stats.Variance.class, name = Ops.Stats.Variance.NAME,
 	priority = Priority.LOW_PRIORITY + 1)
-public class VarianceRealTypeDirect<T extends RealType<T>> extends
-	AbstractComputerOp<Iterable<T>, DoubleType> implements
-	VarianceOp<T, DoubleType>
+public class VarianceRealTypeDirect<T extends RealType<T>, O extends RealType<O>> extends
+	AbstractComputerOp<Iterable<T>, O> implements
+	VarianceOp<T, O>
 {
 
 	@Override
-	public void compute(final Iterable<T> input, final DoubleType output) {
+	public void compute(final Iterable<T> input, final O output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;

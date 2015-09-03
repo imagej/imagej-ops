@@ -28,27 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats.sum;
+package net.imagej.ops.filter.median;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Ops.Stats.Sum.class, name = Ops.Stats.Sum.NAME,
-	priority = Priority.LOW_PRIORITY)
-public class SumRealType<T extends RealType<T>, V extends RealType<V>> extends
-	AbstractComputerOp<Iterable<T>, V> implements SumOp<Iterable<T>, V>
-{
-
-	@Override
-	public void compute(final Iterable<T> input, final V output) {
-		output.setZero();
-		for (final T t : input) {
-			output.setReal(output.getRealDouble() + t.getRealDouble());
-		}
-	}
-
+/**
+ * A typed "median" filter.
+ * 
+ * @author Jonathan Hale (University of Konstanz)
+ */
+public interface MedianFilterOp<I> extends Ops.Filter.Median, ComputerOp<I, I> {
+	// NB: Marker interface.
 }
