@@ -1,15 +1,14 @@
 
 package net.imagej.ops.map.neighborhood.array;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.AbstractMapComputer;
+import net.imagej.ops.map.neighborhood.AbstractMapCenterAwareComputer;
+import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.type.NativeType;
-import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
 
 import org.scijava.Priority;
@@ -33,8 +32,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Ops.Map.NAME,
 	priority = Priority.LOW_PRIORITY + 10)
 public class MapNeighborhoodWithCenterNativeType<I extends NativeType<I>, O extends NativeType<O>>
-	extends
-	AbstractMapComputer<Pair<I, Iterable<I>>, O, ArrayImg<I, ?>, ArrayImg<O, ?>>
+	extends AbstractMapCenterAwareComputer<I, O, ArrayImg<I, ?>, ArrayImg<O, ?>>
 	implements Contingent
 {
 
@@ -50,7 +48,7 @@ public class MapNeighborhoodWithCenterNativeType<I extends NativeType<I>, O exte
 		final int height = (int) input.dimension(1);
 		final int depth = Math.max(1, (int) input.dimension(2));
 
-		final ComputerOp<Pair<I, Iterable<I>>, O> op = getOp();
+		final CenterAwareComputerOp<I, O> op = getOp();
 
 		int index;
 
