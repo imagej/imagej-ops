@@ -42,6 +42,11 @@ package net.imagej.ops;
  */
 public interface InplaceOp<A> extends ComputerOp<A, A> {
 
+	/**
+	 * Mutates the given input argument in-place.
+	 * 
+	 * @param arg of the {@link InplaceOp}
+	 */
 	void compute(A arg);
 
 	@Override
