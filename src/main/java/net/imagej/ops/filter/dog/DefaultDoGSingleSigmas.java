@@ -39,6 +39,7 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Util;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -78,7 +79,7 @@ public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 		final RandomAccessibleInterval<T> input)
 	{
 		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
+		return ops.create().<T> img(input, Util.getTypeFromInterval(input));
 	}
 
 	@Override
