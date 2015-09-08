@@ -84,7 +84,7 @@ public class CreateImgTest extends AbstractOpTest {
 			}
 
 			// create img
-			final Img<?> img = (Img<?>) ops.create().img(new FinalInterval(min, max));
+			final Img<DoubleType> img = (Img<DoubleType>) ops.create().img(new FinalInterval(min, max), new DoubleType());
 
 			assertArrayEquals("Image Minimum:", min, Intervals.minAsLongArray(img));
 			assertArrayEquals("Image Maximum:", max, Intervals.maxAsLongArray(img));
@@ -103,14 +103,13 @@ public class CreateImgTest extends AbstractOpTest {
 
 			// between 2 and 10 pixels per dimensions
 			for (int j = 0; j < dim.length; j++) {
-				dim[j] = randomGenerator.nextInt(9) + 2;
+				dim[j] = (long)randomGenerator.nextInt(9) + 2;
 			}
 
 			// create img
-			final Img<?> img = (Img<?>) ops.create().img(dim);
+			final Img<DoubleType> img = (Img<DoubleType>) ops.create().img(dim, new DoubleType());
 
-			assertArrayEquals("Image Dimensions:", dim, Intervals
-				.dimensionsAsLongArray(img));
+			assertArrayEquals("Image Dimensions:", dim, Intervals.dimensionsAsLongArray(img));
 		}
 	}
 
@@ -118,7 +117,7 @@ public class CreateImgTest extends AbstractOpTest {
 	public void testImgFromImg() {
 		// create img
 		final Img<ByteType> img =
-			ops.create().img(new FinalDimensions(1), new ByteType());
+			(Img<ByteType>) ops.create().img(new FinalDimensions(1), new ByteType());
 		final Img<ByteType> newImg = ops.create().img(img);
 
 		// should both be ByteType. New Img shouldn't be DoubleType (default)
@@ -132,11 +131,11 @@ public class CreateImgTest extends AbstractOpTest {
 		final long[] dim = new long[] { 10, 10, 10 };
 
 		assertEquals("Image Factory: ", ArrayImgFactory.class, ((Img<?>) ops
-			.create().img(dim, null, new ArrayImgFactory<DoubleType>())).factory()
+			.create().img(dim, new ArrayImgFactory<DoubleType>(), new DoubleType())).factory()
 			.getClass());
 
 		assertEquals("Image Factory: ", CellImgFactory.class, ((Img<?>) ops
-			.create().img(dim, null, new CellImgFactory<DoubleType>())).factory()
+			.create().img(dim, new CellImgFactory<DoubleType>(), new DoubleType())).factory()
 			.getClass());
 
 	}
@@ -169,8 +168,8 @@ public class CreateImgTest extends AbstractOpTest {
 	public void testCreateFromImgSameType() {
 
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
-		final Img<?> res =
-			ops.create().img(input, input.firstElement().createVariable());
+		final Img<ByteType> res =
+			ops.create().img(input);
 
 		assertEquals("Image Type: ", ByteType.class, res.firstElement().getClass());
 		assertArrayEquals("Image Dimensions: ", Intervals
@@ -183,7 +182,7 @@ public class CreateImgTest extends AbstractOpTest {
 	public void testCreateFromImgDifferentType() {
 
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
-		final Img<?> res = ops.create().img(input, new ShortType());
+		final Img<?> res = (Img<?>) ops.create().img(input, input.factory(), new ShortType());
 
 		assertEquals("Image Type: ", ShortType.class, res.firstElement().getClass());
 		assertArrayEquals("Image Dimensions: ", Intervals
@@ -209,39 +208,4 @@ public class CreateImgTest extends AbstractOpTest {
 		assertEquals("Image Factory: ", ArrayImgFactory.class, res.factory()
 			.getClass());
 	}
-
-	/**
-	 * A simple test to ensure {@link Integer} arrays are not eaten by the varargs
-	 * when passed as the only argument.
-	 */
-	@Test
-	public void testCreateFromIntegerArray() {
-
-		final Integer[] dims = new Integer[] {25, 25, 10};
-
-		final Img<?> res = (Img<?>) ops.create().img(dims);
-
-		for (int i=0; i<dims.length; i++) {
-			assertEquals("Image Dimension " + i + ": ", dims[i].longValue(), res
-				.dimension(i));
-		}
-	}
-
-	/**
-	 * A simple test to ensure {@link Long} arrays are not eaten by the varargs
-	 * when passed as the only argument.
-	 */
-	@Test
-	public void testCreateFromLongArray() {
-
-		final Long[] dims = new Long[] {25l, 25l, 10l};
-
-		final Img<?> res = (Img<?>) ops.create().img(dims);
-
-		for (int i=0; i<dims.length; i++) {
-			assertEquals("Image Dimension " + i + ": ", dims[i].longValue(), res
-				.dimension(i));
-		}
-	}
-
 }
