@@ -8,6 +8,7 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -29,7 +30,7 @@ public class Sauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Parameter
 	private double k = 0.5d;
-	
+
 	@Parameter
 	private double r = 128.0d;
 
@@ -40,21 +41,21 @@ public class Sauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private VarianceOp<T, DoubleType> var;
 
 	@Override
-	public void compute(final Pair<T> input, final BitType output) {
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 		// Sauvola recommends K_VALUE = 0.5 and R_VALUE = 128.
 
 		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.neighborhood);
+			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
 		}
 		if (var == null) {
-			var = ops.op(VarianceOp.class, DoubleType.class, input.neighborhood);
+			var = ops.op(VarianceOp.class, DoubleType.class, input.getB());
 		}
 		
 		final DoubleType meanValue = new DoubleType();
-		mean.compute(input.neighborhood, meanValue);
+		mean.compute(input.getB(), meanValue);
 		
 		final DoubleType varianceValue = new DoubleType();
-		var.compute(input.neighborhood, varianceValue);
+		var.compute(input.getB(), varianceValue);
 		
 		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(varianceValue.get())/r) - 1.0));
 		
