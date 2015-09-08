@@ -34,9 +34,6 @@ public class Sauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private double r = 128.0d;
 
 	@Parameter
-	boolean doIwhite = true;
-	
-	@Parameter
 	private OpService ops;
 
 	private MeanOp<Iterable<T>, DoubleType> mean;
@@ -61,12 +58,7 @@ public class Sauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 		
 		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(varianceValue.get())/r) - 1.0));
 		
-		if (doIwhite){
-			output.set(input.pixel.getRealDouble() > threshold);
-		}
-		else {
-			output.set(input.pixel.getRealDouble() < threshold);
-		}
+		output.set(input.getA().getRealDouble() >= threshold);
 	}
 
 }
