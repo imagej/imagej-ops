@@ -300,6 +300,7 @@ namespaces = ```
 		[name: "localMidGrey",                iface: "LocalMidGrey"],
 		[name: "localNiblack",                iface: "LocalNiblack"],
 		[name: "localPhansalkar",             iface: "LocalPhansalkar"],
+		[name: "localSauvola",                iface: "LocalSauvola"],
 		[name: "maxEntropy",                  iface: "MaxEntropy"],
 		[name: "maxLikelihood",               iface: "MaxLikelihood"],
 		[name: "mean",                        iface: "Mean"],

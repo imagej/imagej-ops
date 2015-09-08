@@ -522,7 +522,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final Pair<T, Iterable<T>> in, final double k, final double r)
 	{
 		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.sauvola.Sauvola.class,
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
 				out, in, k, r);
 		return result;
 	}

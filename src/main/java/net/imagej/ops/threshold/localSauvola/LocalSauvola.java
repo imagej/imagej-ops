@@ -1,4 +1,4 @@
-package net.imagej.ops.threshold.sauvola;
+package net.imagej.ops.threshold.localSauvola;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -23,9 +23,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-@Plugin(type = Ops.Threshold.Sauvola.class, name = Ops.Threshold.Sauvola.NAME)
-public class Sauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.Sauvola
+@Plugin(type = Ops.Threshold.LocalSauvola.class, name = Ops.Threshold.LocalSauvola.NAME)
+public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
+	implements Ops.Threshold.LocalSauvola
 {
 
 	@Parameter
