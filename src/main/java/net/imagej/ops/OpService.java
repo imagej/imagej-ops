@@ -41,6 +41,7 @@ import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.image.ImageNamespace;
+import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
@@ -408,6 +409,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
+	
+	/** Gateway into ops of the "image moments" namespace. */
+	ImageMomentsNamespace imagemoments();
 
 	/** Gateway into ops of the "thread" namespace. */
 	ThreadNamespace thread();
