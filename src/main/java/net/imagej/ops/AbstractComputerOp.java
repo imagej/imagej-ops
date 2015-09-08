@@ -45,10 +45,10 @@ public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
 	// -- Parameters --
 
 	@Parameter(type = ItemIO.BOTH)
-	private O out;
+	private transient O out;
 
 	@Parameter
-	private I in;
+	private transient I in;
 
 	// -- Runnable methods --
 

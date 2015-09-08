@@ -43,10 +43,10 @@ public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
 	// -- Parameters --
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private O out;
+	private transient O out;
 
 	@Parameter
-	private I in;
+	private transient I in;
 
 	// -- Runnable methods --
 

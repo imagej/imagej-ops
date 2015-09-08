@@ -43,7 +43,7 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 	// -- Parameters --
 
 	@Parameter(type = ItemIO.BOTH)
-	private A arg;
+	private transient A arg;
 
 	// -- Runnable methods --
 
