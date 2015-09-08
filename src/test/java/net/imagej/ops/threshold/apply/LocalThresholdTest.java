@@ -43,6 +43,7 @@ import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
@@ -97,6 +98,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localMedian(out, in, 1.0);
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
+		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
 	}
 
 	/**
@@ -193,6 +195,22 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalPhansalkar
+	 */
+	@Test
+	public void testLocalPhansalkar() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalPhansalkar.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0, 0.0),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
 	}
 
 }
