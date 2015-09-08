@@ -30,19 +30,20 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
-import net.imagej.ops.stats.stdDev.StdDev;
+import net.imagej.ops.Ops.Stats.Mean;
+import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using Niblacks thresholding method.
@@ -51,8 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class LocalNiblack<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalNiblack
-{
+		LocalThresholdMethod<T> implements Ops.Threshold.LocalNiblack {
 
 	@Parameter
 	private double c;
@@ -63,17 +63,20 @@ public class LocalNiblack<T extends RealType<T>> extends
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
+	private ComputerOp<Iterable<T>, DoubleType> mean;
 
-	private StdDev<T, DoubleType> stdDeviation;
+	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 
 		if (stdDeviation == null) {
 			// TODO: Ensure the mean is the mean used by stdDeviation
-			mean = ops.op(MeanOp.class, new DoubleType(), input.getB());
-			stdDeviation = ops.op(StdDev.class, new DoubleType(), input.getB());
+			// FIXME: use ops.computerop(...) as soon as available
+			mean = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Mean.class,
+					new DoubleType(), input.getB());
+			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops.op(
+					StdDev.class, new DoubleType(), input.getB());
 		}
 
 		final DoubleType m = new DoubleType();
@@ -82,7 +85,7 @@ public class LocalNiblack<T extends RealType<T>> extends
 		final DoubleType stdDev = new DoubleType();
 		stdDeviation.compute(input.getB(), stdDev);
 
-		output.set(input.getA().getRealDouble() > m.getRealDouble() + k *
-			stdDev.getRealDouble() - c);
+		output.set(input.getA().getRealDouble() > m.getRealDouble() + k
+				* stdDev.getRealDouble() - c);
 	}
 }

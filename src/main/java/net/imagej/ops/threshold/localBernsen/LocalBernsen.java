@@ -32,18 +32,18 @@ package net.imagej.ops.threshold.localBernsen;
 
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.minMax.MinMaxOp;
+import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
@@ -51,28 +51,28 @@ import org.scijava.plugin.Plugin;
  * the neighborhood of that pixel is too small.
  * 
  * @author Jonathan Hale
- * @param <T> input type
+ * @param <T>
+ *            input type
  */
 @Plugin(type = Op.class)
 public class LocalBernsen<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
-{
+		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
 
 	@Parameter
 	private OpService ops;
 
 	@Parameter
 	private double constrastThreshold;
-	
+
 	@Parameter
 	private double halfMaxValue;
 
-	private MinMaxOp<T> minMax;
+	private MinMax minMax;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		if (minMax == null) {
-			minMax = ops.op(MinMaxOp.class, input.getB());
+			minMax = ops.op(MinMax.class, input.getB());
 		}
 
 		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
@@ -82,8 +82,7 @@ public class LocalBernsen<T extends RealType<T>> extends
 
 		if ((maxValue - minValue) < constrastThreshold) {
 			output.set(midGrey >= halfMaxValue);
-		}
-		else {
+		} else {
 			output.set(input.getA().getRealDouble() >= midGrey);
 		}
 

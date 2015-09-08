@@ -32,18 +32,17 @@ package net.imagej.ops.threshold.localContrast;
 
 import java.util.List;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.stats.minMax.MinMaxOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which determines whether a pixel is closer to the
@@ -53,19 +52,17 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class LocalContrast<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast
-{
+		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
 	@Parameter
 	private OpService ops;
 
-	private MinMaxOp<T> minMax;
+	private MinMax minMax;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-
 		if (minMax == null) {
-			minMax = ops.op(MinMaxOp.class, input.getB());
+			minMax = ops.op(MinMax.class, input.getB());
 		}
 
 		List<T> outputs = (List<T>) ops.run(MinMax.class, input.getB());

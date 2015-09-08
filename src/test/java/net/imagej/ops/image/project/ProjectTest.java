@@ -79,8 +79,10 @@ public class ProjectTest extends AbstractOpTest {
 		ops.image().project(out1, in, op, PROJECTION_DIM);
 		ops.image().project(out2, in, op, PROJECTION_DIM);
 
-		final RandomAccess<UnsignedByteType> out1RandomAccess = out1.randomAccess();
-		final RandomAccess<UnsignedByteType> out2RandomAccess = out2.randomAccess();
+		final RandomAccess<UnsignedByteType> out1RandomAccess = out1
+				.randomAccess();
+		final RandomAccess<UnsignedByteType> out2RandomAccess = out2
+				.randomAccess();
 
 		// at each x,y position the sum projection should be (x+y) *size(z)
 		for (int x = 0; x < 10; x++) {
@@ -88,8 +90,8 @@ public class ProjectTest extends AbstractOpTest {
 				out1RandomAccess.setPosition(new long[] { x, y });
 				out2RandomAccess.setPosition(new long[] { x, y });
 
-				assertEquals(out1RandomAccess.get().get(), in.dimension(
-					PROJECTION_DIM) * (x + y));
+				assertEquals(out1RandomAccess.get().get(),
+						in.dimension(PROJECTION_DIM) * (x + y));
 			}
 		}
 

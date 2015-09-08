@@ -428,17 +428,6 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.variance.VarianceRealTypeDirect.class)
-	public <I extends RealType<I>, O extends RealType<O>> O variance(final O out,
-		final Iterable<I> in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.stats.variance.VarianceRealTypeDirect.class,
-				out, in);
-		return result;
-	}
-
 	// -- Named methods --
 	@Override
 	public String getName() {
