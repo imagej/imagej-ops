@@ -57,8 +57,28 @@ namespaces = ```
 		[name: "sigma",              iface: "Sigma",               aliases: ["sigmaFilter", "filterSigma"]],
 		[name: "variance",           iface: "Variance",            aliases: ["varianceFilter", "filterVariance", "var", "varFilter", "filterVar"]]
 	]],
+		[name: "haralick",           iface: "Haralick", ops: [
+		[name: "asm",		     iface: "ASM"],
+		[name: "clusterpromenence",  iface: "ClusterPromenence"],
+		[name: "clustershade",	     iface: "ClusterShade"],
+		[name: "contrast", 	     iface: "Contrast"],
+		[name: "correlation",        iface: "Correlation"],
+		[name: "differenceentropy",  iface: "DifferenceEntropy"],
+		[name: "entropy",            iface: "Entropy"],
+		[name: "differencevariance", iface: "DifferenceVariance"],
+		[name: "variance",           iface: "Variance"],
+		[name: "icm1",               iface: "ICM1"],
+		[name: "icm2",               iface: "ICM2"],
+		[name: "ifdm",               iface: "IFDM"],
+		[name: "sumaverage",         iface: "SumAverage"],
+		[name: "sumentropy",         iface: "SumEntropy"],
+		[name: "sumvariance",        iface: "SumVariance"],
+		[name: "maxprobability",     iface: "MaxProbability"],
+		[name: "texturehomogeneity", iface: "TextureHomogeneity"]
+	]],
 	[name: "image",      iface: "Image", ops: [
 		[name: "ascii",              iface: "ASCII"],
+		[name: "cooccurrencematrix", iface:"CooccurrenceMatrix"],
 		[name: "crop",               iface: "Crop",                aliases: ["slice"]],
 		[name: "equation",           iface: "Equation"],
 		[name: "histogram",          iface: "Histogram"],
