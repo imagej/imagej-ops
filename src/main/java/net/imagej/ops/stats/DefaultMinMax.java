@@ -28,63 +28,57 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localBernsen;
+package net.imagej.ops.stats;
 
-import java.util.List;
-
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
- * constant value rather than the value of the input pixel when the contrast in
- * the neighborhood of that pixel is too small.
+ * {@link Op} to calculate the {@link MinMax}
  * 
- * @author Jonathan Hale
- * @param <T>
- *            input type
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
  */
-@Plugin(type = Op.class)
-public class LocalBernsen<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
+@Plugin(type = StatOp.class, name = MinMax.NAME, label = "Statistics: MinMax")
+public class DefaultMinMax<I extends RealType<I>> implements MinMax {
 
 	@Parameter
-	private OpService ops;
+	private Iterable<I> input;
 
-	@Parameter
-	private double constrastThreshold;
+	@Parameter(type = ItemIO.OUTPUT)
+	private I min;
 
-	@Parameter
-	private double halfMaxValue;
-
-	private MinMax minMax;
+	@Parameter(type = ItemIO.OUTPUT)
+	private I max;
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+	public void run() {
+		double tmpMin = Double.MAX_VALUE;
+		double tmpMax = Double.MIN_VALUE;
+
+		for (final I in : this.input) {
+			final double n = in.getRealDouble();
+
+			if (tmpMin > n) {
+				tmpMin = n;
+			}
+
+			if (tmpMax < n) {
+				tmpMax = n;
+			}
 		}
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
+		this.min = input.iterator().next().createVariable();
+		this.min.setReal(tmpMin);
 
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		} else {
-			output.set(input.getA().getRealDouble() >= midGrey);
-		}
-
+		this.max = input.iterator().next().createVariable();
+		this.max.setReal(tmpMax);
 	}
+
 }

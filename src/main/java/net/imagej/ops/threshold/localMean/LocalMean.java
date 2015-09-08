@@ -30,17 +30,18 @@
 
 package net.imagej.ops.threshold.localMean;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using mean.
@@ -59,13 +60,14 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Parameter
 	private OpService ops;
-
-	private MeanOp<Iterable<T>, DoubleType> mean;
+	
+	private ComputerOp<Iterable<T>, DoubleType> mean;
 
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+		//FIXME: use ops.computerop(...) as soon as available
 		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
+			mean = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.getB());
 		}
 
 		final DoubleType m = new DoubleType();

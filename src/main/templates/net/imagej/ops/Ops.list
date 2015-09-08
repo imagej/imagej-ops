@@ -182,7 +182,18 @@ namespaces = ```
 		[name: "size",               iface: "Size"],
 		[name: "stdDev",             iface: "StdDev"],
 		[name: "sum",                iface: "Sum"],
-		[name: "variance",           iface: "Variance"]
+		[name: "variance",           iface: "Variance"],
+		[name: "geometricMean",		iface: "GeometricMean"],
+		[name: "harmonicMean",		iface: "HarmonicMean"],
+		[name: "kurtosis",		iface: "Kurtosis"],
+		[name: "moment2AboutMean",	iface: "Moment2AboutMean"],
+		[name: "moment3AboutMean",	iface: "Moment3AboutMean"],
+		[name: "moment4AboutMean",	iface: "Moment4AboutMean"],
+		[name: "percentile",		iface: "Percentile"],
+		[name: "skewness",		iface: "Skewness"],
+		[name: "sumOfInverses",		iface: "SumOfInverses"],
+		[name: "sumOfLogs",		iface: "SumOfLogs"],
+		[name: "sumOfSquares",		iface: "SumOfSquares"]
 	]],
 	[name: "thread", iface: "Thread", ops: [
 		[name: "chunker",          iface: "Chunker"]

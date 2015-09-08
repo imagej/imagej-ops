@@ -28,63 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localBernsen;
+package net.imagej.ops.stats;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
- * constant value rather than the value of the input pixel when the contrast in
- * the neighborhood of that pixel is too small.
+ * {@link Op} to calculate the {@link Variance} Using the online algorithm from
+ * Knuth and Welford.
  * 
- * @author Jonathan Hale
- * @param <T>
- *            input type
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
+ * @param <O> output type
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm">
+ *      Wikipedia</a>
  */
-@Plugin(type = Op.class)
-public class LocalBernsen<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
-
-	@Parameter
-	private OpService ops;
-
-	@Parameter
-	private double constrastThreshold;
-
-	@Parameter
-	private double halfMaxValue;
-
-	private MinMax minMax;
+@Plugin(type = StatOp.class, name = Variance.NAME,
+	label = "Statistics: Variance", priority = Priority.FIRST_PRIORITY)
+public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements Variance
+{
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+	public void compute(final Iterable<I> input, final O output) {
+		int n = 0;
+		double mean = 0.0;
+		double M2 = 0.0;
+
+		for (final I in : input) {
+			double x = in.getRealDouble();
+
+			n = n + 1;
+			double delta = x - mean;
+			mean = mean + delta / n;
+			M2 = M2 + delta * (x - mean);
 		}
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
-
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		} else {
-			output.set(input.getA().getRealDouble() >= midGrey);
+		if (n < 2) {
+			output.setReal(Double.NaN);
 		}
-
+		else {
+			output.setReal(M2 / (n - 1));
+		}
 	}
+
 }

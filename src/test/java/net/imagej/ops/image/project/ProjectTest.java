@@ -34,9 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.stats.max.MaxOp;
-import net.imagej.ops.stats.sum.SumOp;
-import net.imglib2.Cursor;
+import net.imagej.ops.Ops.Stats.Sum;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -73,7 +71,7 @@ public class ProjectTest extends AbstractOpTest {
 		out1 = generateUnsignedByteTestImg(false, 10, 10);
 		out2 = generateUnsignedByteTestImg(false, 10, 10);
 
-		op = ops.op(SumOp.class, RealType.class, out1);
+		op = ops.op(Sum.class, RealType.class, out1);
 	}
 
 	@Test
@@ -81,8 +79,10 @@ public class ProjectTest extends AbstractOpTest {
 		ops.image().project(out1, in, op, PROJECTION_DIM);
 		ops.image().project(out2, in, op, PROJECTION_DIM);
 
-		final RandomAccess<UnsignedByteType> out1RandomAccess = out1.randomAccess();
-		final RandomAccess<UnsignedByteType> out2RandomAccess = out2.randomAccess();
+		final RandomAccess<UnsignedByteType> out1RandomAccess = out1
+				.randomAccess();
+		final RandomAccess<UnsignedByteType> out2RandomAccess = out2
+				.randomAccess();
 
 		// at each x,y position the sum projection should be (x+y) *size(z)
 		for (int x = 0; x < 10; x++) {
@@ -90,8 +90,8 @@ public class ProjectTest extends AbstractOpTest {
 				out1RandomAccess.setPosition(new long[] { x, y });
 				out2RandomAccess.setPosition(new long[] { x, y });
 
-				assertEquals(out1RandomAccess.get().get(), in.dimension(
-					PROJECTION_DIM) * (x + y));
+				assertEquals(out1RandomAccess.get().get(),
+						in.dimension(PROJECTION_DIM) * (x + y));
 			}
 		}
 

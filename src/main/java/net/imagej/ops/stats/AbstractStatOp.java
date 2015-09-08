@@ -28,63 +28,35 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localBernsen;
+package net.imagej.ops.stats;
 
-import java.util.List;
-
+import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
-import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
- * constant value rather than the value of the input pixel when the contrast in
- * the neighborhood of that pixel is too small.
+ * Abstract Statistics Op. Provides {@link OpService} and create the output.
  * 
- * @author Jonathan Hale
- * @param <T>
- *            input type
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Op.class)
-public class LocalBernsen<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
+public abstract class AbstractStatOp<I, O extends RealType<O>> extends
+	AbstractHybridOp<I, O> implements StatOp<I, O>
+{
 
-	@Parameter
-	private OpService ops;
+	@Parameter(type = ItemIO.INPUT)
+	protected OpService ops;
 
-	@Parameter
-	private double constrastThreshold;
-
-	@Parameter
-	private double halfMaxValue;
-
-	private MinMax minMax;
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
-		}
-
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
-
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		} else {
-			output.set(input.getA().getRealDouble() >= midGrey);
-		}
-
+	public O createOutput(I input) {
+		return (O) new DoubleType();
 	}
+
 }

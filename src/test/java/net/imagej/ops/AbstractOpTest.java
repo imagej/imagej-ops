@@ -30,6 +30,7 @@
 
 package net.imagej.ops;
 
+import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -39,6 +40,8 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
+
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -144,4 +147,19 @@ public abstract class AbstractOpTest {
 		return ArrayImgs.floats(array, dims);
 	}
 
+	public Img<UnsignedByteType>
+	generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
+		long tempSeed)
+	{
+
+		Img<UnsignedByteType> img = ArrayImgs.unsignedBytes(dims);
+
+		Random rand = new Random(tempSeed);
+		final Cursor<UnsignedByteType> cursor = img.cursor();
+		while (cursor.hasNext()) {
+			cursor.next().set(rand.nextInt((int) img.firstElement().getMaxValue()));
+		}
+
+		return img;
+	}
 }

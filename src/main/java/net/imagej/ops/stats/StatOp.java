@@ -28,52 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localContrast;
+package net.imagej.ops.stats;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imglib2.type.logic.BitType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
+import net.imagej.ops.HybridOp;
 
 /**
- * LocalThresholdMethod which determines whether a pixel is closer to the
- * maximum or minimum pixel of a neighborhood.
- * 
- * @author Jonathan Hale
+ * marker interface for statistic ops.
+ *
+ * @author Daniel Seebacher, University of Konstanz
  */
-@Plugin(type = Op.class)
-public class LocalContrast<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
-
-	@Parameter
-	private OpService ops;
-
-	private MinMax minMax;
-
-	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
-		}
-
-		List<T> outputs = (List<T>) ops.run(MinMax.class, input.getB());
-
-		final double centerValue = input.getA().getRealDouble();
-		final double diffMin = centerValue - outputs.get(0).getRealDouble();
-		final double diffMax = outputs.get(1).getRealDouble() - centerValue;
-
-		// set to background (false) if pixel closer to min value,
-		// and to foreground (true) if pixel closer to max value.
-		// If diffMin and diffMax are equal, output will be set to fg.
-		output.set(diffMin <= diffMax);
-	}
+public interface StatOp<I, O> extends HybridOp<I, O> {
+	// NB: marker interface
 }

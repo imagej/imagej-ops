@@ -28,63 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.localBernsen;
+package net.imagej.ops.stats;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.threshold.LocalThresholdMethod;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
-import net.imglib2.type.logic.BitType;
+import net.imagej.ops.Ops.Stats.Kurtosis;
+import net.imagej.ops.Ops.Stats.Moment4AboutMean;
+import net.imagej.ops.Ops.Stats.StdDev;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
- * constant value rather than the value of the input pixel when the contrast in
- * the neighborhood of that pixel is too small.
+ * {@link Op} to calculate the {@link Kurtosis} using {@link StdDev} and
+ * {@link Moment4AboutMean}
  * 
- * @author Jonathan Hale
- * @param <T>
- *            input type
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Op.class)
-public class LocalBernsen<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
-
-	@Parameter
-	private OpService ops;
-
-	@Parameter
-	private double constrastThreshold;
-
-	@Parameter
-	private double halfMaxValue;
-
-	private MinMax minMax;
+@Plugin(type = StatOp.class, name = Kurtosis.NAME,
+	label = "Statistics: Kurtosis")
+public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatOp<Iterable<I>, O> implements Kurtosis
+{
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+	public void compute(final Iterable<I> input, final O output) {
+		output.setReal(Double.NaN);
+
+		final double std = this.ops.stats().stdDev(input).getRealDouble();
+		final double moment4 =
+			this.ops.stats().moment4AboutMean(input).getRealDouble();
+
+		if (std != 0) {
+			output.setReal((moment4) / (std * std * std * std));
 		}
-
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
-
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		} else {
-			output.set(input.getA().getRealDouble() >= midGrey);
-		}
-
 	}
 }

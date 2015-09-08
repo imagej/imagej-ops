@@ -30,18 +30,19 @@
 
 package net.imagej.ops.threshold.localMedian;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.median.MedianOp;
+import net.imagej.ops.Ops.Stats.Median;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using median.
@@ -50,8 +51,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMedian
-{
+		implements Ops.Threshold.LocalMedian {
 
 	@Parameter
 	private double c;
@@ -59,12 +59,14 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private OpService ops;
 
-	private MedianOp<Iterable<T>, DoubleType> median;
+	private ComputerOp<Iterable<T>, DoubleType> median;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+		// FIXME: use ops.computerop(...) as soon as available
 		if (median == null) {
-			median = ops.op(MedianOp.class, DoubleType.class, input.getB());
+			median = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Median.class,
+					DoubleType.class, input.getB());
 		}
 
 		final DoubleType m = new DoubleType();

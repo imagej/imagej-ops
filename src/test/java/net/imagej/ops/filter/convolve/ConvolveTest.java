@@ -155,6 +155,7 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// multiply input sum by kernelSum and assert it is the same as outSum
 		inSum.mul(kernelSum);
+
 		assertEquals(inSum.get(), outSum.get(), delta);
 		assertEquals(inSum.get(), outSum2.get(), delta);
 		assertEquals(inSum.get(), outSum3.get(), delta);
