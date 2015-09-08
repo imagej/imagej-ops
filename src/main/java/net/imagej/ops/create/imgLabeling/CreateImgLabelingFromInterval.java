@@ -83,7 +83,7 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>>
 			outType = (T) ops.create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops.create().img(interval, outType, fac));
+		output = new ImgLabeling<L, T>(ops.create().img(interval, fac, outType));
 	}
 
 	@Override
