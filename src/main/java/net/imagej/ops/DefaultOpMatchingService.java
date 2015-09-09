@@ -39,7 +39,6 @@ import net.imagej.ops.OpCandidate.StatusCode;
 import org.scijava.Context;
 import org.scijava.InstantiableException;
 import org.scijava.command.CommandInfo;
-import org.scijava.command.CommandService;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.module.Module;
@@ -68,9 +67,6 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private ModuleService moduleService;
 
 	@Parameter
-	private CommandService commandService;
-
-	@Parameter
 	private ConvertService convertService;
 
 	@Parameter
@@ -79,14 +75,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 	// -- OpMatchingService methods --
 
 	@Override
-	public List<CommandInfo> getOps() {
-		return commandService.getCommandsOfType(Op.class);
-	}
-
-	@Override
-	public <OP extends Op> Module findModule(final OpRef<OP> ref) {
+	public <OP extends Op> Module findModule(final OpService ops,
+		final OpRef<OP> ref)
+	{
 		// find candidates with matching name & type
-		final List<OpCandidate<OP>> candidates = findCandidates(ref);
+		final List<OpCandidate<OP>> candidates = findCandidates(ops, ref);
 		if (candidates.isEmpty()) {
 			throw new IllegalArgumentException("No candidate '" + ref.getLabel() +
 				"' ops");
@@ -110,11 +103,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	@Override
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
-		final OpRef<OP> ref)
+		final OpService ops, final OpRef<OP> ref)
 	{
 		final ArrayList<OpCandidate<OP>> candidates =
 			new ArrayList<OpCandidate<OP>>();
-		for (final CommandInfo info : getOps()) {
+		for (final CommandInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
 				candidates.add(new OpCandidate<OP>(ref, info));
 			}

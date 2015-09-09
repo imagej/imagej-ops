@@ -132,14 +132,14 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Override
 	public Module module(final String name, final Object... args) {
-		return matcher.findModule(new OpRef<Op>(name, args));
+		return matcher.findModule(this, new OpRef<Op>(name, args));
 	}
 
 	@Override
 	public <OP extends Op> Module module(final Class<OP> type,
 		final Object... args)
 	{
-		return matcher.findModule(new OpRef<OP>(type, args));
+		return matcher.findModule(this, new OpRef<OP>(type, args));
 	}
 
 	@Override
@@ -155,10 +155,15 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	}
 
 	@Override
+	public List<CommandInfo> infos() {
+		return commandService.getCommandsOfType(Op.class);
+	}
+
+	@Override
 	public Collection<String> ops() {
 		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
-		for (final CommandInfo info : matcher.getOps()) {
+		for (final CommandInfo info : infos()) {
 			final String name = info.getName();
 			if (name != null && !name.isEmpty()) operations.add(info.getName());
 		}

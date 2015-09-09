@@ -125,7 +125,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			ClassUtils.getAnnotatedMethods(namespaceClass, OpMethod.class);
 
 		// obtain the list of ops
-		final Collection<CommandInfo> allOps = matcher.getOps();
+		final Collection<CommandInfo> allOps = ops.infos();
 
 		// filter methods and ops to only those with the given name
 		final List<Method> methods;

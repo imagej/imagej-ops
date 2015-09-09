@@ -184,6 +184,9 @@ public interface OpService extends PTService<Op>, ImageJService {
 	/** Gets the metadata for a given {@link Op}. */
 	CommandInfo info(Op op);
 
+	/** Gets the metadata for all available op implementations. */
+	Collection<CommandInfo> infos();
+
 	/** Gets the names of all available operations. */
 	Collection<String> ops();
 

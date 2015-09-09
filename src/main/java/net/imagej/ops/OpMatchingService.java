@@ -34,7 +34,6 @@ import java.util.List;
 
 import net.imagej.ImageJService;
 
-import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 
@@ -45,28 +44,28 @@ import org.scijava.module.ModuleInfo;
  */
 public interface OpMatchingService extends ImageJService {
 
-	/** Gets the list of all available {@link Op} implementations. */
-	public List<CommandInfo> getOps();
-
 	/**
 	 * Finds and initializes the best module matching the given op name and/or
 	 * type + arguments.
 	 * 
+	 * @param ops The pool from which candidate ops should be drawn.
 	 * @param ref The op reference describing the op to match.
 	 * @return A {@link Module} wrapping the best {@link Op}, with populated
 	 *         inputs, ready to run.
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public <OP extends Op> Module findModule(OpRef<OP> ref);
+	public <OP extends Op> Module findModule(OpService ops, OpRef<OP> ref);
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
 	 * 
+	 * @param ops The pool from which candidate ops should be drawn.
 	 * @param ref The op reference describing the op to match.
 	 * @return The list of candidate operations.
 	 */
-	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpRef<OP> ref);
+	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpService ops,
+		OpRef<OP> ref);
 
 	/**
 	 * Filters a list of ops to those matching the given arguments.
