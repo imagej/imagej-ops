@@ -60,10 +60,8 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
-import org.scijava.log.LogService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
-import org.scijava.module.ModuleService;
 import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -80,9 +78,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 {
 
 	@Parameter
-	private ModuleService moduleService;
-
-	@Parameter
 	private CommandService commandService;
 
 	@Parameter
@@ -90,9 +85,6 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 
 	@Parameter
 	private NamespaceService namespaceService;
-
-	@Parameter
-	private LogService log;
 
 	// -- OpService methods --
 
