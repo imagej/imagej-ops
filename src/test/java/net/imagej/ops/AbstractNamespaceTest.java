@@ -36,6 +36,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -124,11 +125,11 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			ClassUtils.getAnnotatedMethods(namespaceClass, OpMethod.class);
 
 		// obtain the list of ops
-		final List<CommandInfo> allOps = matcher.getOps();
+		final Collection<CommandInfo> allOps = matcher.getOps();
 
 		// filter methods and ops to only those with the given name
 		final List<Method> methods;
-		final List<CommandInfo> opList;
+		final Collection<CommandInfo> opList;
 		if (opName == null) {
 			methods = allMethods;
 			opList = allOps;
@@ -170,7 +171,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * @param infos List of ops.
 	 */
 	public void assertComplete(final String namespace,
-		final List<Method> methods, final List<? extends ModuleInfo> infos)
+		final Collection<Method> methods,
+		final Collection<? extends ModuleInfo> infos)
 	{
 		final OpCoverSet coverSet = new OpCoverSet();
 
