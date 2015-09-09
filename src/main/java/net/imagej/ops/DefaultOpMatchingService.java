@@ -75,7 +75,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	// -- OpMatchingService methods --
 
 	@Override
-	public <OP extends Op> Module findModule(final OpService ops,
+	public <OP extends Op> Module findModule(final OpEnvironment ops,
 		final OpRef<OP> ref)
 	{
 		// find candidates with matching name & type
@@ -103,7 +103,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 	@Override
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
-		final OpService ops, final OpRef<OP> ref)
+		final OpEnvironment ops, final OpRef<OP> ref)
 	{
 		final ArrayList<OpCandidate<OP>> candidates =
 			new ArrayList<OpCandidate<OP>>();

@@ -55,7 +55,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @throws IllegalArgumentException if there is no match, or if there is more
 	 *           than one match at the same priority.
 	 */
-	public <OP extends Op> Module findModule(OpService ops, OpRef<OP> ref);
+	public <OP extends Op> Module findModule(OpEnvironment ops, OpRef<OP> ref);
 
 	/**
 	 * Builds a list of candidate ops which might match the given op reference.
@@ -64,7 +64,7 @@ public interface OpMatchingService extends ImageJService {
 	 * @param ref The op reference describing the op to match.
 	 * @return The list of candidate operations.
 	 */
-	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpService ops,
+	<OP extends Op> List<OpCandidate<OP>> findCandidates(OpEnvironment ops,
 		OpRef<OP> ref);
 
 	/**
