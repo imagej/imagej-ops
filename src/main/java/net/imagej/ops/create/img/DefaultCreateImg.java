@@ -75,7 +75,7 @@ public class DefaultCreateImg<T extends Type<T>>
 	@Override
 	public void run() {
 		if (factory == null) {
-			factory = (ImgFactory<T>) ops.create().imgFactory(dims, type);
+			factory = (ImgFactory<T>) ops.create().imgFactory(dims);
 		}
 		output = factory.create(dims, type);
 	}
