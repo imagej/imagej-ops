@@ -65,24 +65,15 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>>
 
 	@Parameter
 	private Interval interval;
-
-	@Parameter(required = false)
-	private T outType;
-
+	
 	@Parameter(required = false)
 	private ImgFactory<T> fac;
 
-	@Parameter(required = false)
-	private int maxNumLabelSets;
+	@Parameter
+	private T outType;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-
-		if (outType == null) {
-			outType = (T) ops.create().integerType(maxNumLabelSets);
-		}
-
 		output = new ImgLabeling<L, T>(ops.create().img(interval, fac, outType));
 	}
 

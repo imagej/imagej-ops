@@ -73,8 +73,8 @@ public class CreateLabelingTest extends AbstractOpTest {
 
 			// create imglabeling
 			@SuppressWarnings("unchecked")
-			final ImgLabeling<String, ?> img =
-				(ImgLabeling<String, ?>) ops.create().imgLabeling(dim);
+			final ImgLabeling<String, IntType> img =
+				(ImgLabeling<String, IntType>) ops.create().imgLabeling(dim, new IntType());
 
 			assertArrayEquals("Labeling Dimensions:", dim, Intervals
 				.dimensionsAsLongArray(img));
@@ -88,13 +88,13 @@ public class CreateLabelingTest extends AbstractOpTest {
 		final long[] dim = new long[] { 10, 10, 10 };
 
 		assertEquals("Labeling Factory: ", ArrayImgFactory.class,
-			((Img<?>) ((ImgLabeling<String, ?>) ops.create().imgLabeling(dim,
-				null, new ArrayImgFactory<IntType>())).getIndexImg()).factory()
+			((Img<?>) ((ImgLabeling<String, IntType>) ops.create().imgLabeling(dim,
+				new ArrayImgFactory<IntType>(), new IntType())).getIndexImg()).factory()
 				.getClass());
 
 		assertEquals("Labeling Factory: ", CellImgFactory.class,
-			((Img<?>) ((ImgLabeling<String, ?>) ops.create().imgLabeling(dim,
-				null, new CellImgFactory<IntType>())).getIndexImg()).factory()
+			((Img<?>) ((ImgLabeling<String, IntType>) ops.create().imgLabeling(dim,
+				new CellImgFactory<IntType>(), new IntType())).getIndexImg()).factory()
 				.getClass());
 
 	}
@@ -120,7 +120,7 @@ public class CreateLabelingTest extends AbstractOpTest {
 
 		final ImgLabeling<I, ?> imgLabeling =
 			((ImgLabeling<I, ?>) ops.create().imgLabeling(new long[] { 10,
-				10, 10 }));
+				10, 10 }, new IntType()));
 		imgLabeling.cursor().next().add(type);
 		return imgLabeling;
 	}
