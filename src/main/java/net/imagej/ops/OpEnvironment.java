@@ -79,11 +79,14 @@ import org.scijava.module.Module;
  * </ul>
  * <p>
  * The default&mdash;but not necessarily <em>only</em>&mdash;op environment is
- * the {@link OpService} of the application.
+ * the {@link OpService} of the application. The environment can be modified by
+ * using a {@link CustomOpEnvironment}, or by implementing this interface
+ * directly.
  * </p>
  * 
  * @author Curtis Rueden
  * @see OpService
+ * @see CustomOpEnvironment
  */
 public interface OpEnvironment extends Contextual {
 
