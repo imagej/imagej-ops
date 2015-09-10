@@ -36,5 +36,18 @@ package net.imagej.ops;
  * @author Curtis Rueden
  */
 public abstract class AbstractOp implements Op {
-	// NB: Placeholder class.
+
+	/** The op's execution environment. */
+	private OpEnvironment ops;
+
+	@Override
+	public OpEnvironment ops() {
+		return ops;
+	}
+
+	@Override
+	public void setEnvironment(final OpEnvironment ops) {
+		this.ops = ops;
+	}
+
 }

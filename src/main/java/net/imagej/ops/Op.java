@@ -78,7 +78,7 @@ import org.scijava.plugin.PluginService;
  * <li>Op arguments are fixed: an op may not dynamically alter the number or
  * types of its arguments.</li>
  * <li>Calling the same op twice with the same argument values must result in
- * the same result (for a given set of available ops).</li>
+ * the same result (for a given op execution environment).</li>
  * </ul>
  * <h2>Most common types of ops</h2>
  * <p>
@@ -122,5 +122,11 @@ import org.scijava.plugin.PluginService;
  * @see PluginService
  */
 public interface Op extends Command {
-	// NB: Marker interface.
+
+	/** Gets the op's execution environment. */
+	OpEnvironment ops();
+
+	/** Sets the op's execution environment. */
+	void setEnvironment(OpEnvironment ops);
+
 }

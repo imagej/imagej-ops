@@ -109,7 +109,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 			new ArrayList<OpCandidate<OP>>();
 		for (final CommandInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<OP>(ref, info));
+				candidates.add(new OpCandidate<OP>(ops, ref, info));
 			}
 		}
 		return candidates;
@@ -310,6 +310,9 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 		// unwrap the created op
 		final Op op = unwrapOp(module);
+
+		// inject the op execution environment
+		op.setEnvironment(candidate.ops());
 
 		// inject the SciJava application context
 		context.inject(op);

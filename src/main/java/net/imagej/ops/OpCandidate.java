@@ -55,6 +55,7 @@ public class OpCandidate<OP extends Op> {
 		OTHER
 	}
 
+	private final OpEnvironment ops;
 	private final OpRef<OP> ref;
 	private final ModuleInfo info;
 
@@ -63,9 +64,17 @@ public class OpCandidate<OP extends Op> {
 	private String message;
 	private ModuleItem<?> item;
 
-	public OpCandidate(final OpRef<OP> ref, final ModuleInfo info) {
+	public OpCandidate(final OpEnvironment ops, final OpRef<OP> ref,
+		final ModuleInfo info)
+	{
+		this.ops = ops;
 		this.ref = ref;
 		this.info = info;
+	}
+
+	/** Gets the op execution environment of the desired match. */
+	public OpEnvironment ops() {
+		return ops;
 	}
 
 	/** Gets the op reference describing the desired match. */
