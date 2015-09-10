@@ -240,7 +240,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		if (!typesMatch(candidate, args)) return null;
 
 		// create module and assign the inputs
-		final Module module = createModule(candidate.getInfo(), args);
+		final Module module = createModule(candidate, args);
 		candidate.setModule(module);
 
 		// make sure the op itself is happy with these arguments
@@ -302,8 +302,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private Module createModule(final ModuleInfo info, final Object... args) {
-		final Module module = moduleService.createModule(info);
+	private Module createModule(final OpCandidate<?> candidate,
+		final Object... args)
+	{
+		final Module module = moduleService.createModule(candidate.getInfo());
 		context.inject(module.getDelegateObject());
 		return assignInputs(module, args);
 	}
