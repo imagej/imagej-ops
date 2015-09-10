@@ -49,9 +49,6 @@ import org.scijava.plugin.Plugin;
 public class HelpCandidates extends AbstractHelp {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private OpMatchingService matcher;
 
 	@Parameter(required = false)
@@ -62,7 +59,7 @@ public class HelpCandidates extends AbstractHelp {
 
 	@Override
 	public void run() {
-		help(matcher.findCandidates(ops, new OpRef<Op>(name, opType)));
+		help(matcher.findCandidates(ops(), new OpRef<Op>(name, opType)));
 	}
 
 }

@@ -61,9 +61,6 @@ public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K exte
 	Contingent
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * run the filter (ConvolveFFTRAI) on the rais
 	 */
@@ -72,7 +69,7 @@ public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K exte
 		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
-		ops.filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
+		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output);
 	}
 

@@ -55,14 +55,11 @@ public class DefaultDifferenceEntropy<T extends RealType<T>> extends
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxminusy = (double[]) ops.run(CoocPXMinusY.class,
+		final double[] pxminusy = (double[]) ops().run(CoocPXMinusY.class,
 				(Object) matrix);
 		final int nrGrayLevels = matrix.length;
 

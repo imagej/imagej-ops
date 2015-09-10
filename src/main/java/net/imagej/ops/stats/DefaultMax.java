@@ -52,6 +52,6 @@ public class DefaultMax<I extends RealType<I>, O extends RealType<O>> extends
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(ops.stats().minMax(input).get(1).getRealDouble());
+		output.setReal(ops().stats().minMax(input).get(1).getRealDouble());
 	}
 }

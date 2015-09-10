@@ -67,9 +67,6 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	private ThreadService ts;
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double[] sigmas1;
 
 	@Parameter
@@ -83,7 +80,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 		final RandomAccessibleInterval<T> input)
 	{
 		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
+		return (RandomAccessibleInterval<T>) ops().create().<T> img(input);
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 		input.min(translation);
 
 		final IntervalView<T> tmpInterval =
-			Views.interval(Views.translate((RandomAccessible<T>) ops.create().img(
+			Views.interval(Views.translate((RandomAccessible<T>) ops().create().img(
 				input, Util.getTypeFromInterval(input)), translation), output);
 
 		// TODO: How can I enforce that a certain gauss implementation is used
@@ -113,8 +110,8 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 		// select in a GUI if (for example) he wants to use CUDA or CPU
 		// see issue https://github.com/imagej/imagej-ops/issues/154)
 
-		ops.filter().gauss(tmpInterval, input, sigmas1);
-		ops.filter().gauss(output, input, sigmas2);
+		ops().filter().gauss(tmpInterval, input, sigmas1);
+		ops().filter().gauss(output, input, sigmas2);
 
 		// TODO: Use SubtractOp as soon as available (see issue
 		// https://github.com/imagej/imagej-ops/issues/161).

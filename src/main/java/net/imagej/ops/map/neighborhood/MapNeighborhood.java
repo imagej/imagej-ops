@@ -62,16 +62,13 @@ public class MapNeighborhood<I, O> extends
 	@Parameter
 	private Shape shape;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
 		// Call map on the neighborhoods iterable interval. This may use a
 		// threaded implementation of map.
-		ops.map(output, shape.neighborhoodsSafe(input), getOp());
+		ops().map(output, shape.neighborhoodsSafe(input), getOp());
 		// TODO: optimization with integral images, if there is a rectangular
 		// neighborhood
 	}

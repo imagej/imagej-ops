@@ -50,9 +50,6 @@ public class ApplyManualThreshold<T extends RealType<T>> extends
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private T threshold;
 
 	@Override

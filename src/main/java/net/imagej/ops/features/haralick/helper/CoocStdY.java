@@ -45,17 +45,14 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CoocStdY.class)
 public class CoocStdY extends AbstractFunctionOp<double[][], DoubleType> {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public DoubleType compute(double[][] input) {
 		double res = 0;
 
-		final double meany = ((DoubleType) ops.run(CoocMeanY.class,
+		final double meany = ((DoubleType) ops().run(CoocMeanY.class,
 				(Object) input)).getRealDouble();
 
-		final double[] py = (double[]) ops.run(CoocPY.class,
+		final double[] py = (double[]) ops().run(CoocPY.class,
 				(Object) getInput());
 
 		for (int i = 0; i < py.length; i++) {

@@ -56,7 +56,7 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(this.ops.stats().sum(input).getRealDouble() /
-			this.ops.stats().size(input).getRealDouble());
+		output.setReal(ops().stats().sum(input).getRealDouble() /
+			ops().stats().size(input).getRealDouble());
 	}
 }

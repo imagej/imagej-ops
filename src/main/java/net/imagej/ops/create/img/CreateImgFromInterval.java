@@ -60,9 +60,6 @@ public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
 	implements Ops.Create.Img, Output<Img<T>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<T> output;
 
@@ -78,7 +75,7 @@ public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		output = (Img<T>) ops.run(DefaultCreateImg.class, interval, outType, fac);
+		output = (Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
 		long[] min = new long[interval.numDimensions()];
 		interval.min(min);
 

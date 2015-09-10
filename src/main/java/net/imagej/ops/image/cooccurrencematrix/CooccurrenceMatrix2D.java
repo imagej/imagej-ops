@@ -55,9 +55,6 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
 		CooccurrenceMatrix, Contingent {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
 	private int nrGreyLevels;
 
@@ -74,7 +71,7 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 
 		final Cursor<? extends RealType<?>> cursor = input.cursor();
 
-		final List<T> minMax = ops.stats().minMax(input);
+		final List<T> minMax = ops().stats().minMax(input);
 
 		double localMin = minMax.get(0).getRealDouble();
 		double localMax = minMax.get(1).getRealDouble();

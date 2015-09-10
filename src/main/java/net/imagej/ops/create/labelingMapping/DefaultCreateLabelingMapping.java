@@ -51,9 +51,6 @@ public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 	Ops.Create.LabelingMapping, Output<LabelingMapping<L>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private LabelingMapping<L> output;
 
@@ -62,7 +59,7 @@ public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 
 	@Override
 	public void run() {
-		output = new LabelingMapping<L>(ops.create().integerType(maxNumSets));
+		output = new LabelingMapping<L>(ops().create().integerType(maxNumSets));
 	}
 
 	@Override

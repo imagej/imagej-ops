@@ -57,9 +57,6 @@ public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 	Ops.Image.Crop
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgPlus<T> out;
 
@@ -77,7 +74,7 @@ public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 		final RandomAccessibleInterval<T> rai = in;
 		out =
 			new ImgPlus<T>(ImgView.wrap(
-				ops.image().crop(rai, interval, dropSingleDimensions), in.factory()));
+				ops().image().crop(rai, interval, dropSingleDimensions), in.factory()));
 
 		// TODO remove metadata-util
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);

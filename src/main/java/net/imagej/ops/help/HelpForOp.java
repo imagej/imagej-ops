@@ -49,14 +49,11 @@ import org.scijava.plugin.Plugin;
 public class HelpForOp extends AbstractHelp {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private Op op;
 
 	@Override
 	public void run() {
-		help(Collections.singleton(ops.info(op)));
+		help(Collections.singleton(ops().info(op)));
 	}
 
 }

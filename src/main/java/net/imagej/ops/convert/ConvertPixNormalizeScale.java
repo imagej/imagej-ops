@@ -48,9 +48,6 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 	extends ConvertPixScale<I, O>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void checkInput(final I inType, final O outType) {
 		outMin = outType.getMinValue();
@@ -58,7 +55,7 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 
 	@Override
 	public void checkInput(IterableInterval<I> in) {
-		final List<I> minMax = ops.stats().minMax(in);
+		final List<I> minMax = ops().stats().minMax(in);
 		final I inType = in.firstElement().createVariable();
 		factor =
 			1.0 / (minMax.get(1).getRealDouble() - minMax.get(0).getRealDouble()) *

@@ -44,7 +44,4 @@ public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends
 	extends AbstractHybridOp<I, O>
 {
 
-	@Parameter
-	private OpService ops;
-
 }

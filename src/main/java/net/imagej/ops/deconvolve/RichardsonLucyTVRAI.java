@@ -70,9 +70,6 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	Context ctx;
 
 	@Parameter

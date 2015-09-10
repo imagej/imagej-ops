@@ -56,9 +56,6 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final Img<I> img, final Img<O> out) {
 		if (getOBFInput() == null) {
@@ -83,7 +80,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 		RandomAccessibleInterval<O> extendedOut =
 			Views.interval(Views.extend(out, obfOutput), out);
 
-		ops.filter().convolve(extendedOut, extendedIn, getKernel());
+		ops().filter().convolve(extendedOut, extendedIn, getKernel());
 	}
 
 	@Override

@@ -56,8 +56,8 @@ public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
 		final double moment3 =
-			this.ops.stats().moment3AboutMean(input).getRealDouble();
-		final double std = this.ops.stats().stdDev(input).getRealDouble();
+			ops().stats().moment3AboutMean(input).getRealDouble();
+		final double std = ops().stats().stdDev(input).getRealDouble();
 
 		output.setReal(Double.NaN);
 		if (std != 0) {

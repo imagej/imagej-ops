@@ -54,9 +54,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Eval.class, name = Ops.Eval.NAME)
 public class DefaultEval extends AbstractOp implements Ops.Eval {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private Object result;
 
@@ -68,7 +65,7 @@ public class DefaultEval extends AbstractOp implements Ops.Eval {
 
 	@Override
 	public void run() {
-		final OpEvaluator e = new OpEvaluator(ops);
+		final OpEvaluator e = new OpEvaluator(ops());
 		if (vars != null) e.setAll(vars);
 		result = e.evaluate(expression);
 	}

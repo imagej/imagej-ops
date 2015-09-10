@@ -57,9 +57,6 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	extends AbstractHybridOp<Img<I>, Img<O>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * the kernel (psf)
 	 */

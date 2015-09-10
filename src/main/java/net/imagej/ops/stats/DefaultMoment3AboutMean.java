@@ -55,8 +55,8 @@ public class DefaultMoment3AboutMean<I extends RealType<I>, O extends RealType<O
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double mean = this.ops.stats().mean(input).getRealDouble();
-		final double size = this.ops.stats().size(input).getRealDouble();
+		final double mean = this.ops().stats().mean(input).getRealDouble();
+		final double size = this.ops().stats().size(input).getRealDouble();
 
 		double res = 0;
 		for (final I in : input) {

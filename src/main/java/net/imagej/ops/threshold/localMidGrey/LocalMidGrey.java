@@ -55,9 +55,6 @@ public class LocalMidGrey<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double c;
 
 	private MinMax minMax;
@@ -66,10 +63,10 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		// FIXME: use ops.computerop(...) as soon as available
 		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
+		List<T> outputs = (List<T>) ops().run(minMax, input.getB());
 		final double minValue = outputs.get(0).getRealDouble();
 		final double maxValue = outputs.get(1).getRealDouble();
 

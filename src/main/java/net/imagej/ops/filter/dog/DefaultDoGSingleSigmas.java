@@ -62,9 +62,6 @@ public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 	private ThreadService ts;
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double sigma1;
 
 	@Parameter
@@ -78,7 +75,7 @@ public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 		final RandomAccessibleInterval<T> input)
 	{
 		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
+		return (RandomAccessibleInterval<T>) ops().create().<T> img(input);
 	}
 
 	@Override
@@ -91,6 +88,6 @@ public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 		Arrays.fill(sigmas1, sigma1);
 		Arrays.fill(sigmas2, sigma2);
 
-		ops.run(Ops.Filter.DoG.class, output, input, sigmas1, sigmas2, fac);
+		ops().run(Ops.Filter.DoG.class, output, input, sigmas1, sigmas2, fac);
 	}
 }

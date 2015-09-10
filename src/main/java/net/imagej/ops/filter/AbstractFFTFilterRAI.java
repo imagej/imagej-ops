@@ -52,9 +52,6 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	extends AbstractOp
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * input rai. If extension is desired it needs to be done before passing the
 	 * rai to the op

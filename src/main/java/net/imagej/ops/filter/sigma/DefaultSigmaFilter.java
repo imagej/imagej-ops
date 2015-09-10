@@ -44,7 +44,7 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			@Override
 			public void compute(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
-					variance = (ComputerOp<Iterable<T>, DoubleType>) ops.op(
+					variance = (ComputerOp<Iterable<T>, DoubleType>) ops().op(
 							Variance.class, DoubleType.class, input.getB());
 				}
 

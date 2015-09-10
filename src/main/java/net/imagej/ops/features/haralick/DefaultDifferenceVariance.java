@@ -52,14 +52,11 @@ import org.scijava.plugin.Plugin;
 public class DefaultDifferenceVariance<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements DifferenceVariance {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxminusy = (double[]) ops.run(CoocPXMinusY.class,
+		final double[] pxminusy = (double[]) ops().run(CoocPXMinusY.class,
 				(Object) matrix);
 		double sum = 0.0d;
 		double res = 0;

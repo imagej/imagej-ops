@@ -60,12 +60,9 @@ public class HistogramCreate<T extends RealType<T>> extends AbstractOp
 	@Parameter(required = false)
 	private int numBins = 256;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void run() {
-		final List<T> res = ops.stats().minMax(in);
+		final List<T> res = ops().stats().minMax(in);
 
 		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
 				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));

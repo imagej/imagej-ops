@@ -52,17 +52,14 @@ import org.scijava.plugin.Plugin;
 public class DefaultClusterShade<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ClusterShade {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double mux = ((DoubleType) ops.run(CoocMeanX.class,
+		final double mux = ((DoubleType) ops().run(CoocMeanX.class,
 				(Object) matrix)).getRealDouble();
 
-		final double muy = ((DoubleType) ops.run(CoocMeanY.class,
+		final double muy = ((DoubleType) ops().run(CoocMeanY.class,
 				(Object) matrix)).getRealDouble();
 
 		double res = 0;

@@ -60,9 +60,6 @@ public class LocalNiblack<T extends RealType<T>> extends
 	@Parameter
 	private double k;
 
-	@Parameter
-	private OpService ops;
-
 	private ComputerOp<Iterable<T>, DoubleType> mean;
 
 	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
@@ -73,9 +70,9 @@ public class LocalNiblack<T extends RealType<T>> extends
 		if (stdDeviation == null) {
 			// TODO: Ensure the mean is the mean used by stdDeviation
 			// FIXME: use ops.computerop(...) as soon as available
-			mean = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Mean.class,
+			mean = (ComputerOp<Iterable<T>, DoubleType>) ops().op(Mean.class,
 					new DoubleType(), input.getB());
-			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops.op(
+			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops().op(
 					StdDev.class, new DoubleType(), input.getB());
 		}
 

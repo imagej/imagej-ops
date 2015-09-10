@@ -55,12 +55,9 @@ public class CreateImgFromImg<T extends NativeType<T>> extends
 	AbstractFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public Img<T> compute(final Img<T> input) {
-		return ops.create().img(getInput(),
+		return ops().create().img(getInput(),
 			getInput().firstElement().createVariable(), getInput().factory());
 	}
 

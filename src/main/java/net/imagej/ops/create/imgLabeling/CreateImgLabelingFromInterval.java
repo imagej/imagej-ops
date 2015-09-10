@@ -58,9 +58,6 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgLabeling<L, T> output;
 
@@ -81,10 +78,10 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	public void run() {
 
 		if (outType == null) {
-			outType = (T) ops.create().integerType(maxNumLabelSets);
+			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops.create().img(interval, outType, fac));
+		output = new ImgLabeling<L, T>(ops().create().img(interval, outType, fac));
 	}
 
 	@Override

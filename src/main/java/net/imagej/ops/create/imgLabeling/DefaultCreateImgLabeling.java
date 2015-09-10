@@ -56,9 +56,6 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgLabeling<L, T> output;
 
@@ -79,10 +76,10 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 	public void run() {
 
 		if (outType == null) {
-			outType = (T) ops.create().integerType(maxNumLabelSets);
+			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops.create().img(dims, outType, fac));
+		output = new ImgLabeling<L, T>(ops().create().img(dims, outType, fac));
 	}
 
 	@Override

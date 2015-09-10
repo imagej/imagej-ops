@@ -67,9 +67,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	extends AbstractFFTFilterRAI<I, O, K, C>
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * Max number of iterations to perform
 	 */
@@ -171,10 +168,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				getImgConvolutionInterval());
 
 		// perform fft of input
-		ops.filter().fft(getFFTInput(), getRAIExtendedInput());
+		ops().filter().fft(getFFTInput(), getRAIExtendedInput());
 
 		// perform fft of psf
-		ops.filter().fft(getFFTKernel(), getRAIExtendedKernel());
+		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
 
 		// if non-circulant decon mode create image for normalization
 		if (nonCirculant) {
@@ -224,7 +221,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops.filter().convolve(raiExtendedEstimate, null, getFFTInput(),
+		ops().filter().convolve(raiExtendedEstimate, null, getFFTInput(),
 			getFFTKernel(), raiExtendedReblurred, true, false);
 	}
 
@@ -268,7 +265,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		drawCube(normalization, start, size, 1.0);
 
 		// 3. correlate psf with the output of step 2.
-		ops.run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
+		ops().run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
 			getFFTKernel(), normalization, true, false);
 
 	}

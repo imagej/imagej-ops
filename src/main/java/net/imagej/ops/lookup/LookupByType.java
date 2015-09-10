@@ -47,9 +47,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Lookup.class, name = Ops.Lookup.NAME)
 public class LookupByType extends AbstractOp implements Ops.Lookup {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private Op op;
 
@@ -61,7 +58,7 @@ public class LookupByType extends AbstractOp implements Ops.Lookup {
 
 	@Override
 	public void run() {
-		op = ops.op(type, args);
+		op = ops().op(type, args);
 	}
 
 }

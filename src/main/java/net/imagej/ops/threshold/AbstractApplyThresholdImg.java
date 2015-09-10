@@ -48,9 +48,6 @@ public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
 	AbstractApplyThresholdIterable<T, I, Img<BitType>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	// -- HybridOp methods --
 
 	@Override

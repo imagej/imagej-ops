@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ClusterPromenence;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -38,7 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -53,9 +51,6 @@ import org.scijava.plugin.Plugin;
 public class DefaultClusterPromenence<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ClusterPromenence {
 
-	@Parameter
-	private OpService ops;
-
 	public DoubleType createOutput(final double[][] input) {
 		return new DoubleType();
 	}
@@ -66,9 +61,9 @@ public class DefaultClusterPromenence<T extends RealType<T>> extends
 
 		final int nrGrayLevels = matrix.length;
 
-		final double mux = ((DoubleType) ops.run(CoocMeanX.class,
+		final double mux = ((DoubleType) ops().run(CoocMeanX.class,
 				(Object) matrix)).getRealDouble();
-		final double muy = ((DoubleType) ops.run(CoocMeanY.class,
+		final double muy = ((DoubleType) ops().run(CoocMeanY.class,
 				(Object) matrix)).getRealDouble();
 
 		double res = 0;

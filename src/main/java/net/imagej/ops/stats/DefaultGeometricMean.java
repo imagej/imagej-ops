@@ -55,8 +55,8 @@ public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double size = this.ops.stats().size(input).getRealDouble();
-		final double sumOfLogs = this.ops.stats().sumOfLogs(input).getRealDouble();
+		final double size = ops().stats().size(input).getRealDouble();
+		final double sumOfLogs = ops().stats().sumOfLogs(input).getRealDouble();
 
 		if (size != 0) {
 			output.setReal(Math.exp(sumOfLogs / size));

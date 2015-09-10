@@ -60,9 +60,6 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgFactory<T> output;
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(required = false)
 	private Dimensions dims;
 
@@ -72,7 +69,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	@Override
 	public void run() {
 		if (outType == null) {
-			outType = ops.create().<T> nativeType();
+			outType = ops().create().<T> nativeType();
 		}
 
 		output =

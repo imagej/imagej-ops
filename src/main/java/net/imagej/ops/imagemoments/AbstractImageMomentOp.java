@@ -54,9 +54,6 @@ public abstract class AbstractImageMomentOp<I extends RealType<I>, O extends Rea
 	ImageMomentOp<IterableInterval<I>, O>, Contingent
 {
 
-	@Parameter(type = ItemIO.INPUT)
-	protected OpService ops;
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public O createOutput(IterableInterval<I> input) {

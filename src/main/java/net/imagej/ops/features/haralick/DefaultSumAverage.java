@@ -52,14 +52,11 @@ import org.scijava.plugin.Plugin;
 public class DefaultSumAverage<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements SumAverage {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,
+		final double[] pxplusy = (double[]) ops().run(CoocPXPlusY.class,
 				(Object) matrix);
 
 		final int nrGrayLevels = matrix.length;

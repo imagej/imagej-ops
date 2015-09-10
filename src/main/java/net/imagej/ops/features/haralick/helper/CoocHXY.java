@@ -46,9 +46,6 @@ public class CoocHXY extends AbstractFunctionOp<double[][], double[]> {
 
 	private static final double EPSILON = 0.00000001f;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public double[] compute(double[][] matrix) {
 		double hx = 0.0d;
@@ -58,8 +55,8 @@ public class CoocHXY extends AbstractFunctionOp<double[][], double[]> {
 
 		final int nrGrayLevels = matrix.length;
 
-		final double[] px = (double[]) ops.run(CoocPX.class, (Object) matrix);
-		final double[] py = (double[]) ops.run(CoocPY.class, (Object) matrix);
+		final double[] px = (double[]) ops().run(CoocPX.class, (Object) matrix);
+		final double[] py = (double[]) ops().run(CoocPY.class, (Object) matrix);
 
 		for (int i = 0; i < px.length; i++) {
 			hx += px[i] * Math.log(px[i] + EPSILON);

@@ -53,7 +53,7 @@ public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(Math.sqrt(this.ops.stats().variance(input).getRealDouble()));
+		output.setReal(Math.sqrt(ops().stats().variance(input).getRealDouble()));
 	}
 
 }

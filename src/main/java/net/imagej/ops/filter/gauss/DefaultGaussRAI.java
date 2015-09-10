@@ -66,9 +66,6 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private ThreadService threads;
 
 	@Parameter
@@ -102,7 +99,7 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	public RandomAccessibleInterval<V> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<V>) ops.create().img(input,
+		return (RandomAccessibleInterval<V>) ops().create().img(input,
 			Util.getTypeFromInterval(input));
 	}
 

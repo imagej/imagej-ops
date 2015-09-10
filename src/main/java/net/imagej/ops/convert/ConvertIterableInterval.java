@@ -51,9 +51,6 @@ public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O
 	@Parameter
 	private ConvertPix<I, O> pixConvert;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
@@ -61,7 +58,7 @@ public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O
 		pixConvert.checkInput(input.firstElement().createVariable(), output
 			.firstElement().createVariable());
 		pixConvert.checkInput(input);
-		ops.map(output, input, pixConvert);
+		ops().map(output, input, pixConvert);
 	}
 
 }

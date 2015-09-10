@@ -69,9 +69,6 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private RandomAccessibleInterval<I> input;
 
 	@Parameter

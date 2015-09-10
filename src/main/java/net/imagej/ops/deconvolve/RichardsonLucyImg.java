@@ -60,9 +60,6 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 	Ops.Deconvolve.RichardsonLucy
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * max number of iterations
 	 */
@@ -90,7 +87,7 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
+		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
 			output.factory(), getInput(), getKernel(), nonCirculant, accelerate);
 

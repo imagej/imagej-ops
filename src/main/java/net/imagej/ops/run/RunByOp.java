@@ -47,9 +47,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Run.class, name = Ops.Run.NAME)
 public class RunByOp extends AbstractOp implements Ops.Run {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private Object output;
 
@@ -61,7 +58,7 @@ public class RunByOp extends AbstractOp implements Ops.Run {
 
 	@Override
 	public void run() {
-		output = ops.run(op, args);
+		output = ops().run(op, args);
 	}
 
 }

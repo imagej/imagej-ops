@@ -56,16 +56,13 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private double c;
 
-	@Parameter
-	private OpService ops;
-
 	private ComputerOp<Iterable<T>, DoubleType> median;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		// FIXME: use ops.computerop(...) as soon as available
 		if (median == null) {
-			median = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Median.class,
+			median = (ComputerOp<Iterable<T>, DoubleType>) ops().op(Median.class,
 					DoubleType.class, input.getB());
 		}
 

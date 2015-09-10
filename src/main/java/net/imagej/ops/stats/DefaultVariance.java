@@ -58,7 +58,7 @@ public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
 
-		double mean = ops.stats().mean(input).getRealDouble();
+		double mean = ops().stats().mean(input).getRealDouble();
 
 		int n = 0;
 		double sum = 0d;

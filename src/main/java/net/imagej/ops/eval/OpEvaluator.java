@@ -34,7 +34,7 @@ import java.util.Deque;
 import java.util.HashMap;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 
 import org.scijava.sjep.Function;
@@ -51,12 +51,12 @@ import org.scijava.sjep.eval.Evaluator;
  */
 public class OpEvaluator extends AbstractStandardStackEvaluator {
 
-	private final OpService ops;
+	private final OpEnvironment ops;
 
 	/** Map of SJEP {@link Operator}s to Ops operation names. */
 	private final HashMap<Operator, String> opMap;
 
-	public OpEvaluator(final OpService ops) {
+	public OpEvaluator(final OpEnvironment ops) {
 		this.ops = ops;
 		opMap = new HashMap<Operator, String>();
 

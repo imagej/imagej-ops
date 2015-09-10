@@ -54,9 +54,6 @@ public class DefaultCreateImgPlus<T> extends AbstractOp implements
 	Ops.Create.ImgPlus, Output<ImgPlus<T>>, Contingent
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgPlus<T> output;
 

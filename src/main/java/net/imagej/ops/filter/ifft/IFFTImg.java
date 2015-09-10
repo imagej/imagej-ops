@@ -56,14 +56,11 @@ public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final Img<ComplexFloatType> input, final O output) {
 		// TODO: proper use of Executor service
 		final ExecutorService service = Executors.newFixedThreadPool(4);
 
-		ops.filter().ifft(output, input);
+		ops().filter().ifft(output, input);
 	}
 }

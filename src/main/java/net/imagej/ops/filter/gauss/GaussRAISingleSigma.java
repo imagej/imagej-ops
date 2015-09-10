@@ -60,9 +60,6 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double sigma;
 
 	@Parameter(required = false)
@@ -75,14 +72,14 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 		final double[] sigmas = new double[input.numDimensions()];
 		Arrays.fill(sigmas, sigma);
 
-		ops.filter().gauss(output, input, sigmas, outOfBounds);
+		ops().filter().gauss(output, input, sigmas, outOfBounds);
 	}
 
 	@Override
 	public RandomAccessibleInterval<V> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<V>) ops.create().img(input,
+		return (RandomAccessibleInterval<V>) ops().create().img(input,
 			Util.getTypeFromInterval(input));
 	}
 

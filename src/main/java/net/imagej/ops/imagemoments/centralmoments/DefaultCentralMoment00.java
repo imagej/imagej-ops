@@ -55,6 +55,6 @@ public class DefaultCentralMoment00<I extends RealType<I>, O extends RealType<O>
 
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		output.setReal(ops.imagemoments().moment00(input).getRealDouble());
+		output.setReal(ops().imagemoments().moment00(input).getRealDouble());
 	}
 }

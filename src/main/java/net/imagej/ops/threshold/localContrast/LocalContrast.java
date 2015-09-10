@@ -54,18 +54,15 @@ import org.scijava.plugin.Plugin;
 public class LocalContrast<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
-	@Parameter
-	private OpService ops;
-
 	private MinMax minMax;
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops.run(MinMax.class, input.getB());
+		List<T> outputs = (List<T>) ops().run(MinMax.class, input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
 		final double diffMin = centerValue - outputs.get(0).getRealDouble();

@@ -59,9 +59,6 @@ public class LocalBernsen<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double constrastThreshold;
 
 	@Parameter
@@ -72,10 +69,10 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
+		List<T> outputs = (List<T>) ops().run(minMax, input.getB());
 		final double minValue = outputs.get(0).getRealDouble();
 		final double maxValue = outputs.get(1).getRealDouble();
 		final double midGrey = (maxValue + minValue) / 2.0;

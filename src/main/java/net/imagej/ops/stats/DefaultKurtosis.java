@@ -57,9 +57,9 @@ public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
 	public void compute(final Iterable<I> input, final O output) {
 		output.setReal(Double.NaN);
 
-		final double std = this.ops.stats().stdDev(input).getRealDouble();
+		final double std = ops().stats().stdDev(input).getRealDouble();
 		final double moment4 =
-			this.ops.stats().moment4AboutMean(input).getRealDouble();
+			ops().stats().moment4AboutMean(input).getRealDouble();
 
 		if (std != 0) {
 			output.setReal((moment4) / (std * std * std * std));

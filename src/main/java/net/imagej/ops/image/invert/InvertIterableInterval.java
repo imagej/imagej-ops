@@ -51,9 +51,6 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	implements Ops.Image.Invert
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<I> input,
 		final IterableInterval<O> output)
@@ -66,7 +63,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		else {
 			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
 		}
-		ops.map(output, input, invert);
+		ops().map(output, input, invert);
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>

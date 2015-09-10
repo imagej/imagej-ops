@@ -60,9 +60,6 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	extends IterativeFFTFilterRAI<I, O, K, C>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -82,7 +79,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		inPlaceDivide(getRAIExtendedReblurred(), getRAIExtendedInput());
 
 		// 3. correlate psf with the output of step 2.
-		ops.filter().correlate(getRAIExtendedReblurred(), null, getFFTInput(),
+		ops().filter().correlate(getRAIExtendedReblurred(), null, getFFTInput(),
 			getFFTKernel(), getRAIExtendedReblurred(), true, false);
 
 		// compute estimate -

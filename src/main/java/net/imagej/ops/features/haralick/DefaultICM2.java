@@ -51,18 +51,15 @@ import org.scijava.plugin.Plugin;
 public class DefaultICM2<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ICM2 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
-		final double[] coochxy = (double[]) ops.run(CoocHXY.class,
+		final double[] coochxy = (double[]) ops().run(CoocHXY.class,
 				(Object) matrix);
 		res = Math.sqrt(1 - Math.exp(-2
-				* (coochxy[3] - ops.haralick()
+				* (coochxy[3] - ops().haralick()
 						.entropy(input, numGreyLevels, distance, orientation)
 						.get())));
 

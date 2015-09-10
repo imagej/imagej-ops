@@ -64,9 +64,6 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	private ThreadService threads;
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private StructuringElement se;
 
 	@Parameter(required = false)
@@ -90,7 +87,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 		createOutput(final RandomAccessibleInterval<T> input)
 	{
 		// HACK: For Java 6 compiler.
-		return ops.create().<L, I> imgLabeling(input);
+		return ops().create().<L, I> imgLabeling(input);
 	}
 
 	@Override

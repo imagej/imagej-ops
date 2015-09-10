@@ -56,19 +56,19 @@ public class DefaultHuMoment6<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
 		double n02 =
-			ops.imagemoments().normalizedCentralMoment02(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment02(input).getRealDouble();
 		double n03 =
-			ops.imagemoments().normalizedCentralMoment03(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment03(input).getRealDouble();
 		double n11 =
-			ops.imagemoments().normalizedCentralMoment11(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment11(input).getRealDouble();
 		double n12 =
-			ops.imagemoments().normalizedCentralMoment12(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment12(input).getRealDouble();
 		double n20 =
-			ops.imagemoments().normalizedCentralMoment20(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment20(input).getRealDouble();
 		double n21 =
-			ops.imagemoments().normalizedCentralMoment21(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment21(input).getRealDouble();
 		double n30 =
-			ops.imagemoments().normalizedCentralMoment30(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment30(input).getRealDouble();
 
 		output.setReal((n20 - n02) *
 			(Math.pow(n30 + n12, 2) - Math.pow(n21 + n03, 2)) + 4 * n11 *

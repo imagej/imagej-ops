@@ -51,18 +51,15 @@ import org.scijava.plugin.Plugin;
 public class DefaultSumVariance<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements SumVariance {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,
+		final double[] pxplusy = (double[]) ops().run(CoocPXPlusY.class,
 				(Object) matrix);
 		final int nrGrayLevels = matrix.length;
-		final double average = ((DoubleType) ops.haralick().sumaverage(input,
-				numGreyLevels, distance, orientation)).getRealDouble();
+		final double average = ops().haralick().sumaverage(input,
+				numGreyLevels, distance, orientation).getRealDouble();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {

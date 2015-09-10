@@ -33,7 +33,6 @@ package net.imagej.ops.image.ascii;
 import java.util.List;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -57,9 +56,6 @@ public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
 	private static final String CHARS = " .,-+o*O#";
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private IterableInterval<T> image;
 
 	@Parameter(required = false)
@@ -74,7 +70,7 @@ public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
 	@Override
 	public void run() {
 		if (min == null || max == null) {
-			final List<T> minMax = ops.stats().minMax(image);
+			final List<T> minMax = ops().stats().minMax(image);
 			if (min == null) min = minMax.get(0);
 			if (max == null) max = minMax.get(1);
 		}
