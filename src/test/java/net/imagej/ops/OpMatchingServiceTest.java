@@ -56,7 +56,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		final DoubleType value = new DoubleType(123.456);
 
 		final Module moduleByName =
-			matcher.findModule(new OpRef<Op>("test.nan", value));
+			matcher.findModule(ops, new OpRef<Op>("test.nan", value));
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -65,7 +65,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 		value.set(987.654);
 		final Module moduleByType =
-			matcher.findModule(new OpRef<NaNOp>(NaNOp.class, value));
+			matcher.findModule(ops, new OpRef<NaNOp>(NaNOp.class, value));
 		assertSame(value, moduleByType.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -110,7 +110,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	// -- Helper methods --
 
 	private Module optionalParamsModule(Object... args) {
-		return matcher.findModule(
+		return matcher.findModule(ops,
 			new OpRef<OptionalParams>(OptionalParams.class, args));
 	}
 
