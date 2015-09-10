@@ -30,6 +30,7 @@
 
 package net.imagej.ops.run;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
@@ -43,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Run.class, name = Ops.Run.NAME)
-public class RunByName implements Ops.Run {
+public class RunByName extends AbstractOp implements Ops.Run {
 
 	@Parameter
 	private OpService ops;

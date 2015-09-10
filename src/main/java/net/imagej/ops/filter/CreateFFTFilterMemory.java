@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imglib2.FinalDimensions;
@@ -64,7 +65,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	implements Op
+	extends AbstractOp
 {
 
 	@Parameter

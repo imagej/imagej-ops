@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -45,7 +46,9 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  * @param <T>
  */
-public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {
+public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>>
+	extends AbstractOp
+{
 
 	@Parameter(required = false)
 	protected Type<T> outType;
@@ -68,5 +71,4 @@ public abstract class AbstractCreateSymmetricKernel<T extends ComplexType<T>> {
 	@Parameter(required = false)
 	protected double[] calibration;
 
-	public abstract void run();
 }

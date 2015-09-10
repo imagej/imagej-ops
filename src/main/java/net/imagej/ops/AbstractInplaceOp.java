@@ -38,7 +38,9 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
+public abstract class AbstractInplaceOp<A> extends AbstractOp implements
+	InplaceOp<A>
+{
 
 	// -- Parameters --
 

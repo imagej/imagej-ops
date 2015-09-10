@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.imgLabeling;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
@@ -53,8 +54,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.ImgLabeling.class,
 	name = Ops.Create.ImgLabeling.NAME, priority = Priority.HIGH_PRIORITY)
-public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>>
-	implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
+public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
+	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
 {
 
 	@Parameter

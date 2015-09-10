@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.img;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
@@ -55,8 +56,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromInterval<T extends Type<T>> implements
-	Ops.Create.Img, Output<Img<T>>
+public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
+	implements Ops.Create.Img, Output<Img<T>>
 {
 
 	@Parameter

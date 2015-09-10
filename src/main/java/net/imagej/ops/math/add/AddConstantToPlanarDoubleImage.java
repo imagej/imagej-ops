@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math.add;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -41,7 +42,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
-public class AddConstantToPlanarDoubleImage implements Ops.Math.Add, Contingent {
+public class AddConstantToPlanarDoubleImage extends AbstractOp implements
+	Ops.Math.Add, Contingent
+{
 
 	@Parameter(type = ItemIO.BOTH)
 	private PlanarImg<DoubleType, DoubleArray> image;

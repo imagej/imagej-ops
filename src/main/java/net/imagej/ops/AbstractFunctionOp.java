@@ -38,7 +38,9 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
+public abstract class AbstractFunctionOp<I, O> extends AbstractOp implements
+	FunctionOp<I, O>
+{
 
 	// -- Parameters --
 

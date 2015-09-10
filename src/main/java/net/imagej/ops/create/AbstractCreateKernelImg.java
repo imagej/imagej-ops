@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -45,7 +46,8 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  * @param <V>
  */
-abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
+public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
+	extends AbstractOp
 {
 
 	@Parameter

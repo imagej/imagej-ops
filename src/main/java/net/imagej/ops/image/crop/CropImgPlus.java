@@ -31,6 +31,7 @@
 package net.imagej.ops.image.crop;
 
 import net.imagej.ImgPlus;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -52,7 +53,9 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Crop.class, name = Ops.Image.Crop.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Image.Crop.ALIASES) },
 	priority = Priority.LOW_PRIORITY + 1)
-public class CropImgPlus<T extends Type<T>> implements Ops.Image.Crop {
+public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
+	Ops.Image.Crop
+{
 
 	@Parameter
 	private OpService ops;

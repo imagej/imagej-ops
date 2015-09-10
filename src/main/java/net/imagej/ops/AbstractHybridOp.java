@@ -39,7 +39,9 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
+public abstract class AbstractHybridOp<I, O> extends AbstractOp implements
+	HybridOp<I, O>
+{
 
 	// -- Parameters --
 

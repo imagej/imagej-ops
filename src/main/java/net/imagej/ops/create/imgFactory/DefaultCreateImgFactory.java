@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.imgFactory;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
@@ -52,8 +53,8 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.ImgFactory.class, name = Ops.Create.ImgFactory.NAME)
-public class DefaultCreateImgFactory<T extends NativeType<T>> implements
-	Ops.Create.ImgFactory, Output<ImgFactory<T>>
+public class DefaultCreateImgFactory<T extends NativeType<T>> extends
+	AbstractOp implements Ops.Create.ImgFactory, Output<ImgFactory<T>>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

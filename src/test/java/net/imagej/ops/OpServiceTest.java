@@ -226,7 +226,7 @@ public class OpServiceTest extends AbstractOpTest {
 
 	@Plugin(type = Op.class, name = "test.arrr!",
 		priority = Priority.HIGH_PRIORITY)
-	public static class FirstMate implements Op {
+	public static class FirstMate extends AbstractOp {
 
 		@Parameter(required = false)
 		private EyePatch inventory;
@@ -242,7 +242,7 @@ public class OpServiceTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Op.class, name = "test.arrr!")
-	public static class Captain implements Op {
+	public static class Captain extends AbstractOp {
 
 		@Parameter
 		private Booty inventory;

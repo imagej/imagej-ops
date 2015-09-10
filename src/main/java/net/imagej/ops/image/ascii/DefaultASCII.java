@@ -32,6 +32,7 @@ package net.imagej.ops.image.ascii;
 
 import java.util.List;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -49,7 +50,9 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Image.ASCII.class, name = Ops.Image.ASCII.NAME)
-public class DefaultASCII<T extends RealType<T>> implements Ops.Image.ASCII {
+public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
+	Ops.Image.ASCII
+{
 
 	private static final String CHARS = " .,-+o*O#";
 

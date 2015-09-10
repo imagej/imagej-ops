@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.labelingMapping;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
@@ -46,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @param <L> label type
  */
 @Plugin(type = Ops.Create.LabelingMapping.class, name = Ops.Create.LabelingMapping.NAME)
-public class DefaultCreateLabelingMapping<L> implements
+public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 	Ops.Create.LabelingMapping, Output<LabelingMapping<L>>
 {
 

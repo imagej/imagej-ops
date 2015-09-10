@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.nativeType;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
 import net.imglib2.type.NativeType;
@@ -47,8 +48,8 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Create.NativeType.class, name = Ops.Create.NativeType.NAME)
-public class DefaultCreateNativeType<T extends NativeType<T>> implements
-	Ops.Create.NativeType, Output<T>
+public class DefaultCreateNativeType<T extends NativeType<T>> extends
+	AbstractOp implements Ops.Create.NativeType, Output<T>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

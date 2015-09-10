@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math.add;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.thread.chunker.Chunk;
@@ -50,7 +51,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 10)
-public class AddConstantToArrayByteImageP implements Ops.Math.Add {
+public class AddConstantToArrayByteImageP extends AbstractOp implements
+	Ops.Math.Add
+{
 
 	@Parameter
 	private OpService opService;

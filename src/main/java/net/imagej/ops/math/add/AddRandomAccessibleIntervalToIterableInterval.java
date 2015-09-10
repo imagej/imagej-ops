@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math.add;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -44,7 +45,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
 public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>>
-	implements Ops.Math.Add, Contingent
+	extends AbstractOp implements Ops.Math.Add, Contingent
 {
 
 	@Parameter(type = ItemIO.BOTH)

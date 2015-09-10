@@ -32,6 +32,7 @@ package net.imagej.ops.image.histogram;
 
 import java.util.List;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.histogram.Histogram1d;
@@ -46,8 +47,8 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Histogram.class, name = Ops.Image.Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements
-	Ops.Image.Histogram
+public class HistogramCreate<T extends RealType<T>> extends AbstractOp
+	implements Ops.Image.Histogram
 {
 
 	@Parameter(type = ItemIO.OUTPUT)

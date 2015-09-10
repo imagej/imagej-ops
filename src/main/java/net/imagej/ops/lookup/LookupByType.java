@@ -30,6 +30,7 @@
 
 package net.imagej.ops.lookup;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -44,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Lookup.class, name = Ops.Lookup.NAME)
-public class LookupByType implements Ops.Lookup {
+public class LookupByType extends AbstractOp implements Ops.Lookup {
 
 	@Parameter
 	private OpService ops;

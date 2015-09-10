@@ -33,7 +33,6 @@ package net.imagej.ops.deconvolve;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
-import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -43,9 +42,6 @@ import net.imglib2.view.Views;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,

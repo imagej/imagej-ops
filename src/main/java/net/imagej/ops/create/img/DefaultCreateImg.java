@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.img;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
@@ -51,8 +52,8 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME)
-public class DefaultCreateImg<T> implements
-	Ops.Create.Img, Output<Img<T>>
+public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
+	Output<Img<T>>
 {
 
 	@Parameter

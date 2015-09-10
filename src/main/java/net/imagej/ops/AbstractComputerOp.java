@@ -40,7 +40,9 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractComputerOp<I, O> implements ComputerOp<I, O> {
+public abstract class AbstractComputerOp<I, O> extends AbstractOp implements
+	ComputerOp<I, O>
+{
 
 	// -- Parameters --
 

@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math.add;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
@@ -41,7 +42,9 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY)
-public class AddConstantToArrayByteImage implements Ops.Math.Add {
+public class AddConstantToArrayByteImage extends AbstractOp implements
+	Ops.Math.Add
+{
 
 	@Parameter(type = ItemIO.BOTH)
 	private ArrayImg<ByteType, ByteArray> image;
