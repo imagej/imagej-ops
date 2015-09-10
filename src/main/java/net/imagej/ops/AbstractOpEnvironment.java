@@ -217,6 +217,14 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	public String help(final Namespace namespace) {
+		final String result =
+			(String) run(net.imagej.ops.help.HelpForNamespace.class, namespace);
+		return result;
+	}
+
+
+	@Override
 	public String help() {
 		final String result =
 			(String) run(net.imagej.ops.help.HelpCandidates.class);

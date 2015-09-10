@@ -263,6 +263,10 @@ public interface OpEnvironment extends Contextual {
 	String help(Op op);
 
 	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpForNamespace.class)
+	String help(Namespace namespace);
+
+	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
 	String help();
 
