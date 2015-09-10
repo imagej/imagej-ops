@@ -36,6 +36,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,6 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Help.class, name = Ops.Help.NAME,
+	priority = Priority.HIGH_PRIORITY,
 	description = "Gets documentation for the given op.")
 public class HelpForOp extends AbstractHelp {
 
