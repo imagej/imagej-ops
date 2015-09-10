@@ -305,8 +305,13 @@ public class DefaultOpMatchingService extends AbstractService implements
 	private Module createModule(final OpCandidate<?> candidate,
 		final Object... args)
 	{
+		// create the module
 		final Module module = moduleService.createModule(candidate.getInfo());
+
+		// inject the SciJava application context
 		context.inject(module.getDelegateObject());
+
+		// populate the inputs and return the module
 		return assignInputs(module, args);
 	}
 
