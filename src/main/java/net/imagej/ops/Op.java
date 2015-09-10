@@ -40,7 +40,10 @@ import org.scijava.plugin.PluginService;
  * <p>
  * <p>
  * Ops discoverable at runtime must implement this interface and be annotated
- * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class.
+ * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class
+ * or a subtype thereof (see the interfaces of {@link Ops}). While it is
+ * possible to create an op merely by implementing this interface, it is
+ * encouraged to instead extend {@link AbstractOp}, for convenience.
  * </p>
  * <h2>Naming and matching</h2>
  * <p>
