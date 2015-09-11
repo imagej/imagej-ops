@@ -58,6 +58,7 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 	@Parameter
 	private OpService ops;
 
+	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,

@@ -425,6 +425,7 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 	}
 
 	// TODO: replace this function with divide op
+	@Override
 	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
 		RandomAccessibleInterval<O> numeratorOutput)
 	{
