@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Kurtosis;
 import net.imagej.ops.Ops.Stats.Moment4AboutMean;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Kurtosis} using {@link StdDev} and

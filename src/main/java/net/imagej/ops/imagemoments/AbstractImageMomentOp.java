@@ -30,15 +30,15 @@
 
 package net.imagej.ops.imagemoments;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract {@link ImageMomentOp}. Provides {@link OpService} and create the

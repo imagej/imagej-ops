@@ -30,12 +30,12 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.Ops.Stats.Variance;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link StdDev} using {@link Variance}

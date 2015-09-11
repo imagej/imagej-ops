@@ -32,10 +32,8 @@ package net.imagej.ops.deconvolve;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.deconvolve.RichardsonLucyRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -51,9 +49,6 @@ import org.scijava.Context;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval)

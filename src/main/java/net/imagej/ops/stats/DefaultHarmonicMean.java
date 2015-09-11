@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.HarmonicMean;
 import net.imagej.ops.Ops.Stats.Size;
 import net.imagej.ops.Ops.Stats.SumOfInverses;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link HarmonicMean} using {@link Size} and

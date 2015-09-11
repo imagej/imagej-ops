@@ -30,9 +30,6 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
@@ -44,6 +41,9 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using Niblacks thresholding method.

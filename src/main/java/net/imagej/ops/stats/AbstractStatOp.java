@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
  * Abstract Statistics Op. Provides {@link OpService} and create the output.

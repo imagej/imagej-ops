@@ -39,8 +39,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
-
 /**
  * Simple {@link ComputerOp} and {@link Converter} to perform a normalization.
  * 

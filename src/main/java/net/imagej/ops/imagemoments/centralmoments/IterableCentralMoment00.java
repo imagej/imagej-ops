@@ -30,9 +30,6 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
@@ -40,6 +37,9 @@ import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link CentralMoment00} directly.

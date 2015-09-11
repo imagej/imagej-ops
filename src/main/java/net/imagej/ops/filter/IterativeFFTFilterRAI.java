@@ -31,10 +31,9 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.filter.convolve.ConvolveFFTRAI;
-import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
+import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.Interval;
@@ -51,7 +50,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.scijava.Context;
 import org.scijava.plugin.Parameter;
 
 /**

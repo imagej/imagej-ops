@@ -31,7 +31,6 @@
 package net.imagej.ops.image;
 
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.image.ImageNamespace;
 
 import org.junit.Test;
 
