@@ -121,12 +121,6 @@ import org.scijava.plugin.PluginService;
  * @see Plugin
  * @see PluginService
  */
-public interface Op extends Command {
-
-	/** Gets the op's execution environment. */
-	OpEnvironment ops();
-
-	/** Sets the op's execution environment. */
-	void setEnvironment(OpEnvironment ops);
-
+public interface Op extends Command, Environmental {
+	// NB: Marker interface.
 }

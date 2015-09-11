@@ -31,25 +31,18 @@
 package net.imagej.ops;
 
 /**
- * Abstract superclass for {@link ComputerOp} implementations.
+ * An interface for objects which have an {@link OpEnvironment}.
  * 
  * @author Curtis Rueden
+ * @see Op
+ * @see Namespace
  */
-public abstract class AbstractOp implements Op {
+public interface Environmental {
 
-	/** The op's execution environment. */
-	private OpEnvironment ops;
+	/** Gets the op execution environment. */
+	OpEnvironment ops();
 
-	// -- Environmental methods --
-
-	@Override
-	public OpEnvironment ops() {
-		return ops;
-	}
-
-	@Override
-	public void setEnvironment(final OpEnvironment ops) {
-		this.ops = ops;
-	}
+	/** Sets the op execution environment. */
+	void setEnvironment(OpEnvironment ops);
 
 }

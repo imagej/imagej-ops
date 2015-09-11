@@ -30,13 +30,16 @@
 
 package net.imagej.ops;
 
-import org.scijava.plugin.SingletonService;
+import org.scijava.plugin.PTService;
 
 /**
  * Interface for services that manage Ops {@link Namespace}s.
  *
  * @author Curtis Rueden
  */
-public interface NamespaceService extends SingletonService<Namespace> {
-	// NB: Marker interface.
+public interface NamespaceService extends PTService<Namespace> {
+
+	/** Creates a {@link Namespace} with the given op execution environment. */
+	<NS extends Namespace> NS create(Class<NS> pluginClass, OpEnvironment ops);
+
 }

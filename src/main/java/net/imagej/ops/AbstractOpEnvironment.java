@@ -155,7 +155,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public <NS extends Namespace> NS namespace(final Class<NS> nsClass) {
-		return namespaceService.getInstance(nsClass);
+		return namespaceService.create(nsClass, this);
 	}
 
 	// -- Operation shortcuts - global namespace --
