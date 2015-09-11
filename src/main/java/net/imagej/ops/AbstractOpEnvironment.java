@@ -103,18 +103,12 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Op op(final String name, final Object... args) {
-		final Module module = module(name, args);
-		if (module == null) return null;
-		return (Op) module.getDelegateObject();
+		return unwrapOp(module(name, args), Op.class);
 	}
 
 	@Override
 	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
-		final Module module = module(type, args);
-		if (module == null) return null;
-		@SuppressWarnings("unchecked")
-		final OP op = (OP) module.getDelegateObject();
-		return op;
+		return unwrapOp(module(type, args), type);
 	}
 
 	@Override
@@ -616,6 +610,37 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	/**
+	 * Unwraps the delegate object of the given {@link Module}, ensuring it is an
+	 * instance of the specified type(s).
+	 * 
+	 * @param module The module to unwrap.
+	 * @param opType The expected type of {@link Op}.
+	 * @param types Other required types for the op (e.g., {@link ComputerOp}).
+	 * @return The unwrapped {@link Op}
+	 * @throws IllegalStateException if the op does not conform to the expected
+	 *           types.
+	 */
+	private <OP extends Op> OP unwrapOp(final Module module,
+		final Class<OP> opType, final Class<?>... types)
+	{
+		if (module == null) return null;
+		final Object delegate = module.getDelegateObject();
+		if (!opType.isInstance(delegate)) {
+			throw new IllegalStateException(delegate.getClass().getName() +
+				" is not of type " + opType.getName());
+		}
+		for (final Class<?> type : types) {
+			if (!type.isInstance(delegate)) {
+				throw new IllegalStateException(delegate.getClass().getName() +
+					" is not of type " + opType.getName());
+			}
+		}
+		@SuppressWarnings("unchecked")
+		final OP op = (OP) module.getDelegateObject();
+		return op;
 	}
 
 }
