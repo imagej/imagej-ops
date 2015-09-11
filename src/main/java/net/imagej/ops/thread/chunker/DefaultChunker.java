@@ -31,6 +31,7 @@
 package net.imagej.ops.thread.chunker;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.imagej.ops.Ops;
@@ -96,10 +97,11 @@ public class DefaultChunker extends AbstractChunker {
 				}
 				future.get();
 			}
-			catch (final Exception e) {
-				logService.error(e);
-				cancel(e.getMessage());
-				break;
+			catch (final InterruptedException exc) {
+				throw new RuntimeException(exc);
+			}
+			catch (final ExecutionException exc) {
+				throw new RuntimeException(exc);
 			}
 		}
 	}
