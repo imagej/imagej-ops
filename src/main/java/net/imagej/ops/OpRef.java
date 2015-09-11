@@ -112,6 +112,12 @@ public class OpRef<OP extends Op> {
 		return name == null ? "(any)" : name;
 	}
 
+	/** Determines whether the op's type matches the given class. */
+	public boolean typesMatch(final Class<?> c) {
+		if (type != null && !type.isAssignableFrom(c)) return false;
+		return true;
+	}
+
 	// -- Object methods --
 
 	@Override

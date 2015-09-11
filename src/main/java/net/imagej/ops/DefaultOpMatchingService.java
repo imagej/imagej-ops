@@ -222,7 +222,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 			return false;
 		}
 
-		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
+		return ref.typesMatch(opClass);
 	}
 
 	/** Verifies that the given candidate's module is valid. */
