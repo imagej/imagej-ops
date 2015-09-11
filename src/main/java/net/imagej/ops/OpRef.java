@@ -30,6 +30,7 @@
 package net.imagej.ops;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.scijava.util.MiscUtils;
 
@@ -49,6 +50,9 @@ public class OpRef<OP extends Op> {
 	/** Name of the op, or null for any name. */
 	private String name;
 
+	/** Types which the op must match. */
+	private Collection<? extends Class<?>> types;
+
 	/** Type of the op, or null for any type. */
 	private Class<OP> type;
 
@@ -62,7 +66,7 @@ public class OpRef<OP extends Op> {
 	 * @param args arguments to the op.
 	 */
 	public OpRef(final String name, final Object... args) {
-		this(name, null, args);
+		this(name, null, null, args);
 	}
 
 	/**
@@ -72,20 +76,35 @@ public class OpRef<OP extends Op> {
 	 * @param args arguments to the op.
 	 */
 	public OpRef(final Class<OP> type, final Object... args) {
-		this(null, type, args);
+		this(null, null, type, args);
+	}
+
+	/**
+	 * Creates a new op reference.
+	 * 
+	 * @param types types which the ops must match.
+	 * @param type type of op, or null for any type.
+	 * @param args arguments to the op.
+	 */
+	public OpRef(final Collection<? extends Class<?>> types,
+		final Class<OP> type, final Object... args)
+	{
+		this(null, types, type, args);
 	}
 
 	/**
 	 * Creates a new op reference.
 	 * 
 	 * @param name name of the op, or null for any name.
+	 * @param types types which the ops must match.
 	 * @param type type of op, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public OpRef(final String name, final Class<OP> type,
-		final Object... args)
+	public OpRef(final String name, final Collection<? extends Class<?>> types,
+		final Class<OP> type, final Object... args)
 	{
 		this.name = name;
+		this.types = types;
 		this.type = type;
 		this.args = args;
 	}
@@ -95,6 +114,11 @@ public class OpRef<OP extends Op> {
 	/** Gets the name of the op. */
 	public String getName() {
 		return name;
+	}
+
+	/** Gets the types with which the op must match. */
+	public Collection<? extends Class<?>> getTypes() {
+		return types;
 	}
 
 	/** Gets the type of the op. */
@@ -113,8 +137,13 @@ public class OpRef<OP extends Op> {
 		return name == null ? "(any)" : name;
 	}
 
-	/** Determines whether the op's type matches the given class. */
+	/** Determines whether the op's required types match the given class. */
 	public boolean typesMatch(final Class<?> c) {
+		if (types != null) {
+			for (final Class<?> t : types) {
+				if (!t.isAssignableFrom(c)) return false;
+			}
+		}
 		if (type != null && !type.isAssignableFrom(c)) return false;
 		return true;
 	}
@@ -149,6 +178,7 @@ public class OpRef<OP extends Op> {
 		if (getClass() != obj.getClass()) return false;
 		final OpRef<?> other = (OpRef<?>) obj;
 		if (!MiscUtils.equal(name, other.name)) return false;
+		if (!MiscUtils.equal(types, other.types)) return false;
 		if (!MiscUtils.equal(type, other.type)) return false;
 		if (!Arrays.equals(args, other.args)) return false;
 		return true;
