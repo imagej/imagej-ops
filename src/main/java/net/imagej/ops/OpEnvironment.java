@@ -170,6 +170,184 @@ public interface OpEnvironment extends Contextual {
 	<OP extends Op> OP op(Class<OP> type, Object... args);
 
 	/**
+	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link ComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link ComputerOp}s implement), then the
+	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link ComputerOp} typed output.
+	 * @param inType The {@link Class} of the {@link ComputerOp} typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> ComputerOp<I, O> computer(Class<OP> opType,
+		Class<O> outType, Class<I> inType, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link ComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link ComputerOp}s implement), then the
+	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link ComputerOp} typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and output
+	 *          values.
+	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> ComputerOp<I, O> computer(Class<OP> opType,
+		Class<O> outType, I in, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link ComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link ComputerOp}s implement), then the
+	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> ComputerOp<I, O> computer(Class<OP> opType, O out,
+		I in, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link FunctionOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link FunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link FunctionOp}s implement), then the
+	 *          best {@link FunctionOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link FunctionOp} typed output.
+	 * @param inType The {@link Class} of the {@link FunctionOp} typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link FunctionOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> FunctionOp<I, O> function(Class<OP> opType,
+		Class<O> outType, Class<I> inType, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link FunctionOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link FunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link FunctionOp}s implement), then the
+	 *          best {@link FunctionOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link FunctionOp} typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link FunctionOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> FunctionOp<I, O> function(Class<OP> opType,
+		Class<O> outType, I in, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link HybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link HybridOp}s implement), then the
+	 *          best {@link HybridOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link HybridOp} typed output.
+	 * @param inType The {@link Class} of the {@link HybridOp} typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> HybridOp<I, O> hybrid(Class<OP> opType,
+		Class<O> outType, Class<I> inType, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link HybridOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link HybridOp}s implement), then the best
+	 *          {@link HybridOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link HybridOp} typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> HybridOp<I, O> hybrid(Class<OP> opType,
+		Class<O> outType, I in, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link HybridOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link HybridOp}s implement), then the best
+	 *          {@link HybridOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in The typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 */
+	<I, O, OP extends Op> HybridOp<I, O> hybrid(Class<OP> opType, O out, I in,
+		Object... otherArgs);
+
+	/**
+	 * Gets the best {@link InplaceOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link InplaceOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link InplaceOp}s implement), then the best
+	 *          {@link InplaceOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link InplaceOp} typed argument.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          value.
+	 * @return An {@link InplaceOp} with populated inputs, ready to use.
+	 */
+	<A, OP extends Op> InplaceOp<A> inplace(Class<OP> opType,
+		Class<A> argType, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link InplaceOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link InplaceOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link InplaceOp}s implement), then the best
+	 *          {@link InplaceOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param arg The typed argument.
+	 * @param otherArgs The operation's arguments, excluding the typed input and
+	 *          output values.
+	 * @return An {@link InplaceOp} with populated inputs, ready to use.
+	 */
+	<A, OP extends Op> InplaceOp<A> inplace(Class<OP> opType,
+		A arg, Object... otherArgs);
+
+	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
 	 *
