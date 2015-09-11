@@ -87,15 +87,13 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Object run(final String name, final Object... args) {
-		final Module module = module(name, args);
-		return run(module);
+		return run(module(name, args));
 	}
 
 	@Override
 	public <OP extends Op> Object run(final Class<OP> type, final Object... args)
 	{
-		final Module module = module(type, args);
-		return run(module);
+		return run(module(type, args));
 	}
 
 	@Override
