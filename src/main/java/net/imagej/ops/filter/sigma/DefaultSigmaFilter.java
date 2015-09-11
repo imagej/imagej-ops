@@ -37,7 +37,8 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 	@Override
 	protected CenterAwareComputerOp<T, T> getComputer(Class<?> inClass,
 			Class<?> outClass) {
-		return new AbstractCenterAwareComputerOp<T, T>() {
+		final AbstractCenterAwareComputerOp<T, T> op =
+			new AbstractCenterAwareComputerOp<T, T>() {
 
 			private ComputerOp<Iterable<T>, DoubleType> variance;
 
@@ -83,6 +84,8 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			}
 
 		};
+		op.setEnvironment(ops());
+		return op;
 	}
 
 	@Override
