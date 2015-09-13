@@ -162,4 +162,12 @@ public abstract class AbstractOpTest {
 
 		return img;
 	}
+
+	public static class NoOp extends AbstractOp {
+		@Override
+		public void run() {
+			// NB: No implementation needed.
+		}
+	}
+
 }
