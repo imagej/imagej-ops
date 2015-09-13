@@ -56,6 +56,7 @@ public abstract class AbstractComputerOp<I, O> extends AbstractOp implements
 
 	@Override
 	public void run() {
+		initialize(getInput());
 		compute(getInput(), getOutput());
 	}
 
@@ -69,6 +70,11 @@ public abstract class AbstractComputerOp<I, O> extends AbstractOp implements
 	@Override
 	public void setInput(final I input) {
 		in = input;
+	}
+
+	@Override
+	public void initialize(final I t) {
+		// NB: Do nothing by default.
 	}
 
 	// -- Output methods --

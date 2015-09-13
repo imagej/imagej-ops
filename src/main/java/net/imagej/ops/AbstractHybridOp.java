@@ -64,6 +64,7 @@ public abstract class AbstractHybridOp<I, O> extends AbstractOp implements
 
 	@Override
 	public void run() {
+		initialize(getInput());
 		if (getOutput() == null) out = compute(getInput());
 		else compute(getInput(), getOutput());
 	}
@@ -78,6 +79,11 @@ public abstract class AbstractHybridOp<I, O> extends AbstractOp implements
 	@Override
 	public void setInput(final I input) {
 		in = input;
+	}
+
+	@Override
+	public void initialize(final I t) {
+		// NB: Do nothing by default.
 	}
 
 	// -- Output methods --

@@ -51,6 +51,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractOp implements
 
 	@Override
 	public void run() {
+		initialize(getInput());
 		compute(getInput());
 	}
 
@@ -64,6 +65,11 @@ public abstract class AbstractInplaceOp<A> extends AbstractOp implements
 	@Override
 	public void setInput(final A input) {
 		arg = input;
+	}
+
+	@Override
+	public void initialize(final A t) {
+		// NB: Do nothing by default.
 	}
 
 	// -- Output methods --
