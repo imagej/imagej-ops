@@ -34,6 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.HighLevelHybridOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -71,16 +72,14 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		createWorker(final RandomAccessibleInterval<T> t)
 	{
-		return (HybridOp) ops().hybrid(Ops.Filter.DoG.class, //
-			RandomAccessibleInterval.class, t, //
-			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas1), //
-			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas2), //
-			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t), //
-			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t, Util.getTypeFromInterval(t)), //
+		return RAIs.hybrid(ops(), Ops.Filter.DoG.class, t, //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas1), //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas2), //
+			RAIs.function(ops(), Ops.Create.Img.class, t), //
+			RAIs.function(ops(), Ops.Create.Img.class, t, Util.getTypeFromInterval(t)), //
 			fac);
 	}
 
