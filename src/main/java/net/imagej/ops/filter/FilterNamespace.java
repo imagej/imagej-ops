@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
@@ -45,8 +47,10 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
@@ -706,6 +710,66 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Filter.DoG.class)
 	public Object dog(Object... args) {
 		return ops().run(Ops.Filter.DoG.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public
+		<T extends NumericType<T> & NativeType<T>>
+		RandomAccessibleInterval<T>
+		dog(
+			final RandomAccessibleInterval<T> in,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, in, gauss1, gauss2,
+				outputCreator, tmpCreator);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public
+		<T extends NumericType<T> & NativeType<T>>
+		RandomAccessibleInterval<T>
+		dog(
+			final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, gauss1, gauss2,
+				outputCreator, tmpCreator);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.dog.DefaultDoG.class)
+	public
+		<T extends NumericType<T> & NativeType<T>>
+		RandomAccessibleInterval<T>
+		dog(
+			final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator,
+			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.dog.DefaultDoG.class, out, in, gauss1, gauss2,
+				outputCreator, tmpCreator, fac);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.filter.dog.DoGVaryingSigmas.class)
