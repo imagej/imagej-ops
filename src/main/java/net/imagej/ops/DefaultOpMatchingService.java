@@ -242,7 +242,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		if (!typesMatch(candidate, args)) return null;
+		if (!typesMatch(candidate, args)) {
+			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH);
+			return null;
+		}
 
 		// create module and assign the inputs
 		final Module module = createModule(candidate, args);
