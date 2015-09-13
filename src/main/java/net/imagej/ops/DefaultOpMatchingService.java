@@ -225,7 +225,12 @@ public class DefaultOpMatchingService extends AbstractService implements
 		return ref.typesMatch(opClass);
 	}
 
-	/** Verifies that the given candidate's module is valid. */
+	/**
+	 * Verifies that the given candidate's module is valid.
+	 * <p>
+	 * Helper method of {@link #match(OpCandidate)}.
+	 * </p>
+	 */
 	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
 		if (candidate.getInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
