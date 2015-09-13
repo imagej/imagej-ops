@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
-	priority = Priority.HIGH_PRIORITY)
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class CreateImgFromImg<T extends NativeType<T>> extends
 	AbstractFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
