@@ -31,6 +31,7 @@ package net.imagej.ops;
 
 import java.util.Arrays;
 
+import org.scijava.util.MiscUtils;
 
 /**
  * Data structure which identifies an op by name and/or type, along with a list
@@ -142,26 +143,14 @@ public class OpRef<OP extends Op> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OpRef<?> other = (OpRef<?>) obj;
-		if (!Arrays.equals(args, other.args))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
+	public boolean equals(final Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		final OpRef<?> other = (OpRef<?>) obj;
+		if (!MiscUtils.equal(name, other.name)) return false;
+		if (!MiscUtils.equal(type, other.type)) return false;
+		if (!Arrays.equals(args, other.args)) return false;
 		return true;
 	}
 
