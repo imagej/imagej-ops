@@ -32,6 +32,8 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -49,6 +51,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
+import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -142,6 +145,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return null;
+		if (!outputsMatch(candidate)) return null;
 		final Object[] args = padArgs(candidate);
 		return args == null ? null : match(candidate, args);
 	}
@@ -235,6 +239,32 @@ public class DefaultOpMatchingService extends AbstractService implements
 		if (candidate.getInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
 		return false;
+	}
+
+	/**
+	 * Verifies that the given candidate's output types match those of the op.
+	 * <p>
+	 * Helper method of {@link #match(OpCandidate)}.
+	 * </p>
+	 */
+	private boolean outputsMatch(final OpCandidate<?> candidate) {
+		final Collection<? extends Class<?>> outTypes =
+			candidate.getRef().getOutputs();
+		if (outTypes == null) return true; // no constraints on output types
+
+		final Iterator<ModuleItem<?>> outItems =
+			candidate.getInfo().outputs().iterator();
+		for (final Class<?> outType : outTypes) {
+			if (!outItems.hasNext()) {
+				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
+				return false;
+			}
+			if (!ConversionUtils.canCast(outItems.next().getType(), outType)) {
+				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */

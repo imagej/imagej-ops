@@ -47,6 +47,8 @@ public class OpCandidate<OP extends Op> {
 	public static enum StatusCode {
 		MATCH,
 		INVALID_MODULE,
+		TOO_FEW_OUTPUTS,
+		OUTPUT_TYPES_DO_NOT_MATCH,
 		TOO_MANY_ARGS,
 		TOO_FEW_ARGS,
 		ARG_TYPES_DO_NOT_MATCH,

@@ -59,6 +59,9 @@ public class OpRef<OP extends Op> {
 	/** Arguments to be passed to the op. */
 	private Object[] args;
 
+	/** The op's output types, or null for no constraints. */
+	private Collection<? extends Class<?>> outputs;
+
 	/**
 	 * Creates a new op reference.
 	 * 
@@ -129,6 +132,16 @@ public class OpRef<OP extends Op> {
 	/** Gets the op's arguments. */
 	public Object[] getArgs() {
 		return args;
+	}
+
+	/** Gets the op's output types, or null for no constraints. */
+	public Collection<? extends Class<?>> getOutputs() {
+		return outputs;
+	}
+
+	/** Sets the op's output types, or null for no constraints. */
+	public void setOutputs(final Collection<? extends Class<?>> outputs) {
+		this.outputs = outputs;
 	}
 
 	/** Gets a label identifying the op's scope (i.e., its name and/or types). */
