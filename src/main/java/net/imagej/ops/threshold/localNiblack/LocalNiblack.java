@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;

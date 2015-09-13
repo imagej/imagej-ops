@@ -30,9 +30,7 @@
 package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.OpService;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

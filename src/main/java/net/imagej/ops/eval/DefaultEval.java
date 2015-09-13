@@ -33,7 +33,6 @@ package net.imagej.ops.eval;
 import java.util.Map;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;

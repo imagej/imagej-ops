@@ -31,7 +31,6 @@
 package net.imagej.ops.create.img;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -39,7 +38,6 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

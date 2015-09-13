@@ -34,7 +34,6 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;

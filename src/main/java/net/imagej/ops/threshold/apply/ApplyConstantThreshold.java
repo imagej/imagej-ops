@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;

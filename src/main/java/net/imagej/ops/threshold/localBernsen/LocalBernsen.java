@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.localBernsen;
 import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;

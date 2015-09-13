@@ -30,12 +30,9 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.OpService;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass of {@link ApplyThresholdIterable} implementations that

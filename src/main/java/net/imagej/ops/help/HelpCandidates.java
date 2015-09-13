@@ -33,7 +33,6 @@ package net.imagej.ops.help;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpMatchingService;
 import net.imagej.ops.OpRef;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Parameter;

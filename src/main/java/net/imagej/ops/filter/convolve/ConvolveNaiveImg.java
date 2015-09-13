@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFilterImg;
 import net.imglib2.RandomAccessibleInterval;
@@ -44,7 +43,6 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

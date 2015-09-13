@@ -30,7 +30,6 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractApplyThresholdImg;
 import net.imglib2.img.Img;

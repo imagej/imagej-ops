@@ -32,13 +32,11 @@ package net.imagej.ops.image.invert;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

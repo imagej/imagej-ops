@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;

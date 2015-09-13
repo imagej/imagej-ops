@@ -31,7 +31,6 @@
 package net.imagej.ops.create.labelingMapping;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
 import net.imglib2.roi.labeling.LabelingMapping;

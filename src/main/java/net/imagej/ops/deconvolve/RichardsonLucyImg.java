@@ -30,7 +30,6 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;

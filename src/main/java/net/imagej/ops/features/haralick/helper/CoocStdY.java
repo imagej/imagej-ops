@@ -30,10 +30,8 @@
 package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

@@ -32,7 +32,6 @@ package net.imagej.ops.deconvolve;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;

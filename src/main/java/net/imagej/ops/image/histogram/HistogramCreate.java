@@ -33,7 +33,6 @@ package net.imagej.ops.image.histogram;
 import java.util.List;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;

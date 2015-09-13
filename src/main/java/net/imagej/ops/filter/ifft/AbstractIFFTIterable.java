@@ -31,9 +31,6 @@
 package net.imagej.ops.filter.ifft;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OpService;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for inverse fft implementations.

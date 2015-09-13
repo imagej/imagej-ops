@@ -30,12 +30,9 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for linear filters that operate on RAIs

@@ -32,7 +32,6 @@ package net.imagej.ops.run;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;

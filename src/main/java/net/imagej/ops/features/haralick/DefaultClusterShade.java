@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ClusterShade;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -38,7 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

@@ -32,12 +32,10 @@ package net.imagej.ops.convert;
 
 import java.util.List;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.OpService;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;

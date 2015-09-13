@@ -32,7 +32,6 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imglib2.FinalDimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;

@@ -33,7 +33,6 @@ package net.imagej.ops.threshold.localContrast;
 import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -41,7 +40,6 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

@@ -31,7 +31,6 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;

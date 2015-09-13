@@ -37,9 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
  * Abstract {@link ImageMomentOp}. Provides {@link OpService} and create the
  * output.

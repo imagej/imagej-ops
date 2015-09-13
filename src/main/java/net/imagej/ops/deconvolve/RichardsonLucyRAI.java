@@ -30,7 +30,6 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
 import net.imglib2.Cursor;
@@ -40,7 +39,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**

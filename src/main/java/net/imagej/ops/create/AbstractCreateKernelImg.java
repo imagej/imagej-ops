@@ -31,7 +31,6 @@
 package net.imagej.ops.create;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;

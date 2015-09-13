@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localMedian;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Median;
 import net.imagej.ops.threshold.LocalThresholdMethod;

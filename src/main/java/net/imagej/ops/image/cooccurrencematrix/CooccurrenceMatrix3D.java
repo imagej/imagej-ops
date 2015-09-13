@@ -33,7 +33,6 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
