@@ -131,10 +131,17 @@ public class OpRef<OP extends Op> {
 		return args;
 	}
 
-	/** Gets a label identifying the op's scope (i.e., its type or name). */
+	/** Gets a label identifying the op's scope (i.e., its name and/or types). */
 	public String getLabel() {
-		if (type != null) return type.getName();
-		return name == null ? "(any)" : name;
+		final StringBuilder sb = new StringBuilder();
+		append(sb, name);
+		if (types != null) {
+			for (final Class<?> t : types) {
+				append(sb, t.getName());
+			}
+		}
+		if (type != null) append(sb, type.getName());
+		return sb.toString();
 	}
 
 	/** Determines whether the op's required types match the given class. */
@@ -191,6 +198,14 @@ public class OpRef<OP extends Op> {
 			hash += o.hashCode() * 31;
 		}
 		return type.hashCode() * 31 + hash;
+	}
+
+	// -- Helper methods --
+
+	private void append(final StringBuilder sb, final String s) {
+		if (s == null) return;
+		if (sb.length() > 0) sb.append("/");
+		sb.append(s);
 	}
 
 }
