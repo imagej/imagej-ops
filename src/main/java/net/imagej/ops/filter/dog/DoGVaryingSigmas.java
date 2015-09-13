@@ -32,18 +32,13 @@ package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.util.Util;
-import net.imglib2.view.IntervalView;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -75,53 +70,32 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
+	private HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> worker;
+
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops().create().<T> img(input);
+		return worker.createOutput(input);
+	}
+
+	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void initialize(final RandomAccessibleInterval<T> t) {
+		worker = (HybridOp) ops().hybrid(Ops.Filter.DoG.class, //
+			RandomAccessibleInterval.class, t, //
+			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas1), //
+			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas2), //
+			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t), //
+			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t, Util.getTypeFromInterval(t)), //
+			fac);
 	}
 
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-
-		if (fac == null) {
-			fac =
-				new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
-					Boundary.SINGLE);
-		}
-
-		// input may potentially be translated
-		final long[] translation = new long[input.numDimensions()];
-		input.min(translation);
-
-		final IntervalView<T> tmpInterval =
-			Views.interval(Views.translate((RandomAccessible<T>) ops().create().img(
-				input, Util.getTypeFromInterval(input)), translation), output);
-
-		// TODO: How can I enforce that a certain gauss implementation is used
-		// here? I don't want to pass the Gauss class in the DoG, I rather
-		// would love to have something that allows me to enforce
-		// that certain Ops are used, even if they have lower priority. This is a
-		// common use-case if you want to let the user
-		// select in a GUI if (for example) he wants to use CUDA or CPU
-		// see issue https://github.com/imagej/imagej-ops/issues/154)
-
-		ops().filter().gauss(tmpInterval, input, sigmas1);
-		ops().filter().gauss(output, input, sigmas2);
-
-		// TODO: Use SubtractOp as soon as available (see issue
-		// https://github.com/imagej/imagej-ops/issues/161).
-		final Cursor<T> tmpCursor = Views.flatIterable(tmpInterval).cursor();
-		final Cursor<T> outputCursor = Views.flatIterable(output).cursor();
-
-		while (outputCursor.hasNext()) {
-			outputCursor.next().sub(tmpCursor.next());
-		}
-
+		worker.compute(input, output);
 	}
 
 	@Override
