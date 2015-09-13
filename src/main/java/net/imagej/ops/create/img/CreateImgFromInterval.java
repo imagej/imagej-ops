@@ -30,9 +30,8 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.AbstractOp;
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
 import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -40,7 +39,6 @@ import net.imglib2.img.ImgView;
 import net.imglib2.type.Type;
 import net.imglib2.view.Views;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -55,15 +53,9 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
-	implements Ops.Create.Img, Output<Img<T>>
+public class CreateImgFromInterval<T extends Type<T>> extends
+	AbstractFunctionOp<Interval, Img<T>> implements Ops.Create.Img
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
-
-	@Parameter
-	private Interval interval;
 
 	@Parameter(required = false)
 	private T outType;
@@ -73,8 +65,9 @@ public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		output = (Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
+	public Img<T> compute(final Interval interval) {
+		Img<T> output =
+			(Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
 		long[] min = new long[interval.numDimensions()];
 		interval.min(min);
 
@@ -84,10 +77,6 @@ public class CreateImgFromInterval<T extends Type<T>> extends AbstractOp
 				break;
 			}
 		}
-	}
-
-	@Override
-	public Img<T> getOutput() {
 		return output;
 	}
 
