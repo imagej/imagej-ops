@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter.dog;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.HighLevelHybridOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
@@ -54,7 +54,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
 public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	HighLevelHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG, Contingent
 {
 
@@ -70,32 +70,18 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
-	private HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> worker;
-
-	@Override
-	public RandomAccessibleInterval<T> createOutput(
-		final RandomAccessibleInterval<T> input)
-	{
-		return worker.createOutput(input);
-	}
-
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void initialize(final RandomAccessibleInterval<T> t) {
-		worker = (HybridOp) ops().hybrid(Ops.Filter.DoG.class, //
+	protected HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		createWorker(final RandomAccessibleInterval<T> t)
+	{
+		return (HybridOp) ops().hybrid(Ops.Filter.DoG.class, //
 			RandomAccessibleInterval.class, t, //
 			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas1), //
 			ops().computer(Ops.Filter.Gauss.class, RandomAccessibleInterval.class, t, sigmas2), //
 			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t), //
 			ops().function(Ops.Create.Img.class, RandomAccessibleInterval.class, t, Util.getTypeFromInterval(t)), //
 			fac);
-	}
-
-	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		worker.compute(input, output);
 	}
 
 	@Override
