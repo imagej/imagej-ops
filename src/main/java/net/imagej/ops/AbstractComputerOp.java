@@ -40,8 +40,8 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractComputerOp<I, O> extends AbstractOp implements
-	ComputerOp<I, O>
+public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
+	implements ComputerOp<I, O>
 {
 
 	// -- Parameters --
@@ -70,11 +70,6 @@ public abstract class AbstractComputerOp<I, O> extends AbstractOp implements
 	@Override
 	public void setInput(final I input) {
 		in = input;
-	}
-
-	@Override
-	public void initialize(final I t) {
-		// NB: Do nothing by default.
 	}
 
 	// -- Output methods --

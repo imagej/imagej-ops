@@ -30,61 +30,20 @@
 
 package net.imagej.ops;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link FunctionOp} implementations.
+ * Abstract base class for {@link SpecialOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
-	implements FunctionOp<I, O>
+public abstract class AbstractSpecialOp<I, O> extends AbstractOp implements
+	SpecialOp<I, O>
 {
 
-	// -- Parameters --
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- Runnable methods --
+	// -- Initializable methods --
 
 	@Override
-	public void run() {
-		initialize(getInput());
-		out = compute(getInput());
-	}
-
-	// -- Input methods --
-
-	@Override
-	public I getInput() {
-		return in;
-	}
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public O getOutput() {
-		return out;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public FunctionOp<I, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
+	public void initialize(final I t) {
+		// NB: Do nothing by default.
 	}
 
 }

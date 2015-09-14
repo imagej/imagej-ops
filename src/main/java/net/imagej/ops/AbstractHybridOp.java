@@ -39,8 +39,8 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractHybridOp<I, O> extends AbstractOp implements
-	HybridOp<I, O>
+public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
+	implements HybridOp<I, O>
 {
 
 	// -- Parameters --
@@ -79,11 +79,6 @@ public abstract class AbstractHybridOp<I, O> extends AbstractOp implements
 	@Override
 	public void setInput(final I input) {
 		in = input;
-	}
-
-	@Override
-	public void initialize(final I t) {
-		// NB: Do nothing by default.
 	}
 
 	// -- Output methods --
