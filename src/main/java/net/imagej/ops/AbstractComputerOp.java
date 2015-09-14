@@ -56,7 +56,7 @@ public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
 
 	@Override
 	public void run() {
-		initialize(in());
+		initialize();
 		compute(in(), out());
 	}
 

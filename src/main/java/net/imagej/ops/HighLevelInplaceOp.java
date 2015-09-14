@@ -43,8 +43,8 @@ public abstract class HighLevelInplaceOp<A> extends
 	private InplaceOp<A> worker;
 
 	@Override
-	public void initialize(final A t) {
-		worker = createWorker(t);
+	public void initialize() {
+		worker = createWorker(in());
 	}
 
 	@Override

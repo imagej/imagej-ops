@@ -51,7 +51,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 
 	@Override
 	public void run() {
-		initialize(in());
+		initialize();
 		compute(in());
 	}
 

@@ -130,7 +130,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final ComputerOp<I, O> op =
 			(ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
-		op.initialize(in);
+		op.initialize();
 		return op;
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final ComputerOp<I, O> op =
 			(ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
-		op.initialize(in);
+		op.initialize();
 		return op;
 	}
 
@@ -165,7 +165,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final FunctionOp<I, O> op =
 			(FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
-		op.initialize(in);
+		op.initialize();
 		return op;
 	}
 
@@ -186,7 +186,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final HybridOp<I, O> op =
 			(HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
-		op.initialize(in);
+		op.initialize();
 		return op;
 	}
 
@@ -216,7 +216,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final InplaceOp<A> op =
 			(InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
-		op.initialize(arg);
+		op.initialize();
 		return op;
 	}
 

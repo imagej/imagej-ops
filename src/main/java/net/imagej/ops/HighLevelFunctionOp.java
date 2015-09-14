@@ -43,9 +43,8 @@ public abstract class HighLevelFunctionOp<I, O> extends
 	private FunctionOp<I, O> worker;
 
 	@Override
-	public void initialize(final I t) {
-		// NB: Do nothing by default.
-		worker = createWorker(t);
+	public void initialize() {
+		worker = createWorker(in());
 	}
 
 	@Override

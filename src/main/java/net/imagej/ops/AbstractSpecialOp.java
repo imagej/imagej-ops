@@ -42,7 +42,7 @@ public abstract class AbstractSpecialOp<I, O> extends AbstractOp implements
 	// -- Initializable methods --
 
 	@Override
-	public void initialize(final I t) {
+	public void initialize() {
 		// NB: Do nothing by default.
 	}
 

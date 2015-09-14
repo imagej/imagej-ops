@@ -44,7 +44,9 @@ package net.imagej.ops;
  * @see HybridOp
  * @see InplaceOp
  */
-public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
+public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>,
+	Initializable, Threadable
+{
 
 	@Override
 	SpecialOp<I, O> getIndependentInstance();

@@ -46,8 +46,8 @@ public abstract class HighLevelHybridOp<I, O> extends AbstractHybridOp<I, O> {
 	}
 
 	@Override
-	public void initialize(final I t) {
-		worker = createWorker(t);
+	public void initialize() {
+		worker = createWorker(in());
 	}
 
 	@Override

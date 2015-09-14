@@ -43,7 +43,4 @@ public interface Input<I> {
 
 	void setInput(I input);
 
-	/** Initializes the object with the given input value as a template. */
-	void initialize(I t);
-
 }

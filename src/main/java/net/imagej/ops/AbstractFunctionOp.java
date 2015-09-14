@@ -54,7 +54,7 @@ public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
 
 	@Override
 	public void run() {
-		initialize(in());
+		initialize();
 		out = compute(in());
 	}
 

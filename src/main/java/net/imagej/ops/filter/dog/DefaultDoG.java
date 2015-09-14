@@ -89,7 +89,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	}
 
 	@Override
-	public void initialize(final RandomAccessibleInterval<T> t) {
+	public void initialize() {
 		if (fac == null) {
 			fac =
 				new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
