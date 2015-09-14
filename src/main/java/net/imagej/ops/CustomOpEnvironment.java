@@ -30,7 +30,9 @@
 
 package net.imagej.ops;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.scijava.Context;
@@ -108,12 +110,25 @@ public class CustomOpEnvironment extends AbstractOpEnvironment {
 	/** A table mapping available ops from class name to {@link CommandInfo}. */
 	private static class OpIndex extends HashMap<String, CommandInfo> {
 
+		private ArrayList<CommandInfo> infos;
+		
 		public void addAll(final Collection<? extends CommandInfo> infos) {
 			if (infos == null) return;
 			for (final CommandInfo info : infos) {
 				put(info.getDelegateClassName(), info);
 			}
 		}
+		
+		@Override
+		public Collection<CommandInfo> values() {
+			if(infos == null){
+				infos = new ArrayList<CommandInfo>();
+				infos.addAll(super.values());
+				Collections.sort(infos);
+			}
+			
+			return infos;
+		};
 
 	}
 
