@@ -98,7 +98,7 @@ public class DefaultCreateIntegerType extends AbstractOp implements
 	}
 
 	@Override
-	public IntegerType getOutput() {
+	public IntegerType out() {
 		return output;
 	}
 

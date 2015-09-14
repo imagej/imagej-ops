@@ -128,6 +128,6 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() == 3 && orientation.isCompatible(3);
+		return in().numDimensions() == 3 && orientation.isCompatible(3);
 	}
 }

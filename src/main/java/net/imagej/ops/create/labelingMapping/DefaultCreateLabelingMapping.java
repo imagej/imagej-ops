@@ -62,7 +62,7 @@ public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 	}
 
 	@Override
-	public LabelingMapping<L> getOutput() {
+	public LabelingMapping<L> out() {
 		return output;
 	}
 

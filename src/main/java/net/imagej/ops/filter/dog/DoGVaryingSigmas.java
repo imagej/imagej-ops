@@ -86,6 +86,6 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	@Override
 	public boolean conforms() {
 		return sigmas1.length == sigmas2.length &&
-			sigmas1.length == getInput().numDimensions();
+			sigmas1.length == in().numDimensions();
 	}
 }

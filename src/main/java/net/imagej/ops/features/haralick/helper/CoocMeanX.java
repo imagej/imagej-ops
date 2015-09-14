@@ -48,7 +48,7 @@ public class CoocMeanX extends AbstractFunctionOp<double[][], DoubleType> {
 
 		double res = 0;
 		final double[] px = (double[]) ops().run(CoocPX.class,
-				(Object) getInput());
+				(Object) in());
 		for (int i = 0; i < px.length; i++) {
 			res += i * px[i];
 		}

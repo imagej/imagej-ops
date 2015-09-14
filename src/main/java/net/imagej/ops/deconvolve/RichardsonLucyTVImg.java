@@ -96,7 +96,7 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 
 		ops().run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
 			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
+			imgConvolutionInterval, output.factory(), in(), getKernel(),
 			nonCirculant, accelerate, regularizationFactor);
 
 	}

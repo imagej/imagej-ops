@@ -60,9 +60,9 @@ public class AddIterableIntervalToImg<T extends NumericType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		if (!Intervals.equalDimensions(getInput(), ii)) return false;
-		if (getOutput() == null) return true;
-		return Intervals.equalDimensions(ii, getOutput());
+		if (!Intervals.equalDimensions(in(), ii)) return false;
+		if (out() == null) return true;
+		return Intervals.equalDimensions(ii, out());
 	}
 
 	@Override

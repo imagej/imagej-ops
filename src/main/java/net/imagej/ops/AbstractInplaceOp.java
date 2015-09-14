@@ -51,14 +51,14 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 
 	@Override
 	public void run() {
-		initialize(getInput());
-		compute(getInput());
+		initialize(in());
+		compute(in());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public A getInput() {
+	public A in() {
 		return arg;
 	}
 
@@ -70,7 +70,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 	// -- Output methods --
 
 	@Override
-	public A getOutput() {
+	public A out() {
 		return arg;
 	}
 

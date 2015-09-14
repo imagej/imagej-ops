@@ -39,7 +39,7 @@ package net.imagej.ops;
  */
 public interface Input<I> {
 
-	I getInput();
+	I in();
 
 	void setInput(I input);
 

@@ -59,6 +59,6 @@ public abstract class AbstractImageMomentOp<I extends RealType<I>, O extends Rea
 
 	@Override
 	public boolean conforms() {
-		return 2 == getInput().numDimensions();
+		return 2 == in().numDimensions();
 	}
 }

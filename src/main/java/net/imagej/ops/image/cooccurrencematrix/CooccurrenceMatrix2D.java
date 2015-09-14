@@ -127,6 +127,6 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() == 2 && orientation.isCompatible(2);
+		return in().numDimensions() == 2 && orientation.isCompatible(2);
 	}
 }

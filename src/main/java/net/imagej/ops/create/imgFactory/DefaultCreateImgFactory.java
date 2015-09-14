@@ -77,7 +77,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	}
 
 	@Override
-	public ImgFactory<T> getOutput() {
+	public ImgFactory<T> out() {
 		return output;
 	}
 

@@ -103,8 +103,8 @@ public class DefaultProjectParallel<T, V> extends
 	@Override
 	public boolean conforms() {
 		// TODO this first check is too simple, but for now ok
-		return getInput().numDimensions() == getOutput().numDimensions() + 1 &&
-			getInput().numDimensions() > dim;
+		return in().numDimensions() == out().numDimensions() + 1 &&
+			in().numDimensions() > dim;
 	}
 
 	final class DimensionIterable implements Iterable<T> {

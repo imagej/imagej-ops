@@ -63,7 +63,7 @@ public class MapIterableToIterableParallel<A, B> extends
 
 	@Override
 	public boolean conforms() {
-		return getOutput() == null || isValid(getInput(), getOutput());
+		return out() == null || isValid(in(), out());
 	}
 
 	private boolean isValid(final IterableInterval<A> input,

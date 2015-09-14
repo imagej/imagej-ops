@@ -80,7 +80,7 @@ public class DefaultCreateImgPlus<T> extends AbstractOp implements
 	}
 
 	@Override
-	public ImgPlus<T> getOutput() {
+	public ImgPlus<T> out() {
 		return output;
 	}
 

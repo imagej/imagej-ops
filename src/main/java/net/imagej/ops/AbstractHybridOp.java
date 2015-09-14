@@ -64,15 +64,15 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 
 	@Override
 	public void run() {
-		initialize(getInput());
-		if (getOutput() == null) out = compute(getInput());
-		else compute(getInput(), getOutput());
+		initialize(in());
+		if (out() == null) out = compute(in());
+		else compute(in(), out());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public I getInput() {
+	public I in() {
 		return in;
 	}
 
@@ -84,7 +84,7 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 	// -- Output methods --
 
 	@Override
-	public O getOutput() {
+	public O out() {
 		return out;
 	}
 

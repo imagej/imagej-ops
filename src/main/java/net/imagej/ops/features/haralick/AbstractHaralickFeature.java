@@ -78,7 +78,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return orientation.numDims() == getInput().numDimensions();
+		return orientation.numDims() == in().numDimensions();
 	}
 
 }

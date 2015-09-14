@@ -51,7 +51,7 @@ public class CoocStdY extends AbstractFunctionOp<double[][], DoubleType> {
 				(Object) input)).getRealDouble();
 
 		final double[] py = (double[]) ops().run(CoocPY.class,
-				(Object) getInput());
+				(Object) in());
 
 		for (int i = 0; i < py.length; i++) {
 			res += ((i - meany) * (i - meany)) * py[i];

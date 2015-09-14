@@ -84,7 +84,7 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	}
 
 	@Override
-	public ImgLabeling<L, T> getOutput() {
+	public ImgLabeling<L, T> out() {
 		return output;
 	}
 

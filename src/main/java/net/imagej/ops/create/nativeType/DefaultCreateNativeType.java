@@ -65,7 +65,7 @@ public class DefaultCreateNativeType<T extends NativeType<T>> extends
 	}
 
 	@Override
-	public T getOutput() {
+	public T out() {
 		return output;
 	}
 

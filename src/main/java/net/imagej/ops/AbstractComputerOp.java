@@ -56,14 +56,14 @@ public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
 
 	@Override
 	public void run() {
-		initialize(getInput());
-		compute(getInput(), getOutput());
+		initialize(in());
+		compute(in(), out());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public I getInput() {
+	public I in() {
 		return in;
 	}
 
@@ -75,7 +75,7 @@ public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
 	// -- Output methods --
 
 	@Override
-	public O getOutput() {
+	public O out() {
 		return out;
 	}
 

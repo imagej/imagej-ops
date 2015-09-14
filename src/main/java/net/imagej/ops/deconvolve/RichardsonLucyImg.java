@@ -88,7 +88,7 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 
 		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			output.factory(), getInput(), getKernel(), nonCirculant, accelerate);
+			output.factory(), in(), getKernel(), nonCirculant, accelerate);
 
 	}
 

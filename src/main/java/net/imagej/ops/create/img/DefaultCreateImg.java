@@ -108,7 +108,7 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 	}
 
 	@Override
-	public Img<T> getOutput() {
+	public Img<T> out() {
 		return output;
 	}
 
