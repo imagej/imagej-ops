@@ -150,11 +150,20 @@ public class OpCandidate<OP extends Op> {
 			case INVALID_MODULE:
 				sb.append("Invalid module: " + info.getDelegateClassName());
 				break;
+			case TOO_FEW_OUTPUTS:
+				sb.append("Too few outputs");
+				break;
+			case OUTPUT_TYPES_DO_NOT_MATCH:
+				sb.append("Output types do not match");
+				break;
 			case TOO_MANY_ARGS:
 				sb.append("Too many arguments");
 				break;
 			case TOO_FEW_ARGS:
 				sb.append("Not enough arguments");
+				break;
+			case ARG_TYPES_DO_NOT_MATCH:
+				sb.append("Argument types do not match");
 				break;
 			case REQUIRED_ARG_IS_NULL:
 				sb.append("Missing required argument");
