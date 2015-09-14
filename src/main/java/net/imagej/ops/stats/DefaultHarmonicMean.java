@@ -30,10 +30,12 @@
 
 package net.imagej.ops.stats;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.HarmonicMean;
 import net.imagej.ops.Ops.Stats.Size;
 import net.imagej.ops.Ops.Stats.SumOfInverses;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -52,11 +54,21 @@ import org.scijava.plugin.Plugin;
 public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatOp<Iterable<I>, O> implements HarmonicMean
 {
+	
+	private FunctionOp<Iterable<I>, O> sizeFunc;
+
+	private FunctionOp<Iterable<I>, O> sumOfInversesFunc;
+
+	@Override
+	public void initialize() {
+		sumOfInversesFunc = RTs.function(ops(), SumOfInverses.class, in());
+		sizeFunc = RTs.function(ops(), Size.class, in());
+	}
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double area = ops().stats().size(input).getRealDouble();
-		final double sumOfInverses = ops().stats().size(input).getRealDouble();
+		final double area = sizeFunc.compute(input).getRealDouble();
+		final double sumOfInverses = sumOfInversesFunc.compute(input).getRealDouble();
 
 		if (sumOfInverses != 0) {
 			output.setReal(area / sumOfInverses);

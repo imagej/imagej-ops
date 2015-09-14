@@ -30,9 +30,12 @@
 
 package net.imagej.ops.stats;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.Ops.Stats.Variance;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -54,11 +57,18 @@ import org.scijava.plugin.Plugin;
 public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatOp<Iterable<I>, O> implements Variance
 {
+	
+	private FunctionOp<Iterable<I>, O> meanOp;
+
+	@Override
+	public void initialize() {
+		meanOp = RTs.function(ops(), Mean.class, in());
+	}
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
 
-		double mean = ops().stats().mean(input).getRealDouble();
+		double mean = meanOp.compute(input).getRealDouble();
 
 		int n = 0;
 		double sum = 0d;

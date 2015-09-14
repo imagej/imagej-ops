@@ -30,10 +30,12 @@
 
 package net.imagej.ops.stats;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.GeometricMean;
 import net.imagej.ops.Ops.Stats.Size;
 import net.imagej.ops.Ops.Stats.SumOfLogs;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -44,6 +46,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
+ * 
  * @param <I> input type
  * @param <O> output type
  */
@@ -52,11 +55,21 @@ import org.scijava.plugin.Plugin;
 public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatOp<Iterable<I>, O> implements GeometricMean
 {
+	
+	private FunctionOp<Iterable<I>, O> sizeFunc;
+
+	private FunctionOp<Iterable<I>, O> sumOfLogsFunc;
 
 	@Override
+	public void initialize() {
+		sumOfLogsFunc = RTs.function(ops(), SumOfLogs.class, in());
+		sizeFunc = RTs.function(ops(), Size.class, in());
+	}
+	
+	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double size = ops().stats().size(input).getRealDouble();
-		final double sumOfLogs = ops().stats().sumOfLogs(input).getRealDouble();
+		final double size = sizeFunc.compute(input).getRealDouble();
+		final double sumOfLogs = sumOfLogsFunc.compute(input).getRealDouble();
 
 		if (size != 0) {
 			output.setReal(Math.exp(sumOfLogs / size));
