@@ -52,6 +52,7 @@ import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
 import org.scijava.util.ConversionUtils;
+import org.scijava.util.GenericUtils;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -377,6 +378,15 @@ public class DefaultOpMatchingService extends AbstractService implements
 			}
 			return true;
 		}
+		
+		final List<Class<?>> classes = GenericUtils.getClasses(item.getType());
+		boolean match = true;
+		for(final Class<?> c : classes){
+			if(!c.isInstance(arg)){ match = false; break;}
+		}
+		
+		if(match)
+			return true;
 
 		final Type type = item.getGenericType();
 		if (!canConvert(arg, type)) {
