@@ -41,6 +41,7 @@ import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.util.Intervals;
 
 import org.scijava.plugin.Parameter;
@@ -90,7 +91,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 		createOutput(final RandomAccessibleInterval<T> input)
 	{
 		// HACK: For Java 6 compiler.
-		return ops.create().<L, I> imgLabeling(input);
+		return (ImgLabeling<L, I>) ops.create().<L, IntType> imgLabeling(input, new IntType());
 	}
 
 	@Override

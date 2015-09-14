@@ -48,8 +48,9 @@ Try this Jython script in ImageJ's
 
 # create a new blank image
 from jarray import array
+from net.imglib2.type.numeric.real import DoubleType
 dims = array([150, 100], 'l')
-blank = ij.op().create().img(dims)
+blank = ij.op().create().img(dims, DoubleType())
 
 # fill in the image with a sinusoid using a formula
 formula = "10 * (Math.cos(0.3*p[0]) + Math.sin(0.3*p[1]))"
@@ -59,10 +60,10 @@ sinusoid = ij.op().image().equation(blank, formula)
 ij.op().math().add(sinusoid, 13.0)
 
 # generate a gradient image using a formula
-gradient = ij.op().image().equation(ij.op().create().img(dims), "p[0]+p[1]")
+gradient = ij.op().image().equation(ij.op().create().img(dims, DoubleType()), "p[0]+p[1]")
 
 # add the two images
-composite = ij.op().create().img(dims)
+composite = ij.op().create().img(dims, DoubleType())
 ij.op().math().add(composite, sinusoid, gradient)
 
 # display the images

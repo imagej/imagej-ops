@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -30,84 +31,53 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
-import net.imglib2.Dimensions;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.NativeType;
-
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.Output;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+import net.imglib2.type.Type;
+
 /**
- * Default implementation of the "create.img" op.
+ * Creates an {@link Img} of a type from {@link Dimensions}. If no
+ * {@link ImgFactory} is provided a new one is created.
  *
- * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME)
-public class DefaultCreateImg<T> implements
-	Ops.Create.Img, Output<Img<T>>
-{
-
-	@Parameter
-	private OpService ops;
+public class DefaultCreateImg<T extends Type<T>>
+		implements
+			Ops.Create.Img,
+			Output<Img<T>> {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<T> output;
 
-	@Parameter
+	@Parameter(type = ItemIO.INPUT)
 	private Dimensions dims;
 
-	@Parameter(required = false)
-	private T outType;
+	@Parameter(type = ItemIO.INPUT, required = false)
+	private ImgFactory<T> factory;
 
-	@Parameter(required = false)
-	private ImgFactory<T> fac;
+	@Parameter(type = ItemIO.INPUT)
+	private T type;
+
+	@Parameter
+	private OpService ops;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		// FIXME: not guaranteed to be a T unless a Class<T> is given.
-		if (outType == null) {
-			// HACK: For Java 6 compiler.
-			@SuppressWarnings("rawtypes")
-			final NativeType o = ops.create().nativeType();
-			final T result = (T) o;
-			outType = result;
+		if (factory == null) {
+			factory = (ImgFactory<T>) ops.create().imgFactory(dims);
 		}
-
-		if (fac == null) {
-			if (dims instanceof Img) {
-				final Img<?> inImg = ((Img<?>) dims);
-				if (inImg.firstElement().getClass().isInstance(outType)) {
-					fac = (ImgFactory<T>) inImg.factory();
-				}
-				else {
-					try {
-						// HACK: For Java 6 compiler.
-						final Object o = inImg.factory().imgFactory(outType);
-						final ImgFactory<T> result = (ImgFactory<T>) o;
-						fac = result;
-					}
-					catch (final IncompatibleTypeException e) {
-						// FIXME: outType may not be a NativeType, but imgFactory needs one.
-						fac = (ImgFactory<T>) ops.create().imgFactory(dims, outType);
-					}
-				}
-			}
-			else {
-				// FIXME: outType may not be a NativeType, but imgFactory needs one.
-				fac = (ImgFactory<T>) ops.create().imgFactory(dims, outType);
-			}
-		}
-
-		output = fac.create(dims, outType);
+		output = factory.create(dims, type);
 	}
 
 	@Override
