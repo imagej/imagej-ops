@@ -31,28 +31,22 @@
 package net.imagej.ops;
 
 /**
- * A <em>function</em> computes a result from the given input, returning it as a
- * new object. The contents of the input are not affected.
+ * A <em>special</em> operation is one intended to be used repeatedly from other
+ * ops. They come in two major flavors: {@link ComputerOp} and
+ * {@link FunctionOp}. And there are two additional types, {@link HybridOp} and
+ * {@link InplaceOp}, which specialize behavior further.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  * @param <I> type of input
  * @param <O> type of output
  * @see ComputerOp
+ * @see FunctionOp
  * @see HybridOp
  * @see InplaceOp
  */
-public interface FunctionOp<I, O> extends SpecialOp<I, O> {
-
-	/**
-	 * Compute the output given some input.
-	 * 
-	 * @param input of the {@link FunctionOp}
-	 * @return output
-	 */
-	O compute(I input);
+public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
 
 	@Override
-	FunctionOp<I, O> getIndependentInstance();
+	SpecialOp<I, O> getIndependentInstance();
 
 }

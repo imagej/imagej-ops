@@ -43,7 +43,7 @@ package net.imagej.ops;
  * @see HybridOp
  * @see InplaceOp
  */
-public interface ComputerOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
+public interface ComputerOp<I, O> extends SpecialOp<I, O> {
 
 	void compute(I input, O output);
 
