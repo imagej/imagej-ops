@@ -7,6 +7,7 @@ import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended;
 import net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
@@ -133,6 +134,28 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 		int index = 0;
 		for (ByteType t : out) {
 			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+	
+	/**
+	 * TODO
+	 * 
+	 * @see MapNeighborhoodNativeTypeExtended
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImageAlias() {
+		in = generateByteTestImg(true, 7);
+		out = generateByteTestImg(false, 7);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeTypeExtended.class, out, in,
+				new CountNeighbors(), new RectangleShape(1, false));
+		functional.run();
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index, 3, t.get());
+			index ++;
 		}
 	}
 

@@ -11,8 +11,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.map.AbstractMapComputer;
 import net.imagej.ops.map.neighborhood.MapNeighborhood;
 import net.imglib2.FinalInterval;
-import net.imglib2.algorithm.neighborhood.CenteredRectangleShape;
-import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -54,7 +53,7 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 	protected LogService log;
 
 	@Parameter
-	private CenteredRectangleShape shape;
+	private RectangleShape shape;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, I> oobFactory;
@@ -62,9 +61,7 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 	@Override
 	public void compute(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
 		// all dimensions are equal as ensured in conforms() */
-		final int span =
-			(int) ((shape.neighborhoodsRandomAccessible(input).randomAccess().get()
-				.dimension(0) - 1) / 2);
+		final int span = shape.getSpan();
 
 		final int numDimensions = input.numDimensions();
 
@@ -72,9 +69,10 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 		FinalInterval[] intervals;
 		FinalInterval center;
 		final long dim0 = input.dimension(0);
-		final long max0 = dim0 - span - 1; // maximal extension of horizonally
+		final long max0 = input.max(0);
+		final long maxSafe0 = max0 - span; // maximal extension of horizontally
 																				// centered intervals
-
+		final long spanPlus1 = span + 1;
 		/* Note about ordering of intervals:
 		 * Since done parallel, the idea is to queue work by decreasing size.
 		 * The center interval is usually the biggest, but can be best optimized.
@@ -93,68 +91,69 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 			/* left */
 			new FinalInterval(new long[] { 0 }, new long[] { span }),
 			/* right */
-			new FinalInterval(new long[] { dim0 - span }, new long[] { span }) };
+			new FinalInterval(new long[] { dim0 - span }, new long[] { max0 }) };
 			/* center	*/
-			center = new FinalInterval(new long[] { span + 1 }, new long[] { max0 });
+			center =
+				new FinalInterval(new long[] { spanPlus1 }, new long[] { maxSafe0 });
 		}
 		else if (numDimensions == 2) {
 			final long dim1 = input.dimension(1);
-			final long max1 = dim1 - span - 1; // maximal extension of vertically
+			final long max1 = input.max(1);
+			final long maxSafe1 = max1 - span; // maximal extension of vertically
 																					// centered intervals
 
 			intervals =
 				new FinalInterval[] {
 					/* top */
-					new FinalInterval(new long[] { 0, 0 }, new long[] { dim0, span }),
+					new FinalInterval(new long[] { 0, 0 }, new long[] { max0, span }),
 					/* bottom */
-					new FinalInterval(new long[] { 0, dim1 - span }, new long[] { dim0,
-						dim1 }),
+					new FinalInterval(new long[] { 0, dim1 - span }, new long[] { max0,
+						max1 }),
 					/* left */
-					new FinalInterval(new long[] { 0, span + 1 },
-						new long[] { span, span }),
+					new FinalInterval(new long[] { 0, spanPlus1 }, new long[] { span,
+						max1 - span }),
 					/* right */
-					new FinalInterval(new long[] { dim0 - span, span + 1 }, new long[] {
-						span, max1 }), };
+					new FinalInterval(new long[] { dim0 - span, spanPlus1 }, new long[] {
+						max0, maxSafe1 }) };
 			/* center */
 			center =
-				new FinalInterval(new long[] { span + 1, span + 1 }, new long[] { max0,
-					max1 });
+				new FinalInterval(new long[] { spanPlus1, spanPlus1 }, new long[] {
+					maxSafe0, maxSafe1 });
 		}
 		else {
-			// numDimensions == 3, guranteed by conforms()
+			// numDimensions == 3, guaranteed by conforms()
 
 			final long dim1 = input.dimension(1);
 			final long dim2 = input.dimension(2);
-			final long max1 = dim1 - span - 1; // maximal extension of vertically
+			final long max1 = input.max(1);
+			final long max2 = input.max(2);
+			final long maxSafe1 = max1 - span; // maximal extension of vertically
 																					// centered intervals
-			final long max2 = dim2 - span - 1; // maximal extension of depth centered
-																					// intervals
-			final long spanPlus1 = span + 1;
-
+			final long maxSafe2 = max2 - span; // maximal extension of depth
+																					// centered intervals
 			intervals =
 				new FinalInterval[] {
-					new FinalInterval(new long[] { 0, 0 },
 					/* front */
-					new long[] { dim0, dim1, span }),
+					new FinalInterval(new long[] { 0, 0, 0 }, new long[] { max0, max1, span }),
 					/* back */
 					new FinalInterval(new long[] { 0, 0, dim2 - span }, new long[] {
-						dim0, dim1, dim2 }),
+						max0, max1, max2 }),
 					/* top */
-					new FinalInterval(new long[] { 0, 0, spanPlus1 }, new long[] { dim0,
-						span, max2 }),
+					new FinalInterval(new long[] { 0, 0, spanPlus1 }, new long[] { max0,
+						span, maxSafe2 }),
 					/* bottom */
 					new FinalInterval(new long[] { 0, dim1 - span, spanPlus1 },
-						new long[] { dim0, dim1, max2 }),
+						new long[] { max0, max1, maxSafe2 }),
 					/* left */
 					new FinalInterval(new long[] { 0, spanPlus1, spanPlus1 }, new long[] {
-						span, span, max2 }),
+						span, maxSafe1, maxSafe2 }),
 					/* right */
-					new FinalInterval(new long[] { dim0 - span, spanPlus1 }, new long[] {
-						span, max1, max2 }), };
+					new FinalInterval(new long[] { dim0 - span, spanPlus1, spanPlus1 }, new long[] {
+						max0, maxSafe1, maxSafe2 }) };
 			/* center */
 			center =
 				new FinalInterval(new long[] { spanPlus1, spanPlus1, spanPlus1 },
-					new long[] { max0, max1, max2 });
+					new long[] { maxSafe0, maxSafe1, maxSafe2 });
 		}
 
 		ArrayList<Future<?>> futures =
@@ -165,10 +164,17 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 
 				@Override
 				public void run() {
-					ops.run(MapNeighborhood.class, Views.interval(output, interval),
-						Views.interval(input, interval), getOp(), shape, oobFactory);
+					if (oobFactory == null) {
+						ops.run(MapNeighborhood.class, Views.interval(output, interval),
+							Views.interval(input, interval), getOp(), shape);
+					}
+					else {
+						ops.run(MapNeighborhood.class, Views.interval(output, interval),
+							Views.interval(input, interval), getOp(), shape, oobFactory);
+					}
 				}
 			}));
+
 		}
 
 		final FinalInterval finalCenter = center;
@@ -176,8 +182,8 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 
 			@Override
 			public void run() {
-				ops.map(Views.interval(output, finalCenter), Views.interval(input,
-					finalCenter), getOp(), span);
+				ops.run(MapNeighborhoodNativeType.class, output, input, getOp(), span,
+					finalCenter);
 			}
 		}));
 
@@ -199,23 +205,8 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 
 	@Override
 	public boolean conforms() {
-		if (!(getInput().numDimensions() > 0 || getInput().numDimensions() <= 3)) {
-			return false;
-		}
-
-		/* all dimensions of the neighborhood have to be equal to be able to use
-		   MapNeighborhoodNativeType */
-		Neighborhood<I> neighborhood =
-			shape.neighborhoodsRandomAccessible(getInput()).randomAccess().get();
-		final long dimension0 = neighborhood.dimension(0);
-
-		for (int i = 1; i < neighborhood.numDimensions(); ++i) {
-			if (dimension0 != neighborhood.dimension(i)) {
-				return false;
-			}
-		}
-
-		return true;
+		return getInput().numDimensions() > 0 && getInput().numDimensions() <= 3 &&
+			!shape.isSkippingCenter();
 	}
 
 	// --- Cancelable methods ---

@@ -418,6 +418,22 @@ public interface OpEnvironment extends Contextual {
 		Integer span);
 
 	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+			RectangleShape shape);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+			RectangleShape shape, OutOfBoundsFactory<I, ?> oobFactory);
+
+	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
 	<A, B> Iterable<B> map(Iterable<B> out, Iterable<A> in, ComputerOp<A, B> op);
 
