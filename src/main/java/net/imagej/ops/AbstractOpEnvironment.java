@@ -735,7 +735,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	private <OP extends Op> OP specialOp(final Class<OP> opType,
 		final Class<?> specialType, final Class<?> outType, final Object... args)
 	{
-		final OpRef<?> ref =
+		final OpRef<OP> ref =
 			new OpRef<OP>(Collections.singleton(specialType), opType, args);
 		if (outType != null) ref.setOutputs(Collections.singleton(outType));
 		final Module module = matcher.findModule(this, ref);
