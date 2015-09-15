@@ -30,6 +30,7 @@
 
 package net.imagej.ops;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -52,6 +53,56 @@ public final class OpUtils {
 	}
 
 	// -- Utility methods --
+
+	/**
+	 * Unwraps the delegate object of the given {@link Module}, ensuring it is an
+	 * instance whose type matches the specified {@link OpRef}.
+	 * 
+	 * @param module The module to unwrap.
+	 * @param ref The {@link OpRef} defining the op's type restrictions.
+	 * @return The unwrapped {@link Op}.
+	 * @throws IllegalStateException if the op does not conform to the expected
+	 *           types.
+	 */
+	public static <OP extends Op> OP unwrap(final Module module,
+		final OpRef<OP> ref)
+	{
+		return unwrap(module, ref.getType(), ref.getTypes());
+	}
+
+	/**
+	 * Unwraps the delegate object of the given {@link Module}, ensuring it is an
+	 * instance of the specified type(s).
+	 * 
+	 * @param module The module to unwrap.
+	 * @param type The expected type of {@link Op}.
+	 * @param types Other required types for the op (e.g., {@link ComputerOp}).
+	 * @return The unwrapped {@link Op}.
+	 * @throws IllegalStateException if the op does not conform to the expected
+	 *           types.
+	 */
+	public static <OP extends Op> OP unwrap(final Module module,
+		final Class<OP> type, final Collection<? extends Class<?>> types)
+	{
+		if (module == null) return null;
+		final Object delegate = module.getDelegateObject();
+		final Class<?> opType = type == null ? Op.class : type;
+		if (!opType.isInstance(delegate)) {
+			throw new IllegalStateException(delegate.getClass().getName() +
+				" is not of type " + opType.getName());
+		}
+		if (types != null) {
+			for (final Class<?> t : types) {
+				if (!t.isInstance(delegate)) {
+					throw new IllegalStateException(delegate.getClass().getName() +
+						" is not of type " + t.getName());
+				}
+			}
+		}
+		@SuppressWarnings("unchecked")
+		final OP op = (OP) delegate;
+		return op;
+	}
 
 	/**
 	 * Gets a string describing the given op request.

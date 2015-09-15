@@ -347,7 +347,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Module module = moduleService.createModule(candidate.getInfo());
 
 		// unwrap the created op
-		final Op op = unwrapOp(module);
+		final Op op = OpUtils.unwrap(module, candidate.getRef());
 
 		// inject the op execution environment
 		op.setEnvironment(candidate.ops());
@@ -357,17 +357,6 @@ public class DefaultOpMatchingService extends AbstractService implements
 
 		// populate the inputs and return the module
 		return assignInputs(module, args);
-	}
-
-	/** Extracts the op delegate from the given module instance. */
-	private Op unwrapOp(final Module module) {
-		final Object delegate = module.getDelegateObject();
-		if (!(delegate instanceof Op)) {
-			throw new IllegalStateException("Unexpected op module delegate: " +
-				delegate.getClass().getName());
-		}
-		final Op op = (Op) delegate;
-		return op;
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
