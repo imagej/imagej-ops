@@ -38,7 +38,7 @@ import org.scijava.thread.ThreadService;
  */
 @Plugin(type = net.imagej.ops.Op.class, name = Ops.Map.NAME,
 	priority = Priority.LOW_PRIORITY + 10)
-public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extends NativeType<O>>
+public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extends NativeType<O>, Op extends ComputerOp<?, O>>
 	extends AbstractMapComputer<Iterable<I>, O, ArrayImg<I, ?>, ArrayImg<O, ?>>
 	implements Contingent, Cancelable
 {
