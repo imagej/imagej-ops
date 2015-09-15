@@ -30,8 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
@@ -49,11 +48,8 @@ import org.scijava.plugin.Parameter;
  * @param <C>
  */
 public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	implements Op
+	extends AbstractOp
 {
-
-	@Parameter
-	private OpService ops;
 
 	/**
 	 * input rai. If extension is desired it needs to be done before passing the

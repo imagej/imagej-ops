@@ -30,7 +30,6 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractApplyThresholdImg;
 import net.imglib2.img.Img;
@@ -48,9 +47,6 @@ import org.scijava.plugin.Plugin;
 public class ApplyManualThreshold<T extends RealType<T>> extends
 	AbstractApplyThresholdImg<T, Img<T>>
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter
 	private T threshold;

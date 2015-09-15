@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -64,9 +63,6 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Filter.Gauss
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter
 	private ThreadService threads;
@@ -102,7 +98,7 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	public RandomAccessibleInterval<V> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<V>) ops.create().img(input,
+		return (RandomAccessibleInterval<V>) ops().create().img(input,
 			Util.getTypeFromInterval(input));
 	}
 

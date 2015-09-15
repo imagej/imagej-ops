@@ -226,15 +226,10 @@ public class OpServiceTest extends AbstractOpTest {
 
 	@Plugin(type = Op.class, name = "test.arrr!",
 		priority = Priority.HIGH_PRIORITY)
-	public static class FirstMate implements Op {
+	public static class FirstMate extends NoOp {
 
 		@Parameter(required = false)
 		private EyePatch inventory;
-
-		@Override
-		public void run() {
-			// NB: No implementation needed.
-		}
 	}
 
 	public static interface Booty {
@@ -242,15 +237,10 @@ public class OpServiceTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Op.class, name = "test.arrr!")
-	public static class Captain implements Op {
+	public static class Captain extends NoOp {
 
 		@Parameter
 		private Booty inventory;
-
-		@Override
-		public void run() {
-			// NB: No implementation needed.
-		}
 	}
 
 }

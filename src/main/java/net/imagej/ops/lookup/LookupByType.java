@@ -30,8 +30,8 @@
 
 package net.imagej.ops.lookup;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
@@ -44,10 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Lookup.class, name = Ops.Lookup.NAME)
-public class LookupByType implements Ops.Lookup {
-
-	@Parameter
-	private OpService ops;
+public class LookupByType extends AbstractOp implements Ops.Lookup {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Op op;
@@ -60,7 +57,7 @@ public class LookupByType implements Ops.Lookup {
 
 	@Override
 	public void run() {
-		op = ops.op(type, args);
+		op = ops().op(type, args);
 	}
 
 }

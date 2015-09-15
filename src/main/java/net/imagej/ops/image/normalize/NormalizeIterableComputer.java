@@ -31,7 +31,6 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
@@ -55,9 +54,6 @@ public class NormalizeIterableComputer<T extends RealType<T>> extends
 	Normalize
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(required = false)
 	private T sourceMin;
 
@@ -74,7 +70,7 @@ public class NormalizeIterableComputer<T extends RealType<T>> extends
 	public void compute(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		ops.map(output, input, new NormalizeRealTypeComputer<T>(ops, sourceMin,
+		ops().map(output, input, new NormalizeRealTypeComputer<T>(ops(), sourceMin,
 			sourceMax, targetMin, targetMax, input));
 	}
 }

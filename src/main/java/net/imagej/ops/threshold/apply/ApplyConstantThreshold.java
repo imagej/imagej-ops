@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -57,17 +56,14 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	@Parameter
 	private T threshold;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final Iterable<T> input, final Iterable<BitType> output) {
 		final Object applyThreshold =
-			ops.op(ApplyThresholdComparable.class, BitType.class, threshold
+			ops().op(ApplyThresholdComparable.class, BitType.class, threshold
 				.getClass(), threshold);
 
 		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
-		ops.map(output, input, applyThreshold);
+		ops().map(output, input, applyThreshold);
 	}
 
 }

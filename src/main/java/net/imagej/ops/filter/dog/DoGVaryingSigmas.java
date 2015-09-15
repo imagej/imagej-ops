@@ -30,67 +30,63 @@
 
 package net.imagej.ops.filter.dog;
 
-import java.util.Arrays;
-
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.HighLevelHybridOp;
+import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Util;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * Difference of Gaussians (DoG) implementation where all sigmas are the same in each
- * dimension. Internally running DoG on arrays.
+ * Difference of Gaussians (DoG) implementation where sigmas can vary by
+ * dimension.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME, priority = 1.0)
-public class DefaultDoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
+@Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
+public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Filter.DoG
+	HighLevelHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Ops.Filter.DoG, Contingent
 {
 
 	@Parameter
 	private ThreadService ts;
 
 	@Parameter
-	private OpService ops;
+	private double[] sigmas1;
 
 	@Parameter
-	private double sigma1;
-
-	@Parameter
-	private double sigma2;
+	private double[] sigmas2;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
 	@Override
-	public RandomAccessibleInterval<T> createOutput(
-		final RandomAccessibleInterval<T> input)
+	protected HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		createWorker(final RandomAccessibleInterval<T> t)
 	{
-		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
+		final T type = Util.getTypeFromInterval(t);
+		return RAIs.hybrid(ops(), Ops.Filter.DoG.class, t, //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas1), //
+			RAIs.computer(ops(), Ops.Filter.Gauss.class, t, sigmas2), //
+			RAIs.function(ops(), Ops.Create.Img.class, t), //
+			RAIs.function(ops(), Ops.Create.Img.class, t, type), //
+			fac);
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final double[] sigmas1 = new double[input.numDimensions()];
-		final double[] sigmas2 = new double[input.numDimensions()];
-
-		Arrays.fill(sigmas1, sigma1);
-		Arrays.fill(sigmas2, sigma2);
-
-		ops.run(Ops.Filter.DoG.class, output, input, sigmas1, sigmas2, fac);
+	public boolean conforms() {
+		return sigmas1.length == sigmas2.length &&
+			sigmas1.length == in().numDimensions();
 	}
 }

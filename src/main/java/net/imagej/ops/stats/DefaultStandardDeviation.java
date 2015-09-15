@@ -30,12 +30,14 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Filter.Variance;
 import net.imagej.ops.Ops.Stats.StdDev;
-import net.imagej.ops.Ops.Stats.Variance;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link StdDev} using {@link Variance}
@@ -50,10 +52,17 @@ import net.imglib2.type.numeric.RealType;
 public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatOp<Iterable<I>, O> implements StdDev
 {
+	
+	private FunctionOp<Iterable<I>, O> varianceFunc;
+
+	@Override
+	public void initialize() {
+		varianceFunc = RTs.function(ops(), Variance.class, in());
+	}
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(Math.sqrt(this.ops.stats().variance(input).getRealDouble()));
+		output.setReal(varianceFunc.compute(input).getRealDouble());
 	}
 
 }

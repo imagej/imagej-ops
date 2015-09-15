@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ClusterShade;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -38,7 +37,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -52,17 +50,14 @@ import org.scijava.plugin.Plugin;
 public class DefaultClusterShade<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ClusterShade {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double mux = ((DoubleType) ops.run(CoocMeanX.class,
+		final double mux = ((DoubleType) ops().run(CoocMeanX.class,
 				(Object) matrix)).getRealDouble();
 
-		final double muy = ((DoubleType) ops.run(CoocMeanY.class,
+		final double muy = ((DoubleType) ops().run(CoocMeanY.class,
 				(Object) matrix)).getRealDouble();
 
 		double res = 0;

@@ -30,13 +30,14 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link MinMax}
@@ -46,7 +47,9 @@ import net.imglib2.type.numeric.RealType;
  * @param <I> input type
  */
 @Plugin(type = StatOp.class, name = MinMax.NAME, label = "Statistics: MinMax")
-public class DefaultMinMax<I extends RealType<I>> implements MinMax {
+public class DefaultMinMax<I extends RealType<I>> extends AbstractOp implements
+	MinMax
+{
 
 	@Parameter
 	private Iterable<I> input;

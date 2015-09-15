@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.Correlation;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -40,7 +39,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,25 +53,22 @@ import org.scijava.plugin.Plugin;
 public class DefaultCorrelation<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Correlation {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final int nrGrayLevels = matrix.length;
 
-		final double meanx = ((DoubleType) ops.run(CoocMeanX.class,
+		final double meanx = ((DoubleType) ops().run(CoocMeanX.class,
 				(Object) matrix)).getRealDouble();
 
-		final double meany = ((DoubleType) ops.run(CoocMeanY.class,
+		final double meany = ((DoubleType) ops().run(CoocMeanY.class,
 				(Object) matrix)).getRealDouble();
 
-		final double stdx = ((DoubleType) ops.run(CoocStdX.class,
+		final double stdx = ((DoubleType) ops().run(CoocStdX.class,
 				(Object) matrix)).getRealDouble();
 
-		final double stdy = ((DoubleType) ops.run(CoocStdY.class,
+		final double stdy = ((DoubleType) ops().run(CoocStdY.class,
 				(Object) matrix)).getRealDouble();
 
 		double res = 0;

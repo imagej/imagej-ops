@@ -30,7 +30,9 @@
 package net.imagej.ops;
 
 import java.util.Arrays;
+import java.util.Collection;
 
+import org.scijava.util.MiscUtils;
 
 /**
  * Data structure which identifies an op by name and/or type, along with a list
@@ -48,11 +50,17 @@ public class OpRef<OP extends Op> {
 	/** Name of the op, or null for any name. */
 	private String name;
 
+	/** Types which the op must match. */
+	private Collection<? extends Class<?>> types;
+
 	/** Type of the op, or null for any type. */
 	private Class<OP> type;
 
 	/** Arguments to be passed to the op. */
 	private Object[] args;
+
+	/** The op's output types, or null for no constraints. */
+	private Collection<? extends Class<?>> outputs;
 
 	/**
 	 * Creates a new op reference.
@@ -61,7 +69,7 @@ public class OpRef<OP extends Op> {
 	 * @param args arguments to the op.
 	 */
 	public OpRef(final String name, final Object... args) {
-		this(name, null, args);
+		this(name, null, null, args);
 	}
 
 	/**
@@ -71,20 +79,35 @@ public class OpRef<OP extends Op> {
 	 * @param args arguments to the op.
 	 */
 	public OpRef(final Class<OP> type, final Object... args) {
-		this(null, type, args);
+		this(null, null, type, args);
+	}
+
+	/**
+	 * Creates a new op reference.
+	 * 
+	 * @param types types which the ops must match.
+	 * @param type type of op, or null for any type.
+	 * @param args arguments to the op.
+	 */
+	public OpRef(final Collection<? extends Class<?>> types,
+		final Class<OP> type, final Object... args)
+	{
+		this(null, types, type, args);
 	}
 
 	/**
 	 * Creates a new op reference.
 	 * 
 	 * @param name name of the op, or null for any name.
+	 * @param types types which the ops must match.
 	 * @param type type of op, or null for any type.
 	 * @param args arguments to the op.
 	 */
-	public OpRef(final String name, final Class<OP> type,
-		final Object... args)
+	public OpRef(final String name, final Collection<? extends Class<?>> types,
+		final Class<OP> type, final Object... args)
 	{
 		this.name = name;
+		this.types = types;
 		this.type = type;
 		this.args = args;
 	}
@@ -94,6 +117,11 @@ public class OpRef<OP extends Op> {
 	/** Gets the name of the op. */
 	public String getName() {
 		return name;
+	}
+
+	/** Gets the types with which the op must match. */
+	public Collection<? extends Class<?>> getTypes() {
+		return types;
 	}
 
 	/** Gets the type of the op. */
@@ -106,10 +134,38 @@ public class OpRef<OP extends Op> {
 		return args;
 	}
 
-	/** Gets a label identifying the op's scope (i.e., its type or name). */
+	/** Gets the op's output types, or null for no constraints. */
+	public Collection<? extends Class<?>> getOutputs() {
+		return outputs;
+	}
+
+	/** Sets the op's output types, or null for no constraints. */
+	public void setOutputs(final Collection<? extends Class<?>> outputs) {
+		this.outputs = outputs;
+	}
+
+	/** Gets a label identifying the op's scope (i.e., its name and/or types). */
 	public String getLabel() {
-		if (type != null) return type.getName();
-		return name == null ? "(any)" : name;
+		final StringBuilder sb = new StringBuilder();
+		append(sb, name);
+		if (types != null) {
+			for (final Class<?> t : types) {
+				append(sb, t.getName());
+			}
+		}
+		if (type != null) append(sb, type.getName());
+		return sb.toString();
+	}
+
+	/** Determines whether the op's required types match the given class. */
+	public boolean typesMatch(final Class<?> c) {
+		if (types != null) {
+			for (final Class<?> t : types) {
+				if (!t.isAssignableFrom(c)) return false;
+			}
+		}
+		if (type != null && !type.isAssignableFrom(c)) return false;
+		return true;
 	}
 
 	// -- Object methods --
@@ -136,26 +192,15 @@ public class OpRef<OP extends Op> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OpRef<?> other = (OpRef<?>) obj;
-		if (!Arrays.equals(args, other.args))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
+	public boolean equals(final Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		final OpRef<?> other = (OpRef<?>) obj;
+		if (!MiscUtils.equal(name, other.name)) return false;
+		if (!MiscUtils.equal(types, other.types)) return false;
+		if (!MiscUtils.equal(type, other.type)) return false;
+		if (!Arrays.equals(args, other.args)) return false;
 		return true;
 	}
 
@@ -166,6 +211,14 @@ public class OpRef<OP extends Op> {
 			hash += o.hashCode() * 31;
 		}
 		return type.hashCode() * 31 + hash;
+	}
+
+	// -- Helper methods --
+
+	private void append(final StringBuilder sb, final String s) {
+		if (s == null) return;
+		if (sb.length() > 0) sb.append("/");
+		sb.append(s);
 	}
 
 }

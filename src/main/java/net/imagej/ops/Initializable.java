@@ -28,30 +28,16 @@
  * #L%
  */
 
-package net.imagej.ops.stats;
-
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Min;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imglib2.type.numeric.RealType;
+package net.imagej.ops;
 
 /**
- * {@link Op} to calculate the {@link Min} using {@link MinMax}
+ * Interface for objects which can be initialized.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * @author Curtis Rueden
  */
-@Plugin(type = StatOp.class, name = Min.NAME, label = "Statistics: Min")
-public class DefaultMin<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O> implements Min
-{
+public interface Initializable {
 
-	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(ops.stats().minMax(input).get(0).getRealDouble());
-	}
+	/** Initializes the object. */
+	void initialize();
+
 }

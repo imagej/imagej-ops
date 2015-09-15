@@ -32,17 +32,16 @@ package net.imagej.ops.threshold.localMidGrey;
 
 import java.util.List;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which thresholds against the average of the maximum and
@@ -55,9 +54,6 @@ public class LocalMidGrey<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double c;
 
 	private MinMax minMax;
@@ -66,10 +62,10 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 		// FIXME: use ops.computerop(...) as soon as available
 		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
+			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
+		List<T> outputs = (List<T>) ops().run(minMax, input.getB());
 		final double minValue = outputs.get(0).getRealDouble();
 		final double maxValue = outputs.get(1).getRealDouble();
 

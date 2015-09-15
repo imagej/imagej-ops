@@ -67,6 +67,6 @@ public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
 			}
 		}
 
-		output = ops.create().kernelLog(outType, fac, sigmas, calibration);
+		output = ops().create().kernelLog(outType, fac, sigmas, calibration);
 	}
 }

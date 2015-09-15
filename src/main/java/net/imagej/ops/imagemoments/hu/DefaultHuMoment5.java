@@ -30,14 +30,14 @@
 
 package net.imagej.ops.imagemoments.hu;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.HuMoment5;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link HuMoment5}.
@@ -56,13 +56,13 @@ public class DefaultHuMoment5<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
 		double n03 =
-			ops.imagemoments().normalizedCentralMoment03(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment03(input).getRealDouble();
 		double n12 =
-			ops.imagemoments().normalizedCentralMoment12(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment12(input).getRealDouble();
 		double n21 =
-			ops.imagemoments().normalizedCentralMoment21(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment21(input).getRealDouble();
 		double n30 =
-			ops.imagemoments().normalizedCentralMoment30(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment30(input).getRealDouble();
 
 		output.setReal((n30 - 3 * n12) * (n30 + n12) *
 			(Math.pow(n30 + n12, 2) - 3 * Math.pow(n21 + n03, 2)) + (3 * n21 - n03) *

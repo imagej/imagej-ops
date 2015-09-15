@@ -30,8 +30,6 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment30;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
@@ -39,6 +37,8 @@ import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link CentralMoment30}.
@@ -56,8 +56,8 @@ public class DefaultCentralMoment30<I extends RealType<I>, O extends RealType<O>
 
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = ops.imagemoments().moment00(input).getRealDouble();
-		final double moment10 = ops.imagemoments().moment10(input).getRealDouble();
+		final double moment00 = ops().imagemoments().moment00(input).getRealDouble();
+		final double moment10 = ops().imagemoments().moment10(input).getRealDouble();
 		final double centerX = moment10 / moment00;
 
 		double centralmoment30 = 0;

@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
@@ -39,7 +38,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,9 +53,6 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
 {
 
-	@Parameter
-	private OpService ops;
-
 	private long[] paddedSize;
 
 	private long[] fftSize;
@@ -68,7 +63,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.filter().fftSize(inputSize, paddedSize, fftSize, true, true);
+		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, true);
 
 	}
 
@@ -78,7 +73,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops.filter().fftSize(inputSize, paddedSize, fftSize, true, false);
+		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, false);
 
 	}
 
@@ -97,6 +92,6 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 
 	@Override
 	public void compute(final I input, final Img<ComplexFloatType> output) {
-		ops.filter().fft(output, input, getOBF(), paddedSize);
+		ops().filter().fft(output, input, getOBF(), paddedSize);
 	}
 }

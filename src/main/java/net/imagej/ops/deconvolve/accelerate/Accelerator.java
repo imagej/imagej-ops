@@ -31,8 +31,8 @@
 package net.imagej.ops.deconvolve.accelerate;
 
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
 import net.imglib2.img.Img;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * Interface for classes that are used to accelerate iterative algorithms. 

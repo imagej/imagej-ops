@@ -31,7 +31,6 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -56,9 +55,6 @@ import org.scijava.plugin.Parameter;
 public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends AbstractHybridOp<Img<I>, Img<O>>
 {
-
-	@Parameter
-	private OpService ops;
 
 	/**
 	 * the kernel (psf)

@@ -30,6 +30,7 @@
 
 package net.imagej.ops.create.integerType;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
 import net.imglib2.type.logic.BitType;
@@ -50,12 +51,11 @@ import org.scijava.plugin.Plugin;
  * Create an IntegerType with at least maxValue maximum
  *
  * @author Christian Dietz (University of Konstanz)
- * @param <I> any IntegerType
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Ops.Create.IntegerType.class, name = Ops.Create.IntegerType.NAME)
-public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
-	Output<IntegerType>
+public class DefaultCreateIntegerType extends AbstractOp implements
+	Ops.Create.IntegerType, Output<IntegerType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
@@ -98,7 +98,7 @@ public class DefaultCreateIntegerType implements Ops.Create.IntegerType,
 	}
 
 	@Override
-	public IntegerType getOutput() {
+	public IntegerType out() {
 		return output;
 	}
 

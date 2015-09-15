@@ -30,9 +30,6 @@
 
 package net.imagej.ops.imagemoments;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
@@ -54,9 +51,6 @@ public abstract class AbstractImageMomentOp<I extends RealType<I>, O extends Rea
 	ImageMomentOp<IterableInterval<I>, O>, Contingent
 {
 
-	@Parameter(type = ItemIO.INPUT)
-	protected OpService ops;
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public O createOutput(IterableInterval<I> input) {
@@ -65,6 +59,6 @@ public abstract class AbstractImageMomentOp<I extends RealType<I>, O extends Rea
 
 	@Override
 	public boolean conforms() {
-		return 2 == getInput().numDimensions();
+		return 2 == in().numDimensions();
 	}
 }

@@ -68,7 +68,7 @@ public class NamespacePreprocessor extends AbstractPreprocessorPlugin {
 		T defaultValue = null;
 		
 		if (Namespace.class.isAssignableFrom(item.getType())) {
-			defaultValue = (T) nsService.getInstance((Class<? extends Namespace>)item.getType());
+			defaultValue = (T) nsService.create((Class<? extends Namespace>)item.getType());
 		}
 		if (defaultValue == null) return;
 

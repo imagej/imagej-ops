@@ -30,6 +30,8 @@
 
 package net.imagej.ops;
 
+import java.util.Random;
+
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
@@ -40,8 +42,6 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
-
-import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -162,4 +162,12 @@ public abstract class AbstractOpTest {
 
 		return img;
 	}
+
+	public static class NoOp extends AbstractOp {
+		@Override
+		public void run() {
+			// NB: No implementation needed.
+		}
+	}
+
 }

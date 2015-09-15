@@ -30,7 +30,7 @@
 
 package net.imagej.ops;
 
-import org.scijava.plugin.AbstractSingletonService;
+import org.scijava.plugin.AbstractPTService;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
@@ -41,8 +41,19 @@ import org.scijava.service.Service;
  */
 @Plugin(type = Service.class)
 public class DefaultNamespaceService extends
-	AbstractSingletonService<Namespace> implements NamespaceService
+	AbstractPTService<Namespace> implements NamespaceService
 {
+
+	// -- Namespace methods --
+
+	@Override
+	public <NS extends Namespace> NS create(final Class<NS> pluginClass,
+		final OpEnvironment ops)
+	{
+		final NS namespace = create(pluginClass);
+		namespace.setEnvironment(ops);
+		return namespace;
+	}
 
 	// -- PTService methods --
 

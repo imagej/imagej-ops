@@ -315,9 +315,9 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// Then we can pass Types here instead of Class instances.
 		// final Object[] argTypes = method.getGenericParameterTypes();
 		final Object[] argTypes = method.getParameterTypes();
-		final OpRef<Op> ref = new OpRef<Op>(qName, null, argTypes);
+		final OpRef<Op> ref = new OpRef<Op>(qName, argTypes);
 		final CommandInfo info = commandService.getCommand(opType);
-		final OpCandidate<Op> candidate = new OpCandidate<Op>(ref, info);
+		final OpCandidate<Op> candidate = new OpCandidate<Op>(ops, ref, info);
 
 		// check input types
 		if (!inputTypesMatch(candidate)) {

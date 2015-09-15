@@ -30,7 +30,6 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
@@ -60,9 +59,6 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 	Ops.Deconvolve.RichardsonLucy
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * max number of iterations
 	 */
@@ -90,9 +86,9 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
+		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			output.factory(), getInput(), getKernel(), nonCirculant, accelerate);
+			output.factory(), in(), getKernel(), nonCirculant, accelerate);
 
 	}
 

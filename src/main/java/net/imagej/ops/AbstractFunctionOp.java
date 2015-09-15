@@ -38,7 +38,9 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
+public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
+	implements FunctionOp<I, O>
+{
 
 	// -- Parameters --
 
@@ -52,13 +54,14 @@ public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
 
 	@Override
 	public void run() {
-		out = compute(getInput());
+		initialize();
+		out = compute(in());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public I getInput() {
+	public I in() {
 		return in;
 	}
 
@@ -70,7 +73,7 @@ public abstract class AbstractFunctionOp<I, O> implements FunctionOp<I, O> {
 	// -- Output methods --
 
 	@Override
-	public O getOutput() {
+	public O out() {
 		return out;
 	}
 

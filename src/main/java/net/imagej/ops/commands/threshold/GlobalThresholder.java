@@ -32,6 +32,7 @@ package net.imagej.ops.commands.threshold;
 
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axis;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.threshold.ComputeThreshold;
@@ -50,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Command.class, menuPath = "Image > Threshold > Apply Threshold")
-public class GlobalThresholder<T extends RealType<T>> implements Op {
+public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
 
     @Parameter
     private ComputeThreshold<ImgPlus<T>,T> method;

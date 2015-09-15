@@ -31,9 +31,6 @@
 package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for forward fft implementations.
@@ -43,8 +40,5 @@ import org.scijava.plugin.Parameter;
 public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends Iterable<T>>
 	extends AbstractHybridOp<I, O>
 {
-
-	@Parameter
-	private OpService ops;
 
 }

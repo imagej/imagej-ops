@@ -116,10 +116,11 @@ public class CreateKernelTest extends AbstractOpTest {
 
 		assertEquals(gaussianKernel.dimension(1), 31);
 		assertEquals(gaussianKernel2.dimension(1), 31);
-		assertEquals(gaussianKernel2.dimension(1), 31);
+		assertEquals(gaussianKernel3.dimension(1), 31);
 
 		final Img<FloatType> logKernel =
-			ops.create().kernelLog(new FloatType(), new ArrayImgFactory(), sigmas);
+			ops.create().kernelLog(new FloatType(), new ArrayImgFactory<FloatType>(),
+				sigmas);
 
 		// no factory
 		final Img<FloatType> logKernel2 =
@@ -131,8 +132,7 @@ public class CreateKernelTest extends AbstractOpTest {
 
 		assertEquals(logKernel.dimension(1), 27);
 		assertEquals(logKernel2.dimension(1), 27);
-		assertEquals(logKernel2.dimension(1), 27);
-
+		assertEquals(logKernel3.dimension(1), 27);
 	}
 
 }

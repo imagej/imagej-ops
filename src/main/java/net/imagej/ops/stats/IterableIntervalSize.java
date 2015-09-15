@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Size;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Size} directly.
@@ -53,7 +53,7 @@ public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public void compute(IterableInterval<I> input, O output) {
+	public void compute(final IterableInterval<I> input, final O output) {
 		output.setReal(input.size());
 	}
 

@@ -42,7 +42,7 @@ package net.imagej.ops;
  * @see HybridOp
  * @see InplaceOp
  */
-public interface FunctionOp<I, O> extends Op, Input<I>, Output<O>, Threadable {
+public interface FunctionOp<I, O> extends SpecialOp<I, O> {
 
 	/**
 	 * Compute the output given some input.

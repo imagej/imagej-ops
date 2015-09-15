@@ -34,7 +34,6 @@ import java.util.Iterator;
 
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
@@ -64,9 +63,6 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	private ThreadService threads;
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private StructuringElement se;
 
 	@Parameter(required = false)
@@ -90,13 +86,13 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 		createOutput(final RandomAccessibleInterval<T> input)
 	{
 		// HACK: For Java 6 compiler.
-		return ops.create().<L, I> imgLabeling(input);
+		return ops().create().<L, I> imgLabeling(input);
 	}
 
 	@Override
 	public boolean conforms() {
-		if (getOutput() == null) return true;
-		return Intervals.equalDimensions(getInput(), getOutput());
+		if (out() == null) return true;
+		return Intervals.equalDimensions(in(), out());
 	}
 
 	/*

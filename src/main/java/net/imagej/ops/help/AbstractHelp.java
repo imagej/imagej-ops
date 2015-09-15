@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpCandidate;
 import net.imagej.ops.OpUtils;
@@ -48,7 +49,7 @@ import org.scijava.plugin.Parameter;
  *
  * @author Curtis Rueden
  */
-public abstract class AbstractHelp implements Ops.Help {
+public abstract class AbstractHelp extends AbstractOp implements Ops.Help {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String help;

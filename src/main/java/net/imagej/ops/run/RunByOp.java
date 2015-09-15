@@ -30,8 +30,8 @@
 
 package net.imagej.ops.run;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
@@ -44,10 +44,7 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Run.class, name = Ops.Run.NAME)
-public class RunByOp implements Ops.Run {
-
-	@Parameter
-	private OpService ops;
+public class RunByOp extends AbstractOp implements Ops.Run {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Object output;
@@ -60,7 +57,7 @@ public class RunByOp implements Ops.Run {
 
 	@Override
 	public void run() {
-		output = ops.run(op, args);
+		output = ops().run(op, args);
 	}
 
 }

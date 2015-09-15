@@ -33,7 +33,6 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -54,9 +53,6 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
 		CooccurrenceMatrix, Contingent {
 
-	@Parameter
-	private OpService ops;
-
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
 	private int nrGreyLevels;
 
@@ -72,7 +68,7 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
 		final Cursor<T> cursor = input.cursor();
-		final List<T> minMax = ops.stats().minMax(input);
+		final List<T> minMax = ops().stats().minMax(input);
 
 		double localMin = minMax.get(0).getRealDouble();
 		double localMax = minMax.get(1).getRealDouble();
@@ -132,6 +128,6 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() == 3 && orientation.isCompatible(3);
+		return in().numDimensions() == 3 && orientation.isCompatible(3);
 	}
 }

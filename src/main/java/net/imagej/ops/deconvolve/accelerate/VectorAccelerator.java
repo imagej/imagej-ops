@@ -30,8 +30,6 @@
 
 package net.imagej.ops.deconvolve.accelerate;
 
-import org.scijava.plugin.Parameter;
-
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -40,6 +38,8 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * Vector Accelerator implements acceleration scheme described in Acceleration

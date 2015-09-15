@@ -30,7 +30,7 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
 import net.imglib2.Dimensions;
@@ -51,12 +51,9 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME)
-public class DefaultCreateImg<T> implements
-	Ops.Create.Img, Output<Img<T>>
+public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
+	Output<Img<T>>
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<T> output;
@@ -77,7 +74,7 @@ public class DefaultCreateImg<T> implements
 		if (outType == null) {
 			// HACK: For Java 6 compiler.
 			@SuppressWarnings("rawtypes")
-			final NativeType o = ops.create().nativeType();
+			final NativeType o = ops().create().nativeType();
 			final T result = (T) o;
 			outType = result;
 		}
@@ -97,13 +94,13 @@ public class DefaultCreateImg<T> implements
 					}
 					catch (final IncompatibleTypeException e) {
 						// FIXME: outType may not be a NativeType, but imgFactory needs one.
-						fac = (ImgFactory<T>) ops.create().imgFactory(dims, outType);
+						fac = (ImgFactory<T>) ops().create().imgFactory(dims, outType);
 					}
 				}
 			}
 			else {
 				// FIXME: outType may not be a NativeType, but imgFactory needs one.
-				fac = (ImgFactory<T>) ops.create().imgFactory(dims, outType);
+				fac = (ImgFactory<T>) ops().create().imgFactory(dims, outType);
 			}
 		}
 
@@ -111,7 +108,7 @@ public class DefaultCreateImg<T> implements
 	}
 
 	@Override
-	public Img<T> getOutput() {
+	public Img<T> out() {
 		return output;
 	}
 

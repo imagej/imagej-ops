@@ -30,12 +30,8 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
@@ -44,6 +40,9 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using Niblacks thresholding method.
@@ -60,9 +59,6 @@ public class LocalNiblack<T extends RealType<T>> extends
 	@Parameter
 	private double k;
 
-	@Parameter
-	private OpService ops;
-
 	private ComputerOp<Iterable<T>, DoubleType> mean;
 
 	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
@@ -73,9 +69,9 @@ public class LocalNiblack<T extends RealType<T>> extends
 		if (stdDeviation == null) {
 			// TODO: Ensure the mean is the mean used by stdDeviation
 			// FIXME: use ops.computerop(...) as soon as available
-			mean = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Mean.class,
+			mean = (ComputerOp<Iterable<T>, DoubleType>) ops().op(Mean.class,
 					new DoubleType(), input.getB());
-			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops.op(
+			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops().op(
 					StdDev.class, new DoubleType(), input.getB());
 		}
 

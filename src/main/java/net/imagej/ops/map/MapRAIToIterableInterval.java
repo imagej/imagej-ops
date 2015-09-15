@@ -74,6 +74,6 @@ public class MapRAIToIterableInterval<A, B> extends
 
 	@Override
 	public boolean conforms() {
-		return Intervals.equalDimensions(getOutput(), getInput());
+		return Intervals.equalDimensions(out(), in());
 	}
 }

@@ -28,30 +28,28 @@
  * #L%
  */
 
-package net.imagej.ops.stats;
-
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Max;
-import net.imagej.ops.Ops.Stats.MinMax;
-import net.imglib2.type.numeric.RealType;
+package net.imagej.ops;
 
 /**
- * {@link Op} to calculate the {@link Max} using {@link MinMax}
+ * Abstract superclass for {@link ComputerOp} implementations.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * @author Curtis Rueden
  */
-@Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max")
-public class DefaultMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O> implements Max
-{
+public abstract class AbstractOp implements Op {
+
+	/** The op's execution environment. */
+	private OpEnvironment ops;
+
+	// -- Environmental methods --
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(ops.stats().minMax(input).get(1).getRealDouble());
+	public OpEnvironment ops() {
+		return ops;
 	}
+
+	@Override
+	public void setEnvironment(final OpEnvironment ops) {
+		this.ops = ops;
+	}
+
 }

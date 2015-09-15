@@ -30,14 +30,14 @@
 
 package net.imagej.ops.imagemoments.hu;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.HuMoment1;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link HuMoment1}.
@@ -56,9 +56,9 @@ public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
 		double n20 =
-			ops.imagemoments().normalizedCentralMoment20(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment20(input).getRealDouble();
 		double n02 =
-			ops.imagemoments().normalizedCentralMoment02(input).getRealDouble();
+			ops().imagemoments().normalizedCentralMoment02(input).getRealDouble();
 
 		output.setReal(n20 + n02);
 	}

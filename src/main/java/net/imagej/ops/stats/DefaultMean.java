@@ -30,15 +30,17 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Max;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.Size;
 import net.imagej.ops.Ops.Stats.Sum;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Max} using {@link Sum} and {@link Size}
@@ -53,10 +55,20 @@ import net.imglib2.type.numeric.RealType;
 public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatOp<Iterable<I>, O> implements Mean
 {
+	
+	private FunctionOp<Iterable<I>, O> sumFunc;
+	
+	private FunctionOp<Iterable<I>, O> areaFunc;
+
+	@Override
+	public void initialize() {
+		sumFunc = RTs.function(ops(), Sum.class, in());
+		areaFunc = RTs.function(ops(), Size.class, in());
+	}
 
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(this.ops.stats().sum(input).getRealDouble() /
-			this.ops.stats().size(input).getRealDouble());
+		output.setReal(sumFunc.compute(input).getRealDouble() /
+			areaFunc.compute(input).getRealDouble());
 	}
 }

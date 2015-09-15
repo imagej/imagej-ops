@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.SumVariance;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
@@ -37,7 +36,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -51,17 +49,15 @@ import org.scijava.plugin.Plugin;
 public class DefaultSumVariance<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements SumVariance {
 
-	@Parameter
-	private OpService ops;
-
+	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,
+		final double[] pxplusy = (double[]) ops().run(CoocPXPlusY.class,
 				(Object) matrix);
 		final int nrGrayLevels = matrix.length;
-		final double average = ((DoubleType) ops.haralick().sumaverage(input,
-				numGreyLevels, distance, orientation)).getRealDouble();
+		final double average = ops().haralick().sumaverage(input,
+				numGreyLevels, distance, orientation).getRealDouble();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {
