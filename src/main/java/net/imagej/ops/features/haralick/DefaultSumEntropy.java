@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.SumEntropy;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
@@ -53,11 +54,18 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
 
+	private FunctionOp<double[][], double[]> coocPXPlusFunc;
+	
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocPXPlusFunc = ops().function(CoocPXPlusY.class, double[].class, double[][].class);
+	}
+	
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
-		final double[] pxplusy = (double[]) ops().run(CoocPXPlusY.class,
-				(Object) matrix);
+		final double[] pxplusy = coocPXPlusFunc.compute(matrix);
 		final int nrGrayLevels = matrix.length;
 
 		double res = 0;

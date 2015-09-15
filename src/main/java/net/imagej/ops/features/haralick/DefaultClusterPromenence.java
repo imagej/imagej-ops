@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ClusterPromenence;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -48,11 +49,17 @@ import org.scijava.plugin.Plugin;
  *
  */
 @Plugin(type = HaralickFeature.class, label = "Haralick: Cluster Promenence", name = Haralick.ClusterPromenence.NAME)
-public class DefaultClusterPromenence<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements ClusterPromenence {
+public class DefaultClusterPromenence<T extends RealType<T>> extends AbstractHaralickFeature<T>
+		implements ClusterPromenence {
 
-	public DoubleType createOutput(final double[][] input) {
-		return new DoubleType();
+	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
 	}
 
 	@Override
@@ -61,10 +68,8 @@ public class DefaultClusterPromenence<T extends RealType<T>> extends
 
 		final int nrGrayLevels = matrix.length;
 
-		final double mux = ((DoubleType) ops().run(CoocMeanX.class,
-				(Object) matrix)).getRealDouble();
-		final double muy = ((DoubleType) ops().run(CoocMeanY.class,
-				(Object) matrix)).getRealDouble();
+		final double mux = coocMeanXFunc.compute(matrix).getRealDouble();
+		final double muy = coocMeanYFunc.compute(matrix).getRealDouble();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

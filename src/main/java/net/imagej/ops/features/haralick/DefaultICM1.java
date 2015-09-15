@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ICM1;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
@@ -49,13 +50,21 @@ import org.scijava.plugin.Plugin;
 public class DefaultICM1<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ICM1 {
 
+	private FunctionOp<double[][], double[]> coocHXYFunc;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocHXYFunc = ops().function(CoocHXY.class, double[].class, double[][].class);
+	}
+	
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
+		
 		double res = 0;
 
-		final double[] coochxy = (double[]) ops().run(CoocHXY.class,
-				(Object) matrix);
+		final double[] coochxy = coocHXYFunc.compute(matrix);
 
 		res = (ops().haralick()
 				.entropy(input, numGreyLevels, distance, orientation).get() - coochxy[2])

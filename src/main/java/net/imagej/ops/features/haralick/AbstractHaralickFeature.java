@@ -27,10 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
 import net.imglib2.IterableInterval;
@@ -40,14 +43,13 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract class for Haralick2DFeatures.
+ * Abstract class for HaralickFeatures.
  * 
  * @author Christian Dietz, University of Konstanz
- *
  * @param <T>
  */
 public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
-	AbstractHybridOp<IterableInterval<T>, DoubleType> implements
+	AbstractHybridOp<IterableInterval<T>, DoubleType>implements
 	HaralickFeature<T>, Contingent
 {
 
@@ -60,9 +62,17 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 	@Parameter
 	protected MatrixOrientation orientation;
 
+	private FunctionOp<IterableInterval<T>, double[][]> coocFunc;
+
 	@Override
 	public DoubleType createOutput(final IterableInterval<T> input) {
 		return new DoubleType();
+	}
+
+	@Override
+	public void initialize() {
+		coocFunc = ops().function(CooccurrenceMatrix.class, double[][].class, in(),
+			numGreyLevels, distance, orientation);
 	}
 
 	/**
@@ -72,8 +82,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 	 * @return the {@link CooccurrenceMatrix2D}
 	 */
 	protected double[][] getCooccurrenceMatrix(final IterableInterval<T> input) {
-		return ops().image().cooccurrencematrix(input, numGreyLevels,
-			distance, orientation);
+		return coocFunc.compute(input);
 	}
 
 	@Override

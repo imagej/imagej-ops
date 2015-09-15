@@ -29,10 +29,11 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imglib2.type.numeric.real.DoubleType;
-
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * NB: Helper class. Internal usage only.
@@ -43,15 +44,23 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CoocStdX.class)
 public class CoocStdX extends AbstractFunctionOp<double[][], DoubleType> {
 
+	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private FunctionOp<double[][], double[]> coocPXFunc;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
+	}
+	
 	@Override
 	public DoubleType compute(double[][] input) {
 
 		double res = 0;
 
-		final double meanx = ((DoubleType) ops().run(CoocMeanX.class,
-				(Object) in())).getRealDouble();
-		final double[] px = (double[]) ops().run(CoocPX.class,
-				(Object) in());
+		final double meanx = coocMeanXFunc.compute(input).get();
+		final double[] px = coocPXFunc.compute(input);
 
 		for (int i = 0; i < px.length; i++) {
 			res += ((i - meanx) * (i - meanx)) * px[i];
