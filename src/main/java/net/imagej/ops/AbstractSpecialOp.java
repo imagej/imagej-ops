@@ -30,6 +30,12 @@
 
 package net.imagej.ops;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
+import org.scijava.util.ClassUtils;
+import org.scijava.util.GenericUtils;
+
 /**
  * Abstract base class for {@link SpecialOp} implementations.
  * 
@@ -44,6 +50,34 @@ public abstract class AbstractSpecialOp<I, O> extends AbstractOp implements
 	@Override
 	public void initialize() {
 		// NB: Do nothing by default.
+	}
+
+	// -- Internal methods --
+
+	/**
+	 * Gets the class of a particular field.
+	 * 
+	 * @param value The field value, or null if not set.
+	 * @param baseClass The class containing the input field.
+	 * @param fieldName The name of the input field.
+	 * @return The class of the field in question.
+	 */
+	protected <T> Class<? extends T> type(final T value, final Class<?> baseClass,
+		final String fieldName)
+	{
+		if (value != null) {
+			// input value is currently set; use its actual type
+			@SuppressWarnings("unchecked")
+			final Class<? extends T> type = (Class<? extends T>) value.getClass();
+			return type;
+		}
+		// input value is not set; derive a class from the generic type
+		final Field f = ClassUtils.getField(baseClass, "in");
+		final List<Class<?>> classes = GenericUtils.getFieldClasses(f, getClass());
+		if (classes == null || classes.isEmpty()) return null;
+		@SuppressWarnings("unchecked")
+		final Class<? extends T> type = (Class<? extends T>) classes.get(0);
+		return type;
 	}
 
 }

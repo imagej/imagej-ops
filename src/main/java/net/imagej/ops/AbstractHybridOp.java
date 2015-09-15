@@ -77,6 +77,11 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 	}
 
 	@Override
+	public Class<? extends I> inType() {
+		return type(in, AbstractHybridOp.class, "in");
+	}
+
+	@Override
 	public void setInput(final I input) {
 		in = input;
 	}
@@ -86,6 +91,11 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 	@Override
 	public O out() {
 		return out;
+	}
+
+	@Override
+	public Class<? extends O> outType() {
+		return type(out, AbstractHybridOp.class, "out");
 	}
 
 	// -- Threadable methods --

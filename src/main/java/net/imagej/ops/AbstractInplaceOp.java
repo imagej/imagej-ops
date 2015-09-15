@@ -63,6 +63,11 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 	}
 
 	@Override
+	public Class<? extends A> inType() {
+		return type(arg, AbstractInplaceOp.class, "arg");
+	}
+
+	@Override
 	public void setInput(final A input) {
 		arg = input;
 	}
@@ -72,6 +77,11 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 	@Override
 	public A out() {
 		return arg;
+	}
+
+	@Override
+	public Class<? extends A> outType() {
+		return type(arg, AbstractInplaceOp.class, "arg");
 	}
 
 	// -- ComputerOp methods --

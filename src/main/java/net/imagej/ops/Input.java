@@ -41,6 +41,8 @@ public interface Input<I> {
 
 	I in();
 
+	Class<? extends I> inType();
+
 	void setInput(I input);
 
 }

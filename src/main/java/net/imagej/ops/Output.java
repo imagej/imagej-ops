@@ -45,4 +45,6 @@ public interface Output<O> {
 
 	O out();
 
+	Class<? extends O> outType();
+
 }
