@@ -46,6 +46,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -636,23 +637,19 @@ public class CreateNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Create.NativeType.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
-	public
-		<T extends NativeType<T>> T nativeType() {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class);
-		return result;
+	@OpMethod(op = net.imagej.ops.create.nativeType.CreateDoubleType.class)
+	public DoubleType nativeType() {
+		return (DoubleType) ops().run(
+			net.imagej.ops.create.nativeType.CreateDoubleType.class);
 	}
 
-	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
-	public
-		<T extends NativeType<T>> T nativeType(final Class<T> type) {
+	@OpMethod(
+		op = net.imagej.ops.create.nativeType.CreateNativeTypeFromClass.class)
+	public <T extends NativeType<T>> T nativeType(final Class<T> type) {
 		@SuppressWarnings("unchecked")
 		final T result =
 			(T) ops().run(
-				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class, type);
+				net.imagej.ops.create.nativeType.CreateNativeTypeFromClass.class, type);
 		return result;
 	}
 

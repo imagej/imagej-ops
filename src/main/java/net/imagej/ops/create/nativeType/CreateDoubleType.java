@@ -41,55 +41,28 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the "create.nativeType" op.
+ * Creates a {@link DoubleType} from scratch.
  *
  * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Create.NativeType.class, name = Ops.Create.NativeType.NAME)
-public class DefaultCreateNativeType<T extends NativeType<T>> extends
-	AbstractOp implements Ops.Create.NativeType, Output<T>
+public class CreateDoubleType extends
+	AbstractOp implements Ops.Create.NativeType, Output<DoubleType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private T output;
-
-	@Parameter(required = false)
-	private Class<T> type;
+	private DoubleType out;
 
 	@Override
 	public void run() {
-		if (type != null) output = createTypeFromClass();
-		else output = createTypeFromScratch();
+		out = new DoubleType();
 	}
 
 	@Override
-	public T out() {
-		return output;
-	}
-
-	// -- Helper methods --
-
-	private T createTypeFromClass() {
-		try {
-			return type.newInstance();
-		}
-		catch (final InstantiationException exc) {
-			throw new IllegalArgumentException(exc);
-		}
-		catch (final IllegalAccessException exc) {
-			throw new IllegalStateException(exc);
-		}
-	}
-
-	private T createTypeFromScratch() {
-		// NB: No type given; we can only guess.
-		// HACK: For Java 6 compiler.
-		final Object o = new DoubleType();
-		@SuppressWarnings("unchecked")
-		final T t = (T) o;
-		return t;
+	public DoubleType out() {
+		return out;
 	}
 
 }
