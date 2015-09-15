@@ -767,6 +767,34 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	default <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final UnaryComputerOp<Iterable<I>, O> op, final RectangleShape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result = (ArrayImg<O, ?>) run(
+			net.imagej.ops.Ops.Map.class, out, in, op, shape);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	default
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final UnaryComputerOp<Iterable<I>, O> op, final RectangleShape shape,
+		final OutOfBoundsFactory<I, ?> oobFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result = (ArrayImg<O, ?>) run(
+			net.imagej.ops.Ops.Map.class, out, in, op, shape, oobFactory);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
 	default <EI, EO> Iterable<EO> map(final Iterable<EO> out,
 		final Iterable<EI> in, final UnaryComputerOp<EI, EO> op)

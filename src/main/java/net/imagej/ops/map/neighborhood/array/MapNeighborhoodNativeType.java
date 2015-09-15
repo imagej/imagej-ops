@@ -6,6 +6,8 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.AbstractMapComputer;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.type.NativeType;
@@ -35,8 +37,17 @@ public class MapNeighborhoodNativeType<I extends NativeType<I>, O extends Native
 	implements Contingent
 {
 
+	/**
+	 * Span of the centered rectangle shape to use.
+	 */
 	@Parameter
 	private int span;
+
+	/**
+	 * Interval for input and output images to constrain interation to.
+	 */
+	@Parameter(required = false)
+	private Interval interval;
 
 	@Override
 	public void compute(final ArrayImg<I, ?> input, final ArrayImg<O, ?> output) {
@@ -44,16 +55,33 @@ public class MapNeighborhoodNativeType<I extends NativeType<I>, O extends Native
 		final O out = output.firstElement();
 
 		final int width = (int) input.dimension(0);
-		final int height = (int) input.dimension(1);
-		final int depth = Math.max(0, (int) input.dimension(2));
+		final int height =
+			(input.numDimensions() > 1) ? (int) input.dimension(1) : 1;
+		final int depth =
+			(input.numDimensions() > 2) ? (int) input.dimension(2) : 1;
+
+		final Interval i = (interval == null) ? input : interval;
+			
+		final int minX = (int) i.min(0);
+		final int minY = (i.numDimensions() > 1) ? (int) i.min(1) : 0;
+		final int minZ = (i.numDimensions() > 2) ? (int) i.min(2) : 0;
+
+		final int maxX = (int) i.max(0);
+		final int maxY = (i.numDimensions() > 1) ? (int) i.max(1) : 0;
+		final int maxZ = (i.numDimensions() > 2) ? (int) i.max(2) : 0;
+
+		final int skipX = width - (maxX - minX + 1);
+		final int skipY = width * (height - (maxY - minY + 1));
 
 		final ComputerOp<Iterable<I>, O> op = getOp();
 
-		int index;
-
-		for (int z = 0; z < depth; ++z) {
-			for (int y = 0; y < height; ++y) {
-				for (int x = 0; x < width; ++x) {
+		int index = minX + minY * width + minZ * height * width;
+		in.updateIndex(index);
+		out.updateIndex(index);
+		
+		for (int z = minZ; z <= maxZ; ++z) {
+			for (int y = minY; y <= maxY; ++y) {
+				for (int x = minX; x <= maxX; ++x) {
 					// save the current index, since it will be changed by the
 					// NeighborhoodIterable. Increment to save doing that later.
 					index = in.getIndex() + 1;
@@ -67,8 +95,36 @@ public class MapNeighborhoodNativeType<I extends NativeType<I>, O extends Native
 					in.updateIndex(index);
 					out.incIndex();
 				}
+				in.incIndex(skipX);
+				out.incIndex(skipX);
 			}
+			in.incIndex(skipY);
+			out.incIndex(skipY);
 		}
+	}
+
+	/**
+	 * @return The interval which constraints iteration or <code>null</code>, if
+	 *         none is set.
+	 */
+	public Interval getInterval() {
+		return interval;
+	}
+
+	/**
+	 * Set the interval which constraints iteration.
+	 */
+	public void setInterval(Interval i) {
+		interval = i;
+	}
+
+	/**
+	 * Convenience method to set the interval which constraints iteration.
+	 * 
+	 * @see #setInterval(Interval)
+	 */
+	public void setInterval(long[] min, long[] max) {
+		interval = new FinalInterval(min, max);
 	}
 
 	@Override
