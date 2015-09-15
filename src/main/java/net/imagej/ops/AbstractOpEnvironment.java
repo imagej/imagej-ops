@@ -186,8 +186,9 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result =
-			(IterableInterval<O>) run(net.imagej.ops.convert.ConvertIterableInterval.class, out,
-				in, pixConvert);
+			(IterableInterval<O>) run(
+				net.imagej.ops.convert.ConvertIterableInterval.class, out, in,
+				pixConvert);
 		return result;
 	}
 
@@ -227,7 +228,6 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 			(String) run(net.imagej.ops.help.HelpForNamespace.class, namespace);
 		return result;
 	}
-
 
 	@Override
 	public String help() {
@@ -269,8 +269,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second)
+	public <A, B, C> C join(final C out, final A in,
+		final ComputerOp<A, B> first, final ComputerOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -280,8 +280,9 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second, final BufferFactory<A, B> bufferFactory)
+	public <A, B, C> C join(final C out, final A in,
+		final ComputerOp<A, B> first, final ComputerOp<B, C> second,
+		final BufferFactory<A, B> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -308,8 +309,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
-				ops, bufferFactory);
+			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in, ops,
+				bufferFactory);
 		return result;
 	}
 
@@ -425,8 +426,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
 			(IterableInterval<B>) run(
-				net.imagej.ops.map.MapIterableIntervalToView.class, input, op,
-				type);
+				net.imagej.ops.map.MapIterableIntervalToView.class, input, op, type);
 		return result;
 	}
 
@@ -494,7 +494,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op,
+				shape);
 		return result;
 	}
 
@@ -507,7 +508,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out, in, func, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out,
+				in, func, shape);
 		return result;
 	}
 
@@ -538,10 +540,9 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
-	public
-		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
-			final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
-			final CenterAwareComputerOp<I, O> op, final int span)
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final CenterAwareComputerOp<I, O> op, final int span)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<O, ?> result =

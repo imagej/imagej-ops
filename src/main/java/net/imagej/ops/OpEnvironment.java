@@ -297,7 +297,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	<A, B, C> C join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second);
+	<A, B, C> C
+		join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
