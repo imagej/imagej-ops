@@ -4,8 +4,8 @@ package net.imagej.ops.map.neighborhood.array;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.AbstractMapComputer;
@@ -36,7 +36,7 @@ import org.scijava.thread.ThreadService;
  * @see MapNeighborhoodWithCenterNativeType
  * @see MapNeighborhood
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME,
+@Plugin(type = net.imagej.ops.Op.class, name = Ops.Map.NAME,
 	priority = Priority.LOW_PRIORITY + 10)
 public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extends NativeType<O>>
 	extends AbstractMapComputer<Iterable<I>, O, ArrayImg<I, ?>, ArrayImg<O, ?>>
@@ -134,7 +134,8 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 			intervals =
 				new FinalInterval[] {
 					/* front */
-					new FinalInterval(new long[] { 0, 0, 0 }, new long[] { max0, max1, span }),
+					new FinalInterval(new long[] { 0, 0, 0 }, new long[] { max0, max1,
+						span }),
 					/* back */
 					new FinalInterval(new long[] { 0, 0, dim2 - span }, new long[] {
 						max0, max1, max2 }),
@@ -148,8 +149,8 @@ public class MapNeighborhoodNativeTypeExtended<I extends NativeType<I>, O extend
 					new FinalInterval(new long[] { 0, spanPlus1, spanPlus1 }, new long[] {
 						span, maxSafe1, maxSafe2 }),
 					/* right */
-					new FinalInterval(new long[] { dim0 - span, spanPlus1, spanPlus1 }, new long[] {
-						max0, maxSafe1, maxSafe2 }) };
+					new FinalInterval(new long[] { dim0 - span, spanPlus1, spanPlus1 },
+						new long[] { max0, maxSafe1, maxSafe2 }) };
 			/* center */
 			center =
 				new FinalInterval(new long[] { spanPlus1, spanPlus1, spanPlus1 },
