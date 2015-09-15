@@ -29,6 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.Correlation;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -53,23 +54,31 @@ import org.scijava.plugin.Plugin;
 public class DefaultCorrelation<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Correlation {
 
+	// required functions
+	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private FunctionOp<double[][], DoubleType> coocStdYFunc;
+	private FunctionOp<double[][], DoubleType> coocStdXFunc;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
+		coocStdXFunc = ops().function(CoocStdX.class, DoubleType.class, double[][].class);
+		coocStdYFunc = ops().function(CoocStdY.class, DoubleType.class, double[][].class);
+	}
+	
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final int nrGrayLevels = matrix.length;
 
-		final double meanx = ((DoubleType) ops().run(CoocMeanX.class,
-				(Object) matrix)).getRealDouble();
-
-		final double meany = ((DoubleType) ops().run(CoocMeanY.class,
-				(Object) matrix)).getRealDouble();
-
-		final double stdx = ((DoubleType) ops().run(CoocStdX.class,
-				(Object) matrix)).getRealDouble();
-
-		final double stdy = ((DoubleType) ops().run(CoocStdY.class,
-				(Object) matrix)).getRealDouble();
+		final double meanx = coocMeanXFunc.compute(matrix).get();
+		final double meany = coocMeanYFunc.compute(matrix).get();
+		final double stdx = coocStdXFunc.compute(matrix).get();
+		final double stdy = coocStdYFunc.compute(matrix).get();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

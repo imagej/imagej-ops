@@ -27,8 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.Variance;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
@@ -40,34 +42,46 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Implementation of Variance Haralick Feature
  * 
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
- *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Variance", name = Haralick.Variance.NAME)
+@Plugin(type = HaralickFeature.class, label = "Haralick: Variance",
+	name = Haralick.Variance.NAME)
 public class DefaultVariance<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements Variance {
+	AbstractHaralickFeature<T>implements Variance
+{
+
+	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void initialize() {
+		super.initialize();
+		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class,
+			double[][].class);
+		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class,
+			double[][].class);
+	}
+
+	@Override
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double mux = ((DoubleType) ops().run(CoocMeanX.class,
-				(Object) matrix)).getRealDouble();
+		final double mux = coocMeanXFunc.compute(matrix).getRealDouble();
 
-		final double muy = ((DoubleType) ops().run(CoocMeanY.class,
-				(Object) matrix)).getRealDouble();
+		final double muy = coocMeanYFunc.compute(matrix).getRealDouble();
 
 		final int nrGreyLevel = matrix.length;
 
 		double result = 0.0;
 		for (int i = 0; i < nrGreyLevel; i++) {
 			for (int j = 0; j < nrGreyLevel; j++) {
-				result += (((i - mux) * (i - mux)) * matrix[i][j] + ((j - muy) * (j - muy))
-						* matrix[i][j]);
+				result += (((i - mux) * (i - mux)) * matrix[i][j] + ((j - muy) * (j -
+					muy)) * matrix[i][j]);
 			}
 		}
 
