@@ -62,15 +62,8 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	@Parameter(required = false)
 	private Dimensions dims;
 
-	@Parameter(required = false)
-	private T outType;
-
 	@Override
 	public void run() {
-		if (outType == null) {
-			outType = ops().create().<T> nativeType();
-		}
-
 		output =
 			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
 				? new ArrayImgFactory<T>() : new CellImgFactory<T>();
