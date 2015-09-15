@@ -51,6 +51,7 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -512,32 +513,6 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
-		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
-		final CenterAwareComputerOp<I, O> op, final Integer span)
-	{
-		@SuppressWarnings("unchecked")
-		final ArrayImg<O, ?> result =
-			(ArrayImg<O, ?>) run(
-				net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class,
-				out, in, op, span);
-		return result;
-	}
-
-	@Override
-	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
-		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
-		final ComputerOp<Iterable<I>, O> op, final Integer span)
-	{
-		@SuppressWarnings("unchecked")
-		final ArrayImg<O, ?> result =
-			(ArrayImg<O, ?>) run(
-				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
-				out, in, op, span);
-		return result;
-	}
-
-	@Override
-	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
 		ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
 		RectangleShape shape)
 	{
@@ -559,6 +534,47 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 			(ArrayImg<O, ?>) run(
 				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class,
 				out, in, op, shape, oobFactory);
+		return result;
+	}
+
+	@Override
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+			final CenterAwareComputerOp<I, O> op, final int span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class,
+				out, in, op, span);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final ComputerOp<Iterable<I>, O> op, final int span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
+				out, in, op, span);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?>
+		map(final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+			final ComputerOp<Iterable<I>, O> op, final int span,
+			final Interval interval)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
+				out, in, op, span, interval);
 		return result;
 	}
 
