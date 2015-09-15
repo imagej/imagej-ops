@@ -92,12 +92,19 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final List<Module> matches = findMatches(candidates);
 
 		if (matches.size() == 1) {
-			// a single match: return it
+			// a single match: initialize and return it
 			if (log.isDebug()) {
 				log.debug("Selected '" + ref.getLabel() + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
-			return matches.get(0);
+			final Module m = matches.get(0);
+
+			// initialize the op, if appropriate
+			if (m.getDelegateObject() instanceof Initializable) {
+				((Initializable) m.getDelegateObject()).initialize();
+			}
+
+			return m;
 		}
 
 		final String analysis = OpUtils.matchInfo(candidates, matches);

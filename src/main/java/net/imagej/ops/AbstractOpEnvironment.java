@@ -122,28 +122,22 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <I, O, OP extends Op> ComputerOp<I, O> computer(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
 		final Object[] args = args2(outType, in, otherArgs);
-		@SuppressWarnings("unchecked")
-		final ComputerOp<I, O> op =
-			(ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
-		op.initialize();
-		return op;
+		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <I, O, OP extends Op> ComputerOp<I, O> computer(
 		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = args2(out, in, otherArgs);
-		@SuppressWarnings("unchecked")
-		final ComputerOp<I, O> op =
-			(ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
-		op.initialize();
-		return op;
+		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
 	}
 
 	@Override
@@ -157,16 +151,13 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <I, O, OP extends Op> FunctionOp<I, O> function(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
 		final Object[] args = args1(in, otherArgs);
-		@SuppressWarnings("unchecked")
-		final FunctionOp<I, O> op =
-			(FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
-		op.initialize();
-		return op;
+		return (FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
 	}
 
 	@Override
@@ -179,15 +170,12 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
 		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		final Object[] args = args2(outType, in, otherArgs);
-		@SuppressWarnings("unchecked")
-		final HybridOp<I, O> op =
-			(HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
-		op.initialize();
-		return op;
+		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
 	}
 
 	@Override
@@ -209,15 +197,12 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public <A, OP extends Op> InplaceOp<A> inplace(final Class<OP> opType,
 		final A arg, final Object... otherArgs)
 	{
 		final Object[] args = args1(arg, otherArgs);
-		@SuppressWarnings("unchecked")
-		final InplaceOp<A> op =
-			(InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
-		op.initialize();
-		return op;
+		return (InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
 	}
 
 	@Override
