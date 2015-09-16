@@ -33,7 +33,7 @@ package net.imagej.ops.map;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.math.add.AddConstantToNumericType;
+import net.imagej.ops.math.NumericTypeBinaryMath;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -57,7 +57,7 @@ public class MapViewTest extends AbstractOpTest {
 		final long[] dims = new long[] { 10, 10 };
 		in = generateByteTestImg(false, dims);
 		op =
-			ops.op(AddConstantToNumericType.class, null, NumericType.class,
+			ops.op(NumericTypeBinaryMath.Add.class, null, NumericType.class,
 				new ByteType((byte) 10));
 	}
 

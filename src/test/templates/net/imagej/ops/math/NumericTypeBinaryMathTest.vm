@@ -49,17 +49,17 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Test;
 
 /**
- * Tests the {@link RealBinaryMath} ops.
+ * Tests the {@link NumericTypeBinaryMath} ops.
  *
  * @author Aparna Pal
  * @author Curtis Rueden
  */
-public class RealBinaryMathTest extends AbstractOpTest {
+public class NumericTypeBinaryMathTest extends AbstractOpTest {
 
 	final double aValue = 6.0;
 	final double bValue = 2.0;
 #foreach ($test in $tests)
-#set ($className = "RealBinaryMath.$test.op")
+#set ($className = "NumericTypeBinaryMath.$test.op")
 #foreach ($type in $types)
 
 	/** Tests {@link $className} with {@link $type} arguments. */

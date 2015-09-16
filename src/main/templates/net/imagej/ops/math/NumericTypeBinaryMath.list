@@ -1,6 +1,6 @@
-# Generated binary arithmetic ops with ImgLib2 RealTypes.
+# Generated binary arithmetic ops with ImgLib2 NumericTypes.
 
-[RealBinaryMath.java]
+[NumericTypeBinaryMath.java]
 ops = ```
 [
 	[name: "Add",      function: "add", aliases: true,  verbs: "adds (+)"],

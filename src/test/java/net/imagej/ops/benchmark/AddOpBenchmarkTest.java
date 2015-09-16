@@ -36,11 +36,11 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableToRAIParallel;
 import net.imagej.ops.map.MapParallel;
+import net.imagej.ops.math.NumericTypeBinaryMath;
 import net.imagej.ops.math.add.AddConstantToArrayByteImage;
 import net.imagej.ops.math.add.AddConstantToArrayByteImageP;
 import net.imagej.ops.math.add.AddConstantToImageFunctional;
 import net.imagej.ops.math.add.AddConstantToImageInPlace;
-import net.imagej.ops.math.add.AddConstantToNumericType;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -75,13 +75,13 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void fTestIterableIntervalMapperP() {
 		ops.run(MapIterableToIterableParallel.class, out, in, ops.op(
-			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTestDefaultMapperP() {
 		ops.run(MapIterableToRAIParallel.class, out, in, ops.op(
-			AddConstantToNumericType.class, null, NumericType.class, new ByteType((byte) 10)));
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test

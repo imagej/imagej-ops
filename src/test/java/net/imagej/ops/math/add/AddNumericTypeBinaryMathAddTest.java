@@ -28,55 +28,39 @@
  * #L%
  */
 
-package net.imagej.ops.math;
+package net.imagej.ops.math.add;
 
-import net.imagej.ops.AbstractHybridOp;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.math.NumericTypeBinaryMath;
+import net.imglib2.type.numeric.ARGBDoubleType;
 
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * Generated arithmetic ops with ImgLib2 {@link RealType}s.
- *
- * @author Aparna Pal
+ * Tests {@link net.imagej.ops.math.NumericTypeBinaryMath.Add}.
+ * 
+ * @author Johannes Schindelin
+ * @author Curtis Rueden
  */
-public final class RealBinaryMath {
+public class AddNumericTypeBinaryMathAddTest extends AbstractOpTest {
 
-	private RealBinaryMath() {
-		// NB: Prevent instantiation of utility class.
+	private final double DELTA = 0.00005;
+
+	@Test
+	public void testAdd() {
+		final ARGBDoubleType a = new ARGBDoubleType(255, 128, 128, 128);
+		final ARGBDoubleType b = new ARGBDoubleType(255, 75, 35, 45);
+		final Op op = ops.op(Ops.Math.Add.class, a, a, b);
+		assertSame(NumericTypeBinaryMath.Add.class, op.getClass());
+
+		op.run();
+		assertEquals(203.0, a.getR(), DELTA);
+		assertEquals(163.0, a.getG(), DELTA);
+		assertEquals(173.0, a.getB(), DELTA);
 	}
-#foreach ($op in $ops)
-#set ($iface = "Ops.Math.$op.name")
-
-	/** Op that $op.verbs two RealType values. */
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
-	public static class $op.name<T extends RealType<T>>
-		extends AbstractHybridOp<T, T> implements $iface
-	{
-
-		@Parameter
-		private T b;
-
-		@Override
-		public T createOutput(T input) {
-			return input.createVariable();
-		}
-
-		@Override
-		public void compute(final T input, final T output) {
-			if(output== b)
-			{
-				output.$!{op.function}(input);
-			}
-			else{
-				output.set(input);
-				output.$!{op.function}(b);
-			}
-		}
-	}
-#end
 
 }
