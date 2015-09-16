@@ -1,5 +1,5 @@
 
-package net.imagej.ops.cachedopenvironment;
+package net.imagej.ops.cached;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +14,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops.Stats.Min;
-import net.imagej.ops.featuresets.CachedOpEnvironment;
+import net.imagej.ops.cached.CachedOpEnvironment;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;

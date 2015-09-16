@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.featuresets;
+package net.imagej.ops.cached;
 
 import java.util.Collection;
 
