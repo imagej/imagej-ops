@@ -55,6 +55,11 @@ public class CachedOpEnvironment extends CustomOpEnvironment implements
 
 	@Parameter
 	private CacheService cs;
+	
+	public CachedOpEnvironment(final OpEnvironment parent)
+	{
+		this(parent, null);
+	}
 
 	public CachedOpEnvironment(final OpEnvironment parent,
 		final Collection<? extends CommandInfo> prioritizedInfos)
