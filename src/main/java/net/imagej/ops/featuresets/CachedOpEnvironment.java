@@ -32,6 +32,7 @@ package net.imagej.ops.featuresets;
 
 import java.util.Collection;
 
+import org.scijava.Priority;
 import org.scijava.cache.CacheService;
 import org.scijava.command.CommandInfo;
 import org.scijava.plugin.Parameter;
@@ -65,6 +66,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment implements
 		final Collection<? extends CommandInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
+		for(final CommandInfo info : prioritizedInfos){
+			info.setPriority(Priority.FIRST_PRIORITY);
+		}
 	}
 
 	@Override
@@ -123,7 +127,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment implements
 
 		return hash;
 	}
-
+	
 	/**
 	 * Wraps a {@link FunctionOp} and caches the results. New inputs will result
 	 * in re-computation of the result.
