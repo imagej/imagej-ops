@@ -32,6 +32,12 @@ package net.imagej.ops;
 
 import java.util.Random;
 
+import org.junit.After;
+import org.junit.Before;
+import org.scijava.Context;
+import org.scijava.cache.CacheService;
+import org.scijava.plugin.Parameter;
+
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
@@ -42,11 +48,6 @@ import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.Intervals;
-
-import org.junit.After;
-import org.junit.Before;
-import org.scijava.Context;
-import org.scijava.plugin.Parameter;
 
 /**
  * Base class for {@link Op} unit testing.
@@ -71,7 +72,7 @@ public abstract class AbstractOpTest {
 
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class);
+		return new Context(OpService.class, OpMatchingService.class, CacheService.class);
 	}
 
 	/** Sets up a SciJava context with {@link OpService}. */
