@@ -39,7 +39,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generated arithmetic ops with primitive types.
+ * Generated arithmetic ops with ImgLib2 {@link RealType}s.
  *
  * @author Aparna Pal
  */
