@@ -45,18 +45,18 @@ public class CopyImgLabelingTest extends AbstractOpTest {
 		while (inc.hasNext()) {
 			inc.next().add(Math.random() > 0.5 ? "A" : "B");
 		}
-
+		
 	}
 
 	@Test
 	public void copyImgLabeling() {
-		ImgLabeling<String, IntType> copy = (ImgLabeling<String, IntType>) ops.copy().imgLabeling(
+		ImgLabeling<String, IntType> copy = (ImgLabeling<String, IntType>) ops.run(CopyImgLabeling.class,
 			input);
 		assertNotNull(copy);
 
 		Cursor<LabelingType<String>> inCursor = input.cursor();
 		for (final LabelingType<String> type : copy) {
-			type.equals(inCursor.next());
+			assertEquals(inCursor.next(), type);
 		}
 	}
 }
