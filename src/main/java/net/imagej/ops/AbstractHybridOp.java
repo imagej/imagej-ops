@@ -64,7 +64,6 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 
 	@Override
 	public void run() {
-		initialize();
 		if (out() == null) out = compute(in());
 		else compute(in(), out());
 	}
