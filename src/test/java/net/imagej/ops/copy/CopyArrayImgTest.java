@@ -1,6 +1,7 @@
 
 package net.imagej.ops.copy;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
@@ -41,7 +42,7 @@ public class CopyArrayImgTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void copyRAINoOutputTest() {
+	public void copyArrayImgNoOutputTest() {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<UnsignedByteType> output =
 			(RandomAccessibleInterval<UnsignedByteType>) ops.run(CopyArrayImg.class,
@@ -53,12 +54,12 @@ public class CopyArrayImgTest extends AbstractOpTest {
 		while (inc.hasNext()) {
 			inc.fwd();
 			outRA.setPosition(inc);
-			assertTrue(outRA.get().get() == inc.get().get());
+			assertEquals(inc.get().get(), outRA.get().get());
 		}
 	}
 
 	@Test
-	public void copyRAIWithOutputTest() {
+	public void copyArrayImgWithOutputTest() {
 		final Img<UnsignedByteType> output =
 			input.factory().create(input, input.firstElement());
 
