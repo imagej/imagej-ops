@@ -30,7 +30,10 @@
 
 package net.imagej.ops.copy;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -39,6 +42,7 @@ import net.imglib2.img.array.ArrayImg;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.IntegerType;
 
 /**
@@ -46,6 +50,7 @@ import net.imglib2.type.numeric.IntegerType;
  *
  * @author Christian Dietz, University of Konstanz
  */
+@Plugin(type = Namespace.class)
 public class CopyNamespace extends AbstractNamespace {
 
 	@Override
@@ -177,4 +182,19 @@ public class CopyNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.copy.CopyType.class)
+	public <T extends Type<T>> T type(final T in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.copy.CopyType.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.copy.CopyType.class)
+	public <T extends Type<T>> T type(final T out, final T in) {
+		@SuppressWarnings("unchecked")
+		final T result =
+			(T) ops().run(net.imagej.ops.copy.CopyType.class, out, in);
+		return result;
+	}
 }
