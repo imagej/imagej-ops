@@ -60,7 +60,7 @@ public class DefaultMoment01<I extends RealType<I>, O extends RealType<O>>
 
 		double moment01 = 0;
 
-		Cursor<I> cur = input.localizingCursor();
+		final Cursor<I> cur = input.localizingCursor();
 		while (cur.hasNext()) {
 			cur.fwd();
 			double y = cur.getDoublePosition(1);

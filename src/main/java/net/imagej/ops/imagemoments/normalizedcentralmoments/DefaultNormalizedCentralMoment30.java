@@ -30,8 +30,12 @@
 
 package net.imagej.ops.imagemoments.normalizedcentralmoments;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
+import net.imagej.ops.Ops.ImageMoments.CentralMoment30;
 import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment30;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -53,12 +57,20 @@ public class DefaultNormalizedCentralMoment30<I extends RealType<I>, O extends R
 	extends AbstractImageMomentOp<I, O> implements NormalizedCentralMoment30
 {
 
+	private FunctionOp<IterableInterval<I>, O> centralMoment00Func;
+
+	private FunctionOp<IterableInterval<I>, O> centralMoment30Func;
+
+	@Override
+	public void initialize() {
+		centralMoment00Func = RTs.function(ops(), CentralMoment00.class, in());
+		centralMoment30Func = RTs.function(ops(), CentralMoment30.class, in());
+	}
+
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		double centralMoment00 =
-			ops().imagemoments().centralMoment00(input).getRealDouble();
-		double centralMoment30 =
-			ops().imagemoments().centralMoment30(input).getRealDouble();
+		double centralMoment00 = centralMoment00Func.compute(input).getRealDouble();
+		double centralMoment30 = centralMoment30Func.compute(input).getRealDouble();
 
 		output.setReal(centralMoment30 /
 			Math.pow(centralMoment00, 1 + ((3 + 0) / 2)));

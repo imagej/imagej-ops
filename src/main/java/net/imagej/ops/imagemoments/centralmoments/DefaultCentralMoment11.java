@@ -30,8 +30,14 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment11;
+import net.imagej.ops.Ops.ImageMoments.Moment00;
+import net.imagej.ops.Ops.ImageMoments.Moment01;
+import net.imagej.ops.Ops.ImageMoments.Moment10;
+import net.imagej.ops.Ops.ImageMoments.Moment11;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -53,12 +59,28 @@ public class DefaultCentralMoment11<I extends RealType<I>, O extends RealType<O>
 	extends AbstractImageMomentOp<I, O> implements CentralMoment11
 {
 
+	private FunctionOp<IterableInterval<I>, O> moment00Func;
+
+	private FunctionOp<IterableInterval<I>, O> moment01Func;
+
+	private FunctionOp<IterableInterval<I>, O> moment10Func;
+
+	private FunctionOp<IterableInterval<I>, O> moment11Func;
+
+	@Override
+	public void initialize() {
+		moment00Func = RTs.function(ops(), Moment00.class, in());
+		moment01Func = RTs.function(ops(), Moment01.class, in());
+		moment10Func = RTs.function(ops(), Moment10.class, in());
+		moment11Func = RTs.function(ops(), Moment11.class, in());
+	}
+
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = ops().imagemoments().moment00(input).getRealDouble();
-		final double moment01 = ops().imagemoments().moment01(input).getRealDouble();
-		final double moment10 = ops().imagemoments().moment10(input).getRealDouble();
-		final double moment11 = ops().imagemoments().moment11(input).getRealDouble();
+		final double moment00 = moment00Func.compute(input).getRealDouble();
+		final double moment01 = moment01Func.compute(input).getRealDouble();
+		final double moment10 = moment10Func.compute(input).getRealDouble();
+		final double moment11 = moment11Func.compute(input).getRealDouble();
 
 		final double centerX = moment10 / moment00;
 

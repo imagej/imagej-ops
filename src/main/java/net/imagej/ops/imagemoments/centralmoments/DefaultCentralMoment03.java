@@ -30,8 +30,12 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment03;
+import net.imagej.ops.Ops.ImageMoments.Moment00;
+import net.imagej.ops.Ops.ImageMoments.Moment01;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
@@ -53,11 +57,21 @@ import org.scijava.plugin.Plugin;
 public class DefaultCentralMoment03<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements CentralMoment03
 {
+	
+	private FunctionOp<IterableInterval<I>, O> moment00Func;
+	private FunctionOp<IterableInterval<I>, O> moment01Func;
+
+	@Override
+	public void initialize() {
+		moment00Func = RTs.function(ops(), Moment00.class, in());
+		moment01Func = RTs.function(ops(), Moment01.class, in());
+	}
 
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = ops().imagemoments().moment00(input).getRealDouble();
-		final double moment01 = ops().imagemoments().moment01(input).getRealDouble();
+		final double moment00 = moment00Func.compute(input).getRealDouble();
+		final double moment01 = moment01Func.compute(input).getRealDouble();
+		
 		final double centerY = moment01 / moment00;
 
 		double centralmoment03 = 0;

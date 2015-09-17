@@ -62,7 +62,7 @@ public class IterableCentralMoment11<I extends RealType<I>, O extends RealType<O
 		double moment10 = 0d;
 		double moment11 = 0d;
 
-		Cursor<I> cursor = input.localizingCursor();
+		final Cursor<I> cursor = input.localizingCursor();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			final double x = cursor.getDoublePosition(0);

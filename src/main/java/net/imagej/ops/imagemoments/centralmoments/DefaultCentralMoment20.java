@@ -30,8 +30,12 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment20;
+import net.imagej.ops.Ops.ImageMoments.Moment00;
+import net.imagej.ops.Ops.ImageMoments.Moment10;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
@@ -54,10 +58,21 @@ public class DefaultCentralMoment20<I extends RealType<I>, O extends RealType<O>
 	extends AbstractImageMomentOp<I, O> implements CentralMoment20
 {
 
+	private FunctionOp<IterableInterval<I>, O> moment00Func;
+
+	private FunctionOp<IterableInterval<I>, O> moment10Func;
+
+	@Override
+	public void initialize() {
+		moment00Func = RTs.function(ops(), Moment00.class, in());
+		moment10Func = RTs.function(ops(), Moment10.class, in());
+	}
+
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = ops().imagemoments().moment00(input).getRealDouble();
-		final double moment10 = ops().imagemoments().moment10(input).getRealDouble();
+		final double moment00 = moment00Func.compute(input).getRealDouble();
+		final double moment10 = moment10Func.compute(input).getRealDouble();
+
 		final double centerX = moment10 / moment00;
 
 		double centralmoment20 = 0;
