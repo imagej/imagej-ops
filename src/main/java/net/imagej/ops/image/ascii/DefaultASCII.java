@@ -30,13 +30,12 @@
 
 package net.imagej.ops.image.ascii;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -70,9 +69,9 @@ public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
 	@Override
 	public void run() {
 		if (min == null || max == null) {
-			final List<T> minMax = ops().stats().minMax(image);
-			if (min == null) min = minMax.get(0);
-			if (max == null) max = minMax.get(1);
+			final Pair<T,T> minMax = ops().stats().minMax(image);
+			if (min == null) min = minMax.getA();
+			if (max == null) max = minMax.getB();
 		}
 		ascii = ascii(image, min, max);
 	}

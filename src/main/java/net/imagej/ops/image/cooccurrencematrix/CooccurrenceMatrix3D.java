@@ -29,14 +29,13 @@
  */
 package net.imagej.ops.image.cooccurrencematrix;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -68,10 +67,10 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
 		final Cursor<T> cursor = input.cursor();
-		final List<T> minMax = ops().stats().minMax(input);
+		final Pair<T,T> minMax = ops().stats().minMax(input);
 
-		double localMin = minMax.get(0).getRealDouble();
-		double localMax = minMax.get(1).getRealDouble();
+		double localMin = minMax.getA().getRealDouble();
+		double localMax = minMax.getB().getRealDouble();
 
 		final int[][][] pixels = new int[(int) input.dimension(2)][(int) input
 				.dimension(1)][(int) input.dimension(0)];

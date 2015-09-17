@@ -30,15 +30,14 @@
 
 package net.imagej.ops.stats;
 
-import java.util.List;
-
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * The stats namespace contains operations related to numerical statistics.
@@ -180,9 +179,9 @@ public class StatsNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.stats.DefaultMinMax.class)
-	public <T extends RealType<T>> List<T> minMax(final Iterable<T> in) {
-		final List<T> result =
-			(List<T>) ops().run(net.imagej.ops.stats.DefaultMinMax.class, in);
+	public <T extends RealType<T>> Pair<T,T> minMax(final Iterable<T> in) {
+		final Pair<T,T> result =
+			(Pair<T,T>) ops().run(net.imagej.ops.stats.DefaultMinMax.class, in);
 		return result;
 	}
 
