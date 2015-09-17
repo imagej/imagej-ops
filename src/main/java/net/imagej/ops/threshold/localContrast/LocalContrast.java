@@ -30,8 +30,6 @@
 
 package net.imagej.ops.threshold.localContrast;
 
-import java.util.List;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
@@ -60,11 +58,11 @@ public class LocalContrast<T extends RealType<T>> extends
 			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops().run(MinMax.class, input.getB());
+		Pair<T,T> outputs = (Pair<T,T>) ops().run(MinMax.class, input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
-		final double diffMin = centerValue - outputs.get(0).getRealDouble();
-		final double diffMax = outputs.get(1).getRealDouble() - centerValue;
+		final double diffMin = centerValue - outputs.getA().getRealDouble();
+		final double diffMax = outputs.getB().getRealDouble() - centerValue;
 
 		// set to background (false) if pixel closer to min value,
 		// and to foreground (true) if pixel closer to max value.

@@ -30,14 +30,13 @@
 
 package net.imagej.ops.image.normalize;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpEnvironment;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 /**
  * Simple {@link ComputerOp} and {@link Converter} to perform a normalization.
@@ -57,15 +56,15 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 		double tmp = 0.0;
 
 		if (sourceMin == null || sourceMax == null) {
-			final List<T> minMax = ops.stats().minMax(input);
+			final Pair<T,T> minMax = ops.stats().minMax(input);
 			if (sourceMin == null) {
-				this.sourceMin = minMax.get(0).getRealDouble();
+				this.sourceMin = minMax.getA().getRealDouble();
 			}
 			else {
 				this.sourceMin = sourceMin.getRealDouble();
 			}
 			if (sourceMax == null) {
-				tmp = minMax.get(1).getRealDouble();
+				tmp = minMax.getB().getRealDouble();
 			}
 			else {
 				tmp = sourceMax.getRealDouble();

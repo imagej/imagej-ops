@@ -30,8 +30,6 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
-import java.util.List;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
@@ -71,9 +69,9 @@ public class LocalBernsen<T extends RealType<T>> extends
 			minMax = ops().op(MinMax.class, input.getB());
 		}
 
-		List<T> outputs = (List<T>) ops().run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
+		Pair<T, T> outputs = (Pair<T,T>) ops().run(minMax, input.getB());
+		final double minValue = outputs.getA().getRealDouble();
+		final double maxValue = outputs.getB().getRealDouble();
 		final double midGrey = (maxValue + minValue) / 2.0;
 
 		if ((maxValue - minValue) < constrastThreshold) {
