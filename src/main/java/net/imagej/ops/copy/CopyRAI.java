@@ -69,7 +69,7 @@ public class CopyRAI<T> extends
 	{
 		// FIXME: Assumption here: Create an Img. I would rather like: Create what
 		// ever is best given the input.
-		return (RandomAccessibleInterval<T>) ops.create().img(input);
+		return (RandomAccessibleInterval<T>) ops.create().img(input, Views.iterable(input).firstElement());
 	}
 
 	@SuppressWarnings("unchecked")
