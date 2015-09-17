@@ -50,7 +50,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
-		implements Ops.Threshold.LocalMedian {
+	implements Ops.Threshold.LocalMedian
+{
 
 	@Parameter
 	private double c;
@@ -58,12 +59,12 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private ComputerOp<Iterable<T>, DoubleType> median;
 
 	@Override
+	public void initialize() {
+		median = ops().computer(Median.class, DoubleType.class, in().getB());
+	}
+
+	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		// FIXME: use ops.computerop(...) as soon as available
-		if (median == null) {
-			median = (ComputerOp<Iterable<T>, DoubleType>) ops().op(Median.class,
-					DoubleType.class, input.getB());
-		}
 
 		final DoubleType m = new DoubleType();
 		median.compute(input.getB(), m);

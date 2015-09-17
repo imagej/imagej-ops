@@ -50,8 +50,9 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale
  */
 @Plugin(type = Op.class)
-public class LocalNiblack<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalNiblack {
+public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
+	implements Ops.Threshold.LocalNiblack
+{
 
 	@Parameter
 	private double c;
@@ -64,16 +65,14 @@ public class LocalNiblack<T extends RealType<T>> extends
 	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+	public void initialize() {
+		//FIXME: make sure Mean is used inStdDev.
+		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
+		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
+	}
 
-		if (stdDeviation == null) {
-			// TODO: Ensure the mean is the mean used by stdDeviation
-			// FIXME: use ops.computerop(...) as soon as available
-			mean = (ComputerOp<Iterable<T>, DoubleType>) ops().op(Mean.class,
-					new DoubleType(), input.getB());
-			stdDeviation = (ComputerOp<Iterable<T>, DoubleType>) ops().op(
-					StdDev.class, new DoubleType(), input.getB());
-		}
+	@Override
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 
 		final DoubleType m = new DoubleType();
 		mean.compute(input.getB(), m);
@@ -81,7 +80,7 @@ public class LocalNiblack<T extends RealType<T>> extends
 		final DoubleType stdDev = new DoubleType();
 		stdDeviation.compute(input.getB(), stdDev);
 
-		output.set(input.getA().getRealDouble() > m.getRealDouble() + k
-				* stdDev.getRealDouble() - c);
+		output.set(input.getA().getRealDouble() > m.getRealDouble() + k * stdDev
+			.getRealDouble() - c);
 	}
 }
