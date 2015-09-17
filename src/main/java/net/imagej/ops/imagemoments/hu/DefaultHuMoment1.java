@@ -30,8 +30,12 @@
 
 package net.imagej.ops.imagemoments.hu;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.HuMoment1;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -53,12 +57,22 @@ public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements HuMoment1
 {
 
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment20Func;
+
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment02Func;
+
+	@Override
+	public void initialize() {
+		normalizedCentralMoment20Func =
+			RTs.function(ops(), NormalizedCentralMoment20.class, in());
+		normalizedCentralMoment02Func =
+			RTs.function(ops(), NormalizedCentralMoment02.class, in());
+	}
+
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		double n20 =
-			ops().imagemoments().normalizedCentralMoment20(input).getRealDouble();
-		double n02 =
-			ops().imagemoments().normalizedCentralMoment02(input).getRealDouble();
+		double n20 = normalizedCentralMoment20Func.compute(input).getRealDouble();
+		double n02 = normalizedCentralMoment02Func.compute(input).getRealDouble();
 
 		output.setReal(n20 + n02);
 	}

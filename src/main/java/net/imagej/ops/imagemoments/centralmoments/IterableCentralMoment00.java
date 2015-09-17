@@ -60,7 +60,7 @@ public class IterableCentralMoment00<I extends RealType<I>, O extends RealType<O
 
 		double moment00 = 0;
 
-		Cursor<I> cur = input.localizingCursor();
+		final Cursor<I> cur = input.localizingCursor();
 		while (cur.hasNext()) {
 			cur.fwd();
 			double val = cur.get().getRealDouble();

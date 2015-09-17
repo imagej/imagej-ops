@@ -30,8 +30,14 @@
 
 package net.imagej.ops.imagemoments.hu;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.HuMoment4;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment03;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment21;
+import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment30;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -53,16 +59,36 @@ public class DefaultHuMoment4<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements HuMoment4
 {
 
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment30Func;
+
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment12Func;
+
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment21Func;
+
+	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment03Func;
+
+	@Override
+	public void initialize() {
+		normalizedCentralMoment30Func =
+			RTs.function(ops(), NormalizedCentralMoment30.class, in());
+		normalizedCentralMoment12Func =
+			RTs.function(ops(), NormalizedCentralMoment12.class, in());
+		normalizedCentralMoment21Func =
+			RTs.function(ops(), NormalizedCentralMoment21.class, in());
+		normalizedCentralMoment03Func =
+			RTs.function(ops(), NormalizedCentralMoment03.class, in());
+	}
+
 	@Override
 	public void compute(final IterableInterval<I> input, final O output) {
-		double n30 =
-			ops().imagemoments().normalizedCentralMoment30(input).getRealDouble();
-		double n12 =
-			ops().imagemoments().normalizedCentralMoment12(input).getRealDouble();
-		double n21 =
-			ops().imagemoments().normalizedCentralMoment21(input).getRealDouble();
-		double n03 =
-			ops().imagemoments().normalizedCentralMoment03(input).getRealDouble();
+		final double n30 =
+			normalizedCentralMoment30Func.compute(input).getRealDouble();
+		final double n12 =
+			normalizedCentralMoment12Func.compute(input).getRealDouble();
+		final double n21 =
+			normalizedCentralMoment21Func.compute(input).getRealDouble();
+		final double n03 =
+			normalizedCentralMoment03Func.compute(input).getRealDouble();
 
 		output.setReal(Math.pow(n30 + n12, 2) + Math.pow(n21 + n03, 2));
 	}
