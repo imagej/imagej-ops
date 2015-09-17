@@ -64,11 +64,12 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private ComputerOp<Iterable<T>, DoubleType> mean;
 
 	@Override
+	public void initialize() {
+			mean =  ops.computer(Mean.class, DoubleType.class, in().getB());
+	}
+	
+	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		//FIXME: use ops.computerop(...) as soon as available
-		if (mean == null) {
-			mean = (ComputerOp<Iterable<T>, DoubleType>) ops.op(Mean.class, DoubleType.class, input.getB());
-		}
 
 		final DoubleType m = new DoubleType();
 

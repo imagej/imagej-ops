@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localContrast;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
@@ -50,15 +51,19 @@ import org.scijava.plugin.Plugin;
 public class LocalContrast<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
-	private MinMax minMax;
+	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc = (FunctionOp)ops().function(MinMax.class, Pair.class, in().getB());
+	}
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops().op(MinMax.class, input.getB());
-		}
 
-		Pair<T,T> outputs = (Pair<T,T>) ops().run(MinMax.class, input.getB());
+		@SuppressWarnings("unchecked")
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
 		final double diffMin = centerValue - outputs.getA().getRealDouble();

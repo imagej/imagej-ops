@@ -30,6 +30,7 @@
 
 package net.imagej.ops.threshold.localMidGrey;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
@@ -49,25 +50,30 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class LocalMidGrey<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey {
+	LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey
+{
 
 	@Parameter
 	private double c;
 
-	private MinMax minMax;
+	private FunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc =
+			(FunctionOp) ops().function(MinMax.class, Pair.class, in().getB());
+	}
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		// FIXME: use ops.computerop(...) as soon as available
-		if (minMax == null) {
-			minMax = ops().op(MinMax.class, input.getB());
-		}
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 
-		Pair<T,T> outputs = (Pair<T,T>) ops().run(minMax, input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
+
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();
 
-		output.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0)
-				- c);
+		output
+			.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) - c);
 	}
 }
