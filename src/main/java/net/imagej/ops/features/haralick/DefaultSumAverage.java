@@ -33,7 +33,6 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.SumAverage;
-import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;

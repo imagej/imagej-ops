@@ -34,14 +34,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.imagej.ops.Namespace;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+
 import org.scijava.Priority;
 import org.scijava.command.CommandInfo;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Namespace;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
 
 /**
  * Gets documentation for the given {@link Namespace}.

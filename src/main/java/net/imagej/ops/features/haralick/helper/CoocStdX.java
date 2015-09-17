@@ -29,11 +29,11 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * NB: Helper class. Internal usage only.
