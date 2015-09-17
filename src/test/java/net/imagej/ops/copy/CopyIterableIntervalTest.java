@@ -1,6 +1,7 @@
 
 package net.imagej.ops.copy;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
@@ -52,7 +53,7 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 		while (inc.hasNext()) {
 			inc.fwd();
 			outRA.setPosition(inc);
-			assertTrue(outRA.get().get() == inc.get().get());
+			assertEquals(inc.get().get(), outRA.get().get(), 0.0);
 		}
 	}
 
@@ -67,7 +68,7 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 		final Cursor<DoubleType> outc = output.cursor();
 
 		while (inc.hasNext()) {
-			assertTrue(outc.next().equals(inc.next()));
+			assertEquals(inc.next().get(), outc.next().get(), 0.0);
 		}
 	}
 }
