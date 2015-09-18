@@ -275,28 +275,33 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 	}
 
-	protected LabelRegion<?> createLabelRegion3D() throws MalformedURLException, IOException {
+	protected LabelRegion<String> createLabelRegion3D() throws MalformedURLException,
+	IOException
+{
 
-		Opener o = new Opener();
-		ImagePlus imp = o.openImage("/home/tibuch/Shape3D.tif");
+	final Opener o = new Opener();
+	final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(
+		"3d_geometric_features_testlabel.tif").getPath());
 
-		ImgLabeling<String, IntType> labeling = new ImgLabeling<String, IntType>(ArrayImgs.ints(100, 100, 100));
+	final ImgLabeling<String, IntType> labeling =
+		new ImgLabeling<String, IntType>(ArrayImgs.ints(104, 102, 81));
 
-		RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
-		Img<FloatType> img = ImageJFunctions.convertFloat(imp);
-		Cursor<FloatType> c = img.cursor();
-		while (c.hasNext()) {
-			FloatType item = c.next();
-			int[] pos = new int[3];
-			c.localize(pos);
-			ra.setPosition(pos);
-			if (item.get() > 0) {
-				ra.get().add("1");
-			}
+	final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
+	final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
+	final Cursor<FloatType> c = img.cursor();
+	while (c.hasNext()) {
+		final FloatType item = c.next();
+		final int[] pos = new int[3];
+		c.localize(pos);
+		ra.setPosition(pos);
+		if (item.get() > 0) {
+			ra.get().add("1");
 		}
-		LabelRegions<String> labelRegions = new LabelRegions<String>(labeling);
-
-		return labelRegions.getLabelRegion("1");
-
 	}
+	final LabelRegions<String> labelRegions = new LabelRegions<String>(
+		labeling);
+
+	return labelRegions.getLabelRegion("1");
+
+}
 }

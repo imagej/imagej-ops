@@ -277,6 +277,23 @@ namespaces = ```
 		  [name: "solidity",	    iface: "Solidity"],
 		  [name: "convexity",	    iface: "Convexity"],
 		  [name: "rugosity",	    iface: "Rugosity"]
+	]],
+	[name: "geometric3d", iface: "Geometric3D", ops: [
+	[name: "convexhull3d",	    iface: "ConvexHull3D"],
+	[name: "Volume",	                iface: "Volume"],
+	[name: "SurfaceArea",             iface: "SurfaceArea"],
+	[name: "SurfacePixel",            iface: "SurfacePixel"],
+	[name: "Compactness",             iface: "Compactness"],
+	[name: "Sphericity",              iface: "Sphericity"],
+	[name: "MainElongation",          iface: "MainElongation"],
+	[name: "MedianElongation",        iface: "MedianElongation"],
+	[name: "ConvexHullSurfaceArea",   iface: "ConvexHullSurfaceArea"],
+	[name: "ConvexHullSurfacePixel",  iface: "ConvexHullSurfacePixel"],
+	[name: "ConvexHullVolume",        iface: "ConvexHullVolume"],
+	[name: "Convexity",               iface: "Convexity"],
+	[name: "Solidity",                iface: "Solidity"],
+	[name: "Rugosity",                iface: "Rugosity"],
+	[name: "Spareness",               iface: "Spareness"]
 	]]
 ]
 ```
