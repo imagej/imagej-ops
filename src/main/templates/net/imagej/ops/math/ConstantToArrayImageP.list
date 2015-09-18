@@ -1,0 +1,20 @@
+# TODO
+# Add comments
+
+[ConstantToArrayImageP.java]
+
+types = ```
+[
+	[name: "Byte",   primitive: "byte"], 
+	[name: "Double", primitive: "double"]
+]
+```
+
+ops = ```
+[
+	[name: "Add",      operator: "+", preposition: "To",   verb: "add constant for"],
+	[name: "Subtract", operator: "-", preposition: "From", verb: "subtract constant from"], 
+	[name: "Multiply", operator: "*", preposition: "By",   verb: "multiply constant for"], 
+	[name: "Divide",   operator: "/", preposition: "By",   verb: "divide constant from"]
+]
+```
