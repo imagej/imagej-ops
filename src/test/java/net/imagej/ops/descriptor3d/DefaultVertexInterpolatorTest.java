@@ -6,7 +6,7 @@ import net.imagej.ops.AbstractOpTest;
 import org.junit.Test;
 
 /**
- * This class tests the {@link BitTypeVertexInterpolator}. 
+ * This class tests the {@link DefaultBitTypeVertexInterpolator}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *

@@ -1,8 +1,10 @@
 package net.imagej.ops.geometric3d;
 
 import static org.junit.Assert.assertEquals;
-import ij.ImagePlus;
-import ij.io.Opener;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import net.imagej.ops.Ops.Geometric3D;
 import net.imagej.ops.Ops.Geometric3D.ConvexHullSurfaceArea;
 import net.imagej.ops.Ops.Geometric3D.ConvexHullSurfacePixel;
@@ -10,19 +12,9 @@ import net.imagej.ops.Ops.Geometric3D.Convexity;
 import net.imagej.ops.Ops.Geometric3D.Rugosity;
 import net.imagej.ops.Ops.Geometric3D.Solidity;
 import net.imagej.ops.features.AbstractFeatureTest;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccess;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgs;
-import net.imglib2.img.display.imagej.ImageJFunctions;
-import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
-import net.imglib2.roi.labeling.LabelRegions;
-import net.imglib2.roi.labeling.LabelingType;
-import net.imglib2.type.numeric.integer.IntType;
-import net.imglib2.type.numeric.real.FloatType;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -39,33 +31,17 @@ import org.junit.Test;
  */
 public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 
-	private static LabelRegion<String> region;
+	private LabelRegion<String> region;
 
-	@BeforeClass
-	public static void createData() {
-
-		final Opener o = new Opener();
-		final ImagePlus imp = o.openImage(AbstractFeatureTest.class
-				.getResource("3d_geometric_features_testlabel.tif").getPath());
-
-		final ImgLabeling<String, IntType> labeling = new ImgLabeling<String, IntType>(
-				ArrayImgs.ints(104, 102, 81));
-
-		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
-		final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
-		final Cursor<FloatType> c = img.cursor();
-		while (c.hasNext()) {
-			final FloatType item = c.next();
-			final int[] pos = new int[3];
-			c.localize(pos);
-			ra.setPosition(pos);
-			if (item.get() > 0) {
-				ra.get().add("1");
-			}
+	@Before
+	public void createData() {
+		try {
+			region = createLabelRegion3D();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		final LabelRegions<String> labelRegions = new LabelRegions<String>(
-				labeling);
-		region = labelRegions.getLabelRegion("1");
 	}
 
 	/**

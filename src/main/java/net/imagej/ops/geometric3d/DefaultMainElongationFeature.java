@@ -5,7 +5,7 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
 import net.imagej.ops.descriptor3d.CovarianceOf2ndMultiVariate3D;
-import net.imagej.ops.descriptor3d.SecondMultiVariate3D;
+import net.imagej.ops.descriptor3d.DefaultSecondMultiVariate3D;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -28,7 +28,7 @@ public class DefaultMainElongationFeature<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		multivar = ops().function(SecondMultiVariate3D.class,
+		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 				CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
 	}
 

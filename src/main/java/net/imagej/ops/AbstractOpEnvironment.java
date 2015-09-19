@@ -40,6 +40,7 @@ import java.util.Map;
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.descriptor3d.Descriptor3DNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 
@@ -709,6 +710,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	@Override
 	public Geometric3DNamespace geometric3d() {
 		return namespace(Geometric3DNamespace.class);
+	}
+	
+	@Override
+	public Descriptor3DNamespace descriptor3d() {
+		return namespace(Descriptor3DNamespace.class);
 	}
 
 	// -- Helper methods --

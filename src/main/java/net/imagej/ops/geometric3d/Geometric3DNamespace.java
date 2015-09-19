@@ -148,7 +148,7 @@ public class Geometric3DNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3DFromMC.class)
 	public <B extends BooleanType<B>> DefaultFacets convexhull3d(
-			final MarchingCubes<B> in) {
+			final IterableRegion<B> in) {
 		final DefaultFacets result = (DefaultFacets) ops().run(
 				net.imagej.ops.descriptor3d.QuickHull3DFromMC.class, in);
 		return result;

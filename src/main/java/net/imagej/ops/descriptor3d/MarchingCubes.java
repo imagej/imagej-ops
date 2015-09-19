@@ -1,15 +1,11 @@
 package net.imagej.ops.descriptor3d;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
+import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Descriptor3D.Polygonize;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -17,6 +13,10 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
 import net.imglib2.view.Views;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * This is a marching cubes implementation. It is inspired by
@@ -27,16 +27,16 @@ import net.imglib2.view.Views;
  *
  * @param <T> BooleanType
  */
-@Plugin(type = Op.class, name = "defaultgeneratefaces")
+@Plugin(type = Op.class, name = Descriptor3D.Polygonize.NAME)
 public class MarchingCubes<T extends BooleanType<T>> extends
 		AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultFacets>
-		implements Polygonize<T, DefaultFacets> {
+		implements Polygonize, FunctionOp<RandomAccessibleInterval<T>, DefaultFacets> {
 
 	@Parameter(type = ItemIO.INPUT, required = false)
 	private double isolevel = 1;
 
 	@Parameter(type = ItemIO.INPUT, required = false)
-	private VertexInterpolator interpolatorClass = new BitTypeVertexInterpolator();
+	private VertexInterpolator interpolatorClass = new DefaultBitTypeVertexInterpolator();
 
 	@Parameter
 	private OpService ops;

@@ -5,6 +5,8 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Descriptor3D.Centroid3D;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
@@ -16,10 +18,10 @@ import net.imglib2.type.BooleanType;
  *
  * @param <B> a Boolean Type
  */
-@Plugin(type = Op.class, name = "centroid3d")
+@Plugin(type = Op.class, name = Descriptor3D.Centroid3D.NAME)
 public class DefaultCentroid3D<B extends BooleanType<B>>
 		extends
-			AbstractFunctionOp<IterableRegion<B>, Vector3D> implements Centroid {
+			AbstractFunctionOp<IterableRegion<B>, Vector3D> implements Centroid3D {
 
 	@Override
 	public Vector3D compute(IterableRegion<B> input) {
