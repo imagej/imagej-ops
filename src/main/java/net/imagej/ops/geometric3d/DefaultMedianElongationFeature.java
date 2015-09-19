@@ -1,20 +1,20 @@
 package net.imagej.ops.geometric3d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
 import net.imagej.ops.descriptor3d.CovarianceOf2ndMultiVariate3D;
+import net.imagej.ops.descriptor3d.SecondMultiVariate3D;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
- * Generic implementation of {@link MedianElongationFeature}. Use
- * {@link FeatureSet} to compile this {@link Op}.
+ * Generic implementation of {@link Geometric3D.MedianElongation}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
@@ -27,6 +27,11 @@ public class DefaultMedianElongationFeature<B extends BooleanType<B>>
 			Geometric3D.MedianElongation {
 
 	private FunctionOp<IterableRegion, CovarianceOf2ndMultiVariate3D> multivar;
+	
+	@Override
+	public void initialize() {
+		multivar = ops().function(SecondMultiVariate3D.class, CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
+	}
 
 	@Override
 	public DoubleType compute(IterableRegion<B> input) {

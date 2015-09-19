@@ -23,7 +23,7 @@ public class DefaultCentroid3D<B extends BooleanType<B>>
 
 	@Override
 	public Vector3D compute(IterableRegion<B> input) {
-		Cursor<Void> c = input.localizingCursor();
+		Cursor<B> c = input.localizingCursor();
 		double x = 0;
 		double y = 0;
 		double z = 0;

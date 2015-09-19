@@ -1,21 +1,17 @@
 package net.imagej.ops.geometric3d;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
-import net.imagej.ops.Ops.Geometric3D.ConvexHullVolume;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.plugin.Plugin;
+
 /**
- * Generic implementation of {@link SolidityFeature}. Use {@link FeatureSet} to
- * compile this {@link Op}.
+ * Generic implementation of {@link Geometric3D.Solidity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

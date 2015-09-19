@@ -1,38 +1,42 @@
 package net.imagej.ops.geometric3d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
 import net.imagej.ops.descriptor3d.CovarianceOf2ndMultiVariate3D;
+import net.imagej.ops.descriptor3d.SecondMultiVariate3D;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
- * Generic implementation of {@link MainElongationFeature}. Use
- * {@link FeatureSet} to compile this {@link Op}.
+ * Generic implementation of {@link Geometric3D.MainElongation}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.MainElongation.NAME, label = "Geometric3D: MainElongation", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultMainElongationFeature<B extends BooleanType<B>>
-		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
-		implements
-			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.MainElongation {
+public class DefaultMainElongationFeature<B extends BooleanType<B>> extends
+		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
+		Geometric3DOp<IterableRegion<B>, DoubleType>,
+		Geometric3D.MainElongation {
 
 	private FunctionOp<IterableRegion, CovarianceOf2ndMultiVariate3D> multivar;
 
 	@Override
+	public void initialize() {
+		multivar = ops().function(SecondMultiVariate3D.class,
+				CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
+	}
+
+	@Override
 	public DoubleType compute(IterableRegion<B> input) {
 		CovarianceOf2ndMultiVariate3D compute = multivar.compute(input);
-		return new DoubleType(
-				Math.sqrt(compute.getEigenvalue(0) / compute.getEigenvalue(1)));
+		return new DoubleType(Math.sqrt(compute.getEigenvalue(0)
+				/ compute.getEigenvalue(1)));
 	}
 
 }
