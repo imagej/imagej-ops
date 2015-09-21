@@ -145,19 +145,4 @@ public class Geometric3DNamespace extends AbstractNamespace {
 				net.imagej.ops.geometric3d.DefaultVolumeFeature.class, in);
 		return result;
 	}
-
-	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3DFromMC.class)
-	public <B extends BooleanType<B>> DefaultFacets convexhull3d(
-			final IterableRegion<B> in) {
-		final DefaultFacets result = (DefaultFacets) ops().run(
-				net.imagej.ops.descriptor3d.QuickHull3DFromMC.class, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3D.class)
-	public DefaultFacets convexhull3d(final HashSet<Vertex> in) {
-		final DefaultFacets result = (DefaultFacets) ops().run(
-				net.imagej.ops.descriptor3d.QuickHull3D.class, in);
-		return result;
-	}
 }

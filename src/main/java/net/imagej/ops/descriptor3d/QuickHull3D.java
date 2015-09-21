@@ -11,7 +11,7 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D.ConvexHull3D;
+import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
 
 /**
  * This quickhull implementation is based on the paper

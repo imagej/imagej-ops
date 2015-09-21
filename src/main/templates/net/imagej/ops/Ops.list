@@ -279,7 +279,6 @@ namespaces = ```
 		  [name: "rugosity",	    iface: "Rugosity"]
 	]],
 	[name: "geometric3d", iface: "Geometric3D", ops: [
-	[name: "convexhull3d",	    iface: "ConvexHull3D"],
 	[name: "Volume",	                iface: "Volume"],
 	[name: "SurfaceArea",             iface: "SurfaceArea"],
 	[name: "SurfacePixel",            iface: "SurfacePixel"],
@@ -296,6 +295,7 @@ namespaces = ```
 	[name: "Spareness",               iface: "Spareness"]
 	]],
 	[name: "descriptor3d", iface: "Descriptor3D", ops: [
+	[name: "convexhull3d",	    iface: "ConvexHull3D"],
 	[name: "BitTypeVertexInterpolator", iface: "BitTypeVertexInterpolator"],
 	[name: "VertexInterpolator",        iface: "VertexInterpolator"],
 	[name: "Centroid3D",                iface: "Centroid3D"],

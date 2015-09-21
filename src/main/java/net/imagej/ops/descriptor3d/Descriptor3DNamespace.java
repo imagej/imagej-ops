@@ -7,6 +7,8 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 
+import java.util.HashSet;
+
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
 
@@ -64,6 +66,21 @@ public class Descriptor3DNamespace extends AbstractNamespace {
 	public <B extends BooleanType<B>> CovarianceOf2ndMultiVariate3D SecondMultiVariate3D(final IterableRegion<B> in) {
 		final CovarianceOf2ndMultiVariate3D result =
 			(CovarianceOf2ndMultiVariate3D) ops().run(net.imagej.ops.descriptor3d.DefaultSecondMultiVariate3D.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3DFromMC.class)
+	public <B extends BooleanType<B>> DefaultFacets convexhull3d(
+			final IterableRegion<B> in) {
+		final DefaultFacets result = (DefaultFacets) ops().run(
+				net.imagej.ops.descriptor3d.QuickHull3DFromMC.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3D.class)
+	public DefaultFacets convexhull3d(final HashSet<Vertex> in) {
+		final DefaultFacets result = (DefaultFacets) ops().run(
+				net.imagej.ops.descriptor3d.QuickHull3D.class, in);
 		return result;
 	}
 }
