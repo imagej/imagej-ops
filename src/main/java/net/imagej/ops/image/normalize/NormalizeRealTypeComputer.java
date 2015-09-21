@@ -54,7 +54,7 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 		final IterableInterval<T> input)
 	{
 		double tmp = 0.0;
-
+		
 		if (sourceMin == null || sourceMax == null) {
 			final Pair<T,T> minMax = ops.stats().minMax(input);
 			if (sourceMin == null) {
@@ -69,7 +69,11 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 			else {
 				tmp = sourceMax.getRealDouble();
 			}
+		} else {
+			this.sourceMin = sourceMin.getRealDouble();
+			tmp = sourceMax.getRealDouble();
 		}
+		
 		if (targetMax == null) {
 			this.targetMax = input.firstElement().getMaxValue();
 		}
