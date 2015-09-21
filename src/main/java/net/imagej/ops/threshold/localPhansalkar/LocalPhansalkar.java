@@ -3,6 +3,7 @@ package net.imagej.ops.threshold.localPhansalkar;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.stats.mean.MeanOp;
+import net.imagej.ops.stats.stdDev.StdDev;
 import net.imagej.ops.stats.variance.VarianceOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
@@ -45,7 +46,7 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	private OpService ops;
 
 	private MeanOp<Iterable<T>, DoubleType> mean;
-	private VarianceOp<T, DoubleType> var;
+	private StdDev<T, DoubleType> stdDeviation;
 
 	private double p = 2.0;
 	private double q = 10.0;
@@ -55,17 +56,17 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 		if (mean == null) {
 			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
 		}
-		if (var == null) {
-			var = ops.op(VarianceOp.class, DoubleType.class, input.getB());
+		if (stdDeviation == null) {
+			stdDeviation = ops.op(StdDev.class, DoubleType.class, input.getB());
 		}
-		
+
 		final DoubleType meanValue = new DoubleType();
 		mean.compute(input.getB(), meanValue);
-		
-		final DoubleType varianceValue = new DoubleType();
-		var.compute(input.getB(), varianceValue);
-		
-		double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue.get()) + k * ((Math.sqrt(varianceValue.get())/r) - 1.0));
+
+		final DoubleType stdDevValue = new DoubleType();
+		stdDeviation.compute(input.getB(), stdDevValue);
+
+		double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue.get()) + k * ((stdDevValue.get()/r) - 1.0));
 		
 		output.set(input.getA().getRealDouble() >= threshold);
 	}
