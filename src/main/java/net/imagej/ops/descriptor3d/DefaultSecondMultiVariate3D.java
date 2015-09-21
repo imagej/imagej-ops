@@ -32,12 +32,12 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 
 	private FunctionOp<IterableRegion, DoubleType> volume;
 	
-	private FunctionOp<IterableRegion, Vector3D> centroid;
+	private FunctionOp<IterableRegion, double[]> centroid;
 
 	@Override
 	public void initialize() {
 		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, IterableRegion.class);
-		centroid = ops().function(DefaultCentroid3D.class, Vector3D.class, IterableRegion.class);
+		centroid = ops().function(DefaultCentroid.class, double[].class, IterableRegion.class);
 	}
 	
 	@Override
@@ -45,10 +45,10 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 		CovarianceOf2ndMultiVariate3D output = new CovarianceOf2ndMultiVariate3D();
 		Cursor<B> c = input.localizingCursor();
 		int[] pos = new int[3];
-		Vector3D computedCentroid = centroid.compute(input);
-		double mX = computedCentroid.getX();
-		double mY = computedCentroid.getY();
-		double mZ = computedCentroid.getZ();
+		double[] computedCentroid = centroid.compute(input);
+		double mX = computedCentroid[0];
+		double mY = computedCentroid[1];
+		double mZ = computedCentroid[2];
 		while (c.hasNext()) {
 			c.next();
 			c.localize(pos);

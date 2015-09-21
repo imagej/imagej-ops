@@ -27,10 +27,10 @@ public class Descriptor3DNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultCentroid3D.class)
-	public <B extends BooleanType<B>> Vector3D Centroid3D(final IterableRegion<B> in) {
-		final Vector3D result =
-			(Vector3D) ops().run(net.imagej.ops.descriptor3d.DefaultCentroid3D.class, in);
+	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultCentroid.class)
+	public <B extends BooleanType<B>> double[] Centroid(final IterableRegion<B> in) {
+		final double[] result =
+			(double[]) ops().run(net.imagej.ops.descriptor3d.DefaultCentroid.class, in);
 		return result;
 	}
 	

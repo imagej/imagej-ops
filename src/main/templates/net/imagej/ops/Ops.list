@@ -280,26 +280,26 @@ namespaces = ```
 	]],
 	[name: "geometric3d", iface: "Geometric3D", ops: [
 	[name: "Volume",	                iface: "Volume"],
-	[name: "SurfaceArea",             iface: "SurfaceArea"],
-	[name: "SurfacePixel",            iface: "SurfacePixel"],
-	[name: "Compactness",             iface: "Compactness"],
-	[name: "Sphericity",              iface: "Sphericity"],
-	[name: "MainElongation",          iface: "MainElongation"],
-	[name: "MedianElongation",        iface: "MedianElongation"],
-	[name: "ConvexHullSurfaceArea",   iface: "ConvexHullSurfaceArea"],
-	[name: "ConvexHullSurfacePixel",  iface: "ConvexHullSurfacePixel"],
-	[name: "ConvexHullVolume",        iface: "ConvexHullVolume"],
-	[name: "Convexity",               iface: "Convexity"],
-	[name: "Solidity",                iface: "Solidity"],
-	[name: "Rugosity",                iface: "Rugosity"],
-	[name: "Spareness",               iface: "Spareness"]
+	[name: "SurfaceArea",               iface: "SurfaceArea"],
+	[name: "SurfacePixel",              iface: "SurfacePixel"],
+	[name: "Compactness",               iface: "Compactness"],
+	[name: "Sphericity",                iface: "Sphericity"],
+	[name: "MainElongation",            iface: "MainElongation"],
+	[name: "MedianElongation",          iface: "MedianElongation"],
+	[name: "ConvexHullSurfaceArea",     iface: "ConvexHullSurfaceArea"],
+	[name: "ConvexHullSurfacePixel",    iface: "ConvexHullSurfacePixel"],
+	[name: "ConvexHullVolume",          iface: "ConvexHullVolume"],
+	[name: "Convexity",                 iface: "Convexity"],
+	[name: "Solidity",                  iface: "Solidity"],
+	[name: "Rugosity",                  iface: "Rugosity"],
+	[name: "Spareness",                 iface: "Spareness"]
 	]],
-	[name: "descriptor3d", iface: "Descriptor3D", ops: [
-	[name: "convexhull3d",	    iface: "ConvexHull3D"],
+	[name: "descriptor3d",              iface: "Descriptor3D", ops: [
+	[name: "convexhull3d",	            iface: "ConvexHull3D"],
 	[name: "BitTypeVertexInterpolator", iface: "BitTypeVertexInterpolator"],
 	[name: "VertexInterpolator",        iface: "VertexInterpolator"],
-	[name: "Centroid3D",                iface: "Centroid3D"],
-	[name: "Polygonize",             iface: "Polygonize"],
+	[name: "Centroid",                  iface: "Centroid"],
+	[name: "Polygonize",                iface: "Polygonize"],
 	[name: "SecondMultiVariate3D",      iface: "SecondMultiVariate3D"]
 	]]
 ]
