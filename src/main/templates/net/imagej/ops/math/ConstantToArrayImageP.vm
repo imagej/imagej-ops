@@ -60,12 +60,12 @@ public final class ConstantToArrayImageP {
 	 * 
 	 * @author Christian Dietz (University of Konstanz)
 	 */
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY + 10)
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY +#if ($type.name == "Double") 21#else 11#end)
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Array${type.name}Image#else##
 Array${type.name}Image${op.preposition}Constant#end##
 P implements $iface {
-
+		
 		@Parameter
 		private OpService opService;
 
