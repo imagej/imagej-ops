@@ -377,4 +377,35 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		return accelerator;
 	}
 
+	// TODO replace with op
+	protected void copy2(RandomAccessibleInterval<O> input,
+		RandomAccessibleInterval<O> output)
+	{
+
+		final Cursor<O> cursorInput = Views.iterable(input).cursor();
+		final Cursor<O> cursorOutput = Views.iterable(output).cursor();
+
+		while (cursorInput.hasNext()) {
+			cursorInput.fwd();
+			cursorOutput.fwd();
+
+			cursorOutput.get().set(cursorInput.get());
+		}
+	}
+
+	// TODO replace with op
+	protected <T extends RealType<T>> void inPlaceMultiply(
+		final Img<T> inputOutput, final Img<T> input)
+	{
+		final Cursor<T> cursorInputOutput = inputOutput.cursor();
+		final Cursor<T> cursorInput = input.cursor();
+
+		while (cursorInputOutput.hasNext()) {
+			cursorInputOutput.fwd();
+			cursorInput.fwd();
+			cursorInputOutput.get().mul(cursorInput.get());
+		}
+
+	}
+
 }
