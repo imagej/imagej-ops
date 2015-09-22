@@ -28,56 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
-public class AddRandomAccessibleIntervalToIterableInterval<T extends NumericType<T>>
-	extends AbstractOp implements Ops.Math.Add, Contingent
-{
+public final class ConstantToArrayImage {
+	private ConstantToArrayImage() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
 
-	@Parameter(type = ItemIO.BOTH)
-	private IterableInterval<T> a;
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
+	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
+Constant${op.preposition}Array${type.name}Image#else##
+Array${type.name}Image${op.preposition}Constant#end extends AbstractOp implements $iface {
 
-	@Parameter
-	private RandomAccessibleInterval<T> b;
+		@Parameter(type = ItemIO.BOTH)
+		private ArrayImg<${type.name}Type, ${type.name}Array> image;
 
-	@Override
-	public void run() {
-		final long[] pos = new long[a.numDimensions()];
-		final Cursor<T> cursor = a.cursor();
-		final RandomAccess<T> access = b.randomAccess();
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			cursor.localize(pos);
-			access.setPosition(pos);
-			cursor.get().add(access.get());
+		@Parameter
+		private ${type.primitive} value;
+
+		@Override
+		public void run() {
+			final ${type.primitive}[] data = image.update(null).getCurrentStorageArray();
+			for (int i = 0; i < data.length; i++) {
+				data[i] ${op.operator}= value;
+			}
 		}
 	}
-
-	@Override
-	public boolean conforms() {
-		int n = a.numDimensions();
-		if (n != b.numDimensions()) return false;
-		long[] dimsA = new long[n], dimsB = new long[n];
-		a.dimensions(dimsA);
-		b.dimensions(dimsB);
-		for (int i = 0; i < n; i++) {
-			if (dimsA[i] != dimsB[i]) return false;
-		}
-		return true;
-	}
-
+#end
+#end
 }

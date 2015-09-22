@@ -28,43 +28,75 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME,
-	priority = Priority.VERY_LOW_PRIORITY)
-public class AddConstantToImageFunctional<T extends NumericType<T>> extends
-	AbstractComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Math.Add
-{
-
-	@Parameter
-	private T value;
-
-	@Override
-	public void compute(final IterableInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		final Cursor<T> c = input.localizingCursor();
-		final RandomAccess<T> ra = output.randomAccess();
-		while (c.hasNext()) {
-			final T in = c.next();
-			ra.setPosition(c);
-			final T out = ra.get();
-			out.set(in);
-			out.add(value);
-		}
+public final class IterableIntervalToImg {
+	
+	private IterableIntervalToImg() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
+	
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME,
+			priority = Priority.HIGH_PRIORITY)
+		public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
+IterableInterval${op.preposition}Img#else##
+Img${op.preposition}InterableInterval#end##
+<T extends NumericType<T>> extends
+			AbstractHybridOp<Img<T>, Img<T>> implements $iface, Contingent
+		{
 
+			// TODO: extend common abstract base class which implements Contingent
+			// for dimensionality checking.
+			// TODO: code generate this and all add ops to generalize them to other
+			// operators.
+
+			@Parameter
+			private IterableInterval<T> ii;
+
+			@Override
+			public boolean conforms() {
+				if (!Intervals.equalDimensions(in(), ii)) return false;
+				if (out() == null) return true;
+				return Intervals.equalDimensions(ii, out());
+			}
+
+			@Override
+			public Img<T> createOutput(final Img<T> input) {
+				return input.factory().create(input, input.firstElement());
+			}
+
+			@Override
+			public void compute(final Img<T> input, final Img<T> output) {
+				final Cursor<T> cursor = ii.localizingCursor();
+				final RandomAccess<T> iRA = input.randomAccess();
+				final RandomAccess<T> oRA = output.randomAccess();
+				final T tmp = output.firstElement().copy();
+				while (cursor.hasNext()) {
+					cursor.fwd();
+					iRA.setPosition(cursor);
+					oRA.setPosition(cursor);
+					tmp.set(iRA.get());
+					tmp.${op.function}(cursor.get());
+					oRA.get().set(tmp);
+				}
+			}
+
+		}
+#end
 }

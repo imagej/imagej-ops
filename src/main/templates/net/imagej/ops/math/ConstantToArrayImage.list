@@ -1,0 +1,20 @@
+# TODO
+# Add comments
+
+[ConstantToArrayImage.java]
+
+types = ```
+[
+	[name: "Byte",   primitive: "byte"], 
+	[name: "Double", primitive: "double"]
+]
+```
+
+ops = ```
+[
+	[name: "Add",      operator: "+", preposition: "To"],
+	[name: "Subtract", operator: "-", preposition: "From"], 
+	[name: "Multiply", operator: "*", preposition: "By"], 
+	[name: "Divide",   operator: "/", preposition: "By"]
+]
+```

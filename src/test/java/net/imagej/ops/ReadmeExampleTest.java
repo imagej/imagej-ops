@@ -63,11 +63,11 @@ public class ReadmeExampleTest {
 		// extract the example script
 		final File readme = new File("README.md");
 		final String contents = new String(FileUtils.readFile(readme), "UTF-8");
-		final String telltale = "```python\n";
+		final String telltale = String.format("```python%n");
 		final int begin = contents.indexOf(telltale) + telltale.length();
 		assertTrue(begin > telltale.length());
 		assertTrue(contents.indexOf(telltale, begin) < 0);
-		final int end = contents.indexOf("```\n", begin);
+		final int end = contents.indexOf(String.format("```%n"), begin);
 		assertTrue(end > 0);
 		final String snippet = contents.substring(begin, end);
 		assertTrue(snippet.startsWith("# @ImageJ ij"));

@@ -1,0 +1,19 @@
+# TODO
+# Add comments
+
+[ConstantToPlanarImage.java]
+
+types = ```
+[
+	[name: "Double", primitive: "double"], 
+]
+```
+
+ops = ```
+[
+	[name: "Add",      preposition: "To"],
+	[name: "Subtract", preposition: "From"], 
+	[name: "Multiply", preposition: "By"], 
+	[name: "Divide",   preposition: "By"]
+]
+```

@@ -109,8 +109,8 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(ops = {
-		net.imagej.ops.math.add.AddConstantToArrayByteImageP.class,
-		net.imagej.ops.math.add.AddConstantToArrayByteImage.class })
+		net.imagej.ops.math.ConstantToArrayImageP.AddConstantToArrayByteImageP.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddConstantToArrayByteImage.class })
 	public ArrayImg<ByteType, ByteArray> add(
 		final ArrayImg<ByteType, ByteArray> image, final byte value)
 	{
@@ -122,8 +122,8 @@ public class MathNamespace extends AbstractNamespace {
 
 	@OpMethod(
 		ops = {
-			net.imagej.ops.math.add.AddConstantToArrayDoubleImageP.class,
-			net.imagej.ops.math.add.AddConstantToArrayDoubleImage.class })
+			net.imagej.ops.math.ConstantToArrayImageP.AddConstantToArrayDoubleImageP.class,
+			net.imagej.ops.math.ConstantToArrayImage.AddConstantToArrayDoubleImage.class })
 	public
 		ArrayImg<DoubleType, DoubleArray> add(
 			final ArrayImg<DoubleType, DoubleArray> image, final double value)
@@ -194,7 +194,7 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.add.AddRandomAccessibleIntervalToIterableInterval.class)
+		op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.AddRandomAccessibleIntervalToIterableInterval.class)
 	public
 		<T extends NumericType<T>> IterableInterval<T> add(
 			final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
@@ -203,38 +203,38 @@ public class MathNamespace extends AbstractNamespace {
 		final IterableInterval<T> result =
 			(IterableInterval<T>) ops()
 				.run(
-					net.imagej.ops.math.add.AddRandomAccessibleIntervalToIterableInterval.class,
+					net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.AddRandomAccessibleIntervalToIterableInterval.class,
 					a, b);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.add.AddConstantToPlanarDoubleImage.class)
+		op = net.imagej.ops.math.ConstantToPlanarImage.AddConstantToPlanarDoubleImage.class)
 	public PlanarImg<DoubleType, DoubleArray> add(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
 	{
 		@SuppressWarnings("unchecked")
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
-				net.imagej.ops.math.add.AddConstantToPlanarDoubleImage.class,
+				net.imagej.ops.math.ConstantToPlanarImage.AddConstantToPlanarDoubleImage.class,
 				image, value);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.add.AddConstantToImageInPlace.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.AddConstantToImageInPlace.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> add(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result =
 			(IterableRealInterval<T>) ops().run(
-				net.imagej.ops.math.add.AddConstantToImageInPlace.class, image,
+				net.imagej.ops.math.ConstantToImageInPlace.AddConstantToImageInPlace.class, image,
 				value);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.add.AddConstantToImageFunctional.class)
+		op = net.imagej.ops.math.ConstantToImageFunctional.AddConstantToImageFunctional.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> add(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -242,31 +242,234 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.math.add.AddConstantToImageFunctional.class, out,
+				net.imagej.ops.math.ConstantToImageFunctional.AddConstantToImageFunctional.class, out,
 				in, value);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.add.AddIterableIntervalToImg.class)
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.AddIterableIntervalToImg.class)
 	public <T extends NumericType<T>> Img<T> add(final Img<T> in,
 		final IterableInterval<T> ii)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.math.add.AddIterableIntervalToImg.class, in, ii);
+				net.imagej.ops.math.IterableIntervalToImg.AddIterableIntervalToImg.class, in, ii);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.add.AddIterableIntervalToImg.class)
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.AddIterableIntervalToImg.class)
 	public <T extends NumericType<T>> Img<T> add(final Img<T> out,
 		final Img<T> in, final IterableInterval<T> ii)
 	{
 		@SuppressWarnings("unchecked")
 		final Img<T> result =
 			(Img<T>) ops().run(
-				net.imagej.ops.math.add.AddIterableIntervalToImg.class, out, in,
+				net.imagej.ops.math.IterableIntervalToImg.AddIterableIntervalToImg.class, out, in,
 				ii);
+		return result;
+	}
+	
+	@OpMethod(ops = {
+			net.imagej.ops.math.ConstantToArrayImageP.DivideArrayByteImageByConstantP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.DivideArrayByteImageByConstant.class})
+	public ArrayImg<ByteType, ByteType> divide(final ArrayImg<ByteType, ByteType> image, final byte value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<ByteType, ByteType> result =
+			(ArrayImg<ByteType, ByteType>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.DivideArrayByteImageByConstantP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(ops = {net.imagej.ops.math.ConstantToArrayImageP.DivideArrayDoubleImageByConstantP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.DivideArrayDoubleImageByConstant.class})
+	public ArrayImg<DoubleType, DoubleType> divide(final ArrayImg<DoubleType, DoubleType> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<DoubleType, DoubleType> result =
+			(ArrayImg<DoubleType, DoubleType>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.DivideArrayDoubleImageByConstantP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.DivideImgByInterableInterval.class)
+	public <T extends NumericType<T>> Img<T> divide(final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.DivideImgByInterableInterval.class, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.DivideImgByInterableInterval.class)
+	public <T extends NumericType<T>> Img<T> divide(final Img<T> out, final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.DivideImgByInterableInterval.class, out, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.DivideImageByConstantInPlace.class)
+	public <T extends NumericType<T>> IterableRealInterval<T> divide(final IterableRealInterval<T> image, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final IterableRealInterval<T> result =
+			(IterableRealInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageInPlace.DivideImageByConstantInPlace.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DividePlanarDoubleImageByConstant.class)
+	public PlanarImg<DoubleType, DoubleArray> divide(final PlanarImg<DoubleType, DoubleArray> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final PlanarImg<DoubleType, DoubleArray> result =
+			(PlanarImg<DoubleType, DoubleArray>) ops().run(net.imagej.ops.math.ConstantToPlanarImage.DividePlanarDoubleImageByConstant.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.DivideIterableIntervalByRandomAccessibleInterval.class)
+	public <T extends NumericType<T>> IterableInterval<T> divide(final IterableInterval<T> a, final RandomAccessibleInterval<T> b) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.DivideIterableIntervalByRandomAccessibleInterval.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.DivideImageByConstantFunctional.class)
+	public <T extends NumericType<T>> RandomAccessibleInterval<T> divide(final RandomAccessibleInterval<T> out, final IterableInterval<T> in, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageFunctional.DivideImageByConstantFunctional.class, out, in, value);
+		return result;
+	}
+	
+	@OpMethod(ops = {
+			net.imagej.ops.math.ConstantToArrayImageP.MultiplyArrayByteImageByConstantP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.MultiplyArrayByteImageByConstant.class})
+	public ArrayImg<ByteType, ByteArray> multiply(final ArrayImg<ByteType, ByteArray> image, final byte value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<ByteType, ByteArray> result =
+			(ArrayImg<ByteType, ByteArray>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.MultiplyArrayByteImageByConstantP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(ops = {
+			net.imagej.ops.math.ConstantToArrayImageP.MultiplyArrayDoubleImageByConstantP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.MultiplyArrayDoubleImageByConstant.class})
+	public ArrayImg<DoubleType, DoubleArray> multiply(final ArrayImg<DoubleType, DoubleArray> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<DoubleType, DoubleArray> result =
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.MultiplyArrayDoubleImageByConstantP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.MultiplyImgByInterableInterval.class)
+	public <T extends NumericType<T>> Img<T> multiply(final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.MultiplyImgByInterableInterval.class, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.MultiplyImgByInterableInterval.class)
+	public <T extends NumericType<T>> Img<T> multiply(final Img<T> out, final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.MultiplyImgByInterableInterval.class, out, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.MultiplyImageByConstantInPlace.class)
+	public <T extends NumericType<T>> IterableRealInterval<T> multiply(final IterableRealInterval<T> image, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final IterableRealInterval<T> result =
+			(IterableRealInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageInPlace.MultiplyImageByConstantInPlace.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyPlanarDoubleImageByConstant.class)
+	public PlanarImg<DoubleType, DoubleArray> multiply(final PlanarImg<DoubleType, DoubleArray> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final PlanarImg<DoubleType, DoubleArray> result =
+			(PlanarImg<DoubleType, DoubleArray>) ops().run(net.imagej.ops.math.ConstantToPlanarImage.MultiplyPlanarDoubleImageByConstant.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.MultiplyIterableIntervalByRandomAccessibleInterval.class)
+	public <T extends NumericType<T>> IterableInterval<T> multiply(final IterableInterval<T> a, final RandomAccessibleInterval<T> b) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.MultiplyIterableIntervalByRandomAccessibleInterval.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.MultiplyImageByConstantFunctional.class)
+	public <T extends NumericType<T>> RandomAccessibleInterval<T> multiply(final RandomAccessibleInterval<T> out, final IterableInterval<T> in, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageFunctional.MultiplyImageByConstantFunctional.class, out, in, value);
+		return result;
+	}
+	
+	@OpMethod(ops = {
+			net.imagej.ops.math.ConstantToArrayImageP.SubtractConstantFromArrayByteImageP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.SubtractConstantFromArrayByteImage.class})
+	public ArrayImg<ByteType, ByteArray> subtract(final ArrayImg<ByteType, ByteArray> image, final byte value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<ByteType, ByteArray> result =
+			(ArrayImg<ByteType, ByteArray>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.SubtractConstantFromArrayByteImageP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(ops = {
+			net.imagej.ops.math.ConstantToArrayImageP.SubtractConstantFromArrayDoubleImageP.class, 
+			net.imagej.ops.math.ConstantToArrayImage.SubtractConstantFromArrayDoubleImage.class})
+	public ArrayImg<DoubleType, DoubleArray> subtract(final ArrayImg<DoubleType, DoubleArray> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final ArrayImg<DoubleType, DoubleArray> result =
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(net.imagej.ops.math.ConstantToArrayImageP.SubtractConstantFromArrayDoubleImageP.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.SubtractIterableIntervalFromImg.class)
+	public <T extends NumericType<T>> Img<T> subtract(final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.SubtractIterableIntervalFromImg.class, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.IterableIntervalToImg.SubtractIterableIntervalFromImg.class)
+	public <T extends NumericType<T>> Img<T> subtract(final Img<T> out, final Img<T> in, final IterableInterval<T> ii) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result =
+			(Img<T>) ops().run(net.imagej.ops.math.IterableIntervalToImg.SubtractIterableIntervalFromImg.class, out, in, ii);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.SubtractConstantFromImageInPlace.class)
+	public <T extends NumericType<T>> IterableRealInterval<T> subtract(final IterableRealInterval<T> image, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final IterableRealInterval<T> result =
+			(IterableRealInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageInPlace.SubtractConstantFromImageInPlace.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractConstantFromPlanarDoubleImage.class)
+	public PlanarImg<DoubleType, DoubleArray> subtract(final PlanarImg<DoubleType, DoubleArray> image, final double value) {
+		@SuppressWarnings("unchecked")
+		final PlanarImg<DoubleType, DoubleArray> result =
+			(PlanarImg<DoubleType, DoubleArray>) ops().run(net.imagej.ops.math.ConstantToPlanarImage.SubtractConstantFromPlanarDoubleImage.class, image, value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.SubtractRandomAccessibleIntervalFromIterableInterval.class)
+	public <T extends NumericType<T>> IterableInterval<T> subtract(final IterableInterval<T> a, final RandomAccessibleInterval<T> b) {
+		@SuppressWarnings("unchecked")
+		final IterableInterval<T> result =
+			(IterableInterval<T>) ops().run(net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.SubtractRandomAccessibleIntervalFromIterableInterval.class, a, b);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.SubtractConstantFromImageFunctional.class)
+	public <T extends NumericType<T>> RandomAccessibleInterval<T> subtract(final RandomAccessibleInterval<T> out, final IterableInterval<T> in, final NumericType<T> value) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.math.ConstantToImageFunctional.SubtractConstantFromImageFunctional.class, out, in, value);
 		return result;
 	}
 

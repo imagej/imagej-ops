@@ -33,7 +33,7 @@ outputDirectory = project.properties['outputDirectory']
 
 knownFiles = new java.util.HashSet();
 
-/* Gets the last modified timestap for the given file. */
+/* Gets the last modified timestamp for the given file. */
 def timestamp(dir, file) {
 	if (file == null) return Long.MAX_VALUE;
 	file = new java.io.File(dir, file);
