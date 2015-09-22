@@ -141,6 +141,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		performIterations();
 
+		postProcess();
 	}
 
 	/**
@@ -246,6 +247,33 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		// perform convolution -- kernel FFT should allready exist
 		ops().filter().convolve(raiExtendedEstimate, null, getFFTInput(),
 			getFFTKernel(), raiExtendedReblurred, true, false);
+	}
+
+	/**
+	 * postProcess TODO: review this function
+	 */
+	protected void postProcess() {
+
+		if (getNonCirculant() == true) {
+
+			long[] start = new long[k.numDimensions()];
+			long[] end = new long[k.numDimensions()];
+
+			for (int d = 0; d < k.numDimensions(); d++) {
+				start[d] = (getRAIExtendedEstimate().dimension(d) - k.dimension(d)) / 2;
+				end[d] = start[d] + k.dimension(d) - 1;
+			}
+
+			Img<O> temp = ops().create().img(getNormalization());
+
+			copy2(getRAIExtendedEstimate(), temp);
+
+			RandomAccessibleInterval<O> temp2 = ops().image().crop(
+				getRAIExtendedEstimate(), new FinalInterval(start, end));
+
+			copy2(temp2, getOutput());
+
+		}
 	}
 
 	/**
