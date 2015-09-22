@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableRealInterval;
 import net.imglib2.type.numeric.NumericType;
@@ -50,7 +51,7 @@ public final class ConstantToImageInPlace {
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Image#else##
 Image${op.preposition}Constant#end##
-InPlace<T extends NumericType<T>> implements
+InPlace<T extends NumericType<T>> extends AbstractOp implements
 		$iface
 	{
 

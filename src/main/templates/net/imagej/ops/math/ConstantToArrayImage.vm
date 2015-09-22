@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
@@ -55,7 +56,7 @@ public final class ConstantToArrayImage {
 	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY +#if ($type.name == "Double") 20#else 10#end)
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Array${type.name}Image#else##
-Array${type.name}Image${op.preposition}Constant#end implements $iface {
+Array${type.name}Image${op.preposition}Constant#end extends AbstractOp implements $iface {
 
 		@Parameter(type = ItemIO.BOTH)
 		private ArrayImg<${type.name}Type, ${type.name}Array> image;

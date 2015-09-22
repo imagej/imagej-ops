@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -52,7 +53,7 @@ public final class ConstantToPlanarImage {
 	@Plugin(type = ${iface}.class, name = ${iface}.NAME)
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Planar${type.name}Image#else##
-Planar${type.name}Image${op.preposition}Constant#end implements $iface, Contingent {
+Planar${type.name}Image${op.preposition}Constant#end extends AbstractOp implements $iface, Contingent {
 
 		@Parameter(type = ItemIO.BOTH)
 		private PlanarImg<${type.name}Type, ${type.name}Array> image;

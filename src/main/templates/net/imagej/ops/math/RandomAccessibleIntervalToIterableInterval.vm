@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -54,7 +55,7 @@ public final class RandomAccessibleIntervalToIterableInterval {
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 RandomAccessibleInterval${op.preposition}IterableInterval#else##
 IterableInterval${op.preposition}RandomAccessibleInterval#end##
-<T extends NumericType<T>>
+<T extends NumericType<T>> extends AbstractOp
 		implements $iface, Contingent
 	{
 

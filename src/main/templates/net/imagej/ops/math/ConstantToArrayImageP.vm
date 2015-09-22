@@ -30,6 +30,7 @@
 
 package net.imagej.ops.math;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.thread.chunker.Chunk;
@@ -64,7 +65,7 @@ public final class ConstantToArrayImageP {
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Array${type.name}Image#else##
 Array${type.name}Image${op.preposition}Constant#end##
-P implements $iface {
+P extends AbstractOp implements $iface {
 		
 		@Parameter
 		private OpService opService;
