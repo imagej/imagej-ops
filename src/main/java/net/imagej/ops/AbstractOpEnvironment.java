@@ -37,11 +37,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.scijava.AbstractContextual;
+import org.scijava.command.CommandInfo;
+import org.scijava.command.CommandService;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
+import org.scijava.plugin.Parameter;
+
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
+import net.imagej.ops.geometric.Geometric2DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -57,13 +65,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.AbstractContextual;
-import org.scijava.command.CommandInfo;
-import org.scijava.command.CommandService;
-import org.scijava.module.Module;
-import org.scijava.module.ModuleItem;
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass for {@link OpEnvironment} implementations.
@@ -668,6 +669,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		return namespace(ImageMomentsNamespace.class);
 	}
 
+	@Override
+	public Geometric2DNamespace geometric2d() {
+		return namespace(Geometric2DNamespace.class);
+	}
+	
 	@Override
 	public LabelingNamespace labeling() {
 		return namespace(LabelingNamespace.class);

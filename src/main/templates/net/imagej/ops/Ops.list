@@ -253,6 +253,29 @@ namespaces = ```
 		[name: "huMoment5",	iface: "HuMoment5"],
 		[name: "huMoment6",	iface: "HuMoment6"],
 		[name: "huMoment7",	iface: "HuMoment7"]
+	]],
+	[name: "geometric2d", iface: "Geometric2D", ops: [
+		  [name: "contour",	        iface: "Contour"],
+		  [name: "convexhull",	    iface: "ConvexHull"],
+		  [name: "centroid", iface: "Centroid"],
+		  [name: "boundingbox",	    iface: "BoundingBox"],
+		  [name: "smallestenclosingrectangle",	    iface: "SmallestEnclosingRectangle"],
+		  [name: "area",	        iface: "Area"],
+		  [name: "roundness",	    iface: "Roundness"],
+		  [name: "circularity",	    iface: "Circularity"],
+		  [name: "eccentricity",	iface: "Eccentricity"],
+		  [name: "feret",	        iface: "Feret"],
+		  [name: "feretsAngle",	    iface: "FeretsAngle"],
+		  [name: "feretsDiameter",	iface: "FeretsDiameter"],
+		  [name: "perimeter",	    iface: "Perimeter"],
+		  [name: "minorMajorAxis",	    iface: "MinorMajorAxis"],
+		  [name: "majorAxis",	    iface: "MajorAxis"],
+		  [name: "minorAxis",	    iface: "MinorAxis"],
+		  [name: "elongation",	    iface: "Elongation"],
+		  [name: "rectangularity",	iface: "Rectangularity"],
+		  [name: "solidity",	    iface: "Solidity"],
+		  [name: "convexity",	    iface: "Convexity"],
+		  [name: "rugosity",	    iface: "Rugosity"]
 	]]
 ]
 ```
