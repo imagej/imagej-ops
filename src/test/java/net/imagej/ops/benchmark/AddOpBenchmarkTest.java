@@ -40,7 +40,6 @@ import net.imagej.ops.math.ConstantToArrayImage.AddConstantToArrayByteImage;
 import net.imagej.ops.math.ConstantToArrayImageP.AddConstantToArrayByteImageP;
 import net.imagej.ops.math.ConstantToImageFunctional.AddConstantToImageFunctional;
 import net.imagej.ops.math.ConstantToImageInPlace.AddConstantToImageInPlace;
-import net.imagej.ops.math.ConstantToNumericType.AddConstantToNumericType;
 import net.imagej.ops.math.NumericTypeBinaryMath;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
