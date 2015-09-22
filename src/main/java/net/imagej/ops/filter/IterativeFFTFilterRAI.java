@@ -135,7 +135,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		initialize();
 
-		performIterations(maxIterations);
+		performIterations();
+
 
 	}
 
@@ -174,40 +175,21 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// if non-circulant decon mode create image for normalization
 		if (nonCirculant) {
-			normalization =
-				getImgFactory().create(raiExtendedEstimate, outType.createVariable());
+			normalization = getImgFactory().create(raiExtendedEstimate, outType
+				.createVariable());
 
 			this.CreateNormalizationImageSemiNonCirculant();
 		}
 
-		// set first guess of estimate
-		// TODO: implement logic for various first guesses.
-		// for now just set to original image
-		Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
-		Cursor<I> cIn = Views.iterable(getRAIExtendedInput()).cursor();
-
-		while (c.hasNext()) {
-			c.fwd();
-			cIn.fwd();
-			c.get().setReal(cIn.get().getRealFloat());
-		}
-
-		// TODO: see if we still need to unmask values outside fft space
-		/*		// fft space can be slightly larger then the object space so so use a mask
-			// to get
-			// rid of any values outside the object space.
-			// StaticFunctions.InPlaceMultiply(normalization, mask);
-			*/
-
 		createReblurred();
 
 		if (getAccelerate()) {
-			accelerator = new VectorAccelerator(this.getImgFactory());
+			accelerator = new VectorAccelerator<O>(this.getImgFactory());
 		}
 
 	}
 
-	void performIterations(int maxIterations) {
+	protected void performIterations() {
 		for (int i = 0; i < maxIterations; i++) {
 			performIteration();
 			createReblurred();
