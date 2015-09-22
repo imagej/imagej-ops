@@ -43,6 +43,7 @@ namespaces = ```
 	]],
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",           iface: "AddNoise"],
+		[name: "addPoissonNoise",    iface: "AddPoissonNoise"],
 		[name: "convolve",           iface: "Convolve"],
 		[name: "correlate",          iface: "Correlate"],
 		[name: "fft",                iface: "FFT"],

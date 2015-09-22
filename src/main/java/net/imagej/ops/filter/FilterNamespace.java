@@ -83,6 +83,24 @@ public class FilterNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- addPoissonNoise --
+
+	@OpMethod(op = net.imagej.ops.Ops.Filter.AddPoissonNoise.class)
+	public Object addPoissonNoise(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Filter.AddPoissonNoise.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addPoissonNoise(final O out,
+		final I in, final Random rng)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class, out,
+				in, rng);
+		return result;
+	}
+
 	// -- convolve --
 
 	/** Executes the "convolve" operation on the given arguments. */
