@@ -27,17 +27,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
+import net.imagej.ops.Ops.Haralick.SumAverage;
 import net.imagej.ops.Ops.Haralick.SumVariance;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,23 +46,35 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
- *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Variance", name = Haralick.SumVariance.NAME)
+@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Variance",
+	name = Haralick.SumVariance.NAME)
 public class DefaultSumVariance<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements SumVariance {
+	AbstractHaralickFeature<T>implements SumVariance
+{
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<double[][], double[]> coocPXPlusYFunc;
+	@SuppressWarnings("rawtypes")
+	private FunctionOp<IterableInterval<T>, RealType> sumAverageFunc;
 
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocPXPlusYFunc = ops().function(CoocPXPlusY.class, double[].class,
+			double[][].class);
+		sumAverageFunc = ops().function(SumAverage.class, RealType.class, in(),
+			numGreyLevels, distance, orientation);
+	}
+
+	@Override
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,
-				(Object) matrix);
+		final double[] pxplusy = coocPXPlusYFunc.compute(matrix);
 		final int nrGrayLevels = matrix.length;
-		final double average = ((DoubleType) ops.haralick().sumaverage(input,
-				numGreyLevels, distance, orientation)).getRealDouble();
+		final double average = sumAverageFunc.compute(input).getRealDouble();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {

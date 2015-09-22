@@ -30,46 +30,50 @@
 
 package net.imagej.ops.image.histogram;
 
-import java.util.List;
-
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Histogram.class, name = Ops.Image.Histogram.NAME)
-public class HistogramCreate<T extends RealType<T>> implements
+public class HistogramCreate<T extends RealType<T>> extends
+	AbstractFunctionOp<Iterable<T>, Histogram1d<T>>implements
 	Ops.Image.Histogram
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Histogram1d<T> out;
-
-	@Parameter
-	private Iterable<T> in;
 
 	@Parameter(required = false)
 	private int numBins = 256;
 
-	@Parameter
-	private OpService ops;
+	@SuppressWarnings("rawtypes")
+	private FunctionOp<Iterable<T>, Pair> minMaxFunc;
 
 	@Override
-	public void run() {
-		final List<T> res = ops.stats().minMax(in);
+	public void initialize() {
+		minMaxFunc = ops().function(MinMax.class, Pair.class, in());
+	}
 
-		out = new Histogram1d<T>(new Real1dBinMapper<T>(res.get(0)
-				.getRealDouble(), res.get(1).getRealDouble(), numBins, false));
+	@Override
+	public Histogram1d<T> compute(final Iterable<T> input) {
+		@SuppressWarnings("unchecked")
+		final Pair<T, T> res = minMaxFunc.compute(input);
 
-		out.countData(in);
+		final Histogram1d<T> histogram1d = new Histogram1d<T>(
+			new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()
+				.getRealDouble(), numBins, false));
 
+		histogram1d.countData(input);
+
+		return histogram1d;
 	}
 }

@@ -30,13 +30,14 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
+import net.imglib2.util.ValuePair;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link MinMax}
@@ -46,23 +47,16 @@ import net.imglib2.type.numeric.RealType;
  * @param <I> input type
  */
 @Plugin(type = StatOp.class, name = MinMax.NAME, label = "Statistics: MinMax")
-public class DefaultMinMax<I extends RealType<I>> implements MinMax {
-
-	@Parameter
-	private Iterable<I> input;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private I min;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private I max;
+public class DefaultMinMax<I extends RealType<I>> extends
+	AbstractFunctionOp<Iterable<I>, Pair<I, I>>implements MinMax
+{
 
 	@Override
-	public void run() {
+	public Pair<I, I> compute(final Iterable<I> input) {
 		double tmpMin = Double.MAX_VALUE;
 		double tmpMax = Double.MIN_VALUE;
 
-		for (final I in : this.input) {
+		for (final I in : input) {
 			final double n = in.getRealDouble();
 
 			if (tmpMin > n) {
@@ -74,11 +68,13 @@ public class DefaultMinMax<I extends RealType<I>> implements MinMax {
 			}
 		}
 
-		this.min = input.iterator().next().createVariable();
-		this.min.setReal(tmpMin);
+		final I min = input.iterator().next().createVariable();
+		min.setReal(tmpMin);
 
-		this.max = input.iterator().next().createVariable();
-		this.max.setReal(tmpMax);
+		final I max = input.iterator().next().createVariable();
+		max.setReal(tmpMax);
+
+		return new ValuePair<I, I>(min, max);
 	}
 
 }

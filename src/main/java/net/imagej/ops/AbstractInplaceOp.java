@@ -38,7 +38,9 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
+public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
+	implements InplaceOp<A>
+{
 
 	// -- Parameters --
 
@@ -49,13 +51,13 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 
 	@Override
 	public void run() {
-		compute(getInput());
+		compute(in());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public A getInput() {
+	public A in() {
 		return arg;
 	}
 
@@ -67,7 +69,7 @@ public abstract class AbstractInplaceOp<A> implements InplaceOp<A> {
 	// -- Output methods --
 
 	@Override
-	public A getOutput() {
+	public A out() {
 		return arg;
 	}
 

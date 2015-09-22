@@ -32,6 +32,8 @@ package net.imagej.ops;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -49,6 +51,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.Service;
+import org.scijava.util.ConversionUtils;
 
 /**
  * Default service for finding {@link Op}s which match a request.
@@ -89,12 +92,19 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final List<Module> matches = findMatches(candidates);
 
 		if (matches.size() == 1) {
-			// a single match: return it
+			// a single match: initialize and return it
 			if (log.isDebug()) {
 				log.debug("Selected '" + ref.getLabel() + "' op: " +
 					matches.get(0).getDelegateObject().getClass().getName());
 			}
-			return matches.get(0);
+			final Module m = matches.get(0);
+
+			// initialize the op, if appropriate
+			if (m.getDelegateObject() instanceof Initializable) {
+				((Initializable) m.getDelegateObject()).initialize();
+			}
+
+			return m;
 		}
 
 		final String analysis = OpUtils.matchInfo(candidates, matches);
@@ -109,7 +119,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 			new ArrayList<OpCandidate<OP>>();
 		for (final CommandInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<OP>(ref, info));
+				candidates.add(new OpCandidate<OP>(ops, ref, info));
 			}
 		}
 		return candidates;
@@ -142,6 +152,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Override
 	public <OP extends Op> Module match(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return null;
+		if (!outputsMatch(candidate)) return null;
 		final Object[] args = padArgs(candidate);
 		return args == null ? null : match(candidate, args);
 	}
@@ -222,14 +233,45 @@ public class DefaultOpMatchingService extends AbstractService implements
 			return false;
 		}
 
-		return ref.getType() == null || ref.getType().isAssignableFrom(opClass);
+		return ref.typesMatch(opClass);
 	}
 
-	/** Verifies that the given candidate's module is valid. */
+	/**
+	 * Verifies that the given candidate's module is valid.
+	 * <p>
+	 * Helper method of {@link #match(OpCandidate)}.
+	 * </p>
+	 */
 	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
 		if (candidate.getInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
 		return false;
+	}
+
+	/**
+	 * Verifies that the given candidate's output types match those of the op.
+	 * <p>
+	 * Helper method of {@link #match(OpCandidate)}.
+	 * </p>
+	 */
+	private boolean outputsMatch(final OpCandidate<?> candidate) {
+		final Collection<? extends Class<?>> outTypes =
+			candidate.getRef().getOutputs();
+		if (outTypes == null) return true; // no constraints on output types
+
+		final Iterator<ModuleItem<?>> outItems =
+			candidate.getInfo().outputs().iterator();
+		for (final Class<?> outType : outTypes) {
+			if (!outItems.hasNext()) {
+				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
+				return false;
+			}
+			if (!ConversionUtils.canCast(outItems.next().getType(), outType)) {
+				candidate.setStatus(StatusCode.OUTPUT_TYPES_DO_NOT_MATCH);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** Helper method of {@link #match(OpCandidate)}. */
@@ -237,10 +279,13 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		if (!typesMatch(candidate, args)) return null;
+		if (!typesMatch(candidate, args)) {
+			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH);
+			return null;
+		}
 
 		// create module and assign the inputs
-		final Module module = createModule(candidate.getInfo(), args);
+		final Module module = createModule(candidate, args);
 		candidate.setModule(module);
 
 		// make sure the op itself is happy with these arguments
@@ -302,9 +347,22 @@ public class DefaultOpMatchingService extends AbstractService implements
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
-	private Module createModule(final ModuleInfo info, final Object... args) {
-		final Module module = moduleService.createModule(info);
-		context.inject(module.getDelegateObject());
+	private Module createModule(final OpCandidate<?> candidate,
+		final Object... args)
+	{
+		// create the module
+		final Module module = moduleService.createModule(candidate.getInfo());
+
+		// unwrap the created op
+		final Op op = OpUtils.unwrap(module, candidate.getRef());
+
+		// inject the op execution environment
+		op.setEnvironment(candidate.ops());
+
+		// inject the SciJava application context
+		context.inject(op);
+
+		// populate the inputs and return the module
 		return assignInputs(module, args);
 	}
 

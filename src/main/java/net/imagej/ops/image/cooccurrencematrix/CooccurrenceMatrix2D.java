@@ -30,15 +30,14 @@
 package net.imagej.ops.image.cooccurrencematrix;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -54,9 +53,6 @@ import org.scijava.plugin.Plugin;
 public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
 		CooccurrenceMatrix, Contingent {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
 	private int nrGreyLevels;
@@ -74,10 +70,10 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 
 		final Cursor<? extends RealType<?>> cursor = input.cursor();
 
-		final List<T> minMax = ops.stats().minMax(input);
+		final Pair<T,T> minMax = ops().stats().minMax(input);
 
-		double localMin = minMax.get(0).getRealDouble();
-		double localMax = minMax.get(1).getRealDouble();
+		double localMin = minMax.getA().getRealDouble();
+		double localMax = minMax.getB().getRealDouble();
 
 		final int[][] pixels = new int[(int) input.dimension(1)][(int) input
 				.dimension(0)];
@@ -131,6 +127,6 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() == 2 && orientation.isCompatible(2);
+		return in().numDimensions() == 2 && orientation.isCompatible(2);
 	}
 }

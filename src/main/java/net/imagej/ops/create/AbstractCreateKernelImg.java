@@ -30,7 +30,7 @@
 
 package net.imagej.ops.create;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
@@ -45,11 +45,9 @@ import org.scijava.plugin.Parameter;
  * @author Brian Northan
  * @param <V>
  */
-abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
+public abstract class AbstractCreateKernelImg<V extends Type<V>, W extends Type<W>, FAC extends ImgFactory<W>>
+	extends AbstractOp
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Img<V> output;
@@ -67,18 +65,18 @@ abstract public class AbstractCreateKernelImg<V extends Type<V>, W extends Type<
 
 		// no factory and no type
 		if ((fac == null) && (outType == null)) {
-			output = (Img<V>) ops.create().img(dims, defaultType, defaultFactory);
+			output = (Img<V>) ops().create().img(dims, defaultType, defaultFactory);
 		}
 		// type but no factory
 		else if ((fac == null) && (outType != null)) {
-			output = (Img<V>) ops.create().img(dims, outType, defaultFactory);
+			output = (Img<V>) ops().create().img(dims, outType, defaultFactory);
 		}
 		// factory but no type
 		else if ((fac != null) && (outType == null)) {
-			output = (Img<V>) ops.create().img(dims, defaultType, fac);
+			output = (Img<V>) ops().create().img(dims, defaultType, fac);
 		}
 		else {
-			output = (Img<V>) ops.create().img(dims, outType, fac);
+			output = (Img<V>) ops().create().img(dims, outType, fac);
 		}
 
 	}

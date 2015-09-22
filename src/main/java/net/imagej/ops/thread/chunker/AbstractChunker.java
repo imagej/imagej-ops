@@ -30,6 +30,8 @@
 
 package net.imagej.ops.thread.chunker;
 
+import net.imagej.ops.AbstractOp;
+
 import org.scijava.plugin.Parameter;
 import org.scijava.thread.ThreadService;
 
@@ -38,7 +40,7 @@ import org.scijava.thread.ThreadService;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractChunker implements ChunkerOp {
+public abstract class AbstractChunker extends AbstractOp implements ChunkerOp {
 
 	/**
 	 * ThreadService used for multi-threading

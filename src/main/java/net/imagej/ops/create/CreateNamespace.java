@@ -48,7 +48,6 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.plugin.Plugin;
-import org.scijava.util.ArrayUtils;
 
 /**
  * The create namespace contains ops that create objects.

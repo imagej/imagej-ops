@@ -62,6 +62,7 @@ public abstract class AbstractCreateKernel<T extends ComplexType<T> & NativeType
 
 	protected int numDimensions;
 
+	@Override
 	public void run() {
 
 		numDimensions = sigma.length;

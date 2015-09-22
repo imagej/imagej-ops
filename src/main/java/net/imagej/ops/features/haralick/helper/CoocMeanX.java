@@ -30,10 +30,9 @@
 package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.FunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,15 +44,20 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CoocMeanX.class)
 public class CoocMeanX extends AbstractFunctionOp<double[][], DoubleType> {
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<double[][], double[]> coocPXFunc;
 
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
+	}
+
+	
 	@Override
 	public DoubleType compute(double[][] input) {
 
 		double res = 0;
-		final double[] px = (double[]) ops.run(CoocPX.class,
-				(Object) getInput());
+		final double[] px = coocPXFunc.compute(input);
 		for (int i = 0; i < px.length; i++) {
 			res += i * px[i];
 		}

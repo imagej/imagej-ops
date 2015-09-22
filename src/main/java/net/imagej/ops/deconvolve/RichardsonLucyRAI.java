@@ -30,10 +30,8 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
-import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -41,11 +39,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
@@ -63,9 +57,6 @@ import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends IterativeFFTFilterRAI<I, O, K, C>
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Override
 	protected void initialize() {
@@ -86,7 +77,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		inPlaceDivide(getRAIExtendedReblurred(), getRAIExtendedInput());
 
 		// 3. correlate psf with the output of step 2.
-		ops.filter().correlate(getRAIExtendedReblurred(), null, getFFTInput(),
+		ops().filter().correlate(getRAIExtendedReblurred(), null, getFFTInput(),
 			getFFTKernel(), getRAIExtendedReblurred(), true, false);
 
 		// compute estimate -

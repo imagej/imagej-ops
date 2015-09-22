@@ -30,14 +30,11 @@
 
 package net.imagej.ops.convert;
 
-import java.util.List;
-
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -48,9 +45,6 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 	extends ConvertPixScale<I, O>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void checkInput(final I inType, final O outType) {
 		outMin = outType.getMinValue();
@@ -58,13 +52,13 @@ public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<
 
 	@Override
 	public void checkInput(IterableInterval<I> in) {
-		final List<I> minMax = ops.stats().minMax(in);
+		final Pair<I,I> minMax = ops().stats().minMax(in);
 		final I inType = in.firstElement().createVariable();
 		factor =
-			1.0 / (minMax.get(1).getRealDouble() - minMax.get(0).getRealDouble()) *
+			1.0 / (minMax.getB().getRealDouble() - minMax.getA().getRealDouble()) *
 				(inType.getMaxValue() - inType.getMinValue());
 
-		inMin = minMax.get(0).getRealDouble();
+		inMin = minMax.getA().getRealDouble();
 
 	}
 

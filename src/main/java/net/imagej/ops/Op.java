@@ -40,7 +40,10 @@ import org.scijava.plugin.PluginService;
  * <p>
  * <p>
  * Ops discoverable at runtime must implement this interface and be annotated
- * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class.
+ * with @{@link Plugin} with attribute {@link Plugin#type()} = {@link Op}.class
+ * or a subtype thereof (see the interfaces of {@link Ops}). While it is
+ * possible to create an op merely by implementing this interface, it is
+ * encouraged to instead extend {@link AbstractOp}, for convenience.
  * </p>
  * <h2>Naming and matching</h2>
  * <p>
@@ -75,7 +78,7 @@ import org.scijava.plugin.PluginService;
  * <li>Op arguments are fixed: an op may not dynamically alter the number or
  * types of its arguments.</li>
  * <li>Calling the same op twice with the same argument values must result in
- * the same result (for a given set of available ops).</li>
+ * the same result (for a given op execution environment).</li>
  * </ul>
  * <h2>Most common types of ops</h2>
  * <p>
@@ -118,6 +121,6 @@ import org.scijava.plugin.PluginService;
  * @see Plugin
  * @see PluginService
  */
-public interface Op extends Command {
+public interface Op extends Command, Environmental {
 	// NB: Marker interface.
 }

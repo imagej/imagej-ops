@@ -3,7 +3,6 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -11,13 +10,9 @@ import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 
-public abstract class AbstractNeighborhoodBasedFilter<I, O>
-	extends
+public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
-
-	@Parameter
-	protected OpService ops;
 
 	@Parameter
 	private Shape shape;
@@ -39,16 +34,9 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O>
 		O out = output.randomAccess().get();
 
 		// map computer to neighborhoods
-		ops.map(output, extInput, getComputer(in.getClass(), out.getClass()),
+		ops().map(output, extInput, getComputer(in.getClass(), out.getClass()),
 			getShape());
 
-	}
-
-	/**
-	 * @return the {@link OpService}
-	 */
-	protected OpService getOpService() {
-		return ops;
 	}
 
 	/**

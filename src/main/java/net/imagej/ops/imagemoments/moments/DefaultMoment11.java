@@ -30,9 +30,6 @@
 
 package net.imagej.ops.imagemoments.moments;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.Moment11;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
@@ -40,6 +37,9 @@ import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Moment11}.
@@ -52,7 +52,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = ImageMomentOp.class, name = Moment11.NAME,
 	label = "Image Moment: Moment11", priority = Priority.FIRST_PRIORITY)
 public class DefaultMoment11<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements Moment11
+	extends AbstractImageMomentOp<I, O>implements Moment11
 {
 
 	@Override
@@ -60,7 +60,7 @@ public class DefaultMoment11<I extends RealType<I>, O extends RealType<O>>
 
 		double moment11 = 0;
 
-		Cursor<I> cur = input.localizingCursor();
+		final Cursor<I> cur = input.localizingCursor();
 		while (cur.hasNext()) {
 			cur.fwd();
 			double x = cur.getDoublePosition(0);

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.create.imgLabeling;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Output;
 import net.imglib2.Dimensions;
@@ -51,12 +51,9 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Create.ImgLabeling.class, name = Ops.Create.ImgLabeling.NAME)
-public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
-	Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
+public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
+	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private ImgLabeling<L, T> output;
@@ -78,14 +75,14 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> implements
 	public void run() {
 
 		if (outType == null) {
-			outType = (T) ops.create().integerType(maxNumLabelSets);
+			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops.create().img(dims, outType, fac));
+		output = new ImgLabeling<L, T>(ops().create().img(dims, outType, fac));
 	}
 
 	@Override
-	public ImgLabeling<L, T> getOutput() {
+	public ImgLabeling<L, T> out() {
 		return output;
 	}
 

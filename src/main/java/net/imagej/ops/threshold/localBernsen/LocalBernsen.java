@@ -30,13 +30,8 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -45,21 +40,21 @@ import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
  * constant value rather than the value of the input pixel when the contrast in
  * the neighborhood of that pixel is too small.
  * 
  * @author Jonathan Hale
- * @param <T>
- *            input type
+ * @param <T> input type
  */
 @Plugin(type = Op.class)
 public class LocalBernsen<T extends RealType<T>> extends
-		LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen {
-
-	@Parameter
-	private OpService ops;
+	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
+{
 
 	@Parameter
 	private double constrastThreshold;
@@ -67,22 +62,26 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Parameter
 	private double halfMaxValue;
 
-	private MinMax minMax;
+	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc = (FunctionOp) ops().function(MinMax.class, Pair.class, in().getB());
+	}
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
-		}
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 
-		List<T> outputs = (List<T>) ops.run(minMax, input.getB());
-		final double minValue = outputs.get(0).getRealDouble();
-		final double maxValue = outputs.get(1).getRealDouble();
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
+		final double minValue = outputs.getA().getRealDouble();
+		final double maxValue = outputs.getB().getRealDouble();
 		final double midGrey = (maxValue + minValue) / 2.0;
 
 		if ((maxValue - minValue) < constrastThreshold) {
 			output.set(midGrey >= halfMaxValue);
-		} else {
+		}
+		else {
 			output.set(input.getA().getRealDouble() >= midGrey);
 		}
 

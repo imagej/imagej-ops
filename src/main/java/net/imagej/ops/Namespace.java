@@ -33,7 +33,7 @@ package net.imagej.ops;
 import org.scijava.Contextual;
 import org.scijava.Named;
 import org.scijava.plugin.Plugin;
-import org.scijava.plugin.SingletonPlugin;
+import org.scijava.plugin.SciJavaPlugin;
 
 /**
  * A namespace is a collection of ops with related functions.
@@ -45,8 +45,8 @@ import org.scijava.plugin.SingletonPlugin;
  * 
  * @author Curtis Rueden
  */
-public interface Namespace extends Contextual, Named, SingletonPlugin {
-
-	OpService ops();
-
+public interface Namespace extends Contextual, Environmental, Named,
+	SciJavaPlugin
+{
+	// NB: Marker interface.
 }

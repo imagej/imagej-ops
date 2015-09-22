@@ -32,7 +32,7 @@ package net.imagej.ops.eval;
 
 import java.util.Map;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
@@ -51,10 +51,7 @@ import org.scijava.plugin.Plugin;
  * @see OpEvaluator
  */
 @Plugin(type = Ops.Eval.class, name = Ops.Eval.NAME)
-public class DefaultEval implements Ops.Eval {
-
-	@Parameter
-	private OpService ops;
+public class DefaultEval extends AbstractOp implements Ops.Eval {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private Object result;
@@ -67,7 +64,7 @@ public class DefaultEval implements Ops.Eval {
 
 	@Override
 	public void run() {
-		final OpEvaluator e = new OpEvaluator(ops);
+		final OpEvaluator e = new OpEvaluator(ops());
 		if (vars != null) e.setAll(vars);
 		result = e.evaluate(expression);
 	}

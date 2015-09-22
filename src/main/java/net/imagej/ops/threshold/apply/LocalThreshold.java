@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
@@ -59,9 +58,6 @@ public class LocalThreshold<T extends RealType<T>>
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private LocalThresholdMethod<T> method;
 
 	@Parameter
@@ -80,7 +76,7 @@ public class LocalThreshold<T extends RealType<T>>
 			extendedInput = Views.interval(Views.extend(input, outOfBounds), input);
 		}
 
-		ops.map(output, extendedInput, method, shape);
+		ops().map(output, extendedInput, method, shape);
 	}
 
 }

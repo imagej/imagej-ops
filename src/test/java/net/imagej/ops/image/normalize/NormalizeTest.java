@@ -31,12 +31,10 @@
 package net.imagej.ops.image.normalize;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.util.Pair;
 
 import org.junit.Test;
 
@@ -53,11 +51,10 @@ public class NormalizeTest extends AbstractOpTest {
 
 		ops.image().normalize(out, in);
 
-		List<ByteType> minMax1 = ops.stats().minMax(in);
-		List<ByteType> minMax2 = ops.stats().minMax(out);
+		final Pair<ByteType, ByteType> minMax2 = ops.stats().minMax(out);
 
-		assertEquals(minMax2.get(0).get(), Byte.MIN_VALUE);
-		assertEquals(minMax2.get(1).get(), Byte.MAX_VALUE);
+		assertEquals(minMax2.getA().get(), Byte.MIN_VALUE);
+		assertEquals(minMax2.getB().get(), Byte.MAX_VALUE);
 
 	}
 }

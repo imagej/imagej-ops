@@ -27,9 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.ICM2;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
@@ -37,7 +38,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,31 +45,38 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
- *
  */
-@Plugin(type = HaralickFeature.class, name = Haralick.ICM2.NAME, label = "Haralick: Information Measure of Correlation 2")
+@Plugin(type = HaralickFeature.class, name = Haralick.ICM2.NAME,
+	label = "Haralick: Information Measure of Correlation 2")
 public class DefaultICM2<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements ICM2 {
+	AbstractHaralickFeature<T>implements ICM2
+{
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<double[][], double[]> coocHXYFunc;
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void initialize() {
+		super.initialize();
+		coocHXYFunc = ops().function(CoocHXY.class, double[].class,
+			double[][].class);
+	}
+
+	@Override
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
-		final double[] coochxy = (double[]) ops.run(CoocHXY.class,
-				(Object) matrix);
-		res = Math.sqrt(1 - Math.exp(-2
-				* (coochxy[3] - ops.haralick()
-						.entropy(input, numGreyLevels, distance, orientation)
-						.get())));
+		final double[] coochxy = coocHXYFunc.compute(matrix);
+		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - ops().haralick().entropy(
+			input, numGreyLevels, distance, orientation).get())));
 
 		// if NaN
 		if (Double.isNaN(res)) {
 			output.set(0);
-		} else {
+		}
+		else {
 			output.set(res);
 		}
 	}

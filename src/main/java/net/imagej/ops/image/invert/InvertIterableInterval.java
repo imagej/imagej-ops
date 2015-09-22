@@ -32,13 +32,11 @@ package net.imagej.ops.image.invert;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -50,9 +48,6 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
 	implements Ops.Image.Invert
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Override
 	public void compute(final IterableInterval<I> input,
@@ -66,7 +61,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		else {
 			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
 		}
-		ops.map(output, input, invert);
+		ops().map(output, input, invert);
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>

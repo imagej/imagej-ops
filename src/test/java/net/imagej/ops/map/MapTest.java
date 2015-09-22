@@ -181,7 +181,7 @@ public class MapTest extends AbstractOpTest {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final IterableInterval<ByteType> o =
 			(IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
-				.getOutput();
+				.out();
 
 		final RandomAccess<ByteType> inputRA = in.randomAccess();
 		final Cursor<ByteType> outCursor = o.localizingCursor();
@@ -220,7 +220,7 @@ public class MapTest extends AbstractOpTest {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessibleInterval<ByteType> output =
 			(RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
-				.getOutput();
+				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();
 		final RandomAccess<ByteType> outputRA = output.randomAccess();
@@ -242,7 +242,7 @@ public class MapTest extends AbstractOpTest {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessible<ByteType> output =
 			(RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
-				.getOutput();
+				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();
 		final RandomAccess<ByteType> outputRA = output.randomAccess();

@@ -47,14 +47,18 @@ public class OpCandidate<OP extends Op> {
 	public static enum StatusCode {
 		MATCH,
 		INVALID_MODULE,
+		TOO_FEW_OUTPUTS,
+		OUTPUT_TYPES_DO_NOT_MATCH,
 		TOO_MANY_ARGS,
 		TOO_FEW_ARGS,
+		ARG_TYPES_DO_NOT_MATCH,
 		REQUIRED_ARG_IS_NULL,
 		CANNOT_CONVERT,
 		DOES_NOT_CONFORM,
 		OTHER
 	}
 
+	private final OpEnvironment ops;
 	private final OpRef<OP> ref;
 	private final ModuleInfo info;
 
@@ -63,9 +67,17 @@ public class OpCandidate<OP extends Op> {
 	private String message;
 	private ModuleItem<?> item;
 
-	public OpCandidate(final OpRef<OP> ref, final ModuleInfo info) {
+	public OpCandidate(final OpEnvironment ops, final OpRef<OP> ref,
+		final ModuleInfo info)
+	{
+		this.ops = ops;
 		this.ref = ref;
 		this.info = info;
+	}
+
+	/** Gets the op execution environment of the desired match. */
+	public OpEnvironment ops() {
+		return ops;
 	}
 
 	/** Gets the op reference describing the desired match. */
@@ -138,11 +150,20 @@ public class OpCandidate<OP extends Op> {
 			case INVALID_MODULE:
 				sb.append("Invalid module: " + info.getDelegateClassName());
 				break;
+			case TOO_FEW_OUTPUTS:
+				sb.append("Too few outputs");
+				break;
+			case OUTPUT_TYPES_DO_NOT_MATCH:
+				sb.append("Output types do not match");
+				break;
 			case TOO_MANY_ARGS:
 				sb.append("Too many arguments");
 				break;
 			case TOO_FEW_ARGS:
 				sb.append("Not enough arguments");
+				break;
+			case ARG_TYPES_DO_NOT_MATCH:
+				sb.append("Argument types do not match");
 				break;
 			case REQUIRED_ARG_IS_NULL:
 				sb.append("Missing required argument");

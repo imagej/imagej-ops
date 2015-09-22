@@ -39,7 +39,9 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
+public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
+	implements HybridOp<I, O>
+{
 
 	// -- Parameters --
 
@@ -62,14 +64,14 @@ public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 
 	@Override
 	public void run() {
-		if (getOutput() == null) out = compute(getInput());
-		else compute(getInput(), getOutput());
+		if (out() == null) out = compute(in());
+		else compute(in(), out());
 	}
 
 	// -- Input methods --
 
 	@Override
-	public I getInput() {
+	public I in() {
 		return in;
 	}
 
@@ -81,7 +83,7 @@ public abstract class AbstractHybridOp<I, O> implements HybridOp<I, O> {
 	// -- Output methods --
 
 	@Override
-	public O getOutput() {
+	public O out() {
 		return out;
 	}
 

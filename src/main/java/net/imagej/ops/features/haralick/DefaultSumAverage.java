@@ -27,9 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Haralick;
 import net.imagej.ops.Ops.Haralick.SumAverage;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
@@ -37,30 +38,35 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Implementation of Sum Average Haralick Feature
  * 
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
- *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Average", name = Haralick.SumAverage.NAME)
+@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Average",
+	name = Haralick.SumAverage.NAME)
 public class DefaultSumAverage<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements SumAverage {
+	AbstractHaralickFeature<T>implements SumAverage
+{
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<double[][], double[]> coocPXPlusFunc;
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
-		final double[][] matrix = getCooccurrenceMatrix(input);
+	public void initialize() {
+		super.initialize();
+		coocPXPlusFunc = ops().function(CoocPXPlusY.class, double[].class,
+			double[][].class);
+	}
 
-		final double[] pxplusy = (double[]) ops.run(CoocPXPlusY.class,
-				(Object) matrix);
+	@Override
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
+		final double[][] matrix = getCooccurrenceMatrix(input);
+		final double[] pxplusy = coocPXPlusFunc.compute(matrix);
 
 		final int nrGrayLevels = matrix.length;
 

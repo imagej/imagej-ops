@@ -30,19 +30,16 @@
 
 package net.imagej.ops.threshold.localContrast;
 
-import java.util.List;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod which determines whether a pixel is closer to the
@@ -54,22 +51,23 @@ import net.imglib2.util.Pair;
 public class LocalContrast<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
-	private MinMax minMax;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc = (FunctionOp)ops().function(MinMax.class, Pair.class, in().getB());
+	}
 
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
-		if (minMax == null) {
-			minMax = ops.op(MinMax.class, input.getB());
-		}
 
-		List<T> outputs = (List<T>) ops.run(MinMax.class, input.getB());
+		@SuppressWarnings("unchecked")
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
-		final double diffMin = centerValue - outputs.get(0).getRealDouble();
-		final double diffMax = outputs.get(1).getRealDouble() - centerValue;
+		final double diffMin = centerValue - outputs.getA().getRealDouble();
+		final double diffMax = outputs.getB().getRealDouble() - centerValue;
 
 		// set to background (false) if pixel closer to min value,
 		// and to foreground (true) if pixel closer to max value.

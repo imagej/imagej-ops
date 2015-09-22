@@ -27,13 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.FunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -45,14 +45,19 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = CoocMeanY.class)
 public class CoocMeanY extends AbstractFunctionOp<double[][], DoubleType> {
 
-	@Parameter
-	private OpService ops;
+	private FunctionOp<double[][], double[]> coocPYFunc;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		coocPYFunc = ops().function(CoocPY.class, double[].class, double[][].class);
+	}
 
 	@Override
 	public DoubleType compute(double[][] input) {
 
 		double res = 0;
-		final double[] py = (double[]) ops.run(CoocPY.class, (Object) input);
+		final double[] py = coocPYFunc.compute(input);
 		for (int i = 0; i < py.length; i++) {
 			res += i * py[i];
 		}

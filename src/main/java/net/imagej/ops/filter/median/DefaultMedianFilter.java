@@ -28,7 +28,7 @@ public class DefaultMedianFilter<T extends RealType<T>> extends
 	protected ComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
 		Class<?> outClass)
 	{
-		return (ComputerOp<Iterable<T>, T>) ops.op(Ops.Stats.Median.class, inClass,
+		return (ComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Median.class, inClass,
 			Iterable.class);
 	}
 

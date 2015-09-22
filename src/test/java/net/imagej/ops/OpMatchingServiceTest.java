@@ -144,7 +144,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	}
 
 	@Plugin(type = Op.class)
-	public static class OptionalParams implements Op {
+	public static class OptionalParams extends AbstractOp {
 
 		@Parameter
 		private int a = -1;

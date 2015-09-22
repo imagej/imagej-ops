@@ -30,13 +30,15 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Kurtosis;
 import net.imagej.ops.Ops.Stats.Moment4AboutMean;
 import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Kurtosis} using {@link StdDev} and
@@ -53,13 +55,23 @@ public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatOp<Iterable<I>, O> implements Kurtosis
 {
 
+	private FunctionOp<Iterable<I>, O> stdDevFunc;
+	
+	private FunctionOp<Iterable<I>, O> moment4AboutMeanFunc;
+
+	@Override
+	public void initialize() {
+		stdDevFunc = RTs.function(ops(), StdDev.class, in());
+		moment4AboutMeanFunc = RTs.function(ops(), Moment4AboutMean.class, in());
+	}
+	
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
 		output.setReal(Double.NaN);
 
-		final double std = this.ops.stats().stdDev(input).getRealDouble();
+		final double std = stdDevFunc.compute(input).getRealDouble();
 		final double moment4 =
-			this.ops.stats().moment4AboutMean(input).getRealDouble();
+				moment4AboutMeanFunc.compute(input).getRealDouble();
 
 		if (std != 0) {
 			output.setReal((moment4) / (std * std * std * std));

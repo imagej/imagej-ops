@@ -30,12 +30,12 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Min;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Min}
@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <O> output type
  */
 @Plugin(type = StatOp.class, name = Min.NAME, label = "Statistics: Min",
-	priority = Priority.FIRST_PRIORITY)
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableMin<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatOp<Iterable<I>, O> implements Min
 {

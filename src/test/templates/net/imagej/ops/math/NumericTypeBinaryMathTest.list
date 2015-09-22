@@ -1,0 +1,29 @@
+# Unit tests for the binary arithmetic ops with ImgLib2 NumericTypes.
+
+[NumericTypeBinaryMathTest.java]
+types = ```
+[
+	"BitType",
+	"DoubleType",
+	"FloatType",
+	"IntType",
+	"LongType",
+	"ShortType",
+	"UnboundedIntegerType",
+	"Unsigned12BitType",
+	"Unsigned2BitType",
+	"Unsigned4BitType",
+	"UnsignedByteType",
+	"UnsignedIntType",
+	"UnsignedShortType"
+]
+```
+
+tests = ```
+[
+	[op: "Add",      function: "add"],
+	[op: "Subtract", function: "sub"],
+	[op: "Multiply", function: "mul"],
+	[op: "Divide",   function: "div"]
+]
+```

@@ -31,10 +31,7 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imglib2.type.logic.BitType;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract superclass of {@link ApplyThresholdIterable} implementations.
@@ -48,12 +45,9 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 	ApplyThresholdIterable<T, I, O>
 {
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final I input, final O output) {
-		ops.threshold().apply(output, input, getThreshold(input));
+		ops().threshold().apply(output, input, getThreshold(input));
 	}
 
 }

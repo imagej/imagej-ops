@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFilterImg;
 import net.imglib2.RandomAccessibleInterval;
@@ -44,7 +43,6 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,9 +53,6 @@ import org.scijava.plugin.Plugin;
 public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Override
 	public void compute(final Img<I> img, final Img<O> out) {
@@ -83,7 +78,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 		RandomAccessibleInterval<O> extendedOut =
 			Views.interval(Views.extend(out, obfOutput), out);
 
-		ops.filter().convolve(extendedOut, extendedIn, getKernel());
+		ops().filter().convolve(extendedOut, extendedIn, getKernel());
 	}
 
 	@Override

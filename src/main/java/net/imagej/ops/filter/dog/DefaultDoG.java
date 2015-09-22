@@ -31,8 +31,8 @@
 package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessible;
@@ -42,7 +42,6 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
-import net.imglib2.util.Util;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
@@ -51,29 +50,33 @@ import org.scijava.plugin.Plugin;
 import org.scijava.thread.ThreadService;
 
 /**
- * Default Difference of Gaussians (DoG) implementation.
+ * Low-level difference of Gaussians (DoG) implementation which leans on other
+ * ops to do the work.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  * @param <T>
  */
 @Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
-public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
-	extends
+public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Filter.DoG, Contingent
+	implements Ops.Filter.DoG
 {
 
 	@Parameter
 	private ThreadService ts;
 
 	@Parameter
-	private OpService ops;
+	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
 
 	@Parameter
-	private double[] sigmas1;
+	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2;
 
 	@Parameter
-	private double[] sigmas2;
+	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator;
+
+	@Parameter
+	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
@@ -82,39 +85,32 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		// HACK: Make Java 6 javac compiler happy.
-		return (RandomAccessibleInterval<T>) ops.create().<T> img(input);
+		return outputCreator.compute(input);
+	}
+
+	@Override
+	public void initialize() {
+		if (fac == null) {
+			fac =
+				new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+					Boundary.SINGLE);
+		}
 	}
 
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-
-		if (fac == null) {
-			fac =
-				new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
-					Boundary.SINGLE);
-		}
-
 		// input may potentially be translated
 		final long[] translation = new long[input.numDimensions()];
 		input.min(translation);
 
 		final IntervalView<T> tmpInterval =
-			Views.interval(Views.translate((RandomAccessible<T>) ops.create().img(
-				input, Util.getTypeFromInterval(input)), translation), output);
+			Views.interval(Views.translate((RandomAccessible<T>) tmpCreator
+				.compute(input), translation), output);
 
-		// TODO: How can I enforce that a certain gauss implementation is used
-		// here? I don't want to pass the Gauss class in the DoG, I rather
-		// would love to have something that allows me to enforce
-		// that certain Ops are used, even if they have lower priority. This is a
-		// common use-case if you want to let the user
-		// select in a GUI if (for example) he wants to use CUDA or CPU
-		// see issue https://github.com/imagej/imagej-ops/issues/154)
-
-		ops.filter().gauss(tmpInterval, input, sigmas1);
-		ops.filter().gauss(output, input, sigmas2);
+		gauss1.compute(input, tmpInterval);
+		gauss2.compute(input, output);
 
 		// TODO: Use SubtractOp as soon as available (see issue
 		// https://github.com/imagej/imagej-ops/issues/161).
@@ -124,12 +120,6 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>>
 		while (outputCursor.hasNext()) {
 			outputCursor.next().sub(tmpCursor.next());
 		}
-
 	}
 
-	@Override
-	public boolean conforms() {
-		return sigmas1.length == sigmas2.length &&
-			sigmas1.length == getInput().numDimensions();
-	}
 }

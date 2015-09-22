@@ -32,10 +32,7 @@ package net.imagej.ops.deconvolve;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.deconvolve.RichardsonLucyRAI;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -51,9 +48,6 @@ import org.scijava.Context;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 
 /**
  * Richardson Lucy op that operates on (@link RandomAccessibleInterval)
@@ -73,9 +67,6 @@ priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends RichardsonLucyRAI<I, O, K, C>
 {
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter
 	Context ctx;
@@ -430,6 +421,7 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 	}
 
 	// TODO: replace this function with divide op
+	@Override
 	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
 		RandomAccessibleInterval<O> numeratorOutput)
 	{

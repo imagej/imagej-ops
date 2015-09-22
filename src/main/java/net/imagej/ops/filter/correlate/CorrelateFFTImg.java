@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.correlate;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
@@ -42,7 +41,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -61,9 +59,6 @@ public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K ext
 	Ops.Filter.Correlate
 {
 
-	@Parameter
-	private OpService ops;
-
 	/**
 	 * run the filter (CorrelateFFTRAI) on the rais
 	 */
@@ -73,7 +68,7 @@ public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K ext
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,
+		ops().filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output);
 
 	}

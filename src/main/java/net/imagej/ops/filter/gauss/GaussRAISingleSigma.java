@@ -33,7 +33,6 @@ package net.imagej.ops.filter.gauss;
 import java.util.Arrays;
 
 import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -60,9 +59,6 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private double sigma;
 
 	@Parameter(required = false)
@@ -75,14 +71,14 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 		final double[] sigmas = new double[input.numDimensions()];
 		Arrays.fill(sigmas, sigma);
 
-		ops.filter().gauss(output, input, sigmas, outOfBounds);
+		ops().filter().gauss(output, input, sigmas, outOfBounds);
 	}
 
 	@Override
 	public RandomAccessibleInterval<V> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return (RandomAccessibleInterval<V>) ops.create().img(input,
+		return (RandomAccessibleInterval<V>) ops().create().img(input,
 			Util.getTypeFromInterval(input));
 	}
 

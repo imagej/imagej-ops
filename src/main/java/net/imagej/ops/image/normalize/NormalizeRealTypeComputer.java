@@ -30,16 +30,13 @@
 
 package net.imagej.ops.image.normalize;
 
-import java.util.List;
-
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpEnvironment;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
+import net.imglib2.util.Pair;
 
 /**
  * Simple {@link ComputerOp} and {@link Converter} to perform a normalization.
@@ -52,27 +49,31 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 
 	private double targetMin, targetMax, sourceMin, factor;
 
-	public NormalizeRealTypeComputer(final OpService ops, final T sourceMin,
+	public NormalizeRealTypeComputer(final OpEnvironment ops, final T sourceMin,
 		final T sourceMax, final T targetMin, final T targetMax,
 		final IterableInterval<T> input)
 	{
 		double tmp = 0.0;
-
-		if (sourceMin == null || sourceMax == null) {
-			final List<T> minMax = ops.stats().minMax(input);
+		
+		if (sourceMin != null && sourceMax != null) {
+			this.sourceMin = sourceMin.getRealDouble();
+			tmp = sourceMax.getRealDouble();
+		} else {
+			final Pair<T,T> minMax = ops.stats().minMax(input);
 			if (sourceMin == null) {
-				this.sourceMin = minMax.get(0).getRealDouble();
+				this.sourceMin = minMax.getA().getRealDouble();
 			}
 			else {
 				this.sourceMin = sourceMin.getRealDouble();
 			}
 			if (sourceMax == null) {
-				tmp = minMax.get(1).getRealDouble();
+				tmp = minMax.getB().getRealDouble();
 			}
 			else {
 				tmp = sourceMax.getRealDouble();
 			}
 		}
+
 		if (targetMax == null) {
 			this.targetMax = input.firstElement().getMaxValue();
 		}

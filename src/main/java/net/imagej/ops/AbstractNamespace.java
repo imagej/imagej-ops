@@ -31,7 +31,6 @@
 package net.imagej.ops;
 
 import org.scijava.AbstractContextual;
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract base class for {@link Namespace} implementations.
@@ -42,14 +41,19 @@ public abstract class AbstractNamespace extends AbstractContextual implements
 	Namespace
 {
 
-	@Parameter
-	private OpService ops;
+	/** The namespace's op execution environment. */
+	private OpEnvironment ops;
 
-	// -- Namespace methods --
+	// -- Environmental methods --
 
 	@Override
-	public OpService ops() {
+	public OpEnvironment ops() {
 		return ops;
+	}
+
+	@Override
+	public void setEnvironment(final OpEnvironment ops) {
+		this.ops = ops;
 	}
 
 	// -- Named methods --

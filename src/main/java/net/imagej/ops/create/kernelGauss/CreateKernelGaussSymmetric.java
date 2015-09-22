@@ -52,7 +52,6 @@ public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
 
 	@Override
 	public void run() {
-
 		double[] sigmas = new double[numDimensions];
 
 		for (int d = 0; d < numDimensions; d++) {
@@ -68,6 +67,6 @@ public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
 		}
 
 		output =
-			(Img<T>) ops.create().kernelGauss(outType, fac, sigmas, calibration);
+			(Img<T>) ops().create().kernelGauss(outType, fac, sigmas, calibration);
 	}
 }

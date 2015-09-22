@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.Ops.Haralick;
@@ -42,13 +43,18 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Andreas Grauman, University of Konstanz
  * @author Christian Dietz, University of Konstanz
- *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Texture Homogeneity Feature", name = Haralick.TextureHomogeneity.NAME)
+@Plugin(type = HaralickFeature.class,
+	label = "Haralick: Texture Homogeneity Feature",
+	name = Haralick.TextureHomogeneity.NAME)
 public class DefaultTextureHomogeneity<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements TextureHomogeneity {
+	AbstractHaralickFeature<T>implements TextureHomogeneity
+{
 
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	@Override
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final double nrGreyLevel = matrix.length;

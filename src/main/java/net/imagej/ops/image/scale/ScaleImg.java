@@ -30,6 +30,7 @@
 
 package net.imagej.ops.image.scale;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -53,7 +54,9 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Scale.class, name = Ops.Image.Scale.NAME, attrs = { @Attr(
 	name = "aliases", value = Ops.Image.Scale.ALIASES) })
-public class ScaleImg<T extends RealType<T>> implements Ops.Image.Scale {
+public class ScaleImg<T extends RealType<T>> extends AbstractOp implements
+	Ops.Image.Scale
+{
 
 	@Parameter
 	private Img<T> in;

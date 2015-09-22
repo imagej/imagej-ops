@@ -73,9 +73,6 @@ public class MapNeighborhoodWithCenter<I, O>
 	@Parameter
 	private Shape shape;
 
-	@Parameter
-	private OpService ops;
-
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
@@ -85,7 +82,7 @@ public class MapNeighborhoodWithCenter<I, O>
 
 		final CenterAwareComputerOp<I, O> op = getOp();
 
-		ops.map(Views.iterable(output), new NeighborhoodWithCenterIterableInterval(
+		ops().map(Views.iterable(output), new NeighborhoodWithCenterIterableInterval(
 			neighborhoods, input), op);
 	}
 

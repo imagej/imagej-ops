@@ -87,15 +87,13 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Object run(final String name, final Object... args) {
-		final Module module = module(name, args);
-		return run(module);
+		return run(module(name, args));
 	}
 
 	@Override
 	public <OP extends Op> Object run(final Class<OP> type, final Object... args)
 	{
-		final Module module = module(type, args);
-		return run(module);
+		return run(module(type, args));
 	}
 
 	@Override
@@ -105,18 +103,106 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Op op(final String name, final Object... args) {
-		final Module module = module(name, args);
-		if (module == null) return null;
-		return (Op) module.getDelegateObject();
+		return OpUtils.unwrap(module(name, args), Op.class, null);
 	}
 
 	@Override
 	public <OP extends Op> OP op(final Class<OP> type, final Object... args) {
-		final Module module = module(type, args);
-		if (module == null) return null;
-		@SuppressWarnings("unchecked")
-		final OP op = (OP) module.getDelegateObject();
-		return op;
+		return OpUtils.unwrap(module(type, args), type, null);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> ComputerOp<I, O> computer(
+		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
+		final Object... otherArgs)
+	{
+		final Object[] args = args2(outType, inType, otherArgs);
+		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> ComputerOp<I, O> computer(
+		final Class<OP> opType, final Class<O> outType, final I in,
+		final Object... otherArgs)
+	{
+		final Object[] args = args2(outType, in, otherArgs);
+		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> ComputerOp<I, O> computer(
+		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
+	{
+		final Object[] args = args2(out, in, otherArgs);
+		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> FunctionOp<I, O> function(
+		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
+		final Object... otherArgs)
+	{
+		final Object[] args = args1(inType, otherArgs);
+		return (FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> FunctionOp<I, O> function(
+		final Class<OP> opType, final Class<O> outType, final I in,
+		final Object... otherArgs)
+	{
+		final Object[] args = args1(in, otherArgs);
+		return (FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
+	{
+		final Object[] args = args2(outType, inType, otherArgs);
+		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+		final Class<O> outType, final I in, final Object... otherArgs)
+	{
+		final Object[] args = args2(outType, in, otherArgs);
+		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+		final O out, final I in, final Object... otherArgs)
+	{
+		final Object[] args = args2(out, in, otherArgs);
+		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <A, OP extends Op> InplaceOp<A> inplace(final Class<OP> opType,
+		final Class<A> argType, final Object... otherArgs)
+	{
+		final Object[] args = args1(argType, otherArgs);
+		return (InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <A, OP extends Op> InplaceOp<A> inplace(final Class<OP> opType,
+		final A arg, final Object... otherArgs)
+	{
+		final Object[] args = args1(arg, otherArgs);
+		return (InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
 	}
 
 	@Override
@@ -155,7 +241,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public <NS extends Namespace> NS namespace(final Class<NS> nsClass) {
-		return namespaceService.getInstance(nsClass);
+		return namespaceService.create(nsClass, this);
 	}
 
 	// -- Operation shortcuts - global namespace --
@@ -626,6 +712,50 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 			outputs.add(value);
 		}
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	/**
+	 * Looks up an op of the given type, similar to {@link #op(Class, Object...)},
+	 * but with an additional type constraint&mdash;e.g., matches could be
+	 * restricted to {@link ComputerOp}s.
+	 * 
+	 * @param opType The type of op to match.
+	 * @param specialType The additional constraint (e.g., {@link ComputerOp}).
+	 * @param outType The type of the op's primary output, or null for any type.
+	 * @param args The arguments to use when matching.
+	 * @return The matched op.
+	 */
+	private <OP extends Op> OP specialOp(final Class<OP> opType,
+		final Class<?> specialType, final Class<?> outType, final Object... args)
+	{
+		final OpRef<OP> ref =
+			new OpRef<OP>(Collections.singleton(specialType), opType, args);
+		if (outType != null) ref.setOutputs(Collections.singleton(outType));
+		final Module module = matcher.findModule(this, ref);
+		return OpUtils.unwrap(module, ref);
+	}
+
+	private Object[] args1(final Object o0, final Object... more) {
+		final Object[] result = new Object[1 + more.length];
+		result[0] = o0;
+		int i = 1;
+		for (final Object o : more) {
+			result[i++] = o;
+		}
+		return result;
+	}
+
+	private Object[]
+		args2(final Object o0, final Object o1, final Object... more)
+	{
+		final Object[] result = new Object[2 + more.length];
+		result[0] = o0;
+		result[1] = o1;
+		int i = 2;
+		for (final Object o : more) {
+			result[i++] = o;
+		}
+		return result;
 	}
 
 }

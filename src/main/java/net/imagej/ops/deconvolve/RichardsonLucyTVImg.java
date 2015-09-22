@@ -30,18 +30,17 @@
 
 package net.imagej.ops.deconvolve;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops;
-import net.imagej.ops.OpService;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy with total variation op that operates on (@link Img)
@@ -61,9 +60,6 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 	extends AbstractFFTFilterImg<I, O, K, C>implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
-
-	@Parameter
-	private OpService ops;
 
 	/**
 	 * max number of iterations
@@ -98,9 +94,9 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops.run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
+		ops().run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
 			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), getInput(), getKernel(),
+			imgConvolutionInterval, output.factory(), in(), getKernel(),
 			nonCirculant, accelerate, regularizationFactor);
 
 	}

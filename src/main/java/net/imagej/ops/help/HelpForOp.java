@@ -33,7 +33,6 @@ package net.imagej.ops.help;
 import java.util.Collections;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
@@ -51,14 +50,11 @@ import org.scijava.plugin.Plugin;
 public class HelpForOp extends AbstractHelp {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private Op op;
 
 	@Override
 	public void run() {
-		help(Collections.singleton(ops.info(op)));
+		help(Collections.singleton(ops().info(op)));
 	}
 
 }

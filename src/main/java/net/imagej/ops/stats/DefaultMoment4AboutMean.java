@@ -30,13 +30,15 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.Moment4AboutMean;
 import net.imagej.ops.Ops.Stats.Size;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link Moment4AboutMean} using {@link Mean} and
@@ -53,11 +55,20 @@ public class DefaultMoment4AboutMean<I extends RealType<I>, O extends RealType<O
 	extends AbstractStatOp<Iterable<I>, O> implements Moment4AboutMean
 {
 
+	private FunctionOp<Iterable<I>, O> meanFunc;
+	private FunctionOp<Iterable<I>, O> sizeFunc;
+
+	@Override
+	public void initialize() {
+		meanFunc = RTs.function(ops(), Mean.class, in());
+		sizeFunc = RTs.function(ops(), Size.class, in());
+	}
+
 	@Override
 	public void compute(final Iterable<I> input, final O output) {
-		final double mean = this.ops.stats().mean(input).getRealDouble();
-		final double size = this.ops.stats().size(input).getRealDouble();
-
+		final double mean = meanFunc.compute(input).getRealDouble();
+		final double size = sizeFunc.compute(input).getRealDouble();
+		
 		double res = 0;
 		for (final I in : input) {
 			final double val = in.getRealDouble() - mean;

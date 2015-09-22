@@ -43,6 +43,6 @@ package net.imagej.ops;
  */
 public interface Output<O> {
 
-	O getOutput();
+	O out();
 
 }

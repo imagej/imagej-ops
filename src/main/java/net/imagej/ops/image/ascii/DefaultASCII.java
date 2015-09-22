@@ -30,13 +30,12 @@
 
 package net.imagej.ops.image.ascii;
 
-import java.util.List;
-
-import net.imagej.ops.OpService;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -49,12 +48,11 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Image.ASCII.class, name = Ops.Image.ASCII.NAME)
-public class DefaultASCII<T extends RealType<T>> implements Ops.Image.ASCII {
+public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
+	Ops.Image.ASCII
+{
 
 	private static final String CHARS = " .,-+o*O#";
-
-	@Parameter
-	private OpService ops;
 
 	@Parameter
 	private IterableInterval<T> image;
@@ -71,9 +69,9 @@ public class DefaultASCII<T extends RealType<T>> implements Ops.Image.ASCII {
 	@Override
 	public void run() {
 		if (min == null || max == null) {
-			final List<T> minMax = ops.stats().minMax(image);
-			if (min == null) min = minMax.get(0);
-			if (max == null) max = minMax.get(1);
+			final Pair<T,T> minMax = ops().stats().minMax(image);
+			if (min == null) min = minMax.getA();
+			if (max == null) max = minMax.getB();
 		}
 		ascii = ascii(image, min, max);
 	}

@@ -30,9 +30,6 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment11;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
@@ -40,6 +37,9 @@ import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link CentralMoment11} directly.
@@ -62,7 +62,7 @@ public class IterableCentralMoment11<I extends RealType<I>, O extends RealType<O
 		double moment10 = 0d;
 		double moment11 = 0d;
 
-		Cursor<I> cursor = input.localizingCursor();
+		final Cursor<I> cursor = input.localizingCursor();
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			final double x = cursor.getDoublePosition(0);
