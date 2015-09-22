@@ -34,7 +34,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.scijava.Contextual;
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
+
 import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
@@ -54,10 +59,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Contextual;
-import org.scijava.command.CommandInfo;
-import org.scijava.module.Module;
 
 /**
  * An op environment is the top-level entry point into op execution. It provides
@@ -598,6 +599,9 @@ public interface OpEnvironment extends Contextual {
 
 	// -- Operation shortcuts - other namespaces --
 
+	/** Gateway into ops of the "copy" namespace. */
+	CopyNamespace copy();
+	
 	/** Gateway into ops of the "create" namespace. */
 	CreateNamespace create();
 
