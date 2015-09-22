@@ -50,6 +50,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
+import org.scijava.app.StatusService;
 import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
@@ -67,6 +68,9 @@ import org.scijava.plugin.Parameter;
 public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilterRAI<I, O, K, C>
 {
+
+	@Parameter(required=false)
+	private StatusService status;
 
 	/**
 	 * Max number of iterations to perform
@@ -234,6 +238,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void performIterations() {
 		for (int i = 0; i < maxIterations; i++) {
+
+			if (status != null) {
+				status.showProgress(i, maxIterations);
+			}
 			performIteration();
 			createReblurred();
 			if (getAccelerate()) {
