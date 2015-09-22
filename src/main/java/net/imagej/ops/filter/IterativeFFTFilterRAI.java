@@ -221,7 +221,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			normalization = getImgFactory().create(raiExtendedEstimate, outType
 				.createVariable());
 
-			this.CreateNormalizationImageSemiNonCirculant();
+			this.createNormalizationImageSemiNonCirculant();
 		}
 
 		createReblurred();
@@ -280,25 +280,28 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	 * create the normalization image needed for semi noncirculant model see
 	 * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl
 	 */
-	protected void CreateNormalizationImageSemiNonCirculant() {
-
-		final RandomAccessibleInterval<O> raiExtendedReblurred =
-			getRAIExtendedReblurred();
+	protected void createNormalizationImageSemiNonCirculant() {
 
 		// k is the window size (valid image region)
 		int length = k.numDimensions();
 
 		long[] n = new long[length];
+		long[] nFFT = new long[length];
 
 		// n is the valid image size plus the extended region
 		// also referred to as object space size
 		for (int d = 0; d < length; d++) {
-			n[d] = raiExtendedReblurred.dimension(d);
+			n[d] = k.dimension(d) + l.dimension(d) - 1;
+		}
+
+		for (int d = 0; d < length; d++) {
+			nFFT[d] = raiExtendedReblurred.dimension(d);
 		}
 
 		// create the normalization image
 		final O type = Util.getTypeFromInterval(raiExtendedReblurred);
 		normalization = getImgFactory().create(raiExtendedReblurred, type);
+		Img<O> mask = getImgFactory().create(raiExtendedReblurred, type);
 
 		// size of the measurement window
 		Point size = new Point(3);
@@ -308,16 +311,36 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// starting point of the measurement window when it is centered in fft space
 		Point start = new Point(3);
-		start.setPosition((n[0] - k.dimension(0)) / 2, 0);
-		start.setPosition((n[1] - k.dimension(1)) / 2, 1);
-		start.setPosition((n[2] - k.dimension(2)) / 2, 2);
+		start.setPosition((nFFT[0] - k.dimension(0)) / 2, 0);
+		start.setPosition((nFFT[1] - k.dimension(1)) / 2, 1);
+		start.setPosition((nFFT[2] - k.dimension(2)) / 2, 2);
+
+		// size of the object space
+		Point maskSize = new Point(3);
+		maskSize.setPosition(n[0], 0); // 319
+		maskSize.setPosition(n[1], 1); // 319
+		maskSize.setPosition(n[2], 2); // 190
+
+		// starting point of the object space within the fft space
+		Point maskStart = new Point(3);
+		maskStart.setPosition((nFFT[0] - n[0]) / 2 + 1, 0); // 9
+		maskStart.setPosition((nFFT[1] - n[1]) / 2 + 1, 1); // 21
+		maskStart.setPosition((nFFT[2] - n[2]) / 2 + 1, 2); // 11
 
 		// draw a cube the size of the measurement space
 		drawCube(normalization, start, size, 1.0);
 
+		// draw a cube the size of the object space
+		drawCube(mask, maskStart, maskSize, 1.0);
+
 		// 3. correlate psf with the output of step 2.
 		ops().run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
 			getFFTKernel(), normalization, true, false);
+
+		// fft space can be slightly larger then the object space so so use a mask
+		// to get
+		// rid of any values outside the object space.
+		inPlaceMultiply(normalization, mask);
 
 	}
 
