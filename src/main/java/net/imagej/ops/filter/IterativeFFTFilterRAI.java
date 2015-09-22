@@ -126,6 +126,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	private Img<O> reblurred;
 
+	private Img<O> estimate;
+
 	// Normalization factor for edge handling (see
 	// http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
 	private Img<O> normalization = null;
