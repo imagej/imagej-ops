@@ -33,11 +33,7 @@ package net.imagej.ops.map;
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-<<<<<<< HEAD
-import net.imagej.ops.math.ConstantToNumericType.AddConstantToNumericType;
-=======
 import net.imagej.ops.math.NumericTypeBinaryMath;
->>>>>>> refs/remotes/imagej/master
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
