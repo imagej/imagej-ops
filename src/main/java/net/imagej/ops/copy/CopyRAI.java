@@ -40,6 +40,7 @@ import net.imagej.ops.Ops.Copy.IterableInterval;
 import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.Map;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
@@ -82,7 +83,7 @@ public class CopyRAI<T>
 				out() == null ? RandomAccessibleInterval.class : out(),
 				in(),
 				ops.computer(Ops.Copy.Type.class,
-						out() == null ? IterableInterval.class : Views
+						out() == null ? Type.class : Views
 								.iterable(out()).firstElement().getClass(),
 						Views.iterable(in()).firstElement().getClass()));
 
