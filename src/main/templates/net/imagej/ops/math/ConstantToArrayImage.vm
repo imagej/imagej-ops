@@ -53,7 +53,7 @@ public final class ConstantToArrayImage {
 #set ($iface = "Ops.Math.$op.name")
 
 	/** TODO: add comment **/
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY +#if ($type.name == "Double") 20#else 10#end)
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
 	public static class ${op.name}#if ($op.name == "Add" || $op.name == "Subtract")##
 Constant${op.preposition}Array${type.name}Image#else##
 Array${type.name}Image${op.preposition}Constant#end extends AbstractOp implements $iface {
