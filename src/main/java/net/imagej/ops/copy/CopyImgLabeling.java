@@ -75,10 +75,10 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public boolean conforms() {
-		if (getOutput() != null) {
-			return Intervals.equalDimensions(getInput(), getOutput()) && Util
-				.getTypeFromInterval(getInput().getIndexImg()).getClass() == Util
-					.getTypeFromInterval(getOutput().getIndexImg()).getClass();
+		if (out() != null) {
+			return Intervals.equalDimensions(in(), out()) && Util
+				.getTypeFromInterval(in().getIndexImg()).getClass() == Util
+					.getTypeFromInterval(out().getIndexImg()).getClass();
 		}
 
 		return true;

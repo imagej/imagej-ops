@@ -86,8 +86,8 @@ public class CopyIterableInterval<T> extends
 
 	@Override
 	public boolean conforms() {
-		if (getOutput() != null) {
-			return Intervals.equalDimensions(getInput(), getOutput());
+		if (out() != null) {
+			return Intervals.equalDimensions(in(), out());
 		}
 		return true;
 	}

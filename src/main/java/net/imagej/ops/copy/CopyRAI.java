@@ -30,18 +30,22 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Copy.IterableInterval;
+import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.Map;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Copies a {@link RandomAccessibleInterval} into another
@@ -51,53 +55,52 @@ import net.imglib2.view.Views;
  * @param <L>
  */
 @Plugin(type = Ops.Copy.RAI.class, name = Ops.Copy.RAI.NAME, priority = 1.0)
-public class CopyRAI<T> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-	implements Ops.Copy.RAI, Contingent
-{
+public class CopyRAI<T>
+		extends
+		AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		implements Ops.Copy.RAI, Contingent {
 
 	@Parameter
 	protected OpService ops;
 
 	// used internally
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> map;
+	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
 
-	@SuppressWarnings("unchecked")
+	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
+
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
-		final RandomAccessibleInterval<T> input)
-	{
-		// FIXME: Assumption here: Create an Img. I would rather like: Create what
-		// ever is best given the input.
-		return (RandomAccessibleInterval<T>) ops.create().img(input, Views.iterable(input).firstElement());
+			final RandomAccessibleInterval<T> input) {
+		return createFunc.compute(input);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		mapComputer = (ComputerOp) ops().computer(
+				Map.class,
+				out() == null ? RandomAccessibleInterval.class : out(),
+				in(),
+				ops.computer(Ops.Copy.Type.class,
+						out() == null ? IterableInterval.class : Views
+								.iterable(out()).firstElement().getClass(),
+						Views.iterable(in()).firstElement().getClass()));
+
+		createFunc = (FunctionOp) ops().function(Create.Img.class,
+				RandomAccessibleInterval.class, in(),
+				Util.getTypeFromInterval(in()));
+	}
+
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<T> output)
-	{
-
-		// FIXME: How to make sure that a Computer is returned (in both: inner and
-		// outer op)
-
-		// FIXME: do we need this op at all? we could always use the
-		// IterableInterval version of it ... we just have to make sure that the
-		// iteration orders of Views.iterable(...) match or use
-		// Views.flatIterationOrder if not.
-		if (map == null) map =
-			(ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>) ops
-				.op(Map.class, output, input, ops.op(Ops.Copy.Type.class, Views
-					.iterable(output).firstElement().getClass(), Views.iterable(input)
-						.firstElement().getClass()));
-
-		map.compute(input, output);
+			final RandomAccessibleInterval<T> output) {
+		mapComputer.compute(input, output);
 	}
 
 	@Override
 	public boolean conforms() {
-		if (getOutput() != null) {
-			return Intervals.equalDimensions(getInput(), getOutput());
+		if (out() != null) {
+			return Intervals.equalDimensions(in(), out());
 		}
 		return true;
 	}
