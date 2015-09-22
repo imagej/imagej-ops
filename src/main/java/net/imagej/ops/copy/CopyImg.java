@@ -30,9 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
@@ -40,6 +37,9 @@ import net.imagej.ops.Ops.Copy;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Copying {@link Img} into another {@link Img}
@@ -49,16 +49,15 @@ import net.imglib2.util.Intervals;
  */
 @Plugin(type = Copy.Img.class, name = Copy.Img.NAME)
 public class CopyImg<T extends NativeType<T>> extends
-	AbstractHybridOp<Img<T>, Img<T>>implements Copy.Img, Contingent
-{
+		AbstractHybridOp<Img<T>, Img<T>> implements Copy.Img, Contingent {
 
 	@Parameter
 	private OpService ops;
 
 	@Override
 	public Img<T> createOutput(final Img<T> input) {
-		return ops.create().img(input, input.firstElement().createVariable(), input
-			.factory());
+		return ops.create().img(input, input.firstElement().createVariable(),
+				input.factory());
 	}
 
 	@Override

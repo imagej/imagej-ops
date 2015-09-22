@@ -32,9 +32,6 @@ package net.imagej.ops.copy;
 
 import java.lang.reflect.Array;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Copy;
@@ -43,36 +40,36 @@ import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
  * Copying {@link ArrayImg} into another {@link ArrayImg}
  * 
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Copy.Img.class, name = Copy.Img.NAME,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class CopyArrayImg<T extends NativeType<T>> extends
-	AbstractHybridOp<ArrayImg<T, ? extends ArrayDataAccess<?>>, ArrayImg<T, ? extends ArrayDataAccess<?>>>
-	implements Copy.Img, Contingent
-{
+@Plugin(type = Copy.Img.class, name = Copy.Img.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class CopyArrayImg<T extends NativeType<T>>
+		extends
+		AbstractHybridOp<ArrayImg<T, ? extends ArrayDataAccess<?>>, ArrayImg<T, ? extends ArrayDataAccess<?>>>
+		implements Copy.Img, Contingent {
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayImg<T, ? extends ArrayDataAccess<?>> createOutput(
-		final ArrayImg<T, ? extends ArrayDataAccess<?>> input)
-	{
-		return (ArrayImg<T, ? extends ArrayDataAccess<?>>) input.factory().create(
-			input, input.firstElement().createVariable());
+			final ArrayImg<T, ? extends ArrayDataAccess<?>> input) {
+		return (ArrayImg<T, ? extends ArrayDataAccess<?>>) input.factory()
+				.create(input, input.firstElement().createVariable());
 	}
 
 	@Override
 	public void compute(final ArrayImg<T, ? extends ArrayDataAccess<?>> input,
-		final ArrayImg<T, ? extends ArrayDataAccess<?>> output)
-	{
+			final ArrayImg<T, ? extends ArrayDataAccess<?>> output) {
 
 		final Object inArray = input.update(null).getCurrentStorageArray();
-		System.arraycopy(inArray, 0, output.update(null).getCurrentStorageArray(),
-			0, Array.getLength(inArray));
+		System.arraycopy(inArray, 0, output.update(null)
+				.getCurrentStorageArray(), 0, Array.getLength(inArray));
 
 	}
 

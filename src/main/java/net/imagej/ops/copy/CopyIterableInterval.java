@@ -30,9 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
@@ -42,18 +39,19 @@ import net.imagej.ops.Ops.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * Copies an {@link IterableInterval} into another {@link IterableInterval}
  * 
  * @author Christian Dietz, University of Konstanz
  * @param <L>
  */
-@Plugin(type = Ops.Copy.IterableInterval.class,
-	name = Ops.Copy.IterableInterval.NAME, priority = 1.0)
+@Plugin(type = Ops.Copy.IterableInterval.class, name = Ops.Copy.IterableInterval.NAME, priority = 1.0)
 public class CopyIterableInterval<T> extends
-	AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
-	Ops.Copy.IterableInterval, Contingent
-{
+		AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
+		Ops.Copy.IterableInterval, Contingent {
 
 	@Parameter
 	protected OpService ops;
@@ -64,7 +62,8 @@ public class CopyIterableInterval<T> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
-		// FIXME: Assumption here: Create an Img. I would rather like: Create what
+		// FIXME: Assumption here: Create an Img. I would rather like: Create
+		// what
 		// ever is best given the input.
 		return (IterableInterval<T>) ops.create().img(input);
 	}
@@ -72,14 +71,15 @@ public class CopyIterableInterval<T> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final IterableInterval<T> input,
-		final IterableInterval<T> output)
-	{
-		// FIXME: How to make sure that a Computer is returned (in both: inner and
+			final IterableInterval<T> output) {
+		// FIXME: How to make sure that a Computer is returned (in both: inner
+		// and
 		// outer op)
-		if (map == null) map =
-			(ComputerOp<IterableInterval<T>, IterableInterval<T>>) ops.op(Map.class,
-				output, input, ops.op(Ops.Copy.Type.class, output.firstElement().getClass(),
-					input.firstElement().getClass()));
+		if (map == null)
+			map = (ComputerOp<IterableInterval<T>, IterableInterval<T>>) ops
+					.op(Map.class, output, input, ops.op(Ops.Copy.Type.class,
+							output.firstElement().getClass(), input
+									.firstElement().getClass()));
 
 		map.compute(input, output);
 	}

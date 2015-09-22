@@ -36,7 +36,6 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Copy.IterableInterval;
 import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.Map;
 import net.imglib2.RandomAccessibleInterval;
@@ -82,9 +81,8 @@ public class CopyRAI<T>
 				Map.class,
 				out() == null ? RandomAccessibleInterval.class : out(),
 				in(),
-				ops.computer(Ops.Copy.Type.class,
-						out() == null ? Type.class : Views
-								.iterable(out()).firstElement().getClass(),
+				ops.computer(Ops.Copy.Type.class, out() == null ? Type.class
+						: Views.iterable(out()).firstElement().getClass(),
 						Views.iterable(in()).firstElement().getClass()));
 
 		createFunc = (FunctionOp) ops().function(Create.Img.class,

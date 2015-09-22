@@ -30,8 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -44,6 +42,8 @@ import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.IntegerType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * The filter namespace contains ops that copy data.
@@ -61,18 +61,17 @@ public class CopyNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.copy.CopyImg.class)
 	public <T extends NativeType<T>> Img<T> img(final Img<T> in) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.copy.CopyImg.class,
-			in);
+		final Img<T> result = (Img<T>) ops().run(
+				net.imagej.ops.copy.CopyImg.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyImg.class)
 	public <T extends NativeType<T>> Img<T> img(final Img<T> out,
-		final Img<T> in)
-	{
+			final Img<T> in) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(net.imagej.ops.copy.CopyImg.class,
-			out, in);
+		final Img<T> result = (Img<T>) ops().run(
+				net.imagej.ops.copy.CopyImg.class, out, in);
 		return result;
 	}
 
@@ -80,63 +79,56 @@ public class CopyNamespace extends AbstractNamespace {
 	// just expose CopyImg?
 	@OpMethod(op = net.imagej.ops.copy.CopyArrayImg.class)
 	public <T extends NativeType<T>, A> ArrayImg<T, A> img(
-		final ArrayImg<T, A> in)
-	{
+			final ArrayImg<T, A> in) {
 		@SuppressWarnings("unchecked")
 		final ArrayImg<T, A> result = (ArrayImg<T, A>) ops().run(
-			net.imagej.ops.copy.CopyArrayImg.class, in);
+				net.imagej.ops.copy.CopyArrayImg.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyArrayImg.class)
 	public <T extends NativeType<T>, A> ArrayImg<T, A> img(
-		final ArrayImg<T, A> out, final ArrayImg<T, A> in)
-	{
+			final ArrayImg<T, A> out, final ArrayImg<T, A> in) {
 		@SuppressWarnings("unchecked")
 		final ArrayImg<T, A> result = (ArrayImg<T, A>) ops().run(
-			net.imagej.ops.copy.CopyArrayImg.class, out, in);
+				net.imagej.ops.copy.CopyArrayImg.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyImgLabeling.class)
 	public <L, I extends IntegerType<I>> ImgLabeling<L, I> imgLabeling(
-		final ImgLabeling<L, I> in)
-	{
+			final ImgLabeling<L, I> in) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, I> result = (ImgLabeling<L, I>) ops().run(
-			net.imagej.ops.copy.CopyImgLabeling.class, in);
+				net.imagej.ops.copy.CopyImgLabeling.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyImgLabeling.class)
 	public <L, I extends IntegerType<I>> ImgLabeling<L, I> imgLabeling(
-		final ImgLabeling<L, I> out, final ImgLabeling<L, I> in)
-	{
+			final ImgLabeling<L, I> out, final ImgLabeling<L, I> in) {
 		@SuppressWarnings("unchecked")
 		final ImgLabeling<L, I> result = (ImgLabeling<L, I>) ops().run(
-			net.imagej.ops.copy.CopyImgLabeling.class, out, in);
+				net.imagej.ops.copy.CopyImgLabeling.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyIterableInterval.class)
-	public <T> IterableInterval<T> iterableInterval(
-		final IterableInterval<T> in)
-	{
+	public <T> IterableInterval<T> iterableInterval(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.copy.CopyIterableInterval.class, in);
+				net.imagej.ops.copy.CopyIterableInterval.class, in);
 		return result;
 	}
 
 	// FIXME: Here We can't be sure that we find an apropriate op as there might
 	// not exist an Op mapping from T to T.
 	@OpMethod(op = net.imagej.ops.copy.CopyIterableInterval.class)
-	public <T> IterableInterval<T> iterableInterval(final IterableInterval<T> out,
-		final IterableInterval<T> in)
-	{
+	public <T> IterableInterval<T> iterableInterval(
+			final IterableInterval<T> out, final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.copy.CopyIterableInterval.class, out, in);
+				net.imagej.ops.copy.CopyIterableInterval.class, out, in);
 		return result;
 	}
 
@@ -144,57 +136,51 @@ public class CopyNamespace extends AbstractNamespace {
 	public <L> LabelingMapping<L> labelingMapping(final LabelingMapping<L> in) {
 		@SuppressWarnings("unchecked")
 		final LabelingMapping<L> result = (LabelingMapping<L>) ops().run(
-			net.imagej.ops.copy.CopyLabelingMapping.class, in);
+				net.imagej.ops.copy.CopyLabelingMapping.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyLabelingMapping.class)
 	public <L> LabelingMapping<L> labelingMapping(final LabelingMapping<L> out,
-		final LabelingMapping<L> in)
-	{
+			final LabelingMapping<L> in) {
 		@SuppressWarnings("unchecked")
 		final LabelingMapping<L> result = (LabelingMapping<L>) ops().run(
-			net.imagej.ops.copy.CopyLabelingMapping.class, out, in);
+				net.imagej.ops.copy.CopyLabelingMapping.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyRAI.class)
 	public <T> RandomAccessibleInterval<T> rai(
-		final RandomAccessibleInterval<T> in)
-	{
+			final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.copy.CopyRAI.class,
-				in);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.copy.CopyRAI.class, in);
 		return result;
 	}
 
 	// FIXME: Potentially, the passed RAis are incompatible. how to handle this?
 	@OpMethod(op = net.imagej.ops.copy.CopyRAI.class)
 	public <T> RandomAccessibleInterval<T> rai(
-		final RandomAccessibleInterval<T> out,
-		final RandomAccessibleInterval<T> in)
-	{
+			final RandomAccessibleInterval<T> out,
+			final RandomAccessibleInterval<T> in) {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<T> result =
-			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.copy.CopyRAI.class,
-				out, in);
+		final RandomAccessibleInterval<T> result = (RandomAccessibleInterval<T>) ops()
+				.run(net.imagej.ops.copy.CopyRAI.class, out, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyType.class)
 	public <T extends Type<T>> T type(final T in) {
 		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(net.imagej.ops.copy.CopyType.class, in);
+		final T result = (T) ops().run(net.imagej.ops.copy.CopyType.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.copy.CopyType.class)
 	public <T extends Type<T>> T type(final T out, final T in) {
 		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(net.imagej.ops.copy.CopyType.class, out, in);
+		final T result = (T) ops().run(net.imagej.ops.copy.CopyType.class, out,
+				in);
 		return result;
 	}
 }

@@ -30,9 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
@@ -44,6 +41,9 @@ import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * Copying {@link ImgLabeling} into another {@link ImgLabeling}
  * 
@@ -52,9 +52,8 @@ import net.imglib2.util.Util;
  */
 @Plugin(type = Ops.Copy.ImgLabeling.class, name = Ops.Copy.ImgLabeling.NAME)
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
-	extends AbstractHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>implements
-	Ops.Copy.ImgLabeling, Contingent
-{
+		extends AbstractHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
+		implements Ops.Copy.ImgLabeling, Contingent {
 
 	@Parameter
 	private OpService ops;
@@ -66,9 +65,9 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public void compute(final ImgLabeling<L, T> input,
-		final ImgLabeling<L, T> output)
-	{
-		ops.copy().img((Img<T>) output.getIndexImg(), (Img<T>) input.getIndexImg());
+			final ImgLabeling<L, T> output) {
+		ops.copy().img((Img<T>) output.getIndexImg(),
+				(Img<T>) input.getIndexImg());
 		ops.copy().labelingMapping(output.getMapping(), input.getMapping());
 
 	}
@@ -76,9 +75,10 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 	@Override
 	public boolean conforms() {
 		if (out() != null) {
-			return Intervals.equalDimensions(in(), out()) && Util
-				.getTypeFromInterval(in().getIndexImg()).getClass() == Util
-					.getTypeFromInterval(out().getIndexImg()).getClass();
+			return Intervals.equalDimensions(in(), out())
+					&& Util.getTypeFromInterval(in().getIndexImg()).getClass() == Util
+							.getTypeFromInterval(out().getIndexImg())
+							.getClass();
 		}
 
 		return true;

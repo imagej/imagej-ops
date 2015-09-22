@@ -30,9 +30,9 @@
 
 package net.imagej.ops.copy;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
  * Tests {@link CopyNamespace}.

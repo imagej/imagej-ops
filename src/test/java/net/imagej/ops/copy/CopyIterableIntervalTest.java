@@ -1,8 +1,6 @@
-
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
@@ -28,8 +26,8 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 
 	@Before
 	public void createData() {
-		input = new PlanarImgFactory<DoubleType>().create(new int[] { 120, 100 },
-			new DoubleType());
+		input = new PlanarImgFactory<DoubleType>().create(
+				new int[] { 120, 100 }, new DoubleType());
 
 		final Random r = new Random(System.currentTimeMillis());
 
@@ -43,9 +41,8 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 	@Test
 	public void copyRAINoOutputTest() {
 		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<DoubleType> output =
-			(RandomAccessibleInterval<DoubleType>) ops.run(CopyIterableInterval.class,
-				input);
+		RandomAccessibleInterval<DoubleType> output = (RandomAccessibleInterval<DoubleType>) ops
+				.run(CopyIterableInterval.class, input);
 
 		Cursor<DoubleType> inc = input.localizingCursor();
 		RandomAccess<DoubleType> outRA = output.randomAccess();
@@ -59,8 +56,8 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 
 	@Test
 	public void copyRAIWithOutputTest() {
-		Img<DoubleType> output = input.factory().create(input, input
-			.firstElement());
+		Img<DoubleType> output = input.factory().create(input,
+				input.firstElement());
 
 		ops.run(CopyIterableInterval.class, output, input);
 

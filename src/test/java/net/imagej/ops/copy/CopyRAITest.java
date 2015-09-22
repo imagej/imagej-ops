@@ -1,12 +1,8 @@
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
@@ -15,6 +11,9 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test {@link CopyRAI}.
@@ -27,9 +26,8 @@ public class CopyRAITest extends AbstractOpTest {
 
 	@Before
 	public void createData() {
-		input =
-			new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120, 100 },
-				new UnsignedByteType());
+		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
+				100 }, new UnsignedByteType());
 
 		final Random r = new Random(System.currentTimeMillis());
 
@@ -43,9 +41,8 @@ public class CopyRAITest extends AbstractOpTest {
 	@Test
 	public void copyRAINoOutputTest() {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<UnsignedByteType> output =
-			(RandomAccessibleInterval<UnsignedByteType>) ops.run(CopyRAI.class,
-				input);
+		final RandomAccessibleInterval<UnsignedByteType> output = (RandomAccessibleInterval<UnsignedByteType>) ops
+				.run(CopyRAI.class, input);
 
 		final Cursor<UnsignedByteType> inc = input.localizingCursor();
 		final RandomAccess<UnsignedByteType> outRA = output.randomAccess();
@@ -59,8 +56,8 @@ public class CopyRAITest extends AbstractOpTest {
 
 	@Test
 	public void copyRAIWithOutputTest() {
-		final Img<UnsignedByteType> output =
-			input.factory().create(input, input.firstElement());
+		final Img<UnsignedByteType> output = input.factory().create(input,
+				input.firstElement());
 
 		ops.run(CopyRAI.class, output, input);
 

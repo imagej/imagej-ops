@@ -33,15 +33,15 @@ package net.imagej.ops.copy;
 import java.util.List;
 import java.util.Set;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Copies a {@link LabelingMapping} into another {@link LabelingMapping}
@@ -49,12 +49,10 @@ import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
  * @author Christian Dietz, University of Konstanz
  * @param <L>
  */
-@Plugin(type = Ops.Copy.LabelingMapping.class,
-	name = Ops.Copy.LabelingMapping.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Copy.LabelingMapping.class, name = Ops.Copy.LabelingMapping.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
-	AbstractHybridOp<LabelingMapping<L>, LabelingMapping<L>>implements
-	Ops.Copy.LabelingMapping
-{
+		AbstractHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
+		Ops.Copy.LabelingMapping {
 
 	@Parameter
 	private OpService ops;
@@ -66,13 +64,12 @@ public class CopyLabelingMapping<L> extends
 
 	@Override
 	public void compute(final LabelingMapping<L> input,
-		final LabelingMapping<L> output)
-	{
+			final LabelingMapping<L> output) {
 
-		final LabelingMappingSerializationAccess<L> access =
-			new LabelingMappingSerializationAccess<L>(output);
+		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<L>(
+				output);
 		access.setLabelSets(new LabelingMappingSerializationAccess<L>(input)
-			.getLabelSets());
+				.getLabelSets());
 	}
 
 }
@@ -81,12 +78,10 @@ public class CopyLabelingMapping<L> extends
  * Access to LabelingMapping
  */
 final class LabelingMappingSerializationAccess<T> extends
-	SerialisationAccess<T>
-{
+		SerialisationAccess<T> {
 
 	protected LabelingMappingSerializationAccess(
-		final LabelingMapping<T> labelingMapping)
-	{
+			final LabelingMapping<T> labelingMapping) {
 		super(labelingMapping);
 	}
 
