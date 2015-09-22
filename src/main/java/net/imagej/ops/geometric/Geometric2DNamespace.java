@@ -27,10 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.geometric;
-
-import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
@@ -42,6 +39,8 @@ import net.imglib2.type.logic.BoolType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Namespace for Geometric

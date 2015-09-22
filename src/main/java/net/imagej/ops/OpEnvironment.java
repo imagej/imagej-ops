@@ -34,10 +34,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.Contextual;
-import org.scijava.command.CommandInfo;
-import org.scijava.module.Module;
-
 import net.imagej.ops.convert.ConvertPix;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
@@ -59,6 +55,10 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Contextual;
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
 
 /**
  * An op environment is the top-level entry point into op execution. It provides
@@ -607,12 +607,18 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "filter" namespace. */
 	FilterNamespace filter();
+	
+	/** Gateway into ops of the "geometric" namespace. */
+	Geometric2DNamespace geometric2d();
 
 	/** Gateway into ops of the "haralick " namespace. */
 	HaralickNamespace haralick();
 
 	/** Gateway into ops of the "image" namespace. */
 	ImageNamespace image();
+	
+	/** Gateway into ops of the "image moments" namespace. */
+	ImageMomentsNamespace imagemoments();
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();
@@ -626,12 +632,6 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
 
-	/** Gateway into ops of the "image moments" namespace. */
-	ImageMomentsNamespace imagemoments();
-
-	/** Gateway into ops of the "geometric" namespace. */
-	Geometric2DNamespace geometric2d();
-	
 	/** Gateway into ops of the "thread" namespace. */
 	ThreadNamespace thread();
 

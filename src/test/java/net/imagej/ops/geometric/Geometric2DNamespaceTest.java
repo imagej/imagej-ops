@@ -27,24 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.geometric;
-
-import org.junit.Test;
 
 import net.imagej.ops.AbstractNamespaceTest;
 
+import org.junit.Test;
+
 /**
- * Tests {@link GeometricNamespaceTest}.
+ * Tests {@link Geometric2DNamespaceTest}.
  *
  * @author Daniel Seebacher, University of Konstanz.
  */
-public class GeometricNamespaceTest extends AbstractNamespaceTest {
+public class Geometric2DNamespaceTest extends AbstractNamespaceTest {
 
 	/**
 	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric2DNamespace}
-	 * class.
+	 * type-safe Java method signatures declared in the
+	 * {@link Geometric2DNamespace} class.
 	 */
 	@Test
 	public void testCompleteness() {

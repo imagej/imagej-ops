@@ -1,12 +1,36 @@
-
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
 package net.imagej.ops.geometric;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
@@ -21,24 +45,25 @@ import net.imglib2.type.Type;
 import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.Views;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * Generic implementation of {@link Contour}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Contour",
-	name = Geometric2D.Contour.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Contour", name = Geometric2D.Contour.NAME)
 public class DefaultContour extends
-	AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>implements
-	GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>, Contingent, Geometric2D.Contour
-{
+		AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>
+		implements GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>,
+		Contingent, Geometric2D.Contour {
 
-	@Parameter(type = ItemIO.INPUT,
-		description = "Set this flag to use the refined Jacobs stopping criteria")
+	@Parameter(type = ItemIO.INPUT, description = "Set this flag to use the refined Jacobs stopping criteria")
 	private boolean useJacobs = true;
 
-	@Parameter(type = ItemIO.INPUT,
-		description = "Set this flag to invert between foreground/background.")
+	@Parameter(type = ItemIO.INPUT, description = "Set this flag to invert between foreground/background.")
 	private boolean isInverted = false;
 
 	@Override
@@ -49,22 +74,21 @@ public class DefaultContour extends
 	/**
 	 * ClockwiseMooreNeighborhoodIterator Iterates clockwise through a 2D Moore
 	 * Neighborhood (8 connected Neighborhood). This iterator encourages reuse!
-	 * Reset the iterator and move the underlying random accessible, do not create
-	 * new ones. That is more resource efficient and faster.
+	 * Reset the iterator and move the underlying random accessible, do not
+	 * create new ones. That is more resource efficient and faster.
 	 *
 	 * @author Jonathan Hale (University of Konstanz)
 	 */
-	final class ClockwiseMooreNeighborhoodIterator<T extends Type<T>> implements
-		java.util.Iterator<T>
-	{
+	final class ClockwiseMooreNeighborhoodIterator<T extends Type<T>>
+			implements java.util.Iterator<T> {
 
 		final private RandomAccess<T> m_ra;
 
-		final private int[][] CLOCKWISE_OFFSETS = { { 0, -1 }, { 1, 0 }, { 1, 0 }, {
-			0, 1 }, { 0, 1 }, { -1, 0 }, { -1, 0 }, { 0, -1 } };
+		final private int[][] CLOCKWISE_OFFSETS = { { 0, -1 }, { 1, 0 },
+				{ 1, 0 }, { 0, 1 }, { 0, 1 }, { -1, 0 }, { -1, 0 }, { 0, -1 } };
 
-		final private int[][] CCLOCKWISE_OFFSETS = { { 0, 1 }, { 0, 1 }, { -1, 0 },
-			{ -1, 0 }, { 0, -1 }, { 0, -1 }, { 1, 0 }, { 1, 0 } };
+		final private int[][] CCLOCKWISE_OFFSETS = { { 0, 1 }, { 0, 1 },
+				{ -1, 0 }, { -1, 0 }, { 0, -1 }, { 0, -1 }, { 1, 0 }, { 1, 0 } };
 
 		// index of offset to be executed at next next() call.
 		private int m_curOffset = 0;
@@ -112,16 +136,13 @@ public class DefaultContour extends
 			if (back[0] == 0) {
 				if (back[1] == 1) {
 					m_curOffset = 6;
-				}
-				else {
+				} else {
 					m_curOffset = 2;
 				}
-			}
-			else {
+			} else {
 				if (back[0] == 1) {
 					m_curOffset = 4;
-				}
-				else {
+				} else {
 					m_curOffset = 0;
 				}
 			}
@@ -134,7 +155,8 @@ public class DefaultContour extends
 		}
 
 		/**
-		 * Reset the current offset index. This does not influence the RandomAccess.
+		 * Reset the current offset index. This does not influence the
+		 * RandomAccess.
 		 */
 		public final void reset() {
 			m_curOffset = 0;
@@ -152,16 +174,13 @@ public class DefaultContour extends
 			if (back[0] == 0) {
 				if (back[1] == 1) {
 					m_curOffset = 6;
-				}
-				else {
+				} else {
 					m_curOffset = 2;
 				}
-			}
-			else {
+			} else {
 				if (back[0] == 1) {
 					m_curOffset = 4;
-				}
-				else {
+				} else {
 					m_curOffset = 0;
 				}
 			}
@@ -171,14 +190,14 @@ public class DefaultContour extends
 	}
 
 	@Override
-	public Polygon compute(RandomAccessibleInterval<BoolType> input) {
+	public Polygon compute(final RandomAccessibleInterval<BoolType> input) {
 		List<RealPoint> p = new ArrayList<RealPoint>();
 
 		final RandomAccess<BoolType> raInput = Views.extendValue(input,
-			new BoolType(!isInverted)).randomAccess();
+				new BoolType(!isInverted)).randomAccess();
 		final Cursor<BoolType> cInput = Views.flatIterable(input).cursor();
-		final ClockwiseMooreNeighborhoodIterator<BoolType> cNeigh =
-			new ClockwiseMooreNeighborhoodIterator<BoolType>(raInput);
+		final ClockwiseMooreNeighborhoodIterator<BoolType> cNeigh = new ClockwiseMooreNeighborhoodIterator<BoolType>(
+				raInput);
 
 		double[] position = new double[2];
 		double[] startPos = new double[2];
@@ -204,7 +223,8 @@ public class DefaultContour extends
 						boolean specialBacktrack = false;
 
 						raInput.localize(position);
-						if (startPos[0] == position[0] && startPos[1] == position[1]) {
+						if (startPos[0] == position[0]
+								&& startPos[1] == position[1]) {
 							// startPoint was found.
 							if (useJacobs) {
 								// Jacobs stopping criteria
@@ -213,15 +233,13 @@ public class DefaultContour extends
 									// Jonathans refinement to the
 									// non-terminating jacobs criteria
 									specialBacktrack = true;
-								}
-								else if (index == 2 || index == 3) {
+								} else if (index == 2 || index == 3) {
 									// if index is 2 or 3, we entered the pixel
 									// by moving {1, 0}, therefore in the same
 									// way.
 									break;
 								} // else criteria not fulfilled, continue.
-							}
-							else {
+							} else {
 								break;
 							}
 						}
@@ -230,8 +248,7 @@ public class DefaultContour extends
 
 						if (specialBacktrack) {
 							cNeigh.backtrackSpecial();
-						}
-						else {
+						} else {
 							cNeigh.backtrack();
 						}
 					}

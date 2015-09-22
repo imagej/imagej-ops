@@ -32,11 +32,6 @@ package net.imagej.ops.cached;
 
 import java.util.Collection;
 
-import org.scijava.Priority;
-import org.scijava.cache.CacheService;
-import org.scijava.command.CommandInfo;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.CustomOpEnvironment;
@@ -44,6 +39,11 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+
+import org.scijava.Priority;
+import org.scijava.cache.CacheService;
+import org.scijava.command.CommandInfo;
+import org.scijava.plugin.Parameter;
 
 /**
  * Creates {@link CachedFunctionOp}s which know how to cache their outputs.
