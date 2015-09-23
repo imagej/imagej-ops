@@ -39,6 +39,7 @@ import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
+import net.imagej.ops.geometric.Geometric2DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -606,12 +607,18 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "filter" namespace. */
 	FilterNamespace filter();
+	
+	/** Gateway into ops of the "geometric" namespace. */
+	Geometric2DNamespace geometric2d();
 
 	/** Gateway into ops of the "haralick " namespace. */
 	HaralickNamespace haralick();
 
 	/** Gateway into ops of the "image" namespace. */
 	ImageNamespace image();
+	
+	/** Gateway into ops of the "image moments" namespace. */
+	ImageMomentsNamespace imagemoments();
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();
@@ -624,9 +631,6 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
-
-	/** Gateway into ops of the "image moments" namespace. */
-	ImageMomentsNamespace imagemoments();
 
 	/** Gateway into ops of the "thread" namespace. */
 	ThreadNamespace thread();
