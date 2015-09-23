@@ -31,8 +31,6 @@
 package net.imagej.ops.filter;
 
 import java.util.List;
-import java.util.Random;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
@@ -74,12 +72,53 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealType.class)
 	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
 		final I in, final double rangeMin, final double rangeMax,
-		final double rangeStdDev, final Random rng)
+		final double rangeStdDev)
 	{
 		@SuppressWarnings("unchecked")
 		final O result =
 			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out,
-				in, rangeMin, rangeMax, rangeStdDev, rng);
+				in, rangeMin, rangeMax, rangeStdDev);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addNoise.AddNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addNoise(final O out,
+		final I in, final double rangeMin, final double rangeMax,
+		final double rangeStdDev, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.filter.addNoise.AddNoiseRealType.class, out,
+				in, rangeMin, rangeMax, rangeStdDev, seed);
+		return result;
+	}
+
+	// -- addPoissonNoise --
+
+	@OpMethod(op = net.imagej.ops.Ops.Filter.AddPoissonNoise.class)
+	public Object addPoissonNoise(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Filter.AddPoissonNoise.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addPoissonNoise(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class, out,
+				in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class)
+	public <I extends RealType<I>, O extends RealType<O>> O addPoissonNoise(final O out,
+		final I in, final long seed)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.filter.addPoissonNoise.AddPoissonNoiseRealType.class, out,
+				in, seed);
 		return result;
 	}
 

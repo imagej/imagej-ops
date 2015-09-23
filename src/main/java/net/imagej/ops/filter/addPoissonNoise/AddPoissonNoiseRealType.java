@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.filter.addNoise;
+package net.imagej.ops.filter.addPoissonNoise;
 
 import java.util.Random;
 
@@ -40,23 +40,20 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to the addition of the real
- * component of an input real number with an amount of Gaussian noise.
+ * Sets the real component of an output real number to a real number sampled from
+ * a Poisson distribution with lambda of the input real number.
+ * <p>
+ * Implementation according to:
+ * <p>D. E. Knuth.<br/>
+ * Art of Computer Programming, Volume 2: Seminumerical Algorithms (3rd Edition).<br/>
+ * Addison-Wesley Professional, November 1997
+ *  
+ * @author Jan Eglinger
  */
-@Plugin(type = Ops.Filter.AddNoise.class, name = Ops.Filter.AddNoise.NAME)
-public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
+@Plugin(type = Ops.Filter.AddPoissonNoise.class, name = Ops.Filter.AddPoissonNoise.NAME)
+public class AddPoissonNoiseRealType<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<I, O> implements Ops.Filter.AddPoissonNoise
 {
-
-	@Parameter
-	private double rangeMin;
-
-	@Parameter
-	private double rangeMax;
-
-	@Parameter
-	private double rangeStdDev;
-
 	@Parameter(required = false)
 	private long seed = 0xabcdef1234567890L;
 	
@@ -73,20 +70,14 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void compute(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
-		int i = 0;
+		double l = Math.exp(-(input.getRealDouble()));
+		int k = 0;
+		double p = 1;
 		do {
-			final double newVal =
-				input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
-			if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
-				output.setReal(newVal);
-				return;
-			}
-			if (i++ > 100) {
-				throw new IllegalArgumentException(
-					"noise function failing to terminate. probably misconfigured.");
-			}
-		}
-		while (true);
+			k++;
+			p *= rng.nextDouble();
+		} while (p >= l);
+		output.setReal(k-1);
+		return;
 	}
-
 }
