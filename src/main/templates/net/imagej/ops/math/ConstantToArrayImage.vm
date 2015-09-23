@@ -28,35 +28,55 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY)
-public class AddConstantToArrayByteImage extends AbstractOp implements
-	Ops.Math.Add
-{
+/**
+ * Wrapper class for binary math operations between constant values and {@link ArrayImg}s.
+ * <p>
+ * Add, subtract, multiply, and divide are implemented for {@link ArrayImg}s
+ * of {@link ByteType} or {@link DoubleType}.
+ * </p>
+ *
+ * @author Leon Yang
+ */
+public final class ConstantToArrayImage {
+	private ConstantToArrayImage() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
 
-	@Parameter(type = ItemIO.BOTH)
-	private ArrayImg<ByteType, ByteArray> image;
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
+	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
 
-	@Parameter
-	private byte value;
+		@Parameter(type = ItemIO.BOTH)
+		private ArrayImg<${type.name}Type, ${type.name}Array> image;
 
-	@Override
-	public void run() {
-		final byte[] data = image.update(null).getCurrentStorageArray();
-		for (int i = 0; i < data.length; i++) {
-			data[i] += value;
+		@Parameter
+		private ${type.primitive} value;
+
+		@Override
+		public void run() {
+			final ${type.primitive}[] data = image.update(null).getCurrentStorageArray();
+			for (int i = 0; i < data.length; i++) {
+				data[i] ${op.operator}= value;
+			}
 		}
 	}
+#end
+#end
 }

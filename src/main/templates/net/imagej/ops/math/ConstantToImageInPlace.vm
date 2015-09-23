@@ -28,50 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imglib2.img.basictypeaccess.array.DoubleArray;
-import net.imglib2.img.planar.PlanarImg;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.IterableRealInterval;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME)
-public class AddConstantToPlanarDoubleImage extends AbstractOp implements
-	Ops.Math.Add, Contingent
-{
+/**
+ * Wrapper class for in-place binary math operations between constant values 
+ * and {@link ArrayImg}s.
+ *
+ * @author Leon Yang
+ */
+public final class ConstantToImageInPlace {
+	
+	private ConstantToImageInPlace() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
 
-	@Parameter(type = ItemIO.BOTH)
-	private PlanarImg<DoubleType, DoubleArray> image;
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME)
+	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp implements
+		$iface
+	{
 
-	@Parameter
-	private double value;
+		@Parameter(type = ItemIO.BOTH)
+		private IterableRealInterval<T> image;
 
-	@Override
-	public void run() {
-		long planeCount = 1;
-		for (int d = 2; d < image.numDimensions(); d++) {
-			planeCount *= image.dimension(d);
-		}
-		for (int p = 0; p < planeCount; p++) {
-			final double[] plane = image.getPlane(p).getCurrentStorageArray();
-			for (int i = 0; i < plane.length; i++) {
-				plane[i] += value;
+		@Parameter
+		private T value;
+
+		@Override
+		public void run() {
+			for (final T t : image) {
+				t.${op.function}(value);
 			}
 		}
-	}
 
-	@Override
-	public boolean conforms() {
-		// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
-		// The warning is expected, because the image parameter is assigned via
-		// reflection and hence might not match the declared generic types.
-		return image.firstElement() instanceof DoubleType;
 	}
-
+#end
 }

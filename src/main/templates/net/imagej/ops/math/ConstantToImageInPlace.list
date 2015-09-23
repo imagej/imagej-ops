@@ -1,0 +1,9 @@
+# Generated in-place binary arithmetic ops with generic images.
+
+[ConstantToImageInPlace.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+]
+```

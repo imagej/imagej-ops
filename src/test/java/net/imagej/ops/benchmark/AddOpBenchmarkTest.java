@@ -37,10 +37,10 @@ import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableToRAIParallel;
 import net.imagej.ops.map.MapParallel;
 import net.imagej.ops.math.NumericTypeBinaryMath;
-import net.imagej.ops.math.add.AddConstantToArrayByteImage;
-import net.imagej.ops.math.add.AddConstantToArrayByteImageP;
-import net.imagej.ops.math.add.AddConstantToImageFunctional;
-import net.imagej.ops.math.add.AddConstantToImageInPlace;
+import net.imagej.ops.math.ConstantToArrayImage;
+import net.imagej.ops.math.ConstantToArrayImageP;
+import net.imagej.ops.math.ConstantToImageFunctional;
+import net.imagej.ops.math.ConstantToImageInPlace;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -86,7 +86,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTtestAddConstantToImage() {
-		ops.run(new AddConstantToImageFunctional<ByteType>(), out, in,
+		ops.run(new ConstantToImageFunctional.Add<ByteType>(), out, in,
 			new ByteType((byte) 10));
 	}
 
@@ -98,17 +98,17 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.run(new AddConstantToImageInPlace<ByteType>(), in, new ByteType(
+		ops.run(new ConstantToImageInPlace.Add<ByteType>(), in, new ByteType(
 			(byte) 10));
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImage() {
-		ops.run(new AddConstantToArrayByteImage(), in, (byte) 10);
+		ops.run(new ConstantToArrayImage.AddByte(), in, (byte) 10);
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImageP() {
-		ops.run(new AddConstantToArrayByteImageP(), in, (byte) 10);
+		ops.run(new ConstantToArrayImageP.AddByte(), in, (byte) 10);
 	}
 }

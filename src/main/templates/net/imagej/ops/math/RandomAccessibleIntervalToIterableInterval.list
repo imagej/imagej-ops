@@ -1,0 +1,10 @@
+# Generated binary arithmetic ops with RandomAccessibleIntervals and
+# IterableIntervals. 
+
+[RandomAccessibleIntervalToIterableInterval.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+]
+```

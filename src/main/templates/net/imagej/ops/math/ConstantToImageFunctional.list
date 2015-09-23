@@ -1,0 +1,9 @@
+# Generated functional binary arithmetic ops with ArrayImages.
+
+[ConstantToImageFunctional.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+]
+```
