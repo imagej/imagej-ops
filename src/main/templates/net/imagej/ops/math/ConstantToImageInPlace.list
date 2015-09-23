@@ -5,5 +5,8 @@
 ops = ```
 [
 	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
 ]
 ```

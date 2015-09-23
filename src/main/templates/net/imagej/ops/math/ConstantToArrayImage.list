@@ -12,5 +12,8 @@ types = ```
 ops = ```
 [
 	[name: "Add",      operator: "+"],
+	[name: "Subtract", operator: "-"], 
+	[name: "Multiply", operator: "*"], 
+	[name: "Divide",   operator: "/"]
 ]
 ```
