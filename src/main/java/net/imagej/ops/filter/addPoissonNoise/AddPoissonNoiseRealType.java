@@ -54,11 +54,22 @@ import org.scijava.plugin.Plugin;
 public class AddPoissonNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractComputerOp<I, O> implements Ops.Filter.AddPoissonNoise
 {
-	@Parameter
+	@Parameter(required = false)
+	private long seed = 0xabcdef1234567890L;
+	
 	private Random rng;
 
+	public long getSeed() {
+		return seed;
+	}
+	
+	public void setSeed(final long seed) {
+		this.seed = seed;
+	}
+	
 	@Override
 	public void compute(final I input, final O output) {
+		if (rng == null) rng = new Random(seed);
 		double l = Math.exp(-(input.getRealDouble()));
 		int k = 0;
 		double p = 1;

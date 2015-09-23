@@ -57,11 +57,22 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	@Parameter
 	private double rangeStdDev;
 
-	@Parameter
+	@Parameter(required = false)
+	private long seed = 0xabcdef1234567890L;
+	
 	private Random rng;
 
+	public long getSeed() {
+		return seed;
+	}
+	
+	public void setSeed(final long seed) {
+		this.seed = seed;
+	}
+	
 	@Override
 	public void compute(final I input, final O output) {
+		if (rng == null) rng = new Random(seed);
 		int i = 0;
 		do {
 			final double newVal =
