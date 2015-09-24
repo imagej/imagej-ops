@@ -74,8 +74,6 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 			max = (byte) Math.max(t.getInteger(), max);
 		}
 		assertEquals(out.firstElement().get(), max);
-		
-		System.out.println(max);
 	}
 
 	/**
