@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
+package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;

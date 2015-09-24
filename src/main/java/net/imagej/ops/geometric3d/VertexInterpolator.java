@@ -27,43 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
+package net.imagej.ops.geometric3d;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.Op;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Contingent;
-
-/**
- * This is the {@link AbstractVertexInterpolator}. A vertex interpolator
- * computes the real coordinates based on the pixel intensities.
- * 
- * @author Tim-Oliver Buchholz, University of Konstanz
- *
- */
-public abstract class AbstractVertexInterpolator extends AbstractOp
-		implements
-			VertexInterpolator,
-			Contingent {
-
-	@Parameter(type = ItemIO.INPUT)
-	int[] p1;
-
-	@Parameter(type = ItemIO.INPUT)
-	int[] p2;
-
-	@Parameter(type = ItemIO.INPUT)
-	double p1Value;
-
-	@Parameter(type = ItemIO.INPUT)
-	double p2Value;
-
-	@Parameter(type = ItemIO.OUTPUT)
-	double[] output;
-	
-	@Override
-	public boolean conforms() {
-		return p1.length == 3 && p2.length == 3;
-	}
+public interface VertexInterpolator extends Op {
+	// NB: Marker Interface
 }

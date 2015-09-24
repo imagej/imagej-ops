@@ -27,49 +27,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
+package net.imagej.ops.geometric3d;
 
-import org.scijava.plugin.Plugin;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
-import net.imagej.ops.Ops.Descriptor3D.Centroid;
-import net.imglib2.Cursor;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
+import net.imagej.ops.AbstractOp;
+import net.imagej.ops.Contingent;
 
 /**
- * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
+ * This is the {@link AbstractVertexInterpolator}. A vertex interpolator
+ * computes the real coordinates based on the pixel intensities.
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * @param <B> a Boolean Type
  */
-@Plugin(type = Op.class, name = Descriptor3D.Centroid.NAME)
-public class DefaultCentroid<B extends BooleanType<B>>
-		extends
-			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
+public abstract class AbstractVertexInterpolator extends AbstractOp
+		implements
+			VertexInterpolator,
+			Contingent {
 
+	@Parameter(type = ItemIO.INPUT)
+	int[] p1;
+
+	@Parameter(type = ItemIO.INPUT)
+	int[] p2;
+
+	@Parameter(type = ItemIO.INPUT)
+	double p1Value;
+
+	@Parameter(type = ItemIO.INPUT)
+	double p2Value;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	double[] output;
+	
 	@Override
-	public double[] compute(final IterableRegion<B> input) {
-		int numDimensions = input.numDimensions();
-		double[] output = new double[numDimensions];
-		Cursor<Void> c = input.localizingCursor();
-		while (c.hasNext()) {
-			c.fwd();
-			double[] pos = new double[numDimensions];
-			c.localize(pos);
-			for (int i = 0; i < output.length; i++) {
-				output[i] += pos[i];
-			}
-		}
-
-		for (int i = 0; i < output.length; i++) {
-			output[i] = output[i] / (double)input.size();
-		}
-		
-		return output;
+	public boolean conforms() {
+		return p1.length == 3 && p2.length == 3;
 	}
-
 }

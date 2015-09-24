@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
+package net.imagej.ops.geometric3d;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -37,6 +37,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.geometric3d.DefaultConvexHull3D;
+import net.imagej.ops.geometric3d.DefaultMesh;
+import net.imagej.ops.geometric3d.TriangularFacet;
+import net.imagej.ops.geometric3d.Vertex;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.junit.Test;

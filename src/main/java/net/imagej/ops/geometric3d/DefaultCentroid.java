@@ -27,29 +27,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
+package net.imagej.ops.geometric3d;
 
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Descriptor3D.Centroid;
+import net.imglib2.Cursor;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
+
 /**
- * The {@link BitTypeVertexInterpolator} returns the point which is 
- * in the middle of the two input vertices. 
+ * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *
+ * @param <B> a Boolean Type
  */
-@Plugin(type = Op.class, name = Descriptor3D.VertexInterpolator.NAME)
-public class BitTypeVertexInterpolator extends AbstractVertexInterpolator {
+@Plugin(type = Op.class, name = Descriptor3D.Centroid.NAME)
+public class DefaultCentroid<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
 
 	@Override
-	public void run() {
-		output = new double[3];
-		for (int i = 0; i < 3; i++) {
-			output[i] = (p1[i] + p2[i])/2.0;
+	public double[] compute(final IterableRegion<B> input) {
+		int numDimensions = input.numDimensions();
+		double[] output = new double[numDimensions];
+		Cursor<Void> c = input.localizingCursor();
+		while (c.hasNext()) {
+			c.fwd();
+			double[] pos = new double[numDimensions];
+			c.localize(pos);
+			for (int i = 0; i < output.length; i++) {
+				output[i] += pos[i];
+			}
 		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] = output[i] / (double)input.size();
+		}
+		
+		return output;
 	}
 
 }

@@ -34,9 +34,7 @@ import java.util.HashSet;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
-import net.imagej.ops.descriptor3d.DefaultMesh;
-import net.imagej.ops.descriptor3d.DefaultMarchingCubes;
-import net.imagej.ops.descriptor3d.Vertex;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -172,6 +170,70 @@ public class Geometric3DNamespace extends AbstractNamespace {
 			final IterableRegion<B> in) {
 		final DoubleType result = (DoubleType) ops().run(
 				net.imagej.ops.geometric3d.DefaultVolumeFeature.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.BitTypeVertexInterpolator.class)
+	public double[] VertexInterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value) {
+		final double[] result =
+			(double[]) ops().run(net.imagej.ops.geometric3d.BitTypeVertexInterpolator.class, p1, p2, p1Value, p2Value);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultCentroid.class)
+	public <B extends BooleanType<B>> double[] Centroid(final IterableRegion<B> in) {
+		final double[] result =
+			(double[]) ops().run(net.imagej.ops.geometric3d.DefaultCentroid.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultVertexInterpolator.class)
+	public double[] VertexInterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value, final double isolevel) {
+		final double[] result =
+			(double[]) ops().run(net.imagej.ops.geometric3d.DefaultVertexInterpolator.class, p1, p2, p1Value, p2Value, isolevel);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.geometric3d.DefaultMarchingCubes.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in, final double isolevel) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.geometric3d.DefaultMarchingCubes.class, in, isolevel);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in, final double isolevel, final VertexInterpolator interpolatorClass) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.geometric3d.DefaultMarchingCubes.class, in, isolevel, interpolatorClass);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultSecondMultiVariate3D.class)
+	public <B extends BooleanType<B>> CovarianceOf2ndMultiVariate3D SecondMultiVariate3D(final IterableRegion<B> in) {
+		final CovarianceOf2ndMultiVariate3D result =
+			(CovarianceOf2ndMultiVariate3D) ops().run(net.imagej.ops.geometric3d.DefaultSecondMultiVariate3D.class, in);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geometric3d.QuickHull3DFromMC.class)
+	public <B extends BooleanType<B>> Mesh convexhull3d(
+			final IterableRegion<B> in) {
+		final DefaultMesh result = (DefaultMesh) ops().run(
+				net.imagej.ops.geometric3d.QuickHull3DFromMC.class, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultConvexHull3D.class)
+	public Mesh convexhull3d(final HashSet<Vertex> in) {
+		final DefaultMesh result = (DefaultMesh) ops().run(
+				net.imagej.ops.geometric3d.DefaultConvexHull3D.class, in);
 		return result;
 	}
 }

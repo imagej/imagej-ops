@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.descriptor3d;
+package net.imagej.ops.geometric3d;
 
 import org.scijava.plugin.Plugin;
 
@@ -37,7 +37,6 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D;
 import net.imagej.ops.Ops.Descriptor3D.SecondMultiVariate3D;
-import net.imagej.ops.geometric3d.DefaultVolumeFeature;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
