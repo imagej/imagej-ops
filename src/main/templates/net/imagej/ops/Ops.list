@@ -296,10 +296,9 @@ namespaces = ```
 	]],
 	[name: "descriptor3d",              iface: "Descriptor3D", ops: [
 	[name: "convexhull3d",	            iface: "ConvexHull3D"],
-	[name: "BitTypeVertexInterpolator", iface: "BitTypeVertexInterpolator"],
 	[name: "VertexInterpolator",        iface: "VertexInterpolator"],
 	[name: "Centroid",                  iface: "Centroid"],
-	[name: "Polygonize",                iface: "Polygonize"],
+	[name: "MarchingCubes",             iface: "MarchingCubes"],
 	[name: "SecondMultiVariate3D",      iface: "SecondMultiVariate3D"]
 	]]
 ]

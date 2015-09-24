@@ -38,14 +38,14 @@ import java.util.List;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class Horizon extends AbstractPolygon {
+public class Horizon extends UpdateablePointSet {
 	
 	/**
 	 * Create a new {@link Horizon} from a {@link TriangularFacet}
 	 * @param f the facet
 	 */
 	@SuppressWarnings("unchecked")
-	public Horizon (TriangularFacet f) {
+	public Horizon (final TriangularFacet f) {
 		vertices = (List<Vertex>) f.getVertices();
 		neighbors = f.getNeighbors();
 	}
@@ -58,7 +58,7 @@ public class Horizon extends AbstractPolygon {
 	 * Note: The neighbors of f pointing to f have to be updated manually. 
 	 * @param f the facet to merge into this facet.
 	 */
-	public void simpleMerge(TriangularFacet f) {
+	public void simpleMerge(final TriangularFacet f) {
 		int neighborIndex = neighbors.indexOf(f);
 		int newVertex = -1;
 		for (int i = 0; i < f.getVertices().size(); i++) {
@@ -83,7 +83,7 @@ public class Horizon extends AbstractPolygon {
 	 * Note: The neighbors of f pointing to f have to be updated manually.
 	 * @param f the facet to merge into this facet.
 	 */
-	public void complexMerge(TriangularFacet f) {
+	public void complexMerge(final TriangularFacet f) {
 		Vertex v0 = f.getVertex(0);
 		Vertex v1 = f.getVertex(1);
 		Vertex v2 = f.getVertex(2);
@@ -114,7 +114,7 @@ public class Horizon extends AbstractPolygon {
 	 * @param v0 the vertex of the triangle which lies between the two edges
 	 * @param neighborIndex of the new outer neighbor
 	 */
-	private void mergeTwoAdjacentEdges(TriangularFacet f, Vertex v0, int neighborIndex) {
+	private void mergeTwoAdjacentEdges(final TriangularFacet f, final Vertex v0, final int neighborIndex) {
 		int i = vertices.indexOf(v0) ;
 		vertices.remove(i);
 		neighbors.remove(i);

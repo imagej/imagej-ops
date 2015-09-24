@@ -30,11 +30,12 @@
 package net.imagej.ops.descriptor3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Descriptor3D;
-import net.imagej.ops.Ops.Descriptor3D.Polygonize;
+import net.imagej.ops.Ops.Descriptor3D.MarchingCubes;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -48,32 +49,36 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * This is a marching cubes implementation. It is inspired by
- * Paul Bourke's (http://paulbourke.net/geometry/polygonise/) implementation. 
- * Especially the lookup tables are from his implementation. 
+ * This is a marching cubes implementation. It is inspired by Paul Bourke's
+ * (http://paulbourke.net/geometry/polygonise/) implementation. Especially the
+ * lookup tables are from his implementation.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * @param <T> BooleanType
+ * @param <T>
+ *            BooleanType
  */
-@Plugin(type = Op.class, name = Descriptor3D.Polygonize.NAME)
-public class MarchingCubes<T extends BooleanType<T>> extends
-		AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultFacets>
-		implements Polygonize, FunctionOp<RandomAccessibleInterval<T>, DefaultFacets> {
+@Plugin(type = Op.class, name = Descriptor3D.MarchingCubes.NAME)
+public class DefaultMarchingCubes<T extends BooleanType<T>>
+		extends
+			AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultMesh>
+		implements
+			MarchingCubes,
+			Contingent {
 
 	@Parameter(type = ItemIO.INPUT, required = false)
 	private double isolevel = 1;
 
 	@Parameter(type = ItemIO.INPUT, required = false)
-	private VertexInterpolator interpolatorClass = new DefaultBitTypeVertexInterpolator();
+	private VertexInterpolator interpolatorClass = new BitTypeVertexInterpolator();
 
 	@Parameter
 	private OpService ops;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DefaultFacets compute(RandomAccessibleInterval<T> input) {
-		DefaultFacets output = new DefaultFacets();
+	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
+		DefaultMesh output = new DefaultMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended = Views
 				.extendValue(input, (T)(Object) new BoolType(false));
 		Cursor<T> c = Views.interval(
@@ -181,7 +186,7 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 		return output;
 	}
 
-	private int getCubeIndex(double[] vertex_values) {
+	private int getCubeIndex(final double[] vertex_values) {
 		int cubeindex = 0;
 		for (int i = 0; i < 8; i++) {
 			if (vertex_values[i] < isolevel) {
@@ -191,7 +196,7 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 		return cubeindex;
 	}
 
-	private double[] mapFlatIterableToLookUpCube(double[] vertex_values) {
+	private double[] mapFlatIterableToLookUpCube(final double[] vertex_values) {
 		double[] vv = new double[8];
 		vv[0] = vertex_values[0];
 		vv[1] = vertex_values[1];
@@ -205,8 +210,8 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 	}
 
 	private Cursor<T> getCube(
-			ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended,
-			int cursorX, int cursorY, int cursorZ) {
+			final ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended,
+			final int cursorX, final int cursorY, final int cursorZ) {
 		return Views.flatIterable(
 				Views.interval(extended, new FinalInterval(new long[] {
 						cursorX, cursorY, cursorZ }, new long[] { cursorX + 1,
@@ -223,6 +228,8 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 	// possible vertex states
 	// There are 12 edges. For each entry in the table, if edge #n is
 	// intersected, then bit #n is set to 1
+	// This table is from Paul Bourke's (http://paulbourke.net/geometry/polygonise/)
+	// Marching Cubes implementation.
 	private static final int[] EDGE_TABLE = new int[] { 0x000, 0x109, 0x203,
 			0x30a, 0x406, 0x50f, 0x605, 0x70c, 0x80c, 0x905, 0xa0f, 0xb06,
 			0xc0a, 0xd03, 0xe09, 0xf00, 0x190, 0x099, 0x393, 0x29a, 0x596,
@@ -254,17 +261,16 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 			0x905, 0x80c, 0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109,
 			0x000 };
 
-	// For each of the possible vertex states listed in aiCubeEdgeFlags there is
-	// a specific triangulation
-	// of the edge intersection points. TriangleConnectionTable lists all of
+	// For each of the possible cube state there is a specific triangulation
+	// of the edge intersection points. This table lists all of
 	// them in the form of
 	// 0-5 edge triples with the list terminated by the invalid value -1.
-	// For example: a2iTriangleConnectionTable[3] list the 2 triangles formed
+	// For example: TRIANGLE_TABLE[3] list the 2 triangles formed
 	// when corner[0]
 	// and corner[1] are inside of the surface, but the rest of the cube is not.
 	//
-	// I found this table in an example program someone wrote long ago. It was
-	// probably generated by hand
+	// This table is from Paul Bourke's (http://paulbourke.net/geometry/polygonise/)
+	// Marching Cubes implementation.
 	private static final int[][] TRIANGLE_TABLE = new int[][] {
 			{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
 			{ 0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
@@ -522,5 +528,10 @@ public class MarchingCubes<T extends BooleanType<T>> extends
 			{ 0, 9, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
 			{ 0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
 			{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } };
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
+	}
 
 }

@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -51,24 +52,30 @@ public class DefaultCompactnessFeature<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Volume {
+			Geometric3D.Volume,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> surfacePixel;
+	private FunctionOp<IterableRegion<B>, DoubleType> surfacePixel;
 	
-	private FunctionOp<IterableRegion, DoubleType> volume;
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
 	
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function(DefaultSurfacePixelFeature.class, DoubleType.class, IterableRegion.class);
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, IterableRegion.class);
+		surfacePixel = ops().function(DefaultSurfacePixelFeature.class, DoubleType.class, in());
+		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, in());
 	}
 	
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
 		double v2 = Math.pow(volume.compute(input).get(), 2);
 
 		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

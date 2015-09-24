@@ -32,12 +32,12 @@ package net.imagej.ops.descriptor3d;
 import java.util.List;
 
 /**
- * An {@link AbstractPolygon} consists of vertices and neighbors.
+ * An {@link UpdateablePointSet} consists of vertices and neighbors.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *
  */
-public abstract class AbstractPolygon {
+public abstract class UpdateablePointSet {
 	
 	/**
 	 * The vertices of this facet in counter clock wise orientation.
@@ -50,7 +50,7 @@ public abstract class AbstractPolygon {
 	 * facet at the edge from {@link TriangularFacet#getLastVertex()}
 	 * to {@link DefaultFacet#getVertex(0)}. 
 	 */
-	protected List<AbstractPolygon> neighbors;
+	protected List<UpdateablePointSet> neighbors;
 		
 	/**
 	 * The list of vertices.
@@ -65,7 +65,7 @@ public abstract class AbstractPolygon {
 	 * @param vertex the vertex 
 	 * @return index of vertex or -1 if this vertex is not contained
 	 */
-	public int indexOfVertex(Vertex vertex) {
+	public int indexOfVertex(final Vertex vertex) {
 		return vertices.indexOf(vertex);
 	}
 
@@ -74,7 +74,7 @@ public abstract class AbstractPolygon {
 	 * @param i the position
 	 * @return the vertex
 	 */
-	public Vertex getVertex(int i) {
+	public Vertex getVertex(final int i) {
 		return vertices.get(i);
 	}
 	
@@ -99,7 +99,7 @@ public abstract class AbstractPolygon {
 	 * @param vertexList to check
 	 * @return true if all vertices are contained
 	 */
-	public boolean containsAll(List<Vertex> vertexList) {
+	public boolean containsAll(final List<Vertex> vertexList) {
 		return vertices.containsAll(vertexList);
 	}
 	
@@ -109,7 +109,7 @@ public abstract class AbstractPolygon {
 	 * @param head vertex of the edge
 	 * @return has edge tail to head
 	 */
-	public boolean hasEdge(Vertex tail, Vertex head) {
+	public boolean hasEdge(final Vertex tail, final Vertex head) {
 		int start = vertices.indexOf(tail);
 		int end = vertices.indexOf(head);
 		if (start == -1 || end == -1) {
@@ -123,7 +123,7 @@ public abstract class AbstractPolygon {
 	 * @param position of the neighbor
 	 * @param n the neighbor
 	 */
-	public void setNeighbor(int position, TriangularFacet n) {
+	public void setNeighbor(final int position, final TriangularFacet n) {
 		neighbors.add(position, n);
 	}
 
@@ -132,7 +132,7 @@ public abstract class AbstractPolygon {
 	 * @param position the position
 	 * @return the neighbor
 	 */
-	public AbstractPolygon getNeighbor(int position) {
+	public UpdateablePointSet getNeighbor(final int position) {
 		return neighbors.get(position);
 	}
 	
@@ -140,7 +140,7 @@ public abstract class AbstractPolygon {
 	 * Get all neighbors.
 	 * @return all neighbors
 	 */
-	public List<AbstractPolygon> getNeighbors() {
+	public List<UpdateablePointSet> getNeighbors() {
 		return neighbors;
 	}
 
@@ -149,7 +149,7 @@ public abstract class AbstractPolygon {
 	 * @param i index of the neighbor to replace
 	 * @param f the new neighbor
 	 */
-	public void replaceNeighbor(int i, AbstractPolygon f) {
+	public void replaceNeighbor(final int i, final UpdateablePointSet f) {
 		neighbors.remove(i);
 		neighbors.add(i, f);
 	}
@@ -159,7 +159,7 @@ public abstract class AbstractPolygon {
 	 * @param facet the neighboring facet
 	 * @return the index or -1 if facet is not a neighbor
 	 */
-	public int indexOfNeighbor(TriangularFacet facet) {
+	public int indexOfNeighbor(final TriangularFacet facet) {
 		return neighbors.indexOf(facet);
 	}
 }

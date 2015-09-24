@@ -43,7 +43,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
  */
-public class TriangularFacet extends AbstractPolygon implements FacetInterface {
+public class TriangularFacet extends UpdateablePointSet implements Facet {
 
 	/**
 	 * The centroid of this facet.
@@ -63,7 +63,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 
 	/**
 	 * If a facet has points in front, they are stored in this list.
-	 * This list is used in {@link QuickHull3D}.
+	 * This list is used in {@link DefaultConvexHull3D}.
 	 */
 	private List<Vertex> verticesInFront;
 
@@ -81,13 +81,13 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @param v1 the second vertex
 	 * @param v2 the third vertex
 	 */
-	public TriangularFacet(Vertex v0, Vertex v1, Vertex v2) {
+	public TriangularFacet(final Vertex v0, final Vertex v1, final Vertex v2) {
 		vertices = new ArrayList<Vertex>();
 		vertices.add(v0);
 		vertices.add(v1);
 		vertices.add(v2);
 		verticesInFront = new ArrayList<Vertex>();
-		neighbors = new ArrayList<AbstractPolygon>();
+		neighbors = new ArrayList<UpdateablePointSet>();
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @param p the point
 	 * @return the distance
 	 */
-	public double distanceToPlane(Vector3D p) {
+	public double distanceToPlane(final Vector3D p) {
 		return getNormal().dotProduct(p) - getPlaneOffset();
 	}
 
@@ -177,7 +177,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @param v the vertex
 	 * @param distanceToPlane of this vertex
 	 */
-	public void setVertexInFront(Vertex v, double distanceToPlane) {
+	public void setVertexInFront(final Vertex v, final double distanceToPlane) {
 		if (verticesInFront.isEmpty()) {
 			v.setDistanceToFaceInFront(distanceToPlane);
 			verticesInFront.add(v);
@@ -229,7 +229,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

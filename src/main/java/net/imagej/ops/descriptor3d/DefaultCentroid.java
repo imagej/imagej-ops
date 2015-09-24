@@ -52,7 +52,7 @@ public class DefaultCentroid<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
 
 	@Override
-	public double[] compute(IterableRegion<B> input) {
+	public double[] compute(final IterableRegion<B> input) {
 		int numDimensions = input.numDimensions();
 		double[] output = new double[numDimensions];
 		Cursor<Void> c = input.localizingCursor();

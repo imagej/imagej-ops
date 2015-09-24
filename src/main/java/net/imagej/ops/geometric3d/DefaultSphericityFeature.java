@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -46,22 +47,31 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.Sphericity.NAME, label = "Geometric3D: Sphericity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSphericityFeature<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>, Geometric3D.Sphericity {
+public class DefaultSphericityFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Sphericity,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> compactness;
+	private FunctionOp<IterableRegion<B>, DoubleType> compactness;
 
 	@Override
 	public void initialize() {
 		compactness = ops().function(DefaultCompactnessFeature.class,
-				DoubleType.class, IterableRegion.class);
+				DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		return new DoubleType(Math.pow(compactness.compute(input).get(),
 				(1 / 3d)));
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

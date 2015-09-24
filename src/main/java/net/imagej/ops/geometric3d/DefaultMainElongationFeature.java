@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -51,21 +52,27 @@ import org.scijava.plugin.Plugin;
 public class DefaultMainElongationFeature<B extends BooleanType<B>> extends
 		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
 		Geometric3DOp<IterableRegion<B>, DoubleType>,
-		Geometric3D.MainElongation {
+		Geometric3D.MainElongation,
+		Contingent {
 
-	private FunctionOp<IterableRegion, CovarianceOf2ndMultiVariate3D> multivar;
+	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
 
 	@Override
 	public void initialize() {
 		multivar = ops().function(DefaultSecondMultiVariate3D.class,
-				CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
+				CovarianceOf2ndMultiVariate3D.class, in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		CovarianceOf2ndMultiVariate3D compute = multivar.compute(input);
 		return new DoubleType(Math.sqrt(compute.getEigenvalue(0)
 				/ compute.getEigenvalue(1)));
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

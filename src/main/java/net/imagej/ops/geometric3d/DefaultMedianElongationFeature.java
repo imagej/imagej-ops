@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -53,20 +54,27 @@ public class DefaultMedianElongationFeature<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.MedianElongation {
+			Geometric3D.MedianElongation,
+			Contingent {
 
-	private FunctionOp<IterableRegion, CovarianceOf2ndMultiVariate3D> multivar;
-	
+	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
+
 	@Override
 	public void initialize() {
-		multivar = ops().function(DefaultSecondMultiVariate3D.class, CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
+		multivar = ops().function(DefaultSecondMultiVariate3D.class,
+				CovarianceOf2ndMultiVariate3D.class, in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		CovarianceOf2ndMultiVariate3D compute = multivar.compute(input);
 		return new DoubleType(
 				Math.sqrt(compute.getEigenvalue(1) / compute.getEigenvalue(2)));
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

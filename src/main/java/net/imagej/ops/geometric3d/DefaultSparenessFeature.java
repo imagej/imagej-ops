@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -48,32 +49,36 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.Spareness.NAME, label = "Geometric3D: Spareness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSparenessFeature<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>, Geometric3D.Spareness {
+public class DefaultSparenessFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Spareness,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> mainElongation;
+	private FunctionOp<IterableRegion<B>, DoubleType> mainElongation;
 
-	private FunctionOp<IterableRegion, DoubleType> medianElongation;
+	private FunctionOp<IterableRegion<B>, DoubleType> medianElongation;
 
-	private FunctionOp<IterableRegion, CovarianceOf2ndMultiVariate3D> multivar;
+	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
 
-	private FunctionOp<IterableRegion, DoubleType> volume;
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
 
 	@Override
 	public void initialize() {
 		mainElongation = ops().function(DefaultMainElongationFeature.class,
-				DoubleType.class, IterableRegion.class);
+				DoubleType.class, in());
 		medianElongation = ops().function(DefaultMedianElongationFeature.class,
-				DoubleType.class, IterableRegion.class);
+				DoubleType.class, in());
 		multivar = ops().function(DefaultSecondMultiVariate3D.class,
-				CovarianceOf2ndMultiVariate3D.class, IterableRegion.class);
+				CovarianceOf2ndMultiVariate3D.class, in());
 		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class,
-				IterableRegion.class);
+				in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		double r1 = Math.sqrt(5.0 * multivar.compute(input).getEigenvalue(0));
 		double r2 = r1 / mainElongation.compute(input).get();
 		double r3 = r2 / medianElongation.compute(input).get();
@@ -81,6 +86,11 @@ public class DefaultSparenessFeature<B extends BooleanType<B>> extends
 		double volumeEllipsoid = (4.18879 * r1 * r2 * r3);
 
 		return new DoubleType(volume.compute(input).get() / volumeEllipsoid);
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

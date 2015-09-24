@@ -49,7 +49,7 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	
 	private List<TriangularFacet> facesInFront = new ArrayList<TriangularFacet>();
 	
-	public Vertex(double x, double y, double z) {
+	public Vertex(final double x, final double y, final double z) {
 		super(x, y, z);
 	}
 
@@ -57,11 +57,11 @@ public class Vertex extends Vector3D implements RealLocalizable {
 		return distanceToFaceInFront;
 	}
 
-	public void setDistanceToFaceInFront(double m_distanceToFaceInFront) {
+	public void setDistanceToFaceInFront(final double m_distanceToFaceInFront) {
 		this.distanceToFaceInFront = m_distanceToFaceInFront;
 	}
 
-	public void addFaceInFront(TriangularFacet f) {
+	public void addFaceInFront(final TriangularFacet f) {
 		facesInFront.add(f);
 	}
 	
@@ -93,21 +93,21 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	}
 
 	@Override
-	public void localize(float[] position) {
+	public void localize(final float[] position) {
 		position[0] = getFloatPosition(0);
 		position[1] = getFloatPosition(1);
 		position[2] = getFloatPosition(2);
 	}
 
 	@Override
-	public void localize(double[] position) {
+	public void localize(final double[] position) {
 		position[0] = getDoublePosition(0);
 		position[1] = getDoublePosition(1);
 		position[2] = getDoublePosition(2);
 	}
 
 	@Override
-	public float getFloatPosition(int d) {
+	public float getFloatPosition(final int d) {
 		switch (d) {
 			case 0 :
 				return (float) getX();
@@ -121,7 +121,7 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	}
 
 	@Override
-	public double getDoublePosition(int d) {
+	public double getDoublePosition(final int d) {
 		switch (d) {
 			case 0 :
 				return getX();

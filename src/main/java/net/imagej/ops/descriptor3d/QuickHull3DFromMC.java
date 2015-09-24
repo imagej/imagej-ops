@@ -32,6 +32,7 @@ package net.imagej.ops.descriptor3d;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
@@ -41,18 +42,24 @@ import net.imglib2.type.BooleanType;
 @Plugin(type = Op.class, name = ConvexHull3D.NAME)
 public class QuickHull3DFromMC<B extends BooleanType<B>>
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DefaultFacets> {
+			AbstractFunctionOp<IterableRegion<B>, DefaultMesh> 
+		implements Contingent {
 
-	private FunctionOp<IterableRegion, DefaultFacets> mc;
+	private FunctionOp<IterableRegion<B>, DefaultMesh> mc;
 	
 	@Override
 	public void initialize() {
-		mc = ops().function(MarchingCubes.class, DefaultFacets.class, IterableRegion.class);
+		mc = ops().function(DefaultMarchingCubes.class, DefaultMesh.class, in());
 	}
 
 	@Override
-	public DefaultFacets compute(IterableRegion<B> input) {
-		return (DefaultFacets) ops().run(QuickHull3D.class, mc.compute(input).getPoints());
+	public DefaultMesh compute(final IterableRegion<B> input) {
+		return (DefaultMesh) ops().run(DefaultConvexHull3D.class, mc.compute(input).getPoints());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

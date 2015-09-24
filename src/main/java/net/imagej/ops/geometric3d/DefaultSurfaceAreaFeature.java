@@ -30,11 +30,12 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
-import net.imagej.ops.descriptor3d.DefaultFacets;
-import net.imagej.ops.descriptor3d.MarchingCubes;
+import net.imagej.ops.descriptor3d.DefaultMesh;
+import net.imagej.ops.descriptor3d.DefaultMarchingCubes;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -48,21 +49,30 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.SurfaceArea.NAME, label = "Geometric3D: SurfaceArea", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSurfaceAreaFeature<I extends BooleanType<I>> extends
-		AbstractFunctionOp<IterableRegion<I>, DoubleType> implements
-		Geometric3DOp<IterableRegion<I>, DoubleType>, Geometric3D.SurfaceArea {
+public class DefaultSurfaceAreaFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.SurfaceArea,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DefaultFacets> marchingCube;
+	private FunctionOp<IterableRegion<B>, DefaultMesh> marchingCube;
 
 	@Override
 	public void initialize() {
-		marchingCube = ops().function(MarchingCubes.class, DefaultFacets.class,
-				IterableRegion.class);
+		marchingCube = ops().function(DefaultMarchingCubes.class, DefaultMesh.class,
+				in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<I> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		return new DoubleType(marchingCube.compute(input).getArea());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

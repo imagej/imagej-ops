@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -50,22 +51,30 @@ public class DefaultSolidityFeature<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Solidity {
+			Geometric3D.Solidity,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> volume;
-	
-	private FunctionOp<IterableRegion, DoubleType> convexHullVolume;
-	
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
+
+	private FunctionOp<IterableRegion<B>, DoubleType> convexHullVolume;
+
 	@Override
 	public void initialize() {
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, IterableRegion.class);
-		convexHullVolume = ops().function(DefaultConvexHullVolumeFeature.class, DoubleType.class, IterableRegion.class);
+		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class,
+				in());
+		convexHullVolume = ops().function(DefaultConvexHullVolumeFeature.class,
+				DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
-		return new DoubleType(
-				volume.compute(input).get() / convexHullVolume.compute(input).get());
+	public DoubleType compute(final IterableRegion<B> input) {
+		return new DoubleType(volume.compute(input).get()
+				/ convexHullVolume.compute(input).get());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

@@ -36,12 +36,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This is the default implementation of {@link Facets}. 
+ * This is the default implementation of {@link Mesh}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
  */
-public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
+public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 
 	/**
 	 * All {@link TriangularFacet}. 
@@ -49,29 +49,29 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	private ArrayList<TriangularFacet> facets;
 	
 	/**
-	 * All unique vertices of all {@link DefaultFacets#facets}.
+	 * All unique vertices of all {@link DefaultMesh#facets}.
 	 */
 	private HashSet<Vertex> points;
 	
 	/**
-	 * The sum of the area of all {@link DefaultFacets#facets}.
+	 * The sum of the area of all {@link DefaultMesh#facets}.
 	 */
 	private double area;
 	
 	/**
-	 * The centroid of all {@link DefaultFacets#facets}.
+	 * The centroid of all {@link DefaultMesh#facets}.
 	 */
 	private Vertex centroid;
 
 	/**
-	 * The epsilon which was used to compute all {@link DefaultFacets#facets}.
+	 * The epsilon which was used to compute all {@link DefaultMesh#facets}.
 	 */
 	private double epsilon;
 
 	/**
 	 * A new empty facet container. 
 	 */
-	public DefaultFacets() {
+	public DefaultMesh() {
 		facets = new ArrayList<TriangularFacet>();
 		points = new HashSet<Vertex>();
 		area = 0;
@@ -89,7 +89,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * Set the facets. 
 	 * @param facets to set
 	 */
-	public void setFaces(ArrayList<TriangularFacet> facets) {
+	public void setFaces(final ArrayList<TriangularFacet> facets) {
 		this.facets = facets;
 	}
 	
@@ -97,11 +97,11 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * Add a new facet. 
 	 * @param f the facet to add
 	 */
-	public void addFace(TriangularFacet f) {
+	public void addFace(final TriangularFacet f) {
 		facets.add(f);
 		area += f.getArea();
 
-		points.addAll((List<Vertex>) f.getVertices());
+		points.addAll(f.getVertices());
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * Set the epsilon which was used in the facet computation.
 	 * @param epsilon the epsilon
 	 */
-	public void setEpsilon(double epsilon) {
+	public void setEpsilon(final double epsilon) {
 		this.epsilon = epsilon;
 	}
 	
@@ -169,7 +169,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * Note: No facets are constructed.
 	 * @param points to set
 	 */
-	public void setPoints(HashSet<Vertex> points) {
+	public void setPoints(final HashSet<Vertex> points) {
 		this.points = points;
 	}
 }

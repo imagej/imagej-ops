@@ -45,12 +45,15 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.Volume.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultVolumeFeature<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>, Geometric3D.Volume {
+public class DefaultVolumeFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Volume {
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		return new DoubleType(input.size());
 	}
 }

@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
@@ -45,27 +46,36 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.Rugosity.NAME, label = "Geometric3D: Rugosity")
-public class DefaultRugosityFeature<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>, Geometric3D.Rugosity {
+public class DefaultRugosityFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Rugosity, 
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> surface;
+	private FunctionOp<IterableRegion<B>, DoubleType> surface;
 
-	private FunctionOp<IterableRegion, DoubleType> convexHullSurface;
+	private FunctionOp<IterableRegion<B>, DoubleType> convexHullSurface;
 
 	@Override
 	public void initialize() {
 		surface = ops().function(DefaultSurfaceAreaFeature.class,
-				DoubleType.class, IterableRegion.class);
+				DoubleType.class, in());
 		convexHullSurface = ops().function(
 				DefaultConvexHullSurfaceAreaFeature.class, DoubleType.class,
-				IterableRegion.class);
+				in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 		return new DoubleType(surface.compute(input).get()
 				/ convexHullSurface.compute(input).get());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

@@ -49,10 +49,10 @@ public class Descriptor3DNamespace extends AbstractNamespace {
 		return "descriptor3d";
 	}
 
-	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultBitTypeVertexInterpolator.class)
-	public double[] BitTypeVertexInterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value) {
+	@OpMethod(op = net.imagej.ops.descriptor3d.BitTypeVertexInterpolator.class)
+	public double[] VertexInterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value) {
 		final double[] result =
-			(double[]) ops().run(net.imagej.ops.descriptor3d.DefaultBitTypeVertexInterpolator.class, p1, p2, p1Value, p2Value);
+			(double[]) ops().run(net.imagej.ops.descriptor3d.BitTypeVertexInterpolator.class, p1, p2, p1Value, p2Value);
 		return result;
 	}
 	
@@ -70,24 +70,24 @@ public class Descriptor3DNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.descriptor3d.MarchingCubes.class)
-	public <B extends BooleanType<B>> DefaultFacets Polygonize(final RandomAccessibleInterval<B> in) {
-		final DefaultFacets result =
-			(DefaultFacets) ops().run(net.imagej.ops.descriptor3d.MarchingCubes.class, in);
+	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.descriptor3d.DefaultMarchingCubes.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.descriptor3d.MarchingCubes.class)
-	public <B extends BooleanType<B>> DefaultFacets Polygonize(final RandomAccessibleInterval<B> in, final double isolevel) {
-		final DefaultFacets result =
-			(DefaultFacets) ops().run(net.imagej.ops.descriptor3d.MarchingCubes.class, in, isolevel);
+	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in, final double isolevel) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.descriptor3d.DefaultMarchingCubes.class, in, isolevel);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.descriptor3d.MarchingCubes.class)
-	public <B extends BooleanType<B>> DefaultFacets Polygonize(final RandomAccessibleInterval<B> in, final double isolevel, final VertexInterpolator interpolatorClass) {
-		final DefaultFacets result =
-			(DefaultFacets) ops().run(net.imagej.ops.descriptor3d.MarchingCubes.class, in, isolevel, interpolatorClass);
+	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultMarchingCubes.class)
+	public <B extends BooleanType<B>> DefaultMesh MarchingCubes(final RandomAccessibleInterval<B> in, final double isolevel, final VertexInterpolator interpolatorClass) {
+		final DefaultMesh result =
+			(DefaultMesh) ops().run(net.imagej.ops.descriptor3d.DefaultMarchingCubes.class, in, isolevel, interpolatorClass);
 		return result;
 	}
 	
@@ -99,17 +99,17 @@ public class Descriptor3DNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3DFromMC.class)
-	public <B extends BooleanType<B>> DefaultFacets convexhull3d(
+	public <B extends BooleanType<B>> Mesh convexhull3d(
 			final IterableRegion<B> in) {
-		final DefaultFacets result = (DefaultFacets) ops().run(
+		final DefaultMesh result = (DefaultMesh) ops().run(
 				net.imagej.ops.descriptor3d.QuickHull3DFromMC.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.descriptor3d.QuickHull3D.class)
-	public DefaultFacets convexhull3d(final HashSet<Vertex> in) {
-		final DefaultFacets result = (DefaultFacets) ops().run(
-				net.imagej.ops.descriptor3d.QuickHull3D.class, in);
+	@OpMethod(op = net.imagej.ops.descriptor3d.DefaultConvexHull3D.class)
+	public Mesh convexhull3d(final HashSet<Vertex> in) {
+		final DefaultMesh result = (DefaultMesh) ops().run(
+				net.imagej.ops.descriptor3d.DefaultConvexHull3D.class, in);
 		return result;
 	}
 }

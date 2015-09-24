@@ -30,10 +30,11 @@
 package net.imagej.ops.geometric3d;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric3D;
-import net.imagej.ops.descriptor3d.DefaultFacets;
+import net.imagej.ops.descriptor3d.DefaultMesh;
 import net.imagej.ops.descriptor3d.QuickHull3DFromMC;
 import net.imagej.ops.descriptor3d.TriangularFacet;
 import net.imagej.ops.descriptor3d.Vertex;
@@ -50,21 +51,25 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric3D.ConvexHullVolume.NAME, label = "Geometric3D: ConvexHullVolume", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>, Geometric3D.Volume {
+public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Volume,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DefaultFacets> convexHull;
+	private FunctionOp<IterableRegion<B>, DefaultMesh> convexHull;
 
 	@Override
 	public void initialize() {
 		convexHull = ops().function(QuickHull3DFromMC.class,
-				DefaultFacets.class, IterableRegion.class);
+				DefaultMesh.class, in());
 	}
 
 	@Override
-	public DoubleType compute(IterableRegion<B> input) {
-		DefaultFacets compute = convexHull.compute(input);
+	public DoubleType compute(final IterableRegion<B> input) {
+		DefaultMesh compute = convexHull.compute(input);
 		Vertex centroid = compute.getCentroid();
 		double volume = 0;
 		for (TriangularFacet f : compute.getFacets()) {
@@ -72,6 +77,11 @@ public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>> extends
 					* Math.abs(f.distanceToPlane(centroid));
 		}
 		return new DoubleType(volume);
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
 
 }

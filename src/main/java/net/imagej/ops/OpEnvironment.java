@@ -607,12 +607,18 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
+	
+	/** Gateway into ops of the "descriptor3d" namespace. */
+	Descriptor3DNamespace descriptor3d();
 
 	/** Gateway into ops of the "filter" namespace. */
 	FilterNamespace filter();
 	
 	/** Gateway into ops of the "geometric" namespace. */
 	Geometric2DNamespace geometric2d();
+	
+	/** Gateway into ops of the "geometric3d" namespace. */
+	Geometric3DNamespace geometric3d();
 
 	/** Gateway into ops of the "haralick " namespace. */
 	HaralickNamespace haralick();
@@ -640,11 +646,5 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
-	
-	/** Gateway into ops of the "geometric3d" namespace. */
-	Geometric3DNamespace geometric3d();
-	
-	/** Gateway into ops of the "descriptor3d" namespace. */
-	Descriptor3DNamespace descriptor3d();
 
 }

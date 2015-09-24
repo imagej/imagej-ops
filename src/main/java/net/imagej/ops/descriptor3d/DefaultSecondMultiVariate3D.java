@@ -29,23 +29,19 @@
  */
 package net.imagej.ops.descriptor3d;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D;
 import net.imagej.ops.Ops.Descriptor3D.SecondMultiVariate3D;
-import net.imagej.ops.Ops.Geometric3D.Volume;
 import net.imagej.ops.geometric3d.DefaultVolumeFeature;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the 2nd multi variate of a 
@@ -56,21 +52,25 @@ import org.scijava.plugin.Plugin;
  * @param <B> BooleanType
  */
 @Plugin(type = Op.class, name = Descriptor3D.SecondMultiVariate3D.NAME)
-public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
-		AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> implements Contingent, SecondMultiVariate3D {
+public class DefaultSecondMultiVariate3D<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
+		implements
+			SecondMultiVariate3D,
+			Contingent {
 
-	private FunctionOp<IterableRegion, DoubleType> volume;
-	
-	private FunctionOp<IterableRegion, double[]> centroid;
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
+
+	private FunctionOp<IterableRegion<B>, double[]> centroid;
 
 	@Override
 	public void initialize() {
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, IterableRegion.class);
-		centroid = ops().function(DefaultCentroid.class, double[].class, IterableRegion.class);
+		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, in());
+		centroid = ops().function(DefaultCentroid.class, double[].class, in());
 	}
 	
 	@Override
-	public CovarianceOf2ndMultiVariate3D compute(IterableRegion<B> input) {
+	public CovarianceOf2ndMultiVariate3D compute(final IterableRegion<B> input) {
 		CovarianceOf2ndMultiVariate3D output = new CovarianceOf2ndMultiVariate3D();
 		Cursor<Void> c = input.localizingCursor();
 		int[] pos = new int[3];
@@ -102,7 +102,7 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 
 	@Override
 	public boolean conforms() {
-		return true;
+		return in().numDimensions() == 3;
 	}
 
 }

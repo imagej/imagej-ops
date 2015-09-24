@@ -29,6 +29,6 @@
  */
 package net.imagej.ops.descriptor3d;
 
-public interface FacetInterface {
+public interface Mesh {
 	// NB: Marker Interface
 }

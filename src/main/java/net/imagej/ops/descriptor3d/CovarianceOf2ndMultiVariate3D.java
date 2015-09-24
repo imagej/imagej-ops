@@ -63,14 +63,14 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix;
 	}
 	
-	public double[] getEigenvector(int i) {
+	public double[] getEigenvector(final int i) {
 		if (ed == null) {
 			ed = new EigenDecomposition(matrix);
 		}
 		return ed.getEigenvector(i).toArray();
 	}
 	
-	public double getEigenvalue(int i) {
+	public double getEigenvalue(final int i) {
 		if (ed == null) {
 			ed = new EigenDecomposition(matrix);
 		}
@@ -81,7 +81,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(0, 0);
 	}
 
-	public void setS200(double s200) {
+	public void setS200(final double s200) {
 		matrix.setEntry(0, 0, s200);
 	}
 
@@ -89,7 +89,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(0, 1);
 	}
 
-	public void setS110(double s110) {
+	public void setS110(final double s110) {
 		matrix.setEntry(1, 0, s110);
 		matrix.setEntry(0, 1, s110);
 	}
@@ -98,7 +98,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(0, 2);
 	}
 
-	public void setS101(double s101) {
+	public void setS101(final double s101) {
 		matrix.setEntry(2, 0, s101);
 		matrix.setEntry(0, 2, s101);
 	}
@@ -107,7 +107,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(1, 1);
 	}
 
-	public void setS020(double s020) {
+	public void setS020(final double s020) {
 		matrix.setEntry(1, 1, s020);
 	}
 
@@ -115,7 +115,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(1, 2);
 	}
 
-	public void setS011(double s011) {
+	public void setS011(final double s011) {
 		matrix.setEntry(2, 1, s011);
 		matrix.setEntry(1, 2, s011);
 	}
@@ -124,7 +124,7 @@ public class CovarianceOf2ndMultiVariate3D {
 		return matrix.getEntry(2, 2);
 	}
 
-	public void setS002(double s002) {
+	public void setS002(final double s002) {
 		matrix.setEntry(2, 2, s002);
 	}
 
