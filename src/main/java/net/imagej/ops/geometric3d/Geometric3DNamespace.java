@@ -222,11 +222,11 @@ public class Geometric3DNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geometric3d.QuickHull3DFromMC.class)
+	@OpMethod(op = net.imagej.ops.geometric3d.DefaultConvexHull3DFromMC.class)
 	public <B extends BooleanType<B>> Mesh convexhull3d(
 			final IterableRegion<B> in) {
 		final DefaultMesh result = (DefaultMesh) ops().run(
-				net.imagej.ops.geometric3d.QuickHull3DFromMC.class, in);
+				net.imagej.ops.geometric3d.DefaultConvexHull3DFromMC.class, in);
 		return result;
 	}
 

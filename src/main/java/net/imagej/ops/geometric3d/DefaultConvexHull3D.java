@@ -39,7 +39,6 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
 

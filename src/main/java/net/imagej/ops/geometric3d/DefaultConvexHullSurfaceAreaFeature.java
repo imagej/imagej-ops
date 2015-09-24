@@ -55,17 +55,17 @@ public class DefaultConvexHullSurfaceAreaFeature<B extends BooleanType<B>>
 			Geometric3D.Volume,
 			Contingent {
 
-	private FunctionOp<IterableRegion<B>, DefaultMesh> convexHull;
+	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
 
 	@Override
 	public void initialize() {
-		convexHull = ops().function(QuickHull3DFromMC.class,
-				DefaultMesh.class, in());
+		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
+				Mesh.class, in());
 	}
 
 	@Override
 	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(convexHull.compute(input).getArea());
+		return new DoubleType(((DefaultMesh)convexHull.compute(input)).getArea());
 	}
 
 	@Override

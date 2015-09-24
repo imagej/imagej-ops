@@ -40,9 +40,9 @@ import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 
 @Plugin(type = Op.class, name = ConvexHull3D.NAME)
-public class QuickHull3DFromMC<B extends BooleanType<B>>
+public class DefaultConvexHull3DFromMC<B extends BooleanType<B>>
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DefaultMesh> 
+			AbstractFunctionOp<IterableRegion<B>, Mesh> 
 		implements Contingent {
 
 	private FunctionOp<IterableRegion<B>, DefaultMesh> mc;

@@ -55,17 +55,17 @@ public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
 			Geometric3D.Volume,
 			Contingent {
 
-	private FunctionOp<IterableRegion<B>, DefaultMesh> convexHull;
+	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
 
 	@Override
 	public void initialize() {
-		convexHull = ops().function(QuickHull3DFromMC.class,
-				DefaultMesh.class, in());
+		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
+				Mesh.class, in());
 	}
 
 	@Override
 	public DoubleType compute(final IterableRegion<B> input) {
-		DefaultMesh compute = convexHull.compute(input);
+		DefaultMesh compute = (DefaultMesh)convexHull.compute(input);
 		Vertex centroid = compute.getCentroid();
 		double volume = 0;
 		for (TriangularFacet f : compute.getFacets()) {
