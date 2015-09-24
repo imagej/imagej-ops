@@ -43,7 +43,7 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 	@Override
 	public CovarianceOf2ndMultiVariate3D compute(IterableRegion<B> input) {
 		CovarianceOf2ndMultiVariate3D output = new CovarianceOf2ndMultiVariate3D();
-		Cursor<B> c = input.localizingCursor();
+		Cursor<Void> c = input.localizingCursor();
 		int[] pos = new int[3];
 		double[] computedCentroid = centroid.compute(input);
 		double mX = computedCentroid[0];

@@ -26,7 +26,7 @@ public class DefaultCentroid<B extends BooleanType<B>>
 	public double[] compute(IterableRegion<B> input) {
 		int numDimensions = input.numDimensions();
 		double[] output = new double[numDimensions];
-		Cursor<B> c = input.localizingCursor();
+		Cursor<Void> c = input.localizingCursor();
 		while (c.hasNext()) {
 			c.fwd();
 			double[] pos = new double[numDimensions];
