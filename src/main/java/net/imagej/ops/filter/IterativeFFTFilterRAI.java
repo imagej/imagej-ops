@@ -51,7 +51,6 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.app.StatusService;
-import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -69,7 +68,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	extends AbstractFFTFilterRAI<I, O, K, C>
 {
 
-	@Parameter(required=false)
+	@Parameter(required = false)
 	private StatusService status;
 
 	/**
