@@ -165,7 +165,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			// create image for the estimate
 			estimate = imgFactory.create(getImgConvolutionInterval(), outType
 				.createVariable());
-			I sum = ops().stats().sum(Views.iterable(this.getRAIExtendedInput()));
+			final O sum =
+				ops().stats().<I, O> sum(Views.iterable(this.getRAIExtendedInput()));
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
 			final double average = sum.getRealDouble() / (numPixels);
 
@@ -184,10 +185,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			// assemble the extended view of the reblurred
 			raiExtendedReblurred = reblurred;
-
 		}
 		else {
-
 			// create image for the reblurred
 			reblurred = imgFactory.create(getOutput(), outType.createVariable());
 
