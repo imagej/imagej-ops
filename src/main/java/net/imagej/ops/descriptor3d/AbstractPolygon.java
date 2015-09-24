@@ -42,7 +42,7 @@ public abstract class AbstractPolygon {
 	/**
 	 * The vertices of this facet in counter clock wise orientation.
 	 */
-	protected List<Vertex> m_vertices;
+	protected List<Vertex> vertices;
 	
 	/**
 	 * The neighboring facets of this facet. 
@@ -50,14 +50,14 @@ public abstract class AbstractPolygon {
 	 * facet at the edge from {@link TriangularFacet#getLastVertex()}
 	 * to {@link DefaultFacet#getVertex(0)}. 
 	 */
-	protected List<AbstractPolygon> m_neighbors;
+	protected List<AbstractPolygon> neighbors;
 		
 	/**
 	 * The list of vertices.
 	 * @return all vertices
 	 */
 	public List<Vertex> getVertices() {
-		return m_vertices;
+		return vertices;
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public abstract class AbstractPolygon {
 	 * @return index of vertex or -1 if this vertex is not contained
 	 */
 	public int indexOfVertex(Vertex vertex) {
-		return m_vertices.indexOf(vertex);
+		return vertices.indexOf(vertex);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public abstract class AbstractPolygon {
 	 * @return the vertex
 	 */
 	public Vertex getVertex(int i) {
-		return m_vertices.get(i);
+		return vertices.get(i);
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public abstract class AbstractPolygon {
 	 * @return number of vertices
 	 */
 	public int size() {
-		return m_vertices.size();
+		return vertices.size();
 	}
 
 	/**
@@ -91,16 +91,16 @@ public abstract class AbstractPolygon {
 	 * @return the last vertex
 	 */
 	public Vertex getLastVertex() {
-		return m_vertices.get(m_vertices.size() - 1);
+		return vertices.get(vertices.size() - 1);
 	}
 	
 	/**
 	 * Returns true if all vertices are part of this polygon
-	 * @param vertices to check
+	 * @param vertexList to check
 	 * @return true if all vertices are contained
 	 */
-	public boolean containsAll(List<Vertex> vertices) {
-		return m_vertices.containsAll(vertices);
+	public boolean containsAll(List<Vertex> vertexList) {
+		return vertices.containsAll(vertexList);
 	}
 	
 	/**
@@ -110,12 +110,12 @@ public abstract class AbstractPolygon {
 	 * @return has edge tail to head
 	 */
 	public boolean hasEdge(Vertex tail, Vertex head) {
-		int start = m_vertices.indexOf(tail);
-		int end = m_vertices.indexOf(head);
+		int start = vertices.indexOf(tail);
+		int end = vertices.indexOf(head);
 		if (start == -1 || end == -1) {
 			return false;
 		}
-		return (start + 1) % m_vertices.size() == end;
+		return (start + 1) % vertices.size() == end;
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public abstract class AbstractPolygon {
 	 * @param n the neighbor
 	 */
 	public void setNeighbor(int position, TriangularFacet n) {
-		m_neighbors.add(position, n);
+		neighbors.add(position, n);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public abstract class AbstractPolygon {
 	 * @return the neighbor
 	 */
 	public AbstractPolygon getNeighbor(int position) {
-		return m_neighbors.get(position);
+		return neighbors.get(position);
 	}
 	
 	/**
@@ -141,7 +141,7 @@ public abstract class AbstractPolygon {
 	 * @return all neighbors
 	 */
 	public List<AbstractPolygon> getNeighbors() {
-		return m_neighbors;
+		return neighbors;
 	}
 
 	/**
@@ -150,8 +150,8 @@ public abstract class AbstractPolygon {
 	 * @param f the new neighbor
 	 */
 	public void replaceNeighbor(int i, AbstractPolygon f) {
-		m_neighbors.remove(i);
-		m_neighbors.add(i, f);
+		neighbors.remove(i);
+		neighbors.add(i, f);
 	}
 	
 	/**
@@ -160,6 +160,6 @@ public abstract class AbstractPolygon {
 	 * @return the index or -1 if facet is not a neighbor
 	 */
 	public int indexOfNeighbor(TriangularFacet facet) {
-		return m_neighbors.indexOf(facet);
+		return neighbors.indexOf(facet);
 	}
 }

@@ -48,31 +48,31 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	/**
 	 * The centroid of this facet.
 	 */
-	private Vector3D m_centroid = null;
+	private Vector3D centroid = null;
 
 	/**
 	 * The normal of this facet.
 	 */
-	private Vector3D m_normal = null;
+	private Vector3D normal = null;
 
 	/**
 	 * The area of this facet.
 	 */
-	private double m_area = -1;
+	private double area = -1;
 
 
 	/**
 	 * If a facet has points in front, they are stored in this list.
 	 * This list is used in {@link QuickHull3D}.
 	 */
-	private List<Vertex> m_verticesInFront;
+	private List<Vertex> verticesInFront;
 
 	/**
 	 * Creates a new empty facet.
 	 */
 	public TriangularFacet() {
-		m_vertices = new ArrayList<Vertex>();
-		m_verticesInFront = new ArrayList<Vertex>();
+		vertices = new ArrayList<Vertex>();
+		verticesInFront = new ArrayList<Vertex>();
 	}
 
 	/**
@@ -82,12 +82,12 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @param v2 the third vertex
 	 */
 	public TriangularFacet(Vertex v0, Vertex v1, Vertex v2) {
-		m_vertices = new ArrayList<Vertex>();
-		m_vertices.add(v0);
-		m_vertices.add(v1);
-		m_vertices.add(v2);
-		m_verticesInFront = new ArrayList<Vertex>();
-		m_neighbors = new ArrayList<AbstractPolygon>();
+		vertices = new ArrayList<Vertex>();
+		vertices.add(v0);
+		vertices.add(v1);
+		vertices.add(v2);
+		verticesInFront = new ArrayList<Vertex>();
+		neighbors = new ArrayList<AbstractPolygon>();
 	}
 	
 	/**
@@ -95,19 +95,19 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @return the area
 	 */
 	public double getArea() {
-		if (m_area == -1) {
+		if (area == -1) {
 			computeArea();
 		}
-		return m_area;
+		return area;
 	}
 
 	/**
 	 * Compute the area of this facet.
 	 */
 	private void computeArea() {
-		Vector3D cross = m_vertices.get(0).subtract(m_vertices.get(1))
-				.crossProduct(m_vertices.get(2).subtract(m_vertices.get(0)));
-		m_area = cross.getNorm() * 0.5;
+		Vector3D cross = vertices.get(0).subtract(vertices.get(1))
+				.crossProduct(vertices.get(2).subtract(vertices.get(0)));
+		area = cross.getNorm() * 0.5;
 	}
 
 	/**
@@ -115,23 +115,23 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @return the centroid
 	 */
 	public Vector3D getCentroid() {
-		if (m_centroid == null) {
+		if (centroid == null) {
 			computeCentroid();
 		}
-		return m_centroid;
+		return centroid;
 	}
 
 	/**
 	 * Compute the centroid of this facet.
 	 */
 	private void computeCentroid() {
-		m_centroid = Vector3D.ZERO;
-		Iterator<Vertex> it = m_vertices.iterator();
+		centroid = Vector3D.ZERO;
+		Iterator<Vertex> it = vertices.iterator();
 
 		while (it.hasNext()) {
-			m_centroid = m_centroid.add(it.next());
+			centroid = centroid.add(it.next());
 		}
-		m_centroid = m_centroid.scalarMultiply(1 / (double) m_vertices.size());
+		centroid = centroid.scalarMultiply(1 / (double) vertices.size());
 	}
 
 	/**
@@ -139,20 +139,20 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @return the normal
 	 */
 	public Vector3D getNormal() {
-		if (m_normal == null) {
+		if (normal == null) {
 			computeNormal();
 		}
-		return m_normal;
+		return normal;
 	}
 
 	/**
 	 * Compute the normal of this facet.
 	 */
 	private void computeNormal() {
-		Vector3D v0 = m_vertices.get(0);
-		Vector3D v1 = m_vertices.get(1);
-		Vector3D v2 = m_vertices.get(2);
-		m_normal = v1.subtract(v0).crossProduct(v2.subtract(v0)).normalize();
+		Vector3D v0 = vertices.get(0);
+		Vector3D v1 = vertices.get(1);
+		Vector3D v2 = vertices.get(2);
+		normal = v1.subtract(v0).crossProduct(v2.subtract(v0)).normalize();
 	}
 
 	/**
@@ -178,16 +178,16 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @param distanceToPlane of this vertex
 	 */
 	public void setVertexInFront(Vertex v, double distanceToPlane) {
-		if (m_verticesInFront.isEmpty()) {
+		if (verticesInFront.isEmpty()) {
 			v.setDistanceToFaceInFront(distanceToPlane);
-			m_verticesInFront.add(v);
+			verticesInFront.add(v);
 		} else {
-			if (m_verticesInFront.get(0)
+			if (verticesInFront.get(0)
 					.getDistanceToFaceInFront() < distanceToPlane) {
 				v.setDistanceToFaceInFront(distanceToPlane);
-				m_verticesInFront.add(0, v);
+				verticesInFront.add(0, v);
 			} else {
-				m_verticesInFront.add(v);
+				verticesInFront.add(v);
 			}
 		}
 	}
@@ -197,7 +197,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @return points which are in front
 	 */
 	public List<Vertex> getVerticesInFront() {
-		return m_verticesInFront;
+		return verticesInFront;
 	}
 	
 	/**
@@ -205,7 +205,7 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 	 * @return vertex with maximum distance to the plane
 	 */
 	public Vertex getMaximumDistanceVertex() {
-		return m_verticesInFront.remove(0);
+		return verticesInFront.remove(0);
 	}
 
 	@Override
@@ -213,18 +213,18 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(m_area);
+		temp = Double.doubleToLongBits(area);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
-				+ ((m_centroid == null) ? 0 : m_centroid.hashCode());
+				+ ((centroid == null) ? 0 : centroid.hashCode());
 		result = prime * result
-				+ ((m_neighbors == null) ? 0 : m_neighbors.hashCode());
+				+ ((neighbors == null) ? 0 : neighbors.hashCode());
 		result = prime * result
-				+ ((m_normal == null) ? 0 : m_normal.hashCode());
+				+ ((normal == null) ? 0 : normal.hashCode());
 		result = prime * result
-				+ ((m_verticesInFront == null) ? 0 : m_verticesInFront.hashCode());
+				+ ((verticesInFront == null) ? 0 : verticesInFront.hashCode());
 		result = prime * result
-				+ ((m_vertices == null) ? 0 : m_vertices.hashCode());
+				+ ((vertices == null) ? 0 : vertices.hashCode());
 		return result;
 	}
 
@@ -237,33 +237,33 @@ public class TriangularFacet extends AbstractPolygon implements FacetInterface {
 		if (getClass() != obj.getClass())
 			return false;
 		TriangularFacet other = (TriangularFacet) obj;
-		if (Double.doubleToLongBits(m_area) != Double
-				.doubleToLongBits(other.m_area))
+		if (Double.doubleToLongBits(area) != Double
+				.doubleToLongBits(other.area))
 			return false;
-		if (m_centroid == null) {
-			if (other.m_centroid != null)
+		if (centroid == null) {
+			if (other.centroid != null)
 				return false;
-		} else if (!m_centroid.equals(other.m_centroid))
+		} else if (!centroid.equals(other.centroid))
 			return false;
-		if (m_neighbors == null) {
-			if (other.m_neighbors != null)
+		if (neighbors == null) {
+			if (other.neighbors != null)
 				return false;
-		} else if (!m_neighbors.equals(other.m_neighbors))
+		} else if (!neighbors.equals(other.neighbors))
 			return false;
-		if (m_normal == null) {
-			if (other.m_normal != null)
+		if (normal == null) {
+			if (other.normal != null)
 				return false;
-		} else if (!m_normal.equals(other.m_normal))
+		} else if (!normal.equals(other.normal))
 			return false;
-		if (m_verticesInFront == null) {
-			if (other.m_verticesInFront != null)
+		if (verticesInFront == null) {
+			if (other.verticesInFront != null)
 				return false;
-		} else if (!m_verticesInFront.equals(other.m_verticesInFront))
+		} else if (!verticesInFront.equals(other.verticesInFront))
 			return false;
-		if (m_vertices == null) {
-			if (other.m_vertices != null)
+		if (vertices == null) {
+			if (other.vertices != null)
 				return false;
-		} else if (!m_vertices.equals(other.m_vertices))
+		} else if (!vertices.equals(other.vertices))
 			return false;
 		return true;
 	}

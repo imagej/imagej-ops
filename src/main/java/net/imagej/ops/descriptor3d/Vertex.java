@@ -45,33 +45,33 @@ import net.imglib2.RealLocalizable;
  */
 public class Vertex extends Vector3D implements RealLocalizable {
 
-	private double m_distanceToFaceInFront = 0;
+	private double distanceToFaceInFront = 0;
 	
-	private List<TriangularFacet> m_facesInFront = new ArrayList<TriangularFacet>();
+	private List<TriangularFacet> facesInFront = new ArrayList<TriangularFacet>();
 	
 	public Vertex(double x, double y, double z) {
 		super(x, y, z);
 	}
 
 	public double getDistanceToFaceInFront() {
-		return m_distanceToFaceInFront;
+		return distanceToFaceInFront;
 	}
 
 	public void setDistanceToFaceInFront(double m_distanceToFaceInFront) {
-		this.m_distanceToFaceInFront = m_distanceToFaceInFront;
+		this.distanceToFaceInFront = m_distanceToFaceInFront;
 	}
 
 	public void addFaceInFront(TriangularFacet f) {
-		m_facesInFront.add(f);
+		facesInFront.add(f);
 	}
 	
 	public void clearFacesInFront() {
-		m_facesInFront.clear();
+		facesInFront.clear();
 	}
 	
 	
 	public List<Vertex> getPointsInFront() {
-		Iterator<TriangularFacet> it = m_facesInFront.iterator();
+		Iterator<TriangularFacet> it = facesInFront.iterator();
 		List<Vertex> l = new ArrayList<Vertex>();
 		while (it.hasNext()) {
 			l.addAll(it.next().getVerticesInFront());
@@ -80,11 +80,11 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	}
 
 	public List<TriangularFacet> getFacesInFront() {
-		return m_facesInFront;
+		return facesInFront;
 	}
 
 	public void cleanFaceInFront() {
-		m_facesInFront.clear();
+		facesInFront.clear();
 	}
 
 	@Override

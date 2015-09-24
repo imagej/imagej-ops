@@ -46,35 +46,35 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	/**
 	 * All {@link TriangularFacet}. 
 	 */
-	private ArrayList<TriangularFacet> m_facets;
+	private ArrayList<TriangularFacet> facets;
 	
 	/**
-	 * All unique vertices of all {@link DefaultFacets#m_facets}.
+	 * All unique vertices of all {@link DefaultFacets#facets}.
 	 */
-	private HashSet<Vertex> m_points;
+	private HashSet<Vertex> points;
 	
 	/**
-	 * The sum of the area of all {@link DefaultFacets#m_facets}.
+	 * The sum of the area of all {@link DefaultFacets#facets}.
 	 */
-	private double m_area;
+	private double area;
 	
 	/**
-	 * The centroid of all {@link DefaultFacets#m_facets}.
+	 * The centroid of all {@link DefaultFacets#facets}.
 	 */
-	private Vertex m_centroid;
+	private Vertex centroid;
 
 	/**
-	 * The epsilon which was used to compute all {@link DefaultFacets#m_facets}.
+	 * The epsilon which was used to compute all {@link DefaultFacets#facets}.
 	 */
-	private double m_epsilon;
+	private double epsilon;
 
 	/**
 	 * A new empty facet container. 
 	 */
 	public DefaultFacets() {
-		m_facets = new ArrayList<TriangularFacet>();
-		m_points = new HashSet<Vertex>();
-		m_area = 0;
+		facets = new ArrayList<TriangularFacet>();
+		points = new HashSet<Vertex>();
+		area = 0;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @return the facets
 	 */
 	public ArrayList<TriangularFacet> getFacets() {
-		return m_facets;
+		return facets;
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @param facets to set
 	 */
 	public void setFaces(ArrayList<TriangularFacet> facets) {
-		this.m_facets = facets;
+		this.facets = facets;
 	}
 	
 	/**
@@ -98,10 +98,10 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @param f the facet to add
 	 */
 	public void addFace(TriangularFacet f) {
-		m_facets.add(f);
-		m_area += f.getArea();
+		facets.add(f);
+		area += f.getArea();
 
-		m_points.addAll((List<Vertex>) f.getVertices());
+		points.addAll((List<Vertex>) f.getVertices());
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @return the unique points
 	 */
 	public HashSet<Vertex> getPoints() {
-		return m_points;
+		return points;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @return the total area
 	 */
 	public double getArea() {
-		return m_area;
+		return area;
 	}
 	
 	/**
@@ -125,8 +125,8 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @return the centroid
 	 */
 	public Vertex getCentroid() {
-		if (m_centroid == null) {
-			Iterator<Vertex> it = m_points.iterator();
+		if (centroid == null) {
+			Iterator<Vertex> it = points.iterator();
 			double x,y,z = y = x = 0;
 			while (it.hasNext()) {
 				Vertex next = it.next();
@@ -135,17 +135,17 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 				z += next.getZ();
 			}
 			
-			x /= m_points.size();
-			y /= m_points.size();
-			z /= m_points.size();
-			m_centroid = new Vertex(x, y, z);
+			x /= points.size();
+			y /= points.size();
+			z /= points.size();
+			centroid = new Vertex(x, y, z);
 		}
-		return m_centroid;
+		return centroid;
 	}
 
 	@Override
 	public Iterator<TriangularFacet> iterator() {
-		return m_facets.iterator();
+		return facets.iterator();
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @param epsilon the epsilon
 	 */
 	public void setEpsilon(double epsilon) {
-		m_epsilon = epsilon;
+		this.epsilon = epsilon;
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @return the epsilon
 	 */
 	public double getEpsilon() {
-		return m_epsilon;
+		return epsilon;
 	}
 
 	/**
@@ -170,6 +170,6 @@ public class DefaultFacets implements Facets, Iterable<TriangularFacet> {
 	 * @param points to set
 	 */
 	public void setPoints(HashSet<Vertex> points) {
-		this.m_points = points;
+		this.points = points;
 	}
 }
