@@ -1,0 +1,12 @@
+# Generated functional binary arithmetic ops with ArrayImages.
+
+[ConstantToImageFunctional.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
+]
+```

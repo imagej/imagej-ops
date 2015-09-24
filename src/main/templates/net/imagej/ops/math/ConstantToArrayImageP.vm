@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.math.add;
+package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.OpService;
@@ -38,6 +38,8 @@ import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
@@ -45,44 +47,64 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Multi-threaded version of optimized add constant for {@link ArrayImg}s of type
- * {@link ByteType}
- * 
- * @author Christian Dietz (University of Konstanz)
+ * Wrapper class for multi-threaded version of binary math operations between 
+ * constant values and {@link ArrayImg}s.
+ * <p>
+ * Add, subtract, multiply, and divide are implemented for {@link ArrayImg}s
+ * of {@link ByteType} or {@link DoubleType}.
+ * </p>
+ *
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Math.Add.class, name = Ops.Math.Add.NAME, priority = Priority.HIGH_PRIORITY + 10)
-public class AddConstantToArrayByteImageP extends AbstractOp implements
-	Ops.Math.Add
-{
+public final class ConstantToArrayImageP {
 
-	@Parameter
-	private OpService opService;
-
-	@Parameter(type = ItemIO.BOTH)
-	private ArrayImg<ByteType, ByteArray> image;
-
-	@Parameter
-	private byte value;
-
-	@Override
-	public void run() {
-		final byte[] data = image.update(null).getCurrentStorageArray();
-		opService.run(ChunkerOp.class, new Chunk() {
-			
-			@Override
-			public void execute(final int startIndex, final int stepSize, final int numSteps)
-			{
-				if (stepSize != 1) {
-					for (int i = startIndex, j = 0; j < numSteps; i = i + stepSize, j++) {
-						data[i] += value;
-					}
-				}
-				else {
-					for (int i = startIndex; i < startIndex + numSteps; i++) {
-						data[i] += value;
-					}
-				}
-			}
-		}, data.length);
+	private ConstantToArrayImageP() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
+
+	/**
+	 * Multi-threaded version of optimized $op.verb {@link ArrayImg}s of
+	 * type {@link ${type.name}Type}
+	 * 
+	 * @author Christian Dietz (University of Konstanz)
+	 */
+	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 11#else + 10#end)
+	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
+		
+		@Parameter
+		private OpService opService;
+
+		@Parameter(type = ItemIO.BOTH)
+		private ArrayImg<${type.name}Type, ${type.name}Array> image;
+
+		@Parameter
+		private ${type.primitive} value;
+
+		@Override
+		public void run() {
+			final ${type.primitive}[] data = image.update(null).getCurrentStorageArray();
+			opService.run(ChunkerOp.class, new Chunk() {
+
+				@Override
+				public void execute(final int startIndex, final int stepSize,
+						final int numSteps) {
+					if (stepSize != 1) {
+						for (int i = startIndex, j = 0; j < numSteps; i = i
+								+ stepSize, j++) {
+							data[i] ${op.operator}= value;
+						}
+					} else {
+						for (int i = startIndex; i < startIndex + numSteps; i++) {
+							data[i] ${op.operator}= value;
+						}
+					}
+				}
+			}, data.length);
+		}
+	}
+#end
+#end
 }

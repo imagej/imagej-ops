@@ -1,0 +1,20 @@
+# Generated multi-threaded version of binary arithmetic ops with generic images
+# of ByteType or DoubleType.
+
+[ConstantToArrayImageP.java]
+
+types = ```
+[
+	[name: "Byte",   primitive: "byte"], 
+	[name: "Double", primitive: "double"]
+]
+```
+
+ops = ```
+[
+	[name: "Add",      operator: "+", verb: "add constant for"],
+	[name: "Subtract", operator: "-", verb: "subtract constant from"], 
+	[name: "Multiply", operator: "*", verb: "multiply constant for"], 
+	[name: "Divide",   operator: "/", verb: "divide constant from"]
+]
+```
