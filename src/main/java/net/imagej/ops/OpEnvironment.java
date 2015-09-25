@@ -41,7 +41,6 @@ import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 
 import net.imagej.ops.geometric.Geometric2DNamespace;
-import net.imagej.ops.geometric3d.Descriptor3DNamespace;
 import net.imagej.ops.geometric3d.Geometric3DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
@@ -607,9 +606,6 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "deconvolve" namespace. */
 	DeconvolveNamespace deconvolve();
-	
-	/** Gateway into ops of the "descriptor3d" namespace. */
-	Descriptor3DNamespace descriptor3d();
 
 	/** Gateway into ops of the "filter" namespace. */
 	FilterNamespace filter();

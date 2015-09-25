@@ -44,7 +44,6 @@ import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 
 import net.imagej.ops.geometric.Geometric2DNamespace;
-import net.imagej.ops.geometric3d.Descriptor3DNamespace;
 import net.imagej.ops.geometric3d.Geometric3DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
@@ -663,6 +662,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	public Geometric3DNamespace geometric3d() {
+		return namespace(Geometric3DNamespace.class);
+	}
+
+	@Override
 	public HaralickNamespace haralick() {
 		return namespace(HaralickNamespace.class);
 	}
@@ -707,15 +711,6 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		return namespace(ThresholdNamespace.class);
 	}
 	
-	@Override
-	public Geometric3DNamespace geometric3d() {
-		return namespace(Geometric3DNamespace.class);
-	}
-	
-	@Override
-	public Descriptor3DNamespace descriptor3d() {
-		return namespace(Descriptor3DNamespace.class);
-	}
 
 	// -- Helper methods --
 
