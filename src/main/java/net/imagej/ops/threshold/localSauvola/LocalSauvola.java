@@ -1,9 +1,10 @@
 package net.imagej.ops.threshold.localSauvola;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
-import net.imagej.ops.stats.variance.VarianceOp;
+import net.imagej.ops.Ops.Stats.Mean;
+import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -37,27 +38,26 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
-	private VarianceOp<T, DoubleType> var;
+	private ComputerOp<Iterable<T>, DoubleType> mean;
+	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
+	@Override
+	public void initialize() {
+		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
+		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
+	}
+	
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 		// Sauvola recommends K_VALUE = 0.5 and R_VALUE = 128.
-
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
-		}
-		if (var == null) {
-			var = ops.op(VarianceOp.class, DoubleType.class, input.getB());
-		}
 		
 		final DoubleType meanValue = new DoubleType();
 		mean.compute(input.getB(), meanValue);
 		
-		final DoubleType varianceValue = new DoubleType();
-		var.compute(input.getB(), varianceValue);
+		final DoubleType stdDevValue = new DoubleType();
+		stdDeviation.compute(input.getB(), stdDevValue);
 		
-		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(varianceValue.get())/r) - 1.0));
+		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue.get())/r) - 1.0));
 		
 		output.set(input.getA().getRealDouble() >= threshold);
 	}
