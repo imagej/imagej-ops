@@ -64,10 +64,10 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalSauvola
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private double k = 0.5d;
 
-	@Parameter
+	@Parameter(required = false)
 	private double r = 0.5d;
 
 	@Parameter

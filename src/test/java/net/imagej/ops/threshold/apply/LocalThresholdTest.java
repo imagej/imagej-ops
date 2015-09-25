@@ -102,6 +102,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
 		ops.threshold().localPhansalkar(out, in);
 		ops.threshold().localSauvola(out, in, 0.5, 0.5);
+		ops.threshold().localSauvola(out, in);
 	}
 
 	/**

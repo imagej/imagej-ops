@@ -526,6 +526,26 @@ public class ThresholdNamespace extends AbstractNamespace {
 				out, in, k, r);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
+				out, in, k);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
+		final Pair<T, Iterable<T>> in)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
+				out, in);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
