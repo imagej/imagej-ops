@@ -32,7 +32,7 @@ package net.imagej.ops.geometric3d;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -70,7 +70,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 	@Test
 	public void quickhull_4_Test() {
-		HashSet<Vertex> points = new HashSet<Vertex>();
+		LinkedHashSet<Vertex> points = new LinkedHashSet<Vertex>();
 		points.add(new Vertex(0, 0, 0));
 		points.add(new Vertex(1, 0, 0));
 		points.add(new Vertex(0, 0, 1));
@@ -87,7 +87,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 	@Test
 	public void quickhull_6_Test() {
-		HashSet<Vertex> points = new HashSet<Vertex>();
+		LinkedHashSet<Vertex> points = new LinkedHashSet<Vertex>();
 		points.add(new Vertex(3.2, 4.8, 4.4));
 		points.add(new Vertex(0, -4.9, 1.1));
 		points.add(new Vertex(-2.4, 4.9, -3.1));
@@ -106,7 +106,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 
 	@Test
 	public void quickhull_12_Test() {
-		HashSet<Vertex> points = new HashSet<Vertex>();
+		LinkedHashSet<Vertex> points = new LinkedHashSet<Vertex>();
 		points.add(new Vertex(-0.03621271768232132, 0.3728502838619522,	0.4947140370446388));
 		points.add(new Vertex(0.3210853052521919, 0.4807189479290684, 0.4433501688235907));
 		points.add(new Vertex(0.07214279572678994, -0.4960366976410492, 0.1112227161519441));
@@ -134,7 +134,7 @@ public class QuickHull3DTest extends AbstractOpTest {
 	public void quickhull_40_Test() {
 
 		// 20 result points
-		HashSet<Vertex> points = new HashSet<Vertex>();
+		LinkedHashSet<Vertex> points = new LinkedHashSet<Vertex>();
 		points.add(new Vertex(0.3215426810286406, 0.1678336189760208, -0.2203710966001927));
 		points.add(new Vertex(0.2229772524190855, -0.4213242506806965, -0.1966818060695024));
 		points.add(new Vertex(0.3688830163971363, -0.1831502133823468, -0.2056387967482571));
@@ -218,8 +218,8 @@ public class QuickHull3DTest extends AbstractOpTest {
 	 * @param seed the seed
 	 * @return random point cloud
 	 */
-	private HashSet<Vertex> randomPointSet(int n, long seed) {
-		HashSet<Vertex> points = new HashSet<Vertex>();
+	private LinkedHashSet<Vertex> randomPointSet(int n, long seed) {
+		LinkedHashSet<Vertex> points = new LinkedHashSet<Vertex>();
 		Random r = new Random(seed);
 
 		for (int i = 0; i < n; i++) {

@@ -30,8 +30,8 @@
 package net.imagej.ops.geometric3d;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +56,7 @@ import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
 @Plugin(type = Op.class, name = ConvexHull3D.NAME)
 public class DefaultConvexHull3D
 		extends
-			AbstractFunctionOp<HashSet<Vertex>, Mesh>
+			AbstractFunctionOp<LinkedHashSet<Vertex>, Mesh>
 		implements
 			ConvexHull3D {
 
@@ -86,9 +86,9 @@ public class DefaultConvexHull3D
 	private final double DOUBLE_PREC = 2.2204460492503131e-16;
 
 	@Override
-	public DefaultMesh compute(final HashSet<Vertex> input) {
+	public DefaultMesh compute(final LinkedHashSet<Vertex> input) {
 		DefaultMesh output = new DefaultMesh();
-		vertices = new HashSet<Vertex>(input);
+		vertices = new LinkedHashSet<Vertex>(input);
 		facets = new ArrayList<TriangularFacet>();
 		facetsWithPointInFront = new ArrayList<TriangularFacet>();
 		computeHull();
@@ -210,7 +210,6 @@ public class DefaultConvexHull3D
 	 *            a point outside of the convex hull
 	 * @return facet containing all facets which are in front of vTop
 	 */
-	@SuppressWarnings("unchecked")
 	private Horizon computeHorizon(final TriangularFacet frontFacet, final Vertex vTop) {
 		// Points which are in front have to be reassigned after all new facets
 		// are constructed.
@@ -230,7 +229,7 @@ public class DefaultConvexHull3D
 			// After this step this facet is merged with another facet.
 			facetsWithPointInFront.remove(merge);
 
-			if (h.containsAll((List<Vertex>)merge.getVertices())) {
+			if (h.containsAll(merge.getVertices())) {
 				updateNeighbors(frontFacet, merge);
 				h.complexMerge(merge);
 			} else {
@@ -269,7 +268,6 @@ public class DefaultConvexHull3D
 	 *            point which is added to the convex hull
 	 * @return neighboring facet of front or null if no facet is in front
 	 */
-	@SuppressWarnings("unchecked")
 	private TriangularFacet nextFacetToMerge(final Horizon frontFacet,
 			final Vertex vTop) {
 		Iterator<UpdateablePointSet> it = frontFacet.getNeighbors().iterator();
@@ -279,7 +277,7 @@ public class DefaultConvexHull3D
 				// if frontFacet contains all vertices of f it either is
 				// connected
 				// with two edges or one edge
-				if (frontFacet.containsAll((List<Vertex>)f.getVertices())) {
+				if (frontFacet.containsAll(f.getVertices())) {
 					Vertex v0 = f.getVertex(0);
 					Vertex v1 = f.getVertex(1);
 					Vertex v2 = f.getVertex(2);

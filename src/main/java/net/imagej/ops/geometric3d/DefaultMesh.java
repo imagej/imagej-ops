@@ -30,10 +30,8 @@
 package net.imagej.ops.geometric3d;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
  * This is the default implementation of {@link Mesh}. 
@@ -51,7 +49,7 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	/**
 	 * All unique vertices of all {@link DefaultMesh#facets}.
 	 */
-	private HashSet<Vertex> points;
+	private LinkedHashSet<Vertex> points;
 	
 	/**
 	 * The sum of the area of all {@link DefaultMesh#facets}.
@@ -73,7 +71,7 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 */
 	public DefaultMesh() {
 		facets = new ArrayList<TriangularFacet>();
-		points = new HashSet<Vertex>();
+		points = new LinkedHashSet<Vertex>();
 		area = 0;
 	}
 
@@ -108,7 +106,7 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Get all unique points. 
 	 * @return the unique points
 	 */
-	public HashSet<Vertex> getPoints() {
+	public LinkedHashSet<Vertex> getPoints() {
 		return points;
 	}
 
@@ -167,9 +165,9 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	/**
 	 * Set the points.
 	 * Note: No facets are constructed.
-	 * @param points to set
+	 * @param hashSet to set
 	 */
-	public void setPoints(final HashSet<Vertex> points) {
-		this.points = points;
+	public void setPoints(final LinkedHashSet<Vertex> hashSet) {
+		this.points = hashSet;
 	}
 }
