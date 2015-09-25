@@ -51,18 +51,18 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
 		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
 	}
-	
+
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 
 		final DoubleType meanValue = new DoubleType();
 		mean.compute(input.getB(), meanValue);
-		
+
 		final DoubleType stdDevValue = new DoubleType();
 		stdDeviation.compute(input.getB(), stdDevValue);
-		
+
 		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue.get())/r) - 1.0));
-		
+
 		output.set(input.getA().getRealDouble() >= threshold);
 	}
 
