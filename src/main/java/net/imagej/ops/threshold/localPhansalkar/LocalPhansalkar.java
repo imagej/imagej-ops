@@ -1,10 +1,11 @@
 package net.imagej.ops.threshold.localPhansalkar;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.stats.mean.MeanOp;
-import net.imagej.ops.stats.stdDev.StdDev;
-import net.imagej.ops.stats.variance.VarianceOp;
+import net.imagej.ops.Ops.Stats.Mean;
+import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.stats.DefaultMean;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -45,20 +46,20 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	@Parameter
 	private OpService ops;
 
-	private MeanOp<Iterable<T>, DoubleType> mean;
-	private StdDev<T, DoubleType> stdDeviation;
+	private ComputerOp<Iterable<T>, DoubleType> mean;
+	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	private double p = 2.0;
 	private double q = 10.0;
-	
+
+	@Override
+	public void initialize() {
+		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
+		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
+	}
+
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		if (mean == null) {
-			mean = ops.op(MeanOp.class, DoubleType.class, input.getB());
-		}
-		if (stdDeviation == null) {
-			stdDeviation = ops.op(StdDev.class, DoubleType.class, input.getB());
-		}
 
 		final DoubleType meanValue = new DoubleType();
 		mean.compute(input.getB(), meanValue);
