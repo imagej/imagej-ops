@@ -43,11 +43,8 @@ import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
-<<<<<<< HEAD
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
-=======
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
->>>>>>> Added tests for LocalSauvola
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
@@ -104,7 +101,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
 		ops.threshold().localPhansalkar(out, in);
-		ops.threshold().localSauvola(out, in, 0.5, 128.0);
+		ops.threshold().localSauvola(out, in, 0.5, 0.5);
 	}
 
 	/**
