@@ -73,6 +73,7 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private OpService ops;
 
+	// FIXME: Faster calculation of mean and std-dev.
 	private ComputerOp<Iterable<T>, DoubleType> mean;
 	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
