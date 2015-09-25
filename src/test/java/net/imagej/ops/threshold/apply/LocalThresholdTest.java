@@ -206,7 +206,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out,
 			in,
 			ops.op(LocalPhansalkar.class, BitType.class,
-				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0, 0.0),
+				new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
 			new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
