@@ -15,11 +15,16 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * This is a modification of Niblack's thresholding method.
+ * This is a modification of Niblack's thresholding method. In contrast to the
+ * recommendation on parameters in the publication, this implementation operates
+ * on normalized images (to the [0, 1] range). Hence, the r parameter defaults
+ * to half the possible standard deviation in a normalized image, namely 0.5
+ * 
  * Sauvola J. and Pietaksinen M. (2000) "Adaptive Document Image Binarization"
  * Pattern Recognition, 33(2): 225-236
+ * 
  * http://www.ee.oulu.fi/mvg/publications/show_pdf.php?ID=24
- * Ported to ImageJ plugin from E Celebi's fourier_0.8 routines.
+ * 
  * Original ImageJ1 implementation by Gabriel Landini.
  * 
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
@@ -33,7 +38,7 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private double k = 0.5d;
 
 	@Parameter
-	private double r = 128.0d;
+	private double r = 0.5d;
 
 	@Parameter
 	private OpService ops;
@@ -49,8 +54,7 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	
 	@Override
 	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
-		// Sauvola recommends K_VALUE = 0.5 and R_VALUE = 128.
-		
+
 		final DoubleType meanValue = new DoubleType();
 		mean.compute(input.getB(), meanValue);
 		
