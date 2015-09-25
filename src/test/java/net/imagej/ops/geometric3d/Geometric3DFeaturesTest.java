@@ -112,9 +112,8 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testConvexHullSurfacePixel() {
 		// Verified by hand. qhull merges faces and therefore has another number
-		// of
-		// surface pixels
-		assertEquals(Geometric3D.ConvexHullSurfacePixel.NAME, 616, ops
+		// of surface pixels
+		assertEquals(Geometric3D.ConvexHullSurfacePixel.NAME, 585, ops
 				.geometric3d().ConvexHullSurfacePixel(region).get(),
 				AbstractFeatureTest.BIG_DELTA);
 	}
