@@ -213,8 +213,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 			in,
 			ops.op(LocalPhansalkar.class, BitType.class,
 				new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
-				new RectangleShape(3, false),
-				new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
 	}
@@ -228,9 +228,9 @@ public class LocalThresholdTest extends AbstractOpTest {
 			out,
 			in,
 			ops.op(LocalSauvola.class, BitType.class,
-				new ValuePair<ByteType, Iterable<ByteType>>(null, null), 0.0, 0.0),
-				new RectangleShape(3, false),
-				new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+				new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
 	}
