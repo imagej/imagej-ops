@@ -58,8 +58,8 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 
 	@Override
 	public void initialize() {
-		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
-		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
+		mean = ops().computer(Mean.class, DoubleType.class, in().getB());
+		stdDeviation = ops().computer(StdDev.class, DoubleType.class, in().getB());
 	}
 
 	@Override
