@@ -99,6 +99,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
+		ops.threshold().localPhansalkar(out, in);
 	}
 
 	/**

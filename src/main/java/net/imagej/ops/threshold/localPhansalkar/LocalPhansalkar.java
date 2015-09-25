@@ -40,10 +40,10 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	implements Ops.Threshold.LocalPhansalkar
 {
 
-	@Parameter
+	@Parameter(required = false)
 	private double k = 0.25;
 
-	@Parameter
+	@Parameter(required = false)
 	private double r = 0.5;
 
 	@Parameter
