@@ -56,18 +56,7 @@ public abstract class AbstractIteratingFeatureSet<I, O> extends
 
 		for (int i = 0; i < getNumEntries(); i++) {
 			final int f = i;
-			infos.add(new NamedFeature() {
-
-				@Override
-				public String getName() {
-					return getNamePrefix() + " " + f;
-				}
-
-				@Override
-				public void setName(String name) {
-					throw new UnsupportedOperationException("setName not supported");
-				}
-			});
+			infos.add(new NamedFeature(getNamePrefix() + " " + f));
 		}
 	}
 

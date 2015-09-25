@@ -41,6 +41,7 @@ import net.imagej.ops.Ops.Geometric2D.BoundingBox;
 import net.imagej.ops.Ops.Geometric2D.Centroid;
 import net.imagej.ops.Ops.Geometric2D.ConvexHull;
 import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
+import net.imagej.ops.RTs;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -67,12 +68,12 @@ public class DefaultSmallestEnclosingRectangle extends
 	@Override
 	public void initialize() {
 		convexhullFunc = ops().function(ConvexHull.class, Polygon.class,
-				Polygon.class);
+				in());
 		centroidFunc = ops().function(Centroid.class, RealLocalizable.class,
-				Polygon.class);
-		areaFunc = ops().function(Area.class, DoubleType.class, Polygon.class);
+				in());
+		areaFunc =  RTs.function(ops(), Area.class, in());
 		boundingBoxFunc = ops().function(BoundingBox.class, Polygon.class,
-				Polygon.class);
+				in());
 	}
 
 	/**

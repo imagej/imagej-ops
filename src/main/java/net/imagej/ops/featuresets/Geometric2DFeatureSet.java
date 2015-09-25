@@ -28,6 +28,7 @@ import net.imagej.ops.Ops.Geometric2D.Roundness;
 import net.imagej.ops.Ops.Geometric2D.Rugosity;
 import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
 import net.imagej.ops.Ops.Geometric2D.Solidity;
+import net.imglib2.roi.geometric.Polygon;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<I, O>}.
@@ -36,14 +37,14 @@ import net.imagej.ops.Ops.Geometric2D.Solidity;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = FeatureSet.class, label = "2D Geometric Features",
-description = "Calculates the 2D Geometric Features")
-public class Geometric2DFeatureSet<I, O> extends AbstractOpRefFeatureSet<I, O> {
+@Plugin(type = FeatureSet.class, label = "2D Geometric Features", description = "Calculates the 2D Geometric Features")
+public class Geometric2DFeatureSet<L, O> extends AbstractOpRefFeatureSet<Polygon, O>
+		implements GeometricFeatureSet<L, O> {
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
 		final Set<OpRef<?>> refs = new HashSet<OpRef<?>>();
-		
+
 		refs.add(ref(Area.class));
 		refs.add(ref(BoundingBox.class));
 		refs.add(ref(Centroid.class));
@@ -65,8 +66,23 @@ public class Geometric2DFeatureSet<I, O> extends AbstractOpRefFeatureSet<I, O> {
 		refs.add(ref(Rugosity.class));
 		refs.add(ref(SmallestEnclosingRectangle.class));
 		refs.add(ref(Solidity.class));
-		
+
 		return refs;
 	}
-	
+
+	@Override
+	public int getMinDimensions() {
+		return 2;
+	}
+
+	@Override
+	public int getMaxDimensions() {
+		return 2;
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 2;
+	}
+
 }

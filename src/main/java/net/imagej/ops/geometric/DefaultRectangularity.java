@@ -57,7 +57,7 @@ public class DefaultRectangularity<O extends RealType<O>> extends
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Area.class, in());
 		smallestEnclosingRectangleFunc = ops().function(
-				SmallestEnclosingRectangle.class, Polygon.class, Polygon.class);
+				SmallestEnclosingRectangle.class, Polygon.class, in());
 	}
 
 	@Override

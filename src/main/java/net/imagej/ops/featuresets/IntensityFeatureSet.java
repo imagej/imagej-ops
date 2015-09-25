@@ -27,37 +27,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.featuresets;
 
-import net.imagej.ops.OpRef;
-
 /**
- * {@link NamedFeature} based on {@link OpRef}s
+ * Marker interface to define {@link FeatureSet}s which calculate features based
+ * on the intensity values of an object.
  * 
  * @author Christian Dietz, University of Konstanz
+ *
+ * @param <I>
+ * @param <O>
  */
-public class OpRefFeatureInfo implements NamedFeature {
-
-	private OpRef<?> ref;
-
-	public OpRefFeatureInfo(final OpRef<?> ref) {
-		this.ref = ref;
-	}
-
-	@Override
-	public int hashCode() {
-		return ref.hashCode();
-	}
-
-	@Override
-	public String getName() {
-		return ref.getLabel();
-	}
-
-	@Override
-	public void setName(String name) {
-		throw new UnsupportedOperationException(
-			"setName not supported on OpRefFeatureInfo");
-	}
+public interface IntensityFeatureSet<I, O> extends DimensionBoundFeatureSet<I, O> {
+	// NB: Marker Interface
 }

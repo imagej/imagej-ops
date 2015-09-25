@@ -31,18 +31,18 @@ package net.imagej.ops.geometric;
 
 import java.lang.reflect.Type;
 
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric2D.Contour;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.geometric.Polygon;
-
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops.Geometric2D.Contour;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * 
@@ -53,14 +53,15 @@ import org.scijava.plugin.Plugin;
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class RandomAccessibleIntervalToPolygonConverter extends
-		AbstractConverter<RandomAccessibleInterval, Polygon> {
+public class RandomAccessibleIntervalToPolygonConverter
+		extends
+			AbstractConverter<LabelRegion, Polygon> {
 
 	@Parameter
 	private OpService ops;
 	private FunctionOp<Object, Object> contourFunc;
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
@@ -78,8 +79,8 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 	}
 
 	@Override
-	public Class<RandomAccessibleInterval> getInputType() {
-		return RandomAccessibleInterval.class;
+	public Class<LabelRegion> getInputType() {
+		return LabelRegion.class;
 	}
 
 	@Override
@@ -88,12 +89,12 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 		Object sourceObject = request.sourceObject();
 		Class<?> sourceClass = request.sourceClass();
 
-		if (sourceObject != null
-				&& !(sourceObject instanceof RandomAccessibleInterval)) {
+		
+		if (sourceObject != null && !(sourceObject instanceof LabelRegion)) {
 			return false;
-		} else if (sourceClass != null
-				&& !(RandomAccessibleInterval.class
-						.isAssignableFrom(sourceClass))) {
+		} else
+			if (sourceClass != null
+					&& !(LabelRegion.class.isAssignableFrom(sourceClass))) {
 			return false;
 		}
 
@@ -106,6 +107,8 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 			return false;
 		}
 
+		
+		
 		return true;
 	}
 

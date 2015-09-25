@@ -46,8 +46,11 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Convexity", name = Geometric2D.Convexity.NAME)
-public class DefaultConvexity<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Convexity {
+public class DefaultConvexity<O extends RealType<O>>
+		extends
+			AbstractGeometricFeature<Polygon, O>
+		implements
+			Geometric2D.Convexity {
 
 	private FunctionOp<Polygon, Polygon> convexHullFunction;
 	private FunctionOp<Polygon, O> perimiterFunc;
@@ -55,7 +58,7 @@ public class DefaultConvexity<O extends RealType<O>> extends
 	@Override
 	public void initialize() {
 		convexHullFunction = ops().function(ConvexHull.class, Polygon.class,
-				Polygon.class);
+				in());
 		perimiterFunc = RTs.function(ops(), Perimeter.class, in());
 	}
 
@@ -64,11 +67,11 @@ public class DefaultConvexity<O extends RealType<O>> extends
 
 		// get perimeter of input and its convex hull
 		final O inputArea = perimiterFunc.compute(input);
-		final O convexHullArea = perimiterFunc.compute(convexHullFunction
-				.compute(input));
+		final O convexHullArea = perimiterFunc
+				.compute(convexHullFunction.compute(input));
 
-		output.setReal(convexHullArea.getRealDouble()
-				/ inputArea.getRealDouble());
+		output.setReal(
+				convexHullArea.getRealDouble() / inputArea.getRealDouble());
 	}
 
 }

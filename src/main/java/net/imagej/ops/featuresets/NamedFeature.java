@@ -37,6 +37,50 @@ import org.scijava.Named;
  * 
  * @author Christian Dietz
  */
-public interface NamedFeature extends Named {
+public class NamedFeature implements Named {
+
+	private final String name;
+
+	public NamedFeature(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		throw new UnsupportedOperationException(
+			"Can't change name of NamedFeature");
+	}
 	// NB: Marker interface
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NamedFeature other = (NamedFeature) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+
 }

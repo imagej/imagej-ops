@@ -71,9 +71,9 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends
 		if (namedFeatureMap == null) {
 			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<I, ? extends O>>();
 			for (final OpRef<?> ref : initOpRefs()) {
-				if (active == null || active.contains(ref)) namedFeatureMap.put(
-					new OpRefFeatureInfo(ref), ops().function(ref.getType(), outType,
-						in(), ref.getArgs()));
+				if (active == null || active.contains(new NamedFeature(ref.getLabel()))) namedFeatureMap.put(
+					new NamedFeature(ref.getLabel()), ops().function(ref.getType(),
+						outType, in(), ref.getArgs()));
 			}
 		}
 
@@ -118,6 +118,16 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends
 	 */
 	@Override
 	public Collection<NamedFeature> getFeatures() {
+
+		if (namedFeatureMap == null) {
+			HashSet<NamedFeature> hashSet = new HashSet<NamedFeature>();
+			for (OpRef<?> ref : initOpRefs()) {
+				hashSet.add(new NamedFeature(ref.getLabel()));
+			}
+
+			return hashSet;
+		}
+
 		return namedFeatureMap.keySet();
 	}
 
