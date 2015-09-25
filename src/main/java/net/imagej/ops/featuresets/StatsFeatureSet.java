@@ -63,7 +63,8 @@ import net.imagej.ops.stats.StatOp;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = StatsFeatureSet.class)
+@Plugin(type = FeatureSet.class, label = "Statistic Features",
+description = "Calculates the Statistic Features")
 public class StatsFeatureSet<I, O> extends AbstractOpRefFeatureSet<I, O> {
 
 	@Override

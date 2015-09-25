@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.OpRef;
 import net.imagej.ops.Ops.Geometric2D.Area;
 import net.imagej.ops.Ops.Geometric2D.BoundingBox;
@@ -34,6 +36,8 @@ import net.imagej.ops.Ops.Geometric2D.Solidity;
  * @param <I>
  * @param <O>
  */
+@Plugin(type = FeatureSet.class, label = "2D Geometric Features",
+description = "Calculates the 2D Geometric Features")
 public class Geometric2DFeatureSet<I, O> extends AbstractOpRefFeatureSet<I, O> {
 
 	@Override
