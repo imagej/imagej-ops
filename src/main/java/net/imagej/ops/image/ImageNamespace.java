@@ -184,6 +184,27 @@ public class ImageNamespace extends AbstractNamespace {
 				net.imagej.ops.image.equation.DefaultEquation.class, out, in);
 		return result;
 	}
+	
+	// -- fusion --
+	
+	@OpMethod(op = net.imagej.ops.image.fusion.MinFusion.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> fuseMin(final RandomAccessibleInterval<T> in,
+			final RandomAccessibleInterval<T> in2, final long... offset) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.image.fusion.MinFusion.class, in, in2, offset);
+		return result;
+	}
+	
+	
+	@OpMethod(op = net.imagej.ops.image.fusion.MaxFusion.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> fuseMax(final RandomAccessibleInterval<T> in, 
+			final RandomAccessibleInterval<T> in2, final long... offset) {
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(net.imagej.ops.image.fusion.MaxFusion.class, in, in2, offset);
+		return result;
+	}
 
 	// -- histogram --
 
