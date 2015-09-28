@@ -62,7 +62,7 @@ public class SubsampleStepsForDims<T> extends
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() <= steps.length;
+		return in().numDimensions() <= steps.length;
 	}
 
 }
