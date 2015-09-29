@@ -44,5 +44,5 @@ public interface VertexInterpolator extends Op {
 	public void setIsoLevel(double d);
 	
 	public double[]	getOutput();
-	
+
 }
