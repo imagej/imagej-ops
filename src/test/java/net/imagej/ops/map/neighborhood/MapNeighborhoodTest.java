@@ -35,6 +35,9 @@ import static org.junit.Assert.fail;
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended;
+import net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -111,6 +114,179 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 			assertEquals(9, t.get());
 		}
 	}
+
+	/**
+	 * Test if every neighborhood pixel of the 2D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImage2D() {
+		final Op functional =
+			ops.op(MapNeighborhoodNativeType.class, out, in,
+				new CountNeighborsWithAccess(), 1);
+		functional.run();
+
+		final byte[] expected =
+			new byte[] { 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 9, 9, 9, 9, 9, 9, 9, 9,
+				9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6,
+				6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9,
+				9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9,
+				9, 9, 9, 9, 9, 9, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+	
+	/**
+	 * Test if every neighborhood pixel of the 2D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeTypeExtended
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImageAlias2D() {
+		in = generateByteTestImg(true, 7, 7);
+		out = generateByteTestImg(false, 7, 7);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeTypeExtended.class, out, in,
+				new CountNeighbors(), new RectangleShape(1, false));
+		functional.run();
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", 9, t.get());
+			index++;
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the 1D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImage1D() {
+		in = generateByteTestImg(true, 7);
+		out = generateByteTestImg(false, 7);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeType.class, out, in,
+				new CountNeighborsWithAccess(), 1);
+		functional.run();
+
+		final byte[] expected = new byte[] { 2, 3, 3, 3, 3, 3, 2 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the 1D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeTypeExtended
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImageAlias1D() {
+		in = generateByteTestImg(true, 7);
+		out = generateByteTestImg(false, 7);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeTypeExtended.class, out, in,
+				new CountNeighbors(), new RectangleShape(1, false));
+		functional.run();
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", 3, t.get());
+			index++;
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the 3D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImage3D() {
+		in = generateByteTestImg(true, 3, 3, 3);
+		out = generateByteTestImg(false, 3, 3, 3);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeType.class, out, in,
+				new CountNeighborsWithAccess(), 1);
+		functional.run();
+
+		final byte[] expected =
+			new byte[] { 8, 12, 8, 12, 18, 12, 8, 12, 8, 12, 18, 12, 18, 27, 18, 12,
+				18, 12, 8, 12, 8, 12, 18, 12, 8, 12, 8 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+	
+	/**
+	 * Test if every neighborhood pixel of the 3D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodNativeTypeExtended
+	 */
+	@Test
+	public void testMapNeighborhoodsArrayImageAlias3D() {
+		in = generateByteTestImg(true, 7, 7, 7);
+		out = generateByteTestImg(false, 7, 7, 7);
+
+		final Op functional =
+			ops.op(MapNeighborhoodNativeTypeExtended.class, out, in,
+				new CountNeighbors(), new RectangleShape(1, false));
+		functional.run();
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", 27, t.get());
+			index++;
+		}
+	}
+
+	/**
+	 * Test if every neighborhood pixel of the 2D image was really accessed during
+	 * the map operation.
+	 * 
+	 * @see MapNeighborhoodWithCenterNativeType
+	 */
+	@Test
+	public void testMapNeighborhoodsWithCenterAccessArrayImage2D() {
+		final Op functional =
+			ops.op(MapNeighborhoodWithCenterNativeType.class, out, in,
+				new CountNeighborsWithAccessWithCenter(), 1);
+		functional.run();
+
+		final byte[] expected =
+			new byte[] { 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 6, 9, 9, 9, 9, 9, 9, 9, 9,
+				9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6,
+				6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9,
+				9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 6, 9, 9, 9,
+				9, 9, 9, 9, 9, 9, 6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4 };
+
+		int index = 0;
+		for (ByteType t : out) {
+			assertEquals("Index " + index + ": ", expected[index++], t.get());
+		}
+	}
+	
+	
 
 	/**
 	 * Function which increments the output value for every pixel in the

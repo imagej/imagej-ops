@@ -51,10 +51,15 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
@@ -473,12 +478,13 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	<A, B, C> C join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second);
+	<A, B, C> C
+		join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	<A, B, C> C join(C out, A in, ComputerOp<A, B> first, ComputerOp<B, C> second,
-		BufferFactory<A, B> bufferFactory);
+	<A, B, C> C join(C out, A in, ComputerOp<A, B> first,
+		ComputerOp<B, C> second, BufferFactory<A, B> bufferFactory);
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndInplace.class)
@@ -579,6 +585,45 @@ public interface OpEnvironment extends Contextual {
 	<I, O> RandomAccessibleInterval<O> map(RandomAccessibleInterval<O> out,
 		RandomAccessibleInterval<I> in, CenterAwareComputerOp<Iterable<I>, O> op,
 		Shape shape);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+			RectangleShape shape);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class)
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+			RectangleShape shape, OutOfBoundsFactory<I, ?> oobFactory);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class)
+	public
+		<I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+			final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+			final CenterAwareComputerOp<I, O> op, final int span);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class)
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final ComputerOp<Iterable<I>, O> op, final int span);
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(
+		op = net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class)
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?>
+		map(final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+			final ComputerOp<Iterable<I>, O> op, final int span,
+			final Interval interval);
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)

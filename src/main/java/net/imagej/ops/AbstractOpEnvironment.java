@@ -54,10 +54,15 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.algorithm.neighborhood.Shape;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
 
@@ -270,8 +275,9 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result =
-			(IterableInterval<O>) run(net.imagej.ops.convert.ConvertIterableInterval.class, out,
-				in, pixConvert);
+			(IterableInterval<O>) run(
+				net.imagej.ops.convert.ConvertIterableInterval.class, out, in,
+				pixConvert);
 		return result;
 	}
 
@@ -311,7 +317,6 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 			(String) run(net.imagej.ops.help.HelpForNamespace.class, namespace);
 		return result;
 	}
-
 
 	@Override
 	public String help() {
@@ -353,8 +358,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second)
+	public <A, B, C> C join(final C out, final A in,
+		final ComputerOp<A, B> first, final ComputerOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -364,8 +369,9 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
-	public <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second, final BufferFactory<A, B> bufferFactory)
+	public <A, B, C> C join(final C out, final A in,
+		final ComputerOp<A, B> first, final ComputerOp<B, C> second,
+		final BufferFactory<A, B> bufferFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -392,8 +398,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
-				ops, bufferFactory);
+			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in, ops,
+				bufferFactory);
 		return result;
 	}
 
@@ -509,8 +515,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
 			(IterableInterval<B>) run(
-				net.imagej.ops.map.MapIterableIntervalToView.class, input, op,
-				type);
+				net.imagej.ops.map.MapIterableIntervalToView.class, input, op, type);
 		return result;
 	}
 
@@ -578,7 +583,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op,
+				shape);
 		return result;
 	}
 
@@ -591,7 +597,74 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out, in, func, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out,
+				in, func, shape);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+		RectangleShape shape)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class,
+				out, in, op, shape);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		ArrayImg<O, ?> out, ArrayImg<I, ?> in, ComputerOp<Iterable<I>, O> op,
+		RectangleShape shape, OutOfBoundsFactory<I, ?> oobFactory)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeTypeExtended.class,
+				out, in, op, shape, oobFactory);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final CenterAwareComputerOp<I, O> op, final int span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodWithCenterNativeType.class,
+				out, in, op, span);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?> map(
+		final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+		final ComputerOp<Iterable<I>, O> op, final int span)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
+				out, in, op, span);
+		return result;
+	}
+
+	@Override
+	public <I extends NativeType<I>, O extends NativeType<O>> ArrayImg<O, ?>
+		map(final ArrayImg<O, ?> out, final ArrayImg<I, ?> in,
+			final ComputerOp<Iterable<I>, O> op, final int span,
+			final Interval interval)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<O, ?> result =
+			(ArrayImg<O, ?>) run(
+				net.imagej.ops.map.neighborhood.array.MapNeighborhoodNativeType.class,
+				out, in, op, span, interval);
 		return result;
 	}
 
