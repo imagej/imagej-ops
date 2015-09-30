@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.geom.helper;
 
-
 /**
  * A Horizon is the result of n neighboring {@link TriangularFacet} which are merged.
  * The horizon is a polygon of all outer edges/vertices of the merged

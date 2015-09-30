@@ -180,16 +180,18 @@ public class DefaultMinorMajorAxis extends
 		return new double[] { m00, n20, n11, n02 };
 	}
 
-	private double getY(int index) {
-		if (index == in().getVertices().size())
-			index = 0;
-		return in().getVertices().get(index).getDoublePosition(1);
+	private double getY(final int index) {
+		int i = index;
+		if (i == in().getVertices().size())
+			i = 0;
+		return in().getVertices().get(i).getDoublePosition(1);
 	}
 
-	private double getX(int index) {
-		if (index == in().getVertices().size())
-			index = 0;
-		return in().getVertices().get(index).getDoublePosition(0);
+	private double getX(final int index) {
+		int i = index;
+		if (i == in().getVertices().size())
+			i = 0;
+		return in().getVertices().get(i).getDoublePosition(0);
 	}
 
 	@Override
@@ -211,10 +213,8 @@ public class DefaultMinorMajorAxis extends
 				if (result == 0) {
 					return new Double(o2.getDoublePosition(1))
 							.compareTo(new Double(o1.getDoublePosition(1)));
-				} else {
-
-					return result;
 				}
+				return result;
 			}
 		});
 		points.add(points.get(0));

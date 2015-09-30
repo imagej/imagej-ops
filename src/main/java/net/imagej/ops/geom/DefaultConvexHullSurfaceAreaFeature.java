@@ -44,8 +44,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of
- * {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfaceArea}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfaceArea}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
