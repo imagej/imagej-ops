@@ -69,11 +69,6 @@ public class DefaultContour
 	@Parameter(type = ItemIO.INPUT, description = "Set this flag to invert between foreground/background.")
 	private boolean isInverted = false;
 
-	@Override
-	public boolean conforms() {
-		return 2 == in().numDimensions();
-	}
-
 	/**
 	 * ClockwiseMooreNeighborhoodIterator Iterates clockwise through a 2D Moore
 	 * Neighborhood (8 connected Neighborhood). This iterator encourages reuse!
@@ -262,5 +257,10 @@ public class DefaultContour
 		}
 
 		return new Polygon(p);
+	}
+	
+	@Override
+	public boolean conforms() {
+		return 2 == in().numDimensions();
 	}
 }

@@ -50,7 +50,7 @@ public class DefaultArea extends AbstractFunctionOp<Polygon, DoubleType>
 			Geometric2D.Area {
 
 	@Override
-	public DoubleType compute(Polygon input) {
+	public DoubleType compute(final Polygon input) {
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 
