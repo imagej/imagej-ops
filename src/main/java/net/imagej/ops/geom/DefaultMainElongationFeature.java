@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Geometric3D.MainElongation.NAME, label = "Geometric3D: MainElongation", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMainElongationFeature<B extends BooleanType<B>> extends
 		AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-		Geometric3DOp<IterableRegion<B>, DoubleType>,
+		GeometricOp<IterableRegion<B>, DoubleType>,
 		Geometric3D.MainElongation,
 		Contingent {
 
