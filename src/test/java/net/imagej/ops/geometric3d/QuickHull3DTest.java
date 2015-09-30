@@ -38,9 +38,9 @@ import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.geom.DefaultConvexHull3D;
-import net.imagej.ops.geom.DefaultMesh;
-import net.imagej.ops.geom.TriangularFacet;
-import net.imagej.ops.geom.Vertex;
+import net.imagej.ops.geom.helper.DefaultMesh;
+import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.Vertex;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.junit.Test;

@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.helper;
 
 public interface Mesh {
 	// NB: Marker Interface

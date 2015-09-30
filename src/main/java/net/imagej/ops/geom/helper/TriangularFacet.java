@@ -27,13 +27,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.helper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+
+import net.imagej.ops.geom.DefaultConvexHull3D;
 
 /**
  * This is the triangle implementation of Facet Interface.

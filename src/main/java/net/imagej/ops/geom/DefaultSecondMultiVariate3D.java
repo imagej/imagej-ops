@@ -35,6 +35,7 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D;
 import net.imagej.ops.Ops.Descriptor3D.SecondMultiVariate3D;
+import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;

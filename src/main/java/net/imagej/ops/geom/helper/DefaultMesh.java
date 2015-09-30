@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.helper;
 
 import java.util.ArrayList;
 import java.util.Iterator;

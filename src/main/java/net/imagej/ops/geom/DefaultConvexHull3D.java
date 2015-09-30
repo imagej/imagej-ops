@@ -38,6 +38,12 @@ import java.util.Set;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
+import net.imagej.ops.geom.helper.DefaultMesh;
+import net.imagej.ops.geom.helper.Horizon;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.UpdateablePointSet;
+import net.imagej.ops.geom.helper.Vertex;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
