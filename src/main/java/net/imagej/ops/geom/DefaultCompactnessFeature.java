@@ -27,56 +27,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric3D;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.geom.BitTypeVertexInterpolator;
-
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * This class tests the {@link BitTypeVertexInterpolator}. 
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Compactness}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
- *
  */
-public class BitTypeVertexInterpolatorTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = Geometric3D.Compactness.NAME, label = "Geometric3D: Compactness", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultCompactnessFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.Compactness,
+			Contingent {
 
-	@Test
-	public void interpolatorTest_v2() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 0;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-				assertEquals(5, res[0], 1e-10);
-				assertEquals(0, res[1], 1e-10);
-				assertEquals(5, res[2], 1e-10);
+	private FunctionOp<IterableRegion<B>, DoubleType> surfacePixel;
+	
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
+	
+	@Override
+	public void initialize() {
+		surfacePixel = ops().function(DefaultSurfacePixelFeature.class, DoubleType.class, in());
+		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, in());
 	}
 	
-	@Test
-	public void interpolatorTest_v1() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 0;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
+	@Override
+	public DoubleType compute(final IterableRegion<B> input) {
+		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
+		double v2 = Math.pow(volume.compute(input).get(), 2);
+
+		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
 	}
-	
-	@Test
-	public void interpolatorTest_equal() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
+
 }

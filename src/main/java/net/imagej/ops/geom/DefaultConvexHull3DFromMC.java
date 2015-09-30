@@ -27,23 +27,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = ConvexHull3D.NAME)
+public class DefaultConvexHull3DFromMC<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, Mesh> 
+		implements Contingent {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
-	}
+	private FunctionOp<IterableRegion<B>, DefaultMesh> mc;
 	
+	@Override
+	public void initialize() {
+		mc = ops().function(DefaultMarchingCubes.class, DefaultMesh.class, in());
+	}
+
+	@Override
+	public DefaultMesh compute(final IterableRegion<B> input) {
+		return (DefaultMesh) ops().run(DefaultConvexHull3D.class, mc.compute(input).getPoints());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
+	}
+
 }

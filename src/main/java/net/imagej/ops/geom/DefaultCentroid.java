@@ -27,23 +27,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Descriptor3D.Centroid;
+import net.imglib2.Cursor;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
+/**
+ * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz.
+ *
+ * @param <B> a Boolean Type
+ */
+@Plugin(type = Op.class, name = Descriptor3D.Centroid.NAME)
+public class DefaultCentroid<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
+	@Override
+	public double[] compute(final IterableRegion<B> input) {
+		int numDimensions = input.numDimensions();
+		double[] output = new double[numDimensions];
+		Cursor<Void> c = input.localizingCursor();
+		while (c.hasNext()) {
+			c.fwd();
+			double[] pos = new double[numDimensions];
+			c.localize(pos);
+			for (int i = 0; i < output.length; i++) {
+				output[i] += pos[i];
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] = output[i] / input.size();
+		}
+		
+		return output;
 	}
-	
+
 }

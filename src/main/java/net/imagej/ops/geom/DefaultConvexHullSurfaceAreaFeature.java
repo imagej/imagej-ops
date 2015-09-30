@@ -27,23 +27,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric3D;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
+/**
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfaceArea}.
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz.
+ */
+@Plugin(type = Op.class, name = Geometric3D.ConvexHullSurfaceArea.NAME, label = "Geometric3D: ConvexHullSurfaceArea", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexHullSurfaceAreaFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.ConvexHullSurfaceArea,
+			Contingent {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
+	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
+
+	@Override
+	public void initialize() {
+		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
+				Mesh.class, in());
 	}
-	
+
+	@Override
+	public DoubleType compute(final IterableRegion<B> input) {
+		return new DoubleType(((DefaultMesh)convexHull.compute(input)).getArea());
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
+	}
+
 }

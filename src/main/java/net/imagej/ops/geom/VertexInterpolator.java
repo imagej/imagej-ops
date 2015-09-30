@@ -27,23 +27,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+public interface VertexInterpolator extends Op {
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
-
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
-	}
+	public void setPoint1(int[] p);
+	
+	public void setPoint2(int[] p);
+	
+	public void setValue1(double d);
+	
+	public void setValue2(double d);
+	
+	public void setIsoLevel(double d);
+	
+	public double[]	getOutput();
 	
 }

@@ -27,23 +27,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
+/**
+ * Linearly interpolate the position where an isosurface cuts an edge
+ * between two vertices, each with their own scalar value
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ */
+@Plugin(type = Op.class, name = Descriptor3D.VertexInterpolator.NAME)
+public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
+	@Override
+	public void run() {
+		output = new double[3];
+
+		if (Math.abs(isolevel - p1Value) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p1[i];
+			}
+		} else if (Math.abs(isolevel - p2Value) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p2[i];
+			}
+		} else if (Math.abs(p1Value - p2Value) < 0.00001) {
+			for (int i = 0; i < 3; i++) {
+				output[i] = p1[i];
+			}
+		} else {
+			double mu = (isolevel - p1Value) / (p2Value - p1Value);
+
+			output[0] = p1[0] + mu * (p2[0] - p1[0]);
+			output[1] = p1[1] + mu * (p2[1] - p1[1]);
+			output[2] = p1[2] + mu * (p2[2] - p1[2]);
+		}
 	}
-	
+
 }

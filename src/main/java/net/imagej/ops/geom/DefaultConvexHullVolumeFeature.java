@@ -27,56 +27,58 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import static org.junit.Assert.assertEquals;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric3D;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
+import net.imglib2.type.numeric.real.DoubleType;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.geom.BitTypeVertexInterpolator;
-
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * This class tests the {@link BitTypeVertexInterpolator}. 
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric3D.ConvexHullVolume}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
- *
  */
-public class BitTypeVertexInterpolatorTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = Geometric3D.ConvexHullVolume.NAME, label = "Geometric3D: ConvexHullVolume", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+		implements
+			Geometric3DOp<IterableRegion<B>, DoubleType>,
+			Geometric3D.ConvexHullVolume,
+			Contingent {
 
-	@Test
-	public void interpolatorTest_v2() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 0;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-				assertEquals(5, res[0], 1e-10);
-				assertEquals(0, res[1], 1e-10);
-				assertEquals(5, res[2], 1e-10);
+	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
+
+	@Override
+	public void initialize() {
+		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
+				Mesh.class, in());
 	}
-	
-	@Test
-	public void interpolatorTest_v1() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 0;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
+
+	@Override
+	public DoubleType compute(final IterableRegion<B> input) {
+		DefaultMesh compute = (DefaultMesh)convexHull.compute(input);
+		Vertex centroid = compute.getCentroid();
+		double volume = 0;
+		for (TriangularFacet f : compute.getFacets()) {
+			volume += 1 / 3d * f.getArea()
+					* Math.abs(f.distanceToPlane(centroid));
+		}
+		return new DoubleType(volume);
 	}
-	
-	@Test
-	public void interpolatorTest_equal() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
+
+	@Override
+	public boolean conforms() {
+		return in().numDimensions() == 3;
 	}
+
 }

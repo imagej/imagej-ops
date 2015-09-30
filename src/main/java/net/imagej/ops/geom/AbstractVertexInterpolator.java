@@ -27,23 +27,76 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.AbstractOp;
+import net.imagej.ops.Contingent;
 
-import org.junit.Test;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
-public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
+/**
+ * This is the {@link AbstractVertexInterpolator}. A vertex interpolator
+ * computes the real coordinates based on the pixel intensities.
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz
+ *
+ */
+public abstract class AbstractVertexInterpolator extends AbstractOp
+		implements
+			VertexInterpolator,
+			Contingent {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link Geometric3DNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geometric3d", Geometric3DNamespace.class);
+	@Parameter(type = ItemIO.INPUT)
+	int[] p1;
+
+	@Parameter(type = ItemIO.INPUT)
+	int[] p2;
+
+	@Parameter(type = ItemIO.INPUT)
+	double p1Value;
+
+	@Parameter(type = ItemIO.INPUT)
+	double p2Value;
+	
+	@Parameter(type = ItemIO.INPUT, required = false)
+	double isolevel;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	double[] output;
+	
+	@Override
+	public void setPoint1(int[] p) {
+		p1 = p;
 	}
 	
+	@Override
+	public void setPoint2(int[] p) {
+		p2 = p;
+	}
+	
+	@Override
+	public void setValue1(double d) {
+		p1Value = d;
+	}
+	
+	@Override
+	public void setValue2(double d) {
+		p2Value = d;
+	}
+	
+	@Override
+	public void setIsoLevel(double d) {
+		isolevel = d;
+	}
+	
+	@Override
+	public double[] getOutput() {
+		return output;
+	}
+	
+	@Override
+	public boolean conforms() {
+		return p1.length == 3 && p2.length == 3;
+	}
 }

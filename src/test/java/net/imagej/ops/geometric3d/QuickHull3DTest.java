@@ -37,6 +37,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.geom.DefaultConvexHull3D;
+import net.imagej.ops.geom.DefaultMesh;
+import net.imagej.ops.geom.TriangularFacet;
+import net.imagej.ops.geom.Vertex;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.junit.Test;
