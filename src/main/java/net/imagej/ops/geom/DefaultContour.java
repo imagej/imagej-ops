@@ -55,10 +55,13 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Contour", name = Geometric2D.Contour.NAME)
-public class DefaultContour extends
-		AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>
-		implements GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>,
-		Contingent, Geometric2D.Contour {
+public class DefaultContour
+		extends
+			AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>
+		implements
+			GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>,
+			Contingent,
+			Geometric2D.Contour {
 
 	@Parameter(type = ItemIO.INPUT, description = "Set this flag to use the refined Jacobs stopping criteria")
 	private boolean useJacobs = true;

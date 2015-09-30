@@ -29,6 +29,9 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
 import net.imagej.ops.Ops.Geometric2D.Area;
@@ -36,9 +39,7 @@ import net.imagej.ops.Ops.Geometric2D.MajorAxis;
 import net.imagej.ops.Ops.Geometric2D.Roundness;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Plugin;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link Roundness}.
@@ -46,11 +47,12 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Roundness", name = Geometric2D.Roundness.NAME)
-public class DefaultRoundness<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Roundness {
+public class DefaultRoundness extends AbstractFunctionOp<Polygon, DoubleType>
+		implements
+			Geometric2D.Roundness {
 
-	private FunctionOp<Polygon, O> areaFunc;
-	private FunctionOp<Polygon, O> majorAxisFunc;
+	private FunctionOp<Polygon, DoubleType> areaFunc;
+	private FunctionOp<Polygon, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -59,8 +61,8 @@ public class DefaultRoundness<O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute(final Polygon input, final O output) {
-		output.setReal(4 * (areaFunc.compute(input).getRealDouble() / (Math.PI * Math
+	public DoubleType compute(final Polygon input) {
+		return new DoubleType(4 * (areaFunc.compute(input).getRealDouble() / (Math.PI * Math
 				.pow(majorAxisFunc.compute(input).getRealDouble(), 2))));
 	}
 

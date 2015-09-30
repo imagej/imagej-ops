@@ -29,6 +29,9 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
 import net.imagej.ops.Ops.Geometric2D.ConvexHull;
@@ -36,9 +39,7 @@ import net.imagej.ops.Ops.Geometric2D.Perimeter;
 import net.imagej.ops.Ops.Geometric2D.Rugosity;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Plugin;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link Rugosity}.
@@ -46,10 +47,11 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Rugosity", name = Geometric2D.Rugosity.NAME)
-public class DefaultRugosity<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Rugosity {
+public class DefaultRugosity extends AbstractFunctionOp<Polygon, DoubleType>
+		implements
+			Geometric2D.Rugosity {
 
-	private FunctionOp<Polygon, O> perimeterFunc;
+	private FunctionOp<Polygon, DoubleType> perimeterFunc;
 	private FunctionOp<Polygon, Polygon> convexHullFunc;
 
 	@Override
@@ -60,8 +62,8 @@ public class DefaultRugosity<O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute(final Polygon input, final O output) {
-		output.setReal(perimeterFunc.compute(input).getRealDouble()
+	public DoubleType compute(final Polygon input) {
+		return new DoubleType(perimeterFunc.compute(input).getRealDouble()
 				/ perimeterFunc.compute(convexHullFunc.compute(input))
 						.getRealDouble());
 	}

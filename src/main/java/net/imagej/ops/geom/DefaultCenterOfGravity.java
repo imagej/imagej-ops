@@ -45,9 +45,13 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity", name = Geometric2D.Centroid.NAME)
-public class DefaultCenterOfGravity extends
-		AbstractFunctionOp<Polygon, RealLocalizable> implements
-		GeometricOp<Polygon, RealLocalizable>, Contingent, Geometric2D.Centroid {
+public class DefaultCenterOfGravity
+		extends
+			AbstractFunctionOp<Polygon, RealLocalizable>
+		implements
+			GeometricOp<Polygon, RealLocalizable>,
+			Contingent,
+			Geometric2D.Centroid {
 
 	@Override
 	public RealLocalizable compute(final Polygon input) {

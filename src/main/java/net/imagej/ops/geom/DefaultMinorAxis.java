@@ -29,15 +29,16 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
 import net.imagej.ops.Ops.Geometric2D.MinorAxis;
 import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link MinorAxis}.
@@ -45,8 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Minor Axis", name = Geometric2D.MinorAxis.NAME)
-public class DefaultMinorAxis<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.MinorAxis {
+public class DefaultMinorAxis extends AbstractFunctionOp<Polygon, DoubleType>
+		implements
+			Geometric2D.MinorAxis {
 
 	@SuppressWarnings("rawtypes")
 	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
@@ -59,8 +61,8 @@ public class DefaultMinorAxis<O extends RealType<O>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final Polygon input, final O output) {
+	public DoubleType compute(final Polygon input) {
 		Pair<Double, Double> compute = minorMajorAxisFunc.compute(input);
-		output.setReal(compute.getA());
+		return new DoubleType(compute.getA());
 	}
 }

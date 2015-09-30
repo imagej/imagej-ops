@@ -29,6 +29,9 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
 import net.imagej.ops.Ops.Geometric2D.Elongation;
@@ -36,9 +39,7 @@ import net.imagej.ops.Ops.Geometric2D.MajorAxis;
 import net.imagej.ops.Ops.Geometric2D.MinorAxis;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Plugin;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link Elongation}.
@@ -46,13 +47,14 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Elongation", name = Geometric2D.Elongation.NAME)
-public class DefaultElongation<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Elongation
+public class DefaultElongation extends AbstractFunctionOp<Polygon, DoubleType>
+		implements
+			Geometric2D.Elongation
 
 {
 
-	private FunctionOp<Polygon, O> minorAxisFunc;
-	private FunctionOp<Polygon, O> majorAxisFunc;
+	private FunctionOp<Polygon, DoubleType> minorAxisFunc;
+	private FunctionOp<Polygon, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -61,8 +63,8 @@ public class DefaultElongation<O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute(final Polygon input, final O output) {
-		output.setReal(1d - minorAxisFunc.compute(input).getRealDouble()
+	public DoubleType compute(final Polygon input) {
+		return new DoubleType(1d - minorAxisFunc.compute(input).getRealDouble()
 				/ majorAxisFunc.compute(input).getRealDouble());
 	}
 

@@ -54,10 +54,13 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Smallest Enclosing Rectangle", name = Geometric2D.SmallestEnclosingRectangle.NAME)
-public class DefaultSmallestEnclosingRectangle extends
-		AbstractFunctionOp<Polygon, Polygon> implements
-		GeometricOp<Polygon, Polygon>, Contingent,
-		Geometric2D.SmallestEnclosingRectangle {
+public class DefaultSmallestEnclosingRectangle
+		extends
+			AbstractFunctionOp<Polygon, Polygon>
+		implements
+			GeometricOp<Polygon, Polygon>,
+			Contingent,
+			Geometric2D.SmallestEnclosingRectangle {
 
 	private FunctionOp<Polygon, Polygon> convexhullFunc;
 	private FunctionOp<Polygon, RealLocalizable> centroidFunc;

@@ -29,16 +29,17 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
 import net.imagej.ops.Ops.Geometric2D.Feret;
 import net.imagej.ops.Ops.Geometric2D.FeretsAngle;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link FeretsAngle}.
@@ -46,8 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Ferets Angle", name = Geometric2D.FeretsAngle.NAME)
-public class DefaultFeretsAngle<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.FeretsAngle {
+public class DefaultFeretsAngle extends AbstractFunctionOp<Polygon, DoubleType>
+		implements
+			Geometric2D.FeretsAngle {
 
 	@SuppressWarnings("rawtypes")
 	private FunctionOp<Polygon, Pair> function;
@@ -59,14 +61,15 @@ public class DefaultFeretsAngle<O extends RealType<O>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final Polygon input, final O output) {
+	public DoubleType compute(final Polygon input) {
+		double result;
 		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
 
 		RealLocalizable p1 = ferets.getA();
 		RealLocalizable p2 = ferets.getB();
 
 		if (p1.getDoublePosition(0) == p2.getDoublePosition(0)) {
-			output.setReal(90);
+			result = 90;
 		}
 
 		// tan alpha = opposite leg / adjacent leg
@@ -78,8 +81,8 @@ public class DefaultFeretsAngle<O extends RealType<O>> extends
 		if (adjLeg < 0) {
 			degree = 180 - degree;
 		}
-
-		output.setReal(Math.abs(degree));
+		result = Math.abs(degree);
+		return new DoubleType(result);
 	}
 
 }

@@ -50,8 +50,10 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Convex Hull", name = Geometric2D.ConvexHull.NAME)
 public class DefaultConvexHull extends AbstractFunctionOp<Polygon, Polygon>
-		implements GeometricOp<Polygon, Polygon>, Contingent,
-		Geometric2D.ConvexHull {
+		implements
+			GeometricOp<Polygon, Polygon>,
+			Contingent,
+			Geometric2D.ConvexHull {
 
 	@Override
 	public Polygon compute(final Polygon input) {

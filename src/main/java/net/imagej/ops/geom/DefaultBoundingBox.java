@@ -49,8 +49,10 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Bounding Box", name = Geometric2D.BoundingBox.NAME)
 public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
-		implements GeometricOp<Polygon, Polygon>, Contingent,
-		Geometric2D.BoundingBox {
+		implements
+			GeometricOp<Polygon, Polygon>,
+			Contingent,
+			Geometric2D.BoundingBox {
 
 	@Override
 	public Polygon compute(final Polygon input) {

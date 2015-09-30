@@ -46,11 +46,13 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Feret", name = Geometric2D.Feret.NAME)
-public class DefaultFeret extends
-		AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
+public class DefaultFeret
+		extends
+			AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
 		implements
-		GeometricOp<Polygon, Pair<RealLocalizable, RealLocalizable>>,
-		Contingent, Geometric2D.Feret {
+			GeometricOp<Polygon, Pair<RealLocalizable, RealLocalizable>>,
+			Contingent,
+			Geometric2D.Feret {
 
 	@Override
 	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
