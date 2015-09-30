@@ -114,7 +114,8 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Get the area of all facets combined. 
 	 * @return the total area
 	 */
-	public double getArea() {
+	@Override
+	public double getSize() {
 		return area;
 	}
 	

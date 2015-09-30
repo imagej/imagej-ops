@@ -66,7 +66,7 @@ public class DefaultSurfaceAreaFeature<B extends BooleanType<B>>
 
 	@Override
 	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(marchingCube.compute(input).getArea());
+		return new DoubleType(marchingCube.compute(input).getSize());
 	}
 
 	@Override

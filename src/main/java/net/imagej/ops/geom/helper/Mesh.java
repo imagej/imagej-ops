@@ -31,4 +31,6 @@ package net.imagej.ops.geom.helper;
 
 public interface Mesh {
 	// NB: Marker Interface
+	
+	public double getSize();
 }
