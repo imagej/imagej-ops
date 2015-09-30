@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;

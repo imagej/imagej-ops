@@ -27,40 +27,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.MajorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
+import net.imagej.ops.Ops.Geometric2D.ConvexHull;
+import net.imagej.ops.Ops.Geometric2D.Perimeter;
+import net.imagej.ops.Ops.Geometric2D.Rugosity;
+import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MajorAxis}.
+ * Generic implementation of {@link Rugosity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Major Axis", name = Geometric2D.MajorAxis.NAME)
-public class DefaultMajorAxis<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.MajorAxis {
+@Plugin(type = GeometricOp.class, label = "Geometric: Rugosity", name = Geometric2D.Rugosity.NAME)
+public class DefaultRugosity<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Rugosity {
 
-	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private FunctionOp<Polygon, O> perimeterFunc;
+	private FunctionOp<Polygon, Polygon> convexHullFunc;
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(MinorMajorAxis.class, Pair.class,
-				in());
+		perimeterFunc = RTs.function(ops(), Perimeter.class, in());
+		convexHullFunc = ops().function(ConvexHull.class, Polygon.class,
+				Polygon.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final Polygon input, final O output) {
-		Pair<Double, Double> compute = minorMajorAxisFunc.compute(input);
-		output.setReal(compute.getB());
+		output.setReal(perimeterFunc.compute(input).getRealDouble()
+				/ perimeterFunc.compute(convexHullFunc.compute(input))
+						.getRealDouble());
 	}
+
 }

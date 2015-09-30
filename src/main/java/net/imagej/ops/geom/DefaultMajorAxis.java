@@ -27,42 +27,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Area;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
-import net.imagej.ops.Ops.Geometric2D.Solidity;
-import net.imagej.ops.RTs;
+import net.imagej.ops.Ops.Geometric2D.MajorAxis;
+import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Solidity}.
+ * Generic implementation of {@link MajorAxis}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Solidity", name = Geometric2D.Solidity.NAME)
-public class DefaultSolidity<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Solidity {
+@Plugin(type = GeometricOp.class, label = "Geometric: Major Axis", name = Geometric2D.MajorAxis.NAME)
+public class DefaultMajorAxis<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements Geometric2D.MajorAxis {
 
-	private FunctionOp<Polygon, O> areaFunc;
-	private FunctionOp<Polygon, Polygon> convexHullFunc;
+	@SuppressWarnings("rawtypes")
+	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
-		areaFunc = RTs.function(ops(), Area.class, in());
-		convexHullFunc = ops().function(ConvexHull.class, Polygon.class, in());
+		minorMajorAxisFunc = ops().function(MinorMajorAxis.class, Pair.class,
+				in());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final Polygon input, final O output) {
-		output.setReal(areaFunc.compute(input).getRealDouble()
-				/ areaFunc.compute(convexHullFunc.compute(input))
-						.getRealDouble());
+		Pair<Double, Double> compute = minorMajorAxisFunc.compute(input);
+		output.setReal(compute.getB());
 	}
-
 }

@@ -27,43 +27,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Elongation;
-import net.imagej.ops.Ops.Geometric2D.MajorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorAxis;
-import net.imagej.ops.RTs;
+import net.imagej.ops.Ops.Geometric2D.Perimeter;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Elongation}.
+ * Generic implementation of {@link Perimeter}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Elongation", name = Geometric2D.Elongation.NAME)
-public class DefaultElongation<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Elongation
-
-{
-
-	private FunctionOp<Polygon, O> minorAxisFunc;
-	private FunctionOp<Polygon, O> majorAxisFunc;
-
-	@Override
-	public void initialize() {
-		minorAxisFunc = RTs.function(ops(), MinorAxis.class, in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
-	}
+@Plugin(type = GeometricOp.class, label = "Geometric: Perimeter", name = Geometric2D.Perimeter.NAME)
+public class DefaultPerimeter<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Perimeter {
 
 	@Override
 	public void compute(final Polygon input, final O output) {
-		output.setReal(1d - minorAxisFunc.compute(input).getRealDouble()
-				/ majorAxisFunc.compute(input).getRealDouble());
+		double perimeter = 0;
+		for (int i = 0; i < input.getVertices().size(); i++) {
+			int nexti = i + 1;
+			if (nexti == input.getVertices().size())
+				nexti = 0;
+
+			double dx2 = input.getVertices().get(nexti).getDoublePosition(0)
+					- input.getVertices().get(i).getDoublePosition(0);
+			double dy2 = input.getVertices().get(nexti).getDoublePosition(1)
+					- input.getVertices().get(i).getDoublePosition(1);
+
+			perimeter += Math.sqrt(Math.pow(dx2, 2) + Math.pow(dy2, 2));
+		}
+
+		output.setReal(perimeter);
 	}
 
 }

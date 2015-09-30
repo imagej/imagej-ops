@@ -27,13 +27,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Eccentricity;
-import net.imagej.ops.Ops.Geometric2D.MajorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorAxis;
+import net.imagej.ops.Ops.Geometric2D.Area;
+import net.imagej.ops.Ops.Geometric2D.Rectangularity;
+import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
@@ -41,30 +41,31 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Eccentricity}.
+ * Generic implementation of {@link Rectangularity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Eccentricity", name = Geometric2D.Eccentricity.NAME)
-public class DefaultEccentricity<O extends RealType<O>> extends
+@Plugin(type = GeometricOp.class, label = "Geometric: Rectangularity", name = Geometric2D.Rectangularity.NAME)
+public class DefaultRectangularity<O extends RealType<O>> extends
 		AbstractGeometricFeature<Polygon, O> implements
-		Geometric2D.Eccentricity
+		Geometric2D.Rectangularity {
 
-{
-
-	private FunctionOp<Polygon, O> minorAxisFunc;
-	private FunctionOp<Polygon, O> majorAxisFunc;
+	private FunctionOp<Polygon, O> areaFunc;
+	private FunctionOp<Polygon, Polygon> smallestEnclosingRectangleFunc;
 
 	@Override
 	public void initialize() {
-		minorAxisFunc = RTs.function(ops(), MinorAxis.class, in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
+		areaFunc = RTs.function(ops(), Area.class, in());
+		smallestEnclosingRectangleFunc = ops().function(
+				SmallestEnclosingRectangle.class, Polygon.class, Polygon.class);
 	}
 
 	@Override
 	public void compute(final Polygon input, final O output) {
-		output.setReal(majorAxisFunc.compute(input).getRealDouble()
-				/ minorAxisFunc.compute(input).getRealDouble());
+		output.setReal(areaFunc.compute(input).getRealDouble()
+				/ areaFunc.compute(
+						smallestEnclosingRectangleFunc.compute(input))
+						.getRealDouble());
 	}
 
 }

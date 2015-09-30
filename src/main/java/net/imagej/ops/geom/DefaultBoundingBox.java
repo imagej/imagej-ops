@@ -27,45 +27,64 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.FunctionOp;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Area;
-import net.imagej.ops.Ops.Geometric2D.Rectangularity;
-import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
-import net.imagej.ops.RTs;
+import net.imagej.ops.Ops.Geometric2D.BoundingBox;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Rectangularity}.
+ * Generic implementation of {@link BoundingBox}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Rectangularity", name = Geometric2D.Rectangularity.NAME)
-public class DefaultRectangularity<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements
-		Geometric2D.Rectangularity {
-
-	private FunctionOp<Polygon, O> areaFunc;
-	private FunctionOp<Polygon, Polygon> smallestEnclosingRectangleFunc;
+@Plugin(type = GeometricOp.class, label = "Geometric: Bounding Box", name = Geometric2D.BoundingBox.NAME)
+public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
+		implements GeometricOp<Polygon, Polygon>, Contingent,
+		Geometric2D.BoundingBox {
 
 	@Override
-	public void initialize() {
-		areaFunc = RTs.function(ops(), Area.class, in());
-		smallestEnclosingRectangleFunc = ops().function(
-				SmallestEnclosingRectangle.class, Polygon.class, Polygon.class);
+	public Polygon compute(final Polygon input) {
+		double min_x = Double.POSITIVE_INFINITY;
+		double max_x = Double.NEGATIVE_INFINITY;
+		double min_y = Double.POSITIVE_INFINITY;
+		double max_y = Double.NEGATIVE_INFINITY;
+
+		for (RealLocalizable rl : input.getVertices()) {
+			if (rl.getDoublePosition(0) < min_x) {
+				min_x = rl.getDoublePosition(0);
+			}
+			if (rl.getDoublePosition(0) > max_x) {
+				max_x = rl.getDoublePosition(0);
+			}
+			if (rl.getDoublePosition(1) < min_y) {
+				min_y = rl.getDoublePosition(1);
+			}
+			if (rl.getDoublePosition(1) > max_y) {
+				max_y = rl.getDoublePosition(1);
+			}
+		}
+
+		List<RealLocalizable> bounds = new ArrayList<RealLocalizable>();
+		bounds.add(new RealPoint(min_x, min_y));
+		bounds.add(new RealPoint(min_x, max_y));
+		bounds.add(new RealPoint(max_x, max_y));
+		bounds.add(new RealPoint(max_x, min_y));
+		return new Polygon(bounds);
 	}
 
 	@Override
-	public void compute(final Polygon input, final O output) {
-		output.setReal(areaFunc.compute(input).getRealDouble()
-				/ areaFunc.compute(
-						smallestEnclosingRectangleFunc.compute(input))
-						.getRealDouble());
+	public boolean conforms() {
+		return 2 == in().numDimensions();
 	}
 
 }

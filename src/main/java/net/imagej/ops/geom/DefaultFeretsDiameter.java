@@ -27,41 +27,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Perimeter;
+import net.imagej.ops.Ops.Geometric2D.Feret;
+import net.imagej.ops.Ops.Geometric2D.FeretsDiameter;
+import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Perimeter}.
+ * Generic implementation of {@link FeretsDiameter}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Perimeter", name = Geometric2D.Perimeter.NAME)
-public class DefaultPerimeter<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Perimeter {
+@Plugin(type = GeometricOp.class, label = "Geometric: Ferets Diameter", name = Geometric2D.FeretsDiameter.NAME)
+public class DefaultFeretsDiameter<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements
+		Geometric2D.FeretsDiameter {
+
+	@SuppressWarnings("rawtypes")
+	private FunctionOp<Polygon, Pair> function;
 
 	@Override
+	public void initialize() {
+		function = ops().function(Feret.class, Pair.class, in());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public void compute(final Polygon input, final O output) {
-		double perimeter = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-			int nexti = i + 1;
-			if (nexti == input.getVertices().size())
-				nexti = 0;
+		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
 
-			double dx2 = input.getVertices().get(nexti).getDoublePosition(0)
-					- input.getVertices().get(i).getDoublePosition(0);
-			double dy2 = input.getVertices().get(nexti).getDoublePosition(1)
-					- input.getVertices().get(i).getDoublePosition(1);
+		RealLocalizable p1 = ferets.getA();
+		RealLocalizable p2 = ferets.getB();
 
-			perimeter += Math.sqrt(Math.pow(dx2, 2) + Math.pow(dy2, 2));
-		}
-
-		output.setReal(perimeter);
+		output.setReal(Math.hypot(
+				p1.getDoublePosition(0) - p2.getDoublePosition(0),
+				p1.getDoublePosition(1) - p2.getDoublePosition(1)));
 	}
 
 }

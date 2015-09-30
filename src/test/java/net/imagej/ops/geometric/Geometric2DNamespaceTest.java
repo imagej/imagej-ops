@@ -30,6 +30,7 @@
 package net.imagej.ops.geometric;
 
 import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.geom.Geometric2DNamespace;
 
 import org.junit.Test;
 

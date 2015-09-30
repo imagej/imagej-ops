@@ -27,66 +27,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Feret;
-import net.imglib2.RealLocalizable;
+import net.imagej.ops.Ops.Geometric2D.ConvexHull;
+import net.imagej.ops.Ops.Geometric2D.Convexity;
+import net.imagej.ops.Ops.Geometric2D.Perimeter;
+import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Feret}.
+ * Generic implementation of {@link Convexity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Feret", name = Geometric2D.Feret.NAME)
-public class DefaultFeret extends
-		AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
-		implements
-		GeometricOp<Polygon, Pair<RealLocalizable, RealLocalizable>>,
-		Contingent, Geometric2D.Feret {
+@Plugin(type = GeometricOp.class, label = "Geometric: Convexity", name = Geometric2D.Convexity.NAME)
+public class DefaultConvexity<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Convexity {
+
+	private FunctionOp<Polygon, Polygon> convexHullFunction;
+	private FunctionOp<Polygon, O> perimiterFunc;
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
-
-		double distance = Double.NEGATIVE_INFINITY;
-		int in0 = -1;
-		int in1 = -1;
-
-		for (int i = 0; i < input.getVertices().size(); i++) {
-			for (int j = i + 1; j < input.getVertices().size(); j++) {
-				RealLocalizable temp0 = input.getVertices().get(i);
-				RealLocalizable temp1 = input.getVertices().get(j);
-
-				double sum = 0;
-				for (int k = 0; k < temp0.numDimensions(); k++) {
-					sum += Math.pow(
-							temp0.getDoublePosition(k)
-									- temp1.getDoublePosition(k), 2);
-				}
-				sum = Math.sqrt(sum);
-
-				if (sum > distance) {
-					distance = sum;
-					in0 = i;
-					in1 = j;
-				}
-			}
-		}
-
-		return new ValuePair<RealLocalizable, RealLocalizable>(input
-				.getVertices().get(in0), input.getVertices().get(in1));
+	public void initialize() {
+		convexHullFunction = ops().function(ConvexHull.class, Polygon.class,
+				Polygon.class);
+		perimiterFunc = RTs.function(ops(), Perimeter.class, in());
 	}
 
 	@Override
-	public boolean conforms() {
-		return 2 == in().numDimensions();
+	public void compute(final Polygon input, final O output) {
+
+		// get perimeter of input and its convex hull
+		final O inputArea = perimiterFunc.compute(input);
+		final O convexHullArea = perimiterFunc.compute(convexHullFunction
+				.compute(input));
+
+		output.setReal(convexHullArea.getRealDouble()
+				/ inputArea.getRealDouble());
 	}
 
 }

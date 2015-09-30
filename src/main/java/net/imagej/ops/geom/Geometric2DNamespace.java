@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
@@ -56,257 +56,257 @@ public class Geometric2DNamespace extends AbstractNamespace {
 		return "geometric2d";
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultContour.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultContour.class)
 	public Polygon contour(final RandomAccessibleInterval<BoolType> in,
 		final boolean useJacobs, final boolean isInverted)
 	{
 		final Polygon result = (Polygon) ops().run(
-			net.imagej.ops.geometric.DefaultContour.class, in, useJacobs, isInverted);
+			net.imagej.ops.geom.DefaultContour.class, in, useJacobs, isInverted);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultConvexHull.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHull.class)
 	public Polygon convexhull(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
-			net.imagej.ops.geometric.DefaultConvexHull.class, in);
+			net.imagej.ops.geom.DefaultConvexHull.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultCenterOfGravity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
 	public RealLocalizable centerofgravity(final Polygon in) {
 		final RealLocalizable result = (RealLocalizable) ops().run(
-			net.imagej.ops.geometric.DefaultCenterOfGravity.class, in);
+			net.imagej.ops.geom.DefaultCenterOfGravity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultBoundingBox.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultBoundingBox.class)
 	public Polygon boundingbox(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
-			net.imagej.ops.geometric.DefaultBoundingBox.class, in);
+			net.imagej.ops.geom.DefaultBoundingBox.class, in);
 		return result;
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.geometric.DefaultSmallestEnclosingRectangle.class)
+		op = net.imagej.ops.geom.DefaultSmallestEnclosingRectangle.class)
 	public Polygon smallestenclosingrectangle(final Polygon in) {
 		final Polygon result = (Polygon) ops().run(
-			net.imagej.ops.geometric.DefaultSmallestEnclosingRectangle.class, in);
+			net.imagej.ops.geom.DefaultSmallestEnclosingRectangle.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultArea.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultArea.class)
 	public <O extends RealType<O>> O area(final Polygon in) {
-		final O result = (O) ops().run(net.imagej.ops.geometric.DefaultArea.class,
+		final O result = (O) ops().run(net.imagej.ops.geom.DefaultArea.class,
 			in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultArea.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultArea.class)
 	public <O extends RealType<O>> O area(final O out, final Polygon in) {
-		final O result = (O) ops().run(net.imagej.ops.geometric.DefaultArea.class,
+		final O result = (O) ops().run(net.imagej.ops.geom.DefaultArea.class,
 			out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultCircularity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultCircularity.class)
 	public <O extends RealType<O>> O circularity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultCircularity.class, in);
+			net.imagej.ops.geom.DefaultCircularity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultCircularity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultCircularity.class)
 	public <O extends RealType<O>> O circularity(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultCircularity.class, out, in);
+			net.imagej.ops.geom.DefaultCircularity.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultConvexity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultConvexity.class)
 	public <O extends RealType<O>> O convexity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultConvexity.class, in);
+			net.imagej.ops.geom.DefaultConvexity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultConvexity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultConvexity.class)
 	public <O extends RealType<O>> O convexity(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultConvexity.class, out, in);
+			net.imagej.ops.geom.DefaultConvexity.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultEccentricity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultEccentricity.class)
 	public <O extends RealType<O>> O eccentricity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultEccentricity.class, in);
+			net.imagej.ops.geom.DefaultEccentricity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultEccentricity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultEccentricity.class)
 	public <O extends RealType<O>> O eccentricity(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultEccentricity.class, out, in);
+			net.imagej.ops.geom.DefaultEccentricity.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultElongation.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultElongation.class)
 	public <O extends RealType<O>> O elongation(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultElongation.class, in);
+			net.imagej.ops.geom.DefaultElongation.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultElongation.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultElongation.class)
 	public <O extends RealType<O>> O elongation(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultElongation.class, out, in);
+			net.imagej.ops.geom.DefaultElongation.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultFeret.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultFeret.class)
 	public Pair<RealLocalizable, RealLocalizable> feret(final Polygon in) {
 		final Pair<RealLocalizable, RealLocalizable> result =
 			(Pair<RealLocalizable, RealLocalizable>) ops().run(
-				net.imagej.ops.geometric.DefaultFeret.class, in);
+				net.imagej.ops.geom.DefaultFeret.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultFeretsAngle.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsAngle.class)
 	public <O extends RealType<O>> O feretsAngle(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultFeretsAngle.class, in);
+			net.imagej.ops.geom.DefaultFeretsAngle.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultFeretsAngle.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsAngle.class)
 	public <O extends RealType<O>> O feretsAngle(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultFeretsAngle.class, out, in);
+			net.imagej.ops.geom.DefaultFeretsAngle.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultFeretsDiameter.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsDiameter.class)
 	public <O extends RealType<O>> O feretsDiameter(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultFeretsDiameter.class, in);
+			net.imagej.ops.geom.DefaultFeretsDiameter.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultFeretsDiameter.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsDiameter.class)
 	public <O extends RealType<O>> O feretsDiameter(final O out,
 		final Polygon in)
 	{
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultFeretsDiameter.class, out, in);
+			net.imagej.ops.geom.DefaultFeretsDiameter.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultMinorMajorAxis.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultMinorMajorAxis.class)
 	public Pair<DoubleType, DoubleType> minorMajorAxis(final Polygon in) {
 		final Pair<DoubleType, DoubleType> result =
 			(Pair<DoubleType, DoubleType>) ops().run(
-				net.imagej.ops.geometric.DefaultMinorMajorAxis.class, in);
+				net.imagej.ops.geom.DefaultMinorMajorAxis.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultMajorAxis.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultMajorAxis.class)
 	public <O extends RealType<O>> O majorAxis(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultMajorAxis.class, in);
+			net.imagej.ops.geom.DefaultMajorAxis.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultMajorAxis.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultMajorAxis.class)
 	public <O extends RealType<O>> O majorAxis(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultMajorAxis.class, out, in);
+			net.imagej.ops.geom.DefaultMajorAxis.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultMinorAxis.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultMinorAxis.class)
 	public <O extends RealType<O>> O minorAxis(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultMinorAxis.class, in);
+			net.imagej.ops.geom.DefaultMinorAxis.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultMinorAxis.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultMinorAxis.class)
 	public <O extends RealType<O>> O minorAxis(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultMinorAxis.class, out, in);
+			net.imagej.ops.geom.DefaultMinorAxis.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultPerimeter.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultPerimeter.class)
 	public <O extends RealType<O>> O perimeter(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultPerimeter.class, in);
+			net.imagej.ops.geom.DefaultPerimeter.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultPerimeter.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultPerimeter.class)
 	public <O extends RealType<O>> O perimeter(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultPerimeter.class, out, in);
+			net.imagej.ops.geom.DefaultPerimeter.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRectangularity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRectangularity.class)
 	public <O extends RealType<O>> O rectangularity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRectangularity.class, in);
+			net.imagej.ops.geom.DefaultRectangularity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRectangularity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRectangularity.class)
 	public <O extends RealType<O>> O rectangularity(final O out,
 		final Polygon in)
 	{
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRectangularity.class, out, in);
+			net.imagej.ops.geom.DefaultRectangularity.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRoundness.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRoundness.class)
 	public <O extends RealType<O>> O roundness(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRoundness.class, in);
+			net.imagej.ops.geom.DefaultRoundness.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRoundness.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRoundness.class)
 	public <O extends RealType<O>> O roundness(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRoundness.class, out, in);
+			net.imagej.ops.geom.DefaultRoundness.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRugosity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRugosity.class)
 	public <O extends RealType<O>> O rugosity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRugosity.class, in);
+			net.imagej.ops.geom.DefaultRugosity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultRugosity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultRugosity.class)
 	public <O extends RealType<O>> O rugosity(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultRugosity.class, out, in);
+			net.imagej.ops.geom.DefaultRugosity.class, out, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultSolidity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultSolidity.class)
 	public <O extends RealType<O>> O solidity(final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultSolidity.class, in);
+			net.imagej.ops.geom.DefaultSolidity.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geometric.DefaultSolidity.class)
+	@OpMethod(op = net.imagej.ops.geom.DefaultSolidity.class)
 	public <O extends RealType<O>> O solidity(final O out, final Polygon in) {
 		final O result = (O) ops().run(
-			net.imagej.ops.geometric.DefaultSolidity.class, out, in);
+			net.imagej.ops.geom.DefaultSolidity.class, out, in);
 		return result;
 	}
 }

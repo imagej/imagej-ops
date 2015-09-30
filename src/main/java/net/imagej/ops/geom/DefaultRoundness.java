@@ -27,40 +27,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric;
+package net.imagej.ops.geom;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.MinorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
+import net.imagej.ops.Ops.Geometric2D.Area;
+import net.imagej.ops.Ops.Geometric2D.MajorAxis;
+import net.imagej.ops.Ops.Geometric2D.Roundness;
+import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MinorAxis}.
+ * Generic implementation of {@link Roundness}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Minor Axis", name = Geometric2D.MinorAxis.NAME)
-public class DefaultMinorAxis<O extends RealType<O>> extends
-		AbstractGeometricFeature<Polygon, O> implements Geometric2D.MinorAxis {
+@Plugin(type = GeometricOp.class, label = "Geometric: Roundness", name = Geometric2D.Roundness.NAME)
+public class DefaultRoundness<O extends RealType<O>> extends
+		AbstractGeometricFeature<Polygon, O> implements Geometric2D.Roundness {
 
-	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private FunctionOp<Polygon, O> areaFunc;
+	private FunctionOp<Polygon, O> majorAxisFunc;
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(MinorMajorAxis.class, Pair.class,
-				in());
+		areaFunc = RTs.function(ops(), Area.class, in());
+		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void compute(final Polygon input, final O output) {
-		Pair<Double, Double> compute = minorMajorAxisFunc.compute(input);
-		output.setReal(compute.getA());
+		output.setReal(4 * (areaFunc.compute(input).getRealDouble() / (Math.PI * Math
+				.pow(majorAxisFunc.compute(input).getRealDouble(), 2))));
 	}
+
 }
