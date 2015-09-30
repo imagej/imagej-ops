@@ -33,8 +33,8 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
-import net.imagej.ops.Ops.Descriptor3D.SecondMultiVariate3D;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
@@ -51,12 +51,12 @@ import org.scijava.plugin.Plugin;
  *
  * @param <B> BooleanType
  */
-@Plugin(type = Op.class, name = Descriptor3D.SecondMultiVariate3D.NAME)
+@Plugin(type = Op.class, name = Geometric.SecondMultiVariate.NAME)
 public class DefaultSecondMultiVariate3D<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
 		implements
-			SecondMultiVariate3D,
+			SecondMultiVariate,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> volume;

@@ -33,7 +33,7 @@ import java.lang.reflect.Type;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric2D.Contour;
+import net.imagej.ops.Ops.Geometric.Contour;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.geometric.Polygon;
 

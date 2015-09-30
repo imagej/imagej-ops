@@ -33,9 +33,8 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.MinorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.MinorAxis;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -45,17 +44,17 @@ import net.imglib2.util.Pair;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Minor Axis", name = Geometric2D.MinorAxis.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Minor Axis", name = Geometric.MinorAxis.NAME)
 public class DefaultMinorAxis extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.MinorAxis {
+			Geometric.MinorAxis {
 
 	@SuppressWarnings("rawtypes")
 	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(MinorMajorAxis.class, Pair.class,
+		minorMajorAxisFunc = ops().function(DefaultMinorMajorAxis.class, Pair.class,
 				in());
 	}
 

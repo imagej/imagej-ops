@@ -33,7 +33,8 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
@@ -43,17 +44,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Spareness}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Spareness}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.Spareness.NAME, label = "Geometric3D: Spareness", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Geometric.Spareness.NAME, label = "Geometric3D: Spareness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSparenessFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Spareness,
+			Geometric.Spareness,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> mainElongation;
@@ -72,7 +73,7 @@ public class DefaultSparenessFeature<B extends BooleanType<B>>
 				DoubleType.class, in());
 		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 				CovarianceOf2ndMultiVariate3D.class, in());
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class,
+		volume = ops().function(Size.class, DoubleType.class,
 				in());
 	}
 

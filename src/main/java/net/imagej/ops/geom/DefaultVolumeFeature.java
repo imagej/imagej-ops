@@ -31,7 +31,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -40,17 +40,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Volume}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.Volume.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultVolumeFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Volume {
+			Geometric.Size {
 
 	@Override
 	public DoubleType compute(final IterableRegion<B> input) {

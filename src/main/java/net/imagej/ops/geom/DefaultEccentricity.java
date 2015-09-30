@@ -33,10 +33,10 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Eccentricity;
-import net.imagej.ops.Ops.Geometric2D.MajorAxis;
-import net.imagej.ops.Ops.Geometric2D.MinorAxis;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Eccentricity;
+import net.imagej.ops.Ops.Geometric.MajorAxis;
+import net.imagej.ops.Ops.Geometric.MinorAxis;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,10 +46,10 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Eccentricity", name = Geometric2D.Eccentricity.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Eccentricity", name = Geometric.Eccentricity.NAME)
 public class DefaultEccentricity extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.Eccentricity
+			Geometric.Eccentricity
 
 {
 

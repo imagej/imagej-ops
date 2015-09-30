@@ -29,12 +29,13 @@
  */
 package net.imagej.ops.geom;
 
+import java.awt.geom.Area;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Area;
+import net.imagej.ops.Ops.Geometric;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,10 +45,10 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Area", name = Geometric2D.Area.NAME, priority = Priority.FIRST_PRIORITY)
+@Plugin(type = GeometricOp.class, label = "Geometric: Area", name = Geometric.Size.NAME, priority = Priority.FIRST_PRIORITY)
 public class DefaultArea extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.Area {
+		Geometric.Size {
 
 	@Override
 	public DoubleType compute(final Polygon input) {

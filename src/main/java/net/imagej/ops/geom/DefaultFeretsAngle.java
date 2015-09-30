@@ -33,9 +33,9 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Feret;
-import net.imagej.ops.Ops.Geometric2D.FeretsAngle;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Feret;
+import net.imagej.ops.Ops.Geometric.FeretsAngle;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,10 +46,10 @@ import net.imglib2.util.Pair;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Ferets Angle", name = Geometric2D.FeretsAngle.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Ferets Angle", name = Geometric.FeretsAngle.NAME)
 public class DefaultFeretsAngle extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.FeretsAngle {
+		Geometric.FeretsAngle {
 
 	@SuppressWarnings("rawtypes")
 	private FunctionOp<Polygon, Pair> function;

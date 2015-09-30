@@ -30,7 +30,7 @@
 package net.imagej.ops.geom;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Geometric;
 
 import org.scijava.plugin.Plugin;
 
@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *
  */
-@Plugin(type = Op.class, name = Descriptor3D.VertexInterpolator.NAME)
+@Plugin(type = Op.class, name = Geometric.VertexInterpolator.NAME)
 public class BitTypeVertexInterpolator extends AbstractVertexInterpolator {
 
 	@Override

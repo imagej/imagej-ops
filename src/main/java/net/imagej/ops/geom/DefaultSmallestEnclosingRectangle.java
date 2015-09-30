@@ -35,12 +35,12 @@ import java.util.List;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Area;
-import net.imagej.ops.Ops.Geometric2D.BoundingBox;
-import net.imagej.ops.Ops.Geometric2D.Centroid;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
-import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops.Geometric.BoundingBox;
+import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.SmallestBoundingBox;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -49,18 +49,18 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link SmallestEnclosingRectangle}.
+ * Generic implementation of {@link SmallestBoundingBox}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Smallest Enclosing Rectangle", name = Geometric2D.SmallestEnclosingRectangle.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Smallest Enclosing Rectangle", name = Geometric.SmallestBoundingBox.NAME)
 public class DefaultSmallestEnclosingRectangle
 		extends
 			AbstractFunctionOp<Polygon, Polygon>
 		implements
 			GeometricOp<Polygon, Polygon>,
 			Contingent,
-			Geometric2D.SmallestEnclosingRectangle {
+			Geometric.SmallestBoundingBox {
 
 	private FunctionOp<Polygon, Polygon> convexhullFunc;
 	private FunctionOp<Polygon, RealLocalizable> centroidFunc;
@@ -73,7 +73,7 @@ public class DefaultSmallestEnclosingRectangle
 				Polygon.class);
 		centroidFunc = ops().function(Centroid.class, RealLocalizable.class,
 				Polygon.class);
-		areaFunc = ops().function(Area.class, DoubleType.class, Polygon.class);
+		areaFunc = ops().function(Size.class, DoubleType.class, Polygon.class);
 		boundingBoxFunc = ops().function(BoundingBox.class, Polygon.class,
 				Polygon.class);
 	}

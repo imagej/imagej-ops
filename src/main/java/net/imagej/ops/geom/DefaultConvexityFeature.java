@@ -33,7 +33,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -41,17 +41,17 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Convexity}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Convexity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.Convexity.NAME, label = "Geometric3D: Convexity")
+@Plugin(type = Op.class, name = Geometric.Convexity.NAME, label = "Geometric3D: Convexity")
 public class DefaultConvexityFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Convexity,
+			Geometric.Convexity,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> surface;

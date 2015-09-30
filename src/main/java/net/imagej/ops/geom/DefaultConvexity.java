@@ -33,10 +33,10 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
-import net.imagej.ops.Ops.Geometric2D.Convexity;
-import net.imagej.ops.Ops.Geometric2D.Perimeter;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.Convexity;
+import net.imagej.ops.Ops.Geometric.BoundarySize;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,12 +46,12 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Convexity", name = Geometric2D.Convexity.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Convexity", name = Geometric.Convexity.NAME)
 public class DefaultConvexity
 		extends
 			AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.Convexity {
+		Geometric.Convexity {
 
 	private FunctionOp<Polygon, Polygon> convexHullFunction;
 	private FunctionOp<Polygon, DoubleType> perimiterFunc;
@@ -60,7 +60,7 @@ public class DefaultConvexity
 	public void initialize() {
 		convexHullFunction = ops().function(ConvexHull.class, Polygon.class,
 				Polygon.class);
-		perimiterFunc = RTs.function(ops(), Perimeter.class, in());
+		perimiterFunc = RTs.function(ops(), BoundarySize.class, in());
 	}
 
 	@Override

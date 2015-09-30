@@ -33,8 +33,8 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Descriptor3D;
-import net.imagej.ops.Ops.Descriptor3D.MarchingCubes;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.MarchingCubes;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.TriangularFacet;
 import net.imagej.ops.geom.helper.Vertex;
@@ -60,7 +60,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  *            BooleanType
  */
-@Plugin(type = Op.class, name = Descriptor3D.MarchingCubes.NAME)
+@Plugin(type = Op.class, name = Geometric.MarchingCubes.NAME)
 public class DefaultMarchingCubes<T extends BooleanType<T>>
 		extends
 			AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultMesh>

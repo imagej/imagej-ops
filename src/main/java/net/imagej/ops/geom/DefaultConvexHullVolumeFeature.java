@@ -33,7 +33,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.Mesh;
 import net.imagej.ops.geom.helper.TriangularFacet;
@@ -46,17 +46,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.ConvexHullVolume}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.SizeConvexHull}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.ConvexHullVolume.NAME, label = "Geometric3D: ConvexHullVolume", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Geometric.SizeConvexHull.NAME, label = "Geometric3D: ConvexHullVolume", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Volume,
+			Geometric.SizeConvexHull,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, Mesh> convexHull;

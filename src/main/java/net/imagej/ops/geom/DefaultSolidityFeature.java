@@ -33,7 +33,8 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Size;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -41,17 +42,17 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Solidity}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Solidity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.Solidity.NAME, label = "Geometric3D: Solidity")
+@Plugin(type = Op.class, name = Geometric.Solidity.NAME, label = "Geometric3D: Solidity")
 public class DefaultSolidityFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Solidity,
+			Geometric.Solidity,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> volume;
@@ -60,7 +61,7 @@ public class DefaultSolidityFeature<B extends BooleanType<B>>
 
 	@Override
 	public void initialize() {
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class,
+		volume = ops().function(Size.class, DoubleType.class,
 				in());
 		convexHullVolume = ops().function(DefaultConvexHullVolumeFeature.class,
 				DoubleType.class, in());

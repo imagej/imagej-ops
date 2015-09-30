@@ -31,8 +31,8 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
-import net.imagej.ops.Ops.Descriptor3D.Centroid;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  *
  * @param <B> a Boolean Type
  */
-@Plugin(type = Op.class, name = Descriptor3D.Centroid.NAME)
+@Plugin(type = Op.class, name = Geometric.Centroid.NAME)
 public class DefaultCentroid<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {

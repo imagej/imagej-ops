@@ -31,8 +31,8 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Centroid;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -44,14 +44,14 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity", name = Geometric2D.Centroid.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity", name = Geometric.Centroid.NAME)
 public class DefaultCenterOfGravity
 		extends
 			AbstractFunctionOp<Polygon, RealLocalizable>
 		implements
 			GeometricOp<Polygon, RealLocalizable>,
 			Contingent,
-			Geometric2D.Centroid {
+			Geometric.Centroid {
 
 	@Override
 	public RealLocalizable compute(final Polygon input) {

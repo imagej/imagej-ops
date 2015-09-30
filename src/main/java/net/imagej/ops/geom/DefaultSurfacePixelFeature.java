@@ -33,7 +33,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
@@ -43,17 +43,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.SurfacePixel}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundaryPixel}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.SurfacePixel.NAME, label = "Geometric3D: SurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Geometric.BoundaryPixel.NAME, label = "Geometric3D: SurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfacePixelFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.SurfacePixel,
+			Geometric.BoundaryPixel,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DefaultMesh> marchingCube;

@@ -36,8 +36,8 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 
@@ -48,12 +48,12 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Convex Hull", name = Geometric2D.ConvexHull.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Convex Hull", name = Geometric.ConvexHull.NAME)
 public class DefaultConvexHull extends AbstractFunctionOp<Polygon, Polygon>
 		implements
 			GeometricOp<Polygon, Polygon>,
 			Contingent,
-			Geometric2D.ConvexHull {
+			Geometric.ConvexHull {
 
 	@Override
 	public Polygon compute(final Polygon input) {

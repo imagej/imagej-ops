@@ -34,8 +34,8 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Contour;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Contour;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -54,14 +54,14 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Contour", name = Geometric2D.Contour.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Contour", name = Geometric.Contour.NAME)
 public class DefaultContour
 		extends
 			AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>
 		implements
 			GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>,
 			Contingent,
-			Geometric2D.Contour {
+			Geometric.Contour {
 
 	@Parameter(type = ItemIO.INPUT, description = "Set this flag to use the refined Jacobs stopping criteria")
 	private boolean useJacobs = true;

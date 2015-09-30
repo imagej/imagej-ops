@@ -36,8 +36,8 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.MinorMajorAxis;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.util.Pair;
@@ -46,15 +46,15 @@ import net.imglib2.util.ValuePair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MinorMajorAxis}.
+ * Generic implementation of {@link SecondMultiVariate}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: MinorMajorAxis", name = Geometric2D.MinorMajorAxis.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: MinorMajorAxis", name = Geometric.SecondMultiVariate.NAME)
 public class DefaultMinorMajorAxis extends
 		AbstractFunctionOp<Polygon, Pair<Double, Double>> implements
 		GeometricOp<Polygon, Pair<Double, Double>>, Contingent,
-		Geometric2D.MinorMajorAxis {
+		Geometric.SecondMultiVariate {
 
 	/**
 	 * Code taken from ImageJ1 (EllipseFitter -> getEllipseParam()) and adapted

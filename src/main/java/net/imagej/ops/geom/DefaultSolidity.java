@@ -33,10 +33,10 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.Area;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
-import net.imagej.ops.Ops.Geometric2D.Solidity;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.Solidity;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,17 +46,17 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Solidity", name = Geometric2D.Solidity.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Solidity", name = Geometric.Solidity.NAME)
 public class DefaultSolidity extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.Solidity {
+		Geometric.Solidity {
 
 	private FunctionOp<Polygon, DoubleType> areaFunc;
 	private FunctionOp<Polygon, Polygon> convexHullFunc;
 
 	@Override
 	public void initialize() {
-		areaFunc = RTs.function(ops(), Area.class, in());
+		areaFunc = RTs.function(ops(), Size.class, in());
 		convexHullFunc = ops().function(ConvexHull.class, Polygon.class, in());
 	}
 

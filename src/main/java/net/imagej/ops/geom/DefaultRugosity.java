@@ -33,10 +33,10 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric2D;
-import net.imagej.ops.Ops.Geometric2D.ConvexHull;
-import net.imagej.ops.Ops.Geometric2D.Perimeter;
-import net.imagej.ops.Ops.Geometric2D.Rugosity;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.BoundarySize;
+import net.imagej.ops.Ops.Geometric.Rugosity;
 import net.imagej.ops.RTs;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,17 +46,17 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Rugosity", name = Geometric2D.Rugosity.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Rugosity", name = Geometric.Rugosity.NAME)
 public class DefaultRugosity extends AbstractFunctionOp<Polygon, DoubleType>
 		implements
-			Geometric2D.Rugosity {
+		Geometric.Rugosity {
 
 	private FunctionOp<Polygon, DoubleType> perimeterFunc;
 	private FunctionOp<Polygon, Polygon> convexHullFunc;
 
 	@Override
 	public void initialize() {
-		perimeterFunc = RTs.function(ops(), Perimeter.class, in());
+		perimeterFunc = RTs.function(ops(), BoundarySize.class, in());
 		convexHullFunc = ops().function(ConvexHull.class, Polygon.class,
 				Polygon.class);
 	}
