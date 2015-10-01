@@ -9,7 +9,6 @@ authors = ```
 ```
 ops = ```
 [
-	[name: "convert",     iface: "Convert"],
 	[name: "eval",        iface: "Eval"],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
@@ -23,6 +22,13 @@ ops = ```
 ```
 namespaces = ```
 [
+	[name: "convert", iface: "Convert", ops: [
+		[name: "clip",                        iface: "Clip"],
+		[name: "copy",                        iface: "Copy"],
+		[name: "imageType",                   iface: "ImageType"],
+		[name: "normalizeScale",              iface: "NormalizeScale"],
+		[name: "scale",                       iface: "Scale"]
+	]],
 	[name: "create", iface: "Create", ops: [
 		[name: "img",                         iface: "Img"],
 		[name: "imgLabeling",                 iface: "ImgLabeling"],

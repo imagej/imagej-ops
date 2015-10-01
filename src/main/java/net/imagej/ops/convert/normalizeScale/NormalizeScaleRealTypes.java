@@ -42,9 +42,10 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
+@Plugin(type = Ops.Convert.NormalizeScale.class,
+	name = Ops.Convert.NormalizeScale.NAME)
 public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
-	extends ScaleRealTypes<I, O> implements Contingent
+	extends ScaleRealTypes<I, O> implements Ops.Convert.NormalizeScale, Contingent
 {
 
 	@Override

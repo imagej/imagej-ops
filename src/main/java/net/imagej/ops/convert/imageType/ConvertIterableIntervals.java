@@ -42,10 +42,10 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
+@Plugin(type = Ops.Convert.ImageType.class, name = Ops.Convert.ImageType.NAME)
 public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
-	implements Ops.Convert
+	implements Ops.Convert.ImageType
 {
 
 	@Parameter

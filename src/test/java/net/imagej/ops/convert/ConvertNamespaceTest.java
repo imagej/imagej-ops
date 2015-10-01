@@ -30,31 +30,24 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
- * Base class for ops which convert between {@link RealType}s.
- * 
- * @author Martin Horn (University of Konstanz)
+ * Tests {@link ConvertNamespace}.
+ *
+ * @author Curtis Rueden
  */
-public abstract class RealTypeConverter<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<I, O>
-{
+public class ConvertNamespaceTest extends AbstractNamespaceTest {
 
 	/**
-	 * Allows the convert pix operation to determine some parameters from the
-	 * conrete input and output types.
+	 * Tests that the ops of the convert namespace have corresponding type-safe
+	 * Java method signatures declared in the {@link ConvertNamespace} class.
 	 */
-	public abstract void checkInput(I inType, O outType);
-
-	/**
-	 * If the pixels to be converted stem from an {@link IterableInterval} some
-	 * additionally needed parameters (e.g. for normalization) can be calculated
-	 * here (hence, some heavier calculation might take place here). Might never
-	 * be called!
-	 */
-	public abstract void checkInput(IterableInterval<I> in);
+	@Test
+	public void testCompleteness() {
+		assertComplete("convert", ConvertNamespace.class);
+	}
 
 }

@@ -40,9 +40,9 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
+@Plugin(type = Ops.Convert.Clip.class, name = Ops.Convert.Clip.NAME)
 public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
-	extends RealTypeConverter<I, O>
+	extends RealTypeConverter<I, O> implements Ops.Convert.Clip
 {
 
 	private double outMax;
