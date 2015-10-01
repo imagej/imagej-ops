@@ -30,14 +30,31 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Ops;
+import net.imagej.ops.AbstractComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * A typed conversion operation.
+ * Base class for ops which convert between {@link RealType}s.
  * 
  * @author Martin Horn (University of Konstanz)
  */
-public interface ConvertOp<I, O> extends Ops.Convert, ComputerOp<I, O> {
-	// NB: Marker interface.
+public abstract class RealTypeConverter<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<I, O>
+{
+
+	/**
+	 * Allows the convert pix operation to determine some parameters from the
+	 * conrete input and output types.
+	 */
+	public abstract void checkInput(I inType, O outType);
+
+	/**
+	 * If the pixels to be converted stem from an {@link IterableInterval} some
+	 * additionally needed parameters (e.g. for normalization) can be calculated
+	 * here (hence, some heavier calculation might take place here). Might never
+	 * be called!
+	 */
+	public abstract void checkInput(IterableInterval<I> in);
+
 }

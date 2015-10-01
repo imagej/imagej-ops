@@ -30,34 +30,24 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.AbstractNamespaceTest;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
 /**
- * @author Martin Horn (University of Konstanz)
+ * Tests {@link ConvertNamespace}.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractComputerOp<IterableInterval<I>, IterableInterval<O>> implements
-	ConvertOp<IterableInterval<I>, IterableInterval<O>>
-{
+public class ConvertNamespaceTest extends AbstractNamespaceTest {
 
-	@Parameter
-	private ConvertPix<I, O> pixConvert;
-
-	@Override
-	public void compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
-	{
-		pixConvert.checkInput(input.firstElement().createVariable(), output
-			.firstElement().createVariable());
-		pixConvert.checkInput(input);
-		ops().map(output, input, pixConvert);
+	/**
+	 * Tests that the ops of the convert namespace have corresponding type-safe
+	 * Java method signatures declared in the {@link ConvertNamespace} class.
+	 */
+	@Test
+	public void testCompleteness() {
+		assertComplete("convert", ConvertNamespace.class);
 	}
 
 }

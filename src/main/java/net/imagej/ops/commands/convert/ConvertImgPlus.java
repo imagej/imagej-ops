@@ -32,7 +32,7 @@ package net.imagej.ops.commands.convert;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.OpService;
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.ItemIO;
@@ -52,7 +52,7 @@ public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
 	private ImgPlus<I> in;
 
 	@Parameter
-	private ConvertPix<I, O> conversionMethod;
+	private RealTypeConverter<I, O> conversionMethod;
 
 	@Parameter(type = ItemIO.BOTH)
 	private ImgPlus<O> out;
@@ -62,7 +62,7 @@ public class ConvertImgPlus<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void run() {
-		ops.convert(out, in, conversionMethod);
+		ops.convert().imageType(out, in, conversionMethod);
 	}
 
 }

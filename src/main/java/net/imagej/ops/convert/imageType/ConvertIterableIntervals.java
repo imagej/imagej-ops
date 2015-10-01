@@ -28,47 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.imageType;
 
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertPixScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
+@Plugin(type = Ops.Convert.ImageType.class, name = Ops.Convert.ImageType.NAME)
+public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
+	implements Ops.Convert.ImageType
 {
 
-	protected double inMin;
-
-	protected double outMin;
-
-	protected double factor = 0;
+	@Parameter
+	private RealTypeConverter<I, O> pixConvert;
 
 	@Override
-	public void compute(final I input, final O output) {
-		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
+	public void compute(final IterableInterval<I> input,
+		final IterableInterval<O> output)
+	{
+		pixConvert.checkInput(input.firstElement().createVariable(), output
+			.firstElement().createVariable());
+		pixConvert.checkInput(input);
+		ops().map(output, input, pixConvert);
 	}
 
-	@Override
-	public void checkInput(final I inType, final O outType) {
-		inMin = inType.getMinValue();
-		outMin = outType.getMinValue();
-		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
-	}
-
-	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
-	}
-
-	@Override
-	public boolean conforms() {
-		return true;
-	}
 }

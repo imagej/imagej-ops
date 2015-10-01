@@ -28,32 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.clip;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.Contingent;
+import net.imagej.ops.Ops;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<I, O> implements ConvertOp<I, O>, Contingent
+@Plugin(type = Ops.Convert.Clip.class, name = Ops.Convert.Clip.NAME)
+public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
+	extends RealTypeConverter<I, O> implements Ops.Convert.Clip
 {
 
-	/**
-	 * Allows the convert pix operation to determine some parameters from the
-	 * conrete input and output types.
-	 */
-	public abstract void checkInput(I inType, O outType);
+	private double outMax;
 
-	/**
-	 * If the pixels to be converted stem from an {@link IterableInterval} some
-	 * additionally needed parameters (e.g. for normalization) can be calculated
-	 * here (hence, some heavier calculation might take place here). Might never
-	 * be called!
-	 */
-	public abstract void checkInput(IterableInterval<I> in);
+	private double outMin;
+
+	@Override
+	public void compute(final I input, final O output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
+		}
+		else if (v < outMin) {
+			output.setReal(outMin);
+		}
+		else {
+			output.setReal(v);
+		}
+	}
+
+	@Override
+	public void checkInput(final I inType, final O outType) {
+		outMax = outType.getMaxValue();
+		outMin = outType.getMinValue();
+
+	}
+
+	@Override
+	public void checkInput(final IterableInterval<I> in) {
+		// nothing to do here
+	}
 
 }

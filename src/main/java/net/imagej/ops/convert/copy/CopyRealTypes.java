@@ -28,39 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.copy;
 
-import net.imagej.ops.AbstractOpTest;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.type.numeric.integer.ShortType;
+import net.imagej.ops.Ops;
+import net.imagej.ops.convert.RealTypeConverter;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
 /**
- * A test of {@link ConvertIterableInterval}.
- * 
  * @author Martin Horn (University of Konstanz)
  */
-public class ConvertIITest extends AbstractOpTest {
+@Plugin(type = Ops.Convert.Copy.class, name = Ops.Convert.Copy.NAME)
+public class CopyRealTypes<I extends RealType<I>, O extends RealType<O>>
+	extends RealTypeConverter<I, O> implements Ops.Convert.Copy
+{
 
-	/** The test. */
-	@Test
-	public void test() throws IncompatibleTypeException {
-
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
-				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
-
-		ops.convert(res, img, new ConvertPixCopy<ShortType, ByteType>());
-
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.convert(img, new ConvertPixCopy<ShortType, ByteType>());
-
+	@Override
+	public void compute(final I input, final O output) {
+		output.setReal(input.getRealDouble());
 	}
+
+	@Override
+	public void checkInput(final I inType, final O outType) {
+		// nothing to do here
+	}
+
+	@Override
+	public void checkInput(final IterableInterval<I> in) {
+		// nothing to do here
+	}
+
 }

@@ -28,55 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.normalizeScale;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
+@Plugin(type = Ops.Convert.NormalizeScale.class,
+	name = Ops.Convert.NormalizeScale.NAME)
+public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
+	extends ScaleRealTypes<I, O> implements Ops.Convert.NormalizeScale, Contingent
 {
-
-	private double outMax;
-
-	private double outMin;
-
-	@Override
-	public void compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
-	}
 
 	@Override
 	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
 		outMin = outType.getMinValue();
-
 	}
 
 	@Override
-	public void checkInput(IterableInterval<I> in) {
-		// nothing to do here
+	public void checkInput(final IterableInterval<I> in) {
+		final Pair<I, I> minMax = ops().stats().minMax(in);
+		final I inType = in.firstElement().createVariable();
+		factor =
+			1.0 / (minMax.getB().getRealDouble() - minMax.getA().getRealDouble()) *
+				(inType.getMaxValue() - inType.getMinValue());
+
+		inMin = minMax.getA().getRealDouble();
+
 	}
 
 	@Override
 	public boolean conforms() {
-		return true;
+		// only conforms if an input source has been provided and the scale factor
+		// was calculated
+		return factor != 0;
 	}
 
 }
