@@ -46,7 +46,7 @@ import org.junit.Test;
  * 
  * @author Martin Horn (University of Konstanz)
  */
-public class ConvertIITest extends AbstractOpTest {
+public class ConvertIterableIntervalsTest extends AbstractOpTest {
 
 	/** The test. */
 	@Test
