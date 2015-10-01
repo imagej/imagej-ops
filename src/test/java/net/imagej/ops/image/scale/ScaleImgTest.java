@@ -31,6 +31,7 @@
 package net.imagej.ops.image.scale;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;

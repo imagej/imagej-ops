@@ -29,8 +29,6 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -41,6 +39,8 @@ import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the 2nd multi variate of a 

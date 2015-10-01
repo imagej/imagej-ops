@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 public class Geometric3DNamespaceTest extends AbstractNamespaceTest {
 

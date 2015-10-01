@@ -31,6 +31,7 @@
 package net.imagej.ops.image.invert;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;

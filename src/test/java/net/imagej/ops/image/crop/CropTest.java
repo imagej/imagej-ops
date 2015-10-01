@@ -31,6 +31,7 @@
 package net.imagej.ops.image.crop;
 
 import static org.junit.Assert.assertTrue;
+
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.FinalInterval;

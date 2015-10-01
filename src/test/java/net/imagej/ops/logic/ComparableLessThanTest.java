@@ -32,6 +32,7 @@ package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.logic.BoolType;
 

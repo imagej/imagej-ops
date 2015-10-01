@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.geometric3d;
 
-import java.util.List;
 
 /**
  * A Horizon is the result of n neighboring {@link TriangularFacet} which are merged.

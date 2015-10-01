@@ -29,8 +29,6 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D;
@@ -38,6 +36,8 @@ import net.imagej.ops.Ops.Descriptor3D.Centroid;
 import net.imglib2.Cursor;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).

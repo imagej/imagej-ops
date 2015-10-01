@@ -30,9 +30,8 @@
 package net.imagej.ops.geometric3d;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.geometric3d.BitTypeVertexInterpolator;
-import net.imagej.ops.geometric3d.DefaultVertexInterpolator;
 
 import org.junit.Test;
 

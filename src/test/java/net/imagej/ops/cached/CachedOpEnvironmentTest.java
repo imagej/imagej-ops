@@ -34,19 +34,18 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.scijava.command.CommandInfo;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops.Stats.Min;
-import net.imagej.ops.cached.CachedOpEnvironment;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.scijava.command.CommandInfo;
 
 /**
  * JUnit-Tests for the {@link CachedOpEnvironment}.

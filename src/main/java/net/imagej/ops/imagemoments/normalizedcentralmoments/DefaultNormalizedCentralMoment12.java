@@ -32,10 +32,10 @@ package net.imagej.ops.imagemoments.normalizedcentralmoments;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.RTs;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment12;
 import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;

@@ -31,6 +31,7 @@
 package net.imagej.ops.create;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
