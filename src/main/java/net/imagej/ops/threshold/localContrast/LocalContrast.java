@@ -62,7 +62,6 @@ public class LocalContrast<T extends RealType<T>> extends
 	@Override
 	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 
-		@SuppressWarnings("unchecked")
 		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
