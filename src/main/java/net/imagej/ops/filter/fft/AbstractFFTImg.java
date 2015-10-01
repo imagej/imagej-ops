@@ -103,7 +103,6 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * returns fastest FFT size possible for the input size
 	 * 
 	 * @param inputSize
-	 * @return
 	 */
 	protected abstract void computeFFTFastSize(long[] inputSize);
 
@@ -118,8 +117,6 @@ public abstract class AbstractFFTImg<T, I extends Img<T>, C, O extends Img<C>>
 	 * creates the output Img
 	 * 
 	 * @param factory
-	 * @param size
-	 * @return
 	 */
 	protected abstract O createFFTImg(ImgFactory<T> factory);
 

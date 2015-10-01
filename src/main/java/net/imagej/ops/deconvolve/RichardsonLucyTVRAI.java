@@ -147,8 +147,6 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 	/**
 	 * Efficient multithreaded version of div_unit_grad adapted from IOCBIOS,
 	 * Pearu Peterson https://code.google.com/p/iocbio/
-	 * 
-	 * @return
 	 */
 	void div_unit_grad_fast_thread() {
 		final int Nx, Ny, Nz;
