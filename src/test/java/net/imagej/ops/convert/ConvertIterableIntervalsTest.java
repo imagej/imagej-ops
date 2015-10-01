@@ -30,39 +30,105 @@
 
 package net.imagej.ops.convert;
 
+import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
 import net.imagej.ops.convert.imageType.ConvertIterableIntervals;
-import net.imglib2.exception.IncompatibleTypeException;
+import net.imagej.ops.convert.scale.ScaleRealTypes;
+import net.imglib2.Cursor;
+import net.imglib2.FinalDimensions;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.ShortType;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A test of {@link ConvertIterableIntervals}.
+ * Tests {@link ConvertIterableIntervals} + {@link RealTypeConverter} ops.
  * 
- * @author Martin Horn (University of Konstanz)
+ * @author Curtis Rueden.
  */
 public class ConvertIterableIntervalsTest extends AbstractOpTest {
 
-	/** The test. */
-	@Test
-	public void test() throws IncompatibleTypeException {
+	private IterableInterval<ShortType> in;
+	private Img<ByteType> out;
 
-		final Img<ShortType> img =
-			new ArrayImgFactory<ShortType>().create(new int[] { 10, 10 },
-				new ShortType());
-		final Img<ByteType> res =
-			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
-
-		ops.convert().imageType(res, img, new CopyRealTypes<ShortType, ByteType>());
-
-		// FIXME won't work neither, as the pre-processor to create the result is
-		// missing
-//		ops.convert(img, new ConvertPixCopy<ShortType, ByteType>());
-
+	@Before
+	public void createImages() {
+		final FinalDimensions dims = FinalDimensions.wrap(new long[] {10, 10});
+		in = ops.create().img(dims, new ShortType());
+		addNoise(in);
+		out = ops.create().img(dims, new ByteType());
 	}
+
+	@Test
+	public void testClip() {
+		ops.convert().imageType(out, in, new ClipRealTypes<ShortType, ByteType>());
+
+		final Cursor<ShortType> c = in.localizingCursor();
+		final RandomAccess<ByteType> ra = out.randomAccess();
+		while (c.hasNext()) {
+			final short value = c.next().get();
+			ra.setPosition(c);
+			assertEquals(clip(value), ra.get().get());
+		}
+	}
+
+	@Test
+	public void testCopy() {
+		ops.convert().imageType(out, in, new CopyRealTypes<ShortType, ByteType>());
+
+		final Cursor<ShortType> c = in.localizingCursor();
+		final RandomAccess<ByteType> ra = out.randomAccess();
+		while (c.hasNext()) {
+			final short value = c.next().get();
+			ra.setPosition(c);
+			assertEquals(copy(value), ra.get().get());
+		}
+	}
+
+	@Test
+	public void testScale() {
+		ops.convert().imageType(out, in, new ScaleRealTypes<ShortType, ByteType>());
+
+		final Cursor<ShortType> c = in.localizingCursor();
+		final RandomAccess<ByteType> ra = out.randomAccess();
+		while (c.hasNext()) {
+			final short value = c.next().get();
+			ra.setPosition(c);
+			assertEquals(scale(value), ra.get().get());
+		}
+	}
+
+	// -- Helper methods --
+
+	private byte scale(final short value) {
+		final double norm = (value + 32768) / 65535.0;
+		return (byte) Math.round((255 * norm) - 128);
+	}
+
+	private void addNoise(final Iterable<ShortType> image) {
+		final ComputerOp<ShortType, ShortType> noiseOp =
+			ops.computer(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
+				-32768, 32767, 10000);
+		ops.map(image, image, noiseOp);
+	}
+
+	private byte clip(final short value) {
+		if (value < -128) return -128;
+		if (value > 127) return 127;
+		return (byte) value;
+	}
+
+	private byte copy(final short value) {
+		return (byte) value;
+	}
+
 }
