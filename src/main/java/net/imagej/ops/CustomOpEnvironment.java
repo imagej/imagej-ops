@@ -128,7 +128,7 @@ public class CustomOpEnvironment extends AbstractOpEnvironment {
 			}
 			
 			return infos;
-		};
+		}
 
 	}
 
