@@ -52,8 +52,8 @@ public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O
 	}
 
 	@Override
-	public void checkInput(IterableInterval<I> in) {
-		final Pair<I,I> minMax = ops().stats().minMax(in);
+	public void checkInput(final IterableInterval<I> in) {
+		final Pair<I, I> minMax = ops().stats().minMax(in);
 		final I inType = in.firstElement().createVariable();
 		factor =
 			1.0 / (minMax.getB().getRealDouble() - minMax.getA().getRealDouble()) *

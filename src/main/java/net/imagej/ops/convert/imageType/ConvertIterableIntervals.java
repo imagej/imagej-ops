@@ -44,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractComputerOp<IterableInterval<I>, IterableInterval<O>> implements
-	ConvertOp<IterableInterval<I>, IterableInterval<O>>
+public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
+	implements ConvertOp<IterableInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter

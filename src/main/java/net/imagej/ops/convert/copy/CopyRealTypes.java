@@ -56,7 +56,7 @@ public class CopyRealTypes<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void checkInput(IterableInterval<I> in) {
+	public void checkInput(final IterableInterval<I> in) {
 		// nothing to do here
 	}
 
