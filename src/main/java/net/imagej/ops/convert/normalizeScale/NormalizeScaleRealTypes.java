@@ -30,6 +30,7 @@
 
 package net.imagej.ops.convert.normalizeScale;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imglib2.IterableInterval;
@@ -43,7 +44,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
 public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
-	extends ScaleRealTypes<I, O>
+	extends ScaleRealTypes<I, O> implements Contingent
 {
 
 	@Override

@@ -75,9 +75,4 @@ public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
 		// nothing to do here
 	}
 
-	@Override
-	public boolean conforms() {
-		return true;
-	}
-
 }
