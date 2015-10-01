@@ -46,7 +46,7 @@ public class Horizon extends UpdateablePointSet {
 	 */
 	@SuppressWarnings("unchecked")
 	public Horizon (final TriangularFacet f) {
-		vertices = (List<Vertex>) f.getVertices();
+		vertices = f.getVertices();
 		neighbors = f.getNeighbors();
 	}
 

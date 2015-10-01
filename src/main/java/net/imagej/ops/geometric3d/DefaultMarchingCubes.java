@@ -79,7 +79,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>>
 	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
 		DefaultMesh output = new DefaultMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended = Views
-				.extendValue(input, (T)(Object) new BoolType(false));
+				.extendValue(input, (T)new BoolType(false));
 		Cursor<T> c = Views.interval(
 				extended,
 				new FinalInterval(new long[] {input.min(0) - 1, input.min(1) - 1, input.min(2) - 1}, new long[] {

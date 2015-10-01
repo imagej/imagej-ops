@@ -66,7 +66,7 @@ public class DefaultCentroid<B extends BooleanType<B>>
 		}
 
 		for (int i = 0; i < output.length; i++) {
-			output[i] = output[i] / (double)input.size();
+			output[i] = output[i] / input.size();
 		}
 		
 		return output;
