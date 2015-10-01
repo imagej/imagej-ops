@@ -31,6 +31,7 @@
 package net.imagej.ops.logic;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imglib2.type.logic.BoolType;

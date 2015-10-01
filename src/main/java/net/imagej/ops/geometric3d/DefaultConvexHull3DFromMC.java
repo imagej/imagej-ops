@@ -29,8 +29,6 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -38,6 +36,8 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
+
+import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = ConvexHull3D.NAME)
 public class DefaultConvexHull3DFromMC<B extends BooleanType<B>>

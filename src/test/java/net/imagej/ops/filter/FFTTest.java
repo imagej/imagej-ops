@@ -31,6 +31,7 @@
 package net.imagej.ops.filter;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;

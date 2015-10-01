@@ -31,6 +31,7 @@
 package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.math.NumericTypeBinaryMath;

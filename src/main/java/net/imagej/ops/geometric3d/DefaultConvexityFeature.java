@@ -41,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Geometric3D.Convexity}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Convexity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

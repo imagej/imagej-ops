@@ -190,7 +190,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 				cursor.next().set(rand.nextInt((int) type.getMaxValue()));
 			}
 
-			return (Img<UnsignedByteType>) img;
+			return img;
 		}
 
 		/**
@@ -213,7 +213,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 				cursor.next().set(constant);
 			}
 
-			return (Img<UnsignedByteType>) img;
+			return img;
 		}
 
 		/**
@@ -247,7 +247,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 				cursor.get().set(255);
 			}
 
-			return (Img<UnsignedByteType>) img;
+			return img;
 		}
 	}
 

@@ -32,6 +32,7 @@ package net.imagej.ops.map.neighborhood;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;

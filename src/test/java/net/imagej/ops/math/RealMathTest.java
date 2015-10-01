@@ -31,6 +31,7 @@
 package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.type.numeric.real.DoubleType;
 

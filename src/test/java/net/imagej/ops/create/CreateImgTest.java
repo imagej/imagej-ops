@@ -84,7 +84,7 @@ public class CreateImgTest extends AbstractOpTest {
 			}
 
 			// create img
-			final Img<?> img = (Img<?>) ops.create().img(new FinalInterval(min, max));
+			final Img<?> img = ops.create().img(new FinalInterval(min, max));
 
 			assertArrayEquals("Image Minimum:", min, Intervals.minAsLongArray(img));
 			assertArrayEquals("Image Maximum:", max, Intervals.maxAsLongArray(img));

@@ -39,7 +39,7 @@ import net.imglib2.type.Type;
  * and dimensionality as the input {@link Img}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <L>
+ * @param <T>
  */
 public class ImgImgSameTypeFactory<T extends Type<T>> implements
 	BufferFactory<Img<T>, Img<T>>

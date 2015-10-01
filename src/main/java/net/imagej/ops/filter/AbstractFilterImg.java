@@ -50,7 +50,6 @@ import org.scijava.plugin.Parameter;
  * @param <I>
  * @param <O>
  * @param <K>
- * @param <C>
  */
 public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends AbstractHybridOp<Img<I>, Img<O>>

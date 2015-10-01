@@ -29,11 +29,11 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
  * This is the {@link AbstractVertexInterpolator}. A vertex interpolator

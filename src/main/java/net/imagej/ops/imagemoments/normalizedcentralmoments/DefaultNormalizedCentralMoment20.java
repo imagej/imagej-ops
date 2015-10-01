@@ -30,18 +30,18 @@
 
 package net.imagej.ops.imagemoments.normalizedcentralmoments;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.RTs;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
 import net.imagej.ops.Ops.ImageMoments.CentralMoment20;
 import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20;
+import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@link NormalizedCentralMoment20}.

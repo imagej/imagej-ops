@@ -42,7 +42,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Geometric3D.Compactness}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Compactness}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

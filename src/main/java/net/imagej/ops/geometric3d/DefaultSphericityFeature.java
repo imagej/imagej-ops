@@ -42,7 +42,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Geometric3D.Sphericity}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.Sphericity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

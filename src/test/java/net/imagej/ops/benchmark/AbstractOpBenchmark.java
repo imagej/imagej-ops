@@ -31,6 +31,7 @@
 package net.imagej.ops.benchmark;
 
 import static org.junit.Assume.assumeTrue;
+
 import net.imagej.ops.AbstractOpTest;
 
 import org.junit.Before;

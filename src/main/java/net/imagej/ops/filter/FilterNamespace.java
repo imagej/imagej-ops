@@ -31,6 +31,7 @@
 package net.imagej.ops.filter;
 
 import java.util.List;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;

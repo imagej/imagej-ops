@@ -31,6 +31,7 @@
 package net.imagej.ops.stats;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imglib2.Cursor;

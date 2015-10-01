@@ -29,9 +29,6 @@
  */
 package net.imagej.ops.geometric3d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -41,8 +38,12 @@ import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 /**
- * Generic implementation of {@link Geometric3D.ConvexHullSurfacePixel}. 
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfacePixel}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

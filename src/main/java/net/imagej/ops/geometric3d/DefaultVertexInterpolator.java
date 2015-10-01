@@ -29,12 +29,12 @@
  */
 package net.imagej.ops.geometric3d;
 
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
+
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
 
 /**
  * Linearly interpolate the position where an isosurface cuts an edge
