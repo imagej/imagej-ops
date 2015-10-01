@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
@@ -420,7 +420,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.convert.imageType.ConvertIterableIntervals.class)
 	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
 		convert(IterableInterval<O> out, IterableInterval<I> in,
-			ConvertPix<I, O> pixConvert);
+			RealTypeConverter<I, O> pixConvert);
 
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)

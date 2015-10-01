@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
@@ -265,7 +265,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	@Override
 	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
 		convert(final IterableInterval<O> out, final IterableInterval<I> in,
-			final ConvertPix<I, O> pixConvert)
+			final RealTypeConverter<I, O> pixConvert)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result =

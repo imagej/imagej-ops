@@ -33,7 +33,7 @@ package net.imagej.ops.convert.imageType;
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.ConvertOp;
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -50,7 +50,7 @@ public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<
 {
 
 	@Parameter
-	private ConvertPix<I, O> pixConvert;
+	private RealTypeConverter<I, O> pixConvert;
 
 	@Override
 	public void compute(final IterableInterval<I> input,

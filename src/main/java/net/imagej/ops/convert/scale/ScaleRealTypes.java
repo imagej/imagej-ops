@@ -31,7 +31,7 @@
 package net.imagej.ops.convert.scale;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
 public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPix<I, O>
+	extends RealTypeConverter<I, O>
 {
 
 	protected double inMin;

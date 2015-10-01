@@ -36,9 +36,11 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 /**
+ * Base class for ops which convert between {@link RealType}s.
+ * 
  * @author Martin Horn (University of Konstanz)
  */
-public abstract class ConvertPix<I extends RealType<I>, O extends RealType<O>>
+public abstract class RealTypeConverter<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractComputerOp<I, O> implements ConvertOp<I, O>, Contingent
 {
 
