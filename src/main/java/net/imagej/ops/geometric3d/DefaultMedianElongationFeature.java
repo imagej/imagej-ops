@@ -42,7 +42,8 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Geometric3D.MedianElongation}.
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric3D.MedianElongation}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
