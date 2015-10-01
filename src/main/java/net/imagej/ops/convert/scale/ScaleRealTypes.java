@@ -49,7 +49,7 @@ public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 
 	protected double outMin;
 
-	protected double factor = 0;
+	protected double factor;
 
 	@Override
 	public void compute(final I input, final O output) {
