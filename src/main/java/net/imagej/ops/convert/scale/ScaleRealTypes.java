@@ -28,9 +28,10 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.scale;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.convert.ConvertPix;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -40,33 +41,26 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
+public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends ConvertPix<I, O>
 {
 
-	private double outMax;
+	protected double inMin;
 
-	private double outMin;
+	protected double outMin;
+
+	protected double factor = 0;
 
 	@Override
 	public void compute(final I input, final O output) {
-		final double v = input.getRealDouble();
-		if (v > outMax) {
-			output.setReal(outMax);
-		}
-		else if (v < outMin) {
-			output.setReal(outMin);
-		}
-		else {
-			output.setReal(v);
-		}
+		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
 	}
 
 	@Override
 	public void checkInput(final I inType, final O outType) {
-		outMax = outType.getMaxValue();
+		inMin = inType.getMinValue();
 		outMin = outType.getMinValue();
-
+		factor = (inType.getMaxValue() - inMin) / (outType.getMaxValue() - outMin);
 	}
 
 	@Override
@@ -78,5 +72,4 @@ public class ConvertPixClip<I extends RealType<I>, O extends RealType<O>>
 	public boolean conforms() {
 		return true;
 	}
-
 }

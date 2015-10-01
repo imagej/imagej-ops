@@ -28,36 +28,41 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.copy;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.convert.ConvertPix;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertIterableInterval<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractComputerOp<IterableInterval<I>, IterableInterval<O>> implements
-	ConvertOp<IterableInterval<I>, IterableInterval<O>>
+public class CopyRealTypes<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPix<I, O>
 {
 
-	@Parameter
-	private ConvertPix<I, O> pixConvert;
+	@Override
+	public void compute(final I input, final O output) {
+		output.setReal(input.getRealDouble());
+	}
 
 	@Override
-	public void compute(final IterableInterval<I> input,
-		final IterableInterval<O> output)
-	{
-		pixConvert.checkInput(input.firstElement().createVariable(), output
-			.firstElement().createVariable());
-		pixConvert.checkInput(input);
-		ops().map(output, input, pixConvert);
+	public void checkInput(final I inType, final O outType) {
+		// nothing to do here
+	}
+
+	@Override
+	public void checkInput(IterableInterval<I> in) {
+		// nothing to do here
+	}
+
+	@Override
+	public boolean conforms() {
+		return true;
 	}
 
 }

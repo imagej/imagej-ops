@@ -31,6 +31,8 @@
 package net.imagej.ops.convert;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.convert.copy.CopyRealTypes;
+import net.imagej.ops.convert.imageType.ConvertIterableIntervals;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -40,7 +42,7 @@ import net.imglib2.type.numeric.integer.ShortType;
 import org.junit.Test;
 
 /**
- * A test of {@link ConvertIterableInterval}.
+ * A test of {@link ConvertIterableIntervals}.
  * 
  * @author Martin Horn (University of Konstanz)
  */
@@ -56,7 +58,7 @@ public class ConvertIITest extends AbstractOpTest {
 		final Img<ByteType> res =
 			img.factory().imgFactory(new ByteType()).create(img, new ByteType());
 
-		ops.convert(res, img, new ConvertPixCopy<ShortType, ByteType>());
+		ops.convert(res, img, new CopyRealTypes<ShortType, ByteType>());
 
 		// FIXME won't work neither, as the pre-processor to create the result is
 		// missing

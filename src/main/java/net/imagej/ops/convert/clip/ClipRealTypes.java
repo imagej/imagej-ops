@@ -28,12 +28,12 @@
  * #L%
  */
 
-package net.imagej.ops.convert;
+package net.imagej.ops.convert.clip;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.convert.ConvertPix;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Plugin;
 
@@ -41,32 +41,43 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Convert.class, name = Ops.Convert.NAME)
-public class ConvertPixNormalizeScale<I extends RealType<I>, O extends RealType<O>>
-	extends ConvertPixScale<I, O>
+public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
+	extends ConvertPix<I, O>
 {
+
+	private double outMax;
+
+	private double outMin;
+
+	@Override
+	public void compute(final I input, final O output) {
+		final double v = input.getRealDouble();
+		if (v > outMax) {
+			output.setReal(outMax);
+		}
+		else if (v < outMin) {
+			output.setReal(outMin);
+		}
+		else {
+			output.setReal(v);
+		}
+	}
 
 	@Override
 	public void checkInput(final I inType, final O outType) {
+		outMax = outType.getMaxValue();
 		outMin = outType.getMinValue();
+
 	}
 
 	@Override
 	public void checkInput(IterableInterval<I> in) {
-		final Pair<I,I> minMax = ops().stats().minMax(in);
-		final I inType = in.firstElement().createVariable();
-		factor =
-			1.0 / (minMax.getB().getRealDouble() - minMax.getA().getRealDouble()) *
-				(inType.getMaxValue() - inType.getMinValue());
-
-		inMin = minMax.getA().getRealDouble();
-
+		// nothing to do here
 	}
 
 	@Override
 	public boolean conforms() {
-		// only conforms if an input source has been provided and the scale factor
-		// was calculated
-		return factor != 0;
+		return true;
 	}
 
 }

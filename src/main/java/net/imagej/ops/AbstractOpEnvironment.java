@@ -269,7 +269,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result =
-			(IterableInterval<O>) run(net.imagej.ops.convert.ConvertIterableInterval.class, out,
+			(IterableInterval<O>) run(net.imagej.ops.convert.imageType.ConvertIterableIntervals.class, out,
 				in, pixConvert);
 		return result;
 	}

@@ -410,14 +410,14 @@ public interface OpEnvironment extends Contextual {
 	Object convert(Object... args);
 
 	/** Executes the "convert" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.convert.ConvertPixClip.class,
-		net.imagej.ops.convert.ConvertPixNormalizeScale.class,
-		net.imagej.ops.convert.ConvertPixScale.class,
-		net.imagej.ops.convert.ConvertPixCopy.class })
+	@OpMethod(ops = { net.imagej.ops.convert.clip.ClipRealTypes.class,
+		net.imagej.ops.convert.normalizeScale.NormalizeScaleRealTypes.class,
+		net.imagej.ops.convert.scale.ScaleRealTypes.class,
+		net.imagej.ops.convert.copy.CopyRealTypes.class })
 	<I extends RealType<I>, O extends RealType<O>> O convert(O out, I in);
 
 	/** Executes the "convert" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convert.ConvertIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.convert.imageType.ConvertIterableIntervals.class)
 	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
 		convert(IterableInterval<O> out, IterableInterval<I> in,
 			ConvertPix<I, O> pixConvert);
