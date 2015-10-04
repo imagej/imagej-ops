@@ -49,10 +49,10 @@ namespaces = ```
 	]],
 	[name: "descriptor3d", iface: "Descriptor3D", ops: [
 		[name: "convexhull3d",                iface: "ConvexHull3D"],
-		[name: "VertexInterpolator",          iface: "VertexInterpolator"],
-		[name: "Centroid",                    iface: "Centroid"],
-		[name: "MarchingCubes",               iface: "MarchingCubes"],
-		[name: "SecondMultiVariate3D",        iface: "SecondMultiVariate3D"]
+		[name: "vertexInterpolator",          iface: "VertexInterpolator"],
+		[name: "centroid",                    iface: "Centroid"],
+		[name: "marchingCubes",               iface: "MarchingCubes"],
+		[name: "secondMultiVariate3D",        iface: "SecondMultiVariate3D"]
 	]],
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",                    iface: "AddNoise"],
@@ -95,20 +95,20 @@ namespaces = ```
 		[name: "rugosity",                    iface: "Rugosity"]
 	]],
 	[name: "geometric3d", iface: "Geometric3D", ops: [
-		[name: "Volume",                      iface: "Volume"],
-		[name: "SurfaceArea",                 iface: "SurfaceArea"],
-		[name: "SurfacePixel",                iface: "SurfacePixel"],
-		[name: "Compactness",                 iface: "Compactness"],
-		[name: "Sphericity",                  iface: "Sphericity"],
-		[name: "MainElongation",              iface: "MainElongation"],
-		[name: "MedianElongation",            iface: "MedianElongation"],
-		[name: "ConvexHullSurfaceArea",       iface: "ConvexHullSurfaceArea"],
-		[name: "ConvexHullSurfacePixel",      iface: "ConvexHullSurfacePixel"],
-		[name: "ConvexHullVolume",            iface: "ConvexHullVolume"],
-		[name: "Convexity",                   iface: "Convexity"],
-		[name: "Solidity",                    iface: "Solidity"],
-		[name: "Rugosity",                    iface: "Rugosity"],
-		[name: "Spareness",                   iface: "Spareness"]
+		[name: "volume",                      iface: "Volume"],
+		[name: "surfaceArea",                 iface: "SurfaceArea"],
+		[name: "surfacePixel",                iface: "SurfacePixel"],
+		[name: "compactness",                 iface: "Compactness"],
+		[name: "sphericity",                  iface: "Sphericity"],
+		[name: "mainElongation",              iface: "MainElongation"],
+		[name: "medianElongation",            iface: "MedianElongation"],
+		[name: "convexHullSurfaceArea",       iface: "ConvexHullSurfaceArea"],
+		[name: "convexHullSurfacePixel",      iface: "ConvexHullSurfacePixel"],
+		[name: "convexHullVolume",            iface: "ConvexHullVolume"],
+		[name: "convexity",                   iface: "Convexity"],
+		[name: "solidity",                    iface: "Solidity"],
+		[name: "rugosity",                    iface: "Rugosity"],
+		[name: "spareness",                   iface: "Spareness"]
 	]],
 	[name: "haralick", iface: "Haralick", ops: [
 		[name: "asm",                         iface: "ASM"],
