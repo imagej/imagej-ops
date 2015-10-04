@@ -38,6 +38,7 @@ import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
+import net.imagej.ops.features.zernike.ZernikeNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.geometric.Geometric2DNamespace;
 import net.imagej.ops.geometric3d.Geometric3DNamespace;
@@ -626,5 +627,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
+	
+	/** Gateway into ops of the "zernike" namespace. */
+	ZernikeNamespace zernike();
 
 }

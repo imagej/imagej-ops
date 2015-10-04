@@ -306,6 +306,10 @@ namespaces = ```
 		[name: "Centroid",                    iface: "Centroid"],
 		[name: "MarchingCubes",               iface: "MarchingCubes"],
 		[name: "SecondMultiVariate3D",        iface: "SecondMultiVariate3D"]
+	]],
+	[name: "zernike", iface: "Zernike", ops: [
+		[name: "phase",                    iface: "Phase"],
+		[name: "magnitude",                iface: "Magnitude"]
 	]]
 ]
 ```
