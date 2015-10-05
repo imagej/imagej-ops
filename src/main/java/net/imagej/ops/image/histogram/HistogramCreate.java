@@ -48,19 +48,19 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Histogram.class, name = Ops.Image.Histogram.NAME)
 public class HistogramCreate<T extends RealType<T>> extends
-	AbstractFunctionOp<Iterable<T>, Histogram1d<T>>implements
-	Ops.Image.Histogram
-{
+		AbstractFunctionOp<Iterable<T>, Histogram1d<T>> implements
+		Ops.Image.Histogram {
 
 	@Parameter(required = false)
 	private int numBins = 256;
 
-	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+	private FunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp)ops().function(MinMax.class, Pair.class, in() !=null ? in() : Iterable.class);
+		minMaxFunc = (FunctionOp) ops().function(MinMax.class, Pair.class,
+				in() != null ? in() : Iterable.class);
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public class HistogramCreate<T extends RealType<T>> extends
 		final Pair<T, T> res = minMaxFunc.compute(input);
 
 		final Histogram1d<T> histogram1d = new Histogram1d<T>(
-			new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()
-				.getRealDouble(), numBins, false));
+				new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()
+						.getRealDouble(), numBins, false));
 
 		histogram1d.countData(input);
 
