@@ -52,7 +52,7 @@ public class DefaultCompactnessFeature<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Volume,
+			Geometric3D.Compactness,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> surfacePixel;
