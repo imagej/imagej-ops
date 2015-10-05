@@ -39,6 +39,7 @@ import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.features.zernike.ZernikeNamespace;
+import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.geometric.Geometric2DNamespace;
 import net.imagej.ops.geometric3d.Geometric3DNamespace;
@@ -622,6 +623,9 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
 
+	/** Gateway into ops of the "tamura" namespace */
+	TamuraNamespace tamura();
+	
 	/** Gateway into ops of the "thread" namespace. */
 	ThreadNamespace thread();
 

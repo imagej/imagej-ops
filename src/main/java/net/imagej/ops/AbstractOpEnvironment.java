@@ -42,6 +42,7 @@ import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.features.zernike.ZernikeNamespace;
+import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.geometric.Geometric2DNamespace;
 import net.imagej.ops.geometric3d.Geometric3DNamespace;
@@ -677,6 +678,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	@Override
 	public StatsNamespace stats() {
 		return namespace(StatsNamespace.class);
+	}
+	
+	@Override
+	public TamuraNamespace tamura() {
+		return namespace(TamuraNamespace.class);
 	}
 
 	@Override
