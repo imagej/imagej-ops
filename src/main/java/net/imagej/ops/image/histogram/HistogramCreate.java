@@ -55,17 +55,16 @@ public class HistogramCreate<T extends RealType<T>> extends
 	@Parameter(required = false)
 	private int numBins = 256;
 
-	@SuppressWarnings("rawtypes")
-	private FunctionOp<Iterable<T>, Pair> minMaxFunc;
+	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		minMaxFunc = ops().function(MinMax.class, Pair.class, in());
+		minMaxFunc = (FunctionOp)ops().function(MinMax.class, Pair.class, in() !=null ? in() : Iterable.class);
 	}
 
 	@Override
 	public Histogram1d<T> compute(final Iterable<T> input) {
-		@SuppressWarnings("unchecked")
 		final Pair<T, T> res = minMaxFunc.compute(input);
 
 		final Histogram1d<T> histogram1d = new Histogram1d<T>(
