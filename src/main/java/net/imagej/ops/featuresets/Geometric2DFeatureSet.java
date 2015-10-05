@@ -29,6 +29,7 @@ import net.imagej.ops.Ops.Geometric2D.Rugosity;
 import net.imagej.ops.Ops.Geometric2D.SmallestEnclosingRectangle;
 import net.imagej.ops.Ops.Geometric2D.Solidity;
 import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<I, O>}.
@@ -46,25 +47,18 @@ public class Geometric2DFeatureSet<L, O> extends AbstractOpRefFeatureSet<Polygon
 		final Set<OpRef<?>> refs = new HashSet<OpRef<?>>();
 
 		refs.add(ref(Area.class));
-		refs.add(ref(BoundingBox.class));
-		refs.add(ref(Centroid.class));
 		refs.add(ref(Circularity.class));
-		refs.add(ref(Contour.class, true, false));
-		refs.add(ref(ConvexHull.class));
 		refs.add(ref(Convexity.class));
 		refs.add(ref(Eccentricity.class));
 		refs.add(ref(Elongation.class));
-		refs.add(ref(Feret.class));
 		refs.add(ref(FeretsAngle.class));
 		refs.add(ref(FeretsDiameter.class));
 		refs.add(ref(MajorAxis.class));
 		refs.add(ref(MinorAxis.class));
-		refs.add(ref(MinorMajorAxis.class));
 		refs.add(ref(Perimeter.class));
 		refs.add(ref(Rectangularity.class));
 		refs.add(ref(Roundness.class));
 		refs.add(ref(Rugosity.class));
-		refs.add(ref(SmallestEnclosingRectangle.class));
 		refs.add(ref(Solidity.class));
 
 		return refs;
