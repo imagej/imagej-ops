@@ -31,11 +31,15 @@ package net.imagej.ops.geometric;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.RTs;
 import net.imagej.ops.Ops.Geometric2D;
+import net.imagej.ops.Ops.Geometric2D.Area;
 import net.imagej.ops.Ops.Geometric2D.Centroid;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -49,10 +53,17 @@ public class DefaultCenterOfGravity extends
 		AbstractFunctionOp<Polygon, RealLocalizable> implements
 		GeometricOp<Polygon, RealLocalizable>, Contingent, Geometric2D.Centroid {
 
+	private FunctionOp<Polygon, DoubleType> areaFunc;
+	
+	@Override
+	public void initialize() {
+		areaFunc =  RTs.function(ops(), Area.class, in());
+	}
+	
 	@Override
 	public RealLocalizable compute(final Polygon input) {
 
-		double area = 0;
+		double area = areaFunc.compute(input).get();
 		double cx = 0;
 		double cy = 0;
 		for (int i = 0; i < input.getVertices().size() - 1; i++) {
