@@ -255,9 +255,9 @@ namespaces = ```
 		[name: "zero",                        iface: "Zero"]
 	]],
 	[name: "tamura", iface: "Tamura", ops: [
-		[name: "coarseness",		 iface: "Coarseness"],
-		[name: "contrast",		 iface: "Contrast"],
-		[name: "directionality",	 iface: "Directionality"]
+		[name: "coarseness",                  iface: "Coarseness"],
+		[name: "contrast",                    iface: "Contrast"],
+		[name: "directionality",              iface: "Directionality"]
 	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "geometricMean",               iface: "GeometricMean"],
