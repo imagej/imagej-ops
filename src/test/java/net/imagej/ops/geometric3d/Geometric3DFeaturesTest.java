@@ -93,7 +93,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 		// This test is just here for completeness.
 		// All input values of solidity are verified.
 		assertEquals(Solidity.NAME, 0.898,
-			ops.geometric3d().Solidity(region).get(), AbstractFeatureTest.BIG_DELTA);
+			ops.geometric3d().solidity(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
 		assertEquals(Rugosity.NAME, 1.064,
-			ops.geometric3d().Rugosity(region).get(), AbstractFeatureTest.BIG_DELTA);
+			ops.geometric3d().rugosity(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	public void testConvexity() {
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
-		assertEquals(Convexity.NAME, 0.940, ops.geometric3d().Convexity(region)
+		assertEquals(Convexity.NAME, 0.940, ops.geometric3d().convexity(region)
 			.get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -126,7 +126,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 		// Verified by hand. qhull merges faces and therefore has another number
 		// of surface pixels
 		assertEquals(ConvexHullSurfacePixel.NAME, 329, ops.geometric3d()
-			.ConvexHullSurfacePixel(region).get(), AbstractFeatureTest.BIG_DELTA);
+			.convexHullSurfacePixel(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	public void testConvexHullSurfaceArea() {
 		// value taken from qhull (qhull.org)
 		assertEquals(ConvexHullSurfaceArea.NAME, 4939.004, ops.geometric3d()
-			.ConvexHullSurfaceArea(region).get(), AbstractFeatureTest.BIG_DELTA);
+			.convexHullSurfaceArea(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	public void testConvexHullVolume() {
 		// value taken from qhull (qhull.org)
 		assertEquals(ConvexHullVolume.NAME, 30720.458, ops.geometric3d()
-			.ConvexHullVolume(region).get(), AbstractFeatureTest.BIG_DELTA);
+			.convexHullVolume(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 		// value taken from imagej
 		// The delta is relatively big because they use float numbers in imagej
 		// and my implementation is based on doubles.
-		assertEquals(SurfaceArea.NAME, 5255.868, ops.geometric3d().SurfaceArea(
+		assertEquals(SurfaceArea.NAME, 5255.868, ops.geometric3d().surfaceArea(
 			region).get(), 0.186);
 	}
 
@@ -167,7 +167,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testSurfacePixel() {
 		// value taken from imagej
-		assertEquals(SurfacePixel.NAME, 7322, ops.geometric3d().SurfacePixel(
+		assertEquals(SurfacePixel.NAME, 7322, ops.geometric3d().surfacePixel(
 			region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -177,7 +177,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testVolume() {
 		// value taken from imagej
-		assertEquals(Volume.NAME, 27578, ops.geometric3d().Volume(region).get(),
+		assertEquals(Volume.NAME, 27578, ops.geometric3d().volume(region).get(),
 			AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -187,7 +187,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testCompactness() {
 		// value taken from imagej
-		assertEquals(Compactness.NAME, 0.219, ops.geometric3d().Compactness(region)
+		assertEquals(Compactness.NAME, 0.219, ops.geometric3d().compactness(region)
 			.get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -197,7 +197,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testSphericity() {
 		// value taken from imagej
-		assertEquals(Sphericity.NAME, 0.603, ops.geometric3d().Sphericity(region)
+		assertEquals(Sphericity.NAME, 0.603, ops.geometric3d().sphericity(region)
 			.get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -207,7 +207,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testMainElongation() {
 		// value taken from imagej
-		assertEquals(MainElongation.NAME, 1.305, ops.geometric3d().MainElongation(
+		assertEquals(MainElongation.NAME, 1.305, ops.geometric3d().mainElongation(
 			region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -218,7 +218,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	public void testMedianElongation() {
 		// value taken from imagej
 		assertEquals(MedianElongation.NAME, 1.137, ops.geometric3d()
-			.MedianElongation(region).get(), AbstractFeatureTest.BIG_DELTA);
+			.medianElongation(region).get(), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class Geometric3DFeaturesTest extends AbstractFeatureTest {
 	@Test
 	public void testSpareness() {
 		// value taken from imagej
-		assertEquals(Spareness.NAME, 0.972, ops.geometric3d().Spareness(region)
+		assertEquals(Spareness.NAME, 0.972, ops.geometric3d().spareness(region)
 			.get(), AbstractFeatureTest.BIG_DELTA);
 	}
 }
