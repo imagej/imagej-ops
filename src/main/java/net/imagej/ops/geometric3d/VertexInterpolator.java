@@ -32,5 +32,17 @@ package net.imagej.ops.geometric3d;
 import net.imagej.ops.Op;
 
 public interface VertexInterpolator extends Op {
-	// NB: Marker Interface
+
+	public void setPoint1(int[] p);
+	
+	public void setPoint2(int[] p);
+	
+	public void setValue1(double d);
+	
+	public void setValue2(double d);
+	
+	public void setIsoLevel(double d);
+	
+	public double[]	getOutput();
+	
 }
