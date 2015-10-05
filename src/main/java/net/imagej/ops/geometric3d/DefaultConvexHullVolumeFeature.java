@@ -53,7 +53,7 @@ public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			Geometric3DOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.Volume,
+			Geometric3D.ConvexHullVolume,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
