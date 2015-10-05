@@ -178,6 +178,11 @@ namespaces = ```
 		[name: "xor",                         iface: "Xor"],
 		[name: "zero",                        iface: "Zero"]
 	]],
+	[name: "tamura", iface: "Tamura", ops: [
+		[name: "contrast",		 iface: "Contrast"],
+		[name: "coarseness",		 iface: "Coarseness"],
+		[name: "directionality",	 iface: "Directionality"]
+	]],
 	[name: "stats", iface: "Stats", ops: [
 		[name: "moment1AboutMean",            iface: "Moment1AboutMean"],
 		[name: "max",                         iface: "Max"],
