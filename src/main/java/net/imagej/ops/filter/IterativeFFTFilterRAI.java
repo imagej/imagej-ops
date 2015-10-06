@@ -161,13 +161,13 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		Type<O> outType = Util.getTypeFromInterval(getOutput());
 
 		if (nonCirculant) {
-			
+
 			// create image for the estimate
 			estimate =
 				imgFactory
 					.create(getImgConvolutionInterval(), outType.createVariable());
 			I sum = ops().stats().sum(Views.iterable(this.getRAIExtendedInput()));
-			
+
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
 			final double average = sum.getRealDouble() / (numPixels);
 
@@ -360,10 +360,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		ops().run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
 			getFFTKernel(), normalization, true, false);
 
-		// fft space can be slightly larger then the object space so so use a mask
-		// to get
-		// rid of any values outside the object space.
-		inPlaceMultiply(normalization, mask);
+		// threshold small values that can cause numerical instability
+		threshold(normalization, 1e-7f);
 
 	}
 
@@ -507,6 +505,23 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			cursorOutput.get().set(cursorInput.get());
 		}
+	}
+
+//TODO replace with op
+	protected <T extends RealType<T>> void threshold(final Img<T> inputOutput,
+		final float t)
+	{
+		final Cursor<T> cursorInputOutput = inputOutput.cursor();
+
+		while (cursorInputOutput.hasNext()) {
+			cursorInputOutput.fwd();
+
+			if (cursorInputOutput.get().getRealFloat() <= t) {
+				cursorInputOutput.get().setReal(0.0f);
+
+			}
+		}
+
 	}
 
 	// TODO replace with op
