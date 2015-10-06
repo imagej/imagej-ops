@@ -62,8 +62,9 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class, name = Ops.Deconvolve.RichardsonLucyTV.NAME,
-priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+	name = Ops.Deconvolve.RichardsonLucyTV.NAME,
+	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends RichardsonLucyRAI<I, O, K, C>
 {
@@ -84,12 +85,9 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 
 		Type<O> outType = Util.getTypeFromInterval(getOutput());
 
-		long[] dimensions =
-			new long[] { getRAIExtendedEstimate().dimension(0),
-				getRAIExtendedEstimate().dimension(1),
-				getRAIExtendedEstimate().dimension(2) };
-
-		variation = getImgFactory().create(dimensions, outType.createVariable());
+		variation =
+			getImgFactory()
+				.create(getRAIExtendedEstimate(), outType.createVariable());
 
 		// assemble the extended view of the variation buffer
 		raiExtendedVariation =
@@ -156,7 +154,13 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 
 		Nx = (int) raiExtendedEstimate.dimension(0);
 		Ny = (int) raiExtendedEstimate.dimension(1);
-		Nz = (int) raiExtendedEstimate.dimension(2);
+
+		if (raiExtendedEstimate.numDimensions() > 2) {
+			Nz = (int) raiExtendedEstimate.dimension(2);
+		}
+		else {
+			Nz = 1;
+		}
 
 		final AtomicInteger ai = new AtomicInteger(0);
 		final int numThreads = 4;
@@ -406,9 +410,9 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 									int stop = 5;
 								}
 
-							}// end i
-						}// end j
-					}// end k
+							} // end i
+						} // end j
+					} // end k
 					long totaltime = System.currentTimeMillis() - starttime;
 
 				}// end run
