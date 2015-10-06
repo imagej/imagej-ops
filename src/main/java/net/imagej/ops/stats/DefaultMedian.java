@@ -48,9 +48,9 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Median.NAME, label = "Statistics: Median")
+@Plugin(type = StatsOp.class, name = Median.NAME, label = "Statistics: Median")
 public class DefaultMedian<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements Median
+	extends AbstractStatsOp<Iterable<I>, O> implements Median
 {
 
 	@Override

@@ -47,10 +47,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = StdDev.NAME,
+@Plugin(type = StatsOp.class, name = StdDev.NAME,
 	label = "Statistics: Standard Deviation")
 public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements StdDev
+	extends AbstractStatsOp<Iterable<I>, O> implements StdDev
 {
 	
 	private FunctionOp<Iterable<I>, O> varianceFunc;

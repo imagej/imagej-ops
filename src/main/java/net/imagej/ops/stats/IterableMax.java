@@ -45,10 +45,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Max.NAME, label = "Statistics: Max",
+@Plugin(type = StatsOp.class, name = Max.NAME, label = "Statistics: Max",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O> implements Max
+	AbstractStatsOp<Iterable<I>, O> implements Max
 {
 
 	@Override

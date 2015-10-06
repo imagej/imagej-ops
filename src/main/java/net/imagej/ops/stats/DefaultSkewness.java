@@ -49,10 +49,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Skewness.NAME,
+@Plugin(type = StatsOp.class, name = Skewness.NAME,
 	label = "Statistics: Skewness")
 public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements Skewness
+	extends AbstractStatsOp<Iterable<I>, O> implements Skewness
 {
 
 	private FunctionOp<Iterable<I>, O> moment3AboutMeanFunc;

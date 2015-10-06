@@ -30,27 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.HybridOp;
 
 /**
- * Abstract Statistics Op. Provides {@link OpService} and create the output.
- * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * marker interface for statistic ops.
+ *
+ * @author Daniel Seebacher, University of Konstanz
  */
-public abstract class AbstractStatOp<I, O extends RealType<O>> extends
-	AbstractHybridOp<I, O> implements StatOp<I, O>
-{
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public O createOutput(I input) {
-		return (O) new DoubleType();
-	}
-
+public interface StatsOp<I, O> extends HybridOp<I, O> {
+	// NB: marker interface
 }

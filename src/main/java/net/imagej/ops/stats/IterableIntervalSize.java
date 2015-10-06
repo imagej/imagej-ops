@@ -46,10 +46,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Size.NAME, label = "Statistics: Size",
+@Plugin(type = StatsOp.class, name = Size.NAME, label = "Statistics: Size",
 	priority = Priority.FIRST_PRIORITY)
 public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<IterableInterval<I>, O> implements Size
+	extends AbstractStatsOp<IterableInterval<I>, O> implements Size
 {
 
 	@Override

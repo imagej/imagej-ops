@@ -49,10 +49,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Kurtosis.NAME,
+@Plugin(type = StatsOp.class, name = Kurtosis.NAME,
 	label = "Statistics: Kurtosis")
 public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements Kurtosis
+	extends AbstractStatsOp<Iterable<I>, O> implements Kurtosis
 {
 
 	private FunctionOp<Iterable<I>, O> stdDevFunc;

@@ -49,10 +49,10 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Moment2AboutMean.NAME,
+@Plugin(type = StatsOp.class, name = Moment2AboutMean.NAME,
 	label = "Statistics: Moment2AboutMean")
 public class DefaultMoment2AboutMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements Moment2AboutMean
+	extends AbstractStatsOp<Iterable<I>, O> implements Moment2AboutMean
 {
 	
 	private FunctionOp<Iterable<I>, O> meanFunc;

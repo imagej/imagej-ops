@@ -44,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatOp.class, name = Sum.NAME, label = "Statistics: Sum")
+@Plugin(type = StatsOp.class, name = Sum.NAME, label = "Statistics: Sum")
 public class DefaultSum<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatOp<Iterable<I>, O> implements Sum
+	AbstractStatsOp<Iterable<I>, O> implements Sum
 {
 
 	@Override

@@ -52,10 +52,10 @@ import org.scijava.plugin.Plugin;
  *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Two-pass_algorithm">
  *      Wikipedia </a>
  */
-@Plugin(type = StatOp.class, name = Variance.NAME,
+@Plugin(type = StatsOp.class, name = Variance.NAME,
 	label = "Statistics: Variance")
 public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatOp<Iterable<I>, O> implements Variance
+	extends AbstractStatsOp<Iterable<I>, O> implements Variance
 {
 	
 	private FunctionOp<Iterable<I>, O> meanOp;
