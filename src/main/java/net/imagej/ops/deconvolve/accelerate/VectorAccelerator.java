@@ -51,7 +51,8 @@ import org.scijava.plugin.Parameter;
  */
 //@Plugin(type = Op.class, name = "vectorAccelerate",
 //	priority = Priority.NORMAL_PRIORITY)
-public class VectorAccelerator<T extends RealType<T>> implements Accelerator<T>
+public class VectorAccelerator<T extends RealType<T>> implements
+	Accelerator<T>
 {
 
 	// TODO: should accelerator be an Op?? If so how do we keep track of current
@@ -84,22 +85,22 @@ public class VectorAccelerator<T extends RealType<T>> implements Accelerator<T>
 
 	/*	@Override
 		public void run() {
-
+	
 			Accelerate(yk_iterated_);
 		}*/
 
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
-			long[] dimensions =
-				new long[] { yk_iterated.dimension(0), yk_iterated.dimension(1),
-					yk_iterated.dimension(2) };
-
+			// long[] dimensions =
+			// new long[] { yk_iterated.dimension(0), yk_iterated.dimension(1),
+			// yk_iterated.dimension(2) };
+    
 			Type<T> type = Util.getTypeFromInterval(yk_iterated);
-			yk_prediction = imgFactory.create(dimensions, type.createVariable());
-			xkm1_previous = imgFactory.create(dimensions, type.createVariable());
-			yk_prediction = imgFactory.create(dimensions, type.createVariable());
-			gk = imgFactory.create(dimensions, type.createVariable());
-			hk_vector = imgFactory.create(dimensions, type.createVariable());
+			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
+			xkm1_previous = imgFactory.create(yk_iterated, type.createVariable());
+			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
+			gk = imgFactory.create(yk_iterated, type.createVariable());
+			hk_vector = imgFactory.create(yk_iterated, type.createVariable());
 
 		}
 
@@ -114,8 +115,7 @@ public class VectorAccelerator<T extends RealType<T>> implements Accelerator<T>
 			// StaticFunctions.showStats(yk_iterated);
 			// StaticFunctions.showStats(yk_prediction);
 
-			accelerationFactor =
-				computeAccelerationFactor(yk_iterated, yk_prediction);
+			accelerationFactor = computeAccelerationFactor(yk_iterated);
 
 			System.out.println("Acceleration Factor: " + accelerationFactor);
 
@@ -140,8 +140,8 @@ public class VectorAccelerator<T extends RealType<T>> implements Accelerator<T>
 			Subtract(xk_estimate, xkm1_previous, hk_vector);
 
 			// make the next prediction
-			yk_prediction =
-				AddAndScale(xk_estimate, hk_vector, (float) accelerationFactor);
+			yk_prediction = AddAndScale(xk_estimate, hk_vector,
+				(float) accelerationFactor);
 		}
 		else {
 			// can't make a prediction yet
@@ -166,8 +166,7 @@ public class VectorAccelerator<T extends RealType<T>> implements Accelerator<T>
 
 	}
 
-	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated,
-		Img<T> yk)
+	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated)
 	{
 		// gk=StaticFunctions.Subtract(yk_iterated, yk_prediction);
 		Subtract(yk_iterated, yk_prediction, gk);
