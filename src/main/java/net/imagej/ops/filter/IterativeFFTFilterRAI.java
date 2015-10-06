@@ -239,16 +239,21 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	}
 
 	protected void performIterations() {
+
+		createReblurred();
+
 		for (int i = 0; i < maxIterations; i++) {
 
 			if (status != null) {
 				status.showProgress(i, maxIterations);
 			}
 			performIteration();
-			createReblurred();
+
 			if (getAccelerate()) {
 				getAccelerator().Accelerate(getRAIExtendedEstimate());
 			}
+
+			createReblurred();
 
 		}
 	}
