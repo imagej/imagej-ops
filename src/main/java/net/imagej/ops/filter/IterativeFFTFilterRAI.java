@@ -324,28 +324,31 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		Img<O> mask = getImgFactory().create(raiExtendedReblurred, type);
 
 		// size of the measurement window
-		Point size = new Point(3);
-		size.setPosition(k.dimension(0), 0);
-		size.setPosition(k.dimension(1), 1);
-		size.setPosition(k.dimension(2), 2);
+		Point size = new Point(length);
+
+		for (int d = 0; d < length; d++) {
+			size.setPosition(k.dimension(d), d);
+		}
 
 		// starting point of the measurement window when it is centered in fft space
-		Point start = new Point(3);
-		start.setPosition((nFFT[0] - k.dimension(0)) / 2, 0);
-		start.setPosition((nFFT[1] - k.dimension(1)) / 2, 1);
-		start.setPosition((nFFT[2] - k.dimension(2)) / 2, 2);
+		Point start = new Point(length);
+
+		for (int d = 0; d < length; d++) {
+			start.setPosition((nFFT[d] - k.dimension(d)) / 2, d);
+		}
 
 		// size of the object space
-		Point maskSize = new Point(3);
-		maskSize.setPosition(n[0], 0); // 319
-		maskSize.setPosition(n[1], 1); // 319
-		maskSize.setPosition(n[2], 2); // 190
+		Point maskSize = new Point(length);
+		for (int d = 0; d < length; d++) {
+			maskSize.setPosition(Math.min(n[d], nFFT[d]), d);
+		}
 
 		// starting point of the object space within the fft space
-		Point maskStart = new Point(3);
-		maskStart.setPosition((nFFT[0] - n[0]) / 2 + 1, 0); // 9
-		maskStart.setPosition((nFFT[1] - n[1]) / 2 + 1, 1); // 21
-		maskStart.setPosition((nFFT[2] - n[2]) / 2 + 1, 2); // 11
+		Point maskStart = new Point(length);
+
+		for (int d = 0; d < length; d++) {
+			maskStart.setPosition((Math.max(0, nFFT[d] - n[d]) / 2), d);
+		}
 
 		// draw a cube the size of the measurement space
 		drawCube(normalization, start, size, 1.0);
