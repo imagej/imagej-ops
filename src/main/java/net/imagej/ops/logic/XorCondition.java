@@ -48,9 +48,7 @@ public class XorCondition<T> extends AbstractCondition<T> implements
 
 	@Override
 	public boolean isTrue(final T val) {
-		final boolean one = c1.isTrue(val);
-		final boolean two = c2.isTrue(val);
-		return (one && !two) || (!one && two);
+		return c1.isTrue(val) != c2.isTrue(val);
 	}
 
 }
