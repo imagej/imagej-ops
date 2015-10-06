@@ -74,30 +74,34 @@ public class Haralick3DFeatureSet<T, O> extends AbstractOpRefFeatureSet<Iterable
 	@Parameter
 	private int distance = 1;
 
-	@Parameter
-	private MatrixOrientation3D orientation;
+	@Parameter(choices = { "HORIZONTAL", "VERTICAL", "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL_VERTICAL",
+			"HORIZONTAL_DIAGONAL", "VERTICAL_VERTICAL", "VERTICAL_DIAGONAL", "DIAGONAL_VERTICAL", "DIAGONAL_DIAGONAL",
+			"ANTIDIAGONAL_VERTICAL", "ANTIDIAGONAL_DIAGONAL", "DEPTH" })
+	private String orientation = "HORIZONTAL";
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
 		final HashSet<OpRef<?>> refs = new HashSet<OpRef<?>>();
 
-		refs.add(ref(ASM.class, numGreyLevels, distance, orientation));
-		refs.add(ref(ClusterPromenence.class, numGreyLevels, distance, orientation));
-		refs.add(ref(ClusterShade.class, numGreyLevels, distance, orientation));
-		refs.add(ref(Contrast.class, numGreyLevels, distance, orientation));
-		refs.add(ref(Correlation.class, numGreyLevels, distance, orientation));
-		refs.add(ref(DifferenceEntropy.class, numGreyLevels, distance, orientation));
-		refs.add(ref(DifferenceVariance.class, numGreyLevels, distance, orientation));
-		refs.add(ref(Entropy.class, numGreyLevels, distance, orientation));
-		refs.add(ref(ICM1.class, numGreyLevels, distance, orientation));
-		refs.add(ref(ICM2.class, numGreyLevels, distance, orientation));
-		refs.add(ref(IFDM.class, numGreyLevels, distance, orientation));
-		refs.add(ref(MaxProbability.class, numGreyLevels, distance, orientation));
-		refs.add(ref(SumAverage.class, numGreyLevels, distance, orientation));
-		refs.add(ref(SumEntropy.class, numGreyLevels, distance, orientation));
-		refs.add(ref(SumVariance.class, numGreyLevels, distance, orientation));
-		refs.add(ref(TextureHomogeneity.class, numGreyLevels, distance, orientation));
-		refs.add(ref(Variance.class, numGreyLevels, distance, orientation));
+		MatrixOrientation3D matrixOrientation3D = MatrixOrientation3D.valueOf(orientation);
+
+		refs.add(ref(ASM.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(ClusterPromenence.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(ClusterShade.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(Contrast.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(Correlation.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(DifferenceEntropy.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(DifferenceVariance.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(Entropy.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(ICM1.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(ICM2.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(IFDM.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(MaxProbability.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(SumAverage.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(SumEntropy.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(SumVariance.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(TextureHomogeneity.class, numGreyLevels, distance, matrixOrientation3D));
+		refs.add(ref(Variance.class, numGreyLevels, distance, matrixOrientation3D));
 
 		return refs;
 	}
