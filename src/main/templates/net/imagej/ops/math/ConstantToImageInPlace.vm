@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * Wrapper class for in-place binary math operations between constant values 
- * and {@link ArrayImg}s.
+ * and images in format of (@link IterableRealInterval}.
  *
  * @author Leon Yang
  */
