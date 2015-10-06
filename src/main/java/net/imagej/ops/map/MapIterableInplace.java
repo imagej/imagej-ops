@@ -49,7 +49,7 @@ public class MapIterableInplace<A> extends AbstractMapInplace<A, Iterable<A>> {
 	@Override
 	public void compute(final Iterable<A> arg) {
 		for (final A t : arg) {
-			getOp().compute(t, t);
+			getOp().compute(t);
 		}
 	}
 }
