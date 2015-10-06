@@ -270,6 +270,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	 */
 	protected void postProcess() {
 
+		// if doing non circulant deconvolution we need to crop and copy back to the
+		// original image size
 		if (getNonCirculant() == true) {
 
 			long[] start = new long[k.numDimensions()];
@@ -282,10 +284,12 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			Img<O> temp = ops().create().img(getNormalization());
 
+			// TODO: get rid of extra copy after bug in the crop is fixed
 			copy2(getRAIExtendedEstimate(), temp);
 
-			RandomAccessibleInterval<O> temp2 = ops().image().crop(
-				getRAIExtendedEstimate(), new FinalInterval(start, end));
+			RandomAccessibleInterval<O> temp2 =
+				ops().image().crop(getRAIExtendedEstimate(),
+					new FinalInterval(start, end));
 
 			copy2(temp2, getOutput());
 
