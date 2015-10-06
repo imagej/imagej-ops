@@ -154,19 +154,20 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// if no output out of bounds factory exists create the obf for output
 		if (getObfOutput() == null) {
-			setObfOutput(
-				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
-					.getTypeFromInterval(getOutput()).createVariable()));
+			setObfOutput(new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(
+				Util.getTypeFromInterval(getOutput()).createVariable()));
 		}
 
 		Type<O> outType = Util.getTypeFromInterval(getOutput());
 
 		if (nonCirculant) {
+			
 			// create image for the estimate
-			estimate = imgFactory.create(getImgConvolutionInterval(), outType
-				.createVariable());
-			final O sum =
-				ops().stats().<I, O> sum(Views.iterable(this.getRAIExtendedInput()));
+			estimate =
+				imgFactory
+					.create(getImgConvolutionInterval(), outType.createVariable());
+			I sum = ops().stats().sum(Views.iterable(this.getRAIExtendedInput()));
+			
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
 			final double average = sum.getRealDouble() / (numPixels);
 
@@ -176,8 +177,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			}
 
 			// create image for the reblurred
-			reblurred = imgFactory.create(getImgConvolutionInterval(), outType
-				.createVariable());
+			reblurred =
+				imgFactory
+					.create(getImgConvolutionInterval(), outType.createVariable());
 
 			// TODO: review this step
 			// extend the output and use it as a buffer to store the estimate
@@ -192,12 +194,14 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			// TODO: review this step
 			// extend the output and use it as a buffer to store the estimate
-			raiExtendedEstimate = Views.interval(Views.extend(getOutput(),
-				getObfOutput()), getImgConvolutionInterval());
+			raiExtendedEstimate =
+				Views.interval(Views.extend(getOutput(), getObfOutput()),
+					getImgConvolutionInterval());
 
 			// assemble the extended view of the reblurred
-			raiExtendedReblurred = Views.interval(Views.extend(reblurred,
-				getObfOutput()), getImgConvolutionInterval());
+			raiExtendedReblurred =
+				Views.interval(Views.extend(reblurred, getObfOutput()),
+					getImgConvolutionInterval());
 
 			// set first guess of estimate
 			// TODO: implement logic for various first guesses.
@@ -220,8 +224,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// if non-circulant decon mode create image for normalization
 		if (nonCirculant) {
-			normalization = getImgFactory().create(raiExtendedEstimate, outType
-				.createVariable());
+			normalization =
+				getImgFactory().create(raiExtendedEstimate, outType.createVariable());
 
 			this.createNormalizationImageSemiNonCirculant();
 		}
@@ -253,6 +257,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		// perform convolution -- kernel FFT should allready exist
 		ops().filter().convolve(raiExtendedEstimate, null, getFFTInput(),
 			getFFTKernel(), raiExtendedReblurred, true, false);
+
 	}
 
 	/**
@@ -502,7 +507,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		while (cursorInputOutput.hasNext()) {
 			cursorInputOutput.fwd();
 			cursorInput.fwd();
+
 			cursorInputOutput.get().mul(cursorInput.get());
+
 		}
 
 	}
