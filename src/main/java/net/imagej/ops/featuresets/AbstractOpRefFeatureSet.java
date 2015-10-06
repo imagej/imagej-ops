@@ -51,8 +51,7 @@ import net.imagej.ops.OpRef;
  * @param <O> type of the output
  */
 public abstract class AbstractOpRefFeatureSet<I, O> extends
-	AbstractCachedFeatureSet<I, O>implements FeatureSet<I, O>,
-	ConfigurableFeatureSet<I, O>
+	AbstractCachedFeatureSet<I, O>implements ConfigurableFeatureSet<I, O>
 {
 
 	@Parameter
@@ -71,8 +70,9 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends
 		if (namedFeatureMap == null) {
 			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<I, ? extends O>>();
 			for (final OpRef<?> ref : initOpRefs()) {
-				if (active == null || active.contains(new NamedFeature(ref.getLabel()))) namedFeatureMap.put(
-					new NamedFeature(ref.getLabel()), ops().function(ref.getType(),
+				NamedFeature feature = new NamedFeature(ref.getClass().getName());
+				if (active == null || active.contains(feature)) namedFeatureMap.put(
+					feature, ops().function(ref.getType(),
 						outType, in(), ref.getArgs()));
 			}
 		}
@@ -122,6 +122,7 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends
 		if (namedFeatureMap == null) {
 			HashSet<NamedFeature> hashSet = new HashSet<NamedFeature>();
 			for (OpRef<?> ref : initOpRefs()) {
+
 				hashSet.add(new NamedFeature(ref.getLabel()));
 			}
 
