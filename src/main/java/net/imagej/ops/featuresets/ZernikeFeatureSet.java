@@ -30,17 +30,16 @@
 
 package net.imagej.ops.featuresets;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.features.zernike.helper.ZernikeComputer;
 import net.imagej.ops.features.zernike.helper.ZernikeMoment;
 import net.imagej.ops.stats.StatOp;
@@ -58,43 +57,59 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Features", description = "Calculates the Zernike Features")
 public class ZernikeFeatureSet<I extends RealType<I>>
-		extends
-			AbstractCachedFeatureSet<IterableInterval<I>, DoubleType> {
+		extends AbstractCachedFeatureSet<IterableInterval<I>, DoubleType> {
 
-	@Parameter(type = ItemIO.INPUT, label = "Number of Bins", description = "The number of bins of the histogram", min = "1", max = "2147483647", stepSize = "1")
-	private int numBins = 256;
+	@Parameter(type = ItemIO.INPUT, label = "Minimum Order of Zernike Moment", description = "The minimum order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
+	private int orderMin = 2;
 
-	@Parameter(type = ItemIO.INPUT, label = "Repetition of Zernike Moment", description = "The repetition of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
-	private double repetition = 2;
+	@Parameter(type = ItemIO.INPUT, label = "Maximum Order of Zernike Moment", description = "The maximum order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
+	private int orderMax = 4;
 
-	@Parameter(type = ItemIO.INPUT, label = "Order of Zernike Moment", description = "The order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
-	private double order = 4;
-
-	private FunctionOp<IterableInterval<I>, ZernikeMoment> zernikeComputer;
+	private ZernikeComputer<I> zernikeComputer;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		zernikeComputer = ops().function(ZernikeComputer.class,
-				ZernikeMoment.class, in(), order, repetition);
+		zernikeComputer = (ZernikeComputer<I>) ops().function(ZernikeComputer.class, ZernikeMoment.class, in());
 	}
 
 	@Override
 	public Collection<NamedFeature> getFeatures() {
-		return Arrays.asList(new NamedFeature("Magnitude"),
-				new NamedFeature("Phase"));
+		List<NamedFeature> features = new ArrayList<NamedFeature>();
+
+		for (int order = orderMin; order <= orderMax; order++) {
+			for (int repetition = 0; repetition <= order; repetition++) {
+				if (Math.abs(order - repetition) % 2 == 0) {
+					features.add(new NamedFeature("Magnitude for Order " + order + " and Repetition " + repetition));
+					features.add(new NamedFeature("Phase for Order " + order + " and Repetition " + repetition));
+				}
+			}
+		}
+
+		return features;
 	}
 
 	@Override
-		public Map<NamedFeature, DoubleType> compute(IterableInterval<I> input) {
-			HashMap<NamedFeature, DoubleType> map = new HashMap<NamedFeature, DoubleType>();
-			
-			ZernikeMoment results = zernikeComputer.compute(input);
-			
-			map.put(new NamedFeature("Magnitude"), new DoubleType(results.getMagnitude()));
-			map.put(new NamedFeature("Phase"), new DoubleType(results.getPhase()));
-			
-			return map;
+	public Map<NamedFeature, DoubleType> compute(IterableInterval<I> input) {
+		HashMap<NamedFeature, DoubleType> map = new HashMap<NamedFeature, DoubleType>();
+
+		for (int order = orderMin; order <= orderMax; order++) {
+			for (int repetition = 0; repetition <= order; repetition++) {
+				if (Math.abs(order - repetition) % 2 == 0) {
+					zernikeComputer.setOrder(order);
+					zernikeComputer.setRepetition(repetition);
+
+					ZernikeMoment results = zernikeComputer.compute(input);
+
+					map.put(new NamedFeature("Magnitude for Order " + order + " and Repetition " + repetition),
+							new DoubleType(results.getMagnitude()));
+					map.put(new NamedFeature("Phase for Order " + order + " and Repetition " + repetition),
+							new DoubleType(results.getPhase()));
+				}
+			}
 		}
+
+		return map;
+	}
 
 }
