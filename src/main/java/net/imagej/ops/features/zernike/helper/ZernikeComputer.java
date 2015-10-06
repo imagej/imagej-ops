@@ -273,6 +273,14 @@ public class ZernikeComputer<T extends RealType<T>> extends AbstractFunctionOp<I
 		return sign * fac1 * fac2;
 	}
 
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public void setRepetition(int repetition) {
+		this.repetition = repetition;
+	}
+
 	/**
 	 * 
 	 * Creates a radial polynom for zernike moment with order n and repitition m
