@@ -49,23 +49,24 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
+@SuppressWarnings("rawtypes")
 @Plugin(type = Copy.Img.class, name = Copy.Img.NAME, priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyArrayImg<T extends NativeType<T>>
 		extends
-		AbstractHybridOp<ArrayImg<T, ? extends ArrayDataAccess<?>>, ArrayImg<T, ? extends ArrayDataAccess<?>>>
+		AbstractHybridOp<ArrayImg<T, ? extends ArrayDataAccess>, ArrayImg<T, ? extends ArrayDataAccess>>
 		implements Copy.Img, Contingent {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayImg<T, ? extends ArrayDataAccess<?>> createOutput(
-			final ArrayImg<T, ? extends ArrayDataAccess<?>> input) {
-		return (ArrayImg<T, ? extends ArrayDataAccess<?>>) input.factory()
+	public ArrayImg<T, ? extends ArrayDataAccess> createOutput(
+			final ArrayImg<T, ? extends ArrayDataAccess> input) {
+		return (ArrayImg<T, ? extends ArrayDataAccess>) input.factory()
 				.create(input, input.firstElement().createVariable());
 	}
 
 	@Override
-	public void compute(final ArrayImg<T, ? extends ArrayDataAccess<?>> input,
-			final ArrayImg<T, ? extends ArrayDataAccess<?>> output) {
+	public void compute(final ArrayImg<T, ? extends ArrayDataAccess> input,
+			final ArrayImg<T, ? extends ArrayDataAccess> output) {
 
 		final Object inArray = input.update(null).getCurrentStorageArray();
 		System.arraycopy(inArray, 0, output.update(null)
