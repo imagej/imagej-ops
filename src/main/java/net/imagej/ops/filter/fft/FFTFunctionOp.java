@@ -31,7 +31,6 @@
 package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
@@ -53,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTImg<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
+public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 	extends AbstractFunctionOp<I, O>
 {
 
