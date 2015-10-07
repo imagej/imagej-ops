@@ -628,7 +628,7 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.fft.FFTFunctionOp.class)
 	public
 		<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<I> in)
+		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
