@@ -38,6 +38,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Create;
 import net.imagej.ops.Ops.Map;
+import net.imagej.ops.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
@@ -74,19 +75,16 @@ public class CopyRAI<T>
 		return createFunc.compute(input);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		mapComputer = (ComputerOp) ops().computer(
-				Map.class,
-				out() == null ? RandomAccessibleInterval.class : out(),
-				in(),
-				ops.computer(Ops.Copy.Type.class, out() == null ? Type.class
-						: Views.iterable(out()).firstElement().getClass(),
-						Views.iterable(in()).firstElement().getClass()));
 
-		createFunc = (FunctionOp) ops().function(Create.Img.class,
-				RandomAccessibleInterval.class, in(),
+		final ComputerOp<? extends Object, ? extends Object> typeComputer = ops
+				.computer(Ops.Copy.Type.class, out() == null ? Type.class
+						: Views.iterable(out()).firstElement().getClass(),
+						Views.iterable(in()).firstElement().getClass());
+
+		mapComputer = RAIs.computer(ops(), Map.class, in(), typeComputer);
+		createFunc = RAIs.function(ops(), Create.Img.class, in(),
 				Util.getTypeFromInterval(in()));
 	}
 
