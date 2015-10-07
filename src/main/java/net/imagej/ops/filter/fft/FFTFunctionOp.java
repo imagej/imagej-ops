@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT that operates on Img
+ * Forward FFT function that operates on RAI
  * 
  * @author Brian Northan
  * @param <T>
@@ -57,30 +57,36 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 {
 
 	/**
-	 * size of border to apply in each dimension
+	 * The size of border to apply in each dimension
 	 */
 	@Parameter(required = false)
 	private long[] borderSize = null;
 
 	/**
-	 * set to true to compute the FFT as fast as possible. The input will be
-	 * extended to the next fast FFT size. If false the input will be computed
-	 * using the original input dimensions (if possible) If the input dimensions
-	 * are not supported by the underlying FFT implementation the input will be
-	 * extended to the nearest size that is supported.
+	 * Whether to perform a fast FFT. If true the input will be extended to the
+	 * next fast FFT size. If false the input will be computed using the original
+	 * input dimensions (if possible). If the input dimensions are not supported
+	 * by the underlying FFT implementation the input will be extended to the
+	 * nearest size that is supported.
 	 */
 	@Parameter(required = false)
 	private Boolean fast = true;
 
 	/**
-	 * generates the out of bounds strategy for the extended area
+	 * The OutOfBoundsFactory used to extend the image
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
 
+	/**
+	 * The ImgFactory used to create the output
+	 */
 	@Parameter(required = false)
 	private ImgFactory factory;
 
+	/**
+	 * The type of the output
+	 */
 	@Parameter(required = false)
 	private Type<C> fftType;
 
