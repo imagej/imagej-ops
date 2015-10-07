@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.IntegerType;
 import org.scijava.plugin.Plugin;
 
 /**
- * The filter namespace contains ops that copy data.
+ * The copy namespace contains ops that copy data.
  *
  * @author Christian Dietz, University of Konstanz
  */
