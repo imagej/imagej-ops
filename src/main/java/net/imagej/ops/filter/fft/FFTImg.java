@@ -30,14 +30,19 @@
 
 package net.imagej.ops.filter.fft;
 
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.Type;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -48,49 +53,84 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
-	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
+public class FFTImg<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
+	extends AbstractFunctionOp<I, O>
 {
+
+	/**
+	 * size of border to apply in each dimension
+	 */
+	@Parameter(required = false)
+	private long[] borderSize = null;
+
+	/**
+	 * set to true to compute the FFT as fast as possible. The input will be
+	 * extended to the next fast FFT size. If false the input will be computed
+	 * using the original input dimensions (if possible) If the input dimensions
+	 * are not supported by the underlying FFT implementation the input will be
+	 * extended to the nearest size that is supported.
+	 */
+	@Parameter(required = false)
+	private Boolean fast = true;
+
+	/**
+	 * generates the out of bounds strategy for the extended area
+	 */
+	@Parameter(required = false)
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
+
+	@Parameter(required = false)
+	private ImgFactory factory;
+
+	@Parameter(required = false)
+	private Type<C> fftType;
 
 	private long[] paddedSize;
 
 	private long[] fftSize;
 
-	@Override
-	protected void computeFFTFastSize(long[] inputSize) {
+	/**
+	 * create the output based on the input. If fast=true the size is determined
+	 * such that the underlying FFT implementation will run as fast as possible.
+	 * If fast=false the size is determined such that the underlying FFT
+	 * implementation will use the smallest amount of memory possible.
+	 */
+	public O createOutput(I input) {
+
+		long[] inputSize = new long[input.numDimensions()];
+
+		for (int d = 0; d < input.numDimensions(); d++) {
+			inputSize[d] = input.dimension(d);
+
+			if (borderSize != null) {
+				inputSize[d] += borderSize[d];
+			}
+		}
 
 		paddedSize = new long[inputSize.length];
 		fftSize = new long[inputSize.length];
 
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, true);
+		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, fast);
 
-	}
-
-	@Override
-	protected void computeFFTSmallSize(long[] inputSize) {
-
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, false);
-
-	}
-
-	@Override
-	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory) {
-
-		try {
-			return factory.imgFactory(new ComplexFloatType()).create(fftSize,
-				new ComplexFloatType());
+		if (fftType == null) {
+			fftType = (C) new ComplexFloatType();
 		}
-		// TODO: error handling?
-		catch (IncompatibleTypeException e) {
-			return null;
+
+		if (factory == null) {
+			factory = (ImgFactory) ops().create().imgFactory(fftSize, fftType);
 		}
+
+		return (O) ops().create().img(fftSize, fftType);
+
 	}
 
 	@Override
-	public void compute(final I input, final Img<ComplexFloatType> output) {
-		ops().filter().fft(output, input, getOBF(), paddedSize);
+	public O compute(final I input) {
+
+		O output = createOutput(input);
+
+		ops().filter().fft(output, input, obf, paddedSize);
+
+		return output;
 	}
 }
