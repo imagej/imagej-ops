@@ -52,7 +52,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
 		return (ComputerOp) ops.computer(opType, RandomAccessibleInterval.class,
-			in, otherArgs);
+			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -62,7 +62,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
 		return (FunctionOp) ops.function(opType, RandomAccessibleInterval.class,
-			in, otherArgs);
+			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -71,8 +71,8 @@ public final class RAIs {
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class, in,
-			otherArgs);
+		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class,
+			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	public static <T> InplaceOp<RandomAccessibleInterval<T>> inplace(
