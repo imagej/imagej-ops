@@ -162,28 +162,28 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultEccentricity.class)
-	public DoubleType eccentricity(final Polytope in) {
+	public DoubleType eccentricity(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultEccentricity.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultFeret.class)
-	public Pair<RealLocalizable, RealLocalizable> feret(final Polytope in) {
-		final Pair<RealLocalizable, RealLocalizable> result =
-			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.DefaultFeret.class, in);
+	public Pair feret(final ThePolygon in) {
+		final Pair result =
+			(Pair) ops().run(net.imagej.ops.geom.DefaultFeret.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsAngle.class)
-	public DoubleType feretsangle(final Polytope in) {
+	public DoubleType feretsangle(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultFeretsAngle.class, in);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.geom.DefaultFeretsDiameter.class)
-	public DoubleType feretsdiameter(final Polytope in) {
+	public DoubleType feretsdiameter(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultFeretsDiameter.class, in);
 		return result;
@@ -240,14 +240,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultMinorAxis.class)
-	public DoubleType minoraxis(final Polytope in) {
+	public DoubleType minoraxis(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultMinorAxis.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultRoundness.class)
-	public DoubleType roundness(final Polytope in) {
+	public DoubleType roundness(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultRoundness.class, in);
 		return result;
@@ -261,7 +261,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultMinorMajorAxis.class)
-	public Pair<DoubleType, DoubleType> secondmultivariate(final Polytope in) {
+	public Pair<DoubleType, DoubleType> secondmultivariate(final ThePolygon in) {
 		final Pair<DoubleType, DoubleType> result =
 			(Pair<DoubleType, DoubleType>) ops().run(net.imagej.ops.geom.DefaultMinorMajorAxis.class, in);
 		return result;
@@ -303,7 +303,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultSmallestEnclosingRectangle.class)
-	public ThePolygon smallestboundingbox(final Polytope in) {
+	public ThePolygon smallestboundingbox(final ThePolygon in) {
 		final ThePolygon result =
 			(ThePolygon) ops().run(net.imagej.ops.geom.DefaultSmallestEnclosingRectangle.class, in);
 		return result;
@@ -324,7 +324,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultSphericityFeature.class)
-	public DoubleType sphericity(final Polytope in) {
+	public DoubleType sphericity(final Mesh in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultSphericityFeature.class, in);
 		return result;
