@@ -52,4 +52,9 @@ public class BitTypeVertexInterpolator extends AbstractVertexInterpolator {
 		}
 	}
 
+	@Override
+	public void setIsoLevel(double d) {
+		// nothing to do
+	}
+
 }

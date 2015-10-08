@@ -86,11 +86,6 @@ public abstract class AbstractVertexInterpolator extends AbstractOp
 	}
 	
 	@Override
-	public void setIsoLevel(double d) {
-		isolevel = d;
-	}
-	
-	@Override
 	public double[] getOutput() {
 		return output;
 	}

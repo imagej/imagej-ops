@@ -68,4 +68,9 @@ public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 		}
 	}
 
+	@Override
+	public void setIsoLevel(double d) {
+		isolevel = d;
+	}
+
 }
