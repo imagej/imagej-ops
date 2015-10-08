@@ -36,7 +36,8 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.MarchingCubes;
 import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.DefaultTriangularFacet;
+import net.imagej.ops.geom.helper.Mesh;
 import net.imagej.ops.geom.helper.Vertex;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -63,7 +64,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Geometric.MarchingCubes.NAME)
 public class DefaultMarchingCubes<T extends BooleanType<T>>
 		extends
-			AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultMesh>
+			AbstractFunctionOp<RandomAccessibleInterval<T>, Mesh>
 		implements
 			MarchingCubes,
 			Contingent {
@@ -168,7 +169,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>>
 				/* Create the triangle */
 				for (i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
 
-					TriangularFacet face = new TriangularFacet(
+					DefaultTriangularFacet face = new DefaultTriangularFacet(
 							new Vertex(
 									vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
 									vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
