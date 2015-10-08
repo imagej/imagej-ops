@@ -90,25 +90,11 @@ public class GeomNamespace extends AbstractNamespace {
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultPerimeter.class, in);
 		return result;
 	}
-	
-	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullSurfaceAreaFeature.class)
-	public DoubleType boundarysizeconvexhull(final Mesh in) {
-		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullSurfaceAreaFeature.class, in);
-		return result;
-	}
 
-	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullPerimeter.class)
-	public DoubleType boundarysizeconvexhull(final ThePolygon in) {
+	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullBoundarySize.class)
+	public DoubleType boundarysizeconvexhull(final Polytope in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullPerimeter.class, in);
-		return result;
-	}
-	
-	@OpMethod(op = net.imagej.ops.geom.DefaultBoundingBox.class)
-	public ThePolygon boundingbox(final Polytope in) {
-		final ThePolygon result =
-			(ThePolygon) ops().run(net.imagej.ops.geom.DefaultBoundingBox.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullBoundarySize.class, in);
 		return result;
 	}
 	
@@ -141,14 +127,14 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultCircularity.class)
-	public DoubleType circularity(final Polytope in) {
+	public DoubleType circularity(final ThePolygon in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultCircularity.class, in);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultCompactnessFeature.class)
-	public DoubleType compactness(final Polytope in) {
+	public DoubleType compactness(final Mesh in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultCompactnessFeature.class, in);
 		return result;
@@ -309,17 +295,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullArea.class)
-	public DoubleType sizeconvexhull(final ThePolygon in) {
+	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullSize.class)
+	public DoubleType sizeconvexhull(final Polytope in) {
 		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullArea.class, in);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.geom.DefaultConvexHullVolumeFeature.class)
-	public DoubleType sizeconvexhull(final Mesh in) {
-		final DoubleType result =
-			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullVolumeFeature.class, in);
+			(DoubleType) ops().run(net.imagej.ops.geom.DefaultConvexHullSize.class, in);
 		return result;
 	}
 	
@@ -362,6 +341,13 @@ public class GeomNamespace extends AbstractNamespace {
 	public double[] vertexinterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value) {
 		final double[] result =
 			(double[]) ops().run(net.imagej.ops.geom.BitTypeVertexInterpolator.class, p1, p2, p1Value, p2Value);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.geom.DefaultBoundingBox.class)
+	public ThePolygon boundingbox(final ThePolygon in) {
+		final ThePolygon result =
+			(ThePolygon) ops().run(net.imagej.ops.geom.DefaultBoundingBox.class, in);
 		return result;
 	}
 }
