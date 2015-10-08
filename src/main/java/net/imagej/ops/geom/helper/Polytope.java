@@ -29,6 +29,12 @@
  */
 package net.imagej.ops.geom.helper;
 
+import java.util.List;
+
+import net.imglib2.RealLocalizable;
+
 public interface Polytope {
 	// NB: Marker Interface
+	
+	public List<RealLocalizable> getPoints();
 }
