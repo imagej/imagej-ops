@@ -35,36 +35,35 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Size;
-import net.imagej.ops.Ops.Geometric.Boundingboxity;
 import net.imagej.ops.Ops.Geometric.SmallestBoundingBox;
 import net.imagej.ops.RTs;
-import net.imglib2.roi.geometric.Polygon;
+import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Generic implementation of {@link Boundingboxity}.
+ * Generic implementation of {@link Boundingboxivity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Rectangularity", name = Geometric.Boundingboxity.NAME)
-public class DefaultRectangularity
+@Plugin(type = GeometricOp.class, label = "Geometric: Rectangularity", name = Geometric.Boundingboxivity.NAME)
+public class DefaultBoundingboxivity
 		extends
-			AbstractFunctionOp<Polygon, DoubleType>
+			AbstractFunctionOp<Polytope, DoubleType>
 		implements
-		Geometric.Boundingboxity {
+		Geometric.Boundingboxivity {
 
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, Polygon> smallestEnclosingRectangleFunc;
+	private FunctionOp<Polytope, DoubleType> areaFunc;
+	private FunctionOp<Polytope, Polytope> smallestEnclosingRectangleFunc;
 
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Size.class, in());
 		smallestEnclosingRectangleFunc = ops().function(
-				SmallestBoundingBox.class, Polygon.class, Polygon.class);
+				SmallestBoundingBox.class, Polytope.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final Polytope input) {
 		return new DoubleType(areaFunc.compute(input).getRealDouble()
 				/ areaFunc.compute(
 						smallestEnclosingRectangleFunc.compute(input))
