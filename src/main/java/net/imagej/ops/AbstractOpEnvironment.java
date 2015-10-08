@@ -44,8 +44,7 @@ import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.features.zernike.ZernikeNamespace;
 import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.filter.FilterNamespace;
-import net.imagej.ops.geom.Geometric2DNamespace;
-import net.imagej.ops.geom.Geometric3DNamespace;
+import net.imagej.ops.geom.GeomNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -636,13 +635,8 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 	
 	@Override
-	public Geometric2DNamespace geometric2d() {
-		return namespace(Geometric2DNamespace.class);
-	}
-
-	@Override
-	public Geometric3DNamespace geometric3d() {
-		return namespace(Geometric3DNamespace.class);
+	public GeomNamespace geom() {
+		return namespace(GeomNamespace.class);
 	}
 
 	@Override
