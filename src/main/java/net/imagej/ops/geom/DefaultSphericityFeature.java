@@ -29,17 +29,16 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
+import net.imagej.ops.Ops.Geometric.Compactness;
+import net.imagej.ops.geom.helper.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Sphericity}.
@@ -47,31 +46,24 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.Sphericity.NAME, label = "Geometric3D: Sphericity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSphericityFeature<B extends BooleanType<B>>
+public class DefaultSphericityFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.Sphericity,
-			Contingent {
+			Geometric.Sphericity {
 
-	private FunctionOp<IterableRegion<B>, DoubleType> compactness;
+	private FunctionOp<Mesh, DoubleType> compactness;
 
 	@Override
 	public void initialize() {
-		compactness = ops().function(DefaultCompactnessFeature.class,
-				DoubleType.class, in());
+		compactness = ops().function(Compactness.class, DoubleType.class,
+				in());
 	}
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(Math.pow(compactness.compute(input).get(),
-				(1 / 3d)));
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
+	public DoubleType compute(final Mesh input) {
+		return new DoubleType(
+				Math.pow(compactness.compute(input).get(), (1 / 3d)));
 	}
 
 }

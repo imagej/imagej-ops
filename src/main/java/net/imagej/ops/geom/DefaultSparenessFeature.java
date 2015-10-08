@@ -34,8 +34,12 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.MainElongation;
+import net.imagej.ops.Ops.Geometric.MedianElongation;
 import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -53,7 +57,6 @@ public class DefaultSparenessFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
 			Geometric.Spareness,
 			Contingent {
 
@@ -67,9 +70,9 @@ public class DefaultSparenessFeature<B extends BooleanType<B>>
 
 	@Override
 	public void initialize() {
-		mainElongation = ops().function(DefaultMainElongationFeature.class,
+		mainElongation = ops().function(MainElongation.class,
 				DoubleType.class, in());
-		medianElongation = ops().function(DefaultMedianElongationFeature.class,
+		medianElongation = ops().function(MedianElongation.class,
 				DoubleType.class, in());
 		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 				CovarianceOf2ndMultiVariate3D.class, in());
@@ -79,6 +82,7 @@ public class DefaultSparenessFeature<B extends BooleanType<B>>
 
 	@Override
 	public DoubleType compute(final IterableRegion<B> input) {
+//		Mesh mesh = (Mesh)input;
 		double r1 = Math.sqrt(5.0 * multivar.compute(input).getEigenvalue(0));
 		double r2 = r1 / mainElongation.compute(input).get();
 		double r3 = r2 / medianElongation.compute(input).get();
@@ -90,7 +94,7 @@ public class DefaultSparenessFeature<B extends BooleanType<B>>
 
 	@Override
 	public boolean conforms() {
-		return in().numDimensions() == 3;
+		return true;// in() instanceof Mesh;
 	}
 
 }

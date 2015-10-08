@@ -29,50 +29,47 @@
  */
 package net.imagej.ops.geom;
 
+import java.util.List;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imagej.ops.geom.helper.Mesh;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imglib2.RealLocalizable;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundaryPixelConvexHull}. 
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric.BoundaryPixelConvexHull}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.BoundaryPixelConvexHull.NAME, label = "Geometric3D: ConvexHullSurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexHullSurfacePixelFeature<B extends BooleanType<B>>
+public class DefaultConvexHullSurfacePixelFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Polytope, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.BoundaryPixelConvexHull,
-			Contingent {
+			Geometric.BoundaryPixelConvexHull {
 
-	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
+	private FunctionOp<List<RealLocalizable>, Polytope> convexHullFunc;
 
 	@Override
 	public void initialize() {
-		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
-				Mesh.class, in());
+		convexHullFunc = ops().function(ConvexHull.class, Polytope.class,
+				in().getPoints());
 	}
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(((DefaultMesh)convexHull.compute(input)).getPoints().size());
+	public DoubleType compute(final Polytope input) {
+		return new DoubleType(convexHullFunc
+				.compute(input.getPoints()).getPoints().size());
 	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
-	}
-
 }

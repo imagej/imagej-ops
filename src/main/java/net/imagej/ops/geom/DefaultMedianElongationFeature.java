@@ -29,21 +29,24 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.MedianElongation}.
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric.MedianElongation}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
@@ -52,7 +55,6 @@ public class DefaultMedianElongationFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
 			Geometric.MedianElongation,
 			Contingent {
 

@@ -29,53 +29,47 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.BoundaryPixel;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imglib2.type.numeric.real.DoubleType;
+
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Compactness}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.Compactness.NAME, label = "Geometric3D: Compactness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultCompactnessFeature<B extends BooleanType<B>>
+public class DefaultCompactnessFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.Size,
-			Contingent {
+			Geometric.Compactness {
 
-	private FunctionOp<IterableRegion<B>, DoubleType> surfacePixel;
-	
-	private FunctionOp<IterableRegion<B>, DoubleType> volume;
-	
+	private FunctionOp<Mesh, DoubleType> surfacePixel;
+
+	private FunctionOp<Mesh, DoubleType> volume;
+
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function(DefaultSurfacePixelFeature.class, DoubleType.class, in());
-		volume = ops().function(DefaultVolumeFeature.class, DoubleType.class, in());
+		surfacePixel = ops().function(BoundaryPixel.class, DoubleType.class,
+				in());
+		volume = ops().function(Size.class, DoubleType.class, in());
 	}
-	
+
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
+	public DoubleType compute(final Mesh input) {
 		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
 		double v2 = Math.pow(volume.compute(input).get(), 2);
 
 		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
 	}
 
 }

@@ -29,18 +29,14 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundarySize}.
@@ -48,30 +44,16 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.BoundarySize.NAME, label = "Geometric3D: SurfaceArea", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSurfaceAreaFeature<B extends BooleanType<B>>
+public class DefaultSurfaceAreaFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.BoundarySize,
-			Contingent {
-
-	private FunctionOp<IterableRegion<B>, DefaultMesh> marchingCube;
+			GeometricOp<Mesh, DoubleType>,
+			Geometric.BoundarySize {
 
 	@Override
-	public void initialize() {
-		marchingCube = ops().function(DefaultMarchingCubes.class, DefaultMesh.class,
-				in());
-	}
-
-	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(marchingCube.compute(input).getSize());
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
+	public DoubleType compute(final Mesh input) {
+		return new DoubleType(input.getSurfaceArea());
 	}
 
 }

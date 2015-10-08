@@ -29,18 +29,14 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundaryPixel}.
@@ -48,30 +44,16 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.BoundaryPixel.NAME, label = "Geometric3D: SurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSurfacePixelFeature<B extends BooleanType<B>>
+public class DefaultSurfacePixelFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.BoundaryPixel,
-			Contingent {
+			GeometricOp<Mesh, DoubleType>,
+			Geometric.BoundaryPixel {
 
-	private FunctionOp<IterableRegion<B>, DefaultMesh> marchingCube;
 
 	@Override
-	public void initialize() {
-		marchingCube = ops().function(DefaultMarchingCubes.class,
-				DefaultMesh.class, in());
+	public DoubleType compute(final Mesh input) {
+		return new DoubleType(input.getPoints().size());
 	}
-
-	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(marchingCube.compute(input).getPoints().size());
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
-	}
-
 }
