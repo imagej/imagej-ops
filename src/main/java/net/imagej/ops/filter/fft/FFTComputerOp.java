@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
@@ -54,7 +55,7 @@ import org.scijava.plugin.Plugin;
 public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
-	implements Ops.Filter.FFT
+	implements Ops.Filter.FFT, Contingent
 {
 
 	@Override
@@ -72,6 +73,41 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 		// loop and perform complex to complex FFT in the remaining dimensions
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
+	}
+	
+	/**
+	 * Make sure that the input and output size conforms to a supported FFT size.
+	 */
+	@Override
+	public boolean conforms() {
+
+		long[] paddedDimensions = new long[in().numDimensions()];
+		long[] fftDimensions = new long[in().numDimensions()];
+
+		boolean fastSizeConforms = false;
+
+		FFTMethods.dimensionsRealToComplexFast(in(), paddedDimensions,
+			fftDimensions);
+
+		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
+			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
+		{
+			fastSizeConforms = true;
+		}
+
+		boolean smallSizeConforms = false;
+
+		FFTMethods.dimensionsRealToComplexSmall(in(), paddedDimensions,
+			fftDimensions);
+
+		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
+			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
+		{
+			smallSizeConforms = true;
+		}
+
+		return fastSizeConforms || smallSizeConforms;
+
 	}
 
 }
