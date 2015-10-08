@@ -32,6 +32,15 @@ package net.imagej.ops.geom.helper;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+
+import net.imglib2.RealInterval;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPositionable;
+import net.imglib2.RealRandomAccess;
+import net.imglib2.type.logic.BoolType;
 
 /**
  * This is the default implementation of {@link Mesh}. 
@@ -39,17 +48,17 @@ import java.util.LinkedHashSet;
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
  */
-public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
+public class DefaultMesh implements Mesh, Iterable<Facet> {
 
 	/**
-	 * All {@link TriangularFacet}. 
+	 * All {@link DefaultTriangularFacet}. 
 	 */
-	private ArrayList<TriangularFacet> facets;
+	private List<Facet> facets;
 	
 	/**
 	 * All unique vertices of all {@link DefaultMesh#facets}.
 	 */
-	private LinkedHashSet<Vertex> points;
+	private LinkedHashSet<RealLocalizable> points;
 	
 	/**
 	 * The sum of the area of all {@link DefaultMesh#facets}.
@@ -70,8 +79,8 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * A new empty facet container. 
 	 */
 	public DefaultMesh() {
-		facets = new ArrayList<TriangularFacet>();
-		points = new LinkedHashSet<Vertex>();
+		facets = new ArrayList<Facet>();
+		points = new LinkedHashSet<RealLocalizable>();
 		area = 0;
 	}
 
@@ -79,7 +88,8 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Get all facets.
 	 * @return the facets
 	 */
-	public ArrayList<TriangularFacet> getFacets() {
+	@Override
+	public List<Facet> getFacets() {
 		return facets;
 	}
 
@@ -87,7 +97,7 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Set the facets. 
 	 * @param facets to set
 	 */
-	public void setFaces(final ArrayList<TriangularFacet> facets) {
+	public void setFaces(final List<Facet> facets) {
 		this.facets = facets;
 	}
 	
@@ -95,7 +105,7 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Add a new facet. 
 	 * @param f the facet to add
 	 */
-	public void addFace(final TriangularFacet f) {
+	public void addFace(final DefaultTriangularFacet f) {
 		facets.add(f);
 		area += f.getArea();
 
@@ -106,7 +116,8 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Get all unique points. 
 	 * @return the unique points
 	 */
-	public LinkedHashSet<Vertex> getPoints() {
+	@Override
+	public LinkedHashSet<RealLocalizable> getPoints() {
 		return points;
 	}
 
@@ -115,35 +126,12 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * @return the total area
 	 */
 	@Override
-	public double getSize() {
+	public double getSurfaceArea() {
 		return area;
-	}
-	
-	/**
-	 * Get the centroid of all facets.
-	 * @return the centroid
-	 */
-	public Vertex getCentroid() {
-		if (centroid == null) {
-			Iterator<Vertex> it = points.iterator();
-			double x,y,z = y = x = 0;
-			while (it.hasNext()) {
-				Vertex next = it.next();
-				x += next.getX();
-				y += next.getY();
-				z += next.getZ();
-			}
-			
-			x /= points.size();
-			y /= points.size();
-			z /= points.size();
-			centroid = new Vertex(x, y, z);
-		}
-		return centroid;
 	}
 
 	@Override
-	public Iterator<TriangularFacet> iterator() {
+	public Iterator<Facet> iterator() {
 		return facets.iterator();
 	}
 
@@ -168,7 +156,13 @@ public class DefaultMesh implements Mesh, Iterable<TriangularFacet> {
 	 * Note: No facets are constructed.
 	 * @param hashSet to set
 	 */
-	public void setPoints(final LinkedHashSet<Vertex> hashSet) {
+	public void setPoints(final LinkedHashSet<RealLocalizable> hashSet) {
 		this.points = hashSet;
 	}
+
+	@Override
+	public boolean triangularFacets() {
+		return true;
+	}
+
 }
