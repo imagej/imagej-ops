@@ -29,31 +29,49 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
-
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.helper.Facet;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultVolumeFeature<B extends BooleanType<B>>
+@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY-1)
+public class DefaultSizeFromMesh
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.Size {
+			Geometric.Size,
+			Contingent {
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(input.size());
+	public DoubleType compute(final Mesh input) {
+		double volume = 0;
+		for (Facet f : input.getFacets()) {
+			TriangularFacet tf = (TriangularFacet) f;
+			volume += signedVolumeOfTriangle(tf.getP0(), tf.getP1(), tf.getP2());	
+		}
+		return new DoubleType(Math.abs(volume));
+	}
+
+	private double signedVolumeOfTriangle(Vector3D p0, Vector3D p1, Vector3D p2) {
+		 return p0.dotProduct(p1.crossProduct(p2)) / 6.0f;
+	}
+	
+	@Override
+	public boolean conforms() {
+		return in().triangularFacets();
 	}
 }
