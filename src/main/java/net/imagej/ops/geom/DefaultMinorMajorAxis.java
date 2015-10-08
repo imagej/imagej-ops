@@ -38,8 +38,10 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
 
@@ -51,14 +53,15 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: MinorMajorAxis", name = Geometric.SecondMultiVariate.NAME)
-public class DefaultMinorMajorAxis extends
-		AbstractFunctionOp<Polygon, Pair<Double, Double>> implements
-		GeometricOp<Polygon, Pair<Double, Double>>, Contingent,
-		Geometric.SecondMultiVariate {
+public class DefaultMinorMajorAxis
+		extends
+			AbstractFunctionOp<ThePolygon, Pair<DoubleType, DoubleType>>
+		implements
+			Geometric.SecondMultiVariate {
 
 	/**
 	 * Code taken from ImageJ1 (EllipseFitter -> getEllipseParam()) and adapted
-	 * to work with a {@link Polygon}
+	 * to work with a {@link ThePolygon}
 	 * 
 	 * @param points
 	 *            The vertices of the polygon in counter clockwise order.
@@ -126,11 +129,11 @@ public class DefaultMinorMajorAxis extends
 			minor = tmp;
 		}
 
-		return new double[] { minor, major };
+		return new double[]{minor, major};
 	}
 
 	/**
-	 * Calculates the moments for the {@link Polygon}
+	 * Calculates the moments for the {@link ThePolygon}
 	 * 
 	 * @param points
 	 *            The vertices of the polygon in counter clockwise order.
@@ -154,15 +157,12 @@ public class DefaultMinorMajorAxis extends
 			m10 += a * (getX(i - 1) + getX(i));
 			m01 += a * (getY(i - 1) + getY(i));
 
-			m20 += a
-					* (Math.pow(getX(i - 1), 2) + getX(i - 1) * getX(i) + Math
-							.pow(getX(i), 2));
-			m11 += a
-					* (2 * getX(i - 1) * getY(i - 1) + getX(i - 1) * getY(i)
-							+ getX(i) * getY(i - 1) + 2 * getX(i) * getY(i));
-			m02 += a
-					* (Math.pow(getY(i - 1), 2) + getY(i - 1) * getY(i) + Math
-							.pow(getY(i), 2));
+			m20 += a * (Math.pow(getX(i - 1), 2) + getX(i - 1) * getX(i)
+					+ Math.pow(getX(i), 2));
+			m11 += a * (2 * getX(i - 1) * getY(i - 1) + getX(i - 1) * getY(i)
+					+ getX(i) * getY(i - 1) + 2 * getX(i) * getY(i));
+			m02 += a * (Math.pow(getY(i - 1), 2) + getY(i - 1) * getY(i)
+					+ Math.pow(getY(i), 2));
 		}
 
 		m00 /= 2d;
@@ -177,7 +177,7 @@ public class DefaultMinorMajorAxis extends
 		double n11 = m11 - m10 * m01;
 		double n02 = m02 - Math.pow(m01, 2);
 
-		return new double[] { m00, n20, n11, n02 };
+		return new double[]{m00, n20, n11, n02};
 	}
 
 	private double getY(final int index) {
@@ -195,7 +195,7 @@ public class DefaultMinorMajorAxis extends
 	}
 
 	@Override
-	public Pair<Double, Double> compute(final Polygon input) {
+	public Pair<DoubleType, DoubleType> compute(final ThePolygon input) {
 		List<RealLocalizable> points = new ArrayList<RealLocalizable>(
 				input.getVertices());
 
@@ -221,12 +221,7 @@ public class DefaultMinorMajorAxis extends
 
 		// calculate minor and major axis
 		double[] minorMajorAxis = getMinorMajorAxis(points);
-		return new ValuePair<Double, Double>(minorMajorAxis[0],
-				minorMajorAxis[1]);
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 2;
+		return new ValuePair<DoubleType, DoubleType>(new DoubleType(minorMajorAxis[0]),
+				new DoubleType(minorMajorAxis[1]));
 	}
 }

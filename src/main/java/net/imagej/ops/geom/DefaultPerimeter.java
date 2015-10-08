@@ -32,9 +32,11 @@ package net.imagej.ops.geom;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
-import net.imglib2.roi.geometric.Polygon;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -43,12 +45,12 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Perimeter", name = Geometric.BoundarySize.NAME)
-public class DefaultPerimeter extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultPerimeter extends AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
 		Geometric.BoundarySize {
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final ThePolygon input) {
 		double perimeter = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 			int nexti = i + 1;

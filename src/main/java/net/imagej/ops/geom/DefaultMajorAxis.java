@@ -35,7 +35,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.MajorAxis;
-import net.imglib2.roi.geometric.Polygon;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
@@ -45,12 +45,12 @@ import net.imglib2.util.Pair;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Major Axis", name = Geometric.MajorAxis.NAME)
-public class DefaultMajorAxis extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultMajorAxis extends AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
 		Geometric.MajorAxis {
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private FunctionOp<ThePolygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -60,8 +60,8 @@ public class DefaultMajorAxis extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute(final Polygon input) {
-		Pair<Double, Double> compute = minorMajorAxisFunc.compute(input);
-		return new DoubleType(compute.getB());
+	public DoubleType compute(final ThePolygon input) {
+		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute(input);
+		return compute.getB();
 	}
 }

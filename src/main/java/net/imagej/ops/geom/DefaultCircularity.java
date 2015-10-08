@@ -34,11 +34,11 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Size;
-import net.imagej.ops.Ops.Geometric.Circularity;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
+import net.imagej.ops.Ops.Geometric.Circularity;
+import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.RTs;
-import net.imglib2.roi.geometric.Polygon;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -47,25 +47,27 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Circularity", name = Geometric.Circularity.NAME)
-public class DefaultCircularity extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultCircularity extends AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
-		Geometric.Circularity {
+			Geometric.Circularity {
 
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, DoubleType> perimiterFunc;
+	private FunctionOp<ThePolygon, DoubleType> areaFunc;
+	private FunctionOp<ThePolygon, DoubleType> perimiterFunc;
 
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Size.class, in());
-		perimiterFunc = RTs.function(ops(), BoundarySize.class, in());
+		perimiterFunc = RTs.function(ops(), BoundarySize.class,
+				in());
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(4
-				* Math.PI
-				* (areaFunc.compute(input).getRealDouble() / Math.pow(
-						perimiterFunc.compute(input).getRealDouble(), 2)));
+	public DoubleType compute(final ThePolygon input) {
+		return new DoubleType(
+				4 * Math.PI
+						* (areaFunc.compute(input).getRealDouble() / Math.pow(
+								perimiterFunc.compute(input).getRealDouble(),
+								2)));
 	}
-
+	
 }

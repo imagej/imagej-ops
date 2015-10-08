@@ -32,15 +32,14 @@ package net.imagej.ops.geom;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.BoundingBox;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link BoundingBox}.
@@ -48,14 +47,12 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Bounding Box", name = Geometric.BoundingBox.NAME)
-public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultBoundingBox extends AbstractFunctionOp<ThePolygon, ThePolygon>
 		implements
-			GeometricOp<Polygon, Polygon>,
-			Contingent,
 			Geometric.BoundingBox {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public ThePolygon compute(final ThePolygon input) {
 		double min_x = Double.POSITIVE_INFINITY;
 		double max_x = Double.NEGATIVE_INFINITY;
 		double min_y = Double.POSITIVE_INFINITY;
@@ -81,12 +78,7 @@ public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
 		bounds.add(new RealPoint(min_x, max_y));
 		bounds.add(new RealPoint(max_x, max_y));
 		bounds.add(new RealPoint(max_x, min_y));
-		return new Polygon(bounds);
-	}
-
-	@Override
-	public boolean conforms() {
-		return 2 == in().numDimensions();
+		return new ThePolygon(bounds);
 	}
 
 }

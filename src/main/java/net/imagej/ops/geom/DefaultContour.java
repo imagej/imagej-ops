@@ -36,11 +36,11 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Contour;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.Views;
@@ -57,9 +57,8 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = GeometricOp.class, label = "Geometric: Contour", name = Geometric.Contour.NAME)
 public class DefaultContour
 		extends
-			AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon>
+			AbstractFunctionOp<RandomAccessibleInterval<BoolType>, ThePolygon>
 		implements
-			GeometricOp<RandomAccessibleInterval<BoolType>, Polygon>,
 			Contingent,
 			Geometric.Contour {
 
@@ -188,7 +187,7 @@ public class DefaultContour
 	}
 
 	@Override
-	public Polygon compute(final RandomAccessibleInterval<BoolType> input) {
+	public ThePolygon compute(final RandomAccessibleInterval<BoolType> input) {
 		List<RealPoint> p = new ArrayList<RealPoint>();
 
 		final RandomAccess<BoolType> raInput = Views.extendValue(input,
@@ -256,7 +255,7 @@ public class DefaultContour
 			}
 		}
 
-		return new Polygon(p);
+		return new ThePolygon(p);
 	}
 	
 	@Override

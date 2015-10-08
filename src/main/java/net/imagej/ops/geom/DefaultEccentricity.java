@@ -38,7 +38,7 @@ import net.imagej.ops.Ops.Geometric.Eccentricity;
 import net.imagej.ops.Ops.Geometric.MajorAxis;
 import net.imagej.ops.Ops.Geometric.MinorAxis;
 import net.imagej.ops.RTs;
-import net.imglib2.roi.geometric.Polygon;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -47,14 +47,14 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Eccentricity", name = Geometric.Eccentricity.NAME)
-public class DefaultEccentricity extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultEccentricity
+		extends
+			AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
-			Geometric.Eccentricity
+			Geometric.Eccentricity {
 
-{
-
-	private FunctionOp<Polygon, DoubleType> minorAxisFunc;
-	private FunctionOp<Polygon, DoubleType> majorAxisFunc;
+	private FunctionOp<ThePolygon, DoubleType> minorAxisFunc;
+	private FunctionOp<ThePolygon, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {
@@ -63,7 +63,7 @@ public class DefaultEccentricity extends AbstractFunctionOp<Polygon, DoubleType>
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final ThePolygon input) {
 		return new DoubleType(majorAxisFunc.compute(input).getRealDouble()
 				/ minorAxisFunc.compute(input).getRealDouble());
 	}

@@ -41,9 +41,10 @@ import net.imagej.ops.Ops.Geometric.BoundingBox;
 import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.Ops.Geometric.SmallestBoundingBox;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -56,26 +57,25 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = GeometricOp.class, label = "Geometric: Smallest Enclosing Rectangle", name = Geometric.SmallestBoundingBox.NAME)
 public class DefaultSmallestEnclosingRectangle
 		extends
-			AbstractFunctionOp<Polygon, Polygon>
+			AbstractFunctionOp<ThePolygon, ThePolygon>
 		implements
-			GeometricOp<Polygon, Polygon>,
 			Contingent,
 			Geometric.SmallestBoundingBox {
 
-	private FunctionOp<Polygon, Polygon> convexhullFunc;
-	private FunctionOp<Polygon, RealLocalizable> centroidFunc;
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, Polygon> boundingBoxFunc;
+	private FunctionOp<ThePolygon, ThePolygon> convexhullFunc;
+	private FunctionOp<ThePolygon, RealLocalizable> centroidFunc;
+	private FunctionOp<ThePolygon, DoubleType> areaFunc;
+	private FunctionOp<ThePolygon, ThePolygon> boundingBoxFunc;
 
 	@Override
 	public void initialize() {
-		convexhullFunc = ops().function(ConvexHull.class, Polygon.class,
-				Polygon.class);
+		convexhullFunc = ops().function(ConvexHull.class, ThePolygon.class,
+				in());
 		centroidFunc = ops().function(Centroid.class, RealLocalizable.class,
-				Polygon.class);
-		areaFunc = ops().function(Size.class, DoubleType.class, Polygon.class);
-		boundingBoxFunc = ops().function(BoundingBox.class, Polygon.class,
-				Polygon.class);
+				in());
+		areaFunc = ops().function(Size.class, DoubleType.class, in());
+		boundingBoxFunc = ops().function(BoundingBox.class, ThePolygon.class,
+				in());
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class DefaultSmallestEnclosingRectangle
 	 *            the rotation center
 	 * @return a rotated polygon
 	 */
-	private Polygon rotate(final Polygon inPoly, final double angle,
+	private ThePolygon rotate(final ThePolygon inPoly, final double angle,
 			final RealLocalizable center) {
 
 		List<RealLocalizable> out = new ArrayList<RealLocalizable>();
@@ -120,16 +120,15 @@ public class DefaultSmallestEnclosingRectangle
 			out.add(new RealPoint(x, y));
 		}
 
-		return new Polygon(out);
+		return new ThePolygon(out);
 	}
 
 	@Override
-	public Polygon compute(final Polygon input) {
-
-		Polygon ch = convexhullFunc.compute(input);
+	public ThePolygon compute(final ThePolygon input) {		
+		ThePolygon ch = convexhullFunc.compute(input);
 		RealLocalizable cog = centroidFunc.compute(ch);
 
-		Polygon minBounds = null;
+		ThePolygon minBounds = null;
 		double minArea = Double.POSITIVE_INFINITY;
 		// for each edge (i.e. line from P(i-1) to P(i)
 		for (int i = 1; i < ch.getVertices().size() - 1; i++) {
@@ -141,10 +140,10 @@ public class DefaultSmallestEnclosingRectangle
 
 			// rotate the polygon in such a manner that the line has an angle of
 			// 0
-			final Polygon rotatedPoly = rotate(ch, -angle, cog);
+			final ThePolygon rotatedPoly = rotate(ch, -angle, cog);
 
 			// get the bounds
-			final Polygon bounds = boundingBoxFunc.compute(rotatedPoly);
+			final ThePolygon bounds = boundingBoxFunc.compute(rotatedPoly);
 
 			// calculate the area of the bounds
 			// double area = getBoundsArea(bounds);
@@ -163,7 +162,7 @@ public class DefaultSmallestEnclosingRectangle
 
 	@Override
 	public boolean conforms() {
-		return 2 == in().numDimensions();
+		return in() instanceof ThePolygon;
 	}
 
 }

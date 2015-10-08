@@ -36,8 +36,8 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Feret;
 import net.imagej.ops.Ops.Geometric.FeretsAngle;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
@@ -47,12 +47,12 @@ import net.imglib2.util.Pair;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Ferets Angle", name = Geometric.FeretsAngle.NAME)
-public class DefaultFeretsAngle extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultFeretsAngle extends AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
-		Geometric.FeretsAngle {
+			Geometric.FeretsAngle {
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> function;
+	private FunctionOp<ThePolygon, Pair> function;
 
 	@Override
 	public void initialize() {
@@ -61,9 +61,10 @@ public class DefaultFeretsAngle extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final ThePolygon input) {
 		double result;
-		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
+		Pair<RealLocalizable, RealLocalizable> ferets = function
+				.compute(input);
 
 		RealLocalizable p1 = ferets.getA();
 		RealLocalizable p2 = ferets.getB();

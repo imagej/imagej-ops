@@ -36,8 +36,8 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Feret;
 import net.imagej.ops.Ops.Geometric.FeretsDiameter;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
@@ -49,12 +49,12 @@ import net.imglib2.util.Pair;
 @Plugin(type = GeometricOp.class, label = "Geometric: Ferets Diameter", name = Geometric.FeretsDiameter.NAME)
 public class DefaultFeretsDiameter
 		extends
-			AbstractFunctionOp<Polygon, DoubleType>
+			AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
 		Geometric.FeretsDiameter {
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> function;
+	private FunctionOp<ThePolygon, Pair> function;
 
 	@Override
 	public void initialize() {
@@ -63,7 +63,7 @@ public class DefaultFeretsDiameter
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final ThePolygon input) {
 		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
 
 		RealLocalizable p1 = ferets.getA();

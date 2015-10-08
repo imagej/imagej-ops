@@ -29,16 +29,15 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Feret;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link Feret}.
@@ -48,15 +47,13 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = GeometricOp.class, label = "Geometric: Feret", name = Geometric.Feret.NAME)
 public class DefaultFeret
 		extends
-			AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>>
+			AbstractFunctionOp<ThePolygon, Pair<RealLocalizable, RealLocalizable>>
 		implements
-			GeometricOp<Polygon, Pair<RealLocalizable, RealLocalizable>>,
-			Contingent,
 			Geometric.Feret {
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
-
+	public Pair<RealLocalizable, RealLocalizable> compute(
+			final ThePolygon input) {
 		double distance = Double.NEGATIVE_INFINITY;
 		int in0 = -1;
 		int in1 = -1;
@@ -68,9 +65,8 @@ public class DefaultFeret
 
 				double sum = 0;
 				for (int k = 0; k < temp0.numDimensions(); k++) {
-					sum += Math.pow(
-							temp0.getDoublePosition(k)
-									- temp1.getDoublePosition(k), 2);
+					sum += Math.pow(temp0.getDoublePosition(k)
+							- temp1.getDoublePosition(k), 2);
 				}
 				sum = Math.sqrt(sum);
 
@@ -82,13 +78,8 @@ public class DefaultFeret
 			}
 		}
 
-		return new ValuePair<RealLocalizable, RealLocalizable>(input
-				.getVertices().get(in0), input.getVertices().get(in1));
-	}
-
-	@Override
-	public boolean conforms() {
-		return 2 == in().numDimensions();
+		return new ValuePair<RealLocalizable, RealLocalizable>(
+				input.getVertices().get(in0), input.getVertices().get(in1));
 	}
 
 }
