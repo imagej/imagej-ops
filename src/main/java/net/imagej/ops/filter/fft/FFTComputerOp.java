@@ -35,19 +35,12 @@ import java.util.concurrent.Executors;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
-import net.imglib2.FinalDimensions;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Util;
-import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -64,61 +57,17 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	implements Ops.Filter.FFT
 {
 
-	/**
-	 * Generates the out of bounds strategy for the extended area
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
-
-	/**
-	 * The size of the image after padding
-	 */
-	@Parameter(required = false)
-	private long[] paddedSize;
-
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<C> output)
 	{
-		RandomAccessibleInterval<T> inputRAI;
-
-		// if no paddedSize was passed in make paddedSize equal to the input size
-		if (paddedSize == null) {
-
-			paddedSize = new long[input.numDimensions()];
-
-			for (int d = 0; d < input.numDimensions(); d++) {
-				paddedSize[d] = input.dimension(d);
-			}
-		}
-
-		// If paddedSize is different than the input size, extend the input to
-		// paddedSize using a View
-		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
-
-			if (obf == null) {
-				obf =
-					new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
-						Util.getTypeFromInterval(input).createVariable());
-			}
-
-			Interval inputInterval =
-				FFTMethods.paddingIntervalCentered(input, FinalDimensions
-					.wrap(paddedSize));
-
-			inputRAI = Views.interval(Views.extend(input, obf), inputInterval);
-
-		}
-		else {
-			inputRAI = input;
-		}
 
 		// TODO: proper use of Executor service
 		final int numThreads = Runtime.getRuntime().availableProcessors();
 		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
 
 		// perform a real to complex FFT in the first dimension
-		FFTMethods.realToComplex(inputRAI, output, 0, false, service);
+		FFTMethods.realToComplex(input, output, 0, false, service);
 
 		// loop and perform complex to complex FFT in the remaining dimensions
 		for (int d = 1; d < input.numDimensions(); d++)
