@@ -117,8 +117,8 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	 * @return the unique points
 	 */
 	@Override
-	public LinkedHashSet<RealLocalizable> getPoints() {
-		return points;
+	public List<RealLocalizable> getPoints() {
+		return new ArrayList<RealLocalizable>(points);
 	}
 
 	/**

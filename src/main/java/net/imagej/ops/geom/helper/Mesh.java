@@ -29,10 +29,7 @@
  */
 package net.imagej.ops.geom.helper;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-
-import net.imglib2.RealLocalizable;
 
 public interface Mesh extends Polytope {
 	// NB: Marker Interface
@@ -43,5 +40,4 @@ public interface Mesh extends Polytope {
 	
 	public double getSurfaceArea();
 	
-	public LinkedHashSet<RealLocalizable> getPoints();
 }

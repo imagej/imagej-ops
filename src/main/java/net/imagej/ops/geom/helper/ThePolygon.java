@@ -40,4 +40,9 @@ public class ThePolygon extends Polygon implements Polytope {
 		super(vertices);
 	}
 
+	@Override
+	public List<RealLocalizable> getPoints() {
+		return (List<RealLocalizable>) getVertices();
+	}
+
 }
