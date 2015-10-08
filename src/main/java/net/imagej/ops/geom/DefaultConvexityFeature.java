@@ -29,53 +29,45 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
+import net.imagej.ops.Ops.Geometric.BoundarySize;
+import net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull;
+import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Convexity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Convexity.NAME, label = "Geometric3D: Convexity")
-public class DefaultConvexityFeature<B extends BooleanType<B>>
+@Plugin(type = Op.class, name = Geometric.Convexity.NAME, label = "Geometric: Convexity")
+public class DefaultConvexityFeature
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Polytope, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.Convexity,
-			Contingent {
+			Geometric.Convexity {
 
-	private FunctionOp<IterableRegion<B>, DoubleType> surface;
+	private FunctionOp<Polytope, DoubleType> boundarySize;
 
-	private FunctionOp<IterableRegion<B>, DoubleType> convexHullSurface;
+	private FunctionOp<Polytope, DoubleType> boundarySizeConvexHull;
 
 	@Override
 	public void initialize() {
-		surface = ops().function(DefaultSurfaceAreaFeature.class,
+		boundarySize = ops().function(BoundarySize.class,
 				DoubleType.class, in());
-		convexHullSurface = ops().function(
-				DefaultConvexHullSurfaceAreaFeature.class, DoubleType.class,
+		boundarySizeConvexHull = ops().function(
+				BoundarySizeConvexHull.class, DoubleType.class,
 				in());
 	}
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(convexHullSurface.compute(input).get()
-				/ surface.compute(input).get());
+	public DoubleType compute(final Polytope input) {
+		return new DoubleType(boundarySizeConvexHull.compute(input).get()
+				/ boundarySize.compute(input).get());
 	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
-	}
-
 }
