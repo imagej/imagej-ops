@@ -29,21 +29,21 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imagej.ops.geom.helper.Mesh;
-import net.imagej.ops.geom.helper.TriangularFacet;
-import net.imagej.ops.geom.helper.Vertex;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
+import java.util.List;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops.Geometric.SizeConvexHull;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imglib2.RealLocalizable;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.SizeConvexHull}.
@@ -51,37 +51,24 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class, name = Geometric.SizeConvexHull.NAME, label = "Geometric3D: ConvexHullVolume", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexHullVolumeFeature<B extends BooleanType<B>>
+public class DefaultConvexHullSize
 		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
+			AbstractFunctionOp<Polytope, DoubleType>
 		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.SizeConvexHull,
-			Contingent {
+			SizeConvexHull {
 
-	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
-
+	private FunctionOp<List<RealLocalizable>, Polytope> convexHullFunc;
+	private FunctionOp<Polytope, DoubleType> sizeFunc;
+	
 	@Override
 	public void initialize() {
-		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
-				Mesh.class, in());
+		convexHullFunc = ops().function(ConvexHull.class, Polytope.class, in().getPoints());
+		sizeFunc = ops().function(Size.class, DoubleType.class, in());
 	}
-
+	
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		DefaultMesh compute = (DefaultMesh)convexHull.compute(input);
-		Vertex centroid = compute.getCentroid();
-		double volume = 0;
-		for (TriangularFacet f : compute.getFacets()) {
-			volume += 1 / 3d * f.getArea()
-					* Math.abs(f.distanceToPlane(centroid));
-		}
-		return new DoubleType(volume);
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
+	public DoubleType compute(Polytope input) {
+		return sizeFunc.compute(convexHullFunc.compute(input.getPoints()));
 	}
 
 }

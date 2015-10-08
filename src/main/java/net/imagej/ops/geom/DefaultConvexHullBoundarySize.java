@@ -29,50 +29,42 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imagej.ops.geom.helper.Mesh;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
-import net.imglib2.type.numeric.real.DoubleType;
+import java.util.List;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
-/**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull}. 
- * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
- */
-@Plugin(type = Op.class, name = Geometric.BoundarySizeConvexHull.NAME, label = "Geometric3D: ConvexHullSurfaceArea", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultConvexHullSurfaceAreaFeature<B extends BooleanType<B>>
-		extends
-			AbstractFunctionOp<IterableRegion<B>, DoubleType>
-		implements
-			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric.BoundarySizeConvexHull,
-			Contingent {
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.BoundarySize;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.ThePolygon;
+import net.imglib2.RealLocalizable;
+import net.imglib2.type.numeric.real.DoubleType;
 
-	private FunctionOp<IterableRegion<B>, Mesh> convexHull;
+@Plugin(type = GeometricOp.class, label = "Geometric: ConvexHullPerimeter", name = Geometric.BoundarySizeConvexHull.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultConvexHullBoundarySize
+		extends
+			AbstractFunctionOp<Polytope, DoubleType>
+		implements
+			Geometric.BoundarySizeConvexHull {
+
+	private FunctionOp<List<RealLocalizable>, Polytope> convexHullFunc;
+
+	private FunctionOp<Polytope, DoubleType> perimeterFunc;
 
 	@Override
 	public void initialize() {
-		convexHull = ops().function(DefaultConvexHull3DFromMC.class,
-				Mesh.class, in());
+		convexHullFunc = ops().function(ConvexHull.class, Polytope.class, in().getPoints());
+		perimeterFunc = ops().function(BoundarySize.class, DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
-		return new DoubleType(((DefaultMesh)convexHull.compute(input)).getSize());
-	}
-
-	@Override
-	public boolean conforms() {
-		return in().numDimensions() == 3;
+	public DoubleType compute(Polytope input) {
+		return perimeterFunc.compute(convexHullFunc.compute(input.getPoints()));
 	}
 
 }
