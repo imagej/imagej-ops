@@ -36,8 +36,8 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -45,13 +45,13 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Area", name = Geometric.Size.NAME, priority = Priority.FIRST_PRIORITY)
-public class DefaultArea extends AbstractFunctionOp<Polygon, DoubleType>
+@Plugin(type = GeometricOp.class, label = "Geometric: Size", name = Geometric.Size.NAME, priority = Priority.FIRST_PRIORITY)
+public class DefaultSizeFromPolygon extends AbstractFunctionOp<ThePolygon, DoubleType>
 		implements
 		Geometric.Size {
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute(final ThePolygon input) {
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 
