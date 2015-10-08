@@ -32,15 +32,12 @@ package net.imagej.ops.features.haralick;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Map;
 
 import org.junit.Test;
 
-import net.imagej.ops.OpRef;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation3D;
-import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Testing implementations of {@link HaralickFeature}
