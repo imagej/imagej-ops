@@ -316,7 +316,7 @@ namespaces = ```
 		[name: "magnitude",                iface: "Magnitude"],
 		[name: "phase",                    iface: "Phase"],
 	]],
-	[name: "geometric", iface: "Geometric", ops: [
+	[name: "geom", iface: "Geometric", ops: [
 		[name: "boundary",                iface: "Boundary"],
 		[name: "boundarysize",            iface: "BoundarySize"],
 		[name: "boundarypixel",           iface: "BoundaryPixel"],
@@ -347,7 +347,7 @@ namespaces = ```
 		[name: "circularity",             iface: "Circularity"],
 		[name: "vertexinterpolator",      iface: "VertexInterpolator"],
 		[name: "secondmultivariate",      iface: "SecondMultiVariate"],
-		[name: "boundingboxity",          iface: "Boundingboxity"],
+		[name: "boundingboxivity",        iface: "Boundingboxivity"],
 		[name: "contour",                 iface: "Contour"],
 		[name: "marchingcubes",           iface: "MarchingCubes"]
 	]],
