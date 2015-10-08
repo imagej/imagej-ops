@@ -30,7 +30,7 @@
 package net.imagej.ops.geom;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.List;
 
 import org.scijava.plugin.Plugin;
 
@@ -55,7 +55,7 @@ public class CentroidFromMesh
 
 	@Override
 	public RealLocalizable compute(Mesh input) {
-		LinkedHashSet<RealLocalizable> points = input.getPoints();
+		List<RealLocalizable> points = input.getPoints();
 		Iterator<RealLocalizable> it = points.iterator();
 		double x, y, z = y = x = 0;
 		while (it.hasNext()) {

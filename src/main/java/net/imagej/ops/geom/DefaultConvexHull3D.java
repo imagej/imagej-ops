@@ -36,14 +36,17 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.Horizon;
 import net.imagej.ops.geom.helper.Mesh;
-import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.DefaultTriangularFacet;
 import net.imagej.ops.geom.helper.UpdateablePointSet;
 import net.imagej.ops.geom.helper.Vertex;
+import net.imglib2.RealLocalizable;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
@@ -62,9 +65,10 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = ConvexHull.NAME)
 public class DefaultConvexHull3D
 		extends
-			AbstractFunctionOp<LinkedHashSet<Vertex>, Mesh>
+			AbstractFunctionOp<List<RealLocalizable>, Polytope>
 		implements
-			ConvexHull {
+			ConvexHull,
+			Contingent {
 
 	/**
 	 * Vertices which are not part of the convex hull.
@@ -74,12 +78,12 @@ public class DefaultConvexHull3D
 	/**
 	 * Created facets.
 	 */
-	private List<TriangularFacet> facets;
+	private List<DefaultTriangularFacet> facets;
 
 	/**
 	 * Facets with points in front.
 	 */
-	private List<TriangularFacet> facetsWithPointInFront;
+	private List<DefaultTriangularFacet> facetsWithPointInFront;
 
 	/**
 	 * Minimum distance between a point and a facet.
@@ -92,13 +96,18 @@ public class DefaultConvexHull3D
 	private final double DOUBLE_PREC = 2.2204460492503131e-16;
 
 	@Override
-	public DefaultMesh compute(final LinkedHashSet<Vertex> input) {
+	public DefaultMesh compute(final List<RealLocalizable> input) {
 		DefaultMesh output = new DefaultMesh();
-		vertices = new LinkedHashSet<Vertex>(input);
-		facets = new ArrayList<TriangularFacet>();
-		facetsWithPointInFront = new ArrayList<TriangularFacet>();
+		vertices = new LinkedHashSet<Vertex>();
+		for (RealLocalizable v : input) {
+			vertices.add(new Vertex(v.getDoublePosition(0), 
+					v.getDoublePosition(1),
+					v.getDoublePosition(2)));
+		}
+		facets = new ArrayList<DefaultTriangularFacet>();
+		facetsWithPointInFront = new ArrayList<DefaultTriangularFacet>();
 		computeHull();
-		for (TriangularFacet f : facets) {
+		for (DefaultTriangularFacet f : facets) {
 			output.addFace(f);
 		}
 		output.setEpsilon(epsilon);
@@ -111,7 +120,7 @@ public class DefaultConvexHull3D
 	private void computeHull() {
 		createSimplex();
 		while (!facetsWithPointInFront.isEmpty()) {
-			TriangularFacet next = facetsWithPointInFront.remove(0);
+			DefaultTriangularFacet next = facetsWithPointInFront.remove(0);
 			replaceFacet(next);
 		}
 	}
@@ -123,10 +132,10 @@ public class DefaultConvexHull3D
 	 *            the facet to replace. At least one point must be in front of
 	 *            next.
 	 */
-	private void replaceFacet(final TriangularFacet facet) {
+	private void replaceFacet(final DefaultTriangularFacet facet) {
 		Vertex v = facet.getMaximumDistanceVertex();
 		Horizon horizon = computeHorizon(facet, v);
-		List<TriangularFacet> newFaces = createFacets(horizon, v);
+		List<DefaultTriangularFacet> newFaces = createFacets(horizon, v);
 		assignPointsToFacets(newFaces);
 	}
 
@@ -139,8 +148,8 @@ public class DefaultConvexHull3D
 	 *            point which is added to the convex hull
 	 * @return new created facets
 	 */
-	private List<TriangularFacet> createFacets(final Horizon horizon, final Vertex vTop) {
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+	private List<DefaultTriangularFacet> createFacets(final Horizon horizon, final Vertex vTop) {
+		List<DefaultTriangularFacet> newFacets = new ArrayList<DefaultTriangularFacet>();
 		Vertex vLeft, vRight;
 
 		// triangles 1 to n
@@ -148,9 +157,9 @@ public class DefaultConvexHull3D
 			vLeft = horizon.getVertex(i - 1);
 			vRight = horizon.getVertex(i);
 			
-			TriangularFacet f = new TriangularFacet(vRight, vTop, vLeft);
+			DefaultTriangularFacet f = new DefaultTriangularFacet(vRight, vTop, vLeft);
 
-			setNeighborZero(f, (TriangularFacet)horizon.getNeighbor(i));
+			setNeighborZero(f, (DefaultTriangularFacet)horizon.getNeighbor(i));
 
 			newFacets.add(f);
 		}
@@ -160,9 +169,9 @@ public class DefaultConvexHull3D
 		vRight = horizon.getVertex(0);
 		vLeft = horizon.getLastVertex();
 		
-		TriangularFacet f = new TriangularFacet(vRight, vTop, vLeft);
+		DefaultTriangularFacet f = new DefaultTriangularFacet(vRight, vTop, vLeft);
 
-		setNeighborZero(f, (TriangularFacet)horizon.getNeighbor(0));
+		setNeighborZero(f, (DefaultTriangularFacet)horizon.getNeighbor(0));
 
 		newFacets.add(f);
 
@@ -178,7 +187,7 @@ public class DefaultConvexHull3D
 	 * @param newFacets
 	 *            the triangles
 	 */
-	private void connectTriangles(final List<TriangularFacet> newFacets) {
+	private void connectTriangles(final List<DefaultTriangularFacet> newFacets) {
 		int lastFacetIndex = newFacets.size() - 1;
 		for (int i = 1; i < lastFacetIndex; i++) {
 			newFacets.get(i).setNeighbor(1, newFacets.get(i + 1));
@@ -199,7 +208,7 @@ public class DefaultConvexHull3D
 	 * @param n
 	 *            the neighbor facet.
 	 */
-	private void setNeighborZero(final TriangularFacet f, final TriangularFacet n) {
+	private void setNeighborZero(final DefaultTriangularFacet f, final DefaultTriangularFacet n) {
 		int vertexIndex = n.indexOfVertex(f.getVertex(2));
 		n.replaceNeighbor(vertexIndex, f);
 
@@ -216,7 +225,7 @@ public class DefaultConvexHull3D
 	 *            a point outside of the convex hull
 	 * @return facet containing all facets which are in front of vTop
 	 */
-	private Horizon computeHorizon(final TriangularFacet frontFacet, final Vertex vTop) {
+	private Horizon computeHorizon(final DefaultTriangularFacet frontFacet, final Vertex vTop) {
 		// Points which are in front have to be reassigned after all new facets
 		// are constructed.
 		vertices.addAll(frontFacet.getVerticesInFront());
@@ -225,7 +234,7 @@ public class DefaultConvexHull3D
 		facets.remove(frontFacet);
 
 		Horizon h = new Horizon(frontFacet);
-		TriangularFacet merge = nextFacetToMerge(h, vTop);
+		DefaultTriangularFacet merge = nextFacetToMerge(h, vTop);
 		while (merge != null) {
 			// This points have to be reassigned as well.
 			vertices.addAll(merge.getVerticesInFront());
@@ -257,7 +266,7 @@ public class DefaultConvexHull3D
 	 * @param merge
 	 *            the facet which will be merged with frontFacet.
 	 */
-	private void updateNeighbors(final TriangularFacet frontFacet, final TriangularFacet merge) {
+	private void updateNeighbors(final DefaultTriangularFacet frontFacet, final DefaultTriangularFacet merge) {
 		for (UpdateablePointSet f : merge.getNeighbors()) {
 			if (!f.equals(frontFacet)) {
 				f.replaceNeighbor(f.indexOfNeighbor(merge), frontFacet);
@@ -274,11 +283,11 @@ public class DefaultConvexHull3D
 	 *            point which is added to the convex hull
 	 * @return neighboring facet of front or null if no facet is in front
 	 */
-	private TriangularFacet nextFacetToMerge(final Horizon frontFacet,
+	private DefaultTriangularFacet nextFacetToMerge(final Horizon frontFacet,
 			final Vertex vTop) {
 		Iterator<UpdateablePointSet> it = frontFacet.getNeighbors().iterator();
 		while (it.hasNext()) {
-			TriangularFacet f = (TriangularFacet)it.next();
+			DefaultTriangularFacet f = (DefaultTriangularFacet)it.next();
 			if (f.distanceToPlane(vTop) > epsilon) {
 				// if frontFacet contains all vertices of f it either is
 				// connected
@@ -328,17 +337,17 @@ public class DefaultConvexHull3D
 	 * @param newFacets
 	 *            which could have a point in front
 	 */
-	private void assignPointsToFacets(final List<TriangularFacet> newFacets) {
+	private void assignPointsToFacets(final List<DefaultTriangularFacet> newFacets) {
 		Iterator<Vertex> vertexIt = vertices.iterator();
 		while (vertexIt.hasNext()) {
 			Vertex v = vertexIt.next();
 
-			Iterator<TriangularFacet> facetIt = newFacets.iterator();
-			TriangularFacet maxFacet = null;
+			Iterator<DefaultTriangularFacet> facetIt = newFacets.iterator();
+			DefaultTriangularFacet maxFacet = null;
 			double maxdis = epsilon;
 
 			while (facetIt.hasNext()) {
-				TriangularFacet f = facetIt.next();
+				DefaultTriangularFacet f = facetIt.next();
 				double distanceToPlane = f.distanceToPlane(v);
 				// point is assigned to the facet with maximum distance
 				if (distanceToPlane > maxdis) {
@@ -387,22 +396,22 @@ public class DefaultConvexHull3D
 
 		vertices.remove(v3);
 		
-		TriangularFacet f0 = new TriangularFacet(v0, v1, v2);
+		DefaultTriangularFacet f0 = new DefaultTriangularFacet(v0, v1, v2);
 		if (f0.distanceToPlane(v3) > epsilon) {
 			// change triangle orientation to counter clockwise
 			Vertex tmp = v1;
 			v1 = v2;
 			v2 = tmp;
-			f0 = new TriangularFacet(v0, v1, v2);
+			f0 = new DefaultTriangularFacet(v0, v1, v2);
 		}
 		// v3 is behind f0
 		assert f0.distanceToPlane(v3) < epsilon;
 
-		TriangularFacet f1 = new TriangularFacet(v1, v0, v3);
+		DefaultTriangularFacet f1 = new DefaultTriangularFacet(v1, v0, v3);
 		
-		TriangularFacet f2 = new TriangularFacet(v2, v1, v3);
+		DefaultTriangularFacet f2 = new DefaultTriangularFacet(v2, v1, v3);
 
-		TriangularFacet f3 = new TriangularFacet(v0, v2, v3);
+		DefaultTriangularFacet f3 = new DefaultTriangularFacet(v0, v2, v3);
 
 		f0.setNeighbor(0, f3);
 		f0.setNeighbor(1, f1);
@@ -425,7 +434,7 @@ public class DefaultConvexHull3D
 		assert f2.distanceToPlane(v0) < epsilon;
 		assert f3.distanceToPlane(v1) < epsilon;
 
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+		List<DefaultTriangularFacet> newFacets = new ArrayList<DefaultTriangularFacet>();
 		newFacets.add(f0);
 		newFacets.add(f1);
 		newFacets.add(f2);
@@ -578,6 +587,11 @@ public class DefaultConvexHull3D
 						+ Math.max(Math.abs(maxZ), Math.abs(minZ)));
 
 		return minMax;
+	}
+
+	@Override
+	public boolean conforms() {
+		return !in().isEmpty() && in().get(0).numDimensions() == 3;
 	}
 
 }

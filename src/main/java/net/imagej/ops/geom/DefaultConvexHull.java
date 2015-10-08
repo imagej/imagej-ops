@@ -38,8 +38,9 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.geom.helper.Polytope;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
 
 import org.scijava.plugin.Plugin;
 
@@ -49,17 +50,16 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Convex Hull", name = Geometric.ConvexHull.NAME)
-public class DefaultConvexHull extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultConvexHull extends AbstractFunctionOp<List<RealLocalizable>, Polytope>
 		implements
-			GeometricOp<Polygon, Polygon>,
+			GeometricOp<List<RealLocalizable>, Polytope>,
 			Contingent,
 			Geometric.ConvexHull {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public ThePolygon compute(final List<RealLocalizable> input) {
 		// create a copy of the points because these will get resorted, etc.
-		List<RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(
-				input.getVertices());
+		List<RealLocalizable> RealPoints = input;
 
 		// Sort the RealPoints of P by x-coordinate (in case of a tie, sort by
 		// y-coordinate).
@@ -120,7 +120,7 @@ public class DefaultConvexHull extends AbstractFunctionOp<Polygon, Polygon>
 		// concatenate L and U
 		L.addAll(U);
 
-		return new Polygon(L);
+		return new ThePolygon(L);
 	}
 
 	/**
@@ -148,6 +148,6 @@ public class DefaultConvexHull extends AbstractFunctionOp<Polygon, Polygon>
 
 	@Override
 	public boolean conforms() {
-		return 2 == in().numDimensions();
+		return !in().isEmpty() && in().get(0).numDimensions() == 2;
 	}
 }
