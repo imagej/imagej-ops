@@ -34,6 +34,8 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imglib2.Cursor;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 
@@ -44,16 +46,19 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *
- * @param <B> a Boolean Type
+ * @param <B>
+ *            a Boolean Type
  */
-@Plugin(type = Op.class, name = Geometric.Centroid.NAME)
-public class DefaultCentroid<B extends BooleanType<B>>
+@Plugin(type = Op.class, name = Geometric.Centroid.NAME, priority = 1)
+public class CentroidFromIterableRegion<B extends BooleanType<B>>
 		extends
-			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
+			AbstractFunctionOp<IterableRegion<B>, RealLocalizable>
+		implements
+			Centroid {
 
 	@SuppressWarnings("cast")
 	@Override
-	public double[] compute(final IterableRegion<B> input) {
+	public RealLocalizable compute(final IterableRegion<B> input) {
 		int numDimensions = input.numDimensions();
 		double[] output = new double[numDimensions];
 		Cursor<Void> c = input.localizingCursor();
@@ -67,10 +72,10 @@ public class DefaultCentroid<B extends BooleanType<B>>
 		}
 
 		for (int i = 0; i < output.length; i++) {
-			output[i] = output[i] / input.size();
+			output[i] = output[i] / (double) input.size();
 		}
-		
-		return output;
+
+		return new RealPoint(output);
 	}
 
 }
