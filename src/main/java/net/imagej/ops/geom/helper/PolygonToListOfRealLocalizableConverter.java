@@ -29,89 +29,52 @@
  */
 package net.imagej.ops.geom.helper;
 
-import java.lang.reflect.Type;
-
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric.Contour;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.geometric.Polygon;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import net.imglib2.RealLocalizable;
 
 /**
  * 
- * Converts a RandomAccessibleInterval to a polygon
+ * Converts a RandomAccessibleInterval to a Mesh
  * 
- * @author Daniel Seebacher, University of Konstanz
+ * @author Tim-Oliver Buchholz, University of Konstanz
  *
  */
-@SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class RandomAccessibleIntervalToPolygonConverter extends
-		AbstractConverter<RandomAccessibleInterval, Polygon> {
-
-	@Parameter
-	private OpService ops;
-	private FunctionOp<Object, Object> contourFunc;
-
-	@SuppressWarnings({ "unchecked" })
+public class PolygonToListOfRealLocalizableConverter extends
+		AbstractConverter<ThePolygon, List<RealLocalizable>> {
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T convert(final Object src, final Class<T> dest) {
-		if (contourFunc == null) {
-			contourFunc = (FunctionOp) ops.function(Contour.class, dest, src,
-					true, true);
-		}
-		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute(src);
-		return (T) p;
-	}
-
-	@Override
-	public Class<Polygon> getOutputType() {
-		return Polygon.class;
-	}
-
-	@Override
-	public Class<RandomAccessibleInterval> getInputType() {
-		return RandomAccessibleInterval.class;
-	}
-
-	@Override
-	public boolean supports(final ConversionRequest request) {
-
-		Object sourceObject = request.sourceObject();
-		Class<?> sourceClass = request.sourceClass();
-
-		if (sourceObject != null
-				&& !(sourceObject instanceof RandomAccessibleInterval)) {
-			return false;
-		} else if (sourceClass != null
-				&& !(RandomAccessibleInterval.class
-						.isAssignableFrom(sourceClass))) {
-			return false;
-		}
+	public <T> T convert(Object src, Class<T> dest) {
 		
-		if (sourceObject != null && ((RandomAccessibleInterval) request.sourceObject())
-				.numDimensions() != 2) {
-			return false;
+		if (src instanceof ThePolygon) {	
+			return (T) new ArrayList<RealLocalizable>(((ThePolygon)src).getVertices());
 		}
-
-		Class<?> destClass = request.destClass();
-		Type destType = request.destType();
-
-		if (destClass != null && !(destClass == Polygon.class)) {
-			return false;
-		} else if (destType != null && !(destType == Polygon.class)) {
-			return false;
-		}
-
-		return true;
+		return null;
 	}
 
+	@Override
+	public Class<ThePolygon> getInputType() {
+		return ThePolygon.class;
+	}
+
+	@Override
+	public boolean supports(ConversionRequest request) {
+		return super.supports(request);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Class<List<RealLocalizable>> getOutputType() {
+		List<RealLocalizable> l = new ArrayList<RealLocalizable>();
+		return (Class<List<RealLocalizable>>)l.getClass();
+	}
 }

@@ -29,14 +29,6 @@
  */
 package net.imagej.ops.geom.helper;
 
-import java.lang.reflect.Type;
-
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric.Contour;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.geometric.Polygon;
-
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
@@ -44,74 +36,51 @@ import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops.Geometric.MarchingCubes;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
+
 /**
  * 
- * Converts a RandomAccessibleInterval to a polygon
+ * Converts a RandomAccessibleInterval to a Mesh
  * 
- * @author Daniel Seebacher, University of Konstanz
+ * @author Tim-Oliver Buchholz, University of Konstanz
  *
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
-public class RandomAccessibleIntervalToPolygonConverter extends
-		AbstractConverter<RandomAccessibleInterval, Polygon> {
+public class RandomAccessibleIntervalToMeshConverter extends
+		AbstractConverter<RandomAccessibleInterval, Mesh> {
 
 	@Parameter
 	private OpService ops;
-	private FunctionOp<Object, Object> contourFunc;
-
-	@SuppressWarnings({ "unchecked" })
+	private FunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
+	
 	@Override
-	public <T> T convert(final Object src, final Class<T> dest) {
-		if (contourFunc == null) {
-			contourFunc = (FunctionOp) ops.function(Contour.class, dest, src,
-					true, true);
+	public <T> T convert(Object src, Class<T> dest) {
+		if (marchingCubesFunc == null) {
+			marchingCubesFunc = ops.function(MarchingCubes.class, Mesh.class, (RandomAccessibleInterval)src);
 		}
-		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute(src);
-		return (T) p;
+		if (src instanceof IterableInterval<?>) {
+			return (T)marchingCubesFunc.compute((RandomAccessibleInterval)src);
+		}
+		return null;
 	}
-
 	@Override
-	public Class<Polygon> getOutputType() {
-		return Polygon.class;
+	public Class<Mesh> getOutputType() {
+		return Mesh.class;
 	}
-
 	@Override
 	public Class<RandomAccessibleInterval> getInputType() {
 		return RandomAccessibleInterval.class;
 	}
 
 	@Override
-	public boolean supports(final ConversionRequest request) {
-
-		Object sourceObject = request.sourceObject();
-		Class<?> sourceClass = request.sourceClass();
-
-		if (sourceObject != null
-				&& !(sourceObject instanceof RandomAccessibleInterval)) {
-			return false;
-		} else if (sourceClass != null
-				&& !(RandomAccessibleInterval.class
-						.isAssignableFrom(sourceClass))) {
-			return false;
-		}
-		
-		if (sourceObject != null && ((RandomAccessibleInterval) request.sourceObject())
-				.numDimensions() != 2) {
-			return false;
-		}
-
-		Class<?> destClass = request.destClass();
-		Type destType = request.destType();
-
-		if (destClass != null && !(destClass == Polygon.class)) {
-			return false;
-		} else if (destType != null && !(destType == Polygon.class)) {
-			return false;
-		}
-
-		return true;
+	public boolean supports(ConversionRequest request) {
+		return super.supports(request)
+				&& ((IterableInterval) request.sourceObject())
+						.numDimensions() == 3;
 	}
-
 }
