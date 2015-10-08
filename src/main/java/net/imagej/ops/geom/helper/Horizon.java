@@ -30,19 +30,19 @@
 package net.imagej.ops.geom.helper;
 
 /**
- * A Horizon is the result of n neighboring {@link TriangularFacet} which are merged.
+ * A Horizon is the result of n neighboring {@link DefaultTriangularFacet} which are merged.
  * The horizon is a polygon of all outer edges/vertices of the merged
- * {@link TriangularFacet}. 
+ * {@link DefaultTriangularFacet}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public class Horizon extends UpdateablePointSet {
 	
 	/**
-	 * Create a new {@link Horizon} from a {@link TriangularFacet}
+	 * Create a new {@link Horizon} from a {@link DefaultTriangularFacet}
 	 * @param f the facet
 	 */
-	public Horizon (final TriangularFacet f) {
+	public Horizon (final DefaultTriangularFacet f) {
 		vertices = f.getVertices();
 		neighbors = f.getNeighbors();
 	}
@@ -55,7 +55,7 @@ public class Horizon extends UpdateablePointSet {
 	 * Note: The neighbors of f pointing to f have to be updated manually. 
 	 * @param f the facet to merge into this facet.
 	 */
-	public void simpleMerge(final TriangularFacet f) {
+	public void simpleMerge(final DefaultTriangularFacet f) {
 		int neighborIndex = neighbors.indexOf(f);
 		int newVertex = -1;
 		for (int i = 0; i < f.getVertices().size(); i++) {
@@ -80,7 +80,7 @@ public class Horizon extends UpdateablePointSet {
 	 * Note: The neighbors of f pointing to f have to be updated manually.
 	 * @param f the facet to merge into this facet.
 	 */
-	public void complexMerge(final TriangularFacet f) {
+	public void complexMerge(final DefaultTriangularFacet f) {
 		Vertex v0 = f.getVertex(0);
 		Vertex v1 = f.getVertex(1);
 		Vertex v2 = f.getVertex(2);
@@ -111,7 +111,7 @@ public class Horizon extends UpdateablePointSet {
 	 * @param v0 the vertex of the triangle which lies between the two edges
 	 * @param neighborIndex of the new outer neighbor
 	 */
-	private void mergeTwoAdjacentEdges(final TriangularFacet f, final Vertex v0, final int neighborIndex) {
+	private void mergeTwoAdjacentEdges(final DefaultTriangularFacet f, final Vertex v0, final int neighborIndex) {
 		int i = vertices.indexOf(v0) ;
 		vertices.remove(i);
 		neighbors.remove(i);

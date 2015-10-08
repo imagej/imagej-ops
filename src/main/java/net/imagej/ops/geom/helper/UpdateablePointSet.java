@@ -47,7 +47,7 @@ public abstract class UpdateablePointSet {
 	/**
 	 * The neighboring facets of this facet. 
 	 * Neighbor 0 is the neighbor which is adjacent to this
-	 * facet at the edge from {@link TriangularFacet#getLastVertex()}
+	 * facet at the edge from {@link DefaultTriangularFacet#getLastVertex()}
 	 * to {@link TriangularFacet#getVertex(0)}. 
 	 */
 	@SuppressWarnings("javadoc")
@@ -124,7 +124,7 @@ public abstract class UpdateablePointSet {
 	 * @param position of the neighbor
 	 * @param n the neighbor
 	 */
-	public void setNeighbor(final int position, final TriangularFacet n) {
+	public void setNeighbor(final int position, final DefaultTriangularFacet n) {
 		neighbors.add(position, n);
 	}
 
@@ -160,7 +160,7 @@ public abstract class UpdateablePointSet {
 	 * @param facet the neighboring facet
 	 * @return the index or -1 if facet is not a neighbor
 	 */
-	public int indexOfNeighbor(final TriangularFacet facet) {
+	public int indexOfNeighbor(final DefaultTriangularFacet facet) {
 		return neighbors.indexOf(facet);
 	}
 }
