@@ -32,13 +32,19 @@ package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imglib2.FinalDimensions;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.img.ImgFactory;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -82,25 +88,62 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 	 * The ImgFactory used to create the output
 	 */
 	@Parameter(required = false)
-	private ImgFactory factory;
+	private ImgFactory<?> factory;
 
 	/**
-	 * The type of the output
+	 * The complex type of the output
 	 */
 	@Parameter(required = false)
 	private Type<C> fftType;
 
-	private long[] paddedSize;
-
-	private long[] fftSize;
+	long[] paddedSize;
+	long[] fftSize;
 
 	/**
-	 * create the output based on the input. If fast=true the size is determined
+	 * Create the output based on the input. If fast=true the size is determined
 	 * such that the underlying FFT implementation will run as fast as possible.
-	 * If fast=false the size is determined such that the underlying FFT
+	 * If fast=false the size is determined such that the underlying FFT<?
 	 * implementation will use the smallest amount of memory possible.
 	 */
-	public O createOutput(I input) {
+	@SuppressWarnings("unchecked")
+	public O createOutput() {
+
+		if (fftType == null) {
+			fftType = (C) new ComplexFloatType();
+		}
+
+		if (factory == null) {
+			factory = (ImgFactory<C>) ops().create().imgFactory(fftSize, fftType);
+		}
+
+		return (O) ops().create().img(fftSize, fftType);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public I padInput(I input) {
+		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
+
+			if (obf == null) {
+				obf =
+					new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+						Util.getTypeFromInterval(input).createVariable());
+			}
+
+			Interval inputInterval =
+				FFTMethods.paddingIntervalCentered(input, FinalDimensions
+					.wrap(paddedSize));
+
+			return (I) Views.interval(Views.extend(input, obf), inputInterval);
+
+		}
+
+		return input;
+
+	}
+
+	@Override
+	public O compute(final I input) {
 
 		long[] inputSize = new long[input.numDimensions()];
 
@@ -117,24 +160,10 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 
 		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, fast);
 
-		if (fftType == null) {
-			fftType = (C) new ComplexFloatType();
-		}
+		O output = createOutput();
+		I paddedInput = padInput(input);
 
-		if (factory == null) {
-			factory = (ImgFactory) ops().create().imgFactory(fftSize, fftType);
-		}
-
-		return (O) ops().create().img(fftSize, fftType);
-
-	}
-
-	@Override
-	public O compute(final I input) {
-
-		O output = createOutput(input);
-
-		ops().filter().fft(output, input, obf, paddedSize);
+		ops().filter().fft(output, paddedInput);
 
 		return output;
 	}
