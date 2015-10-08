@@ -53,7 +53,6 @@ import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -676,7 +675,8 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast, obf);
+				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast,
+				obf);
 		return result;
 	}
 
@@ -687,13 +687,13 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
 			final long[] borderSize, final Boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			ImgFactory factory)
+			ImgFactory<C> factory)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast, obf,
-				factory);
+				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast,
+				obf, factory);
 		return result;
 	}
 
@@ -704,13 +704,13 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<T> in,
 			final long[] borderSize, final Boolean fast,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			ImgFactory factory, Type<C> fftType)
+			ImgFactory<C> factory, Type<C> fftType)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast, obf,
-				factory, fftType);
+				net.imagej.ops.filter.fft.FFTFunctionOp.class, in, borderSize, fast,
+				obf, factory, fftType);
 		return result;
 	}
 
@@ -724,35 +724,6 @@ public class FilterNamespace extends AbstractNamespace {
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
 				net.imagej.ops.filter.fft.FFTComputerOp.class, out, in);
-		return result;
-	}
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.FFTComputerOp.class)
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTComputerOp.class, out, in, obf);
-		return result;
-	}
-
-	/** Executes the "fft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.FFTComputerOp.class)
-	public <T extends RealType<T>, C extends ComplexType<C>>
-		RandomAccessibleInterval<C> fft(final RandomAccessibleInterval<C> out,
-			final RandomAccessibleInterval<T> in,
-			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf,
-			final long... paddedSize)
-	{
-		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<C> result =
-			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTComputerOp.class, out, in, obf, paddedSize);
 		return result;
 	}
 
