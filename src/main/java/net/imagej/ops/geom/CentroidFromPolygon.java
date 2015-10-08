@@ -29,15 +29,17 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
-import net.imglib2.roi.geometric.Polygon;
-
-import org.scijava.plugin.Plugin;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link Centroid}.
@@ -45,18 +47,23 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity", name = Geometric.Centroid.NAME)
-public class DefaultCenterOfGravity
+public class CentroidFromPolygon
 		extends
-			AbstractFunctionOp<Polygon, RealLocalizable>
+			AbstractFunctionOp<ThePolygon, RealLocalizable>
 		implements
-			GeometricOp<Polygon, RealLocalizable>,
-			Contingent,
 			Geometric.Centroid {
+	
+	private FunctionOp<ThePolygon, DoubleType> sizeFunc;
 
 	@Override
-	public RealLocalizable compute(final Polygon input) {
-
-		double area = 0;
+	public void initialize() {
+		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+	}
+	
+	@Override
+	public RealLocalizable compute(final ThePolygon input) {
+		
+		double area = sizeFunc.compute(input).get();
 		double cx = 0;
 		double cy = 0;
 		for (int i = 0; i < input.getVertices().size() - 1; i++) {
@@ -73,11 +80,6 @@ public class DefaultCenterOfGravity
 		}
 
 		return new RealPoint(cx / (area * 6), cy / (area * 6));
-	}
-
-	@Override
-	public boolean conforms() {
-		return 2 == in().numDimensions();
 	}
 
 }
