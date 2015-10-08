@@ -45,7 +45,10 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT computer that operates on an RAI and wraps FFTMethods.
+ * Forward FFT computer that operates on an RAI and wraps FFTMethods. The input
+ * and output size must conform to a supported FFT size. Use
+ * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
+ * supported FFT size.
  * 
  * @author Brian Northan
  * @param <T>
@@ -58,6 +61,9 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	implements Ops.Filter.FFT, Contingent
 {
 
+	/**
+	 * Compute an ND FFT
+	 */
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<C> output)
@@ -74,7 +80,7 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
 	}
-	
+
 	/**
 	 * Make sure that the input and output size conforms to a supported FFT size.
 	 */
