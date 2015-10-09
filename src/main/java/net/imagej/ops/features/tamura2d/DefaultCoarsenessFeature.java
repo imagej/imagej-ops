@@ -46,13 +46,13 @@ import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Intervals;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import com.sun.jdi.ByteType;
 
 /**
  * 
