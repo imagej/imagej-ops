@@ -32,13 +32,11 @@ package net.imagej.ops.threshold;
 
 import java.util.List;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
