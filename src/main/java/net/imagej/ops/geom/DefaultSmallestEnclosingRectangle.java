@@ -32,22 +32,21 @@ package net.imagej.ops.geom;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.BoundingBox;
 import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.SmallestBoundingBox;
-import net.imagej.ops.geom.helper.Polytope;
 import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link SmallestBoundingBox}.

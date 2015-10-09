@@ -29,6 +29,9 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -38,14 +41,9 @@ import net.imagej.ops.Ops.Geometric.MainElongation;
 import net.imagej.ops.Ops.Geometric.MedianElongation;
 import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
-import net.imagej.ops.geom.helper.Mesh;
-import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Spareness}.

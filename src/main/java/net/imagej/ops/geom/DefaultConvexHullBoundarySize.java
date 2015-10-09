@@ -35,13 +35,11 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.geom.helper.Polytope;
-import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.RealLocalizable;
 import net.imglib2.type.numeric.real.DoubleType;
 

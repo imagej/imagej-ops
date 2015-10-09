@@ -29,19 +29,16 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.SizeConvexHull;
 import net.imagej.ops.geom.helper.Polytope;
-import net.imglib2.roi.IterableRegion;
-import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Solidity}.

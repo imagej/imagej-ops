@@ -29,6 +29,8 @@
  */
 package net.imagej.ops.geom;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -37,13 +39,10 @@ import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
-import net.imagej.ops.geom.helper.Mesh;
 import net.imglib2.Cursor;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the 2nd multi variate of a 

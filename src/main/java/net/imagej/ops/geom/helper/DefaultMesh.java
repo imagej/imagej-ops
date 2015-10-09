@@ -34,13 +34,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import net.imglib2.RealInterval;
 import net.imglib2.RealLocalizable;
-import net.imglib2.RealPositionable;
-import net.imglib2.RealRandomAccess;
-import net.imglib2.type.logic.BoolType;
 
 /**
  * This is the default implementation of {@link Mesh}. 
@@ -65,11 +59,6 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	 */
 	private double area;
 	
-	/**
-	 * The centroid of all {@link DefaultMesh#facets}.
-	 */
-	private Vertex centroid;
-
 	/**
 	 * The epsilon which was used to compute all {@link DefaultMesh#facets}.
 	 */

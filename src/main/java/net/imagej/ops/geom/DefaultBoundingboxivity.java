@@ -34,6 +34,7 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Boundingboxivity;
 import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.SmallestBoundingBox;
 import net.imagej.ops.RTs;

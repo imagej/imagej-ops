@@ -32,6 +32,8 @@ package net.imagej.ops.geom;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -43,6 +45,9 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Geometric.VertexInterpolator.NAME)
 public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
+	@Parameter(type = ItemIO.INPUT)
+	double isolevel;
+	
 	@Override
 	public void run() {
 		output = new double[3];

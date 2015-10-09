@@ -40,8 +40,6 @@ import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
 import net.imagej.ops.geom.helper.Mesh;
 import net.imagej.ops.geom.helper.Polytope;
 import net.imagej.ops.geom.helper.ThePolygon;
-import net.imagej.ops.geom.helper.Vertex;
-import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
@@ -169,9 +167,10 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultFeret.class)
-	public Pair feret(final ThePolygon in) {
-		final Pair result =
-			(Pair) ops().run(net.imagej.ops.geom.DefaultFeret.class, in);
+	public Pair<RealLocalizable, RealLocalizable> feret(final ThePolygon in) {
+		@SuppressWarnings("unchecked")
+		final Pair<RealLocalizable, RealLocalizable> result =
+			(Pair<RealLocalizable, RealLocalizable>) ops().run(net.imagej.ops.geom.DefaultFeret.class, in);
 		return result;
 	}
 	
@@ -190,7 +189,7 @@ public class GeomNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultMainElongationFeature.class)
-	public DoubleType mainelongation(final IterableRegion in) {
+	public <B extends BooleanType<B>> DoubleType mainelongation(final IterableRegion<B> in) {
 		final DoubleType result =
 			(DoubleType) ops().run(net.imagej.ops.geom.DefaultMainElongationFeature.class, in);
 		return result;
@@ -262,6 +261,7 @@ public class GeomNamespace extends AbstractNamespace {
 	
 	@OpMethod(op = net.imagej.ops.geom.DefaultMinorMajorAxis.class)
 	public Pair<DoubleType, DoubleType> secondmultivariate(final ThePolygon in) {
+		@SuppressWarnings("unchecked")
 		final Pair<DoubleType, DoubleType> result =
 			(Pair<DoubleType, DoubleType>) ops().run(net.imagej.ops.geom.DefaultMinorMajorAxis.class, in);
 		return result;
@@ -330,6 +330,13 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 	
+	@OpMethod(op = net.imagej.ops.geom.DefaultBoundingBox.class)
+	public ThePolygon boundingbox(final ThePolygon in) {
+		final ThePolygon result =
+			(ThePolygon) ops().run(net.imagej.ops.geom.DefaultBoundingBox.class, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.geom.DefaultVertexInterpolator.class)
 	public double[] vertexinterpolator(final int[] p1, final int[] p2, final double p1Value, final double p2Value, final double isolevel) {
 		final double[] result =
@@ -343,11 +350,5 @@ public class GeomNamespace extends AbstractNamespace {
 			(double[]) ops().run(net.imagej.ops.geom.BitTypeVertexInterpolator.class, p1, p2, p1Value, p2Value);
 		return result;
 	}
-	
-	@OpMethod(op = net.imagej.ops.geom.DefaultBoundingBox.class)
-	public ThePolygon boundingbox(final ThePolygon in) {
-		final ThePolygon result =
-			(ThePolygon) ops().run(net.imagej.ops.geom.DefaultBoundingBox.class, in);
-		return result;
-	}
+
 }

@@ -34,6 +34,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -62,6 +65,7 @@ import net.imagej.ops.Ops.Geometric.Spareness;
 import net.imagej.ops.Ops.Geometric.Sphericity;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imglib2.RandomAccess;
+import net.imglib2.RealLocalizable;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
@@ -88,8 +92,8 @@ public class GeomTest extends AbstractFeatureTest {
 	@BeforeClass
 	public static void setupBefore() throws MalformedURLException, IOException {
 		// read simple polygon image
-		final BufferedImage read = ImageIO.read(GeomTest.class
-				.getResourceAsStream("cZgkFsK.png"));
+		final BufferedImage read = ImageIO
+				.read(GeomTest.class.getResourceAsStream("cZgkFsK.png"));
 
 		final ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
 				ArrayImgs.ints(read.getWidth(), read.getHeight()));
@@ -99,7 +103,7 @@ public class GeomTest extends AbstractFeatureTest {
 				.randomAccess();
 		for (int y = 0; y < read.getHeight(); y++) {
 			for (int x = 0; x < read.getWidth(); x++) {
-				randomAccess.setPosition(new int[] { x, y });
+				randomAccess.setPosition(new int[]{x, y});
 				final Color c = new Color(read.getRGB(x, y));
 				if (c.getRed() == Color.black.getRed()) {
 					randomAccess.get().add("1");
@@ -109,7 +113,7 @@ public class GeomTest extends AbstractFeatureTest {
 
 		final LabelRegions<String> labelRegions = new LabelRegions<String>(img);
 		region2D = labelRegions.getLabelRegion("1");
-		
+
 		try {
 			region3D = createLabelRegion3D();
 		} catch (MalformedURLException e) {
@@ -130,12 +134,9 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testArea() {
 		// value taken from imagej
-		assertEquals(
-				Size.NAME,
-				355630.5,
-				ops.geom()
-						.size(ops.geom().contour(region2D, true, true))
-						.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Size.NAME, 355630.5, ops.geom()
+				.size(ops.geom().contour(region2D, true, true)).getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -144,9 +145,11 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testPerimeter() {
 		// value taken from imagej
-		assertEquals(BoundarySize.NAME, 2658.990257670, ops.geom()
-				.boundarysize(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(BoundarySize.NAME, 2658.990257670,
+				ops.geom()
+						.boundarysize(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -155,9 +158,10 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testCircularity() {
 		// value taken from imagej
-		assertEquals(Circularity.NAME, 0.632083948, ops.geom()
-				.circularity(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Circularity.NAME, 0.632083948,
+				ops.geom().circularity(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -166,9 +170,10 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testMinorAxis() {
 		// value taken from imagej
-		assertEquals(MinorAxis.NAME, 520.667420750, ops.geom()
-				.minoraxis(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(MinorAxis.NAME, 520.667420750,
+				ops.geom().minoraxis(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -177,9 +182,10 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testMajorAxis() {
 		// value taken from imagej
-		assertEquals(MajorAxis.NAME, 869.657215429, ops.geom()
-				.majoraxis(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), 0.01);
+		assertEquals(MajorAxis.NAME, 869.657215429,
+				ops.geom().majoraxis(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				0.01);
 	}
 
 	/**
@@ -188,9 +194,12 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testFeretDiameter() {
 		// value taken from imagej
-		assertEquals(FeretsDiameter.NAME, 908.002202641, ops.geom()
-				.feretsdiameter(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(FeretsDiameter.NAME, 908.002202641,
+				ops.geom()
+						.feretsdiameter(
+								ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -208,8 +217,10 @@ public class GeomTest extends AbstractFeatureTest {
 				.getRealDouble();
 
 		boolean isEquals = false;
-		if (Math.abs(expectedAngle - actualAngle) < AbstractFeatureTest.SMALL_DELTA
-				|| Math.abs(expectedAngle + 180 - actualAngle) < AbstractFeatureTest.SMALL_DELTA) {
+		if (Math.abs(
+				expectedAngle - actualAngle) < AbstractFeatureTest.SMALL_DELTA
+				|| Math.abs(expectedAngle + 180
+						- actualAngle) < AbstractFeatureTest.SMALL_DELTA) {
 			isEquals = true;
 		}
 
@@ -223,9 +234,11 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testEccentricity() {
 		// value taken from imagej
-		assertEquals(Eccentricity.NAME, 1.670273923, ops.geom()
-				.eccentricity(ops.geom().contour(region2D, true, true))
-				.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Eccentricity.NAME, 1.670273923,
+				ops.geom()
+						.eccentricity(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 
 	}
 
@@ -235,13 +248,10 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testRoundness() {
 		// value taken from imagej
-		assertEquals(
-				Roundness.NAME,
-				0.598704192,
-				ops.geom()
-						.roundness(
-								ops.geom().contour(region2D, true, true))
-						.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Roundness.NAME, 0.598704192,
+				ops.geom().roundness(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -250,14 +260,12 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testSolidity2D() {
 		// value taken from imagej
-		assertEquals(
-				Solidity.NAME,
-				0.997063173,
-				ops.geom()
-						.solidity(ops.geom().contour(region2D, true, true))
-						.getRealDouble(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Solidity.NAME, 0.997063173,
+				ops.geom().solidity(ops.geom().contour(region2D, true, true))
+						.getRealDouble(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
-	
+
 	/**
 	 * Test the {@link Solidity} Op.
 	 */
@@ -265,8 +273,9 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testSolidity3D() {
 		// This test is just here for completeness.
 		// All input values of solidity are verified.
-		assertEquals(Solidity.NAME, 0.902, ops.geom()
-				.solidity(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Solidity.NAME, 0.754,
+				ops.geom().solidity(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -276,8 +285,9 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testRugosity() {
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
-		assertEquals(Rugosity.NAME, 1.099, ops.geom()
-				.rugosity(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Rugosity.NAME, 1.379,
+				ops.geom().rugosity(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -287,8 +297,9 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testConvexity() {
 		// This test is just here for completeness.
 		// All input values of convexity are verified.
-		assertEquals(Convexity.NAME, 0.910, ops.geom()
-				.convexity(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Convexity.NAME, 0.725,
+				ops.geom().convexity(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -298,9 +309,10 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testConvexHullSurfacePixel() {
 		// Verified by hand. qhull merges faces and therefore has another number
 		// of surface pixels
-		assertEquals(BoundaryPixelConvexHull.NAME, 585, ops
+		assertEquals(BoundaryPixelConvexHull.NAME, 32, ops
 				.geom().boundarypixelconvexhull(ops.geom().marchingcubes(region3D)).get(),
 				AbstractFeatureTest.BIG_DELTA);
+
 	}
 
 	/**
@@ -309,8 +321,11 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testConvexHullSurfaceArea() {
 		// value taken from qhull (qhull.org)
-		assertEquals(BoundarySizeConvexHull.NAME, 19133.663, ops
-				.geom().boundarysizeconvexhull(ops.geom().marchingcubes(region3D)).get(),
+		assertEquals(BoundarySizeConvexHull.NAME,13580.54,
+				ops.geom()
+						.boundarysizeconvexhull(
+								ops.geom().marchingcubes(region3D))
+						.get(),
 				AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -320,8 +335,8 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testConvexHullVolume() {
 		// value taken from qhull (qhull.org)
-		assertEquals(SizeConvexHull.NAME, 234284.5, ops
-				.geom().sizeconvexhull(ops.geom().marchingcubes(region3D)).get(),
+		assertEquals(SizeConvexHull.NAME, 108660.667, ops.geom()
+				.sizeconvexhull(ops.geom().marchingcubes(region3D)).get(),
 				AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -333,8 +348,10 @@ public class GeomTest extends AbstractFeatureTest {
 		// value taken from imagej
 		// The delta is relatively big because they use float numbers in imagej
 		// and my implementation is based on doubles.
-		assertEquals(BoundarySize.NAME, 21025.018, ops.geom()
-				.boundarysize(ops.geom().marchingcubes(region3D)).get(), 0.186);
+		assertEquals(BoundarySize.NAME,
+				18741.018, ops.geom()
+						.boundarysize(ops.geom().marchingcubes(region3D)).get(),
+				0.186);
 	}
 
 	/**
@@ -343,8 +360,9 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testSurfacePixel() {
 		// value taken from imagej
-		assertEquals(BoundaryPixel.NAME, 29738, ops.geom()
-				.boundarypixel(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(BoundaryPixel.NAME, 20996.0, ops.geom()
+				.boundarypixel(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -353,8 +371,7 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testVolume() {
 		// value taken from imagej
-		assertEquals(Size.NAME, 211296,
-				ops.geom().size(region3D).get(),
+		assertEquals(Size.NAME, 81992, ops.geom().size(region3D).get(),
 				AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -364,8 +381,10 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testCompactness() {
 		// value taken from imagej
-		assertEquals(Compactness.NAME, 0.192, ops.geom()
-				.compactness(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Compactness.NAME,
+				0.082, ops.geom()
+						.compactness(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -374,8 +393,9 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testSphericity() {
 		// value taken from imagej
-		assertEquals(Sphericity.NAME, 0.577, ops.geom()
-				.sphericity(ops.geom().marchingcubes(region3D)).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Sphericity.NAME, 0.435,
+				ops.geom().sphericity(ops.geom().marchingcubes(region3D)).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -384,8 +404,9 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testMainElongation() {
 		// value taken from imagej
-		assertEquals(MainElongation.NAME, 1.312, ops.geom()
-				.mainelongation(region3D).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(MainElongation.NAME, 1.041,
+				ops.geom().mainelongation(region3D).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
@@ -394,8 +415,8 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testMedianElongation() {
 		// value taken from imagej
-		assertEquals(MedianElongation.NAME, 1.126, ops
-				.geom().medianelongation(region3D).get(),
+		assertEquals(MedianElongation.NAME, 1.225,
+				ops.geom().medianelongation(region3D).get(),
 				AbstractFeatureTest.BIG_DELTA);
 	}
 
@@ -405,7 +426,8 @@ public class GeomTest extends AbstractFeatureTest {
 	@Test
 	public void testSpareness() {
 		// value taken from imagej
-		assertEquals(Spareness.NAME, 0.970, ops.geom()
-				.spareness(region3D).get(), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Spareness.NAME, 0.509,
+				ops.geom().spareness(region3D).get(),
+				AbstractFeatureTest.BIG_DELTA);
 	}
 }

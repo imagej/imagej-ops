@@ -58,9 +58,6 @@ public abstract class AbstractVertexInterpolator extends AbstractOp
 
 	@Parameter(type = ItemIO.INPUT)
 	double p2Value;
-	
-	@Parameter(type = ItemIO.INPUT, required = false)
-	double isolevel;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	double[] output;

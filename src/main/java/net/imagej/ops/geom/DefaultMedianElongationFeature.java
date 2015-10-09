@@ -38,8 +38,6 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.CovarianceOf2ndMultiVariate3D;
-import net.imagej.ops.geom.helper.Mesh;
-import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;

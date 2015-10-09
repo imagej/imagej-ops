@@ -39,7 +39,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.Facet;
 import net.imagej.ops.geom.helper.Mesh;
-import net.imagej.ops.geom.helper.Polytope;
 import net.imagej.ops.geom.helper.TriangularFacet;
 import net.imglib2.type.numeric.real.DoubleType;
 

@@ -43,8 +43,6 @@ import net.imagej.ops.geom.helper.Polytope;
 import net.imglib2.RealLocalizable;
 import net.imglib2.type.numeric.real.DoubleType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of

@@ -58,6 +58,7 @@ public class RandomAccessibleIntervalToMeshConverter extends
 	private OpService ops;
 	private FunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T convert(Object src, Class<T> dest) {
 		if (marchingCubesFunc == null) {

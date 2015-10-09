@@ -32,14 +32,12 @@ package net.imagej.ops.geom;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.MainElongation;
 import net.imagej.ops.Ops.Geometric.MajorAxis;
 import net.imagej.ops.Ops.Geometric.MinorAxis;
 import net.imagej.ops.RTs;
-import net.imagej.ops.geom.helper.Polytope;
 import net.imagej.ops.geom.helper.ThePolygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -58,8 +56,8 @@ public class DefaultElongation extends AbstractFunctionOp<ThePolygon, DoubleType
 
 	@Override
 	public void initialize() {
-		minorAxisFunc = RTs.function(ops(), MinorAxis.class, (ThePolygon) in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, (ThePolygon) in());
+		minorAxisFunc = RTs.function(ops(), MinorAxis.class, in());
+		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
 	}
 
 	@Override

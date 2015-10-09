@@ -41,7 +41,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.Horizon;
-import net.imagej.ops.geom.helper.Mesh;
 import net.imagej.ops.geom.helper.Polytope;
 import net.imagej.ops.geom.helper.DefaultTriangularFacet;
 import net.imagej.ops.geom.helper.UpdateablePointSet;

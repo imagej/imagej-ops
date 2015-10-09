@@ -40,6 +40,7 @@ public class ThePolygon extends Polygon implements Polytope {
 		super(vertices);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<RealLocalizable> getPoints() {
 		return (List<RealLocalizable>) getVertices();
