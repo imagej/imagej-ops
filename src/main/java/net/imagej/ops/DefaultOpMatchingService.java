@@ -322,7 +322,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		if (name == null) return true; // not filtering on name
 
 		// check if name matches exactly
-		final String infoName = info.getName();
+		final String infoName = OpUtils.getName(info);
 		if (name.equals(infoName)) return true;
 
 		// check if name matches w/o namespace (e.g., 'add' matches 'math.add')
@@ -331,15 +331,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 			if (dot >= 0 && name.equals(infoName.substring(dot + 1))) return true;
 		}
 
-		// check for an alias
-		final String alias = info.get("alias");
-		if (name.equals(alias)) return true;
-
-		// check for a list of aliases
-		final String aliases = info.get("aliases");
+		// check for aliases
+		final String[] aliases = OpUtils.getAliases(info);
 		if (aliases != null) {
-			for (final String a : aliases.split(",")) {
-				if (name.equals(a.trim())) return true;
+			for (final String a : aliases) {
+				if (name.equals(a)) return true;
 			}
 		}
 
