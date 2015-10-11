@@ -49,8 +49,8 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = CentralMoment11.NAME,
-	label = "Image Moment: CentralMoment11", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = CentralMoment11.class, label = "Image Moment: CentralMoment11",
+	priority = Priority.FIRST_PRIORITY)
 public class IterableCentralMoment11<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements CentralMoment11
 {

@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = NormalizedCentralMoment20.NAME,
+@Plugin(type = NormalizedCentralMoment20.class,
 	label = "Image Moment: NormalizedCentralMoment20")
 public class DefaultNormalizedCentralMoment20<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements NormalizedCentralMoment20

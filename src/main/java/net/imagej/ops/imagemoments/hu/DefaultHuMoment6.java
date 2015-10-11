@@ -56,8 +56,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = HuMoment6.NAME,
-	label = "Image Moment: HuMoment6")
+@Plugin(type = HuMoment6.class, label = "Image Moment: HuMoment6")
 public class DefaultHuMoment6<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements HuMoment6
 {
