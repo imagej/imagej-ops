@@ -48,7 +48,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.FIRST_PRIORITY)
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
 	implements Geometric.Size
 {

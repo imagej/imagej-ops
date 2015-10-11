@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <O> output type
  */
 @Plugin(type = Mean.class, label = "Statistics: Mean",
-	priority = Priority.FIRST_PRIORITY)
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableMean<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatsOp<Iterable<I>, O> implements Mean
 {

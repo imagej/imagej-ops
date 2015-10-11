@@ -49,7 +49,7 @@ import net.imglib2.RandomAccessibleInterval;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Converter.class, priority = Priority.FIRST_PRIORITY)
+@Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)
 public class RandomAccessibleIntervalToMeshConverter extends
 	AbstractConverter<RandomAccessibleInterval, Mesh>
 {

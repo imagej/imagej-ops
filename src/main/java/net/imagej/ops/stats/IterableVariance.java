@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  *      Wikipedia</a>
  */
 @Plugin(type = Variance.class, label = "Statistics: Variance",
-	priority = Priority.FIRST_PRIORITY)
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Variance
 {
