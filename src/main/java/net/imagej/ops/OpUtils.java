@@ -30,6 +30,7 @@
 
 package net.imagej.ops;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,6 +39,8 @@ import net.imagej.ops.OpCandidate.StatusCode;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
+import org.scijava.plugin.PluginInfo;
+import org.scijava.util.ClassUtils;
 
 /**
  * Utility methods for working with ops. In particular, this class contains
@@ -56,7 +59,11 @@ public final class OpUtils {
 
 	/** Gets the name of the given op. */
 	public static String getName(final ModuleInfo info) {
-		return info.getName();
+		final String name = info.getName();
+		if (name != null && !name.isEmpty()) return name;
+
+		// name not explicitly specified; look for NAME constant
+		return getFieldValue(info, String.class, "NAME");
 	}
 
 	/** Gets the aliases associated with the given op. */
@@ -65,9 +72,17 @@ public final class OpUtils {
 		final String alias = info.get("alias");
 		if (alias != null) return new String[] { alias };
 
-		// check for a list of aliases
+		// no single alias; check for a list of aliases
 		final String aliases = info.get("aliases");
 		if (aliases != null) return aliases.split("\\s*,\\s*");
+
+		// alias not explicitly specified; look for ALIAS constant
+		final String aliasField = getFieldValue(info, String.class, "ALIAS");
+		if (aliasField != null) return new String[] {aliasField};
+
+		// no single alias; look for ALIASES constant
+		final String aliasesField = getFieldValue(info, String.class, "ALIASES");
+		if (aliasesField != null) return aliasesField.split("\\s*,\\s*");
 
 		return null;
 	}
@@ -222,6 +237,27 @@ public final class OpUtils {
 	}
 
 	// -- Helper methods --
+
+	/** Helper method of {@link #getName} and {@link #getAliases}. */
+	private static <T> T getFieldValue(final ModuleInfo info,
+		final Class<T> fieldType, final String fieldName)
+	{
+		if (!(info instanceof PluginInfo)) return null;
+		final PluginInfo<?> pInfo = (PluginInfo<?>) info;
+
+		// HACK: The CommandInfo.getPluginType() method returns Command.class.
+		// But we want to get the actual type of the wrapped PluginInfo.
+		// CommandInfo does not have a getPluginInfo() unwrap method, though.
+		// So let's extract the type directly from the @Plugin annotation.
+		final Class<?> opType = pInfo.getAnnotation().type();
+
+		final Field nameField = ClassUtils.getField(opType, fieldName);
+		if (nameField == null) return null;
+		if (!fieldType.isAssignableFrom(nameField.getType())) return null;
+		@SuppressWarnings("unchecked")
+		final T value = (T) ClassUtils.getValue(nameField, null);
+		return value;
+	}
 
 	/** Helper method of {@link #opString(ModuleInfo, ModuleItem)}. */
 	private static String paramString(final Iterable<ModuleItem<?>> items,
