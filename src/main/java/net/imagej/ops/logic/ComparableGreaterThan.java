@@ -40,8 +40,7 @@ import org.scijava.plugin.Plugin;
  * Op that performs a greater-than (>) comparison on two {@link Comparable}
  * objects.
  */
-@Plugin(type = Ops.Logic.GreaterThan.class, name = Ops.Logic.GreaterThan.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Logic.GreaterThan.ALIASES) })
+@Plugin(type = Ops.Logic.GreaterThan.class)
 public class ComparableGreaterThan<T> extends AbstractCondition<T> implements
 	Ops.Logic.GreaterThan
 {

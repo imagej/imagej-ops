@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Ops.Create.IntegerType.class, name = Ops.Create.IntegerType.NAME)
+@Plugin(type = Ops.Create.IntegerType.class)
 public class DefaultCreateIntegerType extends AbstractOp implements
 	Ops.Create.IntegerType, Output<IntegerType>
 {

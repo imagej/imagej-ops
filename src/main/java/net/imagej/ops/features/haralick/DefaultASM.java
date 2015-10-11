@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Angular Second Moment (Energy)", name = Haralick.ASM.NAME)
+@Plugin(type = HaralickFeature.class, label = "Haralick: Angular Second Moment (Energy)")
 public class DefaultASM<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements ASM {
 

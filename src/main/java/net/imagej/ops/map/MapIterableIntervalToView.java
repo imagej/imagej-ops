@@ -38,7 +38,7 @@ import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
+@Plugin(type = Ops.Map.class)
 public class MapIterableIntervalToView<A, B extends Type<B>> extends
 	AbstractMapView<A, B, IterableInterval<A>, IterableInterval<B>>
 {

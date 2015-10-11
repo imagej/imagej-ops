@@ -52,7 +52,7 @@ import org.scijava.thread.ThreadService;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Labeling.CCA.class, name = Ops.Labeling.CCA.NAME, priority = 1.0)
+@Plugin(type = Ops.Labeling.CCA.class, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, ImgLabeling<L, I>>

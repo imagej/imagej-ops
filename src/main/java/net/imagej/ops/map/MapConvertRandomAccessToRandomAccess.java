@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @param <A>
  * @param <B>
  */
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME)
+@Plugin(type = Ops.Map.class)
 public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
 	AbstractMapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
 {

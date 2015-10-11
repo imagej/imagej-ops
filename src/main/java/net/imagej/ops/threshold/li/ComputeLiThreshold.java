@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.Li.class, name = Ops.Threshold.Li.NAME)
+@Plugin(type = Ops.Threshold.Li.class)
 public class ComputeLiThreshold<T extends RealType<T>> extends
 	AbstractComputeThresholdHistogram<T>
 {

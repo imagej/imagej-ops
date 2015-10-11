@@ -63,7 +63,7 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Tamura.Coarseness.class, label = "Tamura 2D: Coarseness", name = Tamura.Coarseness.NAME)
+@Plugin(type = Tamura.Coarseness.class, label = "Tamura 2D: Coarseness")
 public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractTamuraFeature<I, O> implements Coarseness {
 

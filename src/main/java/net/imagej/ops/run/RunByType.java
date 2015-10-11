@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Run.class, name = Ops.Run.NAME)
+@Plugin(type = Ops.Run.class)
 public class RunByType extends AbstractOp implements Ops.Run {
 
 	@Parameter(type = ItemIO.OUTPUT)

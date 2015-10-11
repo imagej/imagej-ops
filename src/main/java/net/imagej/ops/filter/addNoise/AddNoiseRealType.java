@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * Sets the real component of an output real number to the addition of the real
  * component of an input real number with an amount of Gaussian noise.
  */
-@Plugin(type = Ops.Filter.AddNoise.class, name = Ops.Filter.AddNoise.NAME)
+@Plugin(type = Ops.Filter.AddNoise.class)
 public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
 {

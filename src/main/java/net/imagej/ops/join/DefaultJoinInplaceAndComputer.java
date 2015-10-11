@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+@Plugin(type = Ops.Join.class)
 public class DefaultJoinInplaceAndComputer<A, B> extends
 	AbstractJoinComputerAndComputer<A, A, B, InplaceOp<A>, ComputerOp<A, B>>
 {

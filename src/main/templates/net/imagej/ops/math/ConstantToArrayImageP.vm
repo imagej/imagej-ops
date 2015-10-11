@@ -71,7 +71,7 @@ public final class ConstantToArrayImageP {
 	 * 
 	 * @author Christian Dietz (University of Konstanz)
 	 */
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 11#else + 10#end)
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 11#else + 10#end)
 	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
 		
 		@Parameter

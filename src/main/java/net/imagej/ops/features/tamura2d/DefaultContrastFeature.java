@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Andeas Graumann, Univesity of Konstanz
  *
  */
-@Plugin(type = Tamura.Contrast.class, label = "Tamura 2D: Contrast", name = Tamura.Contrast.NAME)
+@Plugin(type = Tamura.Contrast.class, label = "Tamura 2D: Contrast")
 public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractTamuraFeature<I, O> implements Contrast {
 

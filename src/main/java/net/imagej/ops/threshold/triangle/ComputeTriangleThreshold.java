@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.Triangle.class, name = Ops.Threshold.Triangle.NAME)
+@Plugin(type = Ops.Threshold.Triangle.class)
 public class ComputeTriangleThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

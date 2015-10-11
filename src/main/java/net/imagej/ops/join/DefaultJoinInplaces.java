@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class, name = Ops.Join.NAME)
+@Plugin(type = Ops.Join.class)
 public class DefaultJoinInplaces<A> extends AbstractJoinInplaces<A> {
 
 	@Override

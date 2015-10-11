@@ -51,8 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Create.ImgLabeling.class,
-	name = Ops.Create.ImgLabeling.NAME, priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Create.ImgLabeling.class, priority = Priority.HIGH_PRIORITY)
 public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	AbstractOp implements Ops.Create.ImgLabeling, Output<ImgLabeling<L, T>>
 {

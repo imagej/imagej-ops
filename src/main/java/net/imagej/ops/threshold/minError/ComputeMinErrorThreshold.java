@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.MinError.class, name = Ops.Threshold.MinError.NAME)
+@Plugin(type = Ops.Threshold.MinError.class)
 public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

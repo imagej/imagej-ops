@@ -52,7 +52,7 @@ public final class NumericTypeBinaryMath {
 #set ($iface = "Ops.Math.$op.name")
 
 	/** Op that $op.verbs two NumericType values. */
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME#if ($op.aliases), attrs = { @Attr(name = "aliases", value = ${iface}.ALIASES) }#end)
+	@Plugin(type = ${iface}.class)
 	public static class $op.name<T extends NumericType<T>>
 		extends AbstractHybridOp<T, T> implements $iface
 	{

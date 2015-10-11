@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
+@Plugin(type = Ops.Threshold.Apply.class)
 public class ApplyManualThreshold<T extends RealType<T>> extends
 	AbstractApplyThresholdImg<T, Img<T>>
 {

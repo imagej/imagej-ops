@@ -50,7 +50,7 @@ import org.scijava.thread.ThreadService;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME, priority = 1.0)
+@Plugin(type = Ops.Filter.DoG.class, priority = 1.0)
 public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>

@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <L> label type
  */
-@Plugin(type = Ops.Create.LabelingMapping.class, name = Ops.Create.LabelingMapping.NAME)
+@Plugin(type = Ops.Create.LabelingMapping.class)
 public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 	Ops.Create.LabelingMapping, Output<LabelingMapping<L>>
 {

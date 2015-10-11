@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  *            type
  */
-@Plugin(type = Ops.Filter.Sigma.class, name = Ops.Filter.Sigma.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Sigma.class, priority = Priority.LOW_PRIORITY)
 public class DefaultSigmaFilter<T extends RealType<T>> extends
 		AbstractCenterAwareNeighborhoodBasedFilter<T, T> implements
 		SigmaFilterOp<RandomAccessibleInterval<T>>, Contingent {

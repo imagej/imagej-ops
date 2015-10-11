@@ -45,8 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Variance.class, name = Ops.Filter.Variance.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Variance.class, priority = Priority.LOW_PRIORITY)
 public class DefaultVarianceFilter<T extends RealType<T>> extends
 	AbstractNeighborhoodBasedFilter<T, T> implements
 	VarianceFilterOp<RandomAccessibleInterval<T>>

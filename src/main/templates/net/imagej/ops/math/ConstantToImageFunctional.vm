@@ -56,7 +56,7 @@ public final class ConstantToImageFunctional {
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.VERY_LOW_PRIORITY)
+	@Plugin(type = ${iface}.class, priority = Priority.VERY_LOW_PRIORITY)
 	public static class ${op.name}<T extends NumericType<T>> extends
 			AbstractComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
 			implements ${iface} {

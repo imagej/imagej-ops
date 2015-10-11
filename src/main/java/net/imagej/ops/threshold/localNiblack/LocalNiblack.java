@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalNiblack.class)
 public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalNiblack
 {

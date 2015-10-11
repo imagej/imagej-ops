@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.Scale.class, name = Ops.Convert.Scale.NAME)
+@Plugin(type = Ops.Convert.Scale.class)
 public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends RealTypeConverter<I, O> implements Ops.Convert.Scale
 {

@@ -53,7 +53,7 @@ public final class ConstantToImageInPlace {
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME)
+	@Plugin(type = ${iface}.class)
 	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp implements
 		$iface
 	{

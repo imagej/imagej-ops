@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.RenyiEntropy.class, name = Ops.Threshold.RenyiEntropy.NAME)
+@Plugin(type = Ops.Threshold.RenyiEntropy.class)
 public class ComputeRenyiEntropyThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

@@ -51,7 +51,7 @@ import net.imglib2.util.Intervals;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Copy.Img.class, name = Copy.Img.NAME)
+@Plugin(type = Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
 		AbstractHybridOp<Img<T>, Img<T>> implements Copy.Img, Contingent {
 

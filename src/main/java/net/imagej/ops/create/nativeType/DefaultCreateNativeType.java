@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Create.NativeType.class, name = Ops.Create.NativeType.NAME)
+@Plugin(type = Ops.Create.NativeType.class)
 public class DefaultCreateNativeType<T extends NativeType<T>> extends
 	AbstractOp implements Ops.Create.NativeType, Output<T>
 {

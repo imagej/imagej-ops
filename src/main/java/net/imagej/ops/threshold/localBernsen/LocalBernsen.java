@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale
  * @param <T> input type
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalBernsen.class)
 public class LocalBernsen<T extends RealType<T>> extends
 	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
 {

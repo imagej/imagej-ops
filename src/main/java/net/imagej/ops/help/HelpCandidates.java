@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Help.class, name = Ops.Help.NAME,
+@Plugin(type = Ops.Help.class,
 	description = "Gets documentation for ops of the given name and/or type.")
 public class HelpCandidates extends AbstractHelp {
 

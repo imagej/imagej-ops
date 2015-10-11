@@ -35,7 +35,7 @@ import net.imagej.ops.Ops;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Logic.Not.class, name = Ops.Logic.Not.NAME)
+@Plugin(type = Ops.Logic.Not.class)
 public class NotCondition<T> extends AbstractCondition<T> implements
 	Ops.Logic.Not
 {

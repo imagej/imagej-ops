@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Lookup.class, name = Ops.Lookup.NAME)
+@Plugin(type = Ops.Lookup.class)
 public class LookupByType extends AbstractOp implements Ops.Lookup {
 
 	@Parameter(type = ItemIO.OUTPUT)

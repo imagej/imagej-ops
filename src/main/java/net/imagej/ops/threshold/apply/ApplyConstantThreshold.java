@@ -47,8 +47,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
 	AbstractComputerOp<Iterable<T>, Iterable<BitType>> implements
 	Ops.Threshold.Apply

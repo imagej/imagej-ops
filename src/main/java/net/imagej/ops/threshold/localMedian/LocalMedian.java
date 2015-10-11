@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalMedian.class)
 public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalMedian
 {

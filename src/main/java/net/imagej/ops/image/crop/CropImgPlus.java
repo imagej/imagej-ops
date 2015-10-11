@@ -49,9 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Crop.class, name = Ops.Image.Crop.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Crop.ALIASES) },
-	priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY + 1)
 public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 	Ops.Image.Crop
 {

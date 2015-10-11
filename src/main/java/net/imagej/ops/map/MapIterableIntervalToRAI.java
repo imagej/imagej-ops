@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @param <A> mapped on <B>
  * @param <B> mapped from <A>
  */
-@Plugin(type = Ops.Map.class, name = Ops.Map.NAME, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class MapIterableIntervalToRAI<A, B> extends
 	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 	implements Contingent
