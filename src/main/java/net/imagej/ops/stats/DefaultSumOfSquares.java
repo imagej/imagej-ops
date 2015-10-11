@@ -44,8 +44,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = SumOfSquares.NAME,
-	label = "Statistics: Sum Of Squares")
+@Plugin(type = SumOfSquares.class, label = "Statistics: Sum Of Squares")
 public class DefaultSumOfSquares<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements SumOfSquares
 {

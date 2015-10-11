@@ -45,8 +45,8 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = StdDev.NAME,
-	label = "Statistics: Standard Deviation", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = StdDev.class, label = "Statistics: Standard Deviation",
+	priority = Priority.FIRST_PRIORITY)
 public class IterableStandardDeviation<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements StdDev
 {

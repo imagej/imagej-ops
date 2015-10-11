@@ -52,8 +52,7 @@ import org.scijava.plugin.Plugin;
  *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Two-pass_algorithm">
  *      Wikipedia </a>
  */
-@Plugin(type = StatsOp.class, name = Variance.NAME,
-	label = "Statistics: Variance")
+@Plugin(type = Variance.class, label = "Statistics: Variance")
 public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Variance
 {

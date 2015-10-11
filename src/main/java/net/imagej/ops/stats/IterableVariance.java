@@ -49,8 +49,8 @@ import org.scijava.plugin.Plugin;
  *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm">
  *      Wikipedia</a>
  */
-@Plugin(type = StatsOp.class, name = Variance.NAME,
-	label = "Statistics: Variance", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = Variance.class, label = "Statistics: Variance",
+	priority = Priority.FIRST_PRIORITY)
 public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Variance
 {

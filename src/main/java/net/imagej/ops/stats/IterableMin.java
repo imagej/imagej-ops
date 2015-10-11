@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = Min.NAME, label = "Statistics: Min",
+@Plugin(type = Min.class, label = "Statistics: Min",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableMin<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatsOp<Iterable<I>, O> implements Min
