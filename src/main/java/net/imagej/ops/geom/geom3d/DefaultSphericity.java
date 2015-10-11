@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Sphericity.NAME,
+@Plugin(type = Geometric.Sphericity.class,
 	label = "Geometric (3D): Sphericity", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSphericity extends AbstractFunctionOp<Mesh, DoubleType>
 	implements Geometric.Sphericity

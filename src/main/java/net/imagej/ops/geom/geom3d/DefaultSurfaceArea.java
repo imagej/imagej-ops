@@ -45,7 +45,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.BoundarySize.NAME,
+@Plugin(type = Geometric.BoundarySize.class,
 	label = "Geometric (3D): Surface Area",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfaceArea extends AbstractFunctionOp<Mesh, DoubleType>

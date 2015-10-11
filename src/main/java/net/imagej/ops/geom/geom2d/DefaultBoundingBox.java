@@ -48,7 +48,7 @@ import net.imglib2.roi.geometric.Polygon;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, name = Geometric.BoundingBox.NAME)
+@Plugin(type = Geometric.BoundingBox.class)
 public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
 	implements Geometric.BoundingBox
 {

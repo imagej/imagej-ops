@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY-1)
+@Plugin(type = Geometric.Size.class, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY-1)
 public class DefaultVolume
 		extends
 			AbstractFunctionOp<Mesh, DoubleType>

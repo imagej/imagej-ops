@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric: Size",
+@Plugin(type = Geometric.Size.class, label = "Geometric: Size",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class SizeIterableInterval extends
 	AbstractFunctionOp<IterableInterval<?>, DoubleType> implements

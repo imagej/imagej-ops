@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Op.class, name = Geometric.VertexInterpolator.NAME)
+@Plugin(type = Geometric.VertexInterpolator.class)
 public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
 	@Parameter(type = ItemIO.INPUT)

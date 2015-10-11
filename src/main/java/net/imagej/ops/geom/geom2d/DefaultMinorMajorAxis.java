@@ -52,7 +52,7 @@ import net.imglib2.util.ValuePair;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, name = Geometric.SecondMultiVariate.NAME)
+@Plugin(type = Geometric.SecondMultiVariate.class)
 public class DefaultMinorMajorAxis extends
 	AbstractFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
 	Geometric.SecondMultiVariate

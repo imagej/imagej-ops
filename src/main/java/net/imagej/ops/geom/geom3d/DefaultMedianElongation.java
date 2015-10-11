@@ -48,7 +48,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.MedianElongation.NAME,
+@Plugin(type = Geometric.MedianElongation.class,
 	label = "Geometric (3D): Median Elongation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMedianElongation<B extends BooleanType<B>> extends

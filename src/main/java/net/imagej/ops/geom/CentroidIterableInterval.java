@@ -49,7 +49,7 @@ import net.imglib2.roi.IterableRegion;
  * @param <B>
  *            a Boolean Type
  */
-@Plugin(type = Op.class, name = Geometric.Centroid.NAME, priority = 1)
+@Plugin(type = Geometric.Centroid.class, priority = 1)
 public class CentroidIterableInterval
 		extends
 			AbstractFunctionOp<IterableInterval<?>, RealLocalizable>

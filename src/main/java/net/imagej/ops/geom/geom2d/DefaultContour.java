@@ -57,7 +57,7 @@ import net.imglib2.view.Views;
  * @author Jonathan Hale, Universitf Konstany.
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, name = Geometric.Contour.NAME)
+@Plugin(type = Geometric.Contour.class)
 public class DefaultContour extends
 	AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon> implements
 	Contingent, Geometric.Contour

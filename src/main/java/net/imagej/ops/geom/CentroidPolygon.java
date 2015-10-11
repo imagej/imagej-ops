@@ -47,8 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity",
-	name = Geometric.Centroid.NAME)
+@Plugin(type = Geometric.Centroid.class, label = "Geometric: Center of Gravity")
 public class CentroidPolygon extends
 	AbstractFunctionOp<Polygon, RealLocalizable> implements Geometric.Centroid
 {

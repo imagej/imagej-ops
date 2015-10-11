@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.MainElongation.NAME,
+@Plugin(type = Geometric.MainElongation.class,
 	label = "Geometric (3D): Main Elongation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMainElongation<B extends BooleanType<B>> extends

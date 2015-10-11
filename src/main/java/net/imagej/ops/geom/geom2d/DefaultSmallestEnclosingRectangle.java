@@ -54,9 +54,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class,
-	label = "Geometric (2D): Smallest Enclosing Rectangle",
-	name = Geometric.SmallestEnclosingBoundingBox.NAME)
+@Plugin(type = Geometric.SmallestEnclosingBoundingBox.class,
+	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
 	AbstractFunctionOp<Polygon, Polygon> implements Contingent,
 	Geometric.SmallestEnclosingBoundingBox

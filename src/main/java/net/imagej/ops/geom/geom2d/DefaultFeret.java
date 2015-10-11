@@ -46,7 +46,7 @@ import net.imglib2.util.ValuePair;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, name = Geometric.Feret.NAME)
+@Plugin(type = Geometric.Feret.class)
 public class DefaultFeret extends
 	AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
 	Geometric.Feret

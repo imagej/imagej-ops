@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Compactness.NAME,
+@Plugin(type = Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
 	implements Geometric.Compactness

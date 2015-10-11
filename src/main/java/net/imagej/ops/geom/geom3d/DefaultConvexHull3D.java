@@ -58,7 +58,7 @@ import net.imglib2.RealLocalizable;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Op.class, name = ConvexHull.NAME)
+@Plugin(type = ConvexHull.class)
 public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 	implements ConvexHull
 {

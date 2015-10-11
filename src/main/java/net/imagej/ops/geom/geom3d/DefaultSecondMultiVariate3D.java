@@ -51,7 +51,7 @@ import net.imglib2.type.BooleanType;
  * @author Tim-Oliver Buchholz, University of Konstanz
  * @param <B> BooleanType
  */
-@Plugin(type = Op.class, name = Geometric.SecondMultiVariate.NAME)
+@Plugin(type = SecondMultiVariate.class)
 public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 	AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
 	implements SecondMultiVariate, Contingent
