@@ -54,6 +54,24 @@ public final class OpUtils {
 
 	// -- Utility methods --
 
+	/** Gets the name of the given op. */
+	public static String getName(final ModuleInfo info) {
+		return info.getName();
+	}
+
+	/** Gets the aliases associated with the given op. */
+	public static String[] getAliases(final ModuleInfo info) {
+		// check for an alias
+		final String alias = info.get("alias");
+		if (alias != null) return new String[] { alias };
+
+		// check for a list of aliases
+		final String aliases = info.get("aliases");
+		if (aliases != null) return aliases.split("\\s*,\\s*");
+
+		return null;
+	}
+
 	/**
 	 * Unwraps the delegate object of the given {@link Module}, ensuring it is an
 	 * instance whose type matches the specified {@link OpRef}.
