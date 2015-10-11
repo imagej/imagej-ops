@@ -30,25 +30,30 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric: Size",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class SizeIterableInterval extends
+	AbstractFunctionOp<IterableInterval<?>, DoubleType> implements
+	GeometricOp<IterableInterval<?>, DoubleType>, Geometric.Size
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public DoubleType compute(IterableInterval<?> input) {
+		return new DoubleType(input.size());
 	}
 
 }

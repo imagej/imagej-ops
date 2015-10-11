@@ -30,25 +30,45 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops.Geometric.SmallestEnclosingBoundingBox;
+import net.imagej.ops.RTs;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of
+ * {@link net.imagej.ops.Ops.Geometric.Boundingboxivity}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+public abstract class AbstractBoxivity<I> extends
+	AbstractFunctionOp<I, DoubleType> implements Geometric.Boxivity
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	private FunctionOp<I, DoubleType> areaFunc;
+
+	private FunctionOp<I, I> smallestEnclosingRectangleFunc;
+
+	private Class<I> inType;
+
+	public AbstractBoxivity(final Class<I> inType) {
+		this.inType = inType;
+	}
+
+	@Override
+	public void initialize() {
+		areaFunc = RTs.function(ops(), Size.class, in());
+		smallestEnclosingRectangleFunc = (FunctionOp<I, I>) ops().function(
+			SmallestEnclosingBoundingBox.class, inType, in());
+	}
+
+	@Override
+	public DoubleType compute(final I input) {
+		return new DoubleType(areaFunc.compute(input).getRealDouble() / areaFunc
+			.compute(smallestEnclosingRectangleFunc.compute(input)).getRealDouble());
 	}
 
 }

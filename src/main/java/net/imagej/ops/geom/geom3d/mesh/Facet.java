@@ -27,28 +27,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.geom.geom3d.mesh;
 
-package net.imagej.ops.geom;
-
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
-
-/**
- * Tests {@link GeomNamespaceTest}.
- *
- * @author Tim-Oliver Buchholz, University of Konstanz.
- */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
-
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
-	}
-
+public interface Facet {
+	// NB: Marker Interface
 }

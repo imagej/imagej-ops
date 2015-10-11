@@ -27,28 +27,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.geom.geom3d.mesh;
 
-package net.imagej.ops.geom;
+import net.imagej.ops.Op;
 
-import org.junit.Test;
+public interface VertexInterpolator extends Op {
 
-import net.imagej.ops.AbstractNamespaceTest;
-
-/**
- * Tests {@link GeomNamespaceTest}.
- *
- * @author Tim-Oliver Buchholz, University of Konstanz.
- */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
-
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
-	}
-
+	public void setPoint1(int[] p);
+	
+	public void setPoint2(int[] p);
+	
+	public void setValue1(double d);
+	
+	public void setValue2(double d);
+	
+	public void setIsoLevel(double d);
+	
+	public double[]	getOutput();
+	
 }

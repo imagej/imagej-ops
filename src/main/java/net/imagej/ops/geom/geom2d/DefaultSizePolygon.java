@@ -28,27 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.geom2d;
 
-import org.junit.Test;
+import java.awt.geom.Area;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.GeometricOp;
+import net.imglib2.RealLocalizable;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * Specific implementation of {@link Area} for a Polygon.
+ * 
+ * @author Daniel Seebacher, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = GeometricOp.class, label = "Geometric (2D): Size",
+	name = Geometric.Size.NAME, priority = Priority.FIRST_PRIORITY)
+public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
+	implements Geometric.Size
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public DoubleType compute(final Polygon input) {
+		double sum = 0;
+		for (int i = 0; i < input.getVertices().size(); i++) {
+
+			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
+				.size());
+			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
+				.size());
+
+			double p0_x = p0.getDoublePosition(0);
+			double p0_y = p0.getDoublePosition(1);
+			double p1_x = p1.getDoublePosition(0);
+			double p1_y = p1.getDoublePosition(1);
+
+			sum += p0_x * p1_y - p0_y * p1_x;
+		}
+		return new DoubleType(Math.abs(sum) / 2d);
 	}
 
 }

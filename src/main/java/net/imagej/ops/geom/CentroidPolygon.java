@@ -30,25 +30,56 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * Generic implementation of {@link Centroid}.
+ * 
+ * @author Daniel Seebacher, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = GeometricOp.class, label = "Geometric: Center of Gravity",
+	name = Geometric.Centroid.NAME)
+public class CentroidPolygon extends
+	AbstractFunctionOp<Polygon, RealLocalizable> implements Geometric.Centroid
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	private FunctionOp<Polygon, DoubleType> sizeFunc;
+
+	@Override
+	public void initialize() {
+		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+	}
+
+	@Override
+	public RealLocalizable compute(final Polygon input) {
+
+		double area = sizeFunc.compute(input).get();
+		double cx = 0;
+		double cy = 0;
+		for (int i = 0; i < input.getVertices().size() - 1; i++) {
+			RealLocalizable p0 = input.getVertices().get(i);
+			RealLocalizable p1 = input.getVertices().get(i + 1);
+
+			double p0_x = p0.getDoublePosition(0);
+			double p0_y = p0.getDoublePosition(1);
+			double p1_x = p1.getDoublePosition(0);
+			double p1_y = p1.getDoublePosition(1);
+
+			cx += (p0_x + p1_x) * (p0_x * p1_y - p1_x * p0_y);
+			cy += (p0_y + p1_y) * (p0_x * p1_y - p1_x * p0_y);
+		}
+
+		return new RealPoint(cx / (area * 6), cy / (area * 6));
 	}
 
 }

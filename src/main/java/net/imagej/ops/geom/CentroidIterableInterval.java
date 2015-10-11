@@ -27,28 +27,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.geom;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
+import net.imglib2.roi.IterableRegion;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
+ *
+ * @param <B>
+ *            a Boolean Type
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.Centroid.NAME, priority = 1)
+public class CentroidIterableInterval
+		extends
+			AbstractFunctionOp<IterableInterval<?>, RealLocalizable>
+		implements
+			Centroid {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public RealLocalizable compute(final IterableInterval<?> input) {
+		int numDimensions = input.numDimensions();
+		double[] output = new double[numDimensions];
+		Cursor<?> c = input.localizingCursor();
+		while (c.hasNext()) {
+			c.fwd();
+			double[] pos = new double[numDimensions];
+			c.localize(pos);
+			for (int i = 0; i < output.length; i++) {
+				output[i] += pos[i];
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] = output[i] / (double) input.size();
+		}
+
+		return new RealPoint(output);
 	}
 
 }

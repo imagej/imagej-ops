@@ -28,27 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.geom3d;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundarySize}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.BoundarySize.NAME,
+	label = "Geometric (3D): Surface Area",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultSurfaceArea extends AbstractFunctionOp<Mesh, DoubleType>
+	implements GeometricOp<Mesh, DoubleType>, Geometric.BoundarySize
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public DoubleType compute(final Mesh input) {
+		return new DoubleType(input.getSurfaceArea());
 	}
 
 }

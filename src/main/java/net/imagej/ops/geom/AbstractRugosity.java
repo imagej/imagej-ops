@@ -30,25 +30,37 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.BoundarySize;
+import net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Rugosity}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+public abstract class AbstractRugosity<I> extends
+	AbstractFunctionOp<I, DoubleType> implements Geometric.Rugosity
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	private FunctionOp<I, DoubleType> boundarySize;
+
+	private FunctionOp<I, DoubleType> convexHullBoundarySize;
+
+	@Override
+	public void initialize() {
+		boundarySize = ops().function(BoundarySize.class, DoubleType.class, in());
+		convexHullBoundarySize = ops().function(BoundarySizeConvexHull.class,
+			DoubleType.class, in());
+	}
+
+	@Override
+	public DoubleType compute(final I input) {
+		return new DoubleType(boundarySize.compute(input).get() /
+			convexHullBoundarySize.compute(input).get());
 	}
 
 }

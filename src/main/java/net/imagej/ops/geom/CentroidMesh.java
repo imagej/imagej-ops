@@ -30,25 +30,46 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
+import java.util.Iterator;
+import java.util.Set;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link Centroid}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = GeometricOp.class, label = "Geometric: Centroid",
+	name = Geometric.Centroid.NAME)
+public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
+	implements Centroid
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public RealLocalizable compute(Mesh input) {
+		final Set<RealLocalizable> points = input.getVertices();
+		final Iterator<RealLocalizable> it = points.iterator();
+		double x, y, z = y = x = 0;
+		while (it.hasNext()) {
+			RealLocalizable next = it.next();
+			x += next.getDoublePosition(0);
+			y += next.getDoublePosition(1);
+			z += next.getDoublePosition(2);
+		}
+
+		x /= points.size();
+		y /= points.size();
+		z /= points.size();
+
+		return new RealPoint(x, y, z);
 	}
 
 }

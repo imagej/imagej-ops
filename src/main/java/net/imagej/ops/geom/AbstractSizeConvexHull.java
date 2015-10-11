@@ -30,25 +30,42 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops.Geometric.SizeConvexHull;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.SizeConvexHull}
+ * .
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+public abstract class AbstractSizeConvexHull<I> extends
+	AbstractFunctionOp<I, DoubleType> implements SizeConvexHull
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	private FunctionOp<I, I> convexHullFunc;
+
+	private FunctionOp<I, DoubleType> sizeFunc;
+
+	private Class<I> inType;
+
+	public AbstractSizeConvexHull(final Class<I> inType) {
+		this.inType = inType;
+	}
+
+	@Override
+	public void initialize() {
+		convexHullFunc = ops().function(ConvexHull.class, inType, in());
+		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+	}
+
+	@Override
+	public DoubleType compute(final I input) {
+		return sizeFunc.compute(convexHullFunc.compute(input));
 	}
 
 }

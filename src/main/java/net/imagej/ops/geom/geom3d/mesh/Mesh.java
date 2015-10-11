@@ -27,28 +27,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.geom.geom3d.mesh;
 
-package net.imagej.ops.geom;
+import java.util.List;
+import java.util.Set;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imglib2.RealLocalizable;
 
 /**
- * Tests {@link GeomNamespaceTest}.
+ * Interface for Meshes
+ * 
+ * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+public interface Mesh {
+	
+	public Set<RealLocalizable> getVertices();
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
-	}
+	public List<Facet> getFacets();
+
+	public boolean triangularFacets();
+
+	public double getSurfaceArea();
 
 }

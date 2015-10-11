@@ -27,67 +27,71 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.geom;
 
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.geom.BitTypeVertexInterpolator;
-import net.imagej.ops.geom.DefaultVertexInterpolator;
+import net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator;
+import net.imagej.ops.geom.geom3d.mesh.DefaultVertexInterpolator;
 
 import org.junit.Test;
 
 /**
- * This class tests the {@link BitTypeVertexInterpolator}. 
+ * This class tests the {@link BitTypeVertexInterpolator}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
- *
  */
 public class DefaultVertexInterpolatorTest extends AbstractOpTest {
 
 	@Test
 	public void vertexInterpolator_025_v2_Test() {
-		int[] p1 = new int[]{0,0,0};
-		int[] p2 = new int[]{10, 0, 10};
+		int[] p1 = new int[] { 0, 0, 0 };
+		int[] p2 = new int[] { 10, 0, 10 };
 		double v1 = 0;
 		double v2 = 1;
-		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2, v1, v2, 0.25);
+		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2,
+			v1, v2, 0.25);
 		assertEquals(2.5, res[0], 1e-10);
 		assertEquals(0, res[1], 1e-10);
 		assertEquals(2.5, res[2], 1e-10);
 	}
-	
+
 	@Test
 	public void vertexInterpolator_1_v2_Test() {
-		int[] p1 = new int[]{0,0,0};
-		int[] p2 = new int[]{10, 0, 10};
+		int[] p1 = new int[] { 0, 0, 0 };
+		int[] p2 = new int[] { 10, 0, 10 };
 		double v1 = 0;
 		double v2 = 1;
-		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2, v1, v2, 1);
+		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2,
+			v1, v2, 1);
 		assertEquals(10, res[0], 1e-10);
 		assertEquals(0, res[1], 1e-10);
 		assertEquals(10, res[2], 1e-10);
 	}
-	
+
 	@Test
 	public void vertexInterpolator_1_v1_Test() {
-		int[] p1 = new int[]{0,0,0};
-		int[] p2 = new int[]{10, 0, 10};
+		int[] p1 = new int[] { 0, 0, 0 };
+		int[] p2 = new int[] { 10, 0, 10 };
 		double v1 = 1;
 		double v2 = 0;
-		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2, v1, v2, 1);
-			assertEquals(0, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(0, res[2], 1e-10);
+		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2,
+			v1, v2, 1);
+		assertEquals(0, res[0], 1e-10);
+		assertEquals(0, res[1], 1e-10);
+		assertEquals(0, res[2], 1e-10);
 	}
-	
+
 	@Test
 	public void vertexInterpolator_1_equalValues_Test() {
-		int[] p1 = new int[]{0,0,0};
-		int[] p2 = new int[]{10, 0, 10};
+		int[] p1 = new int[] { 0, 0, 0 };
+		int[] p2 = new int[] { 10, 0, 10 };
 		double v1 = 1;
 		double v2 = 1;
-		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2, v1, v2, 1);
+		double[] res = (double[]) ops.run(DefaultVertexInterpolator.class, p1, p2,
+			v1, v2, 1);
 		assertEquals(0, res[0], 1e-10);
 		assertEquals(0, res[1], 1e-10);
 		assertEquals(0, res[2], 1e-10);

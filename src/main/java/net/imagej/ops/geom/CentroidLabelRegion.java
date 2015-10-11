@@ -30,25 +30,32 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @param <B> a Boolean Type
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.Centroid.NAME, priority = 2)
+public class CentroidLabelRegion extends
+	AbstractFunctionOp<LabelRegion<?>, RealLocalizable> implements Centroid
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public RealLocalizable compute(final LabelRegion<?> input) {
+
+		return new RealPoint(input.getCenterOfMass());
 	}
 
 }

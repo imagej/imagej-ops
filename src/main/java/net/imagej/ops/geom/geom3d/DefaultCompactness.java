@@ -28,27 +28,48 @@
  * #L%
  */
 
-package net.imagej.ops.geom;
+package net.imagej.ops.geom.geom3d;
 
-import org.junit.Test;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops.Geometric.BoundaryPixelCount;
+import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Compactness}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.Compactness.NAME,
+	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
+public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
+	implements Geometric.Compactness
+{
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	private FunctionOp<Mesh, DoubleType> surfacePixel;
+
+	private FunctionOp<Mesh, DoubleType> volume;
+
+	@Override
+	public void initialize() {
+		surfacePixel = ops().function(BoundaryPixelCount.class, DoubleType.class,
+			in());
+		volume = ops().function(Size.class, DoubleType.class, in());
+	}
+
+	@Override
+	public DoubleType compute(final Mesh input) {
+		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
+		double v2 = Math.pow(volume.compute(input).get(), 2);
+
+		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
 	}
 
 }

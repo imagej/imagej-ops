@@ -27,28 +27,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.geom.geom3d.mesh;
 
-package net.imagej.ops.geom;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.Size.NAME, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY-1)
+public class DefaultVolume
+		extends
+			AbstractFunctionOp<Mesh, DoubleType>
+		implements
+			Geometric.Size,
+			Contingent {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public DoubleType compute(final Mesh input) {
+		double volume = 0;
+		for (Facet f : input.getFacets()) {
+			TriangularFacet tf = (TriangularFacet) f;
+			volume += signedVolumeOfTriangle(tf.getP0(), tf.getP1(), tf.getP2());	
+		}
+		return new DoubleType(Math.abs(volume));
 	}
 
+	private double signedVolumeOfTriangle(Vector3D p0, Vector3D p1, Vector3D p2) {
+		 return p0.dotProduct(p1.crossProduct(p2)) / 6.0f;
+	}
+	
+	@Override
+	public boolean conforms() {
+		return in().triangularFacets();
+	}
 }

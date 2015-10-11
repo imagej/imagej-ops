@@ -27,28 +27,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.geom.geom3d.mesh;
 
-package net.imagej.ops.geom;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Geometric;
 
-import org.junit.Test;
-
-import net.imagej.ops.AbstractNamespaceTest;
+import org.scijava.plugin.Plugin;
 
 /**
- * Tests {@link GeomNamespaceTest}.
- *
+ * The {@link BitTypeVertexInterpolator} returns the point which is 
+ * in the middle of the two input vertices. 
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
+ *
  */
-public class GeomNamespaceTest extends AbstractNamespaceTest {
+@Plugin(type = Op.class, name = Geometric.VertexInterpolator.NAME)
+public class BitTypeVertexInterpolator extends AbstractVertexInterpolator {
 
-	/**
-	 * Tests that the ops of the {@code stats} namespace have corresponding
-	 * type-safe Java method signatures declared in the {@link GeomNamespace}
-	 * class.
-	 */
-	@Test
-	public void testCompleteness() {
-		assertComplete("geom", GeomNamespace.class);
+	@Override
+	public void run() {
+		output = new double[3];
+		for (int i = 0; i < 3; i++) {
+			output[i] = (p1[i] + p2[i])/2.0;
+		}
+	}
+
+	@Override
+	public void setIsoLevel(double d) {
+		// nothing to do
 	}
 
 }
