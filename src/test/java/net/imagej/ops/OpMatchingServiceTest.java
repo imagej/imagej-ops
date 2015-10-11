@@ -36,11 +36,14 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.ItemIO;
 import org.scijava.module.Module;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -108,6 +111,20 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		}
 	}
 
+	@Test
+	public void testNameViaInterface() {
+		assertMatches("dessert.iceCream", FlavorlessIceCream.class);
+		assertMatches("dessert.vanillaIceCream", VanillaIceCream.class);
+		assertMatches("dessert.chocolateIceCream", ChocolateIceCream.class);
+		assertMatches("dessert.sorbet", YummySorbet.class);
+		assertMatches("dessert.sherbet", GenericSherbet.class, RainbowSherbet.class);
+		assertMatches("dessert.americanSherbet", GenericSherbet.class);
+		assertMatches("dessert.rainbowSherbet", RainbowSherbet.class);
+		assertMatches("dessert.gelato", RichGelato.class);
+		assertMatches("dessert.gelati", RichGelato.class);
+		assertMatches("dessert.italianIceCream", RichGelato.class);
+	}
+
 	// -- Helper methods --
 
 	private Module optionalParamsModule(Object... args) {
@@ -129,6 +146,16 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	private int num(final Object o) {
 		return (Integer) o;
+	}
+
+	private void assertMatches(final String name, Class<?>... opTypes) {
+		final List<OpCandidate<Op>> candidates =
+			matcher.findCandidates(ops, new OpRef<Op>(name));
+		final List<Module> matches = matcher.findMatches(candidates);
+		assertEquals(opTypes.length, matches.size());
+		for (int i=0; i<opTypes.length; i++) {
+			assertSame(opTypes[i], matches.get(i).getDelegateObject().getClass());
+		}
 	}
 
 	// -- Helper classes --
@@ -167,6 +194,64 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 			// NB: No action needed.
 		}
 
+	}
+
+	public static interface Dessert extends Op {
+		// NB: Marker interface.
+	}
+
+	public static interface IceCream extends Dessert {
+		String NAME = "dessert.iceCream";
+	}
+
+	public static interface Sorbet extends IceCream {
+		String NAME = "dessert.sorbet";
+	}
+
+	public static interface Sherbet extends IceCream {
+		String NAME = "dessert.sherbet";
+		String ALIAS = "dessert.americanSherbet";
+	}
+
+	public static interface Gelato extends IceCream {
+		String NAME = "dessert.gelato";
+		String ALIASES = "dessert.gelati, dessert.italianIceCream";
+	}
+
+	@Plugin(type = IceCream.class)
+	public static class FlavorlessIceCream extends NoOp implements IceCream {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = IceCream.class, name = "dessert.vanillaIceCream")
+	public static class VanillaIceCream extends NoOp implements IceCream {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = IceCream.class, name = "dessert.chocolateIceCream")
+	public static class ChocolateIceCream extends NoOp implements IceCream {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = Sorbet.class)
+	public static class YummySorbet extends NoOp implements Sorbet {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = Sherbet.class)
+	public static class GenericSherbet extends NoOp implements Sherbet {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = Sherbet.class, //
+		attrs = { @Attr(name = "alias", value = "dessert.rainbowSherbet") })
+	public static class RainbowSherbet extends NoOp implements Sherbet {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = Gelato.class)
+	public static class RichGelato extends NoOp implements Gelato {
+		// NB: No implementation needed.
 	}
 
 }
