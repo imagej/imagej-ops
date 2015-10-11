@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.Entropy;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,9 +45,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Entropy", name = Haralick.Entropy.NAME)
+@Plugin(type = Ops.Haralick.Entropy.class, label = "Haralick: Entropy")
 public class DefaultEntropy<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements Entropy {
+		AbstractHaralickFeature<T> implements Ops.Haralick.Entropy {
 
 	private static final double EPSILON = 0.00000001f;
 

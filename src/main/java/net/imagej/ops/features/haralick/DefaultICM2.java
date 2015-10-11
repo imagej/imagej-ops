@@ -31,8 +31,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.ICM2;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -46,10 +45,10 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = HaralickFeature.class, name = Haralick.ICM2.NAME,
+@Plugin(type = Ops.Haralick.ICM2.class,
 	label = "Haralick: Information Measure of Correlation 2")
 public class DefaultICM2<T extends RealType<T>> extends
-	AbstractHaralickFeature<T>implements ICM2
+	AbstractHaralickFeature<T>implements Ops.Haralick.ICM2
 {
 
 	private FunctionOp<double[][], double[]> coocHXYFunc;

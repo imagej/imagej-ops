@@ -30,8 +30,7 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.TextureHomogeneity;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,11 +43,10 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Grauman, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = HaralickFeature.class,
-	label = "Haralick: Texture Homogeneity Feature",
-	name = Haralick.TextureHomogeneity.NAME)
+@Plugin(type = Ops.Haralick.TextureHomogeneity.class,
+	label = "Haralick: Texture Homogeneity Feature")
 public class DefaultTextureHomogeneity<T extends RealType<T>> extends
-	AbstractHaralickFeature<T>implements TextureHomogeneity
+	AbstractHaralickFeature<T>implements Ops.Haralick.TextureHomogeneity
 {
 
 	@Override

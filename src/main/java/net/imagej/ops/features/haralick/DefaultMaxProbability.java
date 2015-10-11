@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.MaxProbability;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,9 +43,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Maximum Probability Feature", name = Haralick.MaxProbability.NAME)
+@Plugin(type = Ops.Haralick.MaxProbability.class, label = "Haralick: Maximum Probability Feature")
 public class DefaultMaxProbability<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements MaxProbability {
+		AbstractHaralickFeature<T> implements Ops.Haralick.MaxProbability {
 
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {

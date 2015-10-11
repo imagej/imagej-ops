@@ -31,8 +31,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.SumAverage;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -46,10 +45,9 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Average",
-	name = Haralick.SumAverage.NAME)
+@Plugin(type = Ops.Haralick.SumAverage.class, label = "Haralick: Sum Average")
 public class DefaultSumAverage<T extends RealType<T>> extends
-	AbstractHaralickFeature<T>implements SumAverage
+	AbstractHaralickFeature<T>implements Ops.Haralick.SumAverage
 {
 
 	private FunctionOp<double[][], double[]> coocPXPlusFunc;

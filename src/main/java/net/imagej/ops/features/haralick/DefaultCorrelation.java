@@ -30,8 +30,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.Correlation;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
 import net.imagej.ops.features.haralick.helper.CoocStdX;
@@ -50,9 +49,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Correlation", name = Haralick.Correlation.NAME)
+@Plugin(type = Ops.Haralick.Correlation.class, label = "Haralick: Correlation")
 public class DefaultCorrelation<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements Correlation {
+		AbstractHaralickFeature<T> implements Ops.Haralick.Correlation {
 
 	// required functions
 	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
