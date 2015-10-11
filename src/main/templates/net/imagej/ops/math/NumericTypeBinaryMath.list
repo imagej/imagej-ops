@@ -3,9 +3,9 @@
 [NumericTypeBinaryMath.java]
 ops = ```
 [
-	[name: "Add",      function: "add", aliases: true,  verbs: "adds (+)"],
-	[name: "Divide",   function: "div", aliases: true,  verbs: "divides (/)"],
-	[name: "Subtract", function: "sub", aliases: true,  verbs: "subtracts (-)"],
-	[name: "Multiply", function: "mul", aliases: true,  verbs: "multiplies (*)"],
+	[name: "Add",      function: "add", verbs: "adds (+)"],
+	[name: "Divide",   function: "div", verbs: "divides (/)"],
+	[name: "Subtract", function: "sub", verbs: "subtracts (-)"],
+	[name: "Multiply", function: "mul", verbs: "multiplies (*)"],
 ]
 ```
