@@ -62,18 +62,20 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 	private Set<NamedFeature> active;
 
 	// all opRefs
-	private Map<NamedFeature, FunctionOp<I, ? extends O>> namedFeatureMap;
+	private Map<NamedFeature, FunctionOp<Object, ? extends O>> namedFeatureMap;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
 		super.initialize();
 
 		if (namedFeatureMap == null) {
-			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<I, ? extends O>>();
+			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
 			for (final OpRef<?> ref : initOpRefs()) {
 				NamedFeature feature = new NamedFeature(ref.getLabel());
 				if (active == null || active.contains(feature))
-					namedFeatureMap.put(feature, ops().function(ref.getType(), outType, in(), ref.getArgs()));
+					namedFeatureMap.put(feature, (FunctionOp<Object, ? extends O>) ops().function(ref.getType(),
+							outType, in(), ref.getArgs()));
 			}
 		}
 
@@ -83,11 +85,26 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 	public Map<NamedFeature, O> compute(final I input) {
 		final Map<NamedFeature, O> res = new HashMap<NamedFeature, O>();
 
-		for (final Entry<NamedFeature, FunctionOp<I, ? extends O>> entry : namedFeatureMap.entrySet()) {
-			res.put(entry.getKey(), entry.getValue().compute(input));
+		for (final Entry<NamedFeature, FunctionOp<Object, ? extends O>> entry : namedFeatureMap.entrySet()) {
+			res.put(entry.getKey(), evalFunction(entry.getValue(), input));
 		}
 
 		return res;
+	}
+
+	/**
+	 * Can be overriden by implementors to provide specialized implementations
+	 * for certain functions.
+	 * 
+	 * @param func
+	 *            function used to compute output. Will be any function added as
+	 *            OpRef.
+	 * @param input
+	 *            input object
+	 * @return
+	 */
+	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final I input) {
+		return func.compute(input);
 	}
 
 	@Override
