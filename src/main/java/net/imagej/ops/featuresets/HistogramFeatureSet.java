@@ -46,16 +46,11 @@ import net.imglib2.type.numeric.integer.LongType;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = FeatureSet.class, label = "Histogram Features",
-	description = "Calculates the Histogram Features")
-public class HistogramFeatureSet<I extends RealType<I>> extends
-	AbstractIteratingFeatureSet<Iterable<I>, LongType>implements
-	FeatureSet<Iterable<I>, LongType>
-{
+@Plugin(type = FeatureSet.class, label = "Histogram Features", description = "Calculates the Histogram Features")
+public class HistogramFeatureSet<I extends RealType<I>> extends AbstractIteratingFeatureSet<Iterable<I>, LongType>
+		implements FeatureSet<Iterable<I>, LongType> {
 
-	@Parameter(type = ItemIO.INPUT, label = "Number of Bins",
-		description = "The number of bins of the histogram", min = "1",
-		max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Number of Bins", description = "The number of bins of the histogram", min = "1", max = "2147483647", stepSize = "1")
 	private int numBins = 256;
 
 	@SuppressWarnings("rawtypes")
@@ -66,8 +61,7 @@ public class HistogramFeatureSet<I extends RealType<I>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		histogramFunc = ops().function(HistogramCreate.class, Histogram1d.class,
-			in(), numBins);
+		histogramFunc = ops().function(HistogramCreate.class, Histogram1d.class, in(), numBins);
 
 	}
 

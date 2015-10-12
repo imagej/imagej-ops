@@ -49,8 +49,9 @@ import net.imagej.ops.OpRef;
 public interface FeatureSet<I, O> extends FunctionOp<I, Map<NamedFeature, O>> {
 
 	/**
-	 * @return all {@link NamedFeature}s which are supported by this feature set.
+	 * @return all {@link NamedFeature}s which are supported by this feature
+	 *         set.
 	 */
-		Collection<NamedFeature> getFeatures();
+	Collection<NamedFeature> getFeatures();
 
 }

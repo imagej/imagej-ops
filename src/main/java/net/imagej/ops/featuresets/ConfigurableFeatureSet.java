@@ -43,14 +43,16 @@ import java.util.Collection;
 public interface ConfigurableFeatureSet<I, O> extends FeatureSet<I, O> {
 
 	/**
-	 * @param feature {@link NamedFeature} to be enabled/disabled
-	 * @param enabled future status of the feature
+	 * @param feature
+	 *            {@link NamedFeature} to be enabled/disabled
+	 * @param enabled
+	 *            future status of the feature
 	 */
-		void setFeatureStatus(final NamedFeature feature, boolean enabled);
+	void setFeatureStatus(final NamedFeature feature, boolean enabled);
 
 	/**
 	 * @return all enabled features
 	 */
-		Collection<NamedFeature> getEnabledFeatures();
+	Collection<NamedFeature> getEnabledFeatures();
 
 }

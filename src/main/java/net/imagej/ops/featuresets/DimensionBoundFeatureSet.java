@@ -38,7 +38,7 @@ import net.imagej.ops.Contingent;
  * @param <O>
  */
 public interface DimensionBoundFeatureSet<I, O> extends FeatureSet<I, O>, Contingent {
-	
+
 	/**
 	 * Minimum number of dimensions an object must have to derive features from
 	 * it

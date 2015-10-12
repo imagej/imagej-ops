@@ -1,3 +1,4 @@
+
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -27,7 +28,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
@@ -49,12 +49,13 @@ import net.imagej.ops.cached.CachedOpEnvironment;
  * {@link CachedOpEnvironment}.
  * 
  * @author Christian Dietz, University of Konstanz.
- * @param <I> type of the input
- * @param <O> type of the output
+ * @param <I>
+ *            type of the input
+ * @param <O>
+ *            type of the output
  */
-public abstract class AbstractCachedFeatureSet<I, O> extends
-	AbstractFunctionOp<I, Map<NamedFeature, O>>implements FeatureSet<I, O>
-{
+public abstract class AbstractCachedFeatureSet<I, O> extends AbstractFunctionOp<I, Map<NamedFeature, O>>
+		implements FeatureSet<I, O> {
 
 	@Parameter
 	private PluginService ps;

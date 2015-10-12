@@ -52,8 +52,7 @@ public class NamedFeature implements Named {
 
 	@Override
 	public void setName(String name) {
-		throw new UnsupportedOperationException(
-			"Can't change name of NamedFeature");
+		throw new UnsupportedOperationException("Can't change name of NamedFeature");
 	}
 	// NB: Marker interface
 
@@ -81,6 +80,5 @@ public class NamedFeature implements Named {
 			return false;
 		return true;
 	}
-
 
 }
