@@ -67,6 +67,7 @@ import net.imagej.ops.Ops.Geometric.Spareness;
 import net.imagej.ops.Ops.Geometric.Sphericity;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imglib2.RandomAccess;
+import net.imglib2.RealPoint;
 import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
@@ -235,6 +236,18 @@ public class GeomTest extends AbstractFeatureTest {
 		assertEquals(Roundness.NAME, 0.598704192, ops.geom().roundness(ops.geom()
 			.contour(region2D, true, true)).getRealDouble(),
 			AbstractFeatureTest.BIG_DELTA);
+	}
+	
+	/**
+	 * Test the {@link CentroidMesh} Op.
+	 */
+	@Test
+	public void testCentroidMesh() {
+		// value taken from imagej
+		RealPoint c = (RealPoint) ops.geom().centroid(ops.geom().marchingcubes(region3D));
+		assertEquals(-25.700, c.getDoublePosition(0), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(-24.644, c.getDoublePosition(1), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(-19.945, c.getDoublePosition(2), AbstractFeatureTest.BIG_DELTA);
 	}
 
 	/**
