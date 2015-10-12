@@ -29,6 +29,15 @@ namespaces = ```
 		[name: "normalizeScale",              iface: "NormalizeScale"],
 		[name: "scale",                       iface: "Scale"],
 	]],
+	[name: "copy", iface: "Copy", ops: [
+		[name: "img",                iface: "Img"],
+		[name: "imgLabeling",        iface: "ImgLabeling"],
+		[name: "imgPlus",            iface: "ImgPlus"],
+		[name: "iterableInterval",   iface: "IterableInterval"],
+		[name: "labelingMapping",    iface: "LabelingMapping"],
+		[name: "rai",    	     iface: "RAI"],
+		[name: "type", 		     iface: "Type"]
+	]],
 	[name: "create", iface: "Create", ops: [
 		[name: "img",                         iface: "Img"],
 		[name: "imgFactory",                  iface: "ImgFactory"],
@@ -204,7 +213,6 @@ namespaces = ```
 		[name: "arctanh",                     iface: "Arctanh"],
 		[name: "ceil",                        iface: "Ceil"],
 		[name: "complement",                  iface: "Complement",          aliases: ["comp", "not"]],
-		[name: "copy",                        iface: "Copy"],
 		[name: "cos",                         iface: "Cos"],
 		[name: "cosh",                        iface: "Cosh"],
 		[name: "cot",                         iface: "Cot"],

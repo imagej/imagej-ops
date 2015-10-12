@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ops.convert.ConvertNamespace;
+import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
@@ -584,6 +585,9 @@ public interface OpEnvironment extends Contextual {
 
 	// -- Operation shortcuts - other namespaces --
 
+	/** Gateway into ops of the "copy" namespace */
+	CopyNamespace copy();
+	
 	/** Gateway into ops of the "convert" namespace. */
 	ConvertNamespace convert();
 

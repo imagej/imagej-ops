@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.imagej.ops.convert.ConvertNamespace;
+import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
@@ -67,7 +68,6 @@ import org.scijava.command.CommandService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
-
 /**
  * Abstract superclass for {@link OpEnvironment} implementations.
  *
@@ -614,6 +614,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	// -- Operation shortcuts - other namespaces --
+	
+	@Override
+	public CopyNamespace copy() {
+		return namespace(CopyNamespace.class);
+	}
 
 	@Override
 	public ConvertNamespace convert() {

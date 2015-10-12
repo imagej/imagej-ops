@@ -347,21 +347,6 @@ public final class RealMath {
 	}
 
 	/**
-	 * Sets the real component of an output real number to the real component of
-	 * an input real number.
-	 */
-	@Plugin(type = Ops.Math.Copy.class, name = Ops.Math.Copy.NAME)
-	public static class Copy<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Copy
-	{
-
-		@Override
-		public void compute(final I input, final O output) {
-			output.setReal(input.getRealDouble());
-		}
-	}
-
-	/**
 	 * Sets the real component of an output real number to the cosine of the real
 	 * component of an input real number.
 	 */
