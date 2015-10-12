@@ -43,7 +43,6 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -53,52 +52,50 @@ import org.scijava.plugin.Plugin;
  * {@link RandomAccessibleInterval}
  * 
  * @author Christian Dietz, University of Konstanz
- * @param <L>
+ * @param <T>
  */
 @Plugin(type = Ops.Copy.RAI.class, name = Ops.Copy.RAI.NAME, priority = 1.0)
-public class CopyRAI<T>
-		extends
-		AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-		implements Ops.Copy.RAI, Contingent {
+public class CopyRAI<T> extends
+	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	implements Ops.Copy.RAI, Contingent
+{
 
 	@Parameter
 	protected OpService ops;
 
-	// used internally
 	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
 
 	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
-			final RandomAccessibleInterval<T> input) {
+		final RandomAccessibleInterval<T> input)
+	{
 		return createFunc.compute(input);
 	}
 
 	@Override
 	public void initialize() {
-
-		final ComputerOp<? extends Object, ? extends Object> typeComputer = ops
-				.computer(Ops.Copy.Type.class, out() == null ? Type.class
-						: Views.iterable(out()).firstElement().getClass(),
-						Views.iterable(in()).firstElement().getClass());
-
+		final Class<?> outTypeClass =
+			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
+		final T inType = Util.getTypeFromInterval(in());
+		final ComputerOp<T, ?> typeComputer =
+			ops.computer(Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Map.class, in(), typeComputer);
-		createFunc = RAIs.function(ops(), Create.Img.class, in(),
-				Util.getTypeFromInterval(in()));
+		createFunc = RAIs.function(ops(), Create.Img.class, in(), inType);
 	}
 
 	@Override
 	public void compute(final RandomAccessibleInterval<T> input,
-			final RandomAccessibleInterval<T> output) {
+		final RandomAccessibleInterval<T> output)
+	{
 		mapComputer.compute(input, output);
 	}
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
+		if (out() == null) return true;
+		return Intervals.equalDimensions(in(), out());
 	}
+
 }
