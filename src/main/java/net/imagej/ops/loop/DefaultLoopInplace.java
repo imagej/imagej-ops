@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Loop.class, name = Ops.Loop.NAME)
+@Plugin(type = Ops.Loop.class)
 public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override

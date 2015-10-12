@@ -37,7 +37,6 @@ import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02;
 import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
-import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -51,8 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = HuMoment1.NAME,
-	label = "Image Moment: HuMoment1")
+@Plugin(type = HuMoment1.class, label = "Image Moment: HuMoment1")
 public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements HuMoment1
 {

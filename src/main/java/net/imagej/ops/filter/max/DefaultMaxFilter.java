@@ -45,8 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Max.class, name = Ops.Filter.Max.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Max.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMaxFilter<T extends RealType<T>> extends
 	AbstractNeighborhoodBasedFilter<T, T> implements
 	MaxFilterOp<RandomAccessibleInterval<T>>

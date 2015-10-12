@@ -45,15 +45,13 @@ import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
 import org.scijava.ItemIO;
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Scale.class, name = Ops.Image.Scale.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Scale.ALIASES) })
+@Plugin(type = Ops.Image.Scale.class)
 public class ScaleImg<T extends RealType<T>> extends AbstractOp implements
 	Ops.Image.Scale
 {

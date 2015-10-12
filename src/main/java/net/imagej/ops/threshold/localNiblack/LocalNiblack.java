@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalNiblack.class)
 public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	implements Ops.Threshold.LocalNiblack
 {

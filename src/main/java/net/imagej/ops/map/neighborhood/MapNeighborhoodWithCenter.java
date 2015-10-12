@@ -32,7 +32,6 @@ package net.imagej.ops.map.neighborhood;
 
 import java.util.Iterator;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -63,8 +62,7 @@ import org.scijava.plugin.Plugin;
  *      CenterAwareComputerOp, Shape)
  * @see CenterAwareComputerOp
  */
-@Plugin(type = Op.class, name = Ops.Map.NAME,
-	priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O>
 	extends
 	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>

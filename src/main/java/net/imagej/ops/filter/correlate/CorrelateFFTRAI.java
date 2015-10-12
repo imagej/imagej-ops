@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Correlate.class, name = Ops.Filter.Correlate.NAME)
+@Plugin(type = Ops.Filter.Correlate.class)
 public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Correlate
 {

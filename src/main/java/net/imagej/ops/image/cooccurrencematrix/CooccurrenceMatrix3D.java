@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = CooccurrenceMatrix.class, name = CooccurrenceMatrix.NAME)
+@Plugin(type = CooccurrenceMatrix.class)
 public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
 		CooccurrenceMatrix, Contingent {

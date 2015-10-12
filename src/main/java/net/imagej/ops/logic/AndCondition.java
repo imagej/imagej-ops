@@ -35,7 +35,7 @@ import net.imagej.ops.Ops;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-@Plugin(type = Ops.Logic.And.class, name = Ops.Logic.And.NAME)
+@Plugin(type = Ops.Logic.And.class)
 public class AndCondition<T> extends AbstractCondition<T> implements
 	Ops.Logic.And
 {

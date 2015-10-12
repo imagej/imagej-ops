@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.Copy.class, name = Ops.Convert.Copy.NAME)
+@Plugin(type = Ops.Convert.Copy.class)
 public class CopyRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends RealTypeConverter<I, O> implements Ops.Convert.Copy
 {

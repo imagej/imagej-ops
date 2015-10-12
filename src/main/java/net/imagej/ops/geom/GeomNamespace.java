@@ -30,8 +30,6 @@
 
 package net.imagej.ops.geom;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -50,6 +48,8 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Namespace for Geom.

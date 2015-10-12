@@ -45,8 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Median.class, name = Ops.Filter.Median.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Median.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMedianFilter<T extends RealType<T>> extends
 	AbstractNeighborhoodBasedFilter<T, T> implements
 	MedianFilterOp<RandomAccessibleInterval<T>>

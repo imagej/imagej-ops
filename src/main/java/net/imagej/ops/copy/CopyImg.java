@@ -30,9 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
@@ -44,6 +41,9 @@ import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * Copying {@link Img} into another {@link Img}.
  * Exists mainly for convenience reasons. 
@@ -51,7 +51,7 @@ import net.imglib2.util.Intervals;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Copy.Img.class, name = Copy.Img.NAME)
+@Plugin(type = Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
 		AbstractHybridOp<Img<T>, Img<T>> implements Copy.Img, Contingent {
 

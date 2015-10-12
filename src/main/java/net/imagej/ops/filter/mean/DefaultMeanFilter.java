@@ -45,8 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Mean.class, name = Ops.Filter.Mean.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Mean.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMeanFilter<T extends RealType<T>> extends
 	AbstractNeighborhoodBasedFilter<T, T> implements
 	MeanFilterOp<RandomAccessibleInterval<T>>

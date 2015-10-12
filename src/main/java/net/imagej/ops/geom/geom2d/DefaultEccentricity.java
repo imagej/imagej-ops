@@ -30,18 +30,18 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Eccentricity;
 import net.imagej.ops.Ops.Geometric.MajorAxis;
 import net.imagej.ops.Ops.Geometric.MinorAxis;
-import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.RTs;
+import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link Eccentricity}.

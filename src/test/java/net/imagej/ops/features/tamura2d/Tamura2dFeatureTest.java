@@ -30,6 +30,7 @@
 package net.imagej.ops.features.tamura2d;
 
 import static org.junit.Assert.assertEquals;
+
 import net.imagej.ops.Ops.Haralick.Contrast;
 import net.imagej.ops.Ops.Tamura.Coarseness;
 import net.imagej.ops.Ops.Tamura.Directionality;

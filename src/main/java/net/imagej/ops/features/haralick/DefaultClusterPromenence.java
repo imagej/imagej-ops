@@ -30,8 +30,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.ClusterPromenence;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
 import net.imglib2.IterableInterval;
@@ -48,9 +47,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Cluster Promenence", name = Haralick.ClusterPromenence.NAME)
+@Plugin(type = Ops.Haralick.ClusterPromenence.class, label = "Haralick: Cluster Promenence")
 public class DefaultClusterPromenence<T extends RealType<T>> extends AbstractHaralickFeature<T>
-		implements ClusterPromenence {
+		implements Ops.Haralick.ClusterPromenence {
 
 	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
 	private FunctionOp<double[][], DoubleType> coocMeanYFunc;

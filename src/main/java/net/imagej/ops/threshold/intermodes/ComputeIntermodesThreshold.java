@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.Intermodes.class, name = Ops.Threshold.Intermodes.NAME)
+@Plugin(type = Ops.Threshold.Intermodes.class)
 public class ComputeIntermodesThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

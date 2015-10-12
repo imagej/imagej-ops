@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  * @param <T>
  */
-@Plugin(type = Ops.Filter.IFFT.class, name = Ops.Filter.IFFT.NAME)
+@Plugin(type = Ops.Filter.IFFT.class)
 public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 	extends
 	AbstractComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>

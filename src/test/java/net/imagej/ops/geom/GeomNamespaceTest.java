@@ -30,9 +30,9 @@
 
 package net.imagej.ops.geom;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
  * Tests {@link GeomNamespaceTest}.

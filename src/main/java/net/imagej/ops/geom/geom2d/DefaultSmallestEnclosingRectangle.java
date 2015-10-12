@@ -33,8 +33,6 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -43,20 +41,20 @@ import net.imagej.ops.Ops.Geometric.BoundingBox;
 import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.Ops.Geometric.Size;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link SmallestBoundingBox}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class,
-	label = "Geometric (2D): Smallest Enclosing Rectangle",
-	name = Geometric.SmallestEnclosingBoundingBox.NAME)
+@Plugin(type = Geometric.SmallestEnclosingBoundingBox.class,
+	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
 	AbstractFunctionOp<Polygon, Polygon> implements Contingent,
 	Geometric.SmallestEnclosingBoundingBox

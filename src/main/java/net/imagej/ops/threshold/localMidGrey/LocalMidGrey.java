@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.localMidGrey;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -48,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalMidGrey.class)
 public class LocalMidGrey<T extends RealType<T>> extends
 	LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey
 {

@@ -45,8 +45,8 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = HarmonicMean.NAME,
-	label = "Statistics: Harmonic Mean", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = HarmonicMean.class, label = "Statistics: Harmonic Mean",
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements HarmonicMean
 {

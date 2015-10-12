@@ -39,7 +39,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Identity.class, name = Ops.Identity.NAME)
+@Plugin(type = Ops.Identity.class)
 public class DefaultIdentity<A> extends AbstractIdentity<A> {
 
 	@Override

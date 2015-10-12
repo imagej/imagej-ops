@@ -61,7 +61,7 @@ import org.scijava.plugin.Plugin;
  * @param <O>
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Tamura.Directionality.class, label = "Tamura 2D: Directionality", name = Tamura.Directionality.NAME)
+@Plugin(type = Tamura.Directionality.class, label = "Tamura 2D: Directionality")
 public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractTamuraFeature<I, O> implements Directionality {
 

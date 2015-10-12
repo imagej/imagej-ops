@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Thread.Chunker.class, name = Ops.Thread.Chunker.NAME)
+@Plugin(type = Ops.Thread.Chunker.class)
 public class DefaultChunker extends AbstractChunker {
 
 	private final int STEP_SIZE = 1;

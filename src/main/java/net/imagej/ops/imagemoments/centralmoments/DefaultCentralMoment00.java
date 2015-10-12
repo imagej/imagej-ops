@@ -36,7 +36,6 @@ import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
 import net.imagej.ops.Ops.ImageMoments.Moment00;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
-import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -50,8 +49,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = CentralMoment00.NAME,
-	label = "Image Moment: CentralMoment00")
+@Plugin(type = CentralMoment00.class, label = "Image Moment: CentralMoment00")
 public class DefaultCentralMoment00<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements CentralMoment00
 {

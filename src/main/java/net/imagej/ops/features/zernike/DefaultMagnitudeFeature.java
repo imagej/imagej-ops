@@ -29,12 +29,12 @@
  */
 package net.imagej.ops.features.zernike;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops.Zernike;
 import net.imagej.ops.Ops.Zernike.Magnitude;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 
 /**
@@ -48,7 +48,7 @@ import net.imglib2.type.numeric.RealType;
   * @param <O>
  *            Output Type
  */
-@Plugin(type = ZernikeFeature.class, label = "Zernike: Magnitude", name = Zernike.Magnitude.NAME)
+@Plugin(type = Zernike.Magnitude.class, label = "Zernike: Magnitude")
 public class DefaultMagnitudeFeature<T extends RealType<T>, O extends RealType<O>> extends AbstractZernikeFeature<T,O> implements Magnitude {
 
 	@Override

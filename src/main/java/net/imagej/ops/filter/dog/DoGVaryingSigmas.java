@@ -52,7 +52,7 @@ import org.scijava.thread.ThreadService;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
+@Plugin(type = Ops.Filter.DoG.class)
 public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
 	HighLevelHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>

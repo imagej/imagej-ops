@@ -41,7 +41,7 @@ import net.imagej.ops.Op;
  * annotating them with:
  * </p>
  * <pre>
- * @Plugin(type = Ops.Eval.class, name = Ops.Eval.NAME)
+ * @Plugin(type = Ops.Eval.class)
  * </pre>
  *
 #foreach ($author in $authors)
@@ -63,12 +63,7 @@ public final class Ops {
 	 * </p>
 	 *
 	 * <pre>
-#if ($op.aliases)
-	 * @Plugin(type = Ops.${opClass}.class, name = Ops.${opClass}.NAME,
-	 *   attrs = { @Attr(name = "aliases", value = Ops.${opClass}.ALIASES) })
-#else
-	 * @Plugin(type = Ops.${opClass}.class, name = Ops.${opClass}.NAME)
-#end
+	 * @Plugin(type = Ops.${opClass}.class)
 	 * </pre>
 	 */
 	public interface $opClass extends Op {
@@ -103,12 +98,7 @@ $alias##
 		 * </p>
 		 *
 		 * <pre>
-#if ($op.aliases)
-		 * @Plugin(type = Ops.${nsClass}.${opClass}.class, name = Ops.${nsClass}.${opClass}.NAME,
-		 *   attrs = { @Attr(name = "aliases", value = Ops.${nsClass}.${opClass}.ALIASES) })
-#else
-		 * @Plugin(type = Ops.${nsClass}.${opClass}.class, name = Ops.${nsClass}.${opClass}.NAME)
-#end
+		 * @Plugin(type = Ops.${nsClass}.${opClass}.class
 		 * </pre>
 		 */
 		public interface $opClass extends Op {

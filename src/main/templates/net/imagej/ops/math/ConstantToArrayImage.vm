@@ -60,7 +60,7 @@ public final class ConstantToArrayImage {
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
 	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
 
 		@Parameter(type = ItemIO.BOTH)

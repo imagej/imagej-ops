@@ -57,7 +57,7 @@ import org.scijava.thread.ThreadService;
  * @param <V> type of output
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@Plugin(type = Ops.Filter.Gauss.class, name = Ops.Filter.Gauss.NAME)
+@Plugin(type = Ops.Filter.Gauss.class)
 public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>

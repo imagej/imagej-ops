@@ -31,11 +31,11 @@ package net.imagej.ops.features.zernike;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import net.imagej.ops.Ops.Zernike.Magnitude;
 import net.imagej.ops.Ops.Zernike.Phase;
 import net.imagej.ops.features.AbstractFeatureTest;
+
+import org.junit.Test;
 
 /**
  * 

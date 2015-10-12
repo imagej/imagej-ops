@@ -58,8 +58,7 @@ public final class IterableIntervalToImg {
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 	
-	@Plugin(type = ${iface}.class, name = ${iface}.NAME,
-			priority = Priority.HIGH_PRIORITY)
+		@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 		public static class ${op.name}<T extends NumericType<T>> extends
 			AbstractHybridOp<Img<T>, Img<T>> implements $iface, Contingent
 		{

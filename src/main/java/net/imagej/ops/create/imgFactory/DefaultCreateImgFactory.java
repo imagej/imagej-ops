@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Create.ImgFactory.class, name = Ops.Create.ImgFactory.NAME)
+@Plugin(type = Ops.Create.ImgFactory.class)
 public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	AbstractOp implements Ops.Create.ImgFactory, Output<ImgFactory<T>>
 {

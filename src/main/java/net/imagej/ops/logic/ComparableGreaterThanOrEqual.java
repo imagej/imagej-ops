@@ -32,7 +32,6 @@ package net.imagej.ops.logic;
 
 import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -40,10 +39,7 @@ import org.scijava.plugin.Plugin;
  * Op that performs a greater-than-or-equal (>=) comparison on two
  * {@link Comparable} objects.
  */
-@Plugin(
-	type = Ops.Logic.GreaterThanOrEqual.class,
-	name = Ops.Logic.GreaterThanOrEqual.NAME,
-	attrs = { @Attr(name = "aliases", value = Ops.Logic.GreaterThanOrEqual.ALIASES) })
+@Plugin(type = Ops.Logic.GreaterThanOrEqual.class)
 public class ComparableGreaterThanOrEqual<T> extends AbstractCondition<T>
 	implements Ops.Logic.GreaterThanOrEqual
 {

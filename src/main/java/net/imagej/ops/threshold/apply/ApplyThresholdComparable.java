@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.Apply.class, name = Ops.Threshold.Apply.NAME)
+@Plugin(type = Ops.Threshold.Apply.class)
 public class ApplyThresholdComparable<T> extends
 	AbstractComputerOp<Comparable<? super T>, BitType> implements
 	ApplyThreshold<Comparable<? super T>, BitType>

@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 /**
  * Convolves an image naively.
  */
-@Plugin(type = Ops.Filter.Convolve.class, name = Ops.Filter.Convolve.NAME)
+@Plugin(type = Ops.Filter.Convolve.class)
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
 	AbstractComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>

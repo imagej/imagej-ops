@@ -30,22 +30,21 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundarySize}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.BoundarySize.NAME,
+@Plugin(type = Geometric.BoundarySize.class,
 	label = "Geometric (3D): Surface Area",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfaceArea extends AbstractFunctionOp<Mesh, DoubleType>

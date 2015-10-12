@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Image.ASCII.class, name = Ops.Image.ASCII.NAME)
+@Plugin(type = Ops.Image.ASCII.class)
 public class DefaultASCII<T extends RealType<T>> extends AbstractOp implements
 	Ops.Image.ASCII
 {

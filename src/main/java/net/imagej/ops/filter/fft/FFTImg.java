@@ -47,8 +47,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  * @param <I>
  */
-@Plugin(type = Ops.Filter.FFT.class, name = Ops.Filter.FFT.NAME,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
 public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
 {

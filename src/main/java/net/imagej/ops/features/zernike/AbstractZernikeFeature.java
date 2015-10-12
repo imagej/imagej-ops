@@ -29,8 +29,6 @@
  */
 package net.imagej.ops.features.zernike;
 
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
@@ -39,6 +37,8 @@ import net.imagej.ops.features.zernike.helper.ZernikeMoment;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Parameter;
 
 /**
  * 

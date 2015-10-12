@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.localBernsen;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale
  * @param <T> input type
  */
-@Plugin(type = Op.class)
+@Plugin(type = Ops.Threshold.LocalBernsen.class)
 public class LocalBernsen<T extends RealType<T>> extends
 	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
 {

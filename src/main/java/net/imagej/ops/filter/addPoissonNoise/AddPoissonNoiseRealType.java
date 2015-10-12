@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  *  
  * @author Jan Eglinger
  */
-@Plugin(type = Ops.Filter.AddPoissonNoise.class, name = Ops.Filter.AddPoissonNoise.NAME)
+@Plugin(type = Ops.Filter.AddPoissonNoise.class)
 public class AddPoissonNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractComputerOp<I, O> implements Ops.Filter.AddPoissonNoise
 {

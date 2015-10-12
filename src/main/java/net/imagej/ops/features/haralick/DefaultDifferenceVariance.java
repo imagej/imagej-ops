@@ -30,8 +30,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.DifferenceVariance;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -47,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Difference Variance", name = Haralick.DifferenceVariance.NAME)
+@Plugin(type = Ops.Haralick.DifferenceVariance.class, label = "Haralick: Difference Variance")
 public class DefaultDifferenceVariance<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements DifferenceVariance {
+		AbstractHaralickFeature<T> implements Ops.Haralick.DifferenceVariance {
 
 	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
 	

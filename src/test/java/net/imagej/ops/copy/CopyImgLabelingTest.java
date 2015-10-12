@@ -31,6 +31,7 @@ package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.roi.labeling.ImgLabeling;

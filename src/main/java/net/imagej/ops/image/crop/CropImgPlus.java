@@ -41,7 +41,6 @@ import net.imglib2.type.Type;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -49,9 +48,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Image.Crop.class, name = Ops.Image.Crop.NAME, attrs = { @Attr(
-	name = "aliases", value = Ops.Image.Crop.ALIASES) },
-	priority = Priority.LOW_PRIORITY + 1)
+@Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY + 1)
 public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 	Ops.Image.Crop
 {

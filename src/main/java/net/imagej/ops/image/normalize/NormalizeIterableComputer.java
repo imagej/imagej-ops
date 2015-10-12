@@ -36,7 +36,6 @@ import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,8 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Image.Normalize.class, name = Ops.Image.Normalize.NAME,
-	attrs = { @Attr(name = "aliases", value = Ops.Image.Normalize.ALIASES) })
+@Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableComputer<T extends RealType<T>> extends
 	AbstractComputerOp<IterableInterval<T>, IterableInterval<T>> implements
 	Normalize

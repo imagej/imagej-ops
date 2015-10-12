@@ -30,8 +30,7 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.DifferenceEntropy;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -47,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Difference Entropy", name = Haralick.DifferenceEntropy.NAME)
+@Plugin(type = Ops.Haralick.DifferenceEntropy.class, label = "Haralick: Difference Entropy")
 public class DefaultDifferenceEntropy<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements DifferenceEntropy {
+		AbstractHaralickFeature<T> implements Ops.Haralick.DifferenceEntropy {
 
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;

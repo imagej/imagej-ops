@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = Mean.NAME, label = "Statistics: Mean",
+@Plugin(type = Mean.class, label = "Statistics: Mean",
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatsOp<Iterable<I>, O> implements Mean

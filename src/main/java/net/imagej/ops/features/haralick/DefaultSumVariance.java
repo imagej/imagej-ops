@@ -31,9 +31,8 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Haralick;
+import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Haralick.SumAverage;
-import net.imagej.ops.Ops.Haralick.SumVariance;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -47,10 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Sum Variance",
-	name = Haralick.SumVariance.NAME)
+@Plugin(type = Ops.Haralick.SumVariance.class, label = "Haralick: Sum Variance")
 public class DefaultSumVariance<T extends RealType<T>> extends
-	AbstractHaralickFeature<T>implements SumVariance
+	AbstractHaralickFeature<T>implements Ops.Haralick.SumVariance
 {
 
 	private FunctionOp<double[][], double[]> coocPXPlusYFunc;

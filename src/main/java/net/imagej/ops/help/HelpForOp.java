@@ -44,8 +44,7 @@ import org.scijava.plugin.Plugin;
  *
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Help.class, name = Ops.Help.NAME,
-	priority = Priority.HIGH_PRIORITY,
+@Plugin(type = Ops.Help.class, priority = Priority.HIGH_PRIORITY,
 	description = "Gets documentation for the given op.")
 public class HelpForOp extends AbstractHelp {
 

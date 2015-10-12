@@ -50,8 +50,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = GeometricMean.NAME,
-	label = "Statistics: GeometricMean")
+@Plugin(type = GeometricMean.class, label = "Statistics: GeometricMean")
 public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements GeometricMean
 {

@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.IFDM;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -45,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, Univesity of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, name = Haralick.IFDM.NAME, label = "Haralick: Inverse Difference Moment")
+@Plugin(type = Ops.Haralick.IFDM.class, label = "Haralick: Inverse Difference Moment")
 public class DefaultIFDM<T extends RealType<T>> extends AbstractHaralickFeature<T>
-		implements IFDM {
+		implements Ops.Haralick.IFDM {
 
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {

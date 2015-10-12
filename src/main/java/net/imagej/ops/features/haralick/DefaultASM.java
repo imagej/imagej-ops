@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.Ops.Haralick;
-import net.imagej.ops.Ops.Haralick.ASM;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -45,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  *
  */
-@Plugin(type = HaralickFeature.class, label = "Haralick: Angular Second Moment (Energy)", name = Haralick.ASM.NAME)
+@Plugin(type = Ops.Haralick.ASM.class)
 public class DefaultASM<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements ASM {
+		AbstractHaralickFeature<T> implements Ops.Haralick.ASM {
 
 	@Override
 	public void compute(final IterableInterval<T> input, final DoubleType output) {

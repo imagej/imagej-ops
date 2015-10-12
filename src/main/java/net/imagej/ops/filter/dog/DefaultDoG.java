@@ -57,7 +57,7 @@ import org.scijava.thread.ThreadService;
  * @author Curtis Rueden
  * @param <T>
  */
-@Plugin(type = Ops.Filter.DoG.class, name = Ops.Filter.DoG.NAME)
+@Plugin(type = Ops.Filter.DoG.class)
 public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG

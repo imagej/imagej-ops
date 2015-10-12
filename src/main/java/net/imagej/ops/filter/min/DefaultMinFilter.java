@@ -45,8 +45,7 @@ import org.scijava.plugin.Plugin;
  * @author Jonathan Hale (University of Konstanz)
  * @param <T> type
  */
-@Plugin(type = Ops.Filter.Min.class, name = Ops.Filter.Min.NAME,
-	priority = Priority.LOW_PRIORITY)
+@Plugin(type = Ops.Filter.Min.class, priority = Priority.LOW_PRIORITY)
 public class DefaultMinFilter<T extends RealType<T>> extends
 	AbstractNeighborhoodBasedFilter<T, T> implements
 	MinFilterOp<RandomAccessibleInterval<T>>

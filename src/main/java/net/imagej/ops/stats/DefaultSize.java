@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StatsOp.class, name = Size.NAME, label = "Statistics: Size")
+@Plugin(type = Size.class, label = "Statistics: Size")
 public class DefaultSize<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatsOp<Iterable<I>, O> implements Size
 {

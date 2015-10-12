@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-@Plugin(type = Ops.Threshold.MaxEntropy.class, name = Ops.Threshold.MaxEntropy.NAME)
+@Plugin(type = Ops.Threshold.MaxEntropy.class)
 public class ComputeMaxEntropyThreshold<T extends RealType<T>> extends
 		AbstractComputeThresholdHistogram<T> {
 

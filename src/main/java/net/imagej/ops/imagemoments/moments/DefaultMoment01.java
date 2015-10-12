@@ -33,7 +33,6 @@ package net.imagej.ops.imagemoments.moments;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.ImageMoments.Moment01;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
-import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -49,8 +48,8 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = ImageMomentOp.class, name = Moment01.NAME,
-	label = "Image Moment: Moment01", priority = Priority.FIRST_PRIORITY)
+@Plugin(type = Moment01.class, label = "Image Moment: Moment01",
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMoment01<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements Moment01
 {

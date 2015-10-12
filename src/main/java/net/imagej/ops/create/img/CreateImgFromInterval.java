@@ -51,8 +51,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-@Plugin(type = Ops.Create.Img.class, name = Ops.Create.Img.NAME,
-	priority = Priority.HIGH_PRIORITY)
+@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 public class CreateImgFromInterval<T extends Type<T>> extends
 	AbstractFunctionOp<Interval, Img<T>> implements Ops.Create.Img
 {
