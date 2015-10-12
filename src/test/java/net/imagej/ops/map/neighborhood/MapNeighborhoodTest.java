@@ -31,7 +31,8 @@
 package net.imagej.ops.map.neighborhood;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+
+import java.util.Iterator;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
@@ -125,7 +126,9 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 
 		@Override
 		public void compute(final Iterable<ByteType> input, final ByteType output) {
-			for (final ByteType b : input) {
+			for (Iterator<ByteType> iter = input.iterator(); iter.hasNext(); iter
+				.next())
+			{
 				output.inc();
 			}
 		}
@@ -150,63 +153,11 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 			a.set((byte) 0);
 			output.set((byte) 0);
 
-			for (final ByteType b : input.getB()) {
+			for (Iterator<ByteType> iter = input.getB().iterator(); iter.hasNext(); iter
+				.next())
+			{
 				output.inc();
 				a.inc();
-			}
-		}
-	}
-
-	/**
-	 * Computer which increments a outputPixel for every neighboring pixel defined
-	 * by the mapping and tries to access the input pixels value to ensure that no
-	 * access is out of bounds.
-	 *
-	 * @author Jonathan Hale
-	 */
-	private static class CountNeighborsWithAccess extends
-		AbstractComputerOp<Iterable<ByteType>, ByteType>
-	{
-
-		@Override
-		public void compute(final Iterable<ByteType> input, final ByteType output) {
-			try {
-				for (final ByteType t : input) {
-					output.inc();
-					t.inc();
-				}
-			}
-			catch (final Exception e) {
-				fail(e.toString());
-			}
-		}
-	}
-
-	/**
-	 * Computer which increments a outputPixel for every neighboring pixel defined
-	 * by the mapping and tries to access the input pixels value to ensure that no
-	 * access is out of bounds.
-	 *
-	 * @author Jonathan Hale
-	 */
-	private static class CountNeighborsWithAccessWithCenter extends
-		AbstractCenterAwareComputerOp<ByteType, ByteType>
-	{
-
-		@Override
-		public void compute(final Pair<ByteType, Iterable<ByteType>> input,
-			final ByteType output)
-		{
-			try {
-				input.getA().inc();
-
-				for (final ByteType t : input.getB()) {
-					output.inc();
-					t.inc();
-				}
-			}
-			catch (final Exception e) {
-				fail(e.toString());
 			}
 		}
 	}

@@ -44,8 +44,8 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.scijava.Context;
 import org.scijava.Priority;
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -69,7 +69,7 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 {
 
 	@Parameter
-	Context ctx;
+	private LogService log;
 
 	@Parameter
 	private float regularizationFactor = 0.2f;
@@ -96,11 +96,7 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 
 	@Override
 	public void ComputeEstimate() {
-
-		long start = System.currentTimeMillis();
-
 		div_unit_grad_fast_thread();
-		long fasttime = System.currentTimeMillis() - start;
 
 		final Cursor<O> cursorCorrelation =
 			Views.iterable(getRAIExtendedReblurred()).cursor();
@@ -191,13 +187,12 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 						end = Nz;
 					}
 
-					int i, j, k, im1, ip1, jm1, jp1, km1, kp1;
+					int i, j, k, jm1, jp1, km1, kp1;
 
 					double hx, hy, hz;
-					double hx2, hy2, hz2;
 
 					double fip, fim, fjp, fjm, fkp, fkm, fijk;
-					double fimkm, fipkm, fjmkm, fjpkm, fimjm, fipjm, fimkp, fjmkp, fimjp;
+					double fimkm, fipkm, fjmkm, fjpkm, fimjm, fipjm, fimkp, fimjp;
 					double aim, bjm, ckm, aijk, bijk, cijk;
 					double Dxpf, Dxmf, Dypf, Dymf, Dzpf, Dzmf;
 					double Dxma, Dymb, Dzmc;
@@ -205,10 +200,6 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 					hx = 1;
 					hy = 1;
 					hz = 3;
-					hx2 = 2 * hx;
-					hy2 = 2 * hy;
-					hz2 = 2 * hz;
-
 					// i minus 1 cursors
 					Cursor<O> fimjmCursor = Views.iterable(raiExtendedEstimate).cursor();
 					Cursor<O> fimCursor = Views.iterable(raiExtendedEstimate).cursor();
@@ -308,9 +299,6 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 
 							for (i = 0; i < Nx; i++) {
 
-								im1 = (i > 0 ? i - 1 : 0);
-								ip1 = (i + 1 == Nx ? i : i + 1);
-
 								if (i > 1) {
 									fimjmCursor.fwd();
 									fimCursor.fwd();
@@ -345,7 +333,6 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 									fimjp = fimjpCursor.get().getRealFloat();
 									fjmkm = fjmkmCursor.get().getRealFloat();
 									fjm = fjmCursor.get().getRealFloat();
-									fjmkp = fjmkpCursor.get().getRealFloat();
 									fkm = fkmCursor.get().getRealFloat();
 									fijk = fijkCursor.get().getRealFloat();
 									fkp = fkpCursor.get().getRealFloat();
@@ -404,16 +391,15 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 									// outRandom.get().setReal(1);
 
 								}
-								catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-									System.out.println("ERROR at: " + i + " " + j + " " + k);
-									int stop = 5;
+								catch (final ArrayIndexOutOfBoundsException ex) {
+									log.error("ERROR at: " + i + " " + j + " " + k);
 								}
 
 							} // end i
 						} // end j
 					} // end k
 					long totaltime = System.currentTimeMillis() - starttime;
-
+					if (log.isDebug()) log.debug("totaltime = " + totaltime);
 				}// end run
 			});
 		}

@@ -30,9 +30,6 @@
 
 package net.imagej.ops.filter.ifft;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -55,9 +52,6 @@ public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 
 	@Override
 	public void compute(final Img<ComplexFloatType> input, final O output) {
-		// TODO: proper use of Executor service
-		final ExecutorService service = Executors.newFixedThreadPool(4);
-
 		ops().filter().ifft(output, input);
 	}
 }

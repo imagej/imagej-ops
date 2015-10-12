@@ -44,9 +44,6 @@ import org.scijava.plugin.Plugin;
  * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
- *
- * @param <B>
- *            a Boolean Type
  */
 @Plugin(type = Ops.Geometric.Centroid.class, priority = 1)
 public class CentroidIterableInterval
