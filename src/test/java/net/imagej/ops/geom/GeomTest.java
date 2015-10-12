@@ -41,9 +41,6 @@ import java.net.MalformedURLException;
 
 import javax.imageio.ImageIO;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import net.imagej.ops.Ops.Geometric.BoundaryPixelCount;
 import net.imagej.ops.Ops.Geometric.BoundaryPixelCountConvexHull;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
@@ -74,6 +71,9 @@ import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.numeric.integer.IntType;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests for geom features

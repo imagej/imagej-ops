@@ -30,8 +30,6 @@
 
 package net.imagej.ops.geom;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
@@ -40,6 +38,8 @@ import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.roi.labeling.LabelRegion;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).

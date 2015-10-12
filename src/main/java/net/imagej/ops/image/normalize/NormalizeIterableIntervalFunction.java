@@ -38,7 +38,6 @@ import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

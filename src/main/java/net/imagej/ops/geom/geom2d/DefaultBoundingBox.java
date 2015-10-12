@@ -33,15 +33,14 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.BoundingBox;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link BoundingBox}.

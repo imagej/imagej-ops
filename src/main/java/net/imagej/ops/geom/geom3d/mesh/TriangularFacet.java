@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
 import net.imagej.ops.geom.geom3d.DefaultConvexHull3D;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * This is the triangle implementation of Facet Interface.

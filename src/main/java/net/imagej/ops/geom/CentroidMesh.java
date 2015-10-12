@@ -30,9 +30,6 @@
 
 package net.imagej.ops.geom;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
@@ -44,6 +41,9 @@ import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link Centroid}.

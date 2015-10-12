@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
  * 

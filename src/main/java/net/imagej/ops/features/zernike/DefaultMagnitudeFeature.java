@@ -29,12 +29,12 @@
  */
 package net.imagej.ops.features.zernike;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Ops.Zernike;
 import net.imagej.ops.Ops.Zernike.Magnitude;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 
 /**

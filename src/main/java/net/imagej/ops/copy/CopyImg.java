@@ -30,9 +30,6 @@
 
 package net.imagej.ops.copy;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
@@ -43,6 +40,9 @@ import net.imagej.ops.Ops.Create;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Copying {@link Img} into another {@link Img}.

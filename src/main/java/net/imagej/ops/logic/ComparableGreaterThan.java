@@ -32,7 +32,6 @@ package net.imagej.ops.logic;
 
 import net.imagej.ops.Ops;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 

@@ -33,15 +33,10 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Contour;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -50,6 +45,10 @@ import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.Type;
 import net.imglib2.type.logic.BoolType;
 import net.imglib2.view.Views;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Generic implementation of {@link Contour}.

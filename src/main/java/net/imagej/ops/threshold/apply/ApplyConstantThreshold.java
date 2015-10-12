@@ -30,15 +30,15 @@
 
 package net.imagej.ops.threshold.apply;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Applies the given threshold value to every element along the given

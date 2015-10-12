@@ -29,7 +29,6 @@
  */
 package net.imagej.ops.geom.geom3d.mesh;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 
 import org.scijava.ItemIO;

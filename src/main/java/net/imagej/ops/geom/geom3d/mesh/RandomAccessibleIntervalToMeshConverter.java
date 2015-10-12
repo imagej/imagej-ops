@@ -30,18 +30,18 @@
 
 package net.imagej.ops.geom.geom3d.mesh;
 
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops.Geometric.MarchingCubes;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
+
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric.MarchingCubes;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccessibleInterval;
 
 /**
  * Converts a RandomAccessibleInterval to a Mesh

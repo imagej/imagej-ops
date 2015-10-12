@@ -30,7 +30,6 @@
 package net.imagej.ops.features.zernike;
 
 import net.imagej.ops.AbstractNamespaceTest;
-import net.imagej.ops.features.zernike.ZernikeNamespace;
 
 import org.junit.Test;
 

@@ -38,7 +38,6 @@ import net.imagej.ops.Ops.ImageMoments.Moment01;
 import net.imagej.ops.Ops.ImageMoments.Moment10;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
-import net.imagej.ops.imagemoments.ImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;

@@ -30,13 +30,13 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.AbstractRugosity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
