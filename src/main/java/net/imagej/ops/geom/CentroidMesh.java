@@ -30,46 +30,76 @@
 
 package net.imagej.ops.geom;
 
-import java.util.Iterator;
-import java.util.Set;
-
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of {@link Centroid}.
  * 
+ * Computation based on http://wwwf.imperial.ac.uk/~rn/centroid.pdf.
+ * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Centroid",
-	name = Geometric.Centroid.NAME)
+@Plugin(type = GeometricOp.class, label = "Geometric: Centroid", name = Geometric.Centroid.NAME)
 public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
-	implements Centroid
-{
+		implements
+			Centroid,
+			Contingent {
+
+	private FunctionOp<Mesh, DoubleType> sizeFunc;
 
 	@Override
-	public RealLocalizable compute(Mesh input) {
-		final Set<RealLocalizable> points = input.getVertices();
-		final Iterator<RealLocalizable> it = points.iterator();
-		double x, y, z = y = x = 0;
-		while (it.hasNext()) {
-			RealLocalizable next = it.next();
-			x += next.getDoublePosition(0);
-			y += next.getDoublePosition(1);
-			z += next.getDoublePosition(2);
+	public void initialize() {
+		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+	}
+
+	@Override
+	public RealLocalizable compute(final Mesh input) {
+
+		double c_x = 0;
+		double c_y = 0;
+		double c_z = 0;
+
+		for (int i = 0; i < input.getFacets().size(); i++) {
+			TriangularFacet f = (TriangularFacet) input.getFacets().get(i);
+			Vector3D normal = f.getNormal();
+			Vector3D a = f.getP0();
+			Vector3D b = f.getP1();
+			Vector3D c = f.getP2();
+			c_x += (1 / 24d) * normal.getX() * (Math.pow((a.getX() + b.getX()), 2)
+					+ Math.pow((b.getX() + c.getX()), 2)
+					+ Math.pow((c.getX() + a.getX()), 2));
+			c_y += (1 / 24d) * normal.getY() * (Math.pow((a.getY() + b.getY()), 2)
+					+ Math.pow((b.getY() + c.getY()), 2)
+					+ Math.pow((c.getY() + a.getY()), 2));
+			c_z += (1 / 24d) * normal.getZ() * (Math.pow((a.getZ() + b.getZ()), 2)
+					+ Math.pow((b.getZ() + c.getZ()), 2)
+					+ Math.pow((c.getZ() + a.getZ()), 2));
 		}
 
-		x /= points.size();
-		y /= points.size();
-		z /= points.size();
+		double d = 1 / (2 * sizeFunc.compute(input).get());
+		c_x *= d;
+		c_y *= d;
+		c_z *= d;
 
-		return new RealPoint(x, y, z);
+		return new RealPoint(c_x, c_y, c_z);
+	}
+
+	@Override
+	public boolean conforms() {
+		return in().triangularFacets();
 	}
 
 }
