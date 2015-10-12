@@ -42,19 +42,19 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Andreas Graumann, University of Konstanz
  *
  * @param <I>
- * 			type of incoming iterable interval
+ *            type of incoming iterable interval
  * @param <O>
- * 			output type
+ *            output type
  */
 public abstract class AbstractTamuraFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractHybridOp<RandomAccessibleInterval<I>, O>implements TamuraFeature<I, O>, Contingent {
-	
+		extends AbstractHybridOp<RandomAccessibleInterval<I>, O> implements TamuraFeature<I, O>, Contingent {
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public O createOutput(RandomAccessibleInterval<I> input) {
 		return (O) new DoubleType();
 	}
-	
+
 	@Override
 	public boolean conforms() {
 		return in().numDimensions() == 2;

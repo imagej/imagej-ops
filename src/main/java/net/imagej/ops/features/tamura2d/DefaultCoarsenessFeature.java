@@ -53,7 +53,6 @@ import net.imglib2.util.Intervals;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-
 /**
  * 
  * Implementation of Tamura's Coarseness feature
@@ -80,8 +79,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 			meanImages.put(i, mean(input, i));
 		}
 
-		ArrayList<Double> maxDifferences = sizedLeadDiffValues(input,
-				meanImages);
+		ArrayList<Double> maxDifferences = sizedLeadDiffValues(input, meanImages);
 
 		double out = 0.0;
 		for (Double i : maxDifferences) {
@@ -106,8 +104,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 	 *            Mean images
 	 * @return Array containing all leadding difference values
 	 */
-	private ArrayList<Double> sizedLeadDiffValues(
-			final RandomAccessibleInterval<I> input,
+	private ArrayList<Double> sizedLeadDiffValues(final RandomAccessibleInterval<I> input,
 			final HashMap<Integer, Img<I>> meanImages) {
 
 		long[] pos = new long[input.numDimensions()];
@@ -167,15 +164,13 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 		long[] dims = new long[input.numDimensions()];
 		input.dimensions(dims);
 
-		final byte[] array = new byte[(int) Intervals
-				.numElements(new FinalInterval(dims))];
+		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(dims))];
 		Img<I> meanImg = (Img<I>) ArrayImgs.unsignedBytes(array, dims);
 
 		OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory = new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
 				Boundary.SINGLE);
 
-		ops.run(MeanFilterOp.class, meanImg, input,
-				new RectangleShape(i, true), oobFactory);
+		ops.run(MeanFilterOp.class, meanImg, input, new RectangleShape(i, true), oobFactory);
 
 		return meanImg;
 	}

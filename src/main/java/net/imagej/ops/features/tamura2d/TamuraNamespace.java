@@ -38,7 +38,6 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * 
  * Namespace for Tamura features
  * 
  * @author Andreas Graumann, University of Konstanz
@@ -52,51 +51,54 @@ public class TamuraNamespace extends AbstractNamespace {
 	public String getName() {
 		return "tamura2d";
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultContrastFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O contrast (final RandomAccessibleInterval<I> in) {
-		
+	public <I extends RealType<I>, O extends RealType<O>> O contrast(final RandomAccessibleInterval<I> in) {
+
 		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultContrastFeature.class, in);
-		
-		return result; 
+
+		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultContrastFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O contrast (final O out, final RandomAccessibleInterval<I> in) {
-		
+	public <I extends RealType<I>, O extends RealType<O>> O contrast(final O out,
+			final RandomAccessibleInterval<I> in) {
+
 		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultContrastFeature.class, out, in);
-		
-		return result; 
-	}
-	
-	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O directionality(final RandomAccessibleInterval<I> in, final int histogramSize) {
-		final O result =
-			(O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, in, histogramSize);
+
 		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O directionality(final O out, final RandomAccessibleInterval<I> in, final int histogramSize) {
-		final O result =
-			(O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, out, in, histogramSize);
+	public <I extends RealType<I>, O extends RealType<O>> O directionality(final RandomAccessibleInterval<I> in,
+			final int histogramSize) {
+		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, in,
+				histogramSize);
 		return result;
 	}
-	
-	
+
+	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class)
+	public <I extends RealType<I>, O extends RealType<O>> O directionality(final O out,
+			final RandomAccessibleInterval<I> in, final int histogramSize) {
+		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultDirectionalityFeature.class, out, in,
+				histogramSize);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O coarseness (final RandomAccessibleInterval<I> in) {
-		
+	public <I extends RealType<I>, O extends RealType<O>> O coarseness(final RandomAccessibleInterval<I> in) {
+
 		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class, in);
-		
-		return result; 
+
+		return result;
 	}
-	
+
 	@OpMethod(op = net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class)
-	public <I extends RealType<I>, O extends RealType<O>> O coarseness (final O out, final RandomAccessibleInterval<I> in) {
-		
+	public <I extends RealType<I>, O extends RealType<O>> O coarseness(final O out,
+			final RandomAccessibleInterval<I> in) {
+
 		final O result = (O) ops().run(net.imagej.ops.features.tamura2d.DefaultCoarsenessFeature.class, out, in);
-		
-		return result; 
+
+		return result;
 	}
 }

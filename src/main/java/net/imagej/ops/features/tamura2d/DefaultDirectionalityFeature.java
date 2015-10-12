@@ -31,25 +31,23 @@ package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.Ops.Tamura;
 import net.imagej.ops.Ops.Tamura.Directionality;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
-import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gradient.PartialDerivative;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Intervals;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * 
@@ -74,8 +72,7 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 	@Override
 	public void initialize() {
 		stdOp = ops().function(StdDev.class, RealType.class, Iterable.class);
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
-				Iterable.class, histogramSize);
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class, Iterable.class, histogramSize);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,19 +86,13 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 		long[] dims = new long[input.numDimensions()];
 		input.dimensions(dims);
 
-		// create image for derivations in x and y direction<
-		final byte[] arrayX = new byte[(int) Intervals
-				.numElements(new FinalInterval(dims))];
-		final byte[] arrayY = new byte[(int) Intervals
-				.numElements(new FinalInterval(dims))];
-		Img<I> derX = (Img<I>) ArrayImgs.unsignedBytes(arrayX, dims);
-		Img<I> derY = (Img<I>) ArrayImgs.unsignedBytes(arrayY, dims);
+		// create image for derivations in x and y direction
+		Img<I> derX = ops().create().img(input, Util.getTypeFromInterval(input));
+		Img<I> derY = ops().create().img(input, Util.getTypeFromInterval(input));
 
 		// calculate derivations in x and y direction
-		PartialDerivative.gradientCentralDifference2(
-				Views.extendMirrorSingle(input), derX, 0);
-		PartialDerivative.gradientCentralDifference2(
-				Views.extendMirrorSingle(input), derY, 1);
+		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(input), derX, 0);
+		PartialDerivative.gradientCentralDifference2(Views.extendMirrorSingle(input), derY, 1);
 
 		// calculate theta at each position: theta = atan(dX/dY) + pi/2
 		Cursor<I> cX = derX.cursor();
