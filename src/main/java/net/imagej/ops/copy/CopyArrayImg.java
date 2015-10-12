@@ -49,24 +49,29 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@SuppressWarnings("rawtypes")
 @Plugin(type = Copy.Img.class, name = Copy.Img.NAME, priority = Priority.VERY_HIGH_PRIORITY)
-public class CopyArrayImg<T extends NativeType<T>>
+public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 		extends
-		AbstractHybridOp<ArrayImg<T, ? extends ArrayDataAccess>, ArrayImg<T, ? extends ArrayDataAccess>>
+		AbstractHybridOp<ArrayImg<T, A>, ArrayImg<T, A>>
 		implements Copy.Img, Contingent {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayImg<T, ? extends ArrayDataAccess> createOutput(
-			final ArrayImg<T, ? extends ArrayDataAccess> input) {
-		return (ArrayImg<T, ? extends ArrayDataAccess>) input.factory()
-				.create(input, input.firstElement().createVariable());
+	public ArrayImg<T, A> createOutput(final ArrayImg<T, A> input) {
+		// NB: Workaround for ArrayImgFactory not overriding create(Dimensions, T).
+		final long[] dims = new long[ input.numDimensions() ];
+		input.dimensions( dims );
+		final ArrayImg<T, ?> copy =
+			input.factory().create(dims, input.firstElement().createVariable());
+
+		// TODO: Find a way to guarantee the type.
+		@SuppressWarnings("unchecked")
+		final ArrayImg<T, A> typedCopy = (ArrayImg<T, A>) copy;
+		return typedCopy;
 	}
 
 	@Override
-	public void compute(final ArrayImg<T, ? extends ArrayDataAccess> input,
-			final ArrayImg<T, ? extends ArrayDataAccess> output) {
+	public void compute(final ArrayImg<T, A> input,
+			final ArrayImg<T, A> output) {
 
 		final Object inArray = input.update(null).getCurrentStorageArray();
 		System.arraycopy(inArray, 0, output.update(null)
