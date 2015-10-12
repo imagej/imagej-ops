@@ -39,7 +39,7 @@ import net.imglib2.type.numeric.RealType;
  * 
  * @author Andreas Graumann, University of Konstanz
  * 
- * @param <T>
+ * @param <I>
  *            Input Type
   * @param <O>
  *            Output Type

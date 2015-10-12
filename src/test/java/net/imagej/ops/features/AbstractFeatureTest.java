@@ -275,9 +275,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 	}
 
-	protected static LabelRegion<String> createLabelRegion3D() throws MalformedURLException,
-	IOException
-{
+	protected static LabelRegion<String> createLabelRegion3D() {
 
 	final Opener o = new Opener();
 	final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(

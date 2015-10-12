@@ -88,16 +88,7 @@ public class GeomTest extends AbstractFeatureTest {
 
 		final LabelRegions<String> labelRegions = new LabelRegions<String>(img);
 		region2D = labelRegions.getLabelRegion("1");
-
-		try {
-			region3D = createLabelRegion3D();
-		}
-		catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		region3D = createLabelRegion3D();
 	}
 
 	@Test

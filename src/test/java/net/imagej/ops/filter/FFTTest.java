@@ -201,13 +201,9 @@ public class FFTTest extends AbstractOpBenchmark {
 		Cursor<FloatType> c1 = img1.cursor();
 		Cursor<FloatType> c2 = img2.cursor();
 
-		int i = 0;
 		while (c1.hasNext()) {
-
 			c1.fwd();
 			c2.fwd();
-
-			i++;
 
 			// assert that the inverse = the input within the error delta
 			assertEquals(c1.get().getRealFloat(), c2.get().getRealFloat(),
@@ -225,19 +221,14 @@ public class FFTTest extends AbstractOpBenchmark {
 		Cursor<FloatType> c1 = rai1Iterator.cursor();
 		Cursor<FloatType> c2 = rai2Iterator.cursor();
 
-		int i = 0;
 		while (c1.hasNext()) {
-
 			c1.fwd();
 			c2.fwd();
-
-			i++;
 
 			// assert that the inverse = the input within the error delta
 			assertEquals(c1.get().getRealFloat(), c2.get().getRealFloat(),
 					delta);
 		}
-
 	}
 
 	// a utility to assert that two images are equal
@@ -246,13 +237,9 @@ public class FFTTest extends AbstractOpBenchmark {
 		Cursor<ComplexFloatType> c1 = img1.cursor();
 		Cursor<ComplexFloatType> c2 = img2.cursor();
 
-		int i = 0;
 		while (c1.hasNext()) {
-
 			c1.fwd();
 			c2.fwd();
-
-			i++;
 
 			// assert that the inverse = the input within the error delta
 			assertEquals(c1.get().getRealFloat(), c2.get().getRealFloat(),

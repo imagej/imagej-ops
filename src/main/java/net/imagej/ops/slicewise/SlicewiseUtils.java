@@ -39,7 +39,6 @@ public class SlicewiseUtils {
 	 *            for which the {@link AxisType}s indices will be determined
 	 * @param axisTypes
 	 *            which will be used to determine the indices
-	 * @return
 	 */
 	public static synchronized int[] getAxesIndices(final TypedSpace<?> input,
 			final AxisType[] axisTypes) {

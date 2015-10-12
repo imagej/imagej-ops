@@ -40,7 +40,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundaryPixel}.
+ * Generic implementation of {@code geom.boundaryPixelCount}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

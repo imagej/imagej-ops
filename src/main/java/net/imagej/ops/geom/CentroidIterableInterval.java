@@ -70,7 +70,7 @@ public class CentroidIterableInterval
 		}
 
 		for (int i = 0; i < output.length; i++) {
-			output[i] = output[i] / (double) input.size();
+			output[i] = output[i] / input.size();
 		}
 
 		return new RealPoint(output);

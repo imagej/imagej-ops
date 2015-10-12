@@ -50,9 +50,7 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz, University of Konstanz
  */
-public class CachedOpEnvironment extends CustomOpEnvironment implements
-	OpEnvironment
-{
+public class CachedOpEnvironment extends CustomOpEnvironment {
 
 	@Parameter
 	private CacheService cs;

@@ -75,11 +75,9 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 				new NormalizeRealTypeComputer<T>(ops(), sourceMin, sourceMax, targetMin,
 					targetMax, input), input.firstElement().createVariable());
 		}
-		else {
-			final Img<T> output =
-				ops().create().img(input, input.firstElement().createVariable());
-			ops().image().normalize(output, input);
-			return output;
-		}
+		final Img<T> output =
+			ops().create().img(input, input.firstElement().createVariable());
+		ops().image().normalize(output, input);
+		return output;
 	}
 }

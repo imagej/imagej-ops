@@ -32,7 +32,6 @@ package net.imagej.ops.features.zernike.helper;
 import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.types.BigComplex;
 import net.imglib2.Cursor;
@@ -49,8 +48,9 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  */
 @Plugin(type = Op.class)
-public class ZernikeComputer<T extends RealType<T>> extends AbstractFunctionOp<IterableInterval<T>, ZernikeMoment>
-		implements FunctionOp<IterableInterval<T>, ZernikeMoment> {
+public class ZernikeComputer<T extends RealType<T>> extends
+	AbstractFunctionOp<IterableInterval<T>, ZernikeMoment>
+{
 
 	@Parameter
 	private int order;
@@ -63,6 +63,7 @@ public class ZernikeComputer<T extends RealType<T>> extends AbstractFunctionOp<I
 		super.initialize();
 	}
 
+	@Override
 	public ZernikeMoment compute(IterableInterval<T> ii) {
 
 		// what is the acutal N
@@ -83,7 +84,7 @@ public class ZernikeComputer<T extends RealType<T>> extends AbstractFunctionOp<I
 		ZernikeMoment moment = initZernikeMoment(order, repetition, d);
 
 		// get the cursor of the iterable interval
-		final Cursor<? extends RealType<?>> cur = (Cursor<? extends RealType<?>>) ii.localizingCursor();
+		final Cursor<? extends RealType<?>> cur = ii.localizingCursor();
 
 		// count number of pixel inside the unit circle
 		int count = 0;
@@ -245,9 +246,8 @@ public class ZernikeComputer<T extends RealType<T>> extends AbstractFunctionOp<I
 				if ((n == 0 && k == 0) || (n == k) || (k == 0)) {
 					d[n][k] = 1.0;
 					continue;
-				} else {
-					d[n][k] = (((double) n / (n - k))) * d[n - 1][k];
 				}
+				d[n][k] = (((double) n / (n - k))) * d[n - 1][k];
 			}
 		}
 		return d;
