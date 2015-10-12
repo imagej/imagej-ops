@@ -275,7 +275,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 	}
 
-	protected LabelRegion<String> createLabelRegion3D() throws MalformedURLException,
+	protected static LabelRegion<String> createLabelRegion3D() throws MalformedURLException,
 	IOException
 {
 
