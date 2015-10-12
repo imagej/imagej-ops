@@ -1,33 +1,3 @@
-/*
- * #%L
- * ImageJ software for multidimensional image processing and analysis.
- * %%
- * Copyright (C) 2014 - 2015 Board of Regents of the University of
- * Wisconsin-Madison, University of Konstanz and Brian Northan.
- * %%
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * #L%
- */
-
 package net.imagej.ops.featuresets;
 
 import java.util.Collection;
@@ -36,19 +6,26 @@ import java.util.Set;
 
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.Ops.Geometric.BoundaryPixelCount;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
 import net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull;
+import net.imagej.ops.Ops.Geometric.Boxivity;
 import net.imagej.ops.Ops.Geometric.Compactness;
 import net.imagej.ops.Ops.Geometric.Convexity;
+import net.imagej.ops.Ops.Geometric.MainElongation;
+import net.imagej.ops.Ops.Geometric.MarchingCubes;
+import net.imagej.ops.Ops.Geometric.MedianElongation;
 import net.imagej.ops.Ops.Geometric.Rugosity;
 import net.imagej.ops.Ops.Geometric.SizeConvexHull;
 import net.imagej.ops.Ops.Geometric.Solidity;
+import net.imagej.ops.Ops.Geometric.Spareness;
 import net.imagej.ops.Ops.Geometric.Sphericity;
 import net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh;
 import net.imagej.ops.geom.geom3d.mesh.DefaultVolume;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<Mesh, O>}.
@@ -56,14 +33,22 @@ import net.imagej.ops.geom.geom3d.mesh.Mesh;
  * @author Tim-Oliver Buchholz, University of Konstanz
  * @param <O>
  */
+@SuppressWarnings("rawtypes")
 @Plugin(type = FeatureSet.class, label = "3D Geometric Features", description = "Calculates the 3D Geometric Features")
-public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<Mesh, O>
-		implements DimensionBoundFeatureSet<Mesh, O> {
+public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegion, O>
+		implements DimensionBoundFeatureSet<LabelRegion, O> {
+
+	private FunctionOp<LabelRegion, Mesh> contourFunc;
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
 		final Set<OpRef<?>> refs = new HashSet<OpRef<?>>();
 
+		refs.add(ref(MainElongation.class));
+		refs.add(ref(MedianElongation.class));
+		refs.add(ref(Spareness.class));
+
+		refs.add(ref(Boxivity.class));
 		refs.add(ref(Compactness.class));
 		refs.add(ref(BoundarySizeConvexHull.class));
 		refs.add(ref(BoundaryPixelCountConvexHullMesh.class));
@@ -76,7 +61,21 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<Mesh, O>
 		refs.add(ref(BoundaryPixelCount.class));
 		refs.add(ref(DefaultVolume.class));
 
+		contourFunc = ops().function(MarchingCubes.class, Mesh.class, LabelRegion.class);
+
 		return refs;
+	}
+
+	@Override
+	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final LabelRegion input) {
+
+		// FIXME: this hack is not required any more as soon as issue
+		// https://github.com/imagej/imagej-ops/issues/231 is resolved.
+		if (func instanceof MainElongation || func instanceof MedianElongation || func instanceof Spareness) {
+			return super.evalFunction(func, input);
+		} else {
+			return func.compute(contourFunc.compute(input));
+		}
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<Mesh, O>
 
 	@Override
 	public boolean conforms() {
-		return in().triangularFacets();
+		return in().numDimensions() == 3;
 	}
 
 }
