@@ -81,9 +81,7 @@ public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
+		if (out() == null) return true;
+		return Intervals.equalDimensions(in(), out());
 	}
 }
