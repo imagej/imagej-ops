@@ -32,7 +32,6 @@ package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Haralick.SumAverage;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -60,7 +59,7 @@ public class DefaultSumVariance<T extends RealType<T>> extends
 		super.initialize();
 		coocPXPlusYFunc = ops().function(CoocPXPlusY.class, double[].class,
 			double[][].class);
-		sumAverageFunc = ops().function(SumAverage.class, RealType.class, in(),
+		sumAverageFunc = ops().function(Ops.Haralick.SumAverage.class, RealType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 

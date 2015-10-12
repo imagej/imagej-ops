@@ -32,9 +32,7 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundaryPixelCount;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -46,10 +44,10 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.Compactness.class,
+@Plugin(type = Ops.Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
-	implements Geometric.Compactness
+	implements Ops.Geometric.Compactness
 {
 
 	private FunctionOp<Mesh, DoubleType> surfacePixel;
@@ -58,9 +56,9 @@ public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
 
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function(BoundaryPixelCount.class, DoubleType.class,
-			in());
-		volume = ops().function(Size.class, DoubleType.class, in());
+		surfacePixel = ops().function(Ops.Geometric.BoundaryPixelCount.class,
+			DoubleType.class, in());
+		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

@@ -32,9 +32,7 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MinorAxis;
-import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.Ops;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -42,14 +40,14 @@ import net.imglib2.util.Pair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MinorAxis}.
+ * Generic implementation of {@code geom.minorAxis}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Minor Axis",
-	name = Geometric.MinorAxis.NAME)
+@Plugin(type = Ops.Geometric.MinorAxis.class,
+	label = "Geometric (2D): Minor Axis")
 public class DefaultMinorAxis extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.MinorAxis
+	implements Ops.Geometric.MinorAxis
 {
 
 	@SuppressWarnings("rawtypes")

@@ -32,7 +32,6 @@ package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -49,7 +48,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableComputer<T extends RealType<T>> extends
 	AbstractComputerOp<IterableInterval<T>, IterableInterval<T>> implements
-	Normalize
+	Ops.Image.Normalize
 {
 
 	@Parameter(required = false)

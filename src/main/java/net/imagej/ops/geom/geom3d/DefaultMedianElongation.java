@@ -33,7 +33,7 @@ package net.imagej.ops.geom.geom3d;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,12 +47,12 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.MedianElongation.class,
+@Plugin(type = Ops.Geometric.MedianElongation.class,
 	label = "Geometric (3D): Median Elongation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMedianElongation<B extends BooleanType<B>> extends
 	AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-	Geometric.MedianElongation, Contingent
+	Ops.Geometric.MedianElongation, Contingent
 {
 
 	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;

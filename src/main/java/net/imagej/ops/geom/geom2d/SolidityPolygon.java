@@ -30,8 +30,7 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractSolidity;
 import net.imglib2.roi.geometric.Polygon;
 
@@ -41,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Solidity.NAME,
+@Plugin(type = Ops.Geometric.Solidity.class,
 	label = "Geometric (2D): Solidity", priority = Priority.VERY_HIGH_PRIORITY)
 public class SolidityPolygon extends AbstractSolidity<Polygon> {
 	// NB: Marker Interface

@@ -32,9 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundarySize;
-import net.imagej.ops.Ops.Geometric.BoundarySizeConvexHull;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -43,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractRugosity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Geometric.Rugosity
+	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Rugosity
 {
 
 	private FunctionOp<I, DoubleType> boundarySize;
@@ -52,8 +50,8 @@ public abstract class AbstractRugosity<I> extends
 
 	@Override
 	public void initialize() {
-		boundarySize = ops().function(BoundarySize.class, DoubleType.class, in());
-		convexHullBoundarySize = ops().function(BoundarySizeConvexHull.class,
+		boundarySize = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		convexHullBoundarySize = ops().function(Ops.Geometric.BoundarySizeConvexHull.class,
 			DoubleType.class, in());
 	}
 

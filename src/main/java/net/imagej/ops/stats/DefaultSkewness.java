@@ -32,26 +32,24 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Moment3AboutMean;
-import net.imagej.ops.Ops.Stats.Skewness;
-import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Skewness} using {@link Moment3AboutMean}
- * and {@link StdDev}
+ * {@link Op} to calculate the {@code stats.skewness} using
+ * {@code stats.moment3AboutMean} and {@code stats.stdDev}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Skewness.class, label = "Statistics: Skewness")
+@Plugin(type = Ops.Stats.Skewness.class, label = "Statistics: Skewness")
 public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements Skewness
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Skewness
 {
 
 	private FunctionOp<Iterable<I>, O> moment3AboutMeanFunc;
@@ -59,8 +57,8 @@ public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void initialize() {
-		moment3AboutMeanFunc = RTs.function(ops(), Moment3AboutMean.class, in());
-		stdDevFunc = RTs.function(ops(), StdDev.class, in());
+		moment3AboutMeanFunc = RTs.function(ops(), Ops.Stats.Moment3AboutMean.class, in());
+		stdDevFunc = RTs.function(ops(), Ops.Stats.StdDev.class, in());
 	}
 	
 	@Override

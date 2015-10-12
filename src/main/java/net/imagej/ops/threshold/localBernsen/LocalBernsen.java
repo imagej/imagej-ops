@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localBernsen;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;
@@ -66,7 +65,7 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp) ops().function(MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

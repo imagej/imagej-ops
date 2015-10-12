@@ -32,10 +32,7 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Feret;
-import net.imagej.ops.Ops.Geometric.FeretsDiameter;
-import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,14 +41,14 @@ import net.imglib2.util.Pair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link FeretsDiameter}.
+ * Generic implementation of {@code geom.feretsDiameter}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Ferets Diameter",
-	name = Geometric.FeretsDiameter.NAME)
+@Plugin(type = Ops.Geometric.FeretsDiameter.class,
+	label = "Geometric (2D): Ferets Diameter")
 public class DefaultFeretsDiameter extends
-	AbstractFunctionOp<Polygon, DoubleType> implements Geometric.FeretsDiameter
+	AbstractFunctionOp<Polygon, DoubleType> implements Ops.Geometric.FeretsDiameter
 {
 
 	private FunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
@@ -59,7 +56,7 @@ public class DefaultFeretsDiameter extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		function = (FunctionOp) ops().function(Feret.class, Pair.class, in());
+		function = (FunctionOp) ops().function(Ops.Geometric.Feret.class, Pair.class, in());
 	}
 
 	@Override

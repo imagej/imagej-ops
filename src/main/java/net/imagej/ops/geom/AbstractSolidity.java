@@ -32,9 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Size;
-import net.imagej.ops.Ops.Geometric.SizeConvexHull;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -43,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractSolidity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Geometric.Solidity
+	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Solidity
 {
 
 	private FunctionOp<I, DoubleType> volume;
@@ -52,9 +50,9 @@ public abstract class AbstractSolidity<I> extends
 
 	@Override
 	public void initialize() {
-		volume = ops().function(Size.class, DoubleType.class, in());
-		convexHullVolume = ops().function(SizeConvexHull.class, DoubleType.class,
-			in());
+		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullVolume = ops().function(Ops.Geometric.SizeConvexHull.class,
+			DoubleType.class, in());
 	}
 
 	@Override

@@ -32,26 +32,22 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Eccentricity;
-import net.imagej.ops.Ops.Geometric.MajorAxis;
-import net.imagej.ops.Ops.Geometric.MinorAxis;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Eccentricity}.
+ * Generic implementation of {@code geom.eccentricity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Eccentricity",
-	name = Geometric.Eccentricity.NAME)
+@Plugin(type = Ops.Geometric.Eccentricity.class,
+	label = "Geometric (2D): Eccentricity")
 public class DefaultEccentricity extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.Eccentricity
+	implements Ops.Geometric.Eccentricity
 {
 
 	private FunctionOp<Polygon, DoubleType> minorAxisFunc;
@@ -59,8 +55,8 @@ public class DefaultEccentricity extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@Override
 	public void initialize() {
-		minorAxisFunc = RTs.function(ops(), MinorAxis.class, in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
+		minorAxisFunc = RTs.function(ops(), Ops.Geometric.MinorAxis.class, in());
+		majorAxisFunc = RTs.function(ops(), Ops.Geometric.MajorAxis.class, in());
 	}
 
 	@Override

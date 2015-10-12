@@ -38,7 +38,7 @@ import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
-import net.imagej.ops.Ops.Stats.Min;
+import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -76,8 +76,8 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		imgA = generateByteTestImg(true, new long[] { 10, 10 });
 		imgB = generateByteTestImg(true, new long[] { 10, 10 });
 
-		func = env.function(Min.class, DoubleType.class, imgA);
-		hybrid = env.hybrid(Min.class, DoubleType.class, imgA);
+		func = env.function(Ops.Stats.Min.class, DoubleType.class, imgA);
+		hybrid = env.hybrid(Ops.Stats.Min.class, DoubleType.class, imgA);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	// some specialized ops to track number of counts
 	public static class MyMin extends AbstractHybridOp<Img<ByteType>, DoubleType>
-		implements Min
+		implements Ops.Stats.Min
 	{
 
 		@Override

@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localMedian;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Median;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -59,7 +58,7 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Override
 	public void initialize() {
-		median = ops().computer(Median.class, DoubleType.class, in().getB());
+		median = ops().computer(Ops.Stats.Median.class, DoubleType.class, in().getB());
 	}
 
 	@Override

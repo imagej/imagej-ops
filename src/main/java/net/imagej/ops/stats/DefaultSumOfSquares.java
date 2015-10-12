@@ -31,22 +31,22 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.SumOfSquares;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link SumOfSquares}
+ * {@link Op} to calculate the {@code stats.sumOfSquares}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = SumOfSquares.class, label = "Statistics: Sum Of Squares")
+@Plugin(type = Ops.Stats.SumOfSquares.class, label = "Statistics: Sum Of Squares")
 public class DefaultSumOfSquares<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements SumOfSquares
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.SumOfSquares
 {
 
 	@Override

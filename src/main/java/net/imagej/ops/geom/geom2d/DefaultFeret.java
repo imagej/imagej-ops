@@ -31,8 +31,7 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Feret;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.util.Pair;
@@ -41,14 +40,14 @@ import net.imglib2.util.ValuePair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Feret}.
+ * Generic implementation of {@code geom.feret}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.Feret.class)
+@Plugin(type = Ops.Geometric.Feret.class)
 public class DefaultFeret extends
 	AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
-	Geometric.Feret
+	Ops.Geometric.Feret
 {
 
 	@Override

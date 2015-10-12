@@ -31,24 +31,24 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.HarmonicMean;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link HarmonicMean} directly.
+ * {@link Op} to calculate the {@code stats.harmonicMean} directly.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = HarmonicMean.class, label = "Statistics: Harmonic Mean",
+@Plugin(type = Ops.Stats.HarmonicMean.class, label = "Statistics: Harmonic Mean",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableHarmonicMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements HarmonicMean
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.HarmonicMean
 {
 
 	@Override

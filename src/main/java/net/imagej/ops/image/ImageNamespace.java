@@ -36,7 +36,6 @@ import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
@@ -102,7 +101,7 @@ public class ImageNamespace extends AbstractNamespace {
 			final IterableInterval<T> in, final int nrGreyLevels,
 			final int distance, final MatrixOrientation orientation) {
 		final double[][] result = (double[][]) ops().run(
-				CooccurrenceMatrix.class, in, nrGreyLevels, distance,
+				Ops.Image.CooccurrenceMatrix.class, in, nrGreyLevels, distance,
 				orientation);
 		return result;
 	}

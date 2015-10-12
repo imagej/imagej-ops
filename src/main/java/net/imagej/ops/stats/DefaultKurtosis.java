@@ -32,26 +32,24 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Kurtosis;
-import net.imagej.ops.Ops.Stats.Moment4AboutMean;
-import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Kurtosis} using {@link StdDev} and
- * {@link Moment4AboutMean}
+ * {@link Op} to calculate the {@code stats.kurtosis} using {@code stats.stdDev}
+ * and {@code stats.moment4AboutMean}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Kurtosis.class, label = "Statistics: Kurtosis")
+@Plugin(type = Ops.Stats.Kurtosis.class, label = "Statistics: Kurtosis")
 public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements Kurtosis
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Kurtosis
 {
 
 	private FunctionOp<Iterable<I>, O> stdDevFunc;
@@ -60,8 +58,8 @@ public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void initialize() {
-		stdDevFunc = RTs.function(ops(), StdDev.class, in());
-		moment4AboutMeanFunc = RTs.function(ops(), Moment4AboutMean.class, in());
+		stdDevFunc = RTs.function(ops(), Ops.Stats.StdDev.class, in());
+		moment4AboutMeanFunc = RTs.function(ops(), Ops.Stats.Moment4AboutMean.class, in());
 	}
 	
 	@Override

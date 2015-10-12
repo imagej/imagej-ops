@@ -35,7 +35,6 @@ import java.util.List;
 import net.imagej.ops.BufferFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Join;
 
 /**
  * A join operation which joins a list of {@link ComputerOp}s.
@@ -61,15 +60,14 @@ public interface JoinComputers<A, C extends ComputerOp<A, A>> extends
 	void setBufferFactory(BufferFactory<A, A> bufferFactory);
 
 	/**
-	 * @return {@link List} of {@link ComputerOp}s which are joined in this
-	 *         {@link Join}
+	 * @return {@link List} of {@link ComputerOp}s which are joined by this op
 	 */
 	List<? extends C> getOps();
 
 	/**
-	 * Sets the {@link ComputerOp}s which are joined in this {@link Join}.
+	 * Sets the {@link ComputerOp}s which are joined in this op.
 	 * 
-	 * @param ops joined in this {@link Join}
+	 * @param ops joined in this op
 	 */
 	void setOps(List<? extends C> ops);
 

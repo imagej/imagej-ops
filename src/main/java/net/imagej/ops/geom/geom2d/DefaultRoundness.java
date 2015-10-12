@@ -32,26 +32,22 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MajorAxis;
-import net.imagej.ops.Ops.Geometric.Roundness;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Roundness}.
+ * Generic implementation of {@code geom.roundness}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Roundness",
-	name = Geometric.Roundness.NAME)
+@Plugin(type = Ops.Geometric.Roundness.class,
+	label = "Geometric (2D): Roundness")
 public class DefaultRoundness extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.Roundness
+	implements Ops.Geometric.Roundness
 {
 
 	private FunctionOp<Polygon, DoubleType> areaFunc;
@@ -59,8 +55,8 @@ public class DefaultRoundness extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@Override
 	public void initialize() {
-		areaFunc = RTs.function(ops(), Size.class, in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
+		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
+		majorAxisFunc = RTs.function(ops(), Ops.Geometric.MajorAxis.class, in());
 	}
 
 	@Override

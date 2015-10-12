@@ -32,26 +32,22 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MainElongation;
-import net.imagej.ops.Ops.Geometric.MajorAxis;
-import net.imagej.ops.Ops.Geometric.MinorAxis;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MainElongation}.
+ * Generic implementation of {@code geom.mainElongation}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Elongation",
-	name = Geometric.MainElongation.NAME)
+@Plugin(type = Ops.Geometric.MainElongation.class,
+	label = "Geometric (2D): Elongation")
 public class DefaultElongation extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.MainElongation
+	implements Ops.Geometric.MainElongation
 {
 
 	private FunctionOp<Polygon, DoubleType> minorAxisFunc;
@@ -59,8 +55,8 @@ public class DefaultElongation extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@Override
 	public void initialize() {
-		minorAxisFunc = RTs.function(ops(), MinorAxis.class, in());
-		majorAxisFunc = RTs.function(ops(), MajorAxis.class, in());
+		minorAxisFunc = RTs.function(ops(), Ops.Geometric.MinorAxis.class, in());
+		majorAxisFunc = RTs.function(ops(), Ops.Geometric.MajorAxis.class, in());
 	}
 
 	@Override

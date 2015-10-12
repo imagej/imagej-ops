@@ -32,7 +32,7 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.MinMax;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
@@ -40,15 +40,15 @@ import net.imglib2.util.ValuePair;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link MinMax}
+ * {@link Op} to calculate the {@code stats.minMax}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  */
-@Plugin(type = MinMax.class, label = "Statistics: MinMax")
+@Plugin(type = Ops.Stats.MinMax.class, label = "Statistics: MinMax")
 public class DefaultMinMax<I extends RealType<I>> extends
-	AbstractFunctionOp<Iterable<I>, Pair<I, I>>implements MinMax
+	AbstractFunctionOp<Iterable<I>, Pair<I, I>>implements Ops.Stats.MinMax
 {
 
 	@Override

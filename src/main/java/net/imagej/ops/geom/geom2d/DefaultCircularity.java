@@ -32,26 +32,22 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundarySize;
-import net.imagej.ops.Ops.Geometric.Circularity;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
-import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Circularity}.
+ * Generic implementation of {@code geom.circularity}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Circularity",
-	name = Geometric.Circularity.NAME)
+@Plugin(type = Ops.Geometric.Circularity.class,
+	label = "Geometric (2D): Circularity")
 public class DefaultCircularity extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.Circularity
+	implements Ops.Geometric.Circularity
 {
 
 	private FunctionOp<Polygon, DoubleType> areaFunc;
@@ -59,8 +55,8 @@ public class DefaultCircularity extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@Override
 	public void initialize() {
-		areaFunc = RTs.function(ops(), Size.class, in());
-		perimiterFunc = RTs.function(ops(), BoundarySize.class, in());
+		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
+		perimiterFunc = RTs.function(ops(), Ops.Geometric.BoundarySize.class, in());
 	}
 
 	@Override

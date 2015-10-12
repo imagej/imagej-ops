@@ -32,9 +32,7 @@ package net.imagej.ops.imagemoments.centralmoments;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.CentralMoment20;
-import net.imagej.ops.Ops.ImageMoments.Moment00;
-import net.imagej.ops.Ops.ImageMoments.Moment10;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.Cursor;
@@ -44,16 +42,16 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link CentralMoment20}.
+ * {@link Op} to calculate the {@code imageMoments.centralMoment20}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = CentralMoment20.class, label = "Image Moment: CentralMoment20")
+@Plugin(type = Ops.ImageMoments.CentralMoment20.class, label = "Image Moment: CentralMoment20")
 public class DefaultCentralMoment20<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements CentralMoment20
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.CentralMoment20
 {
 
 	private FunctionOp<IterableInterval<I>, O> moment00Func;
@@ -62,8 +60,8 @@ public class DefaultCentralMoment20<I extends RealType<I>, O extends RealType<O>
 
 	@Override
 	public void initialize() {
-		moment00Func = RTs.function(ops(), Moment00.class, in());
-		moment10Func = RTs.function(ops(), Moment10.class, in());
+		moment00Func = RTs.function(ops(), Ops.ImageMoments.Moment00.class, in());
+		moment10Func = RTs.function(ops(), Ops.ImageMoments.Moment10.class, in());
 	}
 
 	@Override

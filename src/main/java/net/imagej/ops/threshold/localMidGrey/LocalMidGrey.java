@@ -32,7 +32,6 @@ package net.imagej.ops.threshold.localMidGrey;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -61,7 +60,7 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		minMaxFunc =
-			(FunctionOp) ops().function(MinMax.class, Pair.class, in().getB());
+			(FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

@@ -30,8 +30,7 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractConvexity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 
@@ -41,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Convexity.NAME,
+@Plugin(type = Ops.Geometric.Convexity.class,
 	label = "Geometric (3D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
 public class ConvexityMesh extends AbstractConvexity<Mesh> {
 	// NB: Marker Interface

@@ -32,9 +32,7 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MajorAxis;
-import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.Ops;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -42,14 +40,14 @@ import net.imglib2.util.Pair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link MajorAxis}.
+ * Generic implementation of {@code geom.majorAxis}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Major Axis",
-	name = Geometric.MajorAxis.NAME)
+@Plugin(type = Ops.Geometric.MajorAxis.class,
+	label = "Geometric (2D): Major Axis")
 public class DefaultMajorAxis extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Geometric.MajorAxis
+	implements Ops.Geometric.MajorAxis
 {
 
 	@SuppressWarnings("rawtypes")

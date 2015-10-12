@@ -33,7 +33,6 @@ package net.imagej.ops.image.histogram;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
@@ -59,7 +58,7 @@ public class HistogramCreate<T extends RealType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp) ops().function(MinMax.class, Pair.class,
+		minMaxFunc = (FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class,
 				in() != null ? in() : Iterable.class);
 	}
 

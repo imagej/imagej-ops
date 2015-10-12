@@ -32,10 +32,7 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Max;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.Size;
-import net.imagej.ops.Ops.Stats.Sum;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
@@ -43,17 +40,18 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Max} using {@link Sum} and {@link Size}
+ * {@link Op} to calculate the {@code stats.max} using {@code stats.sum} and
+ * {@code stats.size}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Mean.class, label = "Statistics: Mean",
+@Plugin(type = Ops.Stats.Mean.class, label = "Statistics: Mean",
 	priority = Priority.LOW_PRIORITY)
 public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatsOp<Iterable<I>, O> implements Mean
+	AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Mean
 {
 	
 	private FunctionOp<Iterable<I>, O> sumFunc;
@@ -62,8 +60,8 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 
 	@Override
 	public void initialize() {
-		sumFunc = RTs.function(ops(), Sum.class, in());
-		areaFunc = RTs.function(ops(), Size.class, in());
+		sumFunc = RTs.function(ops(), Ops.Stats.Sum.class, in());
+		areaFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
 	}
 
 	@Override

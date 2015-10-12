@@ -32,9 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Centroid;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -43,20 +41,20 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Centroid}.
+ * Generic implementation of {@code geom.centroid}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.Centroid.class, label = "Geometric: Center of Gravity")
+@Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Center of Gravity")
 public class CentroidPolygon extends
-	AbstractFunctionOp<Polygon, RealLocalizable> implements Geometric.Centroid
+	AbstractFunctionOp<Polygon, RealLocalizable> implements Ops.Geometric.Centroid
 {
 
 	private FunctionOp<Polygon, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

@@ -36,8 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,14 +46,14 @@ import net.imglib2.util.ValuePair;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link SecondMultiVariate}.
+ * Generic implementation of {@code geom.secondMultiVariate}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.SecondMultiVariate.class)
+@Plugin(type = Ops.Geometric.SecondMultiVariate.class)
 public class DefaultMinorMajorAxis extends
 	AbstractFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
-	Geometric.SecondMultiVariate
+	Ops.Geometric.SecondMultiVariate
 {
 
 	/**

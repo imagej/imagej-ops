@@ -31,22 +31,22 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.SumOfLogs;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link SumOfLogs}
+ * {@link Op} to calculate the {@code stats.sumOfLogs}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = SumOfLogs.class, label = "Statistics: Sum Of Logs")
+@Plugin(type = Ops.Stats.SumOfLogs.class, label = "Statistics: Sum Of Logs")
 public class DefaultSumOfLogs<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements SumOfLogs
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.SumOfLogs
 {
 
 	@Override

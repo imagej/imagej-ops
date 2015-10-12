@@ -42,7 +42,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Ops.Copy.Type.class, name = Ops.Copy.Type.NAME)
+@Plugin(type = Ops.Copy.Type.class)
 public class CopyType<T extends Type<T>> extends AbstractHybridOp<T, T>
 		implements Ops.Copy.Type {
 

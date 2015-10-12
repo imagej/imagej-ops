@@ -32,8 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
@@ -47,9 +46,9 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  * @param <B> a Boolean Type
  */
-@Plugin(type = Op.class, name = Geometric.Centroid.NAME, priority = 2)
+@Plugin(type = Ops.Geometric.Centroid.class, priority = 2)
 public class CentroidLabelRegion extends
-	AbstractFunctionOp<LabelRegion<?>, RealLocalizable> implements Centroid
+	AbstractFunctionOp<LabelRegion<?>, RealLocalizable> implements Ops.Geometric.Centroid
 {
 
 	@Override

@@ -33,7 +33,6 @@ package net.imagej.ops.stats;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Stats.Mean;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -42,7 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.junit.Test;
 
 /**
- * Tests {@link Mean}.
+ * Tests {@link net.imagej.ops.Ops.Stats.Mean}.
  * 
  * @author Curtis Rueden
  */

@@ -33,10 +33,7 @@ package net.imagej.ops.geom.geom3d;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MainElongation;
-import net.imagej.ops.Ops.Geometric.MedianElongation;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -49,11 +46,11 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.Spareness.class,
+@Plugin(type = Ops.Geometric.Spareness.class,
 	label = "Geometric (3D): Spareness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSpareness<B extends BooleanType<B>> extends
 	AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
-	Geometric.Spareness, Contingent
+	Ops.Geometric.Spareness, Contingent
 {
 
 	private FunctionOp<IterableRegion<B>, DoubleType> mainElongation;
@@ -66,13 +63,13 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		mainElongation = ops().function(MainElongation.class, DoubleType.class,
+		mainElongation = ops().function(Ops.Geometric.MainElongation.class, DoubleType.class,
 			in());
-		medianElongation = ops().function(MedianElongation.class, DoubleType.class,
+		medianElongation = ops().function(Ops.Geometric.MedianElongation.class, DoubleType.class,
 			in());
 		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
-		volume = ops().function(Size.class, DoubleType.class, in());
+		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

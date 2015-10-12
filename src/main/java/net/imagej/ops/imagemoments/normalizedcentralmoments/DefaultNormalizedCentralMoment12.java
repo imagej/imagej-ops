@@ -32,9 +32,7 @@ package net.imagej.ops.imagemoments.normalizedcentralmoments;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.CentralMoment00;
-import net.imagej.ops.Ops.ImageMoments.CentralMoment12;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -43,17 +41,17 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link NormalizedCentralMoment12}.
+ * {@link Op} to calculate the {@code imageMoments.normalizedCentralMoment12}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = NormalizedCentralMoment12.class,
+@Plugin(type = Ops.ImageMoments.NormalizedCentralMoment12.class,
 	label = "Image Moment: NormalizedCentralMoment12")
 public class DefaultNormalizedCentralMoment12<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements NormalizedCentralMoment12
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.NormalizedCentralMoment12
 {
 
 	private FunctionOp<IterableInterval<I>, O> centralMoment00Func;
@@ -62,8 +60,8 @@ public class DefaultNormalizedCentralMoment12<I extends RealType<I>, O extends R
 
 	@Override
 	public void initialize() {
-		centralMoment00Func = RTs.function(ops(), CentralMoment00.class, in());
-		centralMoment12Func = RTs.function(ops(), CentralMoment12.class, in());
+		centralMoment00Func = RTs.function(ops(), Ops.ImageMoments.CentralMoment00.class, in());
+		centralMoment12Func = RTs.function(ops(), Ops.ImageMoments.CentralMoment12.class, in());
 	}
 
 	@Override

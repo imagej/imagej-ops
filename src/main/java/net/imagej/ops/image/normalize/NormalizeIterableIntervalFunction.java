@@ -32,7 +32,6 @@ package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Image.Normalize;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;
@@ -51,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 	AbstractFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
-	Normalize
+	Ops.Image.Normalize
 {
 
 	@Parameter(required = false)

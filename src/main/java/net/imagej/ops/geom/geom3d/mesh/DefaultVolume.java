@@ -31,7 +31,7 @@ package net.imagej.ops.geom.geom3d.mesh;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -43,12 +43,13 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric3D: Volume", priority = Priority.VERY_HIGH_PRIORITY-1)
+@Plugin(type = Ops.Geometric.Size.class, label = "Geometric3D: Volume",
+	priority = Priority.VERY_HIGH_PRIORITY-1)
 public class DefaultVolume
 		extends
 			AbstractFunctionOp<Mesh, DoubleType>
 		implements
-			Geometric.Size,
+			Ops.Geometric.Size,
 			Contingent {
 
 	@Override

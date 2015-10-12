@@ -31,7 +31,7 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Size;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -39,17 +39,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Size} directly.
+ * {@link Op} to calculate the {@code stats.size} directly.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Size.class, label = "Statistics: Size",
+@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<IterableInterval<I>, O> implements Size
+	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
 {
 
 	@Override

@@ -32,11 +32,7 @@ package net.imagej.ops.imagemoments.hu;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.HuMoment7;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment03;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment12;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment21;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment30;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -45,16 +41,16 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link HuMoment7}.
+ * {@link Op} to calculate the {@code imageMoments.huMoment7}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = HuMoment7.class, label = "Image Moment: HuMoment7")
+@Plugin(type = Ops.ImageMoments.HuMoment7.class, label = "Image Moment: HuMoment7")
 public class DefaultHuMoment7<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements HuMoment7
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.HuMoment7
 {
 
 	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment30Func;
@@ -68,13 +64,13 @@ public class DefaultHuMoment7<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void initialize() {
 		normalizedCentralMoment03Func =
-			RTs.function(ops(), NormalizedCentralMoment03.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment03.class, in());
 		normalizedCentralMoment12Func =
-			RTs.function(ops(), NormalizedCentralMoment12.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment12.class, in());
 		normalizedCentralMoment21Func =
-			RTs.function(ops(), NormalizedCentralMoment21.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment21.class, in());
 		normalizedCentralMoment30Func =
-			RTs.function(ops(), NormalizedCentralMoment30.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment30.class, in());
 	}
 
 	@Override

@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.features.zernike;
 
-import net.imagej.ops.Ops.Zernike;
-import net.imagej.ops.Ops.Zernike.Phase;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -47,8 +46,8 @@ import org.scijava.plugin.Plugin;
   * @param <O>
  *            Output Type
  */
-@Plugin(type = Zernike.Phase.class, label = "Zernike: Phase")
-public class DefaultPhaseFeature<T extends RealType<T>, O extends RealType<O>> extends AbstractZernikeFeature<T,O>implements Phase {
+@Plugin(type = Ops.Zernike.Phase.class, label = "Zernike: Phase")
+public class DefaultPhaseFeature<T extends RealType<T>, O extends RealType<O>> extends AbstractZernikeFeature<T,O>implements Ops.Zernike.Phase {
 
 	@Override
 	public void compute(IterableInterval<T> input, O output) {

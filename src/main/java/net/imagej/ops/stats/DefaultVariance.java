@@ -32,17 +32,15 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.StdDev;
-import net.imagej.ops.Ops.Stats.Variance;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Variance} using the {@link StdDev} Using
- * the two-pass algorithm.
+ * {@link Op} to calculate the {@code stats.variance} using the
+ * {@code stats.stdDev} using the two-pass algorithm.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
@@ -52,16 +50,16 @@ import org.scijava.plugin.Plugin;
  *      "https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Two-pass_algorithm">
  *      Wikipedia </a>
  */
-@Plugin(type = Variance.class, label = "Statistics: Variance")
+@Plugin(type = Ops.Stats.Variance.class, label = "Statistics: Variance")
 public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements Variance
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Variance
 {
 	
 	private FunctionOp<Iterable<I>, O> meanOp;
 
 	@Override
 	public void initialize() {
-		meanOp = RTs.function(ops(), Mean.class, in());
+		meanOp = RTs.function(ops(), Ops.Stats.Mean.class, in());
 	}
 
 	@Override

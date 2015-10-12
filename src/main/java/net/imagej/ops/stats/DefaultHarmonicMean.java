@@ -32,26 +32,24 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.HarmonicMean;
-import net.imagej.ops.Ops.Stats.Size;
-import net.imagej.ops.Ops.Stats.SumOfInverses;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link HarmonicMean} using {@link Size} and
- * {@link SumOfInverses}
+ * {@link Op} to calculate the {@code stats.harmonicMean} using
+ * {@code stats.size} and {@code stats.sumOfInverses}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = HarmonicMean.class, label = "Statistics: Harmonic Mean")
+@Plugin(type = Ops.Stats.HarmonicMean.class, label = "Statistics: Harmonic Mean")
 public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements HarmonicMean
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.HarmonicMean
 {
 	
 	private FunctionOp<Iterable<I>, O> sizeFunc;
@@ -60,8 +58,8 @@ public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void initialize() {
-		sumOfInversesFunc = RTs.function(ops(), SumOfInverses.class, in());
-		sizeFunc = RTs.function(ops(), Size.class, in());
+		sumOfInversesFunc = RTs.function(ops(), Ops.Stats.SumOfInverses.class, in());
+		sizeFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
 	}
 
 	@Override

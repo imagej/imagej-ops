@@ -31,22 +31,22 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.SumOfInverses;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link SumOfInverses}
+ * {@link Op} to calculate the {@code stats.sumOfInverses}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = SumOfInverses.class, label = "Statistics: Sum Of Inverses")
+@Plugin(type = Ops.Stats.SumOfInverses.class, label = "Statistics: Sum Of Inverses")
 public class DefaultSumOfInverses<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements SumOfInverses
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.SumOfInverses
 {
 
 	@Override

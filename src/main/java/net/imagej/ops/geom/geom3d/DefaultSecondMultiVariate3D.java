@@ -34,8 +34,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric.Centroid;
-import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
@@ -50,17 +49,17 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  * @param <B> BooleanType
  */
-@Plugin(type = SecondMultiVariate.class)
+@Plugin(type = Ops.Geometric.SecondMultiVariate.class)
 public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 	AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
-	implements SecondMultiVariate, Contingent
+	implements Ops.Geometric.SecondMultiVariate, Contingent
 {
 
 	private FunctionOp<IterableRegion<B>, RealLocalizable> centroid;
 
 	@Override
 	public void initialize() {
-		centroid = ops().function(Centroid.class, RealLocalizable.class, in());
+		centroid = ops().function(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
 	}
 
 	@Override

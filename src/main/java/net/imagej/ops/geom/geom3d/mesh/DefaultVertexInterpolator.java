@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.geom.geom3d.mesh;
 
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -41,7 +41,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Geometric.VertexInterpolator.class)
+@Plugin(type = Ops.Geometric.VertexInterpolator.class)
 public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
 	@Parameter(type = ItemIO.INPUT)

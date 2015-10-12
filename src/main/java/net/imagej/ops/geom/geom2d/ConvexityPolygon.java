@@ -29,8 +29,7 @@
  */
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractConvexity;
 import net.imglib2.roi.geometric.Polygon;
 
@@ -40,7 +39,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Convexity.NAME,
+@Plugin(type = Ops.Geometric.Convexity.class,
 	label = "Geometric (2D): Convexity", priority = Priority.VERY_HIGH_PRIORITY)
 public class ConvexityPolygon extends AbstractConvexity<Polygon> {
 	// NB: Marker Interface

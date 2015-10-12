@@ -32,27 +32,24 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.GeometricMean;
-import net.imagej.ops.Ops.Stats.Size;
-import net.imagej.ops.Ops.Stats.SumOfLogs;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link GeometricMean} using {@link Size} and
- * {@link SumOfLogs}
+ * {@link Op} to calculate the {@code stats.geometricMean} using
+ * {@code stats.size} and {@code stats.sumOfLogs}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
- * 
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = GeometricMean.class, label = "Statistics: GeometricMean")
+@Plugin(type = Ops.Stats.GeometricMean.class, label = "Statistics: GeometricMean")
 public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements GeometricMean
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.GeometricMean
 {
 	
 	private FunctionOp<Iterable<I>, O> sizeFunc;
@@ -61,8 +58,8 @@ public class DefaultGeometricMean<I extends RealType<I>, O extends RealType<O>>
 
 	@Override
 	public void initialize() {
-		sumOfLogsFunc = RTs.function(ops(), SumOfLogs.class, in());
-		sizeFunc = RTs.function(ops(), Size.class, in());
+		sumOfLogsFunc = RTs.function(ops(), Ops.Stats.SumOfLogs.class, in());
+		sizeFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
 	}
 	
 	@Override

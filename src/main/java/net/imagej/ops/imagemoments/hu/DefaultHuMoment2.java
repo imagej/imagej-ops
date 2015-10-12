@@ -32,10 +32,7 @@ package net.imagej.ops.imagemoments.hu;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.HuMoment2;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment11;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -44,16 +41,16 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link HuMoment2}.
+ * {@link Op} to calculate the {@code imageMoments.huMoment2}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = HuMoment2.class, label = "Image Moment: HuMoment2")
+@Plugin(type = Ops.ImageMoments.HuMoment2.class, label = "Image Moment: HuMoment2")
 public class DefaultHuMoment2<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements HuMoment2
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.HuMoment2
 {
 
 	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment20Func;
@@ -65,11 +62,11 @@ public class DefaultHuMoment2<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void initialize() {
 		normalizedCentralMoment11Func =
-			RTs.function(ops(), NormalizedCentralMoment11.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment11.class, in());
 		normalizedCentralMoment20Func =
-			RTs.function(ops(), NormalizedCentralMoment20.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment20.class, in());
 		normalizedCentralMoment02Func =
-			RTs.function(ops(), NormalizedCentralMoment02.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment02.class, in());
 	}
 
 	@Override

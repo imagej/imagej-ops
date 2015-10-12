@@ -31,7 +31,7 @@
 package net.imagej.ops.imagemoments.centralmoments;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.CentralMoment11;
+import net.imagej.ops.Ops;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -41,17 +41,17 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link CentralMoment11} directly.
+ * {@link Op} to calculate the {@code imageMoments.centralMoment11} directly.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = CentralMoment11.class, label = "Image Moment: CentralMoment11",
+@Plugin(type = Ops.ImageMoments.CentralMoment11.class, label = "Image Moment: CentralMoment11",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableCentralMoment11<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements CentralMoment11
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.CentralMoment11
 {
 
 	@Override

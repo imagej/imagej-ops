@@ -32,8 +32,6 @@ package net.imagej.ops.threshold.localNiblack;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -66,8 +64,8 @@ public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Override
 	public void initialize() {
 		//FIXME: make sure Mean is used inStdDev.
-		mean = ops().computer(Mean.class, new DoubleType(), in().getB());
-		stdDeviation = ops().computer(StdDev.class, new DoubleType(), in().getB());
+		mean = ops().computer(Ops.Stats.Mean.class, new DoubleType(), in().getB());
+		stdDeviation = ops().computer(Ops.Stats.StdDev.class, new DoubleType(), in().getB());
 	}
 
 	@Override

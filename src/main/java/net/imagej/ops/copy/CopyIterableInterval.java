@@ -35,7 +35,6 @@ import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Map;
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 
@@ -48,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <L>
  */
-@Plugin(type = Ops.Copy.IterableInterval.class, name = Ops.Copy.IterableInterval.NAME, priority = 1.0)
+@Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
 public class CopyIterableInterval<T> extends
 		AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
 		Ops.Copy.IterableInterval, Contingent {
@@ -61,7 +60,7 @@ public class CopyIterableInterval<T> extends
 	
 	@Override
 	public void initialize() {
-		map = ops.computer(Map.class, in(), in(),
+		map = ops.computer(Ops.Map.class, in(), in(),
 				ops.computer(Ops.Copy.Type.class, 
 						in().firstElement().getClass(), 
 						in().firstElement().getClass()));

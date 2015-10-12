@@ -32,9 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundarySize;
-import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -45,7 +43,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 public abstract class AbstractBoundarySizeConvexHull<I> extends
 	AbstractFunctionOp<I, DoubleType> implements
-	Geometric.BoundarySizeConvexHull
+	Ops.Geometric.BoundarySizeConvexHull
 {
 
 	private FunctionOp<I, I> convexHullFunc;
@@ -60,9 +58,8 @@ public abstract class AbstractBoundarySizeConvexHull<I> extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = (FunctionOp<I, I>) ops().function(ConvexHull.class, inType,
-			in());
-		perimeterFunc = ops().function(BoundarySize.class, DoubleType.class, in());
+		convexHullFunc = ops().function(Ops.Geometric.ConvexHull.class, inType, in());
+		perimeterFunc = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
 	}
 
 	@Override

@@ -31,24 +31,24 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Max;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Max}
+ * {@link Op} to calculate the {@code stats.max}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Max.class, label = "Statistics: Max",
+@Plugin(type = Ops.Stats.Max.class, label = "Statistics: Max",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableMax<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatsOp<Iterable<I>, O> implements Max
+	AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Max
 {
 
 	@Override

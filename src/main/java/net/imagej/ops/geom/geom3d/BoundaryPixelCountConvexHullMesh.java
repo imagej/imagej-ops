@@ -32,9 +32,7 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -44,7 +42,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.BoundaryPixelCountConvexHull.NAME,
+@Plugin(type = Ops.Geometric.BoundaryPixelCountConvexHull.class,
 	label = "Geometric (3D): Convex Hull Pixel Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class BoundaryPixelCountConvexHullMesh extends
@@ -55,7 +53,7 @@ public class BoundaryPixelCountConvexHullMesh extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = ops().function(ConvexHull.class, Mesh.class, in());
+		convexHullFunc = ops().function(Ops.Geometric.ConvexHull.class, Mesh.class, in());
 	}
 
 	@Override

@@ -35,8 +35,7 @@ import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Contour;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -51,15 +50,15 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Contour}.
+ * Generic implementation of {@code geom.contour}.
  * 
  * @author Jonathan Hale, Universitf Konstany.
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.Contour.class)
+@Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour extends
 	AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon> implements
-	Contingent, Geometric.Contour
+	Contingent, Ops.Geometric.Contour
 {
 
 	@Parameter(type = ItemIO.INPUT,

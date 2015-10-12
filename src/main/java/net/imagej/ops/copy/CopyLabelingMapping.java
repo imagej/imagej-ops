@@ -49,7 +49,8 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <L>
  */
-@Plugin(type = Ops.Copy.LabelingMapping.class, name = Ops.Copy.LabelingMapping.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Copy.LabelingMapping.class,
+	priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
 		AbstractHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
 		Ops.Copy.LabelingMapping {

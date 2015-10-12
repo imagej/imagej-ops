@@ -31,7 +31,7 @@ package net.imagej.ops.image.cooccurrencematrix;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -47,10 +47,10 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = CooccurrenceMatrix.class)
+@Plugin(type = Ops.Image.CooccurrenceMatrix.class)
 public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
-		CooccurrenceMatrix, Contingent {
+		Ops.Image.CooccurrenceMatrix, Contingent {
 
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
 	private int nrGreyLevels;

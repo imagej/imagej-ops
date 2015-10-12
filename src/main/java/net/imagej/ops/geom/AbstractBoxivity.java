@@ -32,20 +32,18 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Size;
-import net.imagej.ops.Ops.Geometric.SmallestEnclosingBoundingBox;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * Generic implementation of
- * {@link net.imagej.ops.Ops.Geometric.Boundingboxivity}.
+ * {@link net.imagej.ops.Ops.Geometric.Boxivity}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractBoxivity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Geometric.Boxivity
+	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Boxivity
 {
 
 	private FunctionOp<I, DoubleType> areaFunc;
@@ -60,9 +58,9 @@ public abstract class AbstractBoxivity<I> extends
 
 	@Override
 	public void initialize() {
-		areaFunc = RTs.function(ops(), Size.class, in());
-		smallestEnclosingRectangleFunc = (FunctionOp<I, I>) ops().function(
-			SmallestEnclosingBoundingBox.class, inType, in());
+		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
+		smallestEnclosingRectangleFunc = ops().function(
+			Ops.Geometric.SmallestEnclosingBoundingBox.class, inType, in());
 	}
 
 	@Override

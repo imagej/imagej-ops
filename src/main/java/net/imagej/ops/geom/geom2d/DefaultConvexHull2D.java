@@ -36,8 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
@@ -45,13 +44,13 @@ import net.imglib2.roi.geometric.Polygon;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link ConvexHull}.
+ * Generic implementation of {@code geom.convexHull}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, name = Geometric.ConvexHull.NAME)
+@Plugin(type = Ops.Geometric.ConvexHull.class)
 public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
-	implements GeometricOp<Polygon, Polygon>, Geometric.ConvexHull
+	implements GeometricOp<Polygon, Polygon>, Ops.Geometric.ConvexHull
 {
 
 	@Override

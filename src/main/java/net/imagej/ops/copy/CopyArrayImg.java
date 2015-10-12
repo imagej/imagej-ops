@@ -34,7 +34,7 @@ import java.lang.reflect.Array;
 
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Copy;
+import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.type.NativeType;
@@ -49,11 +49,11 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Copy.Img.class, name = Copy.Img.NAME, priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Ops.Copy.Img.class, priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 		extends
 		AbstractHybridOp<ArrayImg<T, A>, ArrayImg<T, A>>
-		implements Copy.Img, Contingent {
+		implements Ops.Copy.Img, Contingent {
 
 	@Override
 	public ArrayImg<T, A> createOutput(final ArrayImg<T, A> input) {

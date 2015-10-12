@@ -32,26 +32,24 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.Moment3AboutMean;
-import net.imagej.ops.Ops.Stats.Size;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Moment3AboutMean} using {@link Mean} and
- * {@link Size}
+ * {@link Op} to calculate the {@code stats.moment3AboutMean} using
+ * {@code stats.mean} and {@code stats.size}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Moment3AboutMean.class, label = "Statistics: Moment3AboutMean")
+@Plugin(type = Ops.Stats.Moment3AboutMean.class, label = "Statistics: Moment3AboutMean")
 public class DefaultMoment3AboutMean<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements Moment3AboutMean
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Moment3AboutMean
 {
 
 	private FunctionOp<Iterable<I>, O> meanFunc;
@@ -59,8 +57,8 @@ public class DefaultMoment3AboutMean<I extends RealType<I>, O extends RealType<O
 
 	@Override
 	public void initialize() {
-		meanFunc = RTs.function(ops(), Mean.class, in());
-		sizeFunc = RTs.function(ops(), Size.class, in());
+		meanFunc = RTs.function(ops(), Ops.Stats.Mean.class, in());
+		sizeFunc = RTs.function(ops(), Ops.Stats.Size.class, in());
 	}
 
 	@Override

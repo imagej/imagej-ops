@@ -36,11 +36,7 @@ import java.util.List;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundingBox;
-import net.imagej.ops.Ops.Geometric.Centroid;
-import net.imagej.ops.Ops.Geometric.ConvexHull;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -49,15 +45,15 @@ import net.imglib2.type.numeric.real.DoubleType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link SmallestBoundingBox}.
+ * Generic implementation of {@code geom.smallestBoundingBox}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.SmallestEnclosingBoundingBox.class,
+@Plugin(type = Ops.Geometric.SmallestEnclosingBoundingBox.class,
 	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
 	AbstractFunctionOp<Polygon, Polygon> implements Contingent,
-	Geometric.SmallestEnclosingBoundingBox
+	Ops.Geometric.SmallestEnclosingBoundingBox
 {
 
 	private FunctionOp<Polygon, Polygon> convexhullFunc;
@@ -67,10 +63,10 @@ public class DefaultSmallestEnclosingRectangle extends
 
 	@Override
 	public void initialize() {
-		convexhullFunc = ops().function(ConvexHull.class, Polygon.class, in());
-		centroidFunc = ops().function(Centroid.class, RealLocalizable.class, in());
-		areaFunc = ops().function(Size.class, DoubleType.class, in());
-		boundingBoxFunc = ops().function(BoundingBox.class, Polygon.class, in());
+		convexhullFunc = ops().function(Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		centroidFunc = ops().function(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		areaFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		boundingBoxFunc = ops().function(Ops.Geometric.BoundingBox.class, Polygon.class, in());
 	}
 
 	/**

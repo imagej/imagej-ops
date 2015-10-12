@@ -32,9 +32,7 @@ package net.imagej.ops.imagemoments.hu;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.ImageMoments.HuMoment1;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment02;
-import net.imagej.ops.Ops.ImageMoments.NormalizedCentralMoment20;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
 import net.imglib2.IterableInterval;
@@ -43,16 +41,16 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link HuMoment1}.
+ * {@link Op} to calculate the {@code imageMoments.huMoment1}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = HuMoment1.class, label = "Image Moment: HuMoment1")
+@Plugin(type = Ops.ImageMoments.HuMoment1.class, label = "Image Moment: HuMoment1")
 public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractImageMomentOp<I, O> implements HuMoment1
+	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.HuMoment1
 {
 
 	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment20Func;
@@ -62,9 +60,9 @@ public class DefaultHuMoment1<I extends RealType<I>, O extends RealType<O>>
 	@Override
 	public void initialize() {
 		normalizedCentralMoment20Func =
-			RTs.function(ops(), NormalizedCentralMoment20.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment20.class, in());
 		normalizedCentralMoment02Func =
-			RTs.function(ops(), NormalizedCentralMoment02.class, in());
+			RTs.function(ops(), Ops.ImageMoments.NormalizedCentralMoment02.class, in());
 	}
 
 	@Override

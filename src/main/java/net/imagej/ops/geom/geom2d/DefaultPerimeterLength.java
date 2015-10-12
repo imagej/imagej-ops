@@ -31,23 +31,21 @@
 package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundarySize;
-import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.Ops;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link BoundarySize}.
+ * Generic implementation of {@code geom.boundarySize}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric (2D): Perimeter",
-	name = Geometric.BoundarySize.NAME)
+@Plugin(type = Ops.Geometric.BoundarySize.class,
+	label = "Geometric (2D): Perimeter")
 public class DefaultPerimeterLength extends
-	AbstractFunctionOp<Polygon, DoubleType> implements Geometric.BoundarySize
+	AbstractFunctionOp<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
 {
 
 	@Override

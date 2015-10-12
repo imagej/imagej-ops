@@ -30,11 +30,7 @@
 package net.imagej.ops.features.tamura2d;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Stats.Moment4AboutMean;
-import net.imagej.ops.Ops.Stats.StdDev;
-import net.imagej.ops.Ops.Stats.Variance;
-import net.imagej.ops.Ops.Tamura;
-import net.imagej.ops.Ops.Tamura.Contrast;
+import net.imagej.ops.Ops;
 import net.imagej.ops.RTs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
@@ -48,9 +44,9 @@ import org.scijava.plugin.Plugin;
  * @author Andeas Graumann, Univesity of Konstanz
  *
  */
-@Plugin(type = Tamura.Contrast.class, label = "Tamura 2D: Contrast")
+@Plugin(type = Ops.Tamura.Contrast.class, label = "Tamura 2D: Contrast")
 public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractTamuraFeature<I, O> implements Contrast {
+		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Contrast {
 
 	private FunctionOp<RandomAccessibleInterval<I>, O> m4Op;
 	private FunctionOp<RandomAccessibleInterval<I>, O> varOp;
@@ -58,9 +54,9 @@ public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>
 
 	@Override
 	public void initialize() {
-		m4Op = RTs.function(ops(), Moment4AboutMean.class, in());
-		varOp = RTs.function(ops(), Variance.class, in());
-		stdOp = RTs.function(ops(), StdDev.class, in());
+		m4Op = RTs.function(ops(), Ops.Stats.Moment4AboutMean.class, in());
+		varOp = RTs.function(ops(), Ops.Stats.Variance.class, in());
+		stdOp = RTs.function(ops(), Ops.Stats.StdDev.class, in());
 	}
 
 	@Override

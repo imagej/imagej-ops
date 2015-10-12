@@ -33,9 +33,7 @@ package net.imagej.ops.geom;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Centroid;
-import net.imagej.ops.Ops.Geometric.Size;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imglib2.RealLocalizable;
@@ -46,23 +44,23 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link Centroid}.
+ * Generic implementation of {@code geom.centroid}.
  * 
  * Computation based on http://wwwf.imperial.ac.uk/~rn/centroid.pdf.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = GeometricOp.class, label = "Geometric: Centroid", name = Geometric.Centroid.NAME)
+@Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Centroid")
 public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
 		implements
-			Centroid,
+			Ops.Geometric.Centroid,
 			Contingent {
 
 	private FunctionOp<Mesh, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function(Size.class, DoubleType.class, in());
+		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

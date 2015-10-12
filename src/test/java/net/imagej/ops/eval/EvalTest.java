@@ -36,12 +36,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.Ops.Eval;
 
 import org.junit.Test;
 
 /**
- * Tests {@link Eval}.
+ * Tests {@link net.imagej.ops.Ops.Eval}.
  * 
  * @author Curtis Rueden
  */

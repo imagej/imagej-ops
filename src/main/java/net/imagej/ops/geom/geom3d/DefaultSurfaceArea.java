@@ -31,7 +31,7 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,11 +44,11 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.BoundarySize.class,
+@Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (3D): Surface Area",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfaceArea extends AbstractFunctionOp<Mesh, DoubleType>
-	implements GeometricOp<Mesh, DoubleType>, Geometric.BoundarySize
+	implements GeometricOp<Mesh, DoubleType>, Ops.Geometric.BoundarySize
 {
 
 	@Override

@@ -35,9 +35,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Ops.Stats.StdDev;
-import net.imagej.ops.Ops.Tamura;
-import net.imagej.ops.Ops.Tamura.Directionality;
+import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
@@ -59,9 +57,9 @@ import net.imglib2.view.Views;
  * @param <O>
  */
 @SuppressWarnings("rawtypes")
-@Plugin(type = Tamura.Directionality.class, label = "Tamura 2D: Directionality")
+@Plugin(type = Ops.Tamura.Directionality.class, label = "Tamura 2D: Directionality")
 public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractTamuraFeature<I, O> implements Directionality {
+		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Directionality {
 
 	@Parameter(required = true)
 	private int histogramSize = 16;
@@ -71,8 +69,9 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@Override
 	public void initialize() {
-		stdOp = ops().function(StdDev.class, RealType.class, Iterable.class);
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class, Iterable.class, histogramSize);
+		stdOp = ops().function(Ops.Stats.StdDev.class, RealType.class, Iterable.class);
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
+			Iterable.class, histogramSize);
 	}
 
 	@SuppressWarnings("unchecked")

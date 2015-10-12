@@ -32,7 +32,6 @@ package net.imagej.ops.filter.sigma;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Variance;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
@@ -74,8 +73,8 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			@Override
 			public void compute(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
-					variance = (ComputerOp<Iterable<T>, DoubleType>) ops().op(
-							Variance.class, DoubleType.class, input.getB());
+					variance = ops().computer(Ops.Stats.Variance.class,
+						DoubleType.class, input.getB());
 				}
 
 				DoubleType varianceResult = new DoubleType();

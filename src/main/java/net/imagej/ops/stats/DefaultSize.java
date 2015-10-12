@@ -31,22 +31,22 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Size;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Size}
+ * {@link Op} to calculate the {@code stats.size}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Size.class, label = "Statistics: Size")
+@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size")
 public class DefaultSize<I extends RealType<I>, O extends RealType<O>> extends
-	AbstractStatsOp<Iterable<I>, O> implements Size
+	AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Size
 {
 
 	@Override

@@ -34,7 +34,7 @@ import java.lang.reflect.Type;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric.Contour;
+import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.geometric.Polygon;
 
@@ -64,7 +64,7 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
-			contourFunc = (FunctionOp) ops.function(Contour.class, dest, src, true,
+			contourFunc = (FunctionOp) ops.function(Ops.Geometric.Contour.class, dest, src, true,
 				true);
 		}
 		// FIXME: can we make this faster?

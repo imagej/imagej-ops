@@ -32,10 +32,8 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.MarchingCubes;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
@@ -62,10 +60,10 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  * @param <T> BooleanType
  */
-@Plugin(type = Op.class, name = Geometric.MarchingCubes.NAME)
+@Plugin(type = Ops.Geometric.MarchingCubes.class)
 public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	AbstractFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
-	MarchingCubes, Contingent
+	Ops.Geometric.MarchingCubes, Contingent
 {
 
 	@Parameter(type = ItemIO.INPUT, required = false)

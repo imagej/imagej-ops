@@ -29,11 +29,9 @@
  */
 package net.imagej.ops.image.cooccurrencematrix;
 
-import net.imagej.ops.Ops.Image.CooccurrenceMatrix;
-
 /**
  * Simple interface for enums representing the orientation of a
- * {@link CooccurrenceMatrix}
+ * {@link net.imagej.ops.Ops.Image.CooccurrenceMatrix}.
  * 
  * @author Christian Dietz, University of Konstanz
  *

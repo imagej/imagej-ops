@@ -31,9 +31,7 @@ package net.imagej.ops.features.tamura2d;
 
 import static org.junit.Assert.assertEquals;
 
-import net.imagej.ops.Ops.Haralick.Contrast;
-import net.imagej.ops.Ops.Tamura.Coarseness;
-import net.imagej.ops.Ops.Tamura.Directionality;
+import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
 
 import org.junit.Test;
@@ -49,20 +47,20 @@ public class Tamura2dFeatureTest extends AbstractFeatureTest {
 
 	@Test
 	public void testContrastFeature() {
-		assertEquals(Contrast.NAME, 63.7185, ops.tamura().contrast(random)
-				.getRealDouble(), 1e-3);
+		assertEquals(Ops.Tamura.Contrast.NAME, 63.7185, ops.tamura().contrast(
+			random).getRealDouble(), 1e-3);
 	}
 
 	@Test
 	public void testDirectionalityFeature() {
-		assertEquals(Directionality.NAME, 0.007819, ops.tamura()
+		assertEquals(Ops.Tamura.Directionality.NAME, 0.007819, ops.tamura()
 				.directionality(random, 16).getRealDouble(), 1e-3);
 	}
 
 	@Test
 	public void testCoarsenessFeature() {
-		assertEquals(Coarseness.NAME, 43.614, ops.tamura().coarseness(random)
-				.getRealDouble(), 1e-3);
+		assertEquals(Ops.Tamura.Coarseness.NAME, 43.614, ops.tamura().coarseness(
+			random).getRealDouble(), 1e-3);
 	}
 
 }

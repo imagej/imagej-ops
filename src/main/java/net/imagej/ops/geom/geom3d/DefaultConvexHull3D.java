@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric.ConvexHull;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.Horizon;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
@@ -57,9 +57,9 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = ConvexHull.class)
+@Plugin(type = Ops.Geometric.ConvexHull.class)
 public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
-	implements ConvexHull
+	implements Ops.Geometric.ConvexHull
 {
 
 	/**
@@ -149,7 +149,7 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 
 			TriangularFacet f = new TriangularFacet(vRight, vTop, vLeft);
 
-			setNeighborZero(f, (TriangularFacet) horizon.getNeighbor(i));
+			setNeighborZero(f, horizon.getNeighbor(i));
 
 			newFacets.add(f);
 		}
@@ -161,7 +161,7 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 
 		TriangularFacet f = new TriangularFacet(vRight, vTop, vLeft);
 
-		setNeighborZero(f, (TriangularFacet) horizon.getNeighbor(0));
+		setNeighborZero(f, horizon.getNeighbor(0));
 
 		newFacets.add(f);
 
@@ -276,7 +276,7 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 	{
 		Iterator<TriangularFacet> it = frontFacet.getNeighbors().iterator();
 		while (it.hasNext()) {
-			TriangularFacet f = (TriangularFacet) it.next();
+			TriangularFacet f = it.next();
 			if (f.distanceToPlane(vTop) > epsilon) {
 				// if frontFacet contains all vertices of f it either is
 				// connected

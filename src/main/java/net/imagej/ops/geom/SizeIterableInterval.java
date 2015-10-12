@@ -31,7 +31,7 @@
 package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -43,11 +43,11 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric: Size",
+@Plugin(type = Ops.Geometric.Size.class, label = "Geometric: Size",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class SizeIterableInterval extends
 	AbstractFunctionOp<IterableInterval<?>, DoubleType> implements
-	GeometricOp<IterableInterval<?>, DoubleType>, Geometric.Size
+	GeometricOp<IterableInterval<?>, DoubleType>, Ops.Geometric.Size
 {
 
 	@Override

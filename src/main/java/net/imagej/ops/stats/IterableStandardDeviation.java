@@ -31,24 +31,24 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link StdDev} directly.
+ * {@link Op} to calculate the {@code stats.stdDev} directly.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = StdDev.class, label = "Statistics: Standard Deviation",
+@Plugin(type = Ops.Stats.StdDev.class, label = "Statistics: Standard Deviation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class IterableStandardDeviation<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements StdDev
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.StdDev
 {
 
 	@Override

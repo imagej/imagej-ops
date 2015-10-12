@@ -31,8 +31,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.Centroid;
+import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RealLocalizable;
@@ -49,12 +48,12 @@ import org.scijava.plugin.Plugin;
  * @param <B>
  *            a Boolean Type
  */
-@Plugin(type = Geometric.Centroid.class, priority = 1)
+@Plugin(type = Ops.Geometric.Centroid.class, priority = 1)
 public class CentroidIterableInterval
 		extends
 			AbstractFunctionOp<IterableInterval<?>, RealLocalizable>
 		implements
-			Centroid {
+			Ops.Geometric.Centroid {
 
 	@Override
 	public RealLocalizable compute(final IterableInterval<?> input) {

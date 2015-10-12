@@ -35,7 +35,6 @@ import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Copy;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
@@ -53,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Ops.Copy.ImgLabeling.class, name = Ops.Copy.ImgLabeling.NAME)
+@Plugin(type = Ops.Copy.ImgLabeling.class)
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 		extends AbstractHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
 		implements Ops.Copy.ImgLabeling, Contingent {
@@ -68,8 +67,8 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public void initialize() {
-		raiCopyOp = ops().computer(Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
-		mappingCopyOp = ops().computer(Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		raiCopyOp = ops().computer(Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
+		mappingCopyOp = ops().computer(Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
 	}
 	
 	@Override

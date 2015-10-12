@@ -35,22 +35,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Stats.Median;
+import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@link Median}
+ * {@link Op} to calculate the {@code stats.median}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  * @author Christian Dietz, University of Konstanz.
  * @param <I> input type
  * @param <O> output type
  */
-@Plugin(type = Median.class, label = "Statistics: Median")
+@Plugin(type = Ops.Stats.Median.class, label = "Statistics: Median")
 public class DefaultMedian<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<Iterable<I>, O> implements Median
+	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Median
 {
 
 	@Override

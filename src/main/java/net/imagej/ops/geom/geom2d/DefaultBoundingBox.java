@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops.Geometric;
-import net.imagej.ops.Ops.Geometric.BoundingBox;
+import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -43,13 +42,13 @@ import net.imglib2.roi.geometric.Polygon;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link BoundingBox}.
+ * Generic implementation of {@code geom.boundingBox}.
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Geometric.BoundingBox.class)
+@Plugin(type = Ops.Geometric.BoundingBox.class)
 public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
-	implements Geometric.BoundingBox
+	implements Ops.Geometric.BoundingBox
 {
 
 	@Override

@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Tamura;
-import net.imagej.ops.Ops.Tamura.Coarseness;
+import net.imagej.ops.Ops;
 import net.imagej.ops.filter.mean.MeanFilterOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -62,9 +61,9 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Tamura.Coarseness.class, label = "Tamura 2D: Coarseness")
+@Plugin(type = Ops.Tamura.Coarseness.class, label = "Tamura 2D: Coarseness")
 public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractTamuraFeature<I, O> implements Coarseness {
+		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Coarseness {
 
 	@Parameter
 	protected OpService ops;

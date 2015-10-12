@@ -30,8 +30,7 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric;
+import net.imagej.ops.Ops;
 import net.imagej.ops.geom.AbstractRugosity;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 
@@ -41,7 +40,7 @@ import org.scijava.plugin.Plugin;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric.Rugosity.NAME,
+@Plugin(type = Ops.Geometric.Rugosity.class,
 	label = "Geometric (3D): Rugosity", priority = Priority.VERY_HIGH_PRIORITY)
 public class RugosityMesh extends AbstractRugosity<Mesh> {
 	// NB: Marker Interface

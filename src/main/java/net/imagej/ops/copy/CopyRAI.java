@@ -36,8 +36,6 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Create;
-import net.imagej.ops.Ops.Map;
 import net.imagej.ops.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
@@ -54,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  * @param <T>
  */
-@Plugin(type = Ops.Copy.RAI.class, name = Ops.Copy.RAI.NAME, priority = 1.0)
+@Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Copy.RAI, Contingent
@@ -81,8 +79,8 @@ public class CopyRAI<T> extends
 		final T inType = Util.getTypeFromInterval(in());
 		final ComputerOp<T, ?> typeComputer =
 			ops.computer(Ops.Copy.Type.class, outTypeClass, inType);
-		mapComputer = RAIs.computer(ops(), Map.class, in(), typeComputer);
-		createFunc = RAIs.function(ops(), Create.Img.class, in(), inType);
+		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
+		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
 	}
 
 	@Override
