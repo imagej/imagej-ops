@@ -154,7 +154,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 		Vector3D v0 = vertices.get(0);
 		Vector3D v1 = vertices.get(1);
 		Vector3D v2 = vertices.get(2);
-		normal = v1.subtract(v0).crossProduct(v2.subtract(v0)).normalize();
+		normal = v1.subtract(v0).crossProduct(v2.subtract(v0));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * @return the offset
 	 */
 	public double getPlaneOffset() {
-		return getNormal().dotProduct(getCentroid());
+		return getNormal().normalize().dotProduct(getCentroid());
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * @return the distance
 	 */
 	public double distanceToPlane(final Vector3D p) {
-		return getNormal().dotProduct(p) - getPlaneOffset();
+		return getNormal().normalize().dotProduct(p) - getPlaneOffset();
 	}
 
 	/** 
