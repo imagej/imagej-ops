@@ -34,7 +34,6 @@ import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
