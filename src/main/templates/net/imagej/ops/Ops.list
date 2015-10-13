@@ -86,6 +86,7 @@ namespaces = ```
 		[name: "mean",                        iface: "Mean",                aliases: ["meanFilter", "filterMean"]],
 		[name: "median",                      iface: "Median",              aliases: ["medianFilter", "filterMedian"]],
 		[name: "min",                         iface: "Min",                 aliases: ["minFilter", "filterMin"]],
+		[name: "padInput",                    iface: "PadInput"],
 		[name: "sigma",                       iface: "Sigma",               aliases: ["sigmaFilter", "filterSigma"]],
 		[name: "variance",                    iface: "Variance",            aliases: ["varianceFilter", "filterVariance", "var", "varFilter", "filterVar"]],
 	]],
