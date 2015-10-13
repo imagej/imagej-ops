@@ -30,43 +30,65 @@
 
 package net.imagej.ops.filter.fftSize;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imglib2.FinalDimensions;
+import net.imglib2.Dimensions;
 import net.imglib2.algorithm.fft2.FFTMethods;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Op to calculate JTransform FFT sizes.
+ * Op that calculates FFT sizes.
  * 
  * @author Brian Northan
  */
 @Plugin(type = Ops.Filter.FFTSize.class)
-public class ComputeFFTSize extends AbstractFFTSize {
+public class ComputeFFTSize extends AbstractOp implements Ops.Filter.FFTSize {
+
+	@Parameter
+	protected Dimensions inputDimensions;
+
+	@Parameter(type = ItemIO.BOTH)
+	protected long[] paddedSize;
+
+	@Parameter(type = ItemIO.BOTH)
+	protected long[] fftSize;
+
+	@Parameter
+	protected Boolean forward;
+
+	@Parameter
+	protected Boolean fast;
 
 	@Override
 	public void run() {
-		FinalDimensions dim = new FinalDimensions(inputSize);
 
 		if (fast && forward) {
 
-			FFTMethods.dimensionsRealToComplexFast(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsRealToComplexFast(inputDimensions, paddedSize,
+				fftSize);
 
 		}
 		else if (!fast && forward) {
-			FFTMethods.dimensionsRealToComplexSmall(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsRealToComplexSmall(inputDimensions, paddedSize,
+				fftSize);
 
 		}
 		if (fast && !forward) {
 
-			FFTMethods.dimensionsComplexToRealFast(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsComplexToRealFast(inputDimensions, paddedSize,
+				fftSize);
 
 		}
 		else if (!fast && !forward) {
 
-			FFTMethods.dimensionsComplexToRealSmall(dim, paddedSize, fftSize);
+			FFTMethods.dimensionsComplexToRealSmall(inputDimensions, paddedSize,
+				fftSize);
 
 		}
+
 	}
 
 }
