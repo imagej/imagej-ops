@@ -32,8 +32,7 @@ package net.imagej.ops.cached;
 
 import java.util.Collection;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.CustomOpEnvironment;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
@@ -134,7 +133,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedFunctionOp<I, O> extends AbstractFunctionOp<I, O> {
+	class CachedFunctionOp<I, O> extends AbstractOp implements FunctionOp<I, O> {
 
 		@Parameter
 		private CacheService cache;
@@ -165,6 +164,36 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 			return output;
 		}
 
+		@Override
+		public void run() {
+			delegate.run();
+		}
+
+		@Override
+		public I in() {
+			return delegate.in();
+		}
+
+		@Override
+		public void setInput(I input) {
+			delegate.setInput(input);
+		}
+
+		@Override
+		public O out() {
+			return delegate.out();
+		}
+
+		@Override
+		public void initialize() {
+			delegate.initialize();
+		}
+
+		@Override
+		public CachedFunctionOp<I, O> getIndependentInstance() {
+			return this;
+		}
+
 	}
 
 	/**
@@ -175,7 +204,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedHybridOp<I, O> extends AbstractHybridOp<I, O> {
+	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements HybridOp<I, O> {
 
 		@Parameter
 		private CacheService cache;
@@ -185,6 +214,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		private final Object[] args;
 
 		public CachedHybridOp(final HybridOp<I, O> delegate, final Object[] args) {
+			super(delegate, args);
 			this.delegate = delegate;
 			this.args = args;
 		}
@@ -214,6 +244,10 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		public void compute(final I input, final O output) {
 			delegate.compute(input, output);
 		}
-
+		
+		@Override
+		public CachedHybridOp<I, O> getIndependentInstance() {
+			return this;
+		}
 	}
 }
