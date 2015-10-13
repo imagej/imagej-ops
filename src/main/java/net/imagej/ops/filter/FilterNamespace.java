@@ -40,6 +40,7 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
+import net.imglib2.Dimensions;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -737,8 +738,9 @@ public class FilterNamespace extends AbstractNamespace {
 
 	/** Executes the "fftSize" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.fftSize.ComputeFFTSize.class)
-	public List<long[]> fftSize(final long[] inputSize, final long[] paddedSize,
-		final long[] fftSize, final Boolean forward, final Boolean fast)
+	public List<long[]> fftSize(final Dimensions inputSize,
+		final long[] paddedSize, final long[] fftSize, final Boolean forward,
+		final Boolean fast)
 	{
 		@SuppressWarnings("unchecked")
 		final List<long[]> result =
@@ -1130,6 +1132,31 @@ public class FilterNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.filter.min.DefaultMinFilter.class, out, in, shape,
 				outOfBoundsFactory);
+		return result;
+	}
+
+	/** Executes the "padFilter" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.PadFFTInput.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> padInput(
+		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.fft.PadFFTInput.class, in, paddedDimensions);
+		return result;
+	}
+
+	/** Executes the "padFilter" filter operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.fft.PadFFTInput.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<T> padInput(
+		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<T> result =
+			(RandomAccessibleInterval<T>) ops().run(
+				net.imagej.ops.filter.fft.PadFFTInput.class, in, paddedDimensions, obf);
 		return result;
 	}
 
