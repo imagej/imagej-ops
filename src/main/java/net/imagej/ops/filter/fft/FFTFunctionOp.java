@@ -32,19 +32,16 @@ package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
-import net.imglib2.util.Util;
-import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -96,72 +93,49 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 	@Parameter(required = false)
 	private Type<C> fftType;
 
-	long[] paddedSize;
-	long[] fftSize;
-
-	/**
-	 * Create the output based on the input. If fast=true the size is determined
-	 * such that the underlying FFT implementation will run as fast as possible.
-	 * If fast=false the size is determined such that the underlying FFT<?
-	 * implementation will use the smallest amount of memory possible.
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	public O createOutput() {
+	public O compute(final I input) {
 
+		long[] inputWithBordersSize = new long[input.numDimensions()];
+
+		for (int d = 0; d < input.numDimensions(); d++) {
+			inputWithBordersSize[d] = input.dimension(d);
+
+			if (borderSize != null) {
+				inputWithBordersSize[d] += borderSize[d];
+			}
+		}
+
+		long[] paddedSize = new long[input.numDimensions()];
+		long[] fftSize = new long[input.numDimensions()];
+
+		// calculate the required input (paddedSize) and complex output (fftSize)
+		// sizes for the FFT
+		ops().filter().fftSize(inputWithBordersSize, paddedSize, fftSize, true,
+			fast);
+
+		Dimensions paddedDimensions = new FinalDimensions(paddedSize);
+		Dimensions fftDimensions = new FinalDimensions(fftSize);
+
+		// if no type was passed in the default is ComplexFloatType
 		if (fftType == null) {
 			fftType = (C) new ComplexFloatType();
 		}
 
-		if (factory == null) {
-			factory = (ImgFactory<C>) ops().create().imgFactory(fftSize, fftType);
+		// create the complex output image
+		O output = (O) ops().create().img(fftDimensions, fftType, factory);
+
+		I paddedInput;
+
+		// pad the input if necessary
+		if (!FFTMethods.dimensionsEqual(input, paddedDimensions)) {
+
+			paddedInput = (I) ops().filter().padInput(input, paddedDimensions, obf);
 		}
-
-		return (O) ops().create().img(fftSize, fftType);
-
-	}
-
-	@SuppressWarnings("unchecked")
-	public I padInput(I input) {
-		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
-
-			if (obf == null) {
-				obf =
-					new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
-						Util.getTypeFromInterval(input).createVariable());
-			}
-
-			Interval inputInterval =
-				FFTMethods.paddingIntervalCentered(input, FinalDimensions
-					.wrap(paddedSize));
-
-			return (I) Views.interval(Views.extend(input, obf), inputInterval);
-
+		else {
+			paddedInput = input;
 		}
-
-		return input;
-
-	}
-
-	@Override
-	public O compute(final I input) {
-
-		long[] inputSize = new long[input.numDimensions()];
-
-		for (int d = 0; d < input.numDimensions(); d++) {
-			inputSize[d] = input.dimension(d);
-
-			if (borderSize != null) {
-				inputSize[d] += borderSize[d];
-			}
-		}
-
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, fast);
-
-		O output = createOutput();
-		I paddedInput = padInput(input);
 
 		ops().filter().fft(output, paddedInput);
 
