@@ -34,7 +34,6 @@ import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
