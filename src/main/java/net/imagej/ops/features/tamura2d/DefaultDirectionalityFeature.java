@@ -85,7 +85,6 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 		long[] dims = new long[input.numDimensions()];
 		input.dimensions(dims);
 
-
 		// create image for derivations in x and y direction
 		Img<I> derX = ops().create().img(input, Util.getTypeFromInterval(input));
 		Img<I> derY = ops().create().img(input, Util.getTypeFromInterval(input));
