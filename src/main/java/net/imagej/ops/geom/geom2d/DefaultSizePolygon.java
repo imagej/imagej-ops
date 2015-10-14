@@ -46,8 +46,8 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
-@Plugin(type = Ops.Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
+	priority = Priority.VERY_HIGH_PRIORITY + 1)
 public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.Size
 {
