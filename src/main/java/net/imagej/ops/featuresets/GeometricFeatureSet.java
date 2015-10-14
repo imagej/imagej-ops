@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.featuresets;
 
-import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * Marker interface to define {@link FeatureSet}s which calculate features based
@@ -40,6 +40,7 @@ import net.imglib2.roi.geometric.Polygon;
  * @param <I>
  * @param <O>
  */
-public interface GeometricFeatureSet<L, O> extends DimensionBoundFeatureSet<Polygon, O> {
+@SuppressWarnings("rawtypes")
+public interface GeometricFeatureSet<O> extends DimensionBoundFeatureSet<LabelRegion, O> {
 	// NB: Marker Interface
 }

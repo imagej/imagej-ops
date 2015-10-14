@@ -36,7 +36,7 @@ import net.imglib2.roi.labeling.LabelRegion;
 @SuppressWarnings("rawtypes")
 @Plugin(type = FeatureSet.class, label = "3D Geometric Features", description = "Calculates the 3D Geometric Features")
 public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegion, O>
-		implements DimensionBoundFeatureSet<LabelRegion, O> {
+		implements GeometricFeatureSet<O> {
 
 	private FunctionOp<LabelRegion, Mesh> contourFunc;
 
@@ -61,7 +61,7 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 		refs.add(ref(BoundaryPixelCount.class));
 		refs.add(ref(DefaultVolume.class));
 
-		contourFunc = ops().function(MarchingCubes.class, Mesh.class, LabelRegion.class);
+		contourFunc = ops().function(MarchingCubes.class, Mesh.class, in());
 
 		return refs;
 	}

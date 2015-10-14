@@ -35,10 +35,12 @@ import java.util.Set;
 
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.Ops.Geometric.BoundarySize;
 import net.imagej.ops.Ops.Geometric.Boxivity;
 import net.imagej.ops.Ops.Geometric.Circularity;
+import net.imagej.ops.Ops.Geometric.Contour;
 import net.imagej.ops.Ops.Geometric.Convexity;
 import net.imagej.ops.Ops.Geometric.Eccentricity;
 import net.imagej.ops.Ops.Geometric.FeretsAngle;
@@ -51,6 +53,7 @@ import net.imagej.ops.Ops.Geometric.Rugosity;
 import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.Solidity;
 import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<I, O>}.
@@ -59,9 +62,12 @@ import net.imglib2.roi.geometric.Polygon;
  * @param <I>
  * @param <O>
  */
+@SuppressWarnings("rawtypes")
 @Plugin(type = FeatureSet.class, label = "2D Geometric Features", description = "Calculates the 2D Geometric Features")
-public class Geometric2DFeatureSet<L, O> extends AbstractOpRefFeatureSet<Polygon, O>
-		implements GeometricFeatureSet<L, O> {
+public class Geometric2DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegion, O>
+		implements GeometricFeatureSet<O> {
+
+	private FunctionOp<LabelRegion, Polygon> contourFunc;
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
@@ -82,7 +88,15 @@ public class Geometric2DFeatureSet<L, O> extends AbstractOpRefFeatureSet<Polygon
 		refs.add(ref(Rugosity.class));
 		refs.add(ref(Solidity.class));
 
+		contourFunc = ops().function(Contour.class, Polygon.class, in(), true, true);
+
 		return refs;
+	}
+
+	@Override
+	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final LabelRegion input) {
+		Polygon contour = contourFunc.compute(input);
+		return func.compute(contour);
 	}
 
 	@Override
