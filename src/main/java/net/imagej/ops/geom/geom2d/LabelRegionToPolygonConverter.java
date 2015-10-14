@@ -32,12 +32,6 @@ package net.imagej.ops.geom.geom2d;
 
 import java.lang.reflect.Type;
 
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.roi.geometric.Polygon;
-
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
@@ -45,15 +39,21 @@ import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
+
 /**
- * Converts a RandomAccessibleInterval to a polygon
+ * Converts a {@link LabelRegion} to a polygon
  * 
  * @author Daniel Seebacher, University of Konstanz
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)
-public class RandomAccessibleIntervalToPolygonConverter extends
-	AbstractConverter<RandomAccessibleInterval, Polygon>
+public class LabelRegionToPolygonConverter extends
+	AbstractConverter<LabelRegion, Polygon>
 {
 
 	@Parameter
@@ -78,30 +78,22 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 	}
 
 	@Override
-	public Class<RandomAccessibleInterval> getInputType() {
-		return RandomAccessibleInterval.class;
+	public Class<LabelRegion> getInputType() {
+		return LabelRegion.class;
 	}
 
 	@Override
 	public boolean supports(final ConversionRequest request) {
 
-		Object sourceObject = request.sourceObject();
-		Class<?> sourceClass = request.sourceClass();
+		final Object sourceObject = request.sourceObject();
 
-		if (sourceObject != null &&
-			!(sourceObject instanceof RandomAccessibleInterval))
-		{
-			return false;
-		}
-		else if (sourceClass != null && !(RandomAccessibleInterval.class
-			.isAssignableFrom(sourceClass)))
-		{
+		// we can decide if we can create a Polygon as we have to know the
+		// dimensionality of the incoming object
+		if (sourceObject == null || !(sourceObject instanceof LabelRegion)) {
 			return false;
 		}
 
-		if (sourceObject != null && ((RandomAccessibleInterval) request
-			.sourceObject()).numDimensions() != 2)
-		{
+		if (((LabelRegion) sourceObject).numDimensions() != 2) {
 			return false;
 		}
 
@@ -110,8 +102,7 @@ public class RandomAccessibleIntervalToPolygonConverter extends
 
 		if (destClass != null && !(destClass == Polygon.class)) {
 			return false;
-		}
-		else if (destType != null && !(destType == Polygon.class)) {
+		} else if (destType != null && !(destType == Polygon.class)) {
 			return false;
 		}
 
