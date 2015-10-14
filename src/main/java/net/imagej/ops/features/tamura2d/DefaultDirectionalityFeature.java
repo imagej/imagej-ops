@@ -36,6 +36,7 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
