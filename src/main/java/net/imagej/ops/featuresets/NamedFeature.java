@@ -32,6 +32,8 @@ package net.imagej.ops.featuresets;
 
 import org.scijava.Named;
 
+import net.imagej.ops.OpRef;
+
 /**
  * Simple semantic description of an arbitrary feature
  * 
@@ -40,9 +42,15 @@ import org.scijava.Named;
 public class NamedFeature implements Named {
 
 	private final String name;
+	private OpRef<?> op;
 
 	public NamedFeature(String name) {
+		this(name, null);
+	}
+
+	public NamedFeature(String name, OpRef<?> op) {
 		this.name = name;
+		this.op = op;
 	}
 
 	@Override
@@ -81,4 +89,7 @@ public class NamedFeature implements Named {
 		return true;
 	}
 
+	public OpRef<?> getOp() {
+		return op;
+	}
 }

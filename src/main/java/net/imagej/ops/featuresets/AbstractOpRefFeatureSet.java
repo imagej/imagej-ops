@@ -72,7 +72,7 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 		if (namedFeatureMap == null) {
 			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
 			for (final OpRef<?> ref : initOpRefs()) {
-				NamedFeature feature = new NamedFeature(ref.getLabel());
+				NamedFeature feature = new NamedFeature(ref.getLabel(), ref);
 				if (active == null || active.contains(feature))
 					namedFeatureMap.put(feature, (FunctionOp<Object, ? extends O>) ops().function(ref.getType(),
 							outType, in(), ref.getArgs()));

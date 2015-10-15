@@ -63,7 +63,7 @@ import net.imagej.ops.Ops.Stats.Variance;
  * @param <O>
  */
 @Plugin(type = FeatureSet.class, label = "Statistic Features", description = "Calculates the Statistic Features")
-public class StatsFeatureSet<I, O> extends AbstractOpRefFeatureSet<I, O> {
+public class StatsFeatureSet<T, O> extends AbstractOpRefFeatureSet<Iterable<T>, O> {
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
