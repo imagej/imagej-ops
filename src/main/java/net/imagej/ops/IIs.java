@@ -69,11 +69,11 @@ public final class IIs {
 		return (HybridOp) ops.hybrid(opType, IterableInterval.class, in, otherArgs);
 	}
 
-	public static <A> InplaceOp<A> inplace(
-		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
-		final Object... otherArgs)
-	{
-		return ops.inplace(opType, arg, otherArgs);
-	}
+	public static <T> InplaceOp<IterableInterval<T>> inplace(
+			final OpEnvironment ops, final Class<? extends Op> opType,
+			final IterableInterval<T> arg, final Object... otherArgs)
+		{
+			return ops.inplace(opType, arg, otherArgs);
+		}
 
 }
