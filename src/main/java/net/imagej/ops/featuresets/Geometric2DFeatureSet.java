@@ -88,13 +88,15 @@ public class Geometric2DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 		refs.add(ref(Rugosity.class));
 		refs.add(ref(Solidity.class));
 
-		contourFunc = ops().function(Contour.class, Polygon.class, in(), true, true);
-
 		return refs;
 	}
 
 	@Override
 	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final LabelRegion input) {
+		if (contourFunc == null) {
+			contourFunc = ops().function(Contour.class, Polygon.class, in(), true, true);
+		}
+
 		Polygon contour = contourFunc.compute(input);
 		return func.compute(contour);
 	}

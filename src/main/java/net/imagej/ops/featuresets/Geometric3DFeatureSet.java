@@ -70,11 +70,9 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 		refs.add(ref(BoundaryPixelCount.class));
 		refs.add(ref(DefaultVolume.class));
 
-		contourFunc = ops().function(MarchingCubes.class, Mesh.class, in());
-		
 		return refs;
 	}
-	
+
 	@Override
 	public void initialize() {
 		super.initialize();
@@ -82,7 +80,7 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 		tmp.setEnvironment(ops());
 		tmp.initialize();
 	}
-	
+
 	@Override
 	public Map<NamedFeature, O> compute(LabelRegion input) {
 		final Map<NamedFeature, O> resMap = new LinkedHashMap<NamedFeature, O>();
@@ -93,6 +91,10 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 
 	@Override
 	protected O evalFunction(FunctionOp<Object, ? extends O> func, LabelRegion input) {
+		if (contourFunc == null) {
+			contourFunc = ops().function(MarchingCubes.class, Mesh.class, in());
+		}
+
 		return func.compute(contourFunc.compute(input));
 	}
 
