@@ -8,7 +8,10 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +21,7 @@ import org.junit.Test;
 import ij.ImagePlus;
 import ij.io.Opener;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops.Geometric.Centroid;
 import net.imagej.ops.Ops.Geometric.MainElongation;
 import net.imagej.ops.Ops.Geometric.MedianElongation;
 import net.imagej.ops.Ops.Geometric.Spareness;
@@ -27,6 +31,7 @@ import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation3D;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
+import net.imglib2.RealLocalizable;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
@@ -35,6 +40,7 @@ import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.roi.labeling.LabelingType;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -240,5 +246,48 @@ public class FeatureSetTest extends AbstractOpTest {
 					entry.getValue().get());
 		}
 	}
+	
+	@Test
+	public void centroid2DFeatureSet() {
+		CentroidFeatureSet fs = ops.op(CentroidFeatureSet.class, region2D, Class[].class);
+		
+		RealLocalizable centroid = ops.geom().centroid(region2D);
 
+		Set<Entry<NamedFeature, DoubleType>> entrySet = fs.compute(region2D).entrySet();
+		
+		HashMap<NamedFeature, DoubleType> map = new HashMap<NamedFeature, DoubleType>();
+		
+		for (Entry<NamedFeature, DoubleType> entry : entrySet) {
+			map.put(entry.getKey(), entry.getValue());
+		}
+		
+		assertEquals("NumDims", centroid.numDimensions(), entrySet.size());
+		
+		for (int i = 0; i < centroid.numDimensions(); i++) {
+			NamedFeature key = new NamedFeature("Centroid of dimension#" + i);
+			assertEquals(key.getName(), centroid.getDoublePosition(i), map.get(key).get(), 0.001);
+		}
+	}
+
+	@Test
+	public void centroid3DFeatureSet() {
+		CentroidFeatureSet fs = ops.op(CentroidFeatureSet.class, region3D, Class[].class);
+		
+		RealLocalizable centroid = ops.geom().centroid(region3D);
+
+		Set<Entry<NamedFeature, DoubleType>> entrySet = fs.compute(region3D).entrySet();
+		
+		HashMap<NamedFeature, DoubleType> map = new HashMap<NamedFeature, DoubleType>();
+		
+		for (Entry<NamedFeature, DoubleType> entry : entrySet) {
+			map.put(entry.getKey(), entry.getValue());
+		}
+		
+		assertEquals("NumDims", centroid.numDimensions(), entrySet.size());
+		
+		for (int i = 0; i < centroid.numDimensions(); i++) {
+			NamedFeature key = new NamedFeature("Centroid of dimension#" + i);
+			assertEquals(key.getName(), centroid.getDoublePosition(i), map.get(key).get(), 0.001);
+		}
+	}
 }
