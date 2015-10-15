@@ -47,4 +47,5 @@ import org.scijava.plugin.PTService;
  */
 public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
 	// NB: Marker interface.
+
 }

@@ -41,6 +41,7 @@ import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.features.zernike.ZernikeNamespace;
+import net.imagej.ops.features.lbp2d.Lbp2dNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.geom.GeomNamespace;
 import net.imagej.ops.image.ImageNamespace;
@@ -613,6 +614,9 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();
+	
+	/** Gateway into ops of the "lbp2d" namespace. */
+	Lbp2dNamespace lbp2d();
 
 	/** Gateway into ops of the "logic" namespace. */
 	LogicNamespace logic();
