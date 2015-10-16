@@ -32,6 +32,8 @@ package net.imagej.ops.featuresets;
 
 import java.util.Collection;
 
+import net.imglib2.type.numeric.RealType;
+
 /**
  * A {@link ConfigurableFeatureSet} allow enabling/disabling of certain features
  * in a {@link FeatureSet}.
@@ -40,13 +42,13 @@ import java.util.Collection;
  * @param <I>
  * @param <O>
  */
-public interface ConfigurableFeatureSet<I, O> extends FeatureSet<I, O> {
+public interface ConfigurableFeatureSet<I, O extends RealType<O>> extends
+	FeatureSet<I, O>
+{
 
 	/**
-	 * @param feature
-	 *            {@link NamedFeature} to be enabled/disabled
-	 * @param enabled
-	 *            future status of the feature
+	 * @param feature {@link NamedFeature} to be enabled/disabled
+	 * @param enabled future status of the feature
 	 */
 	void setFeatureStatus(final NamedFeature feature, boolean enabled);
 

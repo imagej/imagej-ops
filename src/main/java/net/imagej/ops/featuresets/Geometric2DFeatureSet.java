@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.featuresets;
 
 import java.util.Collection;
@@ -54,6 +55,7 @@ import net.imagej.ops.Ops.Geometric.Size;
 import net.imagej.ops.Ops.Geometric.Solidity;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<I, O>}.
@@ -62,12 +64,14 @@ import net.imglib2.roi.labeling.LabelRegion;
  * @param <I>
  * @param <O>
  */
-@SuppressWarnings("rawtypes")
-@Plugin(type = FeatureSet.class, label = "2D Geometric Features", description = "Calculates the 2D Geometric Features")
-public class Geometric2DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegion, O>
-		implements GeometricFeatureSet<O> {
+@Plugin(type = FeatureSet.class, label = "2D Geometric Features",
+	description = "Calculates the 2D Geometric Features")
+public class Geometric2DFeatureSet<L, O extends RealType<O>> extends
+	AbstractOpRefFeatureSet<LabelRegion<L>, O> implements
+	DimensionBoundFeatureSet<LabelRegion<L>, O>
+{
 
-	private FunctionOp<LabelRegion, Polygon> contourFunc;
+	private FunctionOp<LabelRegion<L>, Polygon> contourFunc;
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
@@ -92,9 +96,12 @@ public class Geometric2DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 	}
 
 	@Override
-	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final LabelRegion input) {
+	protected O evalFunction(final FunctionOp<Object, ? extends O> func,
+		final LabelRegion<L> input)
+	{
 		if (contourFunc == null) {
-			contourFunc = ops().function(Contour.class, Polygon.class, in(), true, true);
+			contourFunc = ops().function(Contour.class, Polygon.class, in(), true,
+				true);
 		}
 
 		Polygon contour = contourFunc.compute(input);

@@ -31,7 +31,6 @@
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +53,20 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = FeatureSet.class, label = "Zernike Features", description = "Calculates the Zernike Features")
-public class ZernikeFeatureSet<I extends RealType<I>>
-		extends AbstractCachedFeatureSet<IterableInterval<I>, DoubleType> {
+@Plugin(type = FeatureSet.class, label = "Zernike Features",
+	description = "Calculates the Zernike Features")
+public class ZernikeFeatureSet<I extends RealType<I>> extends
+	AbstractCachedFeatureSet<IterableInterval<I>, DoubleType>
+{
 
-	@Parameter(type = ItemIO.INPUT, label = "Minimum Order of Zernike Moment", description = "The minimum order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Minimum Order of Zernike Moment",
+		description = "The minimum order of the zernike moment to be calculated.",
+		min = "1", max = "2147483647", stepSize = "1")
 	private int orderMin = 2;
 
-	@Parameter(type = ItemIO.INPUT, label = "Maximum Order of Zernike Moment", description = "The maximum order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Maximum Order of Zernike Moment",
+		description = "The maximum order of the zernike moment to be calculated.",
+		min = "1", max = "2147483647", stepSize = "1")
 	private int orderMax = 4;
 
 	private ZernikeComputer<I> zernikeComputer;
@@ -74,14 +79,16 @@ public class ZernikeFeatureSet<I extends RealType<I>>
 	}
 
 	@Override
-	public Collection<NamedFeature> getFeatures() {
-		List<NamedFeature> features = new ArrayList<NamedFeature>();
+	public List<NamedFeature> getFeatures() {
+		final List<NamedFeature> features = new ArrayList<NamedFeature>();
 
 		for (int order = orderMin; order <= orderMax; order++) {
 			for (int repetition = 0; repetition <= order; repetition++) {
 				if (Math.abs(order - repetition) % 2 == 0) {
-					features.add(new NamedFeature("Magnitude for Order " + order + " and Repetition " + repetition));
-					features.add(new NamedFeature("Phase for Order " + order + " and Repetition " + repetition));
+					features.add(new NamedFeature("Magnitude for Order " + order +
+						" and Repetition " + repetition));
+					features.add(new NamedFeature("Phase for Order " + order +
+						" and Repetition " + repetition));
 				}
 			}
 		}
@@ -91,7 +98,8 @@ public class ZernikeFeatureSet<I extends RealType<I>>
 
 	@Override
 	public Map<NamedFeature, DoubleType> compute(IterableInterval<I> input) {
-		HashMap<NamedFeature, DoubleType> map = new HashMap<NamedFeature, DoubleType>();
+		HashMap<NamedFeature, DoubleType> map =
+			new HashMap<NamedFeature, DoubleType>();
 
 		for (int order = orderMin; order <= orderMax; order++) {
 			for (int repetition = 0; repetition <= order; repetition++) {
@@ -101,10 +109,12 @@ public class ZernikeFeatureSet<I extends RealType<I>>
 
 					ZernikeMoment results = zernikeComputer.compute(input);
 
-					map.put(new NamedFeature("Magnitude for Order " + order + " and Repetition " + repetition),
-							new DoubleType(results.getMagnitude()));
-					map.put(new NamedFeature("Phase for Order " + order + " and Repetition " + repetition),
-							new DoubleType(results.getPhase()));
+					map.put(new NamedFeature("Magnitude for Order " + order +
+						" and Repetition " + repetition), new DoubleType(results
+							.getMagnitude()));
+					map.put(new NamedFeature("Phase for Order " + order +
+						" and Repetition " + repetition), new DoubleType(results
+							.getPhase()));
 				}
 			}
 		}

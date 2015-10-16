@@ -31,9 +31,11 @@
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} to calculate features which are organized in a structure,
@@ -42,8 +44,9 @@ import java.util.Map;
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
-public abstract class AbstractIteratingFeatureSet<I, O> extends AbstractCachedFeatureSet<I, O>
-		implements FeatureSet<I, O> {
+public abstract class AbstractIteratingFeatureSet<I, O extends RealType<O>>
+	extends AbstractCachedFeatureSet<I, O> implements FeatureSet<I, O>
+{
 
 	private ArrayList<NamedFeature> infos;
 
@@ -75,7 +78,7 @@ public abstract class AbstractIteratingFeatureSet<I, O> extends AbstractCachedFe
 	}
 
 	@Override
-	public Collection<NamedFeature> getFeatures() {
+	public List<NamedFeature> getFeatures() {
 		return infos;
 	}
 
@@ -83,14 +86,12 @@ public abstract class AbstractIteratingFeatureSet<I, O> extends AbstractCachedFe
 	 * Called once before getResultAtIndex is called subsequently for each entry
 	 * in the {@link FeatureSet}.
 	 * 
-	 * @param input
-	 *            the input
+	 * @param input the input
 	 */
 	protected abstract void preCompute(final I input);
 
 	/**
-	 * @param i
-	 *            index
+	 * @param i index
 	 * @return result hat given index
 	 */
 	protected abstract O getResultAtIndex(int i);

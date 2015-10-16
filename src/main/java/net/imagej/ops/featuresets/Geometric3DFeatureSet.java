@@ -1,9 +1,11 @@
+
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ import net.imagej.ops.geom.geom3d.BoundaryPixelCountConvexHullMesh;
 import net.imagej.ops.geom.geom3d.mesh.DefaultVolume;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.roi.labeling.LabelRegion;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<Mesh, O>}.
@@ -35,16 +38,17 @@ import net.imglib2.roi.labeling.LabelRegion;
  * @author Tim-Oliver Buchholz, University of Konstanz
  * @param <O>
  */
-@SuppressWarnings("rawtypes")
-@Plugin(type = FeatureSet.class, label = "3D Geometric Features", description = "Calculates the 3D Geometric Features")
-public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegion, O>
-		implements GeometricFeatureSet<O> {
+@Plugin(type = FeatureSet.class, label = "3D Geometric Features",
+	description = "Calculates the 3D Geometric Features")
+public class Geometric3DFeatureSet<L, O extends RealType<O>> extends
+	AbstractOpRefFeatureSet<LabelRegion<L>, O> implements
+	DimensionBoundFeatureSet<LabelRegion<L>, O>
+{
 
-	private FunctionOp<LabelRegion, Mesh> contourFunc;
-	private Geometric3DFeatureSet<O>.TmpFeatureSetGeom3D tmp;
+	private FunctionOp<LabelRegion<L>, Mesh> contourFunc;
+	private Geometric3DFeatureSet<L, O>.TmpFeatureSetGeom3D tmp;
 
 	public Geometric3DFeatureSet() {
-
 		this.tmp = new TmpFeatureSetGeom3D();
 	}
 
@@ -82,7 +86,7 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 	}
 
 	@Override
-	public Map<NamedFeature, O> compute(LabelRegion input) {
+	public Map<NamedFeature, O> compute(LabelRegion<L> input) {
 		final Map<NamedFeature, O> resMap = new LinkedHashMap<NamedFeature, O>();
 		resMap.putAll(super.compute(input));
 		resMap.putAll(tmp.compute(input));
@@ -90,12 +94,22 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 	}
 
 	@Override
-	protected O evalFunction(FunctionOp<Object, ? extends O> func, LabelRegion input) {
+	protected O evalFunction(FunctionOp<Object, ? extends O> func,
+		LabelRegion<L> input)
+	{
 		if (contourFunc == null) {
 			contourFunc = ops().function(MarchingCubes.class, Mesh.class, in());
 		}
-
-		return func.compute(contourFunc.compute(input));
+		// FIXME: this hack is not required any more as soon as issue
+		// https://github.com/imagej/imagej-ops/issues/231 is resolved.
+		if (func instanceof MainElongation || func instanceof MedianElongation ||
+			func instanceof Spareness)
+		{
+			return super.evalFunction(func, input);
+		}
+		else {
+			return func.compute(contourFunc.compute(input));
+		}
 	}
 
 	@Override
@@ -119,7 +133,8 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 
 		if (getFeatures().contains(info)) {
 			super.setFeatureStatus(info, enabled);
-		} else {
+		}
+		else {
 			tmp.setFeatureStatus(info, enabled);
 		}
 	}
@@ -133,14 +148,16 @@ public class Geometric3DFeatureSet<O> extends AbstractOpRefFeatureSet<LabelRegio
 	}
 
 	@Override
-	public Collection<NamedFeature> getFeatures() {
+	public List<NamedFeature> getFeatures() {
 		final ArrayList<NamedFeature> joined = new ArrayList<NamedFeature>();
 		joined.addAll(tmp.getFeatures());
 		joined.addAll(super.getFeatures());
 		return joined;
 	}
 
-	private class TmpFeatureSetGeom3D extends AbstractOpRefFeatureSet<LabelRegion<?>, O> {
+	private class TmpFeatureSetGeom3D extends
+		AbstractOpRefFeatureSet<LabelRegion<?>, O>
+	{
 
 		@Override
 		protected Collection<? extends OpRef<?>> initOpRefs() {

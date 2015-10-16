@@ -42,6 +42,7 @@ import org.scijava.plugin.PluginService;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.cached.CachedOpEnvironment;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * In an {@link AbstractCachedFeatureSet} intermediate results are cached during
@@ -54,7 +55,7 @@ import net.imagej.ops.cached.CachedOpEnvironment;
  * @param <O>
  *            type of the output
  */
-public abstract class AbstractCachedFeatureSet<I, O> extends AbstractFunctionOp<I, Map<NamedFeature, O>>
+public abstract class AbstractCachedFeatureSet<I, O extends RealType<O>> extends AbstractFunctionOp<I, Map<NamedFeature, O>>
 		implements FeatureSet<I, O> {
 
 	@Parameter

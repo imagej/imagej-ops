@@ -30,12 +30,13 @@
 
 package net.imagej.ops.featuresets;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpRef;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * A {@link Set} of features which are calculated in combination.
@@ -46,12 +47,13 @@ import net.imagej.ops.OpRef;
  * @param <I>
  * @param <O>
  */
-public interface FeatureSet<I, O> extends FunctionOp<I, Map<NamedFeature, O>> {
+public interface FeatureSet<I, O extends RealType<O>> extends
+	FunctionOp<I, Map<NamedFeature, O>>
+{
 
 	/**
-	 * @return all {@link NamedFeature}s which are supported by this feature
-	 *         set.
+	 * @return all {@link NamedFeature}s which are supported by this feature set.
 	 */
-	Collection<NamedFeature> getFeatures();
+	List<NamedFeature> getFeatures();
 
 }

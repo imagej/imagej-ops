@@ -54,6 +54,7 @@ import net.imagej.ops.Ops.Stats.SumOfInverses;
 import net.imagej.ops.Ops.Stats.SumOfLogs;
 import net.imagej.ops.Ops.Stats.SumOfSquares;
 import net.imagej.ops.Ops.Stats.Variance;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} to calculate {@link StatOp}s.
@@ -62,8 +63,11 @@ import net.imagej.ops.Ops.Stats.Variance;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = FeatureSet.class, label = "Statistic Features", description = "Calculates the Statistic Features")
-public class StatsFeatureSet<T, O> extends AbstractOpRefFeatureSet<Iterable<T>, O> {
+@Plugin(type = FeatureSet.class, label = "Statistic Features",
+	description = "Calculates the Statistic Features")
+public class StatsFeatureSet<I, O extends RealType<O>> extends
+	AbstractOpRefFeatureSet<I, O>
+{
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {

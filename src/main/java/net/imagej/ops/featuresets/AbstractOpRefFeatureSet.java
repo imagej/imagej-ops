@@ -30,9 +30,11 @@
 
 package net.imagej.ops.featuresets;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -42,20 +44,21 @@ import org.scijava.plugin.Parameter;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpRef;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * {@link OpRef} based {@link AbstractCachedFeatureSet}.
  * 
  * @author Christian Dietz, University of Konstanz.
- * @param <I>
- *            type of the input
- * @param <O>
- *            type of the output
+ * @param <I> type of the input
+ * @param <O> type of the output
  */
-public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatureSet<I, O>
-		implements ConfigurableFeatureSet<I, O> {
+public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends
+	AbstractCachedFeatureSet<I, O> implements ConfigurableFeatureSet<I, O>
+{
 
-	@Parameter
+	@Parameter(required = false)
 	private Class<? extends O> outType;
 
 	// active ops
@@ -64,28 +67,47 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 	// all opRefs
 	private Map<NamedFeature, FunctionOp<Object, ? extends O>> namedFeatureMap;
 
+	private List<NamedFeature> featureNames;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
 		super.initialize();
 
 		if (namedFeatureMap == null) {
-			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
+			namedFeatureMap =
+				new HashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
 			for (final OpRef<?> ref : initOpRefs()) {
-				NamedFeature feature = new NamedFeature(ref.getLabel(), ref);
-				if (active == null || active.contains(feature))
-					namedFeatureMap.put(feature, (FunctionOp<Object, ? extends O>) ops().function(ref.getType(),
-							outType, in(), ref.getArgs()));
+				final NamedFeature feature = new NamedFeature(ref.getLabel());
+				if (active == null || active.contains(feature)) namedFeatureMap.put(
+					feature, (FunctionOp<Object, ? extends O>) ops().function(ref
+						.getType(), outType == null ? DoubleType.class : outType, in(), ref
+							.getArgs()));
 			}
 		}
 
+		getFeatureNames();
+	}
+
+	private List<NamedFeature> getFeatureNames() {
+		if (featureNames == null) {
+			final ArrayList<NamedFeature> list = new ArrayList<NamedFeature>();
+			for (final OpRef<?> ref : initOpRefs()) {
+				list.add(new NamedFeature(ref.getLabel()));
+			}
+
+			return list;
+		}
+		return featureNames;
 	}
 
 	@Override
 	public Map<NamedFeature, O> compute(final I input) {
 		final Map<NamedFeature, O> res = new HashMap<NamedFeature, O>();
 
-		for (final Entry<NamedFeature, FunctionOp<Object, ? extends O>> entry : namedFeatureMap.entrySet()) {
+		for (final Entry<NamedFeature, FunctionOp<Object, ? extends O>> entry : namedFeatureMap
+			.entrySet())
+		{
 			res.put(entry.getKey(), evalFunction(entry.getValue(), input));
 		}
 
@@ -93,17 +115,17 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 	}
 
 	/**
-	 * Can be overriden by implementors to provide specialized implementations
-	 * for certain functions.
+	 * Can be overriden by implementors to provide specialized implementations for
+	 * certain functions.
 	 * 
-	 * @param func
-	 *            function used to compute output. Will be any function added as
-	 *            OpRef.
-	 * @param input
-	 *            input object
+	 * @param func function used to compute output. Will be any function added as
+	 *          OpRef.
+	 * @param input input object
 	 * @return
 	 */
-	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final I input) {
+	protected O evalFunction(final FunctionOp<Object, ? extends O> func,
+		final I input)
+	{
 		return func.compute(input);
 	}
 
@@ -114,7 +136,8 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 		}
 		if (enabled) {
 			active.add(info);
-		} else if (active != null) {
+		}
+		else if (active != null) {
 			active.remove(info);
 		}
 	}
@@ -128,35 +151,33 @@ public abstract class AbstractOpRefFeatureSet<I, O> extends AbstractCachedFeatur
 	}
 
 	/**
-	 * @return all {@link OpRef}s.
+	 * @return all {@link OpRef}s which are active!!!
 	 */
 	@Override
-	public Collection<NamedFeature> getFeatures() {
+	public List<NamedFeature> getFeatures() {
+		final ArrayList<NamedFeature> activeFeatures =
+			new ArrayList<NamedFeature>();
 
-		if (namedFeatureMap == null) {
-			HashSet<NamedFeature> hashSet = new HashSet<NamedFeature>();
-			for (OpRef<?> ref : initOpRefs()) {
-
-				hashSet.add(new NamedFeature(ref.getLabel()));
+		for (final NamedFeature feature : getFeatureNames()) {
+			if (getEnabledFeatures().contains(feature)) {
+				activeFeatures.add(feature);
 			}
-
-			return hashSet;
 		}
 
-		return namedFeatureMap.keySet();
+		return activeFeatures;
 	}
 
 	/**
 	 * Helper method: Creates a simple {@link OpRef} given the additional args.
 	 * NB: Input/Output are not type of the args in this particular case.
 	 * 
-	 * @param type
-	 *            of the {@link Op}
-	 * @param args
-	 *            arguments without input and output
+	 * @param type of the {@link Op}
+	 * @param args arguments without input and output
 	 * @return {@link OpRef}
 	 */
-	protected <OP extends Op> OpRef<OP> ref(final Class<OP> type, final Object... args) {
+	protected <OP extends Op> OpRef<OP> ref(final Class<OP> type,
+		final Object... args)
+	{
 		return new OpRef<OP>(type, args);
 	}
 

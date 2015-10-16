@@ -43,21 +43,26 @@ import net.imagej.ops.Ops.Tamura.Coarseness;
 import net.imagej.ops.Ops.Tamura.Contrast;
 import net.imagej.ops.Ops.Tamura.Directionality;
 import net.imagej.ops.features.haralick.HaralickFeature;
-import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} for {@link HaralickFeature}s
  * 
  * @author Christian Dietz, University of Konstanz
- *
  * @param <T>
  * @param <O>w
  */
-@Plugin(type = FeatureSet.class, label = "Tamura Features", description = "Calculates the Tamura Features")
-public class Tamura2DFeatureSet<T, O> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
-		implements Contingent, IntensityFeatureSet<IterableInterval<T>, O> {
+@Plugin(type = FeatureSet.class, label = "Tamura Features",
+	description = "Calculates the Tamura Features")
+public class Tamura2DFeatureSet<T, O extends RealType<O>> extends
+	AbstractOpRefFeatureSet<RandomAccessibleInterval<T>, O> implements Contingent,
+	DimensionBoundFeatureSet<RandomAccessibleInterval<T>, O>
+{
 
-	@Parameter(type = ItemIO.INPUT, label = "Histogram Size", description = "The size of the histogram used by the directionality feature.", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Histogram Size",
+		description = "The size of the histogram used by the directionality feature.",
+		min = "1", max = "2147483647", stepSize = "1")
 	private int histogramSize = 16;
 
 	@Override

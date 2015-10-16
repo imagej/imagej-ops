@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.featuresets;
 
 import java.util.Collection;
@@ -58,51 +59,70 @@ import net.imagej.ops.Ops.Haralick.Variance;
 import net.imagej.ops.features.haralick.HaralickFeature;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation2D;
 import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * {@link FeatureSet} for {@link HaralickFeature}s
  * 
  * @author Christian Dietz, University of Konstanz
- *
  * @param <T>
  * @param <O>
  */
-@Plugin(type = FeatureSet.class, label = "2D Haralick Features", description = "Calculates the 2D Haralick Features")
-public class Haralick2DFeatureSet<T, O> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
-		implements Contingent, IntensityFeatureSet<IterableInterval<T>, O> {
+@Plugin(type = FeatureSet.class, label = "2D Haralick Features",
+	description = "Calculates the 2D Haralick Features")
+public class Haralick2DFeatureSet<T, O extends RealType<O>> extends
+	AbstractOpRefFeatureSet<IterableInterval<T>, O> implements Contingent,
+	DimensionBoundFeatureSet<IterableInterval<T>, O>
+{
 
-	@Parameter(type = ItemIO.INPUT, label = "Num. Grey Levels", description = "The number of grey values determines the size of the co-occurence matrix on which the Haralick features are calculated.", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Num. Grey Levels",
+		description = "The number of grey values determines the size of the co-occurence matrix on which the Haralick features are calculated.",
+		min = "1", max = "2147483647", stepSize = "1")
 	private int numGreyLevels = 32;
 
-	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The maximum distance between pairs of pixels which will be added to the co-occurence matrix.", min = "1", max = "2147483647", stepSize = "1")
+	@Parameter(type = ItemIO.INPUT, label = "Distance",
+		description = "The maximum distance between pairs of pixels which will be added to the co-occurence matrix.",
+		min = "1", max = "2147483647", stepSize = "1")
 	private int distance = 1;
 
-	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "Orientation of the pairs of pixels which will be added to the co-occurence matrix", choices = {
-			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
+	@Parameter(type = ItemIO.INPUT, label = "Orientation",
+		description = "Orientation of the pairs of pixels which will be added to the co-occurence matrix",
+		choices = { "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
 	private String orientation = "HORIZONTAL";
 
 	@Override
 	protected Collection<? extends OpRef<?>> initOpRefs() {
 		final HashSet<OpRef<?>> refs = new HashSet<OpRef<?>>();
 
-		MatrixOrientation2D matrixOrientation2D = MatrixOrientation2D.valueOf(orientation);
+		MatrixOrientation2D matrixOrientation2D = MatrixOrientation2D.valueOf(
+			orientation);
 
 		refs.add(ref(ASM.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(ClusterPromenence.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(ClusterShade.class, numGreyLevels, distance, matrixOrientation2D));
+		refs.add(ref(ClusterPromenence.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(ClusterShade.class, numGreyLevels, distance,
+			matrixOrientation2D));
 		refs.add(ref(Contrast.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(Correlation.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(DifferenceEntropy.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(DifferenceVariance.class, numGreyLevels, distance, matrixOrientation2D));
+		refs.add(ref(Correlation.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(DifferenceEntropy.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(DifferenceVariance.class, numGreyLevels, distance,
+			matrixOrientation2D));
 		refs.add(ref(Entropy.class, numGreyLevels, distance, matrixOrientation2D));
 		refs.add(ref(ICM1.class, numGreyLevels, distance, matrixOrientation2D));
 		refs.add(ref(ICM2.class, numGreyLevels, distance, matrixOrientation2D));
 		refs.add(ref(IFDM.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(MaxProbability.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(SumAverage.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(SumEntropy.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(SumVariance.class, numGreyLevels, distance, matrixOrientation2D));
-		refs.add(ref(TextureHomogeneity.class, numGreyLevels, distance, matrixOrientation2D));
+		refs.add(ref(MaxProbability.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(SumAverage.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(SumEntropy.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(SumVariance.class, numGreyLevels, distance,
+			matrixOrientation2D));
+		refs.add(ref(TextureHomogeneity.class, numGreyLevels, distance,
+			matrixOrientation2D));
 		refs.add(ref(Variance.class, numGreyLevels, distance, matrixOrientation2D));
 
 		return refs;

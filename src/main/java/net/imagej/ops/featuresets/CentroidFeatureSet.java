@@ -1,7 +1,6 @@
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 public class CentroidFeatureSet extends AbstractCachedFeatureSet<LabelRegion, DoubleType> {
 
 	@Override
-	public Collection<NamedFeature> getFeatures() {
+	public List<NamedFeature> getFeatures() {
 		List<NamedFeature> fs = new ArrayList<NamedFeature>();
 		
 		for (int i = 0; i < in().numDimensions(); i++) {

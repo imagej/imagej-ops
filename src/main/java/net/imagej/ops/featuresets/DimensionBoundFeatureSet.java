@@ -27,27 +27,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.featuresets;
 
 import net.imagej.ops.Contingent;
+import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Christian Dietz, University of Konstanz
- *
  * @param <I>
  * @param <O>
  */
-public interface DimensionBoundFeatureSet<I, O> extends FeatureSet<I, O>, Contingent {
+public interface DimensionBoundFeatureSet<I, O extends RealType<O>> extends
+	FeatureSet<I, O>, Contingent
+{
 
 	/**
-	 * Minimum number of dimensions an object must have to derive features from
-	 * it
+	 * Minimum number of dimensions an object must have to derive features from it
 	 */
 	int getMinDimensions();
 
 	/**
-	 * Maximum number of dimensions an object must have to derive features from
-	 * it
+	 * Maximum number of dimensions an object must have to derive features from it
 	 */
 	int getMaxDimensions();
 }
