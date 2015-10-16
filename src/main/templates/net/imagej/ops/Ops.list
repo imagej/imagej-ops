@@ -205,6 +205,7 @@ namespaces = ```
 		[name: "arctanh",                     iface: "Arctanh"],
 		[name: "assign",                      iface: "Assign"],
 		[name: "ceil",                        iface: "Ceil"],
+		[name: "clip",                        iface: "Clip"],
 		[name: "complement",                  iface: "Complement",          aliases: ["comp", "not"]],
 		[name: "cos",                         iface: "Cos"],
 		[name: "cosh",                        iface: "Cosh"],

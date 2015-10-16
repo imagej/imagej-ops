@@ -854,6 +854,21 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.Ops.Math.Clip.class)
+	public Object clip(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Math.Clip.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealMath.Clip.class)
+	public <I extends RealType<I>, O extends RealType<O>> O clip(final O out,
+		final I in, final double outMin, final double outMax)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Clip.class, out,
+			in, outMin, outMax);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Math.Complement.class)
 	public Object complement(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Complement.class, args);

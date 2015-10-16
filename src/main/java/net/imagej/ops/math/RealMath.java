@@ -362,6 +362,27 @@ public final class RealMath {
 	}
 
 	/**
+	 * Sets the real component of an output real number to the clipped value of
+	 * the real component of an input real number.
+	 */
+	@Plugin(type = Ops.Math.Clip.class)
+	public static class Clip<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractComputerOp<I, O> implements Ops.Math.Clip
+	{
+
+		@Parameter
+		private double outMin;
+		
+		@Parameter
+		private double outMax;
+		
+		@Override
+		public void compute(final I input, final O output) {
+			output.setReal(Math.max(Math.min(input.getRealDouble(), outMin), outMax));
+		}
+	}
+
+	/**
 	 * Sets the real component of an output real number to the cosine of the real
 	 * component of an input real number.
 	 */
