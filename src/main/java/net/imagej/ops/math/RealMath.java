@@ -330,6 +330,21 @@ public final class RealMath {
 			output.setReal(0.5 * Math.log((1 + xt) / (1 - xt)));
 		}
 	}
+	
+	/**
+	 * Sets the real component of an output real number to the real component of
+	 * an input real number.
+	 */
+	@Plugin(type = Ops.Math.Assign.class)
+	public static class Assign<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractComputerOp<I, O> implements Ops.Math.Assign
+	{
+
+		@Override
+		public void compute(final I input, final O output) {
+			output.setReal(input.getRealDouble());
+		}		
+	}
 
 	/**
 	 * Sets the real component of an output real number to the ceiling of the real
@@ -1093,20 +1108,6 @@ public final class RealMath {
 		@Override
 		public void compute(final I input, final O output) {
 			output.setReal(constant ^ (long) input.getRealDouble());
-		}
-	}
-
-	/**
-	 * Sets the real component of an output real number to zero.
-	 */
-	@Plugin(type = Ops.Math.Zero.class)
-	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Zero
-	{
-
-		@Override
-		public void compute(final I input, final O output) {
-			output.setZero();
 		}
 	}
 

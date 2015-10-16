@@ -817,6 +817,21 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.Ops.Math.Assign.class)
+	public Object assign(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Math.Assign.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealMath.Assign.class)
+	public <I extends RealType<I>, O extends RealType<O>> O assign(final O out,
+		final I in)
+	{
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.RealMath.Assign.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Math.Ceil.class)
 	public Object ceil(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Math.Ceil.class, args);
@@ -2047,21 +2062,6 @@ public class MathNamespace extends AbstractNamespace {
 		final O result =
 			(O) ops().run(net.imagej.ops.math.RealMath.XorConstant.class, out, in,
 				constant);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.Ops.Math.Zero.class)
-	public Object zero(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Math.Zero.class, args);
-	}
-
-	@OpMethod(op = net.imagej.ops.math.RealMath.Zero.class)
-	public <I extends RealType<I>, O extends RealType<O>> O zero(final O out,
-		final I in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result =
-			(O) ops().run(net.imagej.ops.math.RealMath.Zero.class, out, in);
 		return result;
 	}
 

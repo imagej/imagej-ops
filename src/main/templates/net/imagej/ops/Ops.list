@@ -203,6 +203,7 @@ namespaces = ```
 		[name: "arcsinh",                     iface: "Arcsinh"],
 		[name: "arctan",                      iface: "Arctan"],
 		[name: "arctanh",                     iface: "Arctanh"],
+		[name: "assign",                      iface: "Assign"],
 		[name: "ceil",                        iface: "Ceil"],
 		[name: "complement",                  iface: "Complement",          aliases: ["comp", "not"]],
 		[name: "cos",                         iface: "Cos"],
@@ -252,7 +253,6 @@ namespaces = ```
 		[name: "ulp",                         iface: "Ulp"],
 		[name: "unsignedRightShift",          iface: "UnsignedRightShift",  aliases: ["urshift"]],
 		[name: "xor",                         iface: "Xor"],
-		[name: "zero",                        iface: "Zero"],
 	]],
 	[name: "tamura", iface: "Tamura", ops: [
 		[name: "coarseness",                  iface: "Coarseness"],
