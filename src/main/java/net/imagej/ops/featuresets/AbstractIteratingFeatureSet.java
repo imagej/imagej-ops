@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.imagej.ops.features.sets.HistogramFeatureSet;
 import net.imglib2.type.numeric.RealType;
 
 /**

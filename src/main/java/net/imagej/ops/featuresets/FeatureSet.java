@@ -47,12 +47,11 @@ import net.imglib2.type.numeric.RealType;
  * @param <I>
  * @param <O>
  */
-public interface FeatureSet<I, O extends RealType<O>> extends
-	FunctionOp<I, Map<NamedFeature, O>>
-{
+public interface FeatureSet<I, O extends RealType<O>> extends FunctionOp<I, Map<NamedFeature, O>> {
 
 	/**
-	 * @return all {@link NamedFeature}s which are supported by this feature set.
+	 * @return all {@link NamedFeature}s which are supported by this feature
+	 *         set.
 	 */
 	List<NamedFeature> getFeatures();
 

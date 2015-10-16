@@ -28,13 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.featuresets;
+package net.imagej.ops.features.sets;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.FunctionOp;
+import net.imagej.ops.featuresets.AbstractIteratingFeatureSet;
+import net.imagej.ops.featuresets.FeatureSet;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;

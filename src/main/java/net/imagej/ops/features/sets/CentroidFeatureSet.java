@@ -1,4 +1,4 @@
-package net.imagej.ops.featuresets;
+package net.imagej.ops.features.sets;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -7,6 +7,9 @@ import java.util.Map;
 
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.featuresets.AbstractCachedFeatureSet;
+import net.imagej.ops.featuresets.FeatureSet;
+import net.imagej.ops.featuresets.NamedFeature;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
