@@ -1696,6 +1696,21 @@ public class MathNamespace extends AbstractNamespace {
 			(O) ops().run(net.imagej.ops.math.RealMath.Round.class, out, in);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.Ops.Math.Scale.class)
+	public Object scale(final Object... args) {
+		return ops().run(net.imagej.ops.Ops.Math.Scale.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.math.RealMath.Scale.class)
+	public <I extends RealType<I>, O extends RealType<O>> O scale(final O out,
+		final I in, final double inMin, final double outMin, final double factor)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Scale.class,
+			out, in, inMin, outMin, factor);
+		return result;
+	}	
 
 	@OpMethod(op = net.imagej.ops.Ops.Math.Sec.class)
 	public Object sec(final Object... args) {

@@ -237,6 +237,7 @@ namespaces = ```
 		[name: "remainder",                   iface: "Remainder",           aliases: ["modulus", "mod"]],
 		[name: "rightShift",                  iface: "RightShift",          aliases: ["rshift"]],
 		[name: "round",                       iface: "Round"],
+		[name: "scale",                       iface: "Scale"],
 		[name: "sec",                         iface: "Sec"],
 		[name: "sech",                        iface: "Sech"],
 		[name: "signum",                      iface: "Signum"],

@@ -861,6 +861,29 @@ public final class RealMath {
 			output.setReal(Math.round(input.getRealDouble()));
 		}
 	}
+	
+	/**
+	 * Sets the real component of an output real number to the value of the real
+	 * component of an input real number scaled up by the factor and offset based
+	 * on the minimum values for the input and output.
+	 */
+	@Plugin(type = Ops.Math.Scale.class)
+	public static class Scale<I extends RealType<I>, O extends RealType<O>>
+		extends AbstractComputerOp<I, O> implements Ops.Math.Scale
+	{
+
+		@Parameter
+		private double inMin;
+		@Parameter
+		private double outMin;
+		@Parameter
+		private double factor;
+		
+		@Override
+		public void compute(I input, O output) {
+			output.setReal((input.getRealDouble() - inMin) * factor + outMin);
+		}		
+	}
 
 	/**
 	 * Sets the real component of an output real number to the secant of the real
