@@ -31,8 +31,12 @@ package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
@@ -43,9 +47,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * 
@@ -69,9 +70,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@Override
 	public void initialize() {
-		stdOp = ops().function(Ops.Stats.StdDev.class, RealType.class, Iterable.class);
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
-			Iterable.class, histogramSize);
+		stdOp = ops().function(StdDev.class, RealType.class, Iterable.class);
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class, Iterable.class, histogramSize);
 	}
 
 	@SuppressWarnings("unchecked")

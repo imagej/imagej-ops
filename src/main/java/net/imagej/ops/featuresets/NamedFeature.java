@@ -28,49 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.geom.geom2d;
+package net.imagej.ops.featuresets;
 
-import java.awt.geom.Area;
+import org.scijava.Named;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.OpRef;
 
 /**
- * Specific implementation of {@link Area} for a Polygon.
+ * Simple semantic description of an arbitrary feature
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.VERY_HIGH_PRIORITY + 1)
-public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.Size
-{
+public class NamedFeature implements Named {
 
-	@Override
-	public DoubleType compute(final Polygon input) {
-		double sum = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
+	private final String name;
+	private OpRef<?> ref;
 
-			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
-				.size());
-			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
-				.size());
-
-			double p0_x = p0.getDoublePosition(0);
-			double p0_y = p0.getDoublePosition(1);
-			double p1_x = p1.getDoublePosition(0);
-			double p1_y = p1.getDoublePosition(1);
-
-			sum += p0_x * p1_y - p0_y * p1_x;
-		}
-		return new DoubleType(Math.abs(sum) / 2d);
+	public NamedFeature(String name) {
+		this.name = name;
 	}
 
+	public NamedFeature(OpRef<?> ref) {
+		this(ref.getLabel());
+		this.ref = ref;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		throw new UnsupportedOperationException("Can't change name of NamedFeature");
+	}
+	// NB: Marker interface
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NamedFeature other = (NamedFeature) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	public OpRef<?> getOp() {
+		return ref;
+	}
 }

@@ -56,7 +56,7 @@ public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
 	@Override
 	public Polygon compute(final Polygon input) {
 		// create a copy of points because se will get resorted, etc.
-		List<? extends RealLocalizable> RealPoints = input.getVertices();
+		List<? extends RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(input.getVertices());
 
 		// Sort RealPoints of P by x-coordinate (in case of a tie, sort by
 		// y-coordinate).

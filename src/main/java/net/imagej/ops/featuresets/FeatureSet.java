@@ -28,49 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.geom.geom2d;
+package net.imagej.ops.featuresets;
 
-import java.awt.geom.Area;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpRef;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Specific implementation of {@link Area} for a Polygon.
+ * A {@link Set} of features which are calculated in combination.
+ * {@link FeatureSet}s can provide optimized computations for the calculated
+ * {@link OpRef}s.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz
+ * @param <I>
+ * @param <O>
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.VERY_HIGH_PRIORITY + 1)
-public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.Size
-{
+public interface FeatureSet<I, O extends RealType<O>> extends FunctionOp<I, Map<NamedFeature, O>> {
 
-	@Override
-	public DoubleType compute(final Polygon input) {
-		double sum = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-
-			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
-				.size());
-			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
-				.size());
-
-			double p0_x = p0.getDoublePosition(0);
-			double p0_y = p0.getDoublePosition(1);
-			double p1_x = p1.getDoublePosition(0);
-			double p1_y = p1.getDoublePosition(1);
-
-			sum += p0_x * p1_y - p0_y * p1_x;
-		}
-		return new DoubleType(Math.abs(sum) / 2d);
-	}
+	/**
+	 * @return all {@link NamedFeature}s which are supported by this feature
+	 *         set.
+	 */
+	List<NamedFeature> getFeatures();
 
 }

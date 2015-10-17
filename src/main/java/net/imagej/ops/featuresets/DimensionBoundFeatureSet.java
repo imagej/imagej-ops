@@ -28,49 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops.geom.geom2d;
+package net.imagej.ops.featuresets;
 
-import java.awt.geom.Area;
-
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.Contingent;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Specific implementation of {@link Area} for a Polygon.
+ * @author Christian Dietz, University of Konstanz
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @param <I>
+ * @param <O>
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.VERY_HIGH_PRIORITY + 1)
-public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.Size
-{
+public interface DimensionBoundFeatureSet<I, O extends RealType<O>> extends FeatureSet<I, O>, Contingent {
+	/**
+	 * Minimum number of dimensions an object must have to derive features from
+	 * it
+	 */
+	int getMinDimensions();
 
-	@Override
-	public DoubleType compute(final Polygon input) {
-		double sum = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-
-			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
-				.size());
-			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
-				.size());
-
-			double p0_x = p0.getDoublePosition(0);
-			double p0_y = p0.getDoublePosition(1);
-			double p1_x = p1.getDoublePosition(0);
-			double p1_y = p1.getDoublePosition(1);
-
-			sum += p0_x * p1_y - p0_y * p1_x;
-		}
-		return new DoubleType(Math.abs(sum) / 2d);
-	}
-
+	/**
+	 * Maximum number of dimensions an object must have to derive features from
+	 * it
+	 */
+	int getMaxDimensions();
 }

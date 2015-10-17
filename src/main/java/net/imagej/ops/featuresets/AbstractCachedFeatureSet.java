@@ -27,50 +27,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.featuresets;
 
-package net.imagej.ops.geom.geom2d;
-
-import java.awt.geom.Area;
-
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Geometric;
-import net.imglib2.RealLocalizable;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.type.numeric.real.DoubleType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.scijava.command.CommandInfo;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginService;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.cached.CachedOpEnvironment;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Specific implementation of {@link Area} for a Polygon.
+ * In an {@link AbstractCachedFeatureSet} intermediate results are cached during
+ * computation, avoiding redundant computations of the same feature @see
+ * {@link CachedOpEnvironment}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I>
+ *            type of the input
+ * @param <O>
+ *            type of the output
  */
-@Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
-	priority = Priority.VERY_HIGH_PRIORITY + 1)
-public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
-	implements Ops.Geometric.Size
-{
+public abstract class AbstractCachedFeatureSet<I, O extends RealType<O>> extends AbstractFunctionOp<I, Map<NamedFeature, O>>
+		implements FeatureSet<I, O> {
+
+	@Parameter
+	private PluginService ps;
+
+	@Parameter
+	private Class<? extends Op>[] prioritizedOps;
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		double sum = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-
-			RealLocalizable p0 = input.getVertices().get(i % input.getVertices()
-				.size());
-			RealLocalizable p1 = input.getVertices().get((i + 1) % input.getVertices()
-				.size());
-
-			double p0_x = p0.getDoublePosition(0);
-			double p0_y = p0.getDoublePosition(1);
-			double p1_x = p1.getDoublePosition(0);
-			double p1_y = p1.getDoublePosition(1);
-
-			sum += p0_x * p1_y - p0_y * p1_x;
+	public void initialize() {
+		final List<CommandInfo> infos = new ArrayList<CommandInfo>();
+		if (prioritizedOps != null) {
+			for (final Class<? extends Op> prio : prioritizedOps) {
+				final CommandInfo info = new CommandInfo(prio);
+				info.setPriority(Priority.FIRST_PRIORITY);
+				infos.add(info);
+			}
 		}
-		return new DoubleType(Math.abs(sum) / 2d);
+		setEnvironment(new CachedOpEnvironment(ops(), infos));
 	}
 
 }
