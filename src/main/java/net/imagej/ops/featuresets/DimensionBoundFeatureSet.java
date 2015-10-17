@@ -35,6 +35,7 @@ import net.imglib2.type.numeric.RealType;
 
 /**
  * @author Christian Dietz, University of Konstanz
+ * 
  * @param <I>
  * @param <O>
  */

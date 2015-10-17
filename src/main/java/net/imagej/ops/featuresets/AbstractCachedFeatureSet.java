@@ -1,4 +1,3 @@
-
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.

@@ -31,17 +31,18 @@
 package net.imagej.ops.featuresets;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.scijava.command.CommandService;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.Op;
 import net.imagej.ops.OpRef;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -57,18 +58,39 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends AbstractCachedFeatureSet<I, O> {
 
+	protected final static String ATTR_FEATURE = "feature";
+
+	protected final static String ATTR_TYPE = "feature_type";
+
+	protected final static String ATTR_PARAMS = "feature_params";
+
+	@Parameter
+	private CommandService cs;
+
 	@Parameter(required = false)
 	private Class<? extends O> outType;
 
-	// all opRefs
+	// all features
 	private Map<NamedFeature, FunctionOp<Object, ? extends O>> namedFeatureMap;
 
-	private List<NamedFeature> featureNames;
+	@Override
+	public List<NamedFeature> getFeatures() {
 
-	private final LinkedHashSet<OpRef<?>> opRefs;
+		final List<NamedFeature> features = new ArrayList<NamedFeature>();
+		if (namedFeatureMap == null) {
+			final Module self = cs.getCommand(this.getClass()).createModule(this);
 
-	public AbstractOpRefFeatureSet() {
-		opRefs = new LinkedHashSet<OpRef<?>>();
+			for (final ModuleItem<?> item : self.getInfo().inputs()) {
+				// we found a feature. lets create a named feature!
+				if (item.get(ATTR_FEATURE) != null && ((Boolean) item.getValue(self))) {
+					features.add(new NamedFeature(item.getLabel()));
+				}
+			}
+		} else {
+			features.addAll(namedFeatureMap.keySet());
+		}
+
+		return features;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,28 +98,34 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 	public void initialize() {
 		super.initialize();
 
-		if (namedFeatureMap == null) {
-			namedFeatureMap = new HashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
-			for (final OpRef<?> ref : opRefs) {
-				final NamedFeature feature = new NamedFeature(ref.getLabel());
-				namedFeatureMap.put(feature, (FunctionOp<Object, ? extends O>) ops().function(ref.getType(),
-						outType == null ? DoubleType.class : outType, in(), ref.getArgs()));
+		namedFeatureMap = new LinkedHashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
+
+		final Module self = cs.getCommand(this.getClass()).createModule(this);
+		try {
+			for (final ModuleItem<?> item : self.getInfo().inputs()) {
+				// we found a feature. lets create a named feature!
+				if (item.get(ATTR_FEATURE) != null && ((Boolean) item.getValue(self))) {
+					final String[] params = item.get(ATTR_PARAMS).split(",");
+					final Object[] args = new Object[params.length];
+
+					int i = 0;
+					for (final String param : params) {
+						args[++i] = self.getInput(param);
+					}
+					// make sure we have an outtype
+					final Class<? extends O> outType = this.outType == null ? (Class<? extends O>) DoubleType.class
+							: this.outType;
+
+					@SuppressWarnings("rawtypes")
+					final OpRef ref = new OpRef(Class.forName((String) item.get(ATTR_TYPE)), args);
+
+					namedFeatureMap.put(new NamedFeature(ref), (FunctionOp<Object, ? extends O>) ops()
+							.function(ref.getType(), outType, in(), ref.getArgs()));
+				}
 			}
+		} catch (final ClassNotFoundException e) {
+			throw new RuntimeException(e);
 		}
-
-		getFeatureNames();
-	}
-
-	private List<NamedFeature> getFeatureNames() {
-		if (featureNames == null) {
-			final ArrayList<NamedFeature> list = new ArrayList<NamedFeature>();
-			for (final OpRef<?> ref : opRefs) {
-				list.add(new NamedFeature(ref.getLabel()));
-			}
-
-			return list;
-		}
-		return featureNames;
 	}
 
 	@Override
@@ -125,75 +153,4 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 	protected O evalFunction(final FunctionOp<Object, ? extends O> func, final I input) {
 		return func.compute(input);
 	}
-
-	/**
-	 * @return all {@link OpRef}s which are active!!!
-	 */
-	@Override
-	public List<NamedFeature> getFeatures() {
-		return getFeatureNames();
-	}
-
-	/**
-	 * Adds an {@link OpRef} from the list of active features.
-	 * 
-	 * @param type
-	 *            of the {@link Op}
-	 * @param args
-	 *            arguments without input and output
-	 */
-	private <OP extends Op> void activateFeature(final Class<OP> type, final Object... args) {
-		activateFeature(new OpRef<OP>(type, args));
-	}
-
-	/**
-	 * Adds an {@link OpRef} from the list of active features.
-	 * 
-	 * @param ref
-	 *            {@link OpRef}
-	 */
-	private <OP extends Op> void activateFeature(final OpRef<OP> ref) {
-		opRefs.add(ref);
-	}
-
-	/**
-	 * Removes an {@link OpRef} from the list of active features.
-	 * 
-	 * @param type
-	 *            of the {@link Op}
-	 * 
-	 * @param args
-	 *            arguments without input and output
-	 */
-	private <OP extends Op> void deactivateFeature(final Class<OP> type, final Object... args) {
-		deactivateFeature(new OpRef<OP>(type, args));
-	}
-
-	/**
-	 * Removes an {@link OpRef} from the list of active features.
-	 * 
-	 * @param ref
-	 *            of the {@link OpRef}
-	 * 
-	 * @param args
-	 *            arguments without input and output
-	 */
-	private <OP extends Op> void deactivateFeature(final OpRef<OP> ref) {
-		opRefs.remove(ref);
-	}
-
-	protected <OP extends Op> void handleStatus(final boolean active, final Class<OP> type, final Object... args) {
-		if (active) {
-			activateFeature(type, args);
-		} else {
-			deactivateFeature(type, args);
-		}
-	}
-
-	/**
-	 * @return {@link Collection} of {@link OpRef}s which will be calculated by
-	 *         the {@link FeatureSet} (if activated).
-	 */
-	protected abstract void initOpRefs();
-
 }

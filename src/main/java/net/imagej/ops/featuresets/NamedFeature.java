@@ -37,20 +37,20 @@ import net.imagej.ops.OpRef;
 /**
  * Simple semantic description of an arbitrary feature
  * 
- * @author Christian Dietz
+ * @author Christian Dietz, University of Konstanz
  */
 public class NamedFeature implements Named {
 
 	private final String name;
-	private OpRef<?> op;
+	private OpRef<?> ref;
 
 	public NamedFeature(String name) {
-		this(name, null);
+		this.name = name;
 	}
 
-	public NamedFeature(String name, OpRef<?> op) {
-		this.name = name;
-		this.op = op;
+	public NamedFeature(OpRef<?> ref) {
+		this(ref.getLabel());
+		this.ref = ref;
 	}
 
 	@Override
@@ -90,6 +90,6 @@ public class NamedFeature implements Named {
 	}
 
 	public OpRef<?> getOp() {
-		return op;
+		return ref;
 	}
 }

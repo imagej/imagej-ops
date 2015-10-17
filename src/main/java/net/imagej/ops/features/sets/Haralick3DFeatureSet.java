@@ -1,4 +1,3 @@
-package net.imagej.ops.features.sets;
 /*
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
@@ -28,35 +27,18 @@ package net.imagej.ops.features.sets;
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.features.sets;
 
-import org.apache.commons.math3.ml.clustering.Cluster;
 import org.scijava.ItemIO;
+import org.scijava.plugin.Attr;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops.Haralick.ASM;
-import net.imagej.ops.Ops.Haralick.ClusterPromenence;
-import net.imagej.ops.Ops.Haralick.ClusterShade;
-import net.imagej.ops.Ops.Haralick.Contrast;
-import net.imagej.ops.Ops.Haralick.Correlation;
-import net.imagej.ops.Ops.Haralick.DifferenceEntropy;
-import net.imagej.ops.Ops.Haralick.DifferenceVariance;
-import net.imagej.ops.Ops.Haralick.Entropy;
-import net.imagej.ops.Ops.Haralick.ICM1;
-import net.imagej.ops.Ops.Haralick.ICM2;
-import net.imagej.ops.Ops.Haralick.IFDM;
-import net.imagej.ops.Ops.Haralick.MaxProbability;
-import net.imagej.ops.Ops.Haralick.SumAverage;
-import net.imagej.ops.Ops.Haralick.SumEntropy;
-import net.imagej.ops.Ops.Haralick.SumVariance;
-import net.imagej.ops.Ops.Haralick.TextureHomogeneity;
-import net.imagej.ops.Ops.Haralick.Variance;
 import net.imagej.ops.features.haralick.HaralickFeature;
 import net.imagej.ops.featuresets.AbstractOpRefFeatureSet;
 import net.imagej.ops.featuresets.DimensionBoundFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
-import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation3D;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -64,12 +46,15 @@ import net.imglib2.type.numeric.RealType;
  * {@link FeatureSet} for {@link HaralickFeature}s
  * 
  * @author Christian Dietz, University of Konstanz
+ * 
  * @param <T>
  * @param <O>
  */
-@Plugin(type = FeatureSet.class, label = "Haralick 3D Features", description = "Calculates the 2D Haralick Features")
+@Plugin(type = FeatureSet.class, label = "Haralick 3D Features", description = "Calculates the 3D Haralick Features")
 public class Haralick3DFeatureSet<T, O extends RealType<O>> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
 		implements Contingent, DimensionBoundFeatureSet<IterableInterval<T>, O> {
+
+	private static final String PKG = "net.imagej.ops.Ops.Haralick.";
 
 	@Parameter(type = ItemIO.INPUT, label = "Num. Grey Levels", description = "The number of grey values determines the size of the co-occurence matrix on which the Haralick features are calculated.", min = "1", max = "2147483647", stepSize = "1")
 	private int numGreyLevels = 32;
@@ -77,311 +62,90 @@ public class Haralick3DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The maximum distance between pairs of pixels which will beadded tothe co-occurence matrix.", min = "1", max = "2147483647", stepSize = "1")
 	private int distance = 1;
 
-	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "Orientation of the pairs of pixels which will be added tothe co-occurence matrix", choices = {
-			"HORIZONTAL", "VERTICAL", "DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL_VERTICAL", "HORIZONTAL_DIAGONAL",
-			"VERTICAL_VERTICAL", "VERTICAL_DIAGONAL", "DIAGONAL_VERTICAL", "DIAGONAL_DIAGONAL", "ANTIDIAGONAL_VERTICAL",
-			"ANTIDIAGONAL_DIAGONAL", "DEPTH" })
-	private String orientation = "HORIZONTAL";
-
-	@Parameter(required = false, label = "ASM")
+	@Parameter(required = false, label = "ASM", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ASM") })
 	private boolean isASMActive = true;
 
-	@Parameter(required = false, label = "Cluster Promenence")
+	@Parameter(required = false, label = "Cluster Promenence", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ClusterPromenence") })
 	private boolean isClusterPromenenceActive = true;
 
-	@Parameter(required = false, label = "Cluster Shade")
+	@Parameter(required = false, label = "Cluster Shade", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ClusterShade") })
 	private boolean isClusterShadeActive = true;
 
-	@Parameter(required = false, label = "Cluster Contrast")
+	@Parameter(required = false, label = "Cluster Contrast", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ClusterContrast") })
 	private boolean isContrastActive = true;
 
-	@Parameter(required = false, label = "Correlation")
+	@Parameter(required = false, label = "Correlation", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "Correlation") })
 	private boolean isCorrelationActive = true;
 
-	@Parameter(required = false, label = "Difference Entropy")
+	@Parameter(required = false, label = "Difference Entropy", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "DifferenceEntropy") })
 	private boolean isDifferenceEntropyActive = true;
 
-	@Parameter(required = false, label = "Difference Variance")
+	@Parameter(required = false, label = "Difference Variance", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "DifferenceVariance") })
 	private boolean isDifferenceVarianceActive = true;
 
-	@Parameter(required = false, label = "Entropy")
+	@Parameter(required = false, label = "Entropy", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "Entropy") })
 	private boolean isEntropyActive = true;
 
-	@Parameter(required = false, label = "ICM1")
+	@Parameter(required = false, label = "ICM1", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ICM1") })
 	private boolean isICM1Active = true;
 
-	@Parameter(required = false, label = "ICM2")
+	@Parameter(required = false, label = "ICM2", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ICM2") })
 	private boolean isICM2Active = true;
 
-	@Parameter(required = false, label = "IFDM")
+	@Parameter(required = false, label = "IFDM", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "IFDM") })
 	private boolean isIFDMActive = true;
 
-	@Parameter(required = false, label = "Max Probability")
+	@Parameter(required = false, label = "Max Probability", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "MaxProbability") })
 	private boolean isMaxProbabilityActive = true;
 
-	@Parameter(required = false, label = "Sum Average")
+	@Parameter(required = false, label = "Sum Average", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "SumAverage") })
 	private boolean isSumAverageActive = true;
 
-	@Parameter(required = false, label = "Sum Entropy")
+	@Parameter(required = false, label = "Sum Entropy", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "SumEntropy") })
 	private boolean isSumEntropyActive = true;
 
-	@Parameter(required = false, label = "Sum Variance")
+	@Parameter(required = false, label = "Sum Variance", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "SumVariance") })
 	private boolean isSumVarianceActive = true;
 
-	@Parameter(required = false, label = "Texture Homogenity")
+	@Parameter(required = false, label = "Texture Homogenity", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "TextureHomogenity") })
 	private boolean isTextureHomogeneityActive = true;
 
-	@Parameter(required = false, label = "Variance")
+	@Parameter(required = false, label = "Variance", attrs = { @Attr(name = ATTR_FEATURE),
+			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
+			@Attr(name = ATTR_TYPE, value = PKG + "ASM") })
 	private boolean isVarianceActive = true;
-
-	public int getNumGreyLevels() {
-		return numGreyLevels;
-	}
-
-	public void setNumGreyLevels(int numGreyLevels) {
-		this.numGreyLevels = numGreyLevels;
-	}
-
-	public int getDistance() {
-		return distance;
-	}
-
-	public void setDistance(int distance) {
-		this.distance = distance;
-	}
-
-	public MatrixOrientation3D getOrientation() {
-		return MatrixOrientation3D.valueOf(orientation);
-	}
-
-	public void setOrientation(MatrixOrientation3D orientation) {
-		this.orientation = orientation.toString();
-	}
-
-	public boolean isASMActive() {
-		return isASMActive;
-	}
-
-	public void setASMActive(boolean isASMActive) {
-		if (isASMActive && !this.isASMActive) {
-			activateFeature(ASM.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isASMActive = isASMActive;
-	}
-
-	public boolean isClusterPromenenceActive() {
-		return isClusterPromenenceActive;
-	}
-
-	public void setClusterPromenenceActive(boolean isClusterPromenenceActive) {
-		handleStatus(this.isClusterPromenenceActive = isClusterPromenenceActive, ClusterPromenence.class);
-		if (isClusterPromenenceActive && !this.isClusterPromenenceActive) {
-			activateFeature(ClusterPromenence.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isClusterPromenenceActive = isClusterPromenenceActive;
-	}
-
-	public boolean isClusterShadeActive() {
-		return isClusterShadeActive;
-	}
-
-	public void setClusterShadeActive(boolean isClusterShadeActive) {
-		if (isClusterShadeActive && !this.isClusterShadeActive) {
-			activateFeature(ClusterShade.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isClusterShadeActive = isClusterShadeActive;
-	}
-
-	public boolean isContrastActive() {
-		return isContrastActive;
-	}
-
-	public void setContrastActive(boolean isContrastActive) {
-		if (isContrastActive && !this.isContrastActive) {
-			activateFeature(Contrast.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isContrastActive = isContrastActive;
-	}
-
-	public boolean isCorrelationActive() {
-		return isCorrelationActive;
-	}
-
-	public void setCorrelationActive(boolean isCorrelationActive) {
-		if (isCorrelationActive && !this.isCorrelationActive) {
-			activateFeature(Correlation.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isCorrelationActive = isCorrelationActive;
-	}
-
-	public boolean isDifferenceEntropyActive() {
-		return isDifferenceEntropyActive;
-	}
-
-	public void setDifferenceEntropyActive(boolean isDifferenceEntropyActive) {
-		if (isDifferenceEntropyActive && !this.isDifferenceEntropyActive) {
-			activateFeature(DifferenceEntropy.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isDifferenceEntropyActive = isDifferenceEntropyActive;
-	}
-
-	public boolean isDifferenceVarianceActive() {
-		return isDifferenceVarianceActive;
-	}
-
-	public void setDifferenceVarianceActive(boolean isDifferenceVarianceActive) {
-		if (isDifferenceVarianceActive && !this.isDifferenceVarianceActive) {
-			activateFeature(DifferenceVariance.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isDifferenceVarianceActive = isDifferenceVarianceActive;
-	}
-
-	public boolean isEntropyActive() {
-		return isEntropyActive;
-	}
-
-	public void setEntropyActive(boolean isEntropyActive) {
-		if (isEntropyActive && !this.isEntropyActive) {
-			activateFeature(Entropy.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isEntropyActive = isEntropyActive;
-	}
-
-	public boolean isICM1Active() {
-		return isICM1Active;
-	}
-
-	public void setICM1Active(boolean isICM1Active) {
-		if (isICM1Active && !this.isICM1Active) {
-			activateFeature(ICM1.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isICM1Active = isICM1Active;
-	}
-
-	public boolean isICM2Active() {
-		return isICM2Active;
-	}
-
-	public void setICM2Active(boolean isICM2Active) {
-		if (isICM2Active && !this.isICM2Active) {
-			activateFeature(ICM2.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isICM2Active = isICM2Active;
-	}
-
-	public boolean isIFDMActive() {
-		return isIFDMActive;
-	}
-
-	public void setIFDMActive(boolean isIFDMActive) {
-		if (isIFDMActive && !this.isIFDMActive) {
-			activateFeature(IFDM.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isIFDMActive = isIFDMActive;
-	}
-
-	public boolean isMaxProbabilityActive() {
-		return isMaxProbabilityActive;
-	}
-
-	public void setMaxProbabilityActive(boolean isMaxProbabilityActive) {
-		if (isMaxProbabilityActive && !this.isMaxProbabilityActive) {
-			activateFeature(MaxProbability.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isMaxProbabilityActive = isMaxProbabilityActive;
-	}
-
-	public boolean isSumAverageActive() {
-		return isSumAverageActive;
-	}
-
-	public void setSumAverageActive(boolean isSumAverageActive) {
-		if (isSumAverageActive && !this.isSumAverageActive) {
-			activateFeature(SumAverage.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isSumAverageActive = isSumAverageActive;
-	}
-
-	public boolean isSumEntropyActive() {
-		return isSumEntropyActive;
-	}
-
-	public void setSumEntropyActive(boolean isSumEntropyActive) {
-		if (isSumEntropyActive && !this.isSumEntropyActive) {
-			activateFeature(SumEntropy.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isSumEntropyActive = isSumEntropyActive;
-	}
-
-	public boolean isSumVarianceActive() {
-		return isSumVarianceActive;
-	}
-
-	public void setSumVarianceActive(boolean isSumVarianceActive) {
-		if (isSumVarianceActive && !this.isSumVarianceActive) {
-			activateFeature(SumVariance.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-		this.isSumVarianceActive = isSumVarianceActive;
-	}
-
-	public boolean isTextureHomogeneityActive() {
-		return isTextureHomogeneityActive;
-	}
-
-	public void setTextureHomogeneityActive(boolean isTextureHomogeneityActive) {
-		if (isTextureHomogeneityActive && !this.isTextureHomogeneityActive) {
-			activateFeature(TextureHomogeneity.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isTextureHomogeneityActive = isTextureHomogeneityActive;
-	}
-
-	public boolean isVarianceActive() {
-		return isVarianceActive;
-	}
-
-	public void setVarianceActive(boolean isVarianceActive) {
-		if (isVarianceActive && !this.isVarianceActive) {
-			activateFeature(Variance.class, getNumGreyLevels(), getDistance(), getOrientation());
-		}
-
-		this.isVarianceActive = isVarianceActive;
-	}
-
-	@Override
-	protected void initOpRefs() {
-		setASMActive(isASMActive);
-		setClusterPromenenceActive(isClusterPromenenceActive);
-		setClusterShadeActive(isClusterShadeActive);
-		setContrastActive(isContrastActive);
-		setCorrelationActive(isCorrelationActive);
-		setDifferenceEntropyActive(isDifferenceEntropyActive);
-		setDifferenceVarianceActive(isDifferenceVarianceActive);
-		setEntropyActive(isEntropyActive);
-		setICM1Active(isICM1Active);
-		setICM2Active(isICM2Active);
-		setIFDMActive(isIFDMActive);
-		setMaxProbabilityActive(isMaxProbabilityActive);
-		setSumAverageActive(isSumAverageActive);
-		setSumEntropyActive(isSumEntropyActive);
-		setSumVarianceActive(isSumVarianceActive);
-		setTextureHomogeneityActive(isTextureHomogeneityActive);
-		setVarianceActive(isVarianceActive);
-	}
 
 	@Override
 	public boolean conforms() {
