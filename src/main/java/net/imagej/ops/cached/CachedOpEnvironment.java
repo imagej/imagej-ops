@@ -53,9 +53,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 	@Parameter
 	private CacheService cs;
-	
-	public CachedOpEnvironment(final OpEnvironment parent)
-	{
+
+	public CachedOpEnvironment(final OpEnvironment parent) {
 		this(parent, null);
 	}
 
@@ -63,7 +62,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Collection<? extends CommandInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
-		for(final CommandInfo info : prioritizedInfos){
+		for (final CommandInfo info : prioritizedInfos) {
 			info.setPriority(Priority.FIRST_PRIORITY);
 		}
 	}
@@ -187,7 +186,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements HybridOp<I, O> {
+	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements
+		HybridOp<I, O>
+	{
 
 		@Parameter
 		private CacheService cache;
@@ -227,7 +228,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		public void compute(final I input, final O output) {
 			delegate.compute(input, output);
 		}
-		
+
 		@Override
 		public CachedHybridOp<I, O> getIndependentInstance() {
 			return this;
