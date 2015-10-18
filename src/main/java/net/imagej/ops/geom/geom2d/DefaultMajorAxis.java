@@ -33,6 +33,7 @@ package net.imagej.ops.geom.geom2d;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -55,14 +56,14 @@ public class DefaultMajorAxis extends AbstractFunctionOp<Polygon, DoubleType>
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(DefaultMinorMajorAxis.class, Pair.class,
+		minorMajorAxisFunc = ops().function(SecondMultiVariate.class, Pair.class,
 			in());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public DoubleType compute(final Polygon input) {
-		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute(input);
+		final Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute(input);
 		return compute.getB();
 	}
 }
