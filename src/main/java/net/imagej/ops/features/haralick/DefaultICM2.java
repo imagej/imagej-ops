@@ -52,12 +52,15 @@ public class DefaultICM2<T extends RealType<T>> extends
 {
 
 	private FunctionOp<double[][], double[]> coocHXYFunc;
+	private FunctionOp<IterableInterval<T>, DoubleType> entropy;
 
 	@Override
 	public void initialize() {
 		super.initialize();
 		coocHXYFunc = ops().function(CoocHXY.class, double[].class,
 			double[][].class);
+		entropy = ops().function(Ops.Haralick.Entropy.class, DoubleType.class, in(),
+			numGreyLevels, distance, orientation);
 	}
 
 	@Override
@@ -68,8 +71,8 @@ public class DefaultICM2<T extends RealType<T>> extends
 
 		double res = 0;
 		final double[] coochxy = coocHXYFunc.compute(matrix);
-		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - ops().haralick().entropy(
-			input, numGreyLevels, distance, orientation).get())));
+		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - entropy.compute(input)
+			.get())));
 
 		// if NaN
 		if (Double.isNaN(res)) {
