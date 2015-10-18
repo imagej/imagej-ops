@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Haralick.ICM2.class,
 	label = "Haralick: Information Measure of Correlation 2")
 public class DefaultICM2<T extends RealType<T>> extends
-	AbstractHaralickFeature<T>implements Ops.Haralick.ICM2
+	AbstractHaralickFeature<T> implements Ops.Haralick.ICM2
 {
 
 	private FunctionOp<double[][], double[]> coocHXYFunc;

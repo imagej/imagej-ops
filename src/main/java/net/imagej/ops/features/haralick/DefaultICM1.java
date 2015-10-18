@@ -45,9 +45,11 @@ import org.scijava.plugin.Plugin;
  * @author Andreas Graumann, University of Konstanz
  * @author Christian Dietz, University of Konstanz
  */
-@Plugin(type = Ops.Haralick.ICM1.class, label = "Haralick: Information Measure of Correlation 1")
+@Plugin(type = Ops.Haralick.ICM1.class,
+	label = "Haralick: Information Measure of Correlation 1")
 public class DefaultICM1<T extends RealType<T>> extends
-		AbstractHaralickFeature<T> implements Ops.Haralick.ICM1 {
+	AbstractHaralickFeature<T> implements Ops.Haralick.ICM1
+{
 
 	private FunctionOp<double[][], double[]> coocHXYFunc;
 	private FunctionOp<IterableInterval<T>, DoubleType> entropy;
@@ -62,7 +64,9 @@ public class DefaultICM1<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute(final IterableInterval<T> input,
+		final DoubleType output)
+	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
