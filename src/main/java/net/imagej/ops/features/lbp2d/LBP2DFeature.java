@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
@@ -41,13 +42,11 @@ import net.imglib2.type.numeric.integer.LongType;
  * Marker interface for 2D local binary pattern feature.
  * 
  * @author Andreas Graumann, University of Konstanz
- *
- * @param <I>
- *            type of incoming {@Link RandomAccessibleInterval}
- * @param <O>
- *            type of output value
+ * @param <I> type of incoming {@Link RandomAccessibleInterval}
+ * @param <O> type of output value
  */
-public interface LBP2DFeature<I extends RealType<I>>
-		extends HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D {
+public interface LBP2DFeature<I extends RealType<I>> extends
+	HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
+{
 	// NB: marker interface
 }

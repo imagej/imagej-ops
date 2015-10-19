@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.lbp2d;
 
 import org.junit.Test;
@@ -34,17 +35,15 @@ import org.junit.Test;
 import net.imagej.ops.AbstractNamespaceTest;
 
 /**
- * 
  * Test the {@Link Lbp2dNamespace}
  * 
  * @author Andreas Graumann, University of Konstanz
- *
  */
 public class LBPNamespaceTest extends AbstractNamespaceTest {
 
 	/**
-	 * Tests that the ops of the math namespace have corresponding type-safe
-	 * Java method signatures declared in the {@link LBPNamespace} class.
+	 * Tests that the ops of the math namespace have corresponding type-safe Java
+	 * method signatures declared in the {@link LBPNamespace} class.
 	 */
 	@Test
 	public void testCompleteness() {
