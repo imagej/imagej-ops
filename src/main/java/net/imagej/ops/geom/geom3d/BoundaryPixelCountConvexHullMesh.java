@@ -46,7 +46,8 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric (3D): Convex Hull Pixel Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class BoundaryPixelCountConvexHullMesh extends
-	AbstractFunctionOp<Mesh, DoubleType>
+	AbstractFunctionOp<Mesh, DoubleType>  implements
+	Ops.Geometric.BoundaryPixelCountConvexHull
 {
 
 	private FunctionOp<Mesh, Mesh> convexHullFunc;
