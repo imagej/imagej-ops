@@ -27,25 +27,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.features.lbp2d;
 
-package net.imagej.ops;
+import org.junit.Test;
 
-import net.imagej.ImageJService;
-
-import org.scijava.plugin.PTService;
+import net.imagej.ops.AbstractNamespaceTest;
 
 /**
- * Interface for services that manage and execute {@link Op}s.
- * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
- * </p>
+ * 
+ * Test the {@Link Lbp2dNamespace}
+ * 
+ * @author Andreas Graumann, University of Konstanz
  *
- * @author Curtis Rueden
- * @see OpEnvironment
  */
-public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
+public class Lbp2dNamespaceTest extends AbstractNamespaceTest {
 
+	/**
+	 * Tests that the ops of the math namespace have corresponding type-safe
+	 * Java method signatures declared in the {@link Lbp2dNamespace} class.
+	 */
+	@Test
+	public void testCompleteness() {
+		assertComplete("lbp2d", Lbp2dNamespace.class);
+	}
 }
