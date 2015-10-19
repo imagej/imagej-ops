@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
@@ -47,16 +48,16 @@ import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.view.Views;
 
 /**
- * 
  * Default implementation of 2d local binary patterns
  * 
  * @author Andreas Graumann, University of Konstanz
- *
  * @param <I>
  * @param <O>
  */
 @Plugin(type = Ops.LBP.LBP2D.class, label = "2d Local Binary Pattern")
-public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I> implements LBP2DFeature<I> {
+public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
+	implements LBP2DFeature<I>
+{
 
 	@Parameter(required = true)
 	private int distance = 1;
@@ -69,7 +70,8 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@Override
 	public void initialize() {
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class, ArrayList.class, histogramSize);
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
+			ArrayList.class, histogramSize);
 	}
 
 	@Override
@@ -79,12 +81,14 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(RandomAccessibleInterval<I> input, ArrayList<LongType> output) {
+	public void compute(RandomAccessibleInterval<I> input,
+		ArrayList<LongType> output)
+	{
 		ArrayList<LongType> numberList = new ArrayList<LongType>();
 		RandomAccess<I> raInput = Views.extendZero(input).randomAccess();
 		final Cursor<I> cInput = Views.flatIterable(input).cursor();
-		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh = new ClockwiseDistanceNeighborhoodIterator<I>(raInput,
-				distance);
+		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh =
+			new ClockwiseDistanceNeighborhoodIterator<I>(raInput, distance);
 
 		while (cInput.hasNext()) {
 			cInput.next();

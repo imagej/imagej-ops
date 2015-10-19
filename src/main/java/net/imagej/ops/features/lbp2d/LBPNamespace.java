@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
@@ -41,11 +42,9 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * 
  * Namespace for 2d local binary pattern feature
  * 
  * @author Andreas Graumann, University of Konstanz
- *
  */
 @Plugin(type = Namespace.class)
 public class LBPNamespace extends AbstractNamespace {
@@ -57,19 +56,25 @@ public class LBPNamespace extends AbstractNamespace {
 
 	@SuppressWarnings("unchecked")
 	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
-	public <T extends RealType<T>> ArrayList<LongType> lbp2D(final RandomAccessibleInterval<T> in, final int distance,
-			final int histogramSize) {
-		final ArrayList<LongType> result = (ArrayList<LongType>) ops()
-				.run(net.imagej.ops.features.lbp2d.DefaultLBP2D.class, in, distance, histogramSize);
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(
+		final RandomAccessibleInterval<T> in, final int distance,
+		final int histogramSize)
+	{
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
+			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, in, distance,
+			histogramSize);
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
 	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
-	public <T extends RealType<T>> ArrayList<LongType> lbp2D(final ArrayList<LongType> out,
-			final RandomAccessibleInterval<T> in, final int distance, final int histogramSize) {
-		final ArrayList<LongType> result = (ArrayList<LongType>) ops()
-				.run(net.imagej.ops.features.lbp2d.DefaultLBP2D.class, out, in, distance, histogramSize);
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(
+		final ArrayList<LongType> out, final RandomAccessibleInterval<T> in,
+		final int distance, final int histogramSize)
+	{
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
+			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, out, in, distance,
+			histogramSize);
 		return result;
 	}
 }

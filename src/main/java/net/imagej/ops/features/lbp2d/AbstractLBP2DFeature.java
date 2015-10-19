@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
@@ -40,89 +41,91 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * 
  * Abstract class for 2d local binary pattern feature
  * 
  * @author Andreas Graumann
- *
  * @param <I>
  * @param <O>
  */
-public abstract class AbstractLBP2DFeature<I extends RealType<I>>
-		extends AbstractHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>implements LBP2DFeature<I>, Contingent {
+public abstract class AbstractLBP2DFeature<I extends RealType<I>> extends
+	AbstractHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>> implements
+	LBP2DFeature<I>, Contingent
+{
 
 	@Override
 	public boolean conforms() {
 		return in().numDimensions() == 2;
 	}
-	
+
 	/**
-	 * 
 	 * @author Andreas Graumann, University of Konstanz
 	 * @author Jonathan Hale, University of Konstanz
-	 *
 	 * @param <T>
 	 */
-	final class ClockwiseDistanceNeighborhoodIterator<T extends Type<T>> implements java.util.Iterator<T> {
-        final private RandomAccess<T> m_ra;
-        
-        final private int m_distance;
+	final class ClockwiseDistanceNeighborhoodIterator<T extends Type<T>>
+		implements java.util.Iterator<T>
+	{
 
-        final private int[][] CLOCKWISE_OFFSETS = {{0, -1}, {1, 0}, {1, 0}, {0, 1}, {0, 1}, {-1, 0}, {-1, 0}, {0, -1}};
+		final private RandomAccess<T> m_ra;
 
+		final private int m_distance;
 
-        //index of offset to be executed at next next() call.
-        private int m_curOffset = 0;
+		final private int[][] CLOCKWISE_OFFSETS = { { 0, -1 }, { 1, 0 }, { 1, 0 }, {
+			0, 1 }, { 0, 1 }, { -1, 0 }, { -1, 0 }, { 0, -1 } };
 
+		// index of offset to be executed at next next() call.
+		private int m_curOffset = 0;
 
-        private int m_startIndex = 8;
+		private int m_startIndex = 8;
 
-        public ClockwiseDistanceNeighborhoodIterator(final RandomAccess<T> ra, final int distance) {
-            m_ra = ra;
-            m_distance = distance;
-        }
+		public ClockwiseDistanceNeighborhoodIterator(final RandomAccess<T> ra,
+			final int distance)
+		{
+			m_ra = ra;
+			m_distance = distance;
+		}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public final boolean hasNext() {
-            return (m_curOffset != m_startIndex);
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public final boolean hasNext() {
+			return (m_curOffset != m_startIndex);
+		}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public final T next() {
-        	m_ra.move(CLOCKWISE_OFFSETS[m_curOffset][0]*m_distance,0);
-        	m_ra.move(CLOCKWISE_OFFSETS[m_curOffset][1]*m_distance,1);
-           
-            m_curOffset++;// = (m_curOffset + 1) & 7; //<=> (m_curOffset+1) % 8
-            
-            return m_ra.get();
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public final T next() {
+			m_ra.move(CLOCKWISE_OFFSETS[m_curOffset][0] * m_distance, 0);
+			m_ra.move(CLOCKWISE_OFFSETS[m_curOffset][1] * m_distance, 1);
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public final void remove() {
-            throw new UnsupportedOperationException();
-        }
+			m_curOffset++;// = (m_curOffset + 1) & 7; //<=> (m_curOffset+1) % 8
 
-        public final int getIndex() {
-            return m_curOffset;
-        }
+			return m_ra.get();
+		}
 
-        /**
-         * Reset the current offset index. This does not influence the RandomAccess.
-         */
-        public final void reset() {
-            m_curOffset = 0;
-            m_startIndex = 8;
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public final void remove() {
+			throw new UnsupportedOperationException();
+		}
 
-    }
+		public final int getIndex() {
+			return m_curOffset;
+		}
+
+		/**
+		 * Reset the current offset index. This does not influence the RandomAccess.
+		 */
+		public final void reset() {
+			m_curOffset = 0;
+			m_startIndex = 8;
+		}
+
+	}
 
 }
