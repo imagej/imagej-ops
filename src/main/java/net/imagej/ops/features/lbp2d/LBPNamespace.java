@@ -29,35 +29,47 @@
  */
 package net.imagej.ops.features.lbp2d;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.features.AbstractFeatureTest;
+import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
+import net.imagej.ops.OpMethod;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
  * 
- * Test for {@Link Lbp2dFeature}
+ * Namespace for 2d local binary pattern feature
  * 
  * @author Andreas Graumann, University of Konstanz
  *
  */
-public class Lbp2dFeatureTest extends AbstractFeatureTest {
+@Plugin(type = Namespace.class)
+public class LBPNamespace extends AbstractNamespace {
 
-	@Test
-	public void testLbp2d() {
-		ArrayList<LongType> hist = ops.lbp2d().lbp2d(random, 1,4);
-	
-		// Test values proved by calculating small toy example by hand.
-		assertEquals(Ops.Lbp.Lbp2d.NAME, 5412.0, hist.get(0).getRealDouble(), 1e-3);
-		assertEquals(Ops.Lbp.Lbp2d.NAME, 0.0, hist.get(1).getRealDouble(), 1e-3);
-		assertEquals(Ops.Lbp.Lbp2d.NAME, 4251.0, hist.get(2).getRealDouble(), 1e-3);
-		assertEquals(Ops.Lbp.Lbp2d.NAME, 337.0, hist.get(3).getRealDouble(), 1e-3);
-		
+	@Override
+	public String getName() {
+		return "lbp";
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(final RandomAccessibleInterval<T> in, final int distance,
+			final int histogramSize) {
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops()
+				.run(net.imagej.ops.features.lbp2d.DefaultLBP2D.class, in, distance, histogramSize);
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(final ArrayList<LongType> out,
+			final RandomAccessibleInterval<T> in, final int distance, final int histogramSize) {
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops()
+				.run(net.imagej.ops.features.lbp2d.DefaultLBP2D.class, out, in, distance, histogramSize);
+		return result;
+	}
 }

@@ -29,24 +29,35 @@
  */
 package net.imagej.ops.features.lbp2d;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 
-import net.imagej.ops.HybridOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.RealType;
+import org.junit.Test;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.features.AbstractFeatureTest;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * Marker interface for 2D local binary pattern feature.
+ * 
+ * Test for {@Link Lbp2dFeature}
  * 
  * @author Andreas Graumann, University of Konstanz
  *
- * @param <I>
- * 		type of incoming {@Link RandomAccessibleInterval}
- * @param <O>
- * 		type of output value
  */
-public interface Lbp2dFeature<I extends RealType<I>>
-	extends HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>{
-	// NB: marker interface
+public class LBP2dFeatureTest extends AbstractFeatureTest {
+
+	@Test
+	public void testLbp2d() {
+		ArrayList<LongType> hist = ops.lbp().lbp2D(random, 1,4);
+	
+		// Test values proved by calculating small toy example by hand.
+		assertEquals(Ops.LBP.LBP2D.NAME, 5412.0, hist.get(0).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 0.0, hist.get(1).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 4251.0, hist.get(2).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 337.0, hist.get(3).getRealDouble(), 1e-3);
+		
+	}
+	
 }

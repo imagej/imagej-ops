@@ -40,14 +40,14 @@ import net.imagej.ops.AbstractNamespaceTest;
  * @author Andreas Graumann, University of Konstanz
  *
  */
-public class Lbp2dNamespaceTest extends AbstractNamespaceTest {
+public class LBPNamespaceTest extends AbstractNamespaceTest {
 
 	/**
 	 * Tests that the ops of the math namespace have corresponding type-safe
-	 * Java method signatures declared in the {@link Lbp2dNamespace} class.
+	 * Java method signatures declared in the {@link LBPNamespace} class.
 	 */
 	@Test
 	public void testCompleteness() {
-		assertComplete("lbp2d", Lbp2dNamespace.class);
+		assertComplete("lbp", LBPNamespace.class);
 	}
 }

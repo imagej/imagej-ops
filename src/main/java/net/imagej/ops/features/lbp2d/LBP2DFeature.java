@@ -31,46 +31,23 @@ package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
 
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.Namespace;
-import net.imagej.ops.OpMethod;
+import net.imagej.ops.HybridOp;
+import net.imagej.ops.Ops.LBP.LBP2D;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * 
- * Namespace for 2d local binary pattern feature
+ * Marker interface for 2D local binary pattern feature.
  * 
  * @author Andreas Graumann, University of Konstanz
  *
+ * @param <I>
+ *            type of incoming {@Link RandomAccessibleInterval}
+ * @param <O>
+ *            type of output value
  */
-@Plugin(type = Namespace.class)
-public class Lbp2dNamespace extends AbstractNamespace {
-
-	@Override
-	public String getName() {
-		return "lbp2d";
-	}
-	
-	@SuppressWarnings("unchecked")
-	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLbp2d.class)
-	public <T extends RealType<T>> ArrayList<LongType> lbp2d(final RandomAccessibleInterval<T> in, final int distance, final int histogramSize) {
-		final ArrayList<LongType> result =
-			(ArrayList<LongType>) ops().run(net.imagej.ops.features.lbp2d.DefaultLbp2d.class, in, distance, histogramSize);
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLbp2d.class)
-	public <T extends RealType<T>>ArrayList<LongType> lbp2d(final long[] out, final RandomAccessibleInterval<T> in, final int distance, final int histogramSize) {
-		final ArrayList<LongType> result =
-			(ArrayList<LongType>) ops().run(net.imagej.ops.features.lbp2d.DefaultLbp2d.class, out, in, distance, histogramSize);
-		return result;
-	}
-
-
-
+public interface LBP2DFeature<I extends RealType<I>>
+		extends HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D {
+	// NB: marker interface
 }

@@ -48,8 +48,8 @@ import net.imglib2.type.numeric.integer.LongType;
  * @param <I>
  * @param <O>
  */
-public abstract class AbstractLbp2dFeature<I extends RealType<I>>
-		extends AbstractHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>implements Lbp2dFeature<I>, Contingent {
+public abstract class AbstractLBP2DFeature<I extends RealType<I>>
+		extends AbstractHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>implements LBP2DFeature<I>, Contingent {
 
 	@Override
 	public boolean conforms() {
