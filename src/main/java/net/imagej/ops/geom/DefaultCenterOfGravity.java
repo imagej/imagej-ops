@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.geom;
 
 import org.scijava.plugin.Plugin;
@@ -48,8 +49,10 @@ import net.imglib2.type.numeric.RealType;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.CenterOfGravity.class)
-public class DefaultCenterOfGravity<T extends RealType<T>>
-		extends AbstractFunctionOp<IterableInterval<T>, RealLocalizable> implements Ops.Geometric.CenterOfGravity {
+public class DefaultCenterOfGravity<T extends RealType<T>> extends
+	AbstractFunctionOp<IterableInterval<T>, RealLocalizable> implements
+	Ops.Geometric.CenterOfGravity
+{
 
 	@Override
 	public RealLocalizable compute(final IterableInterval<T> input) {
