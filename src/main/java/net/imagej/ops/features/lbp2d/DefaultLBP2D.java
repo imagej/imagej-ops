@@ -36,7 +36,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -55,18 +55,18 @@ import net.imglib2.view.Views;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Lbp2dFeature.class, label = "2d Local Binary Pattern", name = "Lbp2d")
-public class DefaultLbp2d<I extends RealType<I>> extends AbstractLbp2dFeature<I>implements Lbp2dFeature<I> {
+@Plugin(type = Ops.LBP.LBP2D.class, label = "2d Local Binary Pattern")
+public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I> implements LBP2DFeature<I> {
 
 	@Parameter(required = true)
 	private int distance = 1;
-	
+
 	@Parameter(required = true)
 	private int histogramSize = 256;
 
 	@SuppressWarnings("rawtypes")
 	private FunctionOp<ArrayList, Histogram1d> histOp;
-	
+
 	@Override
 	public void initialize() {
 		histOp = ops().function(HistogramCreate.class, Histogram1d.class, ArrayList.class, histogramSize);
@@ -108,7 +108,7 @@ public class DefaultLbp2d<I extends RealType<I>> extends AbstractLbp2dFeature<I>
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));
 		}
-		
+
 	}
 
 }

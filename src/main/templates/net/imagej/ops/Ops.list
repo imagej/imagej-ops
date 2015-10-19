@@ -170,8 +170,8 @@ namespaces = ```
 	[name: "labeling", iface: "Labeling", ops: [
 		[name: "cca",                         iface: "CCA",                 aliases: ["connectedComponents", "connectedComponentAnalysis"]],
 	]],
-	[name: "lbp2d", iface: "Lbp", ops: [
-		[name: "lbp2d", 				iface: "Lbp2d"]
+	[name: "lbp", iface: "LBP", ops: [
+		[name: "lbp2D", 				iface: "LBP2D"]
 	]],
 	[name: "logic", iface: "Logic", ops: [
 		[name: "and",                         iface: "And"],
