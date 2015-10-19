@@ -106,6 +106,7 @@ namespaces = ```
 		[name: "boxivity",                    iface: "Boxivity"],
 		[name: "contour",                     iface: "Contour"],
 		[name: "marchingcubes",               iface: "MarchingCubes"],
+		[name: "centerofgravity",               iface: "CenterOfGravity"],
 	]],
 	[name: "haralick", iface: "Haralick", ops: [
 		[name: "asm",                         iface: "ASM"],
