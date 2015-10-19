@@ -44,15 +44,20 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imglib2.RandomAccess;
 import net.imglib2.RealPoint;
+import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.display.imagej.ImageJFunctions;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.roi.labeling.LabelRegions;
 import net.imglib2.roi.labeling.LabelingType;
 import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ij.io.Opener;
 
 /**
  * Tests for geom features
@@ -64,12 +69,15 @@ public class GeomTest extends AbstractFeatureTest {
 
 	private static LabelRegion<String> region2D;
 	private static LabelRegion<String> region3D;
+	private static Img<FloatType> img2d;
 
 	@BeforeClass
 	public static void setupBefore() throws MalformedURLException, IOException {
 		// read simple polygon image
 		final BufferedImage read = ImageIO.read(GeomTest.class.getResourceAsStream(
 			"cZgkFsK.png"));
+		img2d = ImageJFunctions
+				.convertFloat(new Opener().openImage(GeomTest.class.getResource("cZgkFsK.png").getPath()));
 
 		final ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
 			ArrayImgs.ints(read.getWidth(), read.getHeight()));
@@ -284,6 +292,14 @@ public class GeomTest extends AbstractFeatureTest {
 	public void testSpareness() {
 		assertEquals(Ops.Geometric.Spareness.NAME, 0.509, ops.geom().spareness(region3D).get(),
 			AbstractFeatureTest.BIG_DELTA);
+	}
+
+	@Test
+	public void testCenterOfGravity() {
+		assertEquals(Ops.Geometric.CenterOfGravity.NAME, 396.063362,
+				ops.geom().centerofgravity(img2d).getDoublePosition(0), AbstractFeatureTest.BIG_DELTA);
+		assertEquals(Ops.Geometric.CenterOfGravity.NAME, 576.763804,
+				ops.geom().centerofgravity(img2d).getDoublePosition(1), AbstractFeatureTest.BIG_DELTA);
 	}
 
 }
