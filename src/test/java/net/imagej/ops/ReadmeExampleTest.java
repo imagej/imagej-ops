@@ -63,11 +63,11 @@ public class ReadmeExampleTest {
 		// extract the example script
 		final File readme = new File("README.md");
 		final String contents = new String(FileUtils.readFile(readme), "UTF-8");
-		final String telltale = "```python%n"; // Need platform independent newline character
+		final String telltale = String.format("```python%n"); // Need platform independent newline character
 		final int begin = contents.indexOf(telltale) + telltale.length();
 		assertTrue(begin > telltale.length());
 		assertTrue(contents.indexOf(telltale, begin) < 0);
-		final int end = contents.indexOf("```%n", begin); // Need platform independent newline character
+		final int end = contents.indexOf(String.format("```%n"), begin); // Need platform independent newline character
 		assertTrue(end > 0);
 		final String snippet = contents.substring(begin, end);
 System.err.println(snippet);
