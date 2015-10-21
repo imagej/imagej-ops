@@ -65,13 +65,13 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 	protected final static String ATTR_PARAMS = "feature_params";
 
 	@Parameter
-	private CommandService cs;
+	protected CommandService cs;
 
 	@Parameter(required = false)
-	private Class<? extends O> outType;
+	protected Class<? extends O> outType;
 
 	// all features
-	private Map<NamedFeature, FunctionOp<Object, ? extends O>> namedFeatureMap;
+	protected Map<NamedFeature, FunctionOp<Object, ? extends O>> namedFeatureMap;
 
 	@Override
 	public List<NamedFeature> getFeatures() {

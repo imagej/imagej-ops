@@ -30,18 +30,32 @@
 
 package net.imagej.ops.features.sets;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Attr;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.features.haralick.HaralickFeature;
 import net.imagej.ops.featuresets.AbstractOpRefFeatureSet;
 import net.imagej.ops.featuresets.DimensionBoundFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
+import net.imagej.ops.featuresets.NamedFeature;
+import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation2D;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.ItemIO;
+import org.scijava.Priority;
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
+import org.scijava.plugin.Attr;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} for {@link HaralickFeature}s
@@ -152,6 +166,64 @@ public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 			@Attr(name = ATTR_TYPE, value = PKG + "ASM") })
 	private boolean isVarianceActive = true;
 
+	@SuppressWarnings("unchecked")
+	public void initialize() {
+		
+		final List<CommandInfo> infos = new ArrayList<CommandInfo>();
+		if (prioritizedOps != null) {
+			for (final Class<? extends Op> prio : prioritizedOps) {
+				final CommandInfo info = new CommandInfo(prio);
+				info.setPriority(Priority.FIRST_PRIORITY);
+				infos.add(info);
+			}
+		}
+		
+		this.namedFeatureMap = new LinkedHashMap<NamedFeature, FunctionOp<Object, ? extends O>>();
+
+		final Module self = this.cs.getCommand(this.getClass()).createModule(this);
+		try {
+			for (final ModuleItem<?> item : self.getInfo().inputs()) {
+				// we found a feature. lets create a named feature!
+				if (item.get(ATTR_FEATURE) != null && ((Boolean) item.getValue(self))) {
+					final String[] params = item.get(ATTR_PARAMS).split(",");
+					final Object[] args = new Object[params.length];
+
+					int i = 0;
+					for (final String param : params) {
+						args[i++] = self.getInput(param);
+					}
+					// make sure we have an outtype
+					final Class<? extends O> outType = this.outType == null ? (Class<? extends O>) DoubleType.class
+							: this.outType;
+
+					@SuppressWarnings("rawtypes")
+					final OpRef ref = new OpRef(Class.forName((String) item.get(ATTR_TYPE)), args);
+					
+					// Convert the String orientation to a MatrixOrientation
+					Object[] currentArgs = ref.getArgs();
+					Object[] newArgs = new Object[currentArgs.length];
+					int j = 0;
+					for(Object o : currentArgs)
+					{
+						if(o instanceof String)
+						{
+							newArgs[j++] = MatrixOrientation2D.valueOf((String) o);
+						}
+						else
+						{
+							newArgs[j++] = o;
+						}
+					}
+
+					namedFeatureMap.put(new NamedFeature(ref), (FunctionOp<Object, ? extends O>) ops()
+							.function(ref.getType(), outType, in(), newArgs));
+				}
+			}
+		} catch (final ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	@Override
 	public boolean conforms() {
 		return in().numDimensions() == 2;

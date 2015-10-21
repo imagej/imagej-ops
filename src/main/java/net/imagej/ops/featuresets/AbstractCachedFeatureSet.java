@@ -60,8 +60,8 @@ public abstract class AbstractCachedFeatureSet<I, O extends RealType<O>> extends
 	@Parameter
 	private PluginService ps;
 
-	@Parameter
-	private Class<? extends Op>[] prioritizedOps;
+	@Parameter(required = false)
+	protected Class<? extends Op>[] prioritizedOps;
 
 	@Override
 	public void initialize() {
