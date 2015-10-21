@@ -29,10 +29,18 @@
  */
 package net.imagej.ops.features.sets;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.featuresets.AbstractOpRefFeatureSet;
 import net.imagej.ops.featuresets.DimensionBoundFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
+import net.imagej.ops.featuresets.NamedFeature;
+import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.RealType;
 
@@ -53,6 +61,10 @@ public class Geometric2DFeatureSet<L, O extends RealType<O>> extends AbstractOpR
 		implements DimensionBoundFeatureSet<LabelRegion<L>, O> {
 	
 	private static final String PKG = "net.imagej.ops.Ops$Geometric$";
+	
+	@Parameter
+	private OpService ops;
+	private FunctionOp<Object, Object> contourFunc;
 
 	@Parameter(required = false, label = "Size", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_PARAMS, value = ""),
@@ -128,6 +140,16 @@ public class Geometric2DFeatureSet<L, O extends RealType<O>> extends AbstractOpR
 	public Map<NamedFeature, O> compute(final LabelRegion<L> input) {
 		final Map<NamedFeature, O> res = new HashMap<NamedFeature, O>();
 
+		// For some reason the converter was not being engaged automatically.
+		Polygon newInput = convert(input);
+		
+		for (final Entry<NamedFeature, FunctionOp<Object, ? extends O>> entry : namedFeatureMap.entrySet()) {
+			res.put(entry.getKey(), entry.getValue().compute(newInput));
+		}
+
+		return res;
+	}
+
 	@Override
 	public int getMinDimensions() {
 		return 2;
@@ -141,6 +163,17 @@ public class Geometric2DFeatureSet<L, O extends RealType<O>> extends AbstractOpR
 	@Override
 	public boolean conforms() {
 		return in().numDimensions() == 2;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private <T> T convert(final Object src) {
+		if (contourFunc == null) {
+			contourFunc = (FunctionOp) ops.function(Ops.Geometric.Contour.class, Polygon.class, src, true,
+				true);
+		}
+		// FIXME: can we make this faster?
+		final Polygon p = (Polygon) contourFunc.compute(src);
+		return (T) p;
 	}
 
 }
