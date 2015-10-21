@@ -142,9 +142,9 @@ public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 			@Attr(name = ATTR_TYPE, value = PKG + "SumVariance") })
 	private boolean isSumVarianceActive = true;
 
-	@Parameter(required = false, label = "Texture Homogenity", attrs = { @Attr(name = ATTR_FEATURE),
+	@Parameter(required = false, label = "Texture Homogeneity", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
-			@Attr(name = ATTR_TYPE, value = PKG + "TextureHomogenity") })
+			@Attr(name = ATTR_TYPE, value = PKG + "TextureHomogeneity") })
 	private boolean isTextureHomogeneityActive = true;
 
 	@Parameter(required = false, label = "Variance", attrs = { @Attr(name = ATTR_FEATURE),
