@@ -55,7 +55,7 @@ import net.imglib2.type.numeric.RealType;
 public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
 		implements Contingent, DimensionBoundFeatureSet<IterableInterval<T>, O> {
 
-	private static final String PKG = "net.imagej.ops.Ops.Haralick.";
+	private static final String PKG = "net.imagej.ops.Ops$Haralick$";
 
 	@Parameter(type = ItemIO.INPUT, label = "Num. Grey Levels", description = "The number of grey values determines the size of the co-occurence matrix on which the Haralick features are calculated.", min = "1", max = "2147483647", stepSize = "1")
 	private int numGreyLevels = 32;
