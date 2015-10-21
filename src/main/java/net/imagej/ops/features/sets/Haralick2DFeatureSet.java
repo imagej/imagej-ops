@@ -82,9 +82,9 @@ public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 			@Attr(name = ATTR_TYPE, value = PKG + "ClusterShade") })
 	private boolean isClusterShadeActive = true;
 
-	@Parameter(required = false, label = "Cluster Contrast", attrs = { @Attr(name = ATTR_FEATURE),
+	@Parameter(required = false, label = "Contrast", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
-			@Attr(name = ATTR_TYPE, value = PKG + "ClusterContrast") })
+			@Attr(name = ATTR_TYPE, value = PKG + "Contrast") })
 	private boolean isContrastActive = true;
 
 	@Parameter(required = false, label = "Correlation", attrs = { @Attr(name = ATTR_FEATURE),
