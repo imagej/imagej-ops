@@ -207,6 +207,7 @@ public class DefaultOpService extends AbstractOpEnvironment implements
 	public void setInfo(final PluginInfo<?> info) {
 		this.info = info;
 	}
+	
 
 	// -- Comparable methods --
 

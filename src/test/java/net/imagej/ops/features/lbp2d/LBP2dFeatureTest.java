@@ -27,25 +27,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+package net.imagej.ops.features.lbp2d;
 
-package net.imagej.ops;
+import static org.junit.Assert.assertEquals;
 
-import net.imagej.ImageJService;
+import java.util.ArrayList;
 
-import org.scijava.plugin.PTService;
+import org.junit.Test;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.features.AbstractFeatureTest;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * Interface for services that manage and execute {@link Op}s.
- * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
- * </p>
+ * 
+ * Test for {@Link Lbp2dFeature}
+ * 
+ * @author Andreas Graumann, University of Konstanz
  *
- * @author Curtis Rueden
- * @see OpEnvironment
  */
-public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
+public class LBP2dFeatureTest extends AbstractFeatureTest {
 
+	@Test
+	public void testLbp2d() {
+		ArrayList<LongType> hist = ops.lbp().lbp2D(random, 1,4);
+	
+		// Test values proved by calculating small toy example by hand.
+		assertEquals(Ops.LBP.LBP2D.NAME, 5412.0, hist.get(0).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 0.0, hist.get(1).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 4251.0, hist.get(2).getRealDouble(), 1e-3);
+		assertEquals(Ops.LBP.LBP2D.NAME, 337.0, hist.get(3).getRealDouble(), 1e-3);
+		
+	}
+	
 }

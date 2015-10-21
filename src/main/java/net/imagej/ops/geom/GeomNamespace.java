@@ -46,6 +46,7 @@ import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 
@@ -450,4 +451,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.geom.DefaultCenterOfGravity.class)
+	public <T extends RealType<T>> RealLocalizable centerofgravity(final IterableInterval<T> in) {
+		final RealLocalizable result = (RealLocalizable) ops().run(net.imagej.ops.geom.DefaultCenterOfGravity.class,
+				in);
+		return result;
+	}
 }

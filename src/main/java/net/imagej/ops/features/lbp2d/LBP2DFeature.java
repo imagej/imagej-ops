@@ -28,24 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.features.lbp2d;
 
-import net.imagej.ImageJService;
+import java.util.ArrayList;
 
-import org.scijava.plugin.PTService;
+import net.imagej.ops.HybridOp;
+import net.imagej.ops.Ops.LBP.LBP2D;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * Interface for services that manage and execute {@link Op}s.
- * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
- * </p>
- *
- * @author Curtis Rueden
- * @see OpEnvironment
+ * Marker interface for 2D local binary pattern feature.
+ * 
+ * @author Andreas Graumann, University of Konstanz
+ * @param <I> type of incoming {@Link RandomAccessibleInterval}
+ * @param <O> type of output value
  */
-public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
-
+public interface LBP2DFeature<I extends RealType<I>> extends
+	HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
+{
+	// NB: marker interface
 }

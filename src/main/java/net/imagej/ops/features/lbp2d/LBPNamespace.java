@@ -28,24 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.features.lbp2d;
 
-import net.imagej.ImageJService;
+import java.util.ArrayList;
 
-import org.scijava.plugin.PTService;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractNamespace;
+import net.imagej.ops.Namespace;
+import net.imagej.ops.OpMethod;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
- * Interface for services that manage and execute {@link Op}s.
- * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
- * </p>
- *
- * @author Curtis Rueden
- * @see OpEnvironment
+ * Namespace for 2d local binary pattern feature
+ * 
+ * @author Andreas Graumann, University of Konstanz
  */
-public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
+@Plugin(type = Namespace.class)
+public class LBPNamespace extends AbstractNamespace {
 
+	@Override
+	public String getName() {
+		return "lbp";
+	}
+
+	@SuppressWarnings("unchecked")
+	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(
+		final RandomAccessibleInterval<T> in, final int distance,
+		final int histogramSize)
+	{
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
+			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, in, distance,
+			histogramSize);
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@OpMethod(op = net.imagej.ops.features.lbp2d.DefaultLBP2D.class)
+	public <T extends RealType<T>> ArrayList<LongType> lbp2D(
+		final ArrayList<LongType> out, final RandomAccessibleInterval<T> in,
+		final int distance, final int histogramSize)
+	{
+		final ArrayList<LongType> result = (ArrayList<LongType>) ops().run(
+			net.imagej.ops.features.lbp2d.DefaultLBP2D.class, out, in, distance,
+			histogramSize);
+		return result;
+	}
 }

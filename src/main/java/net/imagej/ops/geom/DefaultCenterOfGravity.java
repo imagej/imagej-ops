@@ -28,24 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.geom;
 
-import net.imagej.ImageJService;
+import org.scijava.plugin.Plugin;
 
-import org.scijava.plugin.PTService;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RealLocalizable;
+import net.imglib2.RealPoint;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Interface for services that manage and execute {@link Op}s.
- * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
- * </p>
- *
- * @author Curtis Rueden
- * @see OpEnvironment
+ * This {@link Op} computes the center of gravity of a {@link IterableRegion}
+ * (Label).
+ * 
+ * @author Daniel Seebacher, University of Konstanz.
  */
-public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
-	// NB: Marker interface.
+@Plugin(type = Ops.Geometric.CenterOfGravity.class)
+public class DefaultCenterOfGravity<T extends RealType<T>> extends
+	AbstractFunctionOp<IterableInterval<T>, RealLocalizable> implements
+	Ops.Geometric.CenterOfGravity
+{
+
+	@Override
+	public RealLocalizable compute(final IterableInterval<T> input) {
+		final int numDimensions = input.numDimensions();
+
+		final double[] output = new double[numDimensions];
+		final double[] intensityValues = new double[numDimensions];
+
+		final Cursor<T> c = input.localizingCursor();
+		while (c.hasNext()) {
+			c.fwd();
+			for (int i = 0; i < output.length; i++) {
+				output[i] += c.getDoublePosition(i) * c.get().getRealDouble();
+				intensityValues[i] += c.get().getRealDouble();
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] = output[i] / intensityValues[i];
+		}
+
+		return new RealPoint(output);
+	}
 
 }

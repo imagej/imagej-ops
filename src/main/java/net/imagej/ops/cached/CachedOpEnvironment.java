@@ -53,9 +53,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 	@Parameter
 	private CacheService cs;
-	
-	public CachedOpEnvironment(final OpEnvironment parent)
-	{
+
+	public CachedOpEnvironment(final OpEnvironment parent) {
 		this(parent, null);
 	}
 
@@ -63,7 +62,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Collection<? extends CommandInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
-		for(final CommandInfo info : prioritizedInfos){
+		for (final CommandInfo info : prioritizedInfos) {
 			info.setPriority(Priority.FIRST_PRIORITY);
 		}
 	}
@@ -109,23 +108,6 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	/**
-	 * Calculates hash given input, {@link FunctionOp} and args
-	 */
-	private <I, O> long hash(final I input, final FunctionOp<I, O> delegate,
-		final Object[] args)
-	{
-		
-		long hash = input.hashCode() ^ delegate.getClass().getSimpleName()
-			.hashCode();
-
-		for (final Object o : args) {
-			hash ^= o.hashCode();
-		}
-
-		return hash;
-	}
-	
-	/**
 	 * Wraps a {@link FunctionOp} and caches the results. New inputs will result
 	 * in re-computation of the result.
 	 * 
@@ -152,14 +134,14 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		@Override
 		public O compute(final I input) {
 
-			final long combinedHash = hash(input, delegate, args);
+			final Hash hash = new Hash(input, delegate, args);
 
 			@SuppressWarnings("unchecked")
-			O output = (O) cache.get(combinedHash);
+			O output = (O) cache.get(hash);
 
 			if (output == null) {
 				output = delegate.compute(input);
-				cache.put(combinedHash, output);
+				cache.put(hash, output);
 			}
 			return output;
 		}
@@ -204,7 +186,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements HybridOp<I, O> {
+	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements
+		HybridOp<I, O>
+	{
 
 		@Parameter
 		private CacheService cache;
@@ -222,15 +206,15 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		@Override
 		public O compute(final I input) {
 
-			final long combinedHash = hash(input, delegate, args);
+			final Hash hash = new Hash(input, delegate, args);
 
 			@SuppressWarnings("unchecked")
-			O output = (O) cache.get(combinedHash);
+			O output = (O) cache.get(hash);
 
 			if (output == null) {
 				output = createOutput(input);
 				compute(input, output);
-				cache.put(combinedHash, output);
+				cache.put(hash, output);
 			}
 			return output;
 		}
@@ -244,10 +228,41 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		public void compute(final I input, final O output) {
 			delegate.compute(input, output);
 		}
-		
+
 		@Override
 		public CachedHybridOp<I, O> getIndependentInstance() {
 			return this;
+		}
+	}
+
+	/**
+	 * Simple utility class to wrap two objects and an array of objects in a
+	 * single object which combines their hashes.
+	 */
+	private class Hash {
+
+		private final int hash;
+
+		public Hash(final Object o1, final Object o2, final Object[] args) {
+			long hash = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
+
+			for (final Object o : args) {
+				hash ^= o.hashCode();
+			}
+
+			this.hash = (int) hash;
+		}
+
+		@Override
+		public int hashCode() {
+			return hash;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			if (obj == this) return true;
+			if (obj instanceof Hash) return hash == ((Hash) obj).hash;
+			return false;
 		}
 	}
 }

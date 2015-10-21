@@ -49,7 +49,7 @@ import org.scijava.plugin.Parameter;
  * @param <T>
  */
 public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
-	AbstractHybridOp<IterableInterval<T>, DoubleType>implements
+	AbstractHybridOp<IterableInterval<T>, DoubleType> implements
 	HaralickFeature<T>, Contingent
 {
 
@@ -71,8 +71,8 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 
 	@Override
 	public void initialize() {
-		coocFunc = ops().function(Ops.Image.CooccurrenceMatrix.class, double[][].class, in(),
-			numGreyLevels, distance, orientation);
+		coocFunc = ops().function(Ops.Image.CooccurrenceMatrix.class,
+			double[][].class, in(), numGreyLevels, distance, orientation);
 	}
 
 	/**

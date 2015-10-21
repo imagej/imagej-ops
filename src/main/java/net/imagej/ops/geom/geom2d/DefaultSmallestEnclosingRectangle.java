@@ -137,6 +137,9 @@ public class DefaultSmallestEnclosingRectangle extends
 			}
 		}
 
+		if(minBounds == null)
+			minBounds = input;
+		
 		return minBounds;
 	}
 
