@@ -110,7 +110,7 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 
 					int i = 0;
 					for (final String param : params) {
-						args[++i] = self.getInput(param);
+						args[i++] = self.getInput(param);
 					}
 					// make sure we have an outtype
 					final Class<? extends O> outType = this.outType == null ? (Class<? extends O>) DoubleType.class
