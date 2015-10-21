@@ -105,7 +105,15 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 			for (final ModuleItem<?> item : self.getInfo().inputs()) {
 				// we found a feature. lets create a named feature!
 				if (item.get(ATTR_FEATURE) != null && ((Boolean) item.getValue(self))) {
-					final String[] params = item.get(ATTR_PARAMS).split(",");
+					final String[] params;
+					if(item.get(ATTR_PARAMS).equals(""))
+					{
+						params = new String[0];
+					}
+					else
+					{
+						params = item.get(ATTR_PARAMS).split(",");
+					}
 					final Object[] args = new Object[params.length];
 
 					int i = 0;
