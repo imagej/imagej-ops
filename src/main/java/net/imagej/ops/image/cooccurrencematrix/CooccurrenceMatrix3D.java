@@ -31,7 +31,9 @@ package net.imagej.ops.image.cooccurrencematrix;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -61,13 +63,22 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 	@Parameter(label = "Matrix Orientation")
 	private MatrixOrientation orientation;
 
+	private FunctionOp<IterableInterval<T>, Pair<T, T>> minmax;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		super.initialize();
+		minmax = (FunctionOp) ops().function(MinMax.class, Pair.class, in());
+	}
+	
 	@Override
 	public double[][] compute(final IterableInterval<T> input) {
 
 		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
-		final Cursor<T> cursor = input.cursor();
-		final Pair<T,T> minMax = ops().stats().minMax(input);
+		final Cursor<T> cursor = input.localizingCursor();
+	  final Pair<T, T> minMax = minmax.compute(input);
 
 		double localMin = minMax.getA().getRealDouble();
 		double localMax = minMax.getB().getRealDouble();
@@ -75,16 +86,25 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 		final int[][][] pixels = new int[(int) input.dimension(2)][(int) input
 				.dimension(1)][(int) input.dimension(0)];
 
+		final int minimumX = (int) input.min(0);
+		final int minimumY = (int) input.min(1);
+		final int minimumZ = (int) input.min(2);
+		
+		final double diff = localMax - localMin;
 		while (cursor.hasNext()) {
 			cursor.fwd();
-			pixels[cursor.getIntPosition(2) - (int) input.min(2)][cursor
-					.getIntPosition(1) - (int) input.min(1)][cursor
-					.getIntPosition(0) - (int) input.min(0)] = (int) (((cursor
-					.get().getRealDouble() - localMin) / (localMax - localMin)) * (nrGreyLevels - 1));
+			pixels[cursor.getIntPosition(2) - minimumZ][cursor
+					.getIntPosition(1) - minimumY][cursor
+					.getIntPosition(0) - minimumX] = (int) (((cursor
+					.get().getRealDouble() - localMin) / diff) * (nrGreyLevels - 1));
 		}
 
-		int nrPairs = 0;
+		
+		final double orientationAtX = orientation.getValueAtDim(0) * distance;
+		final double orientationAtY = orientation.getValueAtDim(1) * distance;
+		final double orientationAtZ = orientation.getValueAtDim(2) * distance;
 
+		int nrPairs = 0;
 		for (int z = 0; z < pixels.length; z++) {
 			for (int y = 0; y < pixels[z].length; y++) {
 				for (int x = 0; x < pixels[z][y].length; x++) {
@@ -95,9 +115,9 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 					}
 
 					// get second pixel
-					final int sx = x + orientation.getValueAtDim(0) * distance;
-					final int sy = y + orientation.getValueAtDim(1) * distance;
-					final int sz = z + orientation.getValueAtDim(2) * distance;
+					final int sx = (int) (x + orientationAtX);
+					final int sy = (int) (y + orientationAtY);
+					final int sz = (int) (z + orientationAtZ);
 
 					// second pixel in interval and mask
 					if (sx >= 0 && sy >= 0 && sz >= 0 && sz < pixels.length
