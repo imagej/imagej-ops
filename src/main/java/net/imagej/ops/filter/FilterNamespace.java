@@ -996,7 +996,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTRAI.class)
+	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTComputerOp.class)
 	public <C extends ComplexType<C>, T extends RealType<T>>
 		RandomAccessibleInterval<T> ifft(final RandomAccessibleInterval<T> out,
 			final RandomAccessibleInterval<C> in)
@@ -1004,7 +1004,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.ifft.IFFTRAI.class, out, in);
+				net.imagej.ops.filter.ifft.IFFTComputerOp.class, out, in);
 		return result;
 	}
 
