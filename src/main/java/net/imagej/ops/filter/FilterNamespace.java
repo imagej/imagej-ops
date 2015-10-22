@@ -996,17 +996,6 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "ifft" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTImg.class)
-	public <T extends RealType<T>, O extends Img<T>> Img<O> ifft(
-		final Img<O> out, final Img<ComplexFloatType> in)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<O> result =
-			(Img<O>) ops().run(net.imagej.ops.filter.ifft.IFFTImg.class, out, in);
-		return result;
-	}
-
-	/** Executes the "ifft" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.ifft.IFFTRAI.class)
 	public <C extends ComplexType<C>, T extends RealType<T>>
 		RandomAccessibleInterval<T> ifft(final RandomAccessibleInterval<T> out,
