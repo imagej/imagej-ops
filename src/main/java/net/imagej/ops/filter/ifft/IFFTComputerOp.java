@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
@@ -43,7 +44,10 @@ import net.imglib2.type.numeric.RealType;
 import org.scijava.plugin.Plugin;
 
 /**
- * Inverse fft that operates on an RAI and wraps FFTMethods.
+ * Inverse FFT computer that operates on an RAI and wraps FFTMethods. The input
+ * and output size must conform to supported FFT size. Use
+ * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
+ * supported FFT size.
  * 
  * @author Brian Northan
  * @param <C>
@@ -53,9 +57,12 @@ import org.scijava.plugin.Plugin;
 public class IFFTComputerOp<C extends ComplexType<C>, T extends RealType<T>>
 	extends
 	AbstractComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
-	implements Ops.Filter.IFFT
+	implements Ops.Filter.IFFT, Contingent
 {
 
+	/**
+	 * Compute an ND inverse FFT
+	 */
 	@Override
 	public void compute(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
@@ -69,6 +76,37 @@ public class IFFTComputerOp<C extends ComplexType<C>, T extends RealType<T>>
 
 		FFTMethods.complexToReal(input, output, FFTMethods
 			.unpaddingIntervalCentered(input, output), 0, true, service);
+	}
+
+	/**
+	 * Make sure that the input size conforms to a supported FFT size.
+	 */
+	@Override
+	public boolean conforms() {
+
+		long[] paddedDimensions = new long[in().numDimensions()];
+		long[] realDimensions = new long[in().numDimensions()];
+
+		boolean fastSizeConforms = false;
+
+		FFTMethods.dimensionsComplexToRealFast(in(), paddedDimensions,
+			realDimensions);
+
+		if (FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) {
+			fastSizeConforms = true;
+		}
+
+		boolean smallSizeConforms = false;
+
+		FFTMethods.dimensionsComplexToRealSmall(in(), paddedDimensions,
+			realDimensions);
+
+		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true)) {
+			smallSizeConforms = true;
+		}
+
+		return fastSizeConforms || smallSizeConforms;
+
 	}
 
 }
