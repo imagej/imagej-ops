@@ -28,35 +28,37 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.conditional;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.Ops;
 import net.imglib2.type.Type;
-import net.imglib2.type.logic.BoolType;
 
 /**
- * This class works as a conditional operator. For any input whose boolean value
- * is true, it sets the output with the true value; otherwise it sets the output
- * with the false value, or does nothing if the false value is not provided.
+ * This class works as a conditional operator. If the input is true, it sets the
+ * output with the true value; otherwise it sets the output with the false
+ * value, or does nothing if the false value is not provided.
  *
  * @author Leon Yang
- * @param <I>
  * @param <O>
  */
-public class Conditional<I extends BoolType, O extends Type<O>> extends
-	AbstractComputerOp<I, O>
+@Plugin(type = Ops.If.class)
+public class IfBoolean<O extends Type<O>> extends AbstractComputerOp<Boolean, O>
+	implements Ops.If
 {
 
-	private final O trueValue;
-	private final O falseValue;
+	@Parameter
+	private O trueValue;
 
-	public Conditional(final O trueValue, final O falseValue) {
-		this.trueValue = trueValue;
-		this.falseValue = falseValue;
-	}
+	@Parameter(required = false)
+	private O falseValue = null;
 
 	@Override
-	public void compute(final I input, final O output) {
-		if (input.get()) output.set(trueValue);
+	public void compute(final Boolean input, final O output) {
+		if (input) output.set(trueValue);
 		else if (falseValue != null) output.set(falseValue);
 	}
 }
