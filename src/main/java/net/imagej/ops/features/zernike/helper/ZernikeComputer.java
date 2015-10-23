@@ -67,12 +67,12 @@ public class ZernikeComputer<T extends RealType<T>> extends
 	public ZernikeMoment compute(IterableInterval<T> ii) {
 
 		// what is the acutal N
-		final double width = ii.dimension(0) - ii.min(0);
-		final double height = ii.dimension(1) - ii.min(1);
+		final double width = ii.max(0) - ii.min(0);
+		final double height = ii.max(1) - ii.min(1);
 
 		double size = (width > height) ? width : height;
 		final double centerX = width / 2 + ii.min(0);
-		final double centerY = height/2 + ii.min(1);
+		final double centerY = height / 2 + ii.min(1);
 		
 		double radius = Math.sqrt((size + size) * size) / 2;
 
