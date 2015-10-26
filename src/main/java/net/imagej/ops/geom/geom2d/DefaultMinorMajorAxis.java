@@ -63,8 +63,8 @@ public class DefaultMinorMajorAxis extends
 	 * @param points vertices of polygon in counter clockwise order.
 	 * @return minor and major axis
 	 */
-	private double[] getMinorMajorAxis(final List<RealLocalizable> points) {
-		double[] moments = getMoments(points);
+	private double[] getMinorMajorAxis(final Polygon input, final List<RealLocalizable> points) {
+		double[] moments = getMoments(input, points);
 
 		double m00 = moments[0];
 		double u20 = moments[1];
@@ -134,7 +134,7 @@ public class DefaultMinorMajorAxis extends
 	 * @return moments m00, n20, n11 and n02
 	 * @see "On  Calculation of Arbitrary Moments of Polygons, Carsten Steger, October 1996"
 	 */
-	private double[] getMoments(final List<RealLocalizable> points) {
+	private double[] getMoments(final Polygon input, final List<RealLocalizable> points) {
 
 		// calculate normalized moment
 		double m00 = 0;
@@ -145,18 +145,18 @@ public class DefaultMinorMajorAxis extends
 		double m20 = 0;
 
 		for (int i = 1; i < points.size(); i++) {
-			double a = getX(i - 1) * getY(i) - getX(i) * getY(i - 1);
+			double a = getX(input, i - 1) * getY(input, i) - getX(input, i) * getY(input, i - 1);
 
 			m00 += a;
-			m10 += a * (getX(i - 1) + getX(i));
-			m01 += a * (getY(i - 1) + getY(i));
+			m10 += a * (getX(input, i - 1) + getX(input, i));
+			m01 += a * (getY(input, i - 1) + getY(input, i));
 
-			m20 += a * (Math.pow(getX(i - 1), 2) + getX(i - 1) * getX(i) + Math.pow(
-				getX(i), 2));
-			m11 += a * (2 * getX(i - 1) * getY(i - 1) + getX(i - 1) * getY(i) + getX(
-				i) * getY(i - 1) + 2 * getX(i) * getY(i));
-			m02 += a * (Math.pow(getY(i - 1), 2) + getY(i - 1) * getY(i) + Math.pow(
-				getY(i), 2));
+			m20 += a * (Math.pow(getX(input, i - 1), 2) + getX(input, i - 1) * getX(input, i) + Math.pow(
+				getX(input, i), 2));
+			m11 += a * (2 * getX(input, i - 1) * getY(input, i - 1) + getX(input, i - 1) * getY(input, i) + getX(input, 
+				i) * getY(input, i - 1) + 2 * getX(input, i) * getY(input, i));
+			m02 += a * (Math.pow(getY(input, i - 1), 2) + getY(input, i - 1) * getY(input, i) + Math.pow(
+				getY(input, i), 2));
 		}
 
 		m00 /= 2d;
@@ -174,21 +174,21 @@ public class DefaultMinorMajorAxis extends
 		return new double[] { m00, n20, n11, n02 };
 	}
 
-	private double getY(final int index) {
+	private double getY(final Polygon input,final int index) {
 		int i = index;
-		if (i == in().getVertices().size()) i = 0;
-		return in().getVertices().get(i).getDoublePosition(1);
+		if (i == input.getVertices().size()) i = 0;
+		return input.getVertices().get(i).getDoublePosition(1);
 	}
 
-	private double getX(final int index) {
+	private double getX(final Polygon input, final int index) {
 		int i = index;
-		if (i == in().getVertices().size()) i = 0;
-		return in().getVertices().get(i).getDoublePosition(0);
+		if (i == input.getVertices().size()) i = 0;
+		return input.getVertices().get(i).getDoublePosition(0);
 	}
 
 	@Override
 	public Pair<DoubleType, DoubleType> compute(final Polygon input) {
-		setInput(input);
+		
 		List<RealLocalizable> points = new ArrayList<RealLocalizable>(input
 			.getVertices());
 
@@ -212,7 +212,7 @@ public class DefaultMinorMajorAxis extends
 		points.add(points.get(0));
 
 		// calculate minor and major axis
-		double[] minorMajorAxis = getMinorMajorAxis(points);
+		double[] minorMajorAxis = getMinorMajorAxis(input, points);
 		return new ValuePair<DoubleType, DoubleType>(new DoubleType(
 			minorMajorAxis[0]), new DoubleType(minorMajorAxis[1]));
 	}
