@@ -37,15 +37,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.OpRef;
+import net.imglib2.type.numeric.RealType;
+
 import org.scijava.command.CommandService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
-
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpRef;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
 
 /**
  * {@link OpRef} based {@link AbstractCachedFeatureSet}.
@@ -121,7 +120,7 @@ public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends 
 						args[i++] = self.getInput(param);
 					}
 					// make sure we have an outtype
-					final Class<? extends O> outType = this.outType == null ? (Class<? extends O>) DoubleType.class
+					final Class<? extends O> outType = this.outType == null ? (Class<? extends O>) RealType.class
 							: this.outType;
 
 					@SuppressWarnings("rawtypes")
