@@ -82,13 +82,13 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
+		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
 		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			output.factory(), in(), getKernel(), nonCirculant, accelerate);
+			getOutFactory(), in(), getKernel(), nonCirculant, accelerate);
 
 	}
 

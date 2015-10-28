@@ -64,8 +64,8 @@ public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K ext
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
+		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
 		ops().filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,

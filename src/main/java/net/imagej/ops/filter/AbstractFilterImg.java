@@ -30,11 +30,10 @@
 
 package net.imagej.ops.filter;
 
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.AbstractHybridOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
@@ -52,7 +51,8 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  */
 public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractHybridOp<Img<I>, Img<O>>
+	extends
+	AbstractHybridOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	/**
@@ -92,20 +92,21 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	private ImgFactory<O> outFactory;
 
 	/**
-	 * Create the output using the outFactory and outType if they exist. If these
-	 * are null use a default factory and type
+	 * Create the output using the outFactory and outType if they e/*xist. If
+	 * these are null use a default factory and type
 	 */
 	@Override
-	public Img<O> createOutput(Img<I> input) {
+	public RandomAccessibleInterval<O> createOutput(RandomAccessibleInterval<I> input) {
+		
 
 		// if the outType is null
 		if (outType == null) {
 
 			// if the input type and kernel type are the same use this type
-			if (input.firstElement().getClass() == Util.getTypeFromInterval(kernel)
+			if (Util.getTypeFromInterval(input).getClass() == Util.getTypeFromInterval(kernel)
 				.getClass())
 			{
-				Object temp = input.firstElement().createVariable();
+				Object temp = Util.getTypeFromInterval(input).createVariable();
 				outType = (Type<O>) temp;
 
 			}
@@ -115,14 +116,12 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 				outType = (Type<O>) temp;
 			}
 		}
-
-		// if the outFactory is null use a PlanarImgFactory to create the output
-		if (outFactory == null) {
-			Object temp = new PlanarImgFactory();
-			outFactory = (ImgFactory<O>) temp;
+		
+		if (outFactory==null) {
+			outFactory=(ImgFactory<O>)(ops().create().imgFactory(input, outType));
 		}
-
-		return outFactory.create(input, outType.createVariable());
+		
+		return ops().create().img(input, outType.createVariable(), outFactory);
 	}
 
 	protected RandomAccessibleInterval<K> getKernel() {
@@ -151,6 +150,10 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		this.obfKernel = obfKernel;
+	}
+	
+	protected ImgFactory<O> getOutFactory() {
+		return outFactory;
 	}
 
 }

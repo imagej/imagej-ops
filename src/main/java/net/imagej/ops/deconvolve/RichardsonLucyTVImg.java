@@ -89,13 +89,13 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
+		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
 		ops().run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
 			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), in(), getKernel(),
+			imgConvolutionInterval, getOutFactory(), in(), getKernel(),
 			nonCirculant, accelerate, regularizationFactor);
 
 	}

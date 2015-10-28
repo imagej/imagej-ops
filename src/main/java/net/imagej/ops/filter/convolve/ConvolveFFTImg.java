@@ -63,8 +63,8 @@ public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K exte
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
+		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
 			fftKernel, output);

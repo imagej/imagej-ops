@@ -32,7 +32,6 @@ package net.imagej.ops.filter;
 
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -68,12 +67,13 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	 * compute output by extending the input(s) and running the filter
 	 */
 	@Override
-	public void compute(final Img<I> input, final Img<O> output) {
-
-		// run the op that extends the input and kernel and creates the Imgs
+	public void compute(final RandomAccessibleInterval<I> input, RandomAccessibleInterval<O> output)
+	{
+			// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm
 		final CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops().op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
+			ops()
+				.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
 
 		createMemory.run();
 
@@ -81,6 +81,7 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 		runFilter(createMemory.getRAIExtendedInput(), createMemory
 			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
 			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
+
 	}
 
 	/**
@@ -95,7 +96,8 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	 * @param imgConvolutionInterval
 	 */
 	abstract public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval);
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval);
 
 }
