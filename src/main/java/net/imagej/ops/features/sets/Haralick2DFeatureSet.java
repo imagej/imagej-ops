@@ -163,7 +163,7 @@ public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 
 	@Parameter(required = false, label = "Variance", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
-			@Attr(name = ATTR_TYPE, value = PKG + "ASM") })
+			@Attr(name = ATTR_TYPE, value = PKG + "Variance") })
 	private boolean isVarianceActive = true;
 
 	@SuppressWarnings("unchecked")
