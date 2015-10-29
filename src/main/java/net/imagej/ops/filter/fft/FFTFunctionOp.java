@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
@@ -55,8 +55,8 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
-	extends AbstractFunctionOp<I, O>
+public class FFTHybridOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
+	extends AbstractHybridOp<I, O>
 {
 
 	/**
@@ -92,11 +92,11 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 	 */
 	@Parameter(required = false)
 	private Type<C> fftType;
-
+	
+	private Dimensions paddedDimensions; 
+	
 	@Override
-	@SuppressWarnings("unchecked")
-	public O compute(final I input) {
-
+	public O createOutput(final I input) {
 		long[] inputWithBordersSize = new long[input.numDimensions()];
 
 		for (int d = 0; d < input.numDimensions(); d++) {
@@ -115,7 +115,7 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 		ops().filter().fftSize(inputWithBordersSize, paddedSize, fftSize, true,
 			fast);
 
-		Dimensions paddedDimensions = new FinalDimensions(paddedSize);
+		paddedDimensions = new FinalDimensions(paddedSize);
 		Dimensions fftDimensions = new FinalDimensions(fftSize);
 
 		// if no type was passed in the default is ComplexFloatType
@@ -124,7 +124,12 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 		}
 
 		// create the complex output image
-		O output = (O) ops().create().img(fftDimensions, fftType, factory);
+		return (O) ops().create().img(fftDimensions, fftType, factory);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void compute(final I input, final O output) {		
 
 		I paddedInput;
 
@@ -139,6 +144,5 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 
 		ops().filter().fft(output, paddedInput);
 
-		return output;
 	}
 }
