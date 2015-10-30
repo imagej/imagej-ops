@@ -32,6 +32,9 @@ package net.imagej.ops.image.project;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -39,9 +42,6 @@ import net.imglib2.RandomAccess;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class ProjectTest extends AbstractOpTest {
 
@@ -78,22 +78,32 @@ public class ProjectTest extends AbstractOpTest {
 	public void testProjector() {
 		ops.image().project(out1, in, op, PROJECTION_DIM);
 		ops.image().project(out2, in, op, PROJECTION_DIM);
+		testEquality(out1, out2);
 
-		final RandomAccess<UnsignedByteType> out1RandomAccess = out1
-				.randomAccess();
-		final RandomAccess<UnsignedByteType> out2RandomAccess = out2
-				.randomAccess();
+		final Op projLow =
+			new ProjectRAIToIterableInterval<UnsignedByteType, UnsignedByteType>();
+		ops.module(projLow, out1, in, op, PROJECTION_DIM).run();
+		ops.module(projLow, out2, in, op, PROJECTION_DIM).run();
+		testEquality(out1, out2);
+	}
+
+	private void testEquality(final Img<UnsignedByteType> img1,
+		final Img<UnsignedByteType> img2)
+	{
+		final RandomAccess<UnsignedByteType> img1RandomAccess = img1.randomAccess();
+		final RandomAccess<UnsignedByteType> img2RandomAccess = img2.randomAccess();
 
 		// at each x,y position the sum projection should be (x+y) *size(z)
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
-				out1RandomAccess.setPosition(new long[] { x, y });
-				out2RandomAccess.setPosition(new long[] { x, y });
+				img1RandomAccess.setPosition(new long[] { x, y });
+				img2RandomAccess.setPosition(new long[] { x, y });
 
-				assertEquals(out1RandomAccess.get().get(),
-						in.dimension(PROJECTION_DIM) * (x + y));
+				assertEquals(img1RandomAccess.get().get(), in.dimension(
+					PROJECTION_DIM) * (x + y));
+				assertEquals(img2RandomAccess.get().get(), in.dimension(
+					PROJECTION_DIM) * (x + y));
 			}
 		}
-
 	}
 }
