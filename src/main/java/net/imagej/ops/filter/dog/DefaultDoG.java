@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,11 +30,14 @@
 
 package net.imagej.ops.filter.dog;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+import org.scijava.thread.ThreadService;
+
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -45,14 +48,10 @@ import net.imglib2.type.numeric.NumericType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 /**
  * Low-level difference of Gaussians (DoG) implementation which leans on other
  * ops to do the work.
- * 
+ *
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  * @param <T>
@@ -91,9 +90,8 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	@Override
 	public void initialize() {
 		if (fac == null) {
-			fac =
-				new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
-					Boundary.SINGLE);
+			fac = new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+				Boundary.SINGLE);
 		}
 	}
 
@@ -105,21 +103,13 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		final long[] translation = new long[input.numDimensions()];
 		input.min(translation);
 
-		final IntervalView<T> tmpInterval =
-			Views.interval(Views.translate((RandomAccessible<T>) tmpCreator
-				.compute(input), translation), output);
+		final IntervalView<T> tmpInterval = Views.interval(Views.translate(
+			(RandomAccessible<T>) tmpCreator.compute(input), translation), output);
 
 		gauss1.compute(input, tmpInterval);
 		gauss2.compute(input, output);
 
-		// TODO: Use SubtractOp as soon as available (see issue
-		// https://github.com/imagej/imagej-ops/issues/161).
-		final Cursor<T> tmpCursor = Views.flatIterable(tmpInterval).cursor();
-		final Cursor<T> outputCursor = Views.flatIterable(output).cursor();
-
-		while (outputCursor.hasNext()) {
-			outputCursor.next().sub(tmpCursor.next());
-		}
+		ops().run(Ops.Math.Subtract.class, output, output, tmpInterval);
 	}
 
 }

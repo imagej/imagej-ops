@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -78,22 +78,30 @@ public class ProjectTest extends AbstractOpTest {
 	public void testProjector() {
 		ops.image().project(out1, in, op, PROJECTION_DIM);
 		ops.image().project(out2, in, op, PROJECTION_DIM);
+		testEquality(out1, out2);
 
-		final RandomAccess<UnsignedByteType> out1RandomAccess = out1
-				.randomAccess();
-		final RandomAccess<UnsignedByteType> out2RandomAccess = out2
-				.randomAccess();
+		ops.run(ProjectRAIToIterableInterval.class, out1, in, op, PROJECTION_DIM);
+		ops.run(ProjectRAIToIterableInterval.class, out2, in, op, PROJECTION_DIM);
+		testEquality(out1, out2);
+	}
+
+	private void testEquality(final Img<UnsignedByteType> img1,
+		final Img<UnsignedByteType> img2)
+	{
+		final RandomAccess<UnsignedByteType> img1RandomAccess = img1.randomAccess();
+		final RandomAccess<UnsignedByteType> img2RandomAccess = img2.randomAccess();
 
 		// at each x,y position the sum projection should be (x+y) *size(z)
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
-				out1RandomAccess.setPosition(new long[] { x, y });
-				out2RandomAccess.setPosition(new long[] { x, y });
+				img1RandomAccess.setPosition(new long[] { x, y });
+				img2RandomAccess.setPosition(new long[] { x, y });
 
-				assertEquals(out1RandomAccess.get().get(),
-						in.dimension(PROJECTION_DIM) * (x + y));
+				assertEquals(img1RandomAccess.get().get(), in.dimension(
+					PROJECTION_DIM) * (x + y));
+				assertEquals(img2RandomAccess.get().get(), in.dimension(
+					PROJECTION_DIM) * (x + y));
 			}
 		}
-
 	}
 }
