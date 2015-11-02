@@ -33,6 +33,7 @@ package net.imagej.ops.filter.dog;
 import java.util.Arrays;
 
 import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -51,8 +52,7 @@ import org.scijava.thread.ThreadService;
  * @param <T>
  */
 @Plugin(type = Ops.Filter.DoG.class, priority = 1.0)
-public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
-	extends
+public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
@@ -66,8 +66,22 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 	@Parameter
 	private double sigma2;
 
+	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> op;
+
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
+
+	@Override
+	public void initialize() {
+		final double[] sigmas1 = new double[in().numDimensions()];
+		final double[] sigmas2 = new double[in().numDimensions()];
+
+		Arrays.fill(sigmas1, sigma1);
+		Arrays.fill(sigmas2, sigma2);
+
+		op = ops().computer(Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
+			fac);
+	}
 
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
@@ -81,12 +95,6 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>>
 	public void compute(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		final double[] sigmas1 = new double[input.numDimensions()];
-		final double[] sigmas2 = new double[input.numDimensions()];
-
-		Arrays.fill(sigmas1, sigma1);
-		Arrays.fill(sigmas2, sigma2);
-
-		ops().run(Ops.Filter.DoG.class, output, input, sigmas1, sigmas2, fac);
+		op.compute(input, output);
 	}
 }
