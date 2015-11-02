@@ -69,7 +69,7 @@ public class ProjectRAIToIterableInterval<T, V> extends
 			cursor.fwd();
 			for (int d = 0; d < input.numDimensions(); d++) {
 				if (d != dim) {
-					access.setPosition(cursor.getIntPosition(d - d > dim ? -1 : 0), d);
+					access.setPosition(cursor.getIntPosition(d - (d > dim ? -1 : 0)), d);
 				}
 			}
 

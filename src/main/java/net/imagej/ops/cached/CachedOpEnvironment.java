@@ -244,10 +244,15 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		private final int hash;
 
 		public Hash(final Object o1, final Object o2, final Object[] args) {
-			long hash = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
+			// Implement hash joining algorithm from Jon Skeet on SO:
+			// http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
+			long hash = 17;
+
+			hash = hash * 23 + o1.hashCode();
+			hash = hash * 23 + o2.hashCode();
 
 			for (final Object o : args) {
-				hash ^= o.hashCode();
+				hash = hash * 23 + o.hashCode();
 			}
 
 			this.hash = (int) hash;
