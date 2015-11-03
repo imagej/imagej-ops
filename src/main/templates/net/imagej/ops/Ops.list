@@ -313,7 +313,6 @@ namespaces = ```
 		[name: "shanbhag",                    iface: "Shanbhag"],
 		[name: "triangle",                    iface: "Triangle"],
 		[name: "yen",                         iface: "Yen"],
-		[name: "sauvola",                     iface: "Sauvola"],
 	]],
 	[name: "zernike", iface: "Zernike", ops: [
 		[name: "magnitude",                iface: "Magnitude"],

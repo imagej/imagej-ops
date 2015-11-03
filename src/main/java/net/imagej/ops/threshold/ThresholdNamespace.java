@@ -517,8 +517,8 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.sauvola.Sauvola.class)
-	public <T extends RealType<T>> BitType sauvola(final BitType out,
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
 		final Pair<T, Iterable<T>> in, final double k, final double r)
 	{
 		final BitType result =
