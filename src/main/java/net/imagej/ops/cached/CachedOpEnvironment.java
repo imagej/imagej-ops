@@ -243,7 +243,11 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 		private final int hash;
 
+		private Class<?> delegate;
+
 		public Hash(final Object o1, final Class<?> delegate, final Object[] args) {
+			this.delegate = delegate;
+
 			// Implement hash joining algorithm from Jon Skeet on SO:
 			// http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
 			long hash = 17;
@@ -266,7 +270,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj == this) return true;
-			if (obj instanceof Hash) return hash == ((Hash) obj).hash;
+			if (obj instanceof Hash) return ((Hash) obj).delegate == delegate &&
+				((Hash) obj).hash == hash;
 			return false;
 		}
 	}
