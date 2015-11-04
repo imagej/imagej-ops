@@ -34,14 +34,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.featuresets.AbstractCachedFeatureSet;
+import net.imagej.ops.featuresets.AbstractFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
 import net.imagej.ops.featuresets.NamedFeature;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.labeling.LabelRegion;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} to calculate {@link AbstractOpRefFeatureSet<I, O>}.
@@ -52,7 +52,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = FeatureSet.class, label = "Centroid", description = "Calculates the Centroid")
-public class CentroidFeatureSet extends AbstractCachedFeatureSet<LabelRegion, DoubleType> {
+public class CentroidFeatureSet extends AbstractFeatureSet<LabelRegion, DoubleType> {
 
 	@Override
 	public List<NamedFeature> getFeatures() {

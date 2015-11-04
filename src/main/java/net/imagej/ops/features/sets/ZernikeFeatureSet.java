@@ -35,18 +35,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.features.zernike.helper.ZernikeComputer;
 import net.imagej.ops.features.zernike.helper.ZernikeMoment;
-import net.imagej.ops.featuresets.AbstractCachedFeatureSet;
+import net.imagej.ops.featuresets.AbstractFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
 import net.imagej.ops.featuresets.NamedFeature;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link FeatureSet} to calculate {@link StatOp}s.
@@ -58,7 +58,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  */
 @Plugin(type = FeatureSet.class, label = "Zernike Features", description = "Calculates the Zernike Features")
 public class ZernikeFeatureSet<I extends RealType<I>>
-		extends AbstractCachedFeatureSet<IterableInterval<I>, DoubleType> {
+		extends AbstractFeatureSet<IterableInterval<I>, DoubleType> {
 
 	@Parameter(type = ItemIO.INPUT, label = "Minimum Order of Zernike Moment", description = "The minimum order of the zernike moment to be calculated.", min = "1", max = "2147483647", stepSize = "1")
 	private int orderMin = 2;

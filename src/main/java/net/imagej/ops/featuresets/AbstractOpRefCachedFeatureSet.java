@@ -55,7 +55,7 @@ import org.scijava.plugin.Parameter;
  * @param <O>
  *            type of the output
  */
-public abstract class AbstractOpRefFeatureSet<I, O extends RealType<O>> extends AbstractFeatureSet<I, O> {
+public abstract class AbstractOpRefCachedFeatureSet<I, O extends RealType<O>> extends AbstractFeatureSet<I, O> {
 
 	protected final static String ATTR_FEATURE = "feature";
 

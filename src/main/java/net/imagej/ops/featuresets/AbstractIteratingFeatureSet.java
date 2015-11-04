@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <T>
  */
 public abstract class AbstractIteratingFeatureSet<I, O extends RealType<O>>
-	extends AbstractCachedFeatureSet<I, O> implements FeatureSet<I, O>
+	extends AbstractFeatureSet<I, O> implements FeatureSet<I, O>
 {
 
 	private ArrayList<NamedFeature> infos;

@@ -29,11 +29,22 @@
  */
 package net.imagej.ops.featuresets;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.scijava.Priority;
+import org.scijava.command.CommandInfo;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.PluginService;
+
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
 import net.imagej.ops.cached.CachedOpEnvironment;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * In an {@link AbstractCachedFeatureSet} intermediate results are cached during
+ * In an {@link AbstractFeatureSet} intermediate results are cached during
  * computation, avoiding redundant computations of the same feature @see
  * {@link CachedOpEnvironment}.
  * 
@@ -43,13 +54,25 @@ import net.imglib2.type.numeric.RealType;
  * @param <O>
  *            type of the output
  */
-public abstract class AbstractCachedFeatureSet<I, O extends RealType<O>> extends AbstractFeatureSet<I, O>
+public abstract class AbstractFeatureSet<I, O extends RealType<O>> extends AbstractFunctionOp<I, Map<NamedFeature, O>>
 		implements FeatureSet<I, O> {
+
+	@Parameter
+	private PluginService ps;
+
+	@Parameter(required = false)
+	protected Class<? extends Op>[] prioritizedOps;
 
 	@Override
 	public void initialize() {
-		super.initialize();
-		setEnvironment(new CachedOpEnvironment(ops()));
+		final List<CommandInfo> infos = new ArrayList<CommandInfo>();
+		if (prioritizedOps != null) {
+			for (final Class<? extends Op> prio : prioritizedOps) {
+				final CommandInfo info = new CommandInfo(prio);
+				info.setPriority(Priority.FIRST_PRIORITY);
+				infos.add(info);
+			}
+		}
 	}
 
 }

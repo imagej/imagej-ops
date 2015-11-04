@@ -36,7 +36,7 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.features.haralick.HaralickFeature;
-import net.imagej.ops.featuresets.AbstractOpRefFeatureSet;
+import net.imagej.ops.featuresets.AbstractOpRefCachedFeatureSet;
 import net.imagej.ops.featuresets.DimensionBoundFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
 import net.imglib2.IterableInterval;
@@ -51,7 +51,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <O>
  */
 @Plugin(type = FeatureSet.class, label = "Haralick 3D Features", description = "Calculates the 3D Haralick Features")
-public class Haralick3DFeatureSet<T, O extends RealType<O>> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
+public class Haralick3DFeatureSet<T, O extends RealType<O>> extends AbstractOpRefCachedFeatureSet<IterableInterval<T>, O>
 		implements Contingent, DimensionBoundFeatureSet<IterableInterval<T>, O> {
 
 	private static final String PKG = "net.imagej.ops.Ops.Haralick.";
