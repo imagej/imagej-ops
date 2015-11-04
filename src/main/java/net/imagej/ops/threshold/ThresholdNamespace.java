@@ -487,6 +487,66 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
+	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k, final double r)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
+				out, in, k, r);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
+	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
+				out, in, k);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
+	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
+		final Pair<T, Iterable<T>> in)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
+				out, in);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k, final double r)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
+				out, in, k, r);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
+		final Pair<T, Iterable<T>> in, final double k)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
+				out, in, k);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
+	public <T extends RealType<T>> BitType localSauvola(final BitType out,
+		final Pair<T, Iterable<T>> in)
+	{
+		final BitType result =
+			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
+				out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.Ops.Threshold.MaxEntropy.class)
 	public Object maxEntropy(final Object... args) {
 		return ops().run(net.imagej.ops.Ops.Threshold.MaxEntropy.class, args);
@@ -1140,7 +1200,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 				in);
 		return result;
 	}
-
+	
 	// -- Named methods --
 
 	@Override
