@@ -41,8 +41,9 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.type.BooleanType;
 import net.imglib2.type.Type;
-import net.imglib2.type.logic.BoolType;
+import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 import org.scijava.ItemIO;
@@ -56,8 +57,8 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.Contour.class)
-public class DefaultContour extends
-	AbstractFunctionOp<RandomAccessibleInterval<BoolType>, Polygon> implements
+public class DefaultContour<B extends BooleanType<B>> extends
+	AbstractFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
 	Contingent, Ops.Geometric.Contour
 {
 
@@ -194,14 +195,17 @@ public class DefaultContour extends
 	}
 
 	@Override
-	public Polygon compute(final RandomAccessibleInterval<BoolType> input) {
+	public Polygon compute(final RandomAccessibleInterval<B> input) {
 		List<RealPoint> p = new ArrayList<RealPoint>();
 
-		final RandomAccess<BoolType> raInput = Views.extendValue(input,
-			new BoolType(!isInverted)).randomAccess();
-		final Cursor<BoolType> cInput = Views.flatIterable(input).cursor();
-		final ClockwiseMooreNeighborhoodIterator<BoolType> cNeigh =
-			new ClockwiseMooreNeighborhoodIterator<BoolType>(raInput);
+		final B var = Util.getTypeFromInterval(input).createVariable();
+		var.set(!isInverted);
+
+		final RandomAccess<B> raInput = Views.extendValue(input, var)
+			.randomAccess();
+		final Cursor<B> cInput = Views.flatIterable(input).cursor();
+		final ClockwiseMooreNeighborhoodIterator<B> cNeigh =
+			new ClockwiseMooreNeighborhoodIterator<B>(raInput);
 
 		double[] position = new double[2];
 		double[] startPos = new double[2];
