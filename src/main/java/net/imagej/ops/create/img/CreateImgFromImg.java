@@ -54,8 +54,8 @@ public class CreateImgFromImg<T extends NativeType<T>> extends
 
 	@Override
 	public Img<T> compute(final Img<T> input) {
-		return ops().create().img(in(),
-			in().firstElement().createVariable(), in().factory());
+		return ops().create().img(input,
+			input.firstElement().createVariable(), input.factory());
 	}
 
 }
