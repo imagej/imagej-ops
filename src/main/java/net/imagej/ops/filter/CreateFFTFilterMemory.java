@@ -166,8 +166,8 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 		final long[] paddedDimensions = new long[numDimensions];
 		final long[] fftDimensions = new long[numDimensions];
 
-		FFTMethods.dimensionsRealToComplexFast(FinalDimensions.wrap(newDimensions),
-			paddedDimensions, fftDimensions);
+		ops().filter().fftSize(FinalDimensions.wrap(newDimensions),
+			paddedDimensions, fftDimensions, true, true);
 
 		// 3. Using the size calculated above compute the new interval for
 		// the input image
