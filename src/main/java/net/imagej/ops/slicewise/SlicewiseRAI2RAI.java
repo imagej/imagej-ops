@@ -56,7 +56,7 @@ public class SlicewiseRAI2RAI<I, O> extends
 {
 
 	@Parameter
-	private ComputerOp<I, O> op;
+	private ComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op;
 
 	@Parameter
 	private int[] axisIndices;
