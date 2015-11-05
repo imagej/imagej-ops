@@ -80,9 +80,8 @@ public class ComputeHuangThreshold<T extends RealType<T>> extends
 			W[i] = W[i - 1] + i * histogram[i];
 		}
 
-		// precalculate the summands of the entropy given the absolute
-		// difference x
-		// - mu (integral)
+		// precalculate the summands of the entropy given the absolute difference
+		// x - mu (integral)
 		double C = last - first;
 		double[] Smu = new double[last + 1 - first];
 		for (int i = 1; i < Smu.length; i++) {
