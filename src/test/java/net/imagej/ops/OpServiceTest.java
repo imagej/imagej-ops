@@ -153,7 +153,7 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(value.get()));
 	}
 
-	/** Tests {@link OpService#run(String, Object...)}. */
+	/** Tests {@link OpService#run(String, Object...)} with op aliases. */
 	@Test
 	public void testAliases() {
 		final DoubleType value = new DoubleType(123.456);
@@ -195,6 +195,7 @@ public class OpServiceTest extends AbstractOpTest {
 		assertSame(Captain.class, op.getClass());
 	}
 
+	/** Tests that all ops can be successfully instantiated. */
 	@Test
 	public void testInstantiation() {
 		int errors = 0;
