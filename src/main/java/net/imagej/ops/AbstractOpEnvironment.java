@@ -63,7 +63,6 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 
 import org.scijava.AbstractContextual;
-import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
@@ -222,18 +221,22 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Module module(final Op op, final Object... args) {
-		final Module module = info(op).createModule(op);
+		final Module module = info(op).cInfo().createModule(op);
 		getContext().inject(module.getDelegateObject());
 		return matcher.assignInputs(module, args);
+	}
+
+	@Override
+	public OpInfo info(final Op op) {
+		return info(op.getClass());
 	}
 
 	@Override
 	public Collection<String> ops() {
 		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
-		for (final CommandInfo info : infos()) {
-			final String name = info.getName();
-			if (name != null && !name.isEmpty()) operations.add(info.getName());
+		for (final OpInfo info : infos()) {
+			if (info.isNamed()) operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list

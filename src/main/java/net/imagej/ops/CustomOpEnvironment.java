@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.scijava.Context;
-import org.scijava.command.CommandInfo;
 
 /**
  * A customized op execution environment.
@@ -70,13 +69,13 @@ public class CustomOpEnvironment extends AbstractOpEnvironment {
 	 * environment, plus the specified additional ops.
 	 */
 	public CustomOpEnvironment(final OpEnvironment parent,
-		final Collection<? extends CommandInfo> infos)
+		final Collection<? extends OpInfo> infos)
 	{
 		this(parent.getContext(), parent, infos);
 	}
 
 	private CustomOpEnvironment(final Context context,
-		final OpEnvironment parent, final Collection<? extends CommandInfo> infos)
+		final OpEnvironment parent, final Collection<? extends OpInfo> infos)
 	{
 		setContext(context);
 		this.parent = parent;
@@ -84,19 +83,19 @@ public class CustomOpEnvironment extends AbstractOpEnvironment {
 		// NB: If this is not performant and/or dynamic enough, we could create/use
 		// a concatenating collection (see e.g. Guava's Iterables.concat method)
 		// that does not copy all the elements.
-		if (parent != null) index.addAll(parent.infos());
-		index.addAll(infos);
+		if (parent != null) index.addOps(parent.infos());
+		index.addOps(infos);
 	}
 
 	// -- OpEnvironment methods --
 
 	@Override
-	public CommandInfo info(final Op op) {
-		return index.get(op.getClass().getName());
+	public OpInfo info(final Class<? extends Op> type) {
+		return index.get(type.getName());
 	}
 
 	@Override
-	public Collection<CommandInfo> infos() {
+	public Collection<OpInfo> infos() {
 		return index.values();
 	}
 
@@ -107,26 +106,21 @@ public class CustomOpEnvironment extends AbstractOpEnvironment {
 
 	// -- Helper classes --
 
-	/** A table mapping available ops from class name to {@link CommandInfo}. */
-	private static class OpIndex extends HashMap<String, CommandInfo> {
+	/** A table mapping available ops from class name to {@link OpInfo}. */
+	private static class OpIndex extends HashMap<String, OpInfo> {
 
-		private ArrayList<CommandInfo> infos;
-		
-		public void addAll(final Collection<? extends CommandInfo> infos) {
+		public void addOps(final Collection<? extends OpInfo> infos) {
 			if (infos == null) return;
-			for (final CommandInfo info : infos) {
-				put(info.getDelegateClassName(), info);
+			for (final OpInfo info : infos) {
+				put(info.cInfo().getDelegateClassName(), info);
 			}
 		}
 		
 		@Override
-		public Collection<CommandInfo> values() {
-			if(infos == null){
-				infos = new ArrayList<CommandInfo>();
-				infos.addAll(super.values());
-				Collections.sort(infos);
-			}
-			
+		public Collection<OpInfo> values() {
+			final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
+			infos.addAll(super.values());
+			Collections.sort(infos);
 			return infos;
 		}
 

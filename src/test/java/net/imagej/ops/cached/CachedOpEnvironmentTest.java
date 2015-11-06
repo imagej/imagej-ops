@@ -38,6 +38,7 @@ import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
+import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -45,7 +46,6 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.scijava.command.CommandInfo;
 
 /**
  * JUnit-Tests for the {@link CachedOpEnvironment}.
@@ -68,8 +68,8 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	@Before
 	public void initCustomOps() {
-		final ArrayList<CommandInfo> customOps = new ArrayList<CommandInfo>();
-		customOps.add(new CommandInfo(MyMin.class));
+		final ArrayList<OpInfo> customOps = new ArrayList<OpInfo>();
+		customOps.add(new OpInfo(MyMin.class));
 
 		env = new CachedOpEnvironment(ops, customOps);
 

@@ -30,6 +30,7 @@
 
 package net.imagej.ops;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,13 +63,22 @@ public class DefaultOpService extends AbstractOpEnvironment implements
 	// -- OpEnvironment methods --
 
 	@Override
-	public CommandInfo info(final Op op) {
-		return commandService.getCommand(op.getClass());
+	public OpInfo info(final Class<? extends Op> type) {
+		// TODO: Consider maintaining a separate and efficient
+		// OpInfo data structure in AbstractOpEnvironment.
+		final CommandInfo cInfo = commandService.getCommand(type);
+		return cInfo == null ? null : new OpInfo(cInfo);
 	}
 
 	@Override
-	public Collection<CommandInfo> infos() {
-		return commandService.getCommandsOfType(Op.class);
+	public Collection<OpInfo> infos() {
+		// TODO: Consider maintaining a separate and efficient
+		// OpInfo data structure in AbstractOpEnvironment.
+		final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
+		for (final CommandInfo cInfo : commandService.getCommandsOfType(Op.class)) {
+			infos.add(new OpInfo(cInfo));
+		}
+		return infos;
 	}
 
 	@Override
