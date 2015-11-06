@@ -35,6 +35,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
@@ -209,6 +211,18 @@ public class OpServiceTest extends AbstractOpTest {
 			}
 		}
 		assertEquals(0, errors);
+	}
+
+	/** Tests {@link OpService#ops()}. */
+	@Test
+	public void testOps() {
+		final Collection<String> opList = ops.ops();
+		assertTrue(opList.size() > 250);
+		final String[] knownOps =
+			{ "eval", "map", "math.abs", "math.add", "math.sqrt", "stats.mean" };
+		for (String op : knownOps) {
+			assertTrue(op + " is missing", opList.contains(op));
+		}
 	}
 
 	// -- Helper classes --
