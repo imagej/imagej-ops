@@ -1125,19 +1125,19 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "padFilter" filter operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.PadFFTInput.class)
+	@OpMethod(op = net.imagej.ops.filter.pad.PadInput.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> padInput(
 		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.fft.PadFFTInput.class, in, paddedDimensions);
+				net.imagej.ops.filter.pad.PadInput.class, in, paddedDimensions);
 		return result;
 	}
 
 	/** Executes the "padFilter" filter operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.fft.PadFFTInput.class)
+	@OpMethod(op = net.imagej.ops.filter.pad.PadInput.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<T> padInput(
 		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions,
 		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf)
@@ -1145,7 +1145,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.filter.fft.PadFFTInput.class, in, paddedDimensions, obf);
+				net.imagej.ops.filter.pad.PadInput.class, in, paddedDimensions, obf);
 		return result;
 	}
 
