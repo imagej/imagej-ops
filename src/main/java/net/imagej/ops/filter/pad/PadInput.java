@@ -1,5 +1,5 @@
 
-package net.imagej.ops.filter.fft;
+package net.imagej.ops.filter.pad;
 
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
@@ -28,7 +28,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.FFT.class, name = Ops.Filter.PadInput.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class PadFFTInput<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
+public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
 	extends AbstractFunctionOp<I, O>
 {
 
