@@ -87,6 +87,20 @@ public final class OpUtils {
 		return null;
 	}
 
+	/** Gets the namespace portion of the given op name. */
+	public static String getNamespace(final String opName) {
+		if (opName == null) return null;
+		final int dot = opName.lastIndexOf(".");
+		return dot < 0 ? null : opName.substring(0, dot);
+	}
+
+	/** Gets the simple portion (without namespace) of the given op name. */
+	public static String stripNamespace(final String opName) {
+		if (opName == null) return null;
+		final int dot = opName.lastIndexOf(".");
+		return dot < 0 ? opName : opName.substring(dot + 1);
+	}
+
 	/**
 	 * Unwraps the delegate object of the given {@link Module}, ensuring it is an
 	 * instance whose type matches the specified {@link OpRef}.

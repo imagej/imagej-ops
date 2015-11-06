@@ -75,7 +75,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		final Class<?> namespaceClass)
 	{
 		for (final String op : ops.ops()) {
-			final String ns = getNamespace(op);
+			final String ns = OpUtils.getNamespace(op);
 			if (!MiscUtils.equal(namespace, ns)) continue;
 			assertComplete(namespaceClass, op);
 		}
@@ -117,8 +117,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 */
 	public void assertComplete(final Class<?> namespaceClass, final String qName)
 	{
-		final String namespace = getNamespace(qName);
-		final String opName = stripNamespace(qName);
+		final String namespace = OpUtils.getNamespace(qName);
+		final String opName = OpUtils.stripNamespace(qName);
 
 		// obtain the list of built-in methods
 		final List<Method> allMethods =
@@ -433,7 +433,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 			info.getDelegateClassName().replaceAll("\\$", ".") + ".class";
 		sb.append("\t@OpMethod(op = " + className + ")\n");
 
-		final String methodName = stripNamespace(info.getName());
+		final String methodName = OpUtils.stripNamespace(info.getName());
 		sb.append("\tpublic " + returnType + " " + methodName + "(");
 
 		// inputs
@@ -470,18 +470,6 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 
 	private String castTypeString(final ModuleItem<?> item) {
 		return ConversionUtils.getNonprimitiveType(item.getType()).getSimpleName();
-	}
-
-	private String getNamespace(final String qName) {
-		if (qName == null) return null;
-		final int dot = qName.lastIndexOf(".");
-		return dot < 0 ? null : qName.substring(0, dot);
-	}
-
-	private String stripNamespace(final String qName) {
-		if (qName == null) return null;
-		final int dot = qName.lastIndexOf(".");
-		return dot < 0 ? qName : qName.substring(dot + 1);
 	}
 
 	// -- Helper classes --
