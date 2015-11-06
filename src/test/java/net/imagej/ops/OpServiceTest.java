@@ -211,6 +211,8 @@ public class OpServiceTest extends AbstractOpTest {
 		assertEquals(0, errors);
 	}
 
+	// -- Helper classes --
+
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
