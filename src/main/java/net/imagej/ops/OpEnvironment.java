@@ -396,7 +396,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	Collection<CommandInfo> infos();
 
-	/** Gets the names of all available operations. */
+	/** Gets the fully qualified names of all available operations. */
 	Collection<String> ops();
 
 	/** The parent context, if any. */
