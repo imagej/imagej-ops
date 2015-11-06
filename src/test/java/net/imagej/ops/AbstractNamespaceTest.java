@@ -484,6 +484,8 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		return dot < 0 ? qName : qName.substring(dot + 1);
 	}
 
+	// -- Helper classes --
+
 	/** A data structure which maps each key to a set of values. */
 	private static class MultiMap<K, V> extends HashMap<K, Set<V>> {
 
