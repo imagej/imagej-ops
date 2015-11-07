@@ -32,7 +32,7 @@ package net.imagej.ops.slicewise;
 
 import java.util.Iterator;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
@@ -58,14 +58,14 @@ public class Hyperslice extends AbstractInterval implements
 
 	private final Interval slice;
 
-	private final OpService opService;
+	private final OpEnvironment opEnvironment;
 
 	private final RandomAccessibleInterval<?> source;
 
 	private final boolean dropSingleDimensions;
 
 	/**
-	 * @param opService {@link OpService} used
+	 * @param opEnvironment {@link OpEnvironment} used
 	 * @param source {@link RandomAccessibleInterval} which will be virtually
 	 *          cropped
 	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
@@ -73,7 +73,7 @@ public class Hyperslice extends AbstractInterval implements
 	 * @param dropSingleDimensions if true, dimensions of size one will be
 	 *          discarded in the hyper-sliced images
 	 */
-	public Hyperslice(final OpService opService,
+	public Hyperslice(final OpEnvironment opEnvironment,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest,
 		final boolean dropSingleDimensions)
 	{
@@ -90,22 +90,22 @@ public class Hyperslice extends AbstractInterval implements
 		}
 
 		this.slice = new FinalInterval(sliceMin, sliceMax);
-		this.opService = opService;
+		this.opEnvironment = opEnvironment;
 		this.source = source;
 		this.dropSingleDimensions = dropSingleDimensions;
 	}
 
 	/**
-	 * @param opService {@link OpService} used
+	 * @param opEnvironment {@link OpEnvironment} used
 	 * @param source {@link RandomAccessibleInterval} which will be virtually
 	 *          cropped
 	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
 	 *          other axes will be iterated.
 	 */
-	public Hyperslice(final OpService opService,
+	public Hyperslice(final OpEnvironment opEnvironment,
 		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
 	{
-		this(opService, source, axesOfInterest, true);
+		this(opEnvironment, source, axesOfInterest, true);
 	}
 
 	// init method
@@ -132,7 +132,7 @@ public class Hyperslice extends AbstractInterval implements
 
 	@Override
 	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new HyperSliceCursor(source, opService, this, slice);
+		return new HyperSliceCursor(source, opEnvironment, this, slice);
 	}
 
 	@Override
@@ -170,17 +170,17 @@ public class Hyperslice extends AbstractInterval implements
 	{
 
 		private final long[] tmpPosition;
-		private final OpService opService;
+		private final OpEnvironment environment;
 		private final RandomAccessibleInterval<?> src;
 		private final long[] sliceMax;
 		private final long[] sliceMin;
 
 		public HyperSliceCursor(final RandomAccessibleInterval<?> src,
-			final OpService service, final Interval fixedAxes, final Interval slice)
+			final OpEnvironment environment, final Interval fixedAxes, final Interval slice)
 		{
 			super(fixedAxes);
 
-			this.opService = service;
+			this.environment = environment;
 			this.src = src;
 			this.tmpPosition = new long[fixedAxes.numDimensions()];
 			this.sliceMax = new long[slice.numDimensions()];
@@ -193,7 +193,7 @@ public class Hyperslice extends AbstractInterval implements
 		private HyperSliceCursor(final HyperSliceCursor cursor) {
 			super(cursor);
 
-			this.opService = cursor.opService;
+			this.environment = cursor.environment;
 			this.src = cursor.src;
 			this.sliceMax = cursor.sliceMax;
 			this.sliceMin = cursor.sliceMin;
@@ -207,15 +207,15 @@ public class Hyperslice extends AbstractInterval implements
 		public RandomAccessibleInterval<?> get() {
 			localize(tmpPosition);
 
-			final long[] max = tmpPosition.clone();
-			final long[] min = tmpPosition.clone();
+			final long[] maxPos = tmpPosition.clone();
+			final long[] minPos = tmpPosition.clone();
 			for (int d = 0; d < max.length; d++) {
-				max[d] += sliceMax[d];
-				min[d] += sliceMin[d];
+				maxPos[d] += sliceMax[d];
+				minPos[d] += sliceMin[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Ops.Image.Crop.class,
-				src, new FinalInterval(min, max), dropSingleDimensions);
+			return (RandomAccessibleInterval<?>) environment.run(Ops.Image.Crop.class,
+				src, new FinalInterval(minPos, maxPos), dropSingleDimensions);
 		}
 
 		@Override

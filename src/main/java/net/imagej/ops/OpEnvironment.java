@@ -60,7 +60,6 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 
 import org.scijava.Contextual;
-import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 
 /**
@@ -386,17 +385,20 @@ public interface OpEnvironment extends Contextual {
 	 */
 	Module module(Op op, Object... args);
 
+	/** Gets the metadata for a given {@link Op} class. */
+	OpInfo info(Class<? extends Op> type);
+
 	/** Gets the metadata for a given {@link Op}. */
-	CommandInfo info(Op op);
+	OpInfo info(Op op);
 
 	/**
 	 * The available ops for the context, <em>including</em> those of the parent.
 	 *
 	 * @see #parent()
 	 */
-	Collection<CommandInfo> infos();
+	Collection<OpInfo> infos();
 
-	/** Gets the names of all available operations. */
+	/** Gets the fully qualified names of all available operations. */
 	Collection<String> ops();
 
 	/** The parent context, if any. */

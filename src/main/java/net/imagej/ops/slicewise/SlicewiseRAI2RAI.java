@@ -32,7 +32,6 @@ package net.imagej.ops.slicewise;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 
@@ -41,8 +40,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link SlicewiseOp} implementation fo {@link RandomAccessibleInterval} input
- * and {@link RandomAccessibleInterval} output.
+ * {@link SlicewiseOp} implementation for {@link RandomAccessibleInterval} input
+ * and {@link RandomAccessibleInterval} output. </br>
+ * The input {@link RandomAccessibleInterval} will be wrapped into a
+ * {@link Hyperslice}, so that the given Op can compute on a per-slice base.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
@@ -55,14 +56,11 @@ public class SlicewiseRAI2RAI<I, O> extends
 {
 
 	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private ComputerOp<I, O> op;
+	private ComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op;
 
 	@Parameter
 	private int[] axisIndices;
-	
+
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
@@ -70,9 +68,9 @@ public class SlicewiseRAI2RAI<I, O> extends
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		opService.run(Ops.Map.class, new Hyperslice(opService,
-				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
-				input, axisIndices, dropSingleDimensions), op);
+		ops().run(Ops.Map.class, new Hyperslice(ops(), output, axisIndices,
+			dropSingleDimensions), new Hyperslice(ops(), input, axisIndices,
+				dropSingleDimensions), op);
 	}
 
 }

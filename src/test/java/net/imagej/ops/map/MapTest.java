@@ -77,7 +77,7 @@ public class MapTest extends AbstractOpTest {
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 	}
 
@@ -108,7 +108,7 @@ public class MapTest extends AbstractOpTest {
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 	}
 
@@ -138,7 +138,7 @@ public class MapTest extends AbstractOpTest {
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 	}
 
@@ -168,7 +168,7 @@ public class MapTest extends AbstractOpTest {
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 	}
 
@@ -190,7 +190,7 @@ public class MapTest extends AbstractOpTest {
 		while (outCursor.hasNext()) {
 			outCursor.fwd();
 			inputRA.setPosition(outCursor);
-			assertEquals(inputRA.get().get() + 1, outCursor.get().get());
+			assertEquals((byte) (inputRA.get().get() + 1), outCursor.get().get());
 		}
 	}
 
@@ -207,7 +207,7 @@ public class MapTest extends AbstractOpTest {
 		while (cursor1.hasNext()) {
 			cursor1.fwd();
 			cursor2.fwd();
-			assertEquals(cursor1.get().get() + 1, cursor2.get().get());
+			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 	}
 
@@ -229,7 +229,7 @@ public class MapTest extends AbstractOpTest {
 		while (inputC.hasNext()) {
 			inputC.fwd();
 			outputRA.setPosition(inputC);
-			assertEquals(inputC.get().get() + 1, outputRA.get().get());
+			assertEquals((byte) (inputC.get().get() + 1), outputRA.get().get());
 		}
 	}
 
@@ -251,7 +251,7 @@ public class MapTest extends AbstractOpTest {
 		while (inputC.hasNext()) {
 			inputC.fwd();
 			outputRA.setPosition(inputC);
-			assertEquals(inputC.get().get() + 1, outputRA.get().get());
+			assertEquals((byte) (inputC.get().get() + 1), outputRA.get().get());
 		}
 	}
 

@@ -37,11 +37,11 @@ import java.util.List;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpCandidate;
+import net.imagej.ops.OpInfo;
 import net.imagej.ops.OpUtils;
 import net.imagej.ops.Ops;
 
 import org.scijava.ItemIO;
-import org.scijava.module.ModuleInfo;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -55,27 +55,27 @@ public abstract class AbstractHelp extends AbstractOp implements Ops.Help {
 	private String help;
 
 	protected <OP extends Op> void help(final List<OpCandidate<OP>> candidates) {
-		final ArrayList<ModuleInfo> infos = new ArrayList<ModuleInfo>();
+		final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
 		for (final OpCandidate<OP> candidate : candidates) {
-			infos.add(candidate.getInfo());
+			infos.add(candidate.opInfo());
 		}
 		help(infos);
 	}
 
-	protected void help(final Collection<? extends ModuleInfo> infos) {
+	protected void help(final Collection<? extends OpInfo> infos) {
 		if (infos.size() == 0) {
 			help = "No such operation.";
 			return;
 		}
 
 		final StringBuilder sb = new StringBuilder("Available operations:");
-		for (final ModuleInfo info : infos) {
-			sb.append("\n\t" + OpUtils.opString(info));
+		for (final OpInfo info : infos) {
+			sb.append("\n\t" + OpUtils.opString(info.cInfo()));
 		}
 
 		if (infos.size() == 1) {
-			final ModuleInfo info = infos.iterator().next();
-			final String description = info.getDescription();
+			final OpInfo info = infos.iterator().next();
+			final String description = info.cInfo().getDescription();
 			if (description != null && !description.isEmpty()) {
 				sb.append("\n\n" + description);
 			}

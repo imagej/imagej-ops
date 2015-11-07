@@ -38,10 +38,10 @@ import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.OpInfo;
 
 import org.scijava.Priority;
 import org.scijava.cache.CacheService;
-import org.scijava.command.CommandInfo;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -59,11 +59,11 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	public CachedOpEnvironment(final OpEnvironment parent,
-		final Collection<? extends CommandInfo> prioritizedInfos)
+		final Collection<? extends OpInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
-		for (final CommandInfo info : prioritizedInfos) {
-			info.setPriority(Priority.FIRST_PRIORITY);
+		for (final OpInfo info : prioritizedInfos) {
+			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
 		}
 	}
 

@@ -30,13 +30,13 @@
 
 package net.imagej.ops;
 
+import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
-import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
 
 /**
- * Container class for a possible operation match between an {@link OpRef} and a
- * {@link ModuleInfo}, as computed by the {@link OpMatchingService}.
+ * Container class for a possible operation match between an {@link OpRef} and
+ * an {@link OpInfo}, as computed by the {@link OpMatchingService}.
  * 
  * @author Curtis Rueden
  * @param <OP> The type of {@link Op}.
@@ -60,7 +60,7 @@ public class OpCandidate<OP extends Op> {
 
 	private final OpEnvironment ops;
 	private final OpRef<OP> ref;
-	private final ModuleInfo info;
+	private final OpInfo info;
 
 	private Module module;
 	private StatusCode code;
@@ -68,7 +68,7 @@ public class OpCandidate<OP extends Op> {
 	private ModuleItem<?> item;
 
 	public OpCandidate(final OpEnvironment ops, final OpRef<OP> ref,
-		final ModuleInfo info)
+		final OpInfo info)
 	{
 		this.ops = ops;
 		this.ref = ref;
@@ -85,9 +85,18 @@ public class OpCandidate<OP extends Op> {
 		return ref;
 	}
 
-	/** Gets the module info describing the op to match against. */
-	public ModuleInfo getInfo() {
+	/** Gets the {@link OpInfo} metadata describing the op to match against. */
+	public OpInfo opInfo() {
 		return info;
+	}
+
+	/**
+	 * Gets the {@link CommandInfo} metadata describing the op to match against.
+	 * 
+	 * @see OpInfo#cInfo()
+	 */
+	public CommandInfo cInfo() {
+		return info.cInfo();
 	}
 
 	/** Sets the module instance associated with the attempted match. */
@@ -148,7 +157,7 @@ public class OpCandidate<OP extends Op> {
 				sb.append("MATCH");
 				break;
 			case INVALID_MODULE:
-				sb.append("Invalid module: " + info.getDelegateClassName());
+				sb.append("Invalid module: " + info.cInfo().getDelegateClassName());
 				break;
 			case TOO_FEW_OUTPUTS:
 				sb.append("Too few outputs");
@@ -185,6 +194,6 @@ public class OpCandidate<OP extends Op> {
 
 	@Override
 	public String toString() {
-		return OpUtils.opString(getInfo());
+		return info.toString();
 	}
 }

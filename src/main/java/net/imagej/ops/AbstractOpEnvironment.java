@@ -42,9 +42,9 @@ import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
+import net.imagej.ops.features.lbp2d.LBPNamespace;
 import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.features.zernike.ZernikeNamespace;
-import net.imagej.ops.features.lbp2d.LBPNamespace;
 import net.imagej.ops.filter.FilterNamespace;
 import net.imagej.ops.geom.GeomNamespace;
 import net.imagej.ops.image.ImageNamespace;
@@ -63,7 +63,6 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 
 import org.scijava.AbstractContextual;
-import org.scijava.command.CommandInfo;
 import org.scijava.command.CommandService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
@@ -222,18 +221,22 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 
 	@Override
 	public Module module(final Op op, final Object... args) {
-		final Module module = info(op).createModule(op);
+		final Module module = info(op).cInfo().createModule(op);
 		getContext().inject(module.getDelegateObject());
 		return matcher.assignInputs(module, args);
+	}
+
+	@Override
+	public OpInfo info(final Op op) {
+		return info(op.getClass());
 	}
 
 	@Override
 	public Collection<String> ops() {
 		// collect list of unique operation names
 		final HashSet<String> operations = new HashSet<String>();
-		for (final CommandInfo info : infos()) {
-			final String name = info.getName();
-			if (name != null && !name.isEmpty()) operations.add(info.getName());
+		for (final OpInfo info : infos()) {
+			if (info.isNamed()) operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list

@@ -35,11 +35,11 @@ import java.util.Collection;
 import java.util.List;
 
 import net.imagej.ops.Namespace;
+import net.imagej.ops.OpInfo;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
-import org.scijava.command.CommandInfo;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -60,11 +60,11 @@ public class HelpForNamespace extends AbstractHelp {
 
 	@Override
 	public void run() {
-		final Collection<CommandInfo> allOps = ops.infos();
-		final List<CommandInfo> requestedOps = new ArrayList<CommandInfo>();
+		final Collection<OpInfo> allOps = ops.infos();
+		final List<OpInfo> requestedOps = new ArrayList<OpInfo>();
 
-		for (final CommandInfo info : allOps) {
-			if (info.getName().startsWith(namespace.getName() + ".")) {
+		for (final OpInfo info : allOps) {
+			if (info.isNamespace(namespace.getName())) {
 				requestedOps.add(info);
 			}
 		}
