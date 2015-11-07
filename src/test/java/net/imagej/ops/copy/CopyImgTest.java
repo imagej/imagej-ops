@@ -69,32 +69,51 @@ public class CopyImgTest extends AbstractOpTest {
 
 	@Test
 	public void copyImgNoOutputTest() {
+		Img<DoubleType> inputCopy = input.factory().create(input, input.firstElement());
+		copy(input, inputCopy);
+		
 		@SuppressWarnings("unchecked")
 		RandomAccessibleInterval<DoubleType> output = (RandomAccessibleInterval<DoubleType>) ops
 				.run(CopyImg.class, input);
 
 		Cursor<DoubleType> inc = input.localizingCursor();
+		RandomAccess<DoubleType> inCopyRA = inputCopy.randomAccess();
 		RandomAccess<DoubleType> outRA = output.randomAccess();
 
 		while (inc.hasNext()) {
 			inc.fwd();
+			inCopyRA.setPosition(inc);
 			outRA.setPosition(inc);
 			assertEquals(inc.get().get(), outRA.get().get(), 0.0);
+			assertEquals(inc.get().get(), inCopyRA.get().get(), 0.0);
 		}
 	}
 
 	@Test
 	public void copyImgWithOutputTest() {
+		Img<DoubleType> inputCopy = input.factory().create(input, input.firstElement());
+		copy(input, inputCopy);
+		
 		Img<DoubleType> output = input.factory().create(input,
 				input.firstElement());
 
 		ops.run(CopyImg.class, output, input);
 
 		final Cursor<DoubleType> inc = input.cursor();
+		final Cursor<DoubleType> inCopyc = inputCopy.cursor();
 		final Cursor<DoubleType> outc = output.cursor();
 
 		while (inc.hasNext()) {
 			assertEquals(inc.next().get(), outc.next().get(), 0.0);
+			assertEquals(inc.get().get(), inCopyc.next().get(), 0.0);
+		}
+	}
+
+	private void copy(Img<DoubleType> from, Img<DoubleType> to) {
+		final Cursor<DoubleType> fromc = from.cursor();
+		final Cursor<DoubleType> toc = to.cursor();
+		while (fromc.hasNext()) {
+			toc.next().set(fromc.next().get());
 		}
 	}
 }
