@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
@@ -46,17 +47,17 @@ import org.junit.Test;
 
 /**
  * Test {@link CopyImg}.
- * 
- * @author Tim-Oliver Buchholz, University of Konstanz
  *
+ * @author Tim-Oliver Buchholz, University of Konstanz
  */
 public class CopyImgTest extends AbstractOpTest {
+
 	private Img<DoubleType> input;
 
 	@Before
 	public void createData() {
-		input = new ArrayImgFactory<DoubleType>().create(
-				new int[] { 120, 100 }, new DoubleType());
+		input = new ArrayImgFactory<DoubleType>().create(new int[] { 120, 100 },
+			new DoubleType());
 
 		final Random r = new Random(System.currentTimeMillis());
 
@@ -69,32 +70,53 @@ public class CopyImgTest extends AbstractOpTest {
 
 	@Test
 	public void copyImgNoOutputTest() {
-		@SuppressWarnings("unchecked")
-		RandomAccessibleInterval<DoubleType> output = (RandomAccessibleInterval<DoubleType>) ops
-				.run(CopyImg.class, input);
+		final Img<DoubleType> inputCopy = input.factory().create(input, input
+			.firstElement());
+		copy(input, inputCopy);
 
-		Cursor<DoubleType> inc = input.localizingCursor();
-		RandomAccess<DoubleType> outRA = output.randomAccess();
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<DoubleType> output =
+			(RandomAccessibleInterval<DoubleType>) ops.run(CopyImg.class, input);
+
+		final Cursor<DoubleType> inc = input.localizingCursor();
+		final RandomAccess<DoubleType> inCopyRA = inputCopy.randomAccess();
+		final RandomAccess<DoubleType> outRA = output.randomAccess();
 
 		while (inc.hasNext()) {
 			inc.fwd();
+			inCopyRA.setPosition(inc);
 			outRA.setPosition(inc);
 			assertEquals(inc.get().get(), outRA.get().get(), 0.0);
+			assertEquals(inc.get().get(), inCopyRA.get().get(), 0.0);
 		}
 	}
 
 	@Test
 	public void copyImgWithOutputTest() {
-		Img<DoubleType> output = input.factory().create(input,
-				input.firstElement());
+		final Img<DoubleType> inputCopy = input.factory().create(input, input
+			.firstElement());
+		copy(input, inputCopy);
+
+		final Img<DoubleType> output = input.factory().create(input, input
+			.firstElement());
 
 		ops.run(CopyImg.class, output, input);
 
 		final Cursor<DoubleType> inc = input.cursor();
+		final Cursor<DoubleType> inCopyc = inputCopy.cursor();
 		final Cursor<DoubleType> outc = output.cursor();
 
 		while (inc.hasNext()) {
 			assertEquals(inc.next().get(), outc.next().get(), 0.0);
+			assertEquals(inc.get().get(), inCopyc.next().get(), 0.0);
+		}
+	}
+
+	private void copy(final Img<DoubleType> from, final Img<DoubleType> to) {
+		final Cursor<DoubleType> fromc = from.cursor();
+		final Cursor<DoubleType> toc = to.cursor();
+		while (fromc.hasNext()) {
+			toc.next().set(fromc.next().get());
 		}
 	}
 }
