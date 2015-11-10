@@ -33,7 +33,6 @@ package net.imagej.ops.copy;
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -43,7 +42,6 @@ import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -56,9 +54,6 @@ import org.scijava.plugin.Plugin;
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 		extends AbstractHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
 		implements Ops.Copy.ImgLabeling, Contingent {
-
-	@Parameter
-	private OpService ops;
 	
 	
 	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;
@@ -73,7 +68,7 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 	
 	@Override
 	public ImgLabeling<L, T> createOutput(final ImgLabeling<L, T> input) {
-		return ops.create().imgLabeling(input);
+		return ops().create().imgLabeling(input);
 	}
 
 	

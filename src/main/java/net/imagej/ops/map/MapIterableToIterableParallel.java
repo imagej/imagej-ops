@@ -32,7 +32,6 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -41,7 +40,6 @@ import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -57,9 +55,6 @@ public class MapIterableToIterableParallel<A, B> extends
 	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel
 {
-
-	@Parameter
-	private OpService opService;
 
 	@Override
 	public boolean conforms() {
@@ -81,7 +76,7 @@ public class MapIterableToIterableParallel<A, B> extends
 				"Input and Output do not have the same iteration order!");
 		}
 
-		opService.run(ChunkerOp.class, new CursorBasedChunk() {
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,

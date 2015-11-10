@@ -73,9 +73,6 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	private VertexInterpolator interpolatorClass =
 		new BitTypeVertexInterpolator();
 
-	@Parameter
-	private OpService ops;
-
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
