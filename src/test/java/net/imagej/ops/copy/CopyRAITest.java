@@ -27,36 +27,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.Converter;
+import net.imglib2.converter.Converters;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
-
-import org.junit.Before;
-import org.junit.Test;
+import net.imglib2.view.Views;
 
 /**
  * Test {@link CopyRAI}.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
- *
  */
 public class CopyRAITest extends AbstractOpTest {
+
 	private Img<UnsignedByteType> input;
 
 	@Before
 	public void createData() {
 		input = new ArrayImgFactory<UnsignedByteType>().create(new int[] { 120,
-				100 }, new UnsignedByteType());
+			100 }, new UnsignedByteType());
 
 		final Random r = new Random(System.currentTimeMillis());
 
@@ -70,8 +74,9 @@ public class CopyRAITest extends AbstractOpTest {
 	@Test
 	public void copyRAINoOutputTest() {
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<UnsignedByteType> output = (RandomAccessibleInterval<UnsignedByteType>) ops
-				.run(CopyRAI.class, input);
+		final RandomAccessibleInterval<UnsignedByteType> output =
+			(RandomAccessibleInterval<UnsignedByteType>) ops.run(CopyRAI.class,
+				input);
 
 		final Cursor<UnsignedByteType> inc = input.localizingCursor();
 		final RandomAccess<UnsignedByteType> outRA = output.randomAccess();
@@ -85,8 +90,8 @@ public class CopyRAITest extends AbstractOpTest {
 
 	@Test
 	public void copyRAIWithOutputTest() {
-		final Img<UnsignedByteType> output = input.factory().create(input,
-				input.firstElement());
+		final Img<UnsignedByteType> output = input.factory().create(input, input
+			.firstElement());
 
 		ops.run(CopyRAI.class, output, input);
 
@@ -96,5 +101,26 @@ public class CopyRAITest extends AbstractOpTest {
 		while (inc.hasNext()) {
 			assertEquals(inc.next().get(), outc.next().get());
 		}
+	}
+
+	@Test
+	public void copyRAIViewTest() {
+
+		// Create something which is NOT an IterableInterval
+		final RandomAccessibleInterval<UnsignedByteType> converted = Converters
+			.convert((RandomAccessibleInterval<UnsignedByteType>) input,
+				new Converter<UnsignedByteType, UnsignedByteType>()
+		{
+
+					@Override
+					public void convert(UnsignedByteType i, UnsignedByteType o) {
+						o.set(i.get());
+					}
+				}, new UnsignedByteType());
+
+		// try to retrieve the output. Doesn't work. Internally the IterableInterval
+		// can be converted to a RAI, however, during execution the RAI isn't
+		// converted to an II. Boom. Related to https://github.com/imagej/imagej-ops/issues/231
+		ops.run(CopyRAI.class, converted);
 	}
 }
