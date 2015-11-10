@@ -36,7 +36,6 @@ import java.util.List;
 
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpInfo;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
@@ -53,14 +52,11 @@ import org.scijava.plugin.Plugin;
 public class HelpForNamespace extends AbstractHelp {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private Namespace namespace;
 
 	@Override
 	public void run() {
-		final Collection<OpInfo> allOps = ops.infos();
+		final Collection<OpInfo> allOps = ops().infos();
 		final List<OpInfo> requestedOps = new ArrayList<OpInfo>();
 
 		for (final OpInfo info : allOps) {

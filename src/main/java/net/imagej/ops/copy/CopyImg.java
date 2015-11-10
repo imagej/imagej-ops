@@ -34,13 +34,11 @@ import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -53,9 +51,6 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
 		AbstractHybridOp<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
-
-	@Parameter
-	private OpService ops;
 	
 	private ComputerOp<Iterable<T>, Iterable<T>> copyComputer;
 
@@ -64,7 +59,7 @@ public class CopyImg<T extends NativeType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = (ComputerOp)ops.computer(CopyIterableInterval.class, in(), in());
+		copyComputer = (ComputerOp)ops().computer(CopyIterableInterval.class, in(), in());
 		createFunc = (FunctionOp) ops().function(Ops.Create.Img.class, Img.class, 
 				in());
 	}

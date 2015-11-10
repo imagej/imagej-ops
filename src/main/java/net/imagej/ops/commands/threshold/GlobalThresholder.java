@@ -56,9 +56,6 @@ public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
     @Parameter
     private ComputeThreshold<ImgPlus<T>,T> method;
 
-    @Parameter
-    private OpService ops;
-
     // should not be Dataset, DisplayService, ...
     @Parameter
     private ImgPlus<T> in;
@@ -72,10 +69,10 @@ public class GlobalThresholder<T extends RealType<T>> extends AbstractOp {
 
     @Override
     public void run() {
-        Op threshold = ops.op("threshold", out, in, method);
+        Op threshold = ops().op("threshold", out, in, method);
 
         // TODO actually map axes to int array
-        ops.slicewise(out, in, threshold, new int[]{0, 1});
+        ops().slicewise(out, in, threshold, new int[]{0, 1});
     }
     
     // TODO call otsu: out = ops.run(GlobalThresholder.class, ops.ops(Otsu...),in).

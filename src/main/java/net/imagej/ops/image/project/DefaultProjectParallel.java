@@ -35,7 +35,6 @@ import java.util.Iterator;
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -56,9 +55,6 @@ public class DefaultProjectParallel<T, V> extends
 {
 
 	@Parameter
-	private OpService opService;
-
-	@Parameter
 	private ComputerOp<Iterable<T>, V> method;
 
 	// dimension which will be projected
@@ -69,7 +65,7 @@ public class DefaultProjectParallel<T, V> extends
 	public void compute(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
-		opService.run(ChunkerOp.class, new CursorBasedChunk() {
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void
