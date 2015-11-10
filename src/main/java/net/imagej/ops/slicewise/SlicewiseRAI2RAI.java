@@ -68,8 +68,8 @@ public class SlicewiseRAI2RAI<I, O> extends
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		ops().run(Ops.Map.class, new Hyperslice(ops(), output, axisIndices,
-			dropSingleDimensions), new Hyperslice(ops(), input, axisIndices,
+		ops().run(Ops.Map.class, new Hyperslice<O>(ops(), output, axisIndices,
+			dropSingleDimensions), new Hyperslice<I>(ops(), input, axisIndices,
 				dropSingleDimensions), op);
 	}
 
