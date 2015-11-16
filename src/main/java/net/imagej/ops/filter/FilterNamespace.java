@@ -41,6 +41,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imglib2.Dimensions;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -52,7 +53,6 @@ import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.plugin.Plugin;
 
@@ -676,8 +676,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast,
-				obf);
+				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast, obf);
 		return result;
 	}
 
@@ -693,8 +692,8 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast,
-				obf, factory);
+				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast, obf,
+				factory);
 		return result;
 	}
 
@@ -710,8 +709,8 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<C> result =
 			(RandomAccessibleInterval<C>) ops().run(
-				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast,
-				obf, factory, fftType);
+				net.imagej.ops.filter.fft.FFTHybridOp.class, in, borderSize, fast, obf,
+				factory, fftType);
 		return result;
 	}
 
@@ -1121,6 +1120,30 @@ public class FilterNamespace extends AbstractNamespace {
 			(RandomAccessibleInterval<T>) ops().run(
 				net.imagej.ops.filter.min.DefaultMinFilter.class, out, in, shape,
 				outOfBoundsFactory);
+		return result;
+	}
+
+	/** Executes the "paddingIntervalCentered" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.pad.PaddingIntervalCentered.class)
+	public <T extends RealType<T>> Interval paddingIntervalCentered(
+		final RandomAccessibleInterval<T> in, final Dimensions paddedDimensions)
+	{
+		final Interval result =
+			(Interval) ops().run(
+				net.imagej.ops.filter.pad.PaddingIntervalCentered.class, in,
+				paddedDimensions);
+		return result;
+	}
+
+	/** Executes the "paddingIntervalOrigin" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.filter.pad.PaddingIntervalOrigin.class)
+	public <T extends RealType<T>> Interval paddingIntervalOrigin(
+		final RandomAccessibleInterval<T> in, final Interval centeredInterval)
+	{
+		final Interval result =
+			(Interval) ops().run(
+				net.imagej.ops.filter.pad.PaddingIntervalOrigin.class, in,
+				centeredInterval);
 		return result;
 	}
 
