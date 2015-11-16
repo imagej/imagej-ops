@@ -32,8 +32,10 @@ package net.imagej.ops.map.neighborhood;
 
 import java.util.Iterator;
 
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Map;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Positionable;
@@ -70,18 +72,21 @@ public class MapNeighborhoodWithCenter<I, O>
 
 	@Parameter
 	private Shape shape;
+	private ComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		map = (ComputerOp) ops().computer(Map.class, Iterable.class,
+			NeighborhoodWithCenterIterableInterval.class, getOp());
+	}
 
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		final IterableInterval<Neighborhood<I>> neighborhoods =
-			shape.neighborhoodsSafe(input);
-
-		final CenterAwareComputerOp<I, O> op = getOp();
-
-		ops().map(Views.iterable(output), new NeighborhoodWithCenterIterableInterval(
-			neighborhoods, input), op);
+		map.compute(new NeighborhoodWithCenterIterableInterval(
+			shape.neighborhoodsSafe(input), input), Views.iterable(output));
 	}
 
 	/**
