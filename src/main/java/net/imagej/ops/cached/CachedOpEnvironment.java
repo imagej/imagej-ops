@@ -62,7 +62,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		final Collection<? extends OpInfo> prioritizedInfos)
 	{
 		super(parent, prioritizedInfos);
-		for (final OpInfo info : prioritizedInfos) {
+		
+		if (prioritizedInfos != null) 
+			for (final OpInfo info : prioritizedInfos) {
 			info.cInfo().setPriority(Priority.FIRST_PRIORITY);
 		}
 	}
