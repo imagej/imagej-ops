@@ -79,6 +79,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	/**
 	 * The interval to process
+	 * TODO: this is probably redundant - remove
 	 */
 	@Parameter
 	private Interval imgConvolutionInterval;
