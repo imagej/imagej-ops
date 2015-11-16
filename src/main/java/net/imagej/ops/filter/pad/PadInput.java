@@ -4,10 +4,8 @@ package net.imagej.ops.filter.pad;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
-import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -26,7 +24,7 @@ import org.scijava.plugin.Plugin;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Ops.Filter.FFT.class, name = Ops.Filter.PadInput.NAME,
+@Plugin(type = Ops.Filter.PadInput.class, name = Ops.Filter.PadInput.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
 	extends AbstractFunctionOp<I, O>
@@ -51,12 +49,8 @@ public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<
 					Util.getTypeFromInterval(input).createVariable());
 		}
 
-		final long[] paddedSize = new long[paddedDimensions.numDimensions()];
-		paddedDimensions.dimensions(paddedSize);
-
 		Interval inputInterval =
-			FFTMethods.paddingIntervalCentered(input, FinalDimensions
-				.wrap(paddedSize));
+			ops().filter().paddingIntervalCentered(input, paddedDimensions);
 
 		return (O) Views.interval(Views.extend(input, obf), inputInterval);
 	}

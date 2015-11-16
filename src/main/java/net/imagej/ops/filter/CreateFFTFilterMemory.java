@@ -33,10 +33,8 @@ package net.imagej.ops.filter;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imglib2.FinalDimensions;
-import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -171,32 +169,30 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 
 		// 3. Using the size calculated above compute the new interval for
 		// the input image
+
 		imgConvolutionInterval =
-			FFTMethods.paddingIntervalCentered(input, FinalDimensions
-				.wrap(paddedDimensions));
+			ops().filter().paddingIntervalCentered(input,
+				FinalDimensions.wrap(paddedDimensions));
 
 		// 4. compute the new interval for the kernel image
+
 		final Interval kernelConvolutionInterval =
-			FFTMethods.paddingIntervalCentered(kernel, FinalDimensions
-				.wrap(paddedDimensions));
+			ops().filter().paddingIntervalCentered(kernel,
+				FinalDimensions.wrap(paddedDimensions));
 
 		// compute where to place the final Interval for the kernel so that the
 		// coordinate in the center
 		// of the kernel is at position (0,0).
-		final long[] min = new long[numDimensions];
-		final long[] max = new long[numDimensions];
 
-		for (int d = 0; d < numDimensions; ++d) {
-			min[d] = kernel.min(d) + kernel.dimension(d) / 2;
-			max[d] = min[d] + kernelConvolutionInterval.dimension(d) - 1;
-		}
+		final Interval kernelConvolutionIntervalOrigin =
+			ops().filter().paddingIntervalOrigin(kernel, kernelConvolutionInterval);
 
 		// assemble the kernel (size of the input + extended periodic +
 		// top left at center of input kernel)
 		raiExtendedKernel =
 			Views.interval(Views.extendPeriodic(Views.interval(Views.extendValue(
 				kernel, Util.getTypeFromInterval(kernel).createVariable()),
-				kernelConvolutionInterval)), new FinalInterval(min, max));
+				kernelConvolutionInterval)), kernelConvolutionIntervalOrigin);
 
 		// assemble the extended view of the image
 		raiExtendedInput =
