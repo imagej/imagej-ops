@@ -34,7 +34,6 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFilterImg;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -54,7 +53,12 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 {
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> img, final RandomAccessibleInterval<O> out) {
+	public RandomAccessibleInterval<O> compute(
+		final RandomAccessibleInterval<I> img)
+	{
+
+		RandomAccessibleInterval<O> out = createOutput(img);
+
 		if (getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
 				Util.getTypeFromInterval(img).createVariable()));
@@ -78,6 +82,8 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 			Views.interval(Views.extend(out, obfOutput), out);
 
 		ops().filter().convolve(extendedOut, extendedIn, getKernel());
+
+		return out;
 	}
 
 	@Override

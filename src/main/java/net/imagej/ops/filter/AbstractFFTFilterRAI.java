@@ -32,7 +32,6 @@ package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -61,27 +60,27 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	/**
 	 * kernel rai. Needs to be the same size as the input rai
 	 */
-	@Parameter(required = false)
+	@Parameter
 	private RandomAccessibleInterval<K> raiExtendedKernel;
 
 	/**
 	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
 	 * the fft size of raiExtendedInput
 	 */
-	@Parameter(required = false)
-	private Img<C> fftInput;
+	@Parameter
+	private RandomAccessibleInterval<C> fftInput;
 
 	/**
 	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
 	 * to the fft size of raiExtendedKernel
 	 */
-	@Parameter(required = false)
-	private Img<C> fftKernel;
+	@Parameter
+	private RandomAccessibleInterval<C> fftKernel;
 
 	/**
 	 * RAI to store output
 	 */
-	@Parameter(required = false)
+	@Parameter
 	private RandomAccessibleInterval<O> output;
 
 	/**
@@ -106,11 +105,11 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 		return raiExtendedKernel;
 	}
 
-	protected Img<C> getFFTInput() {
+	protected RandomAccessibleInterval<C> getFFTInput() {
 		return fftInput;
 	}
 
-	protected Img<C> getFFTKernel() {
+	protected RandomAccessibleInterval<C> getFFTKernel() {
 		return fftKernel;
 	}
 

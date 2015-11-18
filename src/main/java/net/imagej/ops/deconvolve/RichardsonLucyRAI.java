@@ -77,8 +77,8 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		inPlaceDivide(getRAIExtendedReblurred(), getRAIExtendedInput());
 
 		// 3. correlate psf with the output of step 2.
-		ops().filter().correlate(getRAIExtendedReblurred(), null, getFFTInput(),
-			getFFTKernel(), getRAIExtendedReblurred(), true, false);
+		ops().filter().correlate(getRAIExtendedReblurred(), getRAIExtendedKernel(),
+			getFFTInput(), getFFTKernel(), getRAIExtendedReblurred(), true, false);
 
 		// compute estimate -
 		// for standard RL this step will multiply output of correlation step

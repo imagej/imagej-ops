@@ -33,9 +33,10 @@ package net.imagej.ops.filter.convolve;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.LinearFFTFilterRAI;
 import net.imglib2.Cursor;
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -59,9 +60,11 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	 * use an op here??
 	 */
 	@Override
-	protected void frequencyOperation(Img<C> a, Img<C> b) {
-		final Cursor<C> cursorA = a.cursor();
-		final Cursor<C> cursorB = b.cursor();
+	protected void frequencyOperation(RandomAccessibleInterval<C> a,
+		RandomAccessibleInterval<C> b)
+	{
+		final Cursor<C> cursorA = Views.iterable(a).cursor();
+		final Cursor<C> cursorB = Views.iterable(b).cursor();
 
 		while (cursorA.hasNext()) {
 			cursorA.fwd();

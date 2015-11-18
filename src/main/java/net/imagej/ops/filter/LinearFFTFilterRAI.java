@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter;
 
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -72,5 +73,5 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 	// abstract function that implements an operation in frequency domain (ie
 	// multiplication for convolution,
 	// complex conjugate multiplication for correlation, Wiener Filter, etc.)
-	protected abstract void frequencyOperation(final Img<C> a, final Img<C> b);
+	protected abstract void frequencyOperation(final RandomAccessibleInterval<C> a, final RandomAccessibleInterval<C> b);
 }

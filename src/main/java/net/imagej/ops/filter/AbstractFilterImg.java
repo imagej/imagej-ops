@@ -31,7 +31,6 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.AbstractHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -52,7 +51,7 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends
-	AbstractHybridOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	/**
@@ -95,10 +94,10 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 	 * Create the output using the outFactory and outType if they e/*xist. If
 	 * these are null use a default factory and type
 	 */
-	@Override
+	@SuppressWarnings("unchecked")
 	public RandomAccessibleInterval<O> createOutput(RandomAccessibleInterval<I> input) {
 		
-
+		
 		// if the outType is null
 		if (outType == null) {
 

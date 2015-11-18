@@ -65,7 +65,7 @@ public class DeconvolveTest extends AbstractOpTest {
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> convolved = ops.filter().convolve(in, kernel);
+		RandomAccessibleInterval<FloatType> convolved = ops.filter().convolve(in, kernel);
 
 		final RandomAccessibleInterval<FloatType> deconvolved2 =
 			ops.deconvolve().richardsonLucy(convolved, kernel, 10);
