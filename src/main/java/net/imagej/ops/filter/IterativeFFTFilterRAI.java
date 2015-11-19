@@ -359,7 +359,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		drawCube(mask, maskStart, maskSize, 1.0);
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
+		ops().run(CorrelateFFTRAI.class, normalization, this.getRAIExtendedKernel(), getFFTInput(),
 			getFFTKernel(), normalization, true, false);
 
 		// threshold small values that can cause numerical instability
