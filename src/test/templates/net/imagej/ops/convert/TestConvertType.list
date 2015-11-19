@@ -65,8 +65,8 @@ types = ```
 	[op: "Uint64",   built: "uint64",   imglibT: "UnsignedLong",   outMethod: "uint64",   values: [
 		[v: "1049L",                            r: "1049L",                            i: "0L"],
 		[v: "0L",                               r: "0L",                               i: "0L"],
-		[v: "p64.longValue()",                  r: "p64.longValue()",                  i: "0L"],
-		[v: "n64.longValue()",                  r: "n64.longValue()",                  i: "0L"]
+		[v: "p64",                              r: "p64",                              i: "0L", s:""],
+		[v: "n64",                              r: "n64",                              i: "0L", s:""]
 	]],
 	[op: "Uint128",  built: "uint128",  imglibT: "Unsigned128Bit", outMethod: "uint128",  values: [
 		[v: "beef",                             r: "beef",                             i: "biZero"],

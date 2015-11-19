@@ -531,17 +531,7 @@ public final class ConvertTypes {
 
 		@Override
 		public void compute(final T input, final Unsigned128BitType output) {
-			/**
-			 * HACK The IntegerType interface does not currently have a method which
-			 * returns a BigInteger. See issue {@link https
-			 * ://github.com/imglib/imglib2/issues/105}.
-			 */
-			if (input instanceof Unsigned128BitType) {
-				output.set(((Unsigned128BitType) input).get());
-			}
-			else {
-				output.set(BigInteger.valueOf(input.getIntegerLong()));
-			}
+			output.set(input.getBigInteger());
 		}
 
 	}

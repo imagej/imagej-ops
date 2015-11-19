@@ -110,6 +110,8 @@ public class TestConvertType extends AbstractOpTest{
 		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).get(), 0);
 #elseif ($toType.op.equals("Uint64"))
 		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).getBigInteger());
+#elseif ($toType.op.equals("Uint128") && $fromType.op.equals("Uint64") && $value.s)
+		assertEquals(Types.uint64Uint128($value.r), ops.convert().${toType.built}(b).getBigInteger());
 #else
 		assertEquals($methodName($value.r), ops.convert().${toType.built}(b).get());
 #end

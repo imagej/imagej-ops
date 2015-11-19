@@ -177,6 +177,8 @@ public final class Types {
 
 	public static BigInteger uint128(final BigInteger value) { return value.and(mask128); }
 
+	public static BigInteger uint64Uint128(final BigInteger value){ return value.and(maskU64); }
+
 	public static BigInteger uint128(final boolean value) { return value ? BigInteger.ONE : BigInteger.ZERO; }
 
 	public static float float32(final long value) { return value; }
