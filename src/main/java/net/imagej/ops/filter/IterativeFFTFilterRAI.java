@@ -169,6 +169,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			estimate =
 				imgFactory
 					.create(getImgConvolutionInterval(), outType.createVariable());
+
 			final O sum = ops().stats().<I, O> sum(Views.iterable(in()));
 
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
@@ -184,18 +185,13 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				imgFactory
 					.create(getImgConvolutionInterval(), outType.createVariable());
 
-			// TODO: review this step
-			// extend the output and use it as a buffer to store the estimate
 			raiExtendedEstimate = estimate;
-
-			// assemble the extended view of the reblurred
 			raiExtendedReblurred = reblurred;
 		}
 		else {
 			// create image for the reblurred
 			reblurred = imgFactory.create(out(), outType.createVariable());
 
-			// TODO: review this step
 			// extend the output and use it as a buffer to store the estimate
 			raiExtendedEstimate =
 				Views.interval(Views.extend(out(), getObfOutput()),
@@ -233,8 +229,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			this.createNormalizationImageSemiNonCirculant();
 		}
 
-		createReblurred();
-
 		if (getAccelerate()) {
 			accelerator = new VectorAccelerator<O>(this.getImgFactory());
 		}
@@ -261,8 +255,11 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 	}
 
+	/**
+	 * convolve estimate with kernel to create reblurred
+	 */
 	protected void createReblurred() {
-		// perform convolution -- kernel FFT should allready exist
+
 		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate,
 			getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
