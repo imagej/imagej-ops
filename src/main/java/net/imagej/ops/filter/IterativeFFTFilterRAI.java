@@ -524,21 +524,4 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	}
 
-	// TODO replace with op
-	protected <T extends RealType<T>> void inPlaceMultiply(
-		final Img<T> inputOutput, final Img<T> input)
-	{
-		final Cursor<T> cursorInputOutput = inputOutput.cursor();
-		final Cursor<T> cursorInput = input.cursor();
-
-		while (cursorInputOutput.hasNext()) {
-			cursorInputOutput.fwd();
-			cursorInput.fwd();
-
-			cursorInputOutput.get().mul(cursorInput.get());
-
-		}
-
-	}
-
 }
