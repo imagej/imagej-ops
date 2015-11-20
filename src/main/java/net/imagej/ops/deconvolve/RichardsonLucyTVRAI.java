@@ -79,10 +79,10 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 	protected RandomAccessibleInterval<O> raiExtendedVariation;
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 
-		Type<O> outType = Util.getTypeFromInterval(getOutput());
+		Type<O> outType = Util.getTypeFromInterval(out());
 
 		variation =
 			getImgFactory()

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractOp;
+import net.imagej.ops.AbstractComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -47,15 +47,8 @@ import org.scijava.plugin.Parameter;
  * @param <C>
  */
 public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractOp
+	extends AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
-
-	/**
-	 * input rai. If extension is desired it needs to be done before passing the
-	 * rai to the op
-	 */
-	@Parameter
-	private RandomAccessibleInterval<I> raiExtendedInput;
 
 	/**
 	 * kernel rai. Needs to be the same size as the input rai
@@ -78,12 +71,6 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	private RandomAccessibleInterval<C> fftKernel;
 
 	/**
-	 * RAI to store output
-	 */
-	@Parameter
-	private RandomAccessibleInterval<O> output;
-
-	/**
 	 * Boolean indicating that the input FFT has allready been calculated (use
 	 * when re-using an input with the same kernel size)
 	 */
@@ -97,9 +84,6 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
 
-	protected RandomAccessibleInterval<I> getRAIExtendedInput() {
-		return raiExtendedInput;
-	}
 
 	protected RandomAccessibleInterval<K> getRAIExtendedKernel() {
 		return raiExtendedKernel;
@@ -113,9 +97,6 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 		return fftKernel;
 	}
 
-	protected RandomAccessibleInterval<O> getOutput() {
-		return output;
-	}
 
 	protected boolean getPerformInputFFT() {
 		return performInputFFT;

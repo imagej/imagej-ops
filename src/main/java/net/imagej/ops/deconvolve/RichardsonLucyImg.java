@@ -34,7 +34,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -55,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>implements
+	extends AbstractFFTFilterImg<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucy
 {
 
@@ -82,13 +81,15 @@ public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K e
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
-		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			getOutFactory(), in(), getKernel(), nonCirculant, accelerate);
+		ops().deconvolve().richardsonLucy(output, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+			imgConvolutionInterval, getOutFactory(), in(), getKernel(), nonCirculant,
+			accelerate);
 
 	}
 

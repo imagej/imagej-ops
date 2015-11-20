@@ -58,12 +58,6 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	extends IterativeFFTFilterRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucy
 {
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-	}
-
 	/**
 	 * performs one iteration of the Richardson Lucy Algorithm
 	 */
@@ -74,11 +68,12 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// previous iteration in order to calculate error stats)
 
 		// 2. divide observed image by reblurred
-		inPlaceDivide(getRAIExtendedReblurred(), getRAIExtendedInput());
+		inPlaceDivide(getRAIExtendedReblurred(), in());
 
 		// 3. correlate psf with the output of step 2.
-		ops().filter().correlate(getRAIExtendedReblurred(), getRAIExtendedKernel(),
-			getFFTInput(), getFFTKernel(), getRAIExtendedReblurred(), true, false);
+		ops().filter().correlate(getRAIExtendedReblurred(),
+			getRAIExtendedReblurred(), getRAIExtendedKernel(), getFFTInput(),
+			getFFTKernel(), true, false);
 
 		// compute estimate -
 		// for standard RL this step will multiply output of correlation step

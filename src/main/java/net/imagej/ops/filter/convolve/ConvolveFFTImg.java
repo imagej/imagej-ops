@@ -35,7 +35,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterImg;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
@@ -63,11 +62,12 @@ public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K exte
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, RandomAccessibleInterval<C> fftImg,
-		RandomAccessibleInterval<C> fftKernel, RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
-		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		ops().filter().convolve(output, raiExtendedInput, raiExtendedKernel,
+			fftImg, fftKernel);
 	}
 
 	@Override

@@ -285,43 +285,58 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
-			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output)
+			final RandomAccessibleInterval<C> fftKernel)
 	{
-		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output);
+		@SuppressWarnings("unchecked")
+		RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O>
+		convolve(final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
-			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
+			final RandomAccessibleInterval<C> fftKernel, final boolean performInputFFT)
 	{
-		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
-			performInputFFT);
+		@SuppressWarnings("unchecked")
+		RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+				performInputFFT);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void convolve(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O> convolve(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
 			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT)
+			final boolean performInputFFT, final boolean performKernelFFT)
 	{
-		ops().run(net.imagej.ops.filter.convolve.ConvolveFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
-			performInputFFT, performKernelFFT);
+		@SuppressWarnings("unchecked")
+		RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.convolve.ConvolveFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+				performInputFFT, performKernelFFT);
+		return result;
 	}
 
 	// -- correlate --
@@ -487,45 +502,60 @@ public class FilterNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O> correlate(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
-			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output)
+			final RandomAccessibleInterval<C> fftKernel)
 	{
-		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output);
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.correlate.CorrelateFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel);
+		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O>
+		correlate(final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
-			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT)
+			final RandomAccessibleInterval<C> fftKernel, final boolean performInputFFT)
 	{
-		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
-			performInputFFT);
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.correlate.CorrelateFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+				performInputFFT);
+		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTRAI.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-		void correlate(final RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<O> correlate(
+			final RandomAccessibleInterval<O> output,
+			final RandomAccessibleInterval<I> raiExtendedInput,
 			final RandomAccessibleInterval<K> raiExtendedKernel,
 			final RandomAccessibleInterval<C> fftInput,
 			final RandomAccessibleInterval<C> fftKernel,
-			final RandomAccessibleInterval<O> output, final boolean performInputFFT,
-			final boolean performKernelFFT)
+			final boolean performInputFFT, final boolean performKernelFFT)
 	{
-		ops().run(net.imagej.ops.filter.correlate.CorrelateFFTRAI.class,
-			raiExtendedInput, raiExtendedKernel, fftInput, fftKernel, output,
-			performInputFFT, performKernelFFT);
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<O> result =
+			(RandomAccessibleInterval<O>) ops().run(
+				net.imagej.ops.filter.correlate.CorrelateFFTRAI.class, output,
+				raiExtendedInput, raiExtendedKernel, fftInput, fftKernel,
+				performInputFFT, performKernelFFT);
+		return result;
 	}
 
 	// -- fft --

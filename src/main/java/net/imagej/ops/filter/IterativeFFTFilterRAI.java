@@ -78,8 +78,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private int maxIterations;
 
 	/**
-	 * The interval to process
-	 * TODO: this is probably redundant - remove
+	 * The interval to process TODO: this is probably redundant - remove
 	 */
 	@Parameter
 	private Interval imgConvolutionInterval;
@@ -139,7 +138,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private Accelerator<O> accelerator = null;
 
 	@Override
-	public void run() {
+	public void compute(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> out)
+	{
 
 		initialize();
 
@@ -151,15 +152,16 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	/**
 	 * initialize TODO: review this function
 	 */
-	protected void initialize() {
+	@Override
+	public void initialize() {
 
 		// if no output out of bounds factory exists create the obf for output
 		if (getObfOutput() == null) {
 			setObfOutput(new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(
-				Util.getTypeFromInterval(getOutput()).createVariable()));
+				Util.getTypeFromInterval(out()).createVariable()));
 		}
 
-		Type<O> outType = Util.getTypeFromInterval(getOutput());
+		Type<O> outType = Util.getTypeFromInterval(out());
 
 		if (nonCirculant) {
 
@@ -167,8 +169,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			estimate =
 				imgFactory
 					.create(getImgConvolutionInterval(), outType.createVariable());
-			final O sum =
-				ops().stats().<I, O> sum(Views.iterable(getRAIExtendedInput()));
+			final O sum = ops().stats().<I, O> sum(Views.iterable(in()));
 
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
 			final double average = sum.getRealDouble() / (numPixels);
@@ -192,12 +193,12 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 		else {
 			// create image for the reblurred
-			reblurred = imgFactory.create(getOutput(), outType.createVariable());
+			reblurred = imgFactory.create(out(), outType.createVariable());
 
 			// TODO: review this step
 			// extend the output and use it as a buffer to store the estimate
 			raiExtendedEstimate =
-				Views.interval(Views.extend(getOutput(), getObfOutput()),
+				Views.interval(Views.extend(out(), getObfOutput()),
 					getImgConvolutionInterval());
 
 			// assemble the extended view of the reblurred
@@ -209,7 +210,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			// TODO: implement logic for various first guesses.
 			// for now just set to original image
 			Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
-			Cursor<I> cIn = Views.iterable(getRAIExtendedInput()).cursor();
+			Cursor<I> cIn = Views.iterable(in()).cursor();
 
 			while (c.hasNext()) {
 				c.fwd();
@@ -219,7 +220,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 
 		// perform fft of input
-		ops().filter().fft(getFFTInput(), getRAIExtendedInput());
+		ops().filter().fft(getFFTInput(), in());
 
 		// perform fft of psf
 		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
@@ -262,8 +263,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	protected void createReblurred() {
 		// perform convolution -- kernel FFT should allready exist
-		ops().filter().convolve(raiExtendedEstimate, getRAIExtendedKernel(), getFFTInput(),
-			getFFTKernel(), raiExtendedReblurred, true, false);
+		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate,
+			getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 	}
 
@@ -293,7 +294,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				ops().image().crop(getRAIExtendedEstimate(),
 					new FinalInterval(start, end));
 
-			copy2(temp2, getOutput());
+			copy2(temp2, out());
 
 		}
 	}
@@ -359,8 +360,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		drawCube(mask, maskStart, maskSize, 1.0);
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, this.getRAIExtendedKernel(), getFFTInput(),
-			getFFTKernel(), normalization, true, false);
+		ops().run(CorrelateFFTRAI.class, normalization, normalization,
+			this.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 		// threshold small values that can cause numerical instability
 		threshold(normalization, 1e-7f);

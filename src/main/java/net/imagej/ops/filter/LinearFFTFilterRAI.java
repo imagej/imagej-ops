@@ -31,7 +31,6 @@
 package net.imagej.ops.filter;
 
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -49,11 +48,13 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 {
 
 	@Override
-	public void run() {
+	public void compute(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> out)
+	{
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			ops().filter().fft(getFFTInput(), getRAIExtendedInput());
+			ops().filter().fft(getFFTInput(), in());
 		}
 
 		// perform kernel FFT if needed
@@ -67,11 +68,12 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 		frequencyOperation(getFFTInput(), getFFTKernel());
 
 		// inverse fft
-		ops().filter().ifft(getOutput(), getFFTInput());
+		ops().filter().ifft(out(), getFFTInput());
 	}
 
 	// abstract function that implements an operation in frequency domain (ie
 	// multiplication for convolution,
 	// complex conjugate multiplication for correlation, Wiener Filter, etc.)
-	protected abstract void frequencyOperation(final RandomAccessibleInterval<C> a, final RandomAccessibleInterval<C> b);
+	protected abstract void frequencyOperation(
+		final RandomAccessibleInterval<C> a, final RandomAccessibleInterval<C> b);
 }

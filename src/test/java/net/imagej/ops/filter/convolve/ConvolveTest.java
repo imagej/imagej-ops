@@ -127,7 +127,8 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		RandomAccessibleInterval<FloatType> out = ops.filter().convolve(in, kernel, borderSize);
+		RandomAccessibleInterval<FloatType> out =
+			ops.filter().convolve(in, kernel, borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 =
@@ -145,12 +146,13 @@ public class ConvolveTest extends AbstractOpTest {
 		createMemory.run();
 
 		// run convolve using the rai version with the memory created above
-		ops.filter().convolve(createMemory.getRAIExtendedInput(),
+		ops.filter().convolve(out2, createMemory.getRAIExtendedInput(),
 			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
-			createMemory.getFFTKernel(), out2);
+			createMemory.getFFTKernel());
 
-		ops.filter().convolve(createMemory.getRAIExtendedInput(), createMemory.getRAIExtendedKernel(),
-			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
+		ops.filter().convolve(out3, createMemory.getRAIExtendedInput(),
+			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
+			createMemory.getFFTKernel(), true, false);
 
 		ops.stats().sum(outSum, Views.iterable(out));
 		ops.stats().sum(outSum2, out2);
