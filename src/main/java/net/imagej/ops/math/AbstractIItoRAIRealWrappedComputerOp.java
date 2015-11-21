@@ -54,14 +54,15 @@ public abstract class AbstractIItoRAIRealWrappedComputerOp<I extends RealType<I>
 AbstractComputerOp<IterableInterval<I>, RandomAccessibleInterval<O>> implements Contingent
 {
 
-	private Class<? extends Op> worker;
-
+	private Class<? extends Op> workerClass;
+	
 	private ComputerWrapper<I,O> wrapper;
 
 	@Override
 	public void initialize() {
-		this.worker = getWorkerClass();
+		this.workerClass = getWorkerClass();
 		this.wrapper = createWrapper();
+		ops().context().inject(this.wrapper);;
 	}
 
 	@Override
@@ -70,11 +71,17 @@ AbstractComputerOp<IterableInterval<I>, RandomAccessibleInterval<O>> implements 
 		final long[] pos = new long[input.numDimensions()];
 		final Cursor<I> cursor = input.cursor();
 		final RandomAccess<O> access = output.randomAccess();
+		long curY = -1;
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			cursor.localize(pos);
 			access.setPosition(pos);
-			this.wrapper.compute(ops(), this.worker, cursor.get(), access.get());
+			if(curY != pos[1])
+			{
+				System.out.println("x: "+pos[0]+ ", y: " + pos[1]);
+				curY = pos[1];
+			}
+			this.wrapper.compute(this.workerClass, cursor.get(), access.get());
 		}
 
 	}
@@ -93,7 +100,7 @@ AbstractComputerOp<IterableInterval<I>, RandomAccessibleInterval<O>> implements 
 	}
 
 	protected abstract Class<? extends Op> getWorkerClass();
-
+	
 	protected abstract ComputerWrapper<I,O> createWrapper();
 
 }
