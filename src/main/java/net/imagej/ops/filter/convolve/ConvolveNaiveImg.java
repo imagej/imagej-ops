@@ -32,7 +32,7 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFilterImg;
+import net.imagej.ops.filter.AbstractFilter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
 public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
+	extends AbstractFilter<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
 	@Override

@@ -49,7 +49,7 @@ import org.scijava.plugin.Parameter;
  * @param <O>
  * @param <K>
  */
-public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+public abstract class AbstractFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends
 	AbstractFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
