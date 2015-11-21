@@ -31,7 +31,6 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -42,7 +41,6 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -58,14 +56,11 @@ public class MapIterableToRAIParallel<A, B> extends
 	implements Parallel
 {
 
-	@Parameter
-	private OpService opService;
-
 	@Override
 	public void compute(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
-		opService.run(ChunkerOp.class, new CursorBasedChunk() {
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,

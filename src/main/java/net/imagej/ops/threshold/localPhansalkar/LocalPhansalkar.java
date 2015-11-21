@@ -76,9 +76,6 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	@Parameter(required = false)
 	private double r = 0.5;
 
-	@Parameter
-	private OpService ops;
-
 	// FIXME: Faster calculation of mean and std-dev
 	private ComputerOp<Iterable<T>, DoubleType> mean;
 	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;

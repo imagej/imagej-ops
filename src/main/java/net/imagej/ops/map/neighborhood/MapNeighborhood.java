@@ -33,7 +33,9 @@ package net.imagej.ops.map.neighborhood;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.AbstractMapComputer;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -62,15 +64,21 @@ public class MapNeighborhood<I, O> extends
 	@Parameter
 	private Shape shape;
 
+	private ComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<O>> map;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		map = (ComputerOp) ops().computer(Map.class, RandomAccessibleInterval.class,
+			in() != null ? shape.neighborhoodsSafe(in()) : IterableInterval.class,
+			getOp());
+	}
+
 	@Override
 	public void compute(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		// Call map on the neighborhoods iterable interval. This may use a
-		// threaded implementation of map.
-		ops().map(output, shape.neighborhoodsSafe(input), getOp());
-		// TODO: optimization with integral images, if there is a rectangular
-		// neighborhood
+		map.compute(shape.neighborhoodsSafe(input), output);
 	}
 
 }

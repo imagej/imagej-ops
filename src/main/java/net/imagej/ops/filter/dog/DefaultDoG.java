@@ -109,6 +109,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		gauss1.compute(input, tmpInterval);
 		gauss2.compute(input, output);
 
+		// TODO: Match the Subtract Op in initialize() once we have BinaryOp
 		ops().run(Ops.Math.Subtract.class, output, output, tmpInterval);
 	}
 

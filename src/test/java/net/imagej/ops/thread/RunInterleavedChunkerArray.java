@@ -31,13 +31,11 @@ package net.imagej.ops.thread;
 
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.Chunk;
 import net.imagej.ops.thread.chunker.ChunkerInterleaved;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "test.chunker",
@@ -45,13 +43,10 @@ import org.scijava.plugin.Plugin;
 public class RunInterleavedChunkerArray<A> extends
 	AbstractComputerOp<A[], A[]> implements Parallel
 {
-
-	@Parameter
-	private OpService opService;
 	
 	@Override
 	public void compute(final A[] input, final A[] output) {
-		opService.run(ChunkerInterleaved.class, new Chunk() {
+		ops().run(ChunkerInterleaved.class, new Chunk() {
 
 			@Override
 			public void
