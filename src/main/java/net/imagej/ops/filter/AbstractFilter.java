@@ -55,50 +55,48 @@ public abstract class AbstractFilter<I extends RealType<I>, O extends RealType<O
 {
 
 	/**
-	 * the kernel (psf)
+	 * The kernel (psf)
 	 */
 	@Parameter
 	private RandomAccessibleInterval<K> kernel;
 
 	/**
-	 * Border size in each dimension. If null default border size will be added.
+	 * Border size in each dimension. If null default border size will be calculated and added.
 	 */
 	@Parameter(required = false)
 	private long[] borderSize = null;
 
 	/**
-	 * generates the out of bounds strategy for the extended area of the input
+	 * Defines the out of bounds strategy for the extended area of the input
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
 
 	/**
-	 * generates the out of bounds strategy for the extended area of the kernel
+	 * Defines the out of bounds strategy for the extended area of the kernel
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
 
 	/**
-	 * The output type. If null default output type will be used.
+	 * The output type. If null a default output type will be used.
 	 */
 	@Parameter(required = false)
 	private Type<O> outType;
 
 	/**
-	 * Factory to create output Img
+	 * Factory to create output Img.  If null a default output factory will be used
 	 */
 	@Parameter(required = false)
 	private ImgFactory<O> outFactory;
 
 	/**
-	 * Create the output using the outFactory and outType if they e/*xist. If
+	 * Create the output using the outFactory and outType if they exist. If
 	 * these are null use a default factory and type
 	 */
 	@SuppressWarnings("unchecked")
 	public RandomAccessibleInterval<O> createOutput(RandomAccessibleInterval<I> input) {
 		
-		
-		// if the outType is null
 		if (outType == null) {
 
 			// if the input type and kernel type are the same use this type
