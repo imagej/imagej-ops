@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Correlate.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public class CorrelateFFT<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilter<I, O, K, C> implements Contingent,
 	Ops.Filter.Correlate
 {

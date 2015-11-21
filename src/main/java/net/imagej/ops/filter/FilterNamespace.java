@@ -348,7 +348,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(final RandomAccessibleInterval<I> in,
@@ -357,12 +357,12 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel);
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -373,13 +373,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -391,13 +391,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -410,13 +410,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -430,13 +430,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -450,13 +450,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, outFactory);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -471,13 +471,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, outFactory, fftType);
 		return result;
 	}
 
 	/** Executes the "correlate" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.correlate.CorrelateFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> correlate(
@@ -492,7 +492,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.correlate.CorrelateFFTImg.class, in, kernel,
+				net.imagej.ops.filter.correlate.CorrelateFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, outFactory, fftType,
 				fftFactory);
 		return result;
