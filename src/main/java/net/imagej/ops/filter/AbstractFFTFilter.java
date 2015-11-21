@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFilter<I, O, K>
 {
 

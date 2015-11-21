@@ -32,7 +32,7 @@ package net.imagej.ops.filter.correlate;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
+import net.imagej.ops.filter.AbstractFFTFilter;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Correlate.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent,
+	extends AbstractFFTFilter<I, O, K, C> implements Contingent,
 	Ops.Filter.Correlate
 {
 

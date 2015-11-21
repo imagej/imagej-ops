@@ -32,7 +32,7 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
+import net.imagej.ops.filter.AbstractFFTFilter;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
 public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve,
+	extends AbstractFFTFilter<I, O, K, C> implements Ops.Filter.Convolve,
 	Contingent
 {
 
