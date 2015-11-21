@@ -57,29 +57,27 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	private RandomAccessibleInterval<K> raiExtendedKernel;
 
 	/**
-	 * Img to be used to store FFTs for input. Size of fftInput must correspond to
+	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond to
 	 * the fft size of raiExtendedInput
 	 */
 	@Parameter
 	private RandomAccessibleInterval<C> fftInput;
 
 	/**
-	 * Img to be used to store FFTs for kernel. Size of fftKernel must correspond
+	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must correspond
 	 * to the fft size of raiExtendedKernel
 	 */
 	@Parameter
 	private RandomAccessibleInterval<C> fftKernel;
 
 	/**
-	 * Boolean indicating that the input FFT has allready been calculated (use
-	 * when re-using an input with the same kernel size)
+	 * Boolean indicating that the input FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performInputFFT = true;
 
 	/**
-	 * Boolean indicating that the kernel FFT has allready been calculated (use
-	 * when re-using an input with the same kernel size)
+	 * Boolean indicating that the kernel FFT has already been calculated 
 	 */
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
@@ -96,7 +94,6 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	protected RandomAccessibleInterval<C> getFFTKernel() {
 		return fftKernel;
 	}
-
 
 	protected boolean getPerformInputFFT() {
 		return performInputFFT;

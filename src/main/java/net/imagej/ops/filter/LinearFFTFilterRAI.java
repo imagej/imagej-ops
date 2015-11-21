@@ -64,10 +64,10 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 
 		// perform the operation in frequency domain (ie multiplication for
 		// convolution, complex conjugate multiplication for correlation,
-		// etc.) Wiener Filter,
+		// Wiener Filter, etc.)
 		frequencyOperation(getFFTInput(), getFFTKernel());
 
-		// inverse fft
+		// perform inverse fft
 		ops().filter().ifft(out(), getFFTInput());
 	}
 
