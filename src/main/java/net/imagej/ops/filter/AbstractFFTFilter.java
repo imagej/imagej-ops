@@ -58,7 +58,7 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	private ComplexType<C> fftType;
 
 	/**
-	 * Factory to create ffts Imgs
+	 * Factory to create FFT Imgs
 	 */
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
@@ -72,6 +72,7 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	{
 
 		RandomAccessibleInterval<O> output = createOutput(input);
+		
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm
 		final CreateFFTFilterMemory<I, O, K, C> createMemory =
