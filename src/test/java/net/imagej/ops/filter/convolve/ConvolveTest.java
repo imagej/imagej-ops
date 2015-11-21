@@ -85,7 +85,7 @@ public class ConvolveTest extends AbstractOpTest {
 		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// this time we should get ConvolveFFT
-		assertSame(ConvolveFFTImg.class, op.getClass());
+		assertSame(ConvolveFFT.class, op.getClass());
 
 		// make sure it runs
 		out = ops.filter().convolve(in, kernel);

@@ -136,7 +136,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -150,7 +150,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -164,7 +164,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -179,7 +179,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -195,7 +195,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -212,7 +212,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFTImg.class,
+	@OpMethod(ops = { net.imagej.ops.filter.convolve.ConvolveFFT.class,
 		net.imagej.ops.filter.convolve.ConvolveNaiveImg.class })
 	public <I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -229,7 +229,7 @@ public class FilterNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -242,13 +242,13 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.convolve.ConvolveFFTImg.class, in, kernel,
+				net.imagej.ops.filter.convolve.ConvolveFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, outFactory, fftType);
 		return result;
 	}
 
 	/** Executes the "convolve" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFTImg.class)
+	@OpMethod(op = net.imagej.ops.filter.convolve.ConvolveFFT.class)
 	public
 		<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 		RandomAccessibleInterval<O> convolve(final RandomAccessibleInterval<I> in,
@@ -261,7 +261,7 @@ public class FilterNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) ops().run(
-				net.imagej.ops.filter.convolve.ConvolveFFTImg.class, in, kernel,
+				net.imagej.ops.filter.convolve.ConvolveFFT.class, in, kernel,
 				borderSize, obfInput, obfKernel, outType, outFactory, fftType,
 				fftFactory);
 		return result;

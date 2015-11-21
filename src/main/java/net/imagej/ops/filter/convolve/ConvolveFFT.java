@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  * @param <C>
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public class ConvolveFFT<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractFFTFilter<I, O, K, C> implements Ops.Filter.Convolve,
 	Contingent
 {
