@@ -6,6 +6,12 @@ import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
+/**
+ * Basic class for performing logic operations using real values.
+ * @author jaywarrick
+ *
+ */
+
 public class RealLogic {
 
 	private RealLogic()
