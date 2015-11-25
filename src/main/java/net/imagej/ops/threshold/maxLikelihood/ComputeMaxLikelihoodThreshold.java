@@ -53,7 +53,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.MaxLikelihood.class)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MaxLikelihood
+{
 
 	private static final int MAX_ATTEMPTS = 10000;
 

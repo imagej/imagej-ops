@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Mean.class)
 public class ComputeMeanThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Mean {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

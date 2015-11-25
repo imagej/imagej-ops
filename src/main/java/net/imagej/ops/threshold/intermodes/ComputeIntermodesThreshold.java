@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Intermodes.class)
 public class ComputeIntermodesThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Intermodes {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;
