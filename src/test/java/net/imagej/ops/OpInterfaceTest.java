@@ -32,39 +32,30 @@ package net.imagej.ops;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.scijava.InstantiableException;
 import org.scijava.plugin.PluginInfo;
 
 /**
- * Test for marker interface of each Op.
- * 
+ * Tests the consistency of declared op interfaces.
+ *
  * @author Leon Yang
  */
 public class OpInterfaceTest extends AbstractOpTest {
 
 	/**
-	 * Tests if each Op implements the marker interface that the it uses as its
-	 * plug-in type.
+	 * Tests that each op implements the marker interface that it uses as its
+	 * plugin type.
 	 */
 	@Test
-	public void testOpInterface() {
-		List<PluginInfo<Op>> infos = ops.getPlugins();
-		for (PluginInfo<Op> info : infos) {
+	public void testOpInterface() throws InstantiableException {
+		for (final PluginInfo<Op> info : ops.getPlugins()) {
 			final Class<Op> type = info.getPluginType();
-			try {
-				info.loadClass();
-			}
-			catch (InstantiableException e) {
-				// do something?
-				e.printStackTrace();
-				continue;
-			}
-			final Class<? extends Op> clazz = info.getPluginClass();
-			final String msg = type + " is not assignable from " + clazz;
-			assertTrue(msg, type.isAssignableFrom(clazz));
+			final Class<? extends Op> c = info.loadClass();
+			final String msg =
+				type.getName() + " is not assignable from " + c.getName();
+			assertTrue(msg, type.isAssignableFrom(c));
 		}
 	}
+
 }
