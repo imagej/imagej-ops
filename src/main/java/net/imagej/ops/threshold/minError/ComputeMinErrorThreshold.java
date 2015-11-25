@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.MinError.class)
 public class ComputeMinErrorThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MinError {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;

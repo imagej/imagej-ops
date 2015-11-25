@@ -65,7 +65,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends RichardsonLucyRAI<I, O, K, C>
+	extends RichardsonLucyRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucyTV
 {
 
 	@Parameter

@@ -28,45 +28,43 @@
  * #L%
  */
 
-package net.imagej.ops.threshold.mean;
+package net.imagej.ops;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
-import net.imglib2.histogram.Histogram1d;
-import net.imglib2.type.numeric.RealType;
+import static org.junit.Assert.assertTrue;
 
-import org.scijava.plugin.Plugin;
+import java.util.List;
 
-// NB - this plugin adapted from Gabriel Landini's code of his AutoThreshold
-// plugin found in Fiji (version 1.14).
+import org.junit.Test;
+import org.scijava.InstantiableException;
+import org.scijava.plugin.PluginInfo;
 
 /**
- * Implements a mean threshold method by Glasbey.
+ * Test for marker interface of each Op.
  * 
- * @author Barry DeZonia
- * @author Gabriel Landini
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Threshold.Mean.class)
-public class ComputeMeanThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Mean {
+public class OpInterfaceTest extends AbstractOpTest {
 
-	@Override
-	public long computeBin(final Histogram1d<T> hist) {
-		long[] histogram = hist.toLongArray();
-		// C. A. Glasbey,
-		// "An analysis of histogram-based thresholding algorithms,"
-		// CVGIP: Graphical Models and Image Processing, vol. 55, pp. 532-537,
-		// 1993.
-		//
-		// The threshold is the mean of the greyscale data
-		int threshold = -1;
-		double tot = 0, sum = 0;
-		for (int i = 0; i < histogram.length; i++) {
-			tot += histogram[i];
-			sum += (i * histogram[i]);
+	/**
+	 * Tests if each Op implements the marker interface that the it uses as its
+	 * plug-in type.
+	 */
+	@Test
+	public void testOpInterface() {
+		List<PluginInfo<Op>> infos = ops.getPlugins();
+		for (PluginInfo<Op> info : infos) {
+			final Class<Op> type = info.getPluginType();
+			try {
+				info.loadClass();
+			}
+			catch (InstantiableException e) {
+				// do something?
+				e.printStackTrace();
+				continue;
+			}
+			final Class<? extends Op> clazz = info.getPluginClass();
+			final String msg = type + " is not assignable from " + clazz;
+			assertTrue(msg, type.isAssignableFrom(clazz));
 		}
-		threshold = (int) Math.floor(sum / tot);
-		return threshold;
 	}
-
 }
