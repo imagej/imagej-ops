@@ -208,6 +208,94 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
+		final Class<I2> in2Type, final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, outType, in1Type, in2Type);
+		return (BinaryComputerOp<I1, I2, O>) specialOp(opType,
+			BinaryComputerOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, outType, in1, in2);
+		return (BinaryComputerOp<I1, I2, O>) specialOp(opType,
+			BinaryComputerOp.class, null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		final Class<OP> opType, final O out, final I1 in1, final I2 in2,
+		final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, out, in1, in2);
+		return (BinaryComputerOp<I1, I2, O>) specialOp(opType, BinaryComputerOp.class,
+			null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
+		final Class<I2> in2Type, final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, in1Type, in2Type);
+		return (BinaryFunctionOp<I1, I2, O>) specialOp(opType,
+			BinaryFunctionOp.class, outType, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, in1, in2);
+		return (BinaryFunctionOp<I1, I2, O>) specialOp(opType,
+			BinaryFunctionOp.class, outType, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
+		final Class<I2> in2Type, final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, outType, in1Type, in2Type);
+		return (BinaryHybridOp<I1, I2, O>) specialOp(opType, BinaryHybridOp.class,
+			null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
+		final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, outType, in1, in2);
+		return (BinaryHybridOp<I1, I2, O>) specialOp(opType, BinaryHybridOp.class,
+			null, args);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		final Class<OP> opType, final O out, final I1 in1, final I2 in2,
+		final Object... otherArgs)
+	{
+		final Object[] args = args(otherArgs, out, in1, in2);
+		return (BinaryHybridOp<I1, I2, O>) specialOp(opType, BinaryHybridOp.class,
+			null, args);
+	}
+
+	@Override
 	public Module module(final String name, final Object... args) {
 		return matcher.findModule(this, new OpRef<Op>(name, args));
 	}

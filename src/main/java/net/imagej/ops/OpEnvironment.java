@@ -351,6 +351,173 @@ public interface OpEnvironment extends Contextual {
 		A arg, Object... otherArgs);
 
 	/**
+	 * Gets the best {@link BinaryComputerOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryComputerOp}s implement),
+	 *          then the best {@link BinaryComputerOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryComputerOp} typed
+	 *          output.
+	 * @param in1Type The {@link Class} of the {@link BinaryComputerOp} first
+	 *          typed input.
+	 * @param in2Type The {@link Class} of the {@link BinaryComputerOp} second
+	 *          typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		Class<OP> opType, Class<O> outType, Class<I1> in1Type, Class<I2> in2Type,
+		Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryComputerOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryComputerOp}s implement),
+	 *          then the best {@link BinaryComputerOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryComputerOp} typed
+	 *          output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		Class<OP> opType, Class<O> outType, I1 in1, I2 in2, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryComputerOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryComputerOp}s implement),
+	 *          then the best {@link BinaryComputerOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+		Class<OP> opType, O out, I1 in1, I2 in2, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryFunctionOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryFunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryFunctionOp}s implement),
+	 *          then the best {@link BinaryFunctionOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryFunctionOp} typed
+	 *          output.
+	 * @param in1Type The {@link Class} of the {@link BinaryFunctionOp} first
+	 *          typed input.
+	 * @param in2Type The {@link Class} of the {@link BinaryFunctionOp} second
+	 *          typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+		Class<OP> opType, Class<O> outType, Class<I1> in1Type, Class<I2> in2Type,
+		Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryFunctionOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryFunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryFunctionOp}s implement),
+	 *          then the best {@link BinaryFunctionOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryFunctionOp} typed
+	 *          output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+		Class<OP> opType, Class<O> outType, I1 in1, I2 in2, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridOp}s implement), then
+	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridOp} typed
+	 *          output.
+	 * @param in1Type The {@link Class} of the {@link BinaryHybridOp} first typed
+	 *          input.
+	 * @param in2Type The {@link Class} of the {@link BinaryHybridOp} second typed
+	 *          input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		Class<OP> opType, Class<O> outType, Class<I1> in1Type, Class<I2> in2Type,
+		Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridOp}s implement), then
+	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link BinaryHybridOp} typed
+	 *          output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		Class<OP> opType, Class<O> outType, I1 in1, I2 in2, Object... otherArgs);
+
+	/**
+	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridOp}s implement), then
+	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param in1 The first typed input.
+	 * @param in2 The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed inputs and
+	 *          output values.
+	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 */
+	<I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+		Class<OP> opType, O out, I1 in1, I2 in2, Object... otherArgs);
+
+	/**
 	 * Gets the best {@link Op} to use for the given operation and arguments,
 	 * wrapping it as a {@link Module} with populated inputs.
 	 *
