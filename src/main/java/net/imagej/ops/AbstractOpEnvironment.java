@@ -119,7 +119,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
-		final Object[] args = args2(outType, inType, otherArgs);
+		final Object[] args = args(otherArgs, outType, inType);
 		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
 	}
 
@@ -129,7 +129,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
-		final Object[] args = args2(outType, in, otherArgs);
+		final Object[] args = args(otherArgs, outType, in);
 		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
 	}
 
@@ -138,7 +138,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <I, O, OP extends Op> ComputerOp<I, O> computer(
 		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
 	{
-		final Object[] args = args2(out, in, otherArgs);
+		final Object[] args = args(otherArgs, out, in);
 		return (ComputerOp<I, O>) specialOp(opType, ComputerOp.class, null, args);
 	}
 
@@ -148,7 +148,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
-		final Object[] args = args1(inType, otherArgs);
+		final Object[] args = args(otherArgs, inType);
 		return (FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
 	}
 
@@ -158,7 +158,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
-		final Object[] args = args1(in, otherArgs);
+		final Object[] args = args(otherArgs, in);
 		return (FunctionOp<I, O>) specialOp(opType, FunctionOp.class, outType, args);
 	}
 
@@ -167,7 +167,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
 		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
-		final Object[] args = args2(outType, inType, otherArgs);
+		final Object[] args = args(otherArgs, outType, inType);
 		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
 	}
 
@@ -176,7 +176,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
 		final Class<O> outType, final I in, final Object... otherArgs)
 	{
-		final Object[] args = args2(outType, in, otherArgs);
+		final Object[] args = args(otherArgs, outType, in);
 		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
 	}
 
@@ -185,7 +185,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
 		final O out, final I in, final Object... otherArgs)
 	{
-		final Object[] args = args2(out, in, otherArgs);
+		final Object[] args = args(otherArgs, out, in);
 		return (HybridOp<I, O>) specialOp(opType, HybridOp.class, null, args);
 	}
 
@@ -194,7 +194,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <A, OP extends Op> InplaceOp<A> inplace(final Class<OP> opType,
 		final Class<A> argType, final Object... otherArgs)
 	{
-		final Object[] args = args1(argType, otherArgs);
+		final Object[] args = args(otherArgs, argType);
 		return (InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
 	}
 
@@ -203,7 +203,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public <A, OP extends Op> InplaceOp<A> inplace(final Class<OP> opType,
 		final A arg, final Object... otherArgs)
 	{
-		final Object[] args = args1(arg, otherArgs);
+		final Object[] args = args(otherArgs, arg);
 		return (InplaceOp<A>) specialOp(opType, InplaceOp.class, null, args);
 	}
 
@@ -745,24 +745,13 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		return OpUtils.unwrap(module, ref);
 	}
 
-	private Object[] args1(final Object o0, final Object... more) {
-		final Object[] result = new Object[1 + more.length];
-		result[0] = o0;
-		int i = 1;
-		for (final Object o : more) {
+	private Object[] args(final Object[] latter, final Object... former) {
+		final Object[] result = new Object[former.length + latter.length];
+		int i = 0;
+		for (final Object o : former) {
 			result[i++] = o;
 		}
-		return result;
-	}
-
-	private Object[]
-		args2(final Object o0, final Object o1, final Object... more)
-	{
-		final Object[] result = new Object[2 + more.length];
-		result[0] = o0;
-		result[1] = o1;
-		int i = 2;
-		for (final Object o : more) {
+		for (final Object o : latter) {
 			result[i++] = o;
 		}
 		return result;
