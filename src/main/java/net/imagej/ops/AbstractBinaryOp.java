@@ -31,29 +31,25 @@
 package net.imagej.ops;
 
 /**
- * A <em>computer</em> calculates a result from the given input, storing it into
- * the specified output reference.
+ * Abstract base class for {@link BinaryOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @param <I> type of input
- * @param <O> type of output
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
  */
-public interface ComputerOp<I, O> extends SpecialOp<I, O> {
+public abstract class AbstractBinaryOp<I1, I2, O> extends
+	AbstractSpecialOp<BinaryInput<I1, I2>, O> implements BinaryOp<I1, I2, O>
+{
 
-	/**
-	 * Computes the output given some input.
-	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
-	 */
-	void compute(I input, O output);
+	// -- Input methods --
 
 	@Override
-	ComputerOp<I, O> getIndependentInstance();
+	public BinaryInput<I1, I2> in() {
+		return this;
+	}
+
+	@Override
+	public void setInput(final BinaryInput<I1, I2> input) {
+		setInput1(input.in1());
+		setInput2(input.in2());
+	}
 
 }

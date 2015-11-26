@@ -31,29 +31,24 @@
 package net.imagej.ops;
 
 /**
- * A <em>computer</em> calculates a result from the given input, storing it into
- * the specified output reference.
+ * A <em>binary</em> operation is a {@link SpecialOp} with two input parameters,
+ * rather than just one. They come in two major flavors:
+ * {@link BinaryComputerOp} and {@link BinaryFunctionOp}. And there is one
+ * additional type, {@link BinaryHybridOp}, which unions both flavors.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @param <I> type of input
+ * @param <I1> type of first input
+ * @param <I2> type of second input
  * @param <O> type of output
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
+ * @see BinaryComputerOp
+ * @see BinaryFunctionOp
+ * @see BinaryHybridOp
  */
-public interface ComputerOp<I, O> extends SpecialOp<I, O> {
-
-	/**
-	 * Computes the output given some input.
-	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
-	 */
-	void compute(I input, O output);
+public interface BinaryOp<I1, I2, O> extends SpecialOp<BinaryInput<I1, I2>, O>,
+	BinaryInput<I1, I2>
+{
 
 	@Override
-	ComputerOp<I, O> getIndependentInstance();
+	BinaryOp<I1, I2, O> getIndependentInstance();
 
 }

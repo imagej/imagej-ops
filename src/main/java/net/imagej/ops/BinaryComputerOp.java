@@ -31,29 +31,30 @@
 package net.imagej.ops;
 
 /**
- * A <em>computer</em> calculates a result from the given input, storing it into
- * the specified output reference.
+ * A binary {@link ComputerOp} which calculates a result from two given inputs,
+ * storing it into the specified output reference.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
- * @param <I> type of input
+ * @param <I1> type of first input
+ * @param <I2> type of second input
  * @param <O> type of output
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
+ * @see BinaryFunctionOp
+ * @see BinaryHybridOp
  */
-public interface ComputerOp<I, O> extends SpecialOp<I, O> {
+public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
+	ComputerOp<BinaryInput<I1, I2>, O>
+{
 
 	/**
-	 * Computes the output given some input.
+	 * Computes the output given two inputs.
 	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
+	 * @param input1 first argument to the computation
+	 * @param input2 second argument to the computation
+	 * @param output object where the computation's result will be stored
 	 */
-	void compute(I input, O output);
+	void compute2(I1 input1, I2 input2, O output);
 
 	@Override
-	ComputerOp<I, O> getIndependentInstance();
+	BinaryComputerOp<I1, I2, O> getIndependentInstance();
 
 }

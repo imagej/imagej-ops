@@ -30,30 +30,80 @@
 
 package net.imagej.ops;
 
-/**
- * A <em>computer</em> calculates a result from the given input, storing it into
- * the specified output reference.
- * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
- * @author Curtis Rueden
- * @param <I> type of input
- * @param <O> type of output
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
- */
-public interface ComputerOp<I, O> extends SpecialOp<I, O> {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
-	/**
-	 * Computes the output given some input.
-	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
-	 */
-	void compute(I input, O output);
+/**
+ * Abstract superclass for {@link BinaryFunctionOp} implementations.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractBinaryFunctionOp<I1, I2, O> extends
+	AbstractBinaryOp<I1, I2, O> implements BinaryFunctionOp<I1, I2, O>
+{
+
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private O out;
+
+	@Parameter
+	private I1 in1;
+
+	@Parameter
+	private I2 in2;
+
+	// -- FunctionOp methods --
 
 	@Override
-	ComputerOp<I, O> getIndependentInstance();
+	public O compute(final BinaryInput<I1, I2> input) {
+		return compute2(input.in1(), input.in2());
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		out = compute2(in1(), in2());
+	}
+
+	// -- BinaryInput methods --
+
+	@Override
+	public I1 in1() {
+		return in1;
+	}
+
+	@Override
+	public I2 in2() {
+		return in2;
+	}
+
+	@Override
+	public void setInput1(final I1 input1) {
+		in1 = input1;
+	}
+
+	@Override
+	public void setInput2(final I2 input2) {
+		in2 = input2;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public O out() {
+		return out;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public BinaryFunctionOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

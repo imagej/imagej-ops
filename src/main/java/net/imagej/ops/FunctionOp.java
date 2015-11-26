@@ -45,10 +45,10 @@ package net.imagej.ops;
 public interface FunctionOp<I, O> extends SpecialOp<I, O> {
 
 	/**
-	 * Compute the output given some input.
+	 * Computes the output given some input.
 	 * 
-	 * @param input of the {@link FunctionOp}
-	 * @return output
+	 * @param input Argument to the function
+	 * @return output Result of the function
 	 */
 	O compute(I input);
 
