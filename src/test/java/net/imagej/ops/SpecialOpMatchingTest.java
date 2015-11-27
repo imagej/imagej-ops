@@ -175,21 +175,21 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testHybrid() {
-		final ComputerOp<Apple, Apple> computerAA =
-			ops.computer(FruitOp.class, Apple.class, Apple.class);
-		assertSame(computerAA.getClass(), ComputerAA.class);
+		final HybridOp<Apple, Apple> hybridAA =
+			ops.hybrid(FruitOp.class, Apple.class, Apple.class);
+		assertSame(hybridAA.getClass(), HybridAA.class);
 
-		final ComputerOp<Apple, Orange> computerAO =
-			ops.computer(FruitOp.class, Orange.class, Apple.class);
-		assertSame(computerAO.getClass(), ComputerAO.class);
+		final HybridOp<Apple, Orange> hybridAO =
+			ops.hybrid(FruitOp.class, Orange.class, Apple.class);
+		assertSame(hybridAO.getClass(), HybridAO.class);
 
-		final ComputerOp<Orange, Apple> computerOA =
-			ops.computer(FruitOp.class, Apple.class, Orange.class);
-		assertSame(computerOA.getClass(), ComputerOA.class);
+		final HybridOp<Orange, Apple> hybridOA =
+			ops.hybrid(FruitOp.class, Apple.class, Orange.class);
+		assertSame(hybridOA.getClass(), HybridOA.class);
 
-		final ComputerOp<Orange, Orange> computerOO =
-			ops.computer(FruitOp.class, Orange.class, Orange.class);
-		assertSame(computerOO.getClass(), ComputerOO.class);
+		final HybridOp<Orange, Orange> hybridOO =
+			ops.hybrid(FruitOp.class, Orange.class, Orange.class);
+		assertSame(hybridOO.getClass(), HybridOO.class);
 	}
 
 	/**
