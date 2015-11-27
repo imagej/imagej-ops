@@ -333,7 +333,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 	}
 
-	public static class AbstractFruitOp extends NoOp implements FruitOp {
+	public abstract static class AbstractFruitOp extends NoOp implements FruitOp {
 		// NB: No implementation needed.
 	}
 
