@@ -53,20 +53,6 @@ public abstract class AbstractBinaryComputerOp<I1, I2, O> extends
 	@Parameter
 	private I2 in2;
 
-	// -- ComputerOp methods --
-
-	@Override
-	public void compute(final BinaryInput<I1, I2> input, final O output) {
-		compute2(input.in1(), input.in2(), output);
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute2(in1(), in2(), out());
-	}
-
 	// -- BinaryInput methods --
 
 	@Override
@@ -94,16 +80,6 @@ public abstract class AbstractBinaryComputerOp<I1, I2, O> extends
 	@Override
 	public O out() {
 		return out;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public BinaryComputerOp<I1, I2, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
 	}
 
 }

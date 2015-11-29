@@ -54,7 +54,28 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	void compute2(I1 input1, I2 input2, O output);
 
+	// -- ComputerOp methods --
+
 	@Override
-	BinaryComputerOp<I1, I2, O> getIndependentInstance();
+	default void compute(final BinaryInput<I1, I2> input, final O output) {
+		compute2(input.in1(), input.in2(), output);
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		compute2(in1(), in2(), out());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryComputerOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }
