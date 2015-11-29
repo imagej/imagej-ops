@@ -63,9 +63,6 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 {
 
 	@Parameter
-	private ThreadService ts;
-
-	@Parameter
 	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
 
 	@Parameter
