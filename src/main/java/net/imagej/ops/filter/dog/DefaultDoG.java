@@ -30,10 +30,6 @@
 
 package net.imagej.ops.filter.dog;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
@@ -47,6 +43,9 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Low-level difference of Gaussians (DoG) implementation which leans on other
