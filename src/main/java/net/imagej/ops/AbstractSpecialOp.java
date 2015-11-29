@@ -38,12 +38,5 @@ package net.imagej.ops;
 public abstract class AbstractSpecialOp<I, O> extends AbstractOp implements
 	SpecialOp<I, O>
 {
-
-	// -- Initializable methods --
-
-	@Override
-	public void initialize() {
-		// NB: Do nothing by default.
-	}
-
+	// NB: No implementation needed.
 }
