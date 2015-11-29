@@ -53,7 +53,23 @@ public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
 	 */
 	O createOutput(I input);
 
+	// -- FunctionOp methods --
+
 	@Override
-	HybridOp<I, O> getIndependentInstance();
+	default O compute(final I input) {
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default HybridOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }
