@@ -52,7 +52,14 @@ public interface FunctionOp<I, O> extends SpecialOp<I, O> {
 	 */
 	O compute(I input);
 
+	// -- Threadable methods --
+
 	@Override
-	FunctionOp<I, O> getIndependentInstance();
+	default FunctionOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

@@ -76,14 +76,4 @@ public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
 		return out;
 	}
 
-	// -- Threadable methods --
-
-	@Override
-	public FunctionOp<I, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
-
 }
