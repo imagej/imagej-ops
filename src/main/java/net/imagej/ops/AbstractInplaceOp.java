@@ -47,13 +47,6 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute(in());
-	}
-
 	// -- Input methods --
 
 	@Override
@@ -71,26 +64,6 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 	@Override
 	public A out() {
 		return arg;
-	}
-
-	// -- ComputerOp methods --
-
-	@Override
-	public void compute(final A input, final A output) {
-		if (input != output) {
-			throw new IllegalArgumentException("Input and output must match");
-		}
-		compute(input);
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public InplaceOp<A> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
 	}
 
 }

@@ -49,7 +49,31 @@ public interface InplaceOp<A> extends ComputerOp<A, A> {
 	 */
 	void compute(A arg);
 
+	// -- ComputerOp methods --
+
 	@Override
-	InplaceOp<A> getIndependentInstance();
+	default void compute(final A input, final A output) {
+		if (input != output) {
+			throw new IllegalArgumentException("Input and output must match");
+		}
+		compute(input);
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		compute(in());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default InplaceOp<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }
