@@ -38,18 +38,5 @@ package net.imagej.ops;
 public abstract class AbstractBinaryOp<I1, I2, O> extends
 	AbstractSpecialOp<BinaryInput<I1, I2>, O> implements BinaryOp<I1, I2, O>
 {
-
-	// -- Input methods --
-
-	@Override
-	public BinaryInput<I1, I2> in() {
-		return this;
-	}
-
-	@Override
-	public void setInput(final BinaryInput<I1, I2> input) {
-		setInput1(input.in1());
-		setInput2(input.in2());
-	}
-
+	// NB: No implementation needed.
 }

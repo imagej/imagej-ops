@@ -48,7 +48,27 @@ public interface BinaryOp<I1, I2, O> extends SpecialOp<BinaryInput<I1, I2>, O>,
 	BinaryInput<I1, I2>
 {
 
+	// -- Input methods --
+
 	@Override
-	BinaryOp<I1, I2, O> getIndependentInstance();
+	default BinaryInput<I1, I2> in() {
+		return this;
+	}
+
+	@Override
+	default void setInput(final BinaryInput<I1, I2> input) {
+		setInput1(input.in1());
+		setInput2(input.in2());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }
