@@ -63,7 +63,6 @@ import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
 
 import org.scijava.AbstractContextual;
-import org.scijava.command.CommandService;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
@@ -75,9 +74,6 @@ import org.scijava.plugin.Parameter;
 public abstract class AbstractOpEnvironment extends AbstractContextual
 	implements OpEnvironment
 {
-
-	@Parameter
-	private CommandService commandService;
 
 	@Parameter
 	private OpMatchingService matcher;
