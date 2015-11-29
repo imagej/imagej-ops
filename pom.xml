@@ -210,7 +210,6 @@
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
 		<imglib2.version>2.5.0</imglib2.version>
-		<imglib2-roi.version>0.4.1</imglib2-roi.version>
 	</properties>
 
 	<repositories>
