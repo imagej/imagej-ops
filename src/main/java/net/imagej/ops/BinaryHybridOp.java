@@ -52,7 +52,44 @@ public interface BinaryHybridOp<I1, I2, O> extends
 	 */
 	O createOutput(I1 input1, I2 input2);
 
+	// -- BinaryFunctionOp methods --
+
 	@Override
-	BinaryHybridOp<I1, I2, O> getIndependentInstance();
+	default O compute2(final I1 input1, final I2 input2) {
+		final O output = createOutput(input1, input2);
+		compute2(input1, input2, output);
+		return output;
+	}
+
+	// -- HybridOp methods --
+
+	@Override
+	default O createOutput(final BinaryInput<I1, I2> input) {
+		return createOutput(input.in1(), input.in2());
+	}
+
+	// -- ComputerOp methods --
+
+	@Override
+	default void compute(final BinaryInput<I1, I2> input, final O output) {
+		compute2(input.in1(), input.in2(), output);
+	}
+
+	// -- FunctionOp methods --
+
+	@Override
+	default O compute(final BinaryInput<I1, I2> input) {
+		return compute2(input.in1(), input.in2());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryHybridOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

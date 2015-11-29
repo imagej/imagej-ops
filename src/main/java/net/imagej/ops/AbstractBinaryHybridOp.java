@@ -53,36 +53,6 @@ public abstract class AbstractBinaryHybridOp<I1, I2, O> extends
 	@Parameter
 	private I2 in2;
 
-	// -- BinaryFunctionOp methods --
-
-	@Override
-	public O compute2(final I1 input1, final I2 input2) {
-		final O output = createOutput(input1, input2);
-		compute2(input1, input2, output);
-		return output;
-	}
-
-	// -- HybridOp methods --
-
-	@Override
-	public O createOutput(final BinaryInput<I1, I2> input) {
-		return createOutput(input.in1(), input.in2());
-	}
-
-	// -- ComputerOp methods --
-
-	@Override
-	public void compute(final BinaryInput<I1, I2> input, final O output) {
-		compute2(input.in1(), input.in2(), output);
-	}
-
-	// -- FunctionOp methods --
-
-	@Override
-	public O compute(final BinaryInput<I1, I2> input) {
-		return compute2(input.in1(), input.in2());
-	}
-
 	// -- Runnable methods --
 
 	@Override
@@ -118,16 +88,6 @@ public abstract class AbstractBinaryHybridOp<I1, I2, O> extends
 	@Override
 	public O out() {
 		return out;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public BinaryHybridOp<I1, I2, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
 	}
 
 }
