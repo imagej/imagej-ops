@@ -54,7 +54,21 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	O compute2(I1 input1, I2 input2);
 
+	// -- FunctionOp methods --
+
 	@Override
-	BinaryFunctionOp<I1, I2, O> getIndependentInstance();
+	default O compute(final BinaryInput<I1, I2> input) {
+		return compute2(input.in1(), input.in2());
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryFunctionOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

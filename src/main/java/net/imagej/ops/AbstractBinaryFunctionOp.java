@@ -53,13 +53,6 @@ public abstract class AbstractBinaryFunctionOp<I1, I2, O> extends
 	@Parameter
 	private I2 in2;
 
-	// -- FunctionOp methods --
-
-	@Override
-	public O compute(final BinaryInput<I1, I2> input) {
-		return compute2(input.in1(), input.in2());
-	}
-
 	// -- Runnable methods --
 
 	@Override
@@ -94,16 +87,6 @@ public abstract class AbstractBinaryFunctionOp<I1, I2, O> extends
 	@Override
 	public O out() {
 		return out;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public BinaryFunctionOp<I1, I2, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
 	}
 
 }
