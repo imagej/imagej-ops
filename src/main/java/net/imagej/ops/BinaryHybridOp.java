@@ -42,15 +42,8 @@ package net.imagej.ops;
  */
 public interface BinaryHybridOp<I1, I2, O> extends
 	HybridOp<BinaryInput<I1, I2>, O>, BinaryComputerOp<I1, I2, O>,
-	BinaryFunctionOp<I1, I2, O>
+	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>
 {
-
-	/**
-	 * Creates an output object of type O, given two inputs. The output can then
-	 * be used to call {@link BinaryComputerOp#compute2}, which will fill the
-	 * output with the result.
-	 */
-	O createOutput(I1 input1, I2 input2);
 
 	// -- BinaryFunctionOp methods --
 
@@ -59,13 +52,6 @@ public interface BinaryHybridOp<I1, I2, O> extends
 		final O output = createOutput(input1, input2);
 		compute2(input1, input2, output);
 		return output;
-	}
-
-	// -- HybridOp methods --
-
-	@Override
-	default O createOutput(final BinaryInput<I1, I2> input) {
-		return createOutput(input.in1(), input.in2());
 	}
 
 	// -- ComputerOp methods --
