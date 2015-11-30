@@ -231,6 +231,12 @@ public class StatisticsTest extends AbstractOpTest {
 	}
 
 	@Test
+	public void testPercentile() {
+		Assert.assertEquals("50-th Percentile", 128d, ops.stats().percentile(randomlyFilledImg, 50d)
+				.getRealDouble(), 0.00001d);
+	}
+
+	@Test
 	public void testSkewness() {
 		Assert.assertEquals("Skewness", -0.0012661517853476312, ops.stats()
 			.skewness(randomlyFilledImg).getRealDouble(), 0.00001d);
