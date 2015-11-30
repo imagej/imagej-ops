@@ -82,4 +82,40 @@ public final class RAIs {
 		return ops.inplace(opType, arg, otherArgs);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryComputerOp) ops.binaryComputer(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryFunctionOp) ops.binaryFunction(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryHybridOp) ops.binaryHybrid(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
+	}
+
 }
