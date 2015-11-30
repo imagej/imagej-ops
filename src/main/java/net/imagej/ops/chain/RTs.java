@@ -28,8 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
 
+import net.imagej.ops.BinaryComputerOp;
+import net.imagej.ops.BinaryFunctionOp;
+import net.imagej.ops.BinaryHybridOp;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.HybridOp;
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpEnvironment;
 import net.imglib2.type.numeric.RealType;
 
 /**

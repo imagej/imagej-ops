@@ -28,29 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.BinaryOp;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to other
- * {@link FunctionOp} implementations.
+ * Base class for {@link BinaryOp} implementations that delegate to other
+ * {@link BinaryOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingFunctionOp<I, O> extends
-	AbstractFunctionOp<I, O> implements
-	DelegatingSpecialOp<FunctionOp<I, O>, I, O>
+public interface DelegatingBinaryOp<T extends BinaryOp<I1, I2, O>, I1, I2, O>
+	extends BinaryOp<I1, I2, O>
 {
 
-	private FunctionOp<I, O> worker;
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public O compute(final I input) {
-		return worker.compute(input);
-	}
+	T createWorker(I1 t1, I2 t2);
 
 }

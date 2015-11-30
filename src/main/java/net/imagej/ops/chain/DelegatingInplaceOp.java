@@ -28,29 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 
 /**
- * Base class for {@link BinaryComputerOp} implementations that delegate to
- * other {@link BinaryComputerOp} implementations.
+ * Base class for {@link InplaceOp} implementations that delegate to other
+ * {@link InplaceOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingBinaryComputerOp<I1, I2, O> extends
-	AbstractBinaryComputerOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>
+public abstract class DelegatingInplaceOp<A> extends
+	AbstractInplaceOp<A> implements DelegatingSpecialOp<InplaceOp<A>, A, A>
 {
 
-	private BinaryComputerOp<I1, I2, O> worker;
+	private InplaceOp<A> worker;
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in1(), in2());
+		worker = createWorker(in());
 	}
 
 	@Override
-	public void compute2(final I1 input1, final I2 input2, final O output) {
-		worker.compute2(input1, input2, output);
+	public void compute(final A arg) {
+		worker.compute(arg);
 	}
 
 }

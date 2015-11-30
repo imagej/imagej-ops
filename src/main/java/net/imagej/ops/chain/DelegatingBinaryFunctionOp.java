@@ -28,7 +28,10 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.AbstractBinaryFunctionOp;
+import net.imagej.ops.BinaryFunctionOp;
 
 /**
  * Base class for {@link BinaryFunctionOp} implementations that delegate to
@@ -36,12 +39,12 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingBinaryHybridOp<I1, I2, O> extends
+public abstract class DelegatingBinaryFunctionOp<I1, I2, O> extends
 	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryHybridOp<I1, I2, O>, I1, I2, O>
+	DelegatingBinaryOp<BinaryFunctionOp<I1, I2, O>, I1, I2, O>
 {
 
-	private BinaryHybridOp<I1, I2, O> worker;
+	private BinaryFunctionOp<I1, I2, O> worker;
 
 	@Override
 	public void initialize() {

@@ -28,18 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.SpecialOp;
 
 /**
- * Base class for {@link BinaryOp} implementations that delegate to other
- * {@link BinaryOp} implementations.
+ * Base class for {@link SpecialOp} implementations that delegate to other
+ * {@link SpecialOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public interface DelegatingBinaryOp<T extends BinaryOp<I1, I2, O>, I1, I2, O>
-	extends BinaryOp<I1, I2, O>
+public interface DelegatingSpecialOp<T extends SpecialOp<I, O>, I, O> extends
+	SpecialOp<I, O>
 {
 
-	T createWorker(I1 t1, I2 t2);
+	T createWorker(I t);
 
 }

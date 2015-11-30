@@ -28,19 +28,27 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.HybridOp;
 
 /**
- * Base class for {@link InplaceOp} implementations that delegate to other
- * {@link InplaceOp} implementations.
+ * Base class for {@link HybridOp} implementations that delegate to other
+ * {@link HybridOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingInplaceOp<A> extends
-	AbstractInplaceOp<A> implements DelegatingSpecialOp<InplaceOp<A>, A, A>
+public abstract class DelegatingHybridOp<I, O> extends AbstractHybridOp<I, O>
+	implements DelegatingSpecialOp<HybridOp<I, O>, I, O>
 {
 
-	private InplaceOp<A> worker;
+	private HybridOp<I, O> worker;
+
+	@Override
+	public O createOutput(final I input) {
+		return worker.createOutput(input);
+	}
 
 	@Override
 	public void initialize() {
@@ -48,8 +56,8 @@ public abstract class DelegatingInplaceOp<A> extends
 	}
 
 	@Override
-	public void compute(final A arg) {
-		worker.compute(arg);
+	public void compute(final I input, final O output) {
+		worker.compute(input, output);
 	}
 
 }

@@ -31,10 +31,10 @@
 package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.DelegatingHybridOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RAIs;
+import net.imagej.ops.chain.DelegatingHybridOp;
+import net.imagej.ops.chain.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
