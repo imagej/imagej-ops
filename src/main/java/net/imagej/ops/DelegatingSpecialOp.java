@@ -31,27 +31,15 @@
 package net.imagej.ops;
 
 /**
- * Base class for {@link ComputerOp} implementations that delegate to other,
- * lower level {@link ComputerOp} implementations.
+ * Base class for {@link SpecialOp} implementations that delegate to other
+ * {@link SpecialOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HighLevelComputerOp<I, O> extends
-	AbstractComputerOp<I, O>
+public interface DelegatingSpecialOp<T extends SpecialOp<I, O>, I, O> extends
+	SpecialOp<I, O>
 {
 
-	private ComputerOp<I, O> worker;
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
-	}
-
-	protected abstract ComputerOp<I, O> createWorker(I t);
+	T createWorker(I t);
 
 }

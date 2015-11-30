@@ -31,19 +31,17 @@
 package net.imagej.ops;
 
 /**
- * Base class for {@link HybridOp} implementations that delegate to other, lower
- * level {@link HybridOp} implementations.
+ * Base class for {@link FunctionOp} implementations that delegate to other
+ * {@link FunctionOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HighLevelHybridOp<I, O> extends AbstractHybridOp<I, O> {
+public abstract class DelegatingFunctionOp<I, O> extends
+	AbstractFunctionOp<I, O> implements
+	DelegatingSpecialOp<FunctionOp<I, O>, I, O>
+{
 
-	private HybridOp<I, O> worker;
-
-	@Override
-	public O createOutput(final I input) {
-		return worker.createOutput(input);
-	}
+	private FunctionOp<I, O> worker;
 
 	@Override
 	public void initialize() {
@@ -51,10 +49,8 @@ public abstract class HighLevelHybridOp<I, O> extends AbstractHybridOp<I, O> {
 	}
 
 	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
+	public O compute(final I input) {
+		return worker.compute(input);
 	}
-
-	protected abstract HybridOp<I, O> createWorker(I t);
 
 }

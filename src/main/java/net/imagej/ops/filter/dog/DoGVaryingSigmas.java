@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.HighLevelHybridOp;
+import net.imagej.ops.DelegatingHybridOp;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.RAIs;
@@ -55,7 +55,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.DoG.class)
 public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
-	HighLevelHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	DelegatingHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG, Contingent
 {
 
@@ -72,7 +72,7 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
 	@Override
-	protected HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		createWorker(final RandomAccessibleInterval<T> t)
 	{
 		final T type = Util.getTypeFromInterval(t);

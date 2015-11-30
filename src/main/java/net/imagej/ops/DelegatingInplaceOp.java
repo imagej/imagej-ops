@@ -31,16 +31,16 @@
 package net.imagej.ops;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to other,
- * lower level {@link FunctionOp} implementations.
+ * Base class for {@link InplaceOp} implementations that delegate to other
+ * {@link InplaceOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HighLevelFunctionOp<I, O> extends
-	AbstractFunctionOp<I, O>
+public abstract class DelegatingInplaceOp<A> extends
+	AbstractInplaceOp<A> implements DelegatingSpecialOp<InplaceOp<A>, A, A>
 {
 
-	private FunctionOp<I, O> worker;
+	private InplaceOp<A> worker;
 
 	@Override
 	public void initialize() {
@@ -48,10 +48,8 @@ public abstract class HighLevelFunctionOp<I, O> extends
 	}
 
 	@Override
-	public O compute(final I input) {
-		return worker.compute(input);
+	public void compute(final A arg) {
+		worker.compute(arg);
 	}
-
-	protected abstract FunctionOp<I, O> createWorker(I t);
 
 }
