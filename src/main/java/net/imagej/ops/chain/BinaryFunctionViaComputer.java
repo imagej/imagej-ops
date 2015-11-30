@@ -30,9 +30,10 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractBinaryHybridOp;
+import net.imagej.ops.AbstractBinaryFunctionOp;
 import net.imagej.ops.BinaryComputerOp;
 import net.imagej.ops.BinaryHybridOp;
+import net.imagej.ops.BinaryOutputFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
@@ -57,9 +58,10 @@ import net.imglib2.type.numeric.real.DoubleType;
  * wrapped {@link ComputerOp}.
  * </p>
  */
-public abstract class BinaryHybridViaComputer<I1, I2, O> extends
-	AbstractBinaryHybridOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>
+public abstract class BinaryFunctionViaComputer<I1, I2, O> extends
+	AbstractBinaryFunctionOp<I1, I2, O> implements
+	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>,
+	BinaryOutputFactory<I1, I2, O>
 {
 
 	private BinaryComputerOp<I1, I2, O> worker;

@@ -30,15 +30,16 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.HybridOp;
+import net.imagej.ops.OutputFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Base class for {@link HybridOp} implementations that delegate to
+ * Base class for {@link FunctionOp} implementations that delegate to
  * {@link ComputerOp} implementations.
  * <p>
  * This is mostly useful when the {@link ComputerOp} in question has a
@@ -55,8 +56,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * wrapped {@link ComputerOp}.
  * </p>
  */
-public abstract class HybridViaComputer<I, O> extends AbstractHybridOp<I, O>
-	implements DelegatingSpecialOp<ComputerOp<I, O>, I, O>
+public abstract class FunctionViaComputer<I, O> extends AbstractFunctionOp<I, O>
+	implements DelegatingSpecialOp<ComputerOp<I, O>, I, O>, OutputFactory<I, O>
 {
 
 	private ComputerOp<I, O> worker;
