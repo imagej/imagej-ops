@@ -38,7 +38,7 @@ import java.util.List;
 import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapOp;
@@ -112,17 +112,17 @@ public class JoinTest extends AbstractOpTest {
 
 	@Test
 	public void testComputerAndComputerJoin() {
-		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
-			new BufferFactory<Img<ByteType>, Img<ByteType>>() {
+		final OutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
+			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
-				public Img<ByteType> createBuffer(final Img<ByteType> input) {
+				public Img<ByteType> createOutput(final Img<ByteType> input) {
 					return input.factory().create(input,
 						input.firstElement().createVariable());
 				}
 			};
 
-		ops.join(out, in, computerOp, computerOp, bufferFactory);
+		ops.join(out, in, computerOp, computerOp, outputFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();
@@ -142,17 +142,17 @@ public class JoinTest extends AbstractOpTest {
 			computers.add(new AddOneComputerImg());
 		}
 
-		final BufferFactory<Img<ByteType>, Img<ByteType>> bufferFactory =
-			new BufferFactory<Img<ByteType>, Img<ByteType>>() {
+		final OutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
+			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
-				public Img<ByteType> createBuffer(final Img<ByteType> input) {
+				public Img<ByteType> createOutput(final Img<ByteType> input) {
 					return input.factory().create(input,
 						input.firstElement().createVariable());
 				}
 			};
 
-		ops.join(out, in, computers, bufferFactory);
+		ops.join(out, in, computers, outputFactory);
 
 		// test
 		final Cursor<ByteType> c = out.cursor();

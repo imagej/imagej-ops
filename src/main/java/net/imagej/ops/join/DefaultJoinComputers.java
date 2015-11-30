@@ -93,7 +93,7 @@ public class DefaultJoinComputers<A> extends
 		}
 
 		joiner.setOps(ops);
-		joiner.setBufferFactory(getBufferFactory());
+		joiner.setOutputFactory(getOutputFactory());
 
 		return joiner;
 	}

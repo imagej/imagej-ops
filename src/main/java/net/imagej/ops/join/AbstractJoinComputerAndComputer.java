@@ -31,7 +31,7 @@
 package net.imagej.ops.join;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
@@ -53,21 +53,21 @@ public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends Comput
 	private C2 second;
 
 	@Parameter(required = false)
-	private BufferFactory<A, B> bufferFactory;
+	private OutputFactory<A, B> outputFactory;
 
 	private B buffer;
 
 	public B getBuffer(final A input) {
-		if (buffer == null) buffer = bufferFactory.createBuffer(input);
+		if (buffer == null) buffer = outputFactory.createOutput(input);
 		return buffer;
 	}
 
-	public BufferFactory<A, B> getBufferFactory() {
-		return bufferFactory;
+	public OutputFactory<A, B> getOutputFactory() {
+		return outputFactory;
 	}
 
-	public void setBufferFactory(final BufferFactory<A, B> bufferFactory) {
-		this.bufferFactory = bufferFactory;
+	public void setOutputFactory(final OutputFactory<A, B> outputFactory) {
+		this.outputFactory = outputFactory;
 	}
 
 	@Override

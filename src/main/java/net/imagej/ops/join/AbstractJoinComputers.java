@@ -33,7 +33,7 @@ package net.imagej.ops.join;
 import java.util.List;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
@@ -52,18 +52,18 @@ public abstract class AbstractJoinComputers<A, C extends ComputerOp<A, A>>
 	private List<? extends C> ops;
 
 	@Parameter
-	private BufferFactory<A, A> bufferFactory;
+	private OutputFactory<A, A> outputFactory;
 
 	private A buffer;
 
 	@Override
-	public BufferFactory<A, A> getBufferFactory() {
-		return bufferFactory;
+	public OutputFactory<A, A> getOutputFactory() {
+		return outputFactory;
 	}
 
 	@Override
-	public void setBufferFactory(final BufferFactory<A, A> bufferFactory) {
-		this.bufferFactory = bufferFactory;
+	public void setOutputFactory(final OutputFactory<A, A> outputFactory) {
+		this.outputFactory = outputFactory;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public abstract class AbstractJoinComputers<A, C extends ComputerOp<A, A>>
 	 */
 	protected A getBuffer(final A input) {
 		if (buffer == null) {
-			buffer = bufferFactory.createBuffer(input);
+			buffer = outputFactory.createOutput(input);
 		}
 		return buffer;
 	}

@@ -32,7 +32,7 @@ package net.imagej.ops.join;
 
 import java.util.List;
 
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 
@@ -47,17 +47,17 @@ public interface JoinComputers<A, C extends ComputerOp<A, A>> extends
 {
 
 	/**
-	 * @return {@link BufferFactory} used to create intermediate results
+	 * @return {@link OutputFactory} used to create intermediate results
 	 */
-	BufferFactory<A, A> getBufferFactory();
+	OutputFactory<A, A> getOutputFactory();
 
 	/**
-	 * Sets the {@link BufferFactory} which is used to create intermediate
+	 * Sets the {@link OutputFactory} which is used to create intermediate
 	 * results.
 	 * 
-	 * @param bufferFactory used to create intermediate results
+	 * @param outputFactory used to create intermediate results
 	 */
-	void setBufferFactory(BufferFactory<A, A> bufferFactory);
+	void setOutputFactory(OutputFactory<A, A> outputFactory);
 
 	/**
 	 * @return {@link List} of {@link ComputerOp}s which are joined by this op

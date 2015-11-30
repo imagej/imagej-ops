@@ -31,7 +31,7 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
@@ -49,17 +49,17 @@ public abstract class AbstractLoopComputer<C extends ComputerOp<I, I>, I>
 	private ComputerOp<I, I> op;
 
 	@Parameter
-	private BufferFactory<I, I> bufferFactory;
+	private OutputFactory<I, I> outputFactory;
 
 	@Parameter
 	private int n;
 
-	public BufferFactory<I, I> getBufferFactory() {
-		return bufferFactory;
+	public OutputFactory<I, I> getOutputFactory() {
+		return outputFactory;
 	}
 
-	public void setBufferFactory(final BufferFactory<I, I> bufferFactory) {
-		this.bufferFactory = bufferFactory;
+	public void setOutputFactory(final OutputFactory<I, I> outputFactory) {
+		this.outputFactory = outputFactory;
 	}
 
 	@Override

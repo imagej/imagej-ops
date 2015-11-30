@@ -60,7 +60,7 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 
 		joiner.setFirst(getFirst().getIndependentInstance());
 		joiner.setSecond(getSecond().getIndependentInstance());
-		joiner.setBufferFactory(getBufferFactory());
+		joiner.setOutputFactory(getOutputFactory());
 
 		return joiner;
 	}

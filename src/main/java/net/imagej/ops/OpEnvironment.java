@@ -840,12 +840,12 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
 	default <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second, final BufferFactory<A, B> bufferFactory)
+		final ComputerOp<B, C> second, final OutputFactory<A, B> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
 			(C) run(net.imagej.ops.join.DefaultJoinComputerAndComputer.class, out,
-				in, first, second, bufferFactory);
+				in, first, second, outputFactory);
 		return result;
 	}
 
@@ -865,12 +865,12 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputers.class)
 	default <A> A join(final A out, final A in,
 		final List<? extends ComputerOp<A, A>> ops,
-		final BufferFactory<A, A> bufferFactory)
+		final OutputFactory<A, A> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
 			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
-				ops, bufferFactory);
+				ops, outputFactory);
 		return result;
 	}
 
@@ -898,12 +898,12 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
 	default <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final ComputerOp<A, B> second, final BufferFactory<A, A> bufferFactory)
+		final ComputerOp<A, B> second, final OutputFactory<A, A> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
 			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in,
-				first, second, bufferFactory);
+				first, second, outputFactory);
 		return result;
 	}
 
@@ -922,12 +922,12 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
 	default <A, B> B join(final B out, final A in, final ComputerOp<A, B> first,
-		final InplaceOp<B> second, final BufferFactory<A, B> bufferFactory)
+		final InplaceOp<B> second, final OutputFactory<A, B> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
 			(B) run(net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in,
-				first, second, bufferFactory);
+				first, second, outputFactory);
 		return result;
 	}
 
@@ -949,12 +949,12 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopComputer.class)
 	default <A> A loop(final A out, final A in, final ComputerOp<A, A> op,
-		final BufferFactory<A, A> bufferFactory, final int n)
+		final OutputFactory<A, A> outputFactory, final int n)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
 			(A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out, in, op,
-				bufferFactory, n);
+				outputFactory, n);
 		return result;
 	}
 

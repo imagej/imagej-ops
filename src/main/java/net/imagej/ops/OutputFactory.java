@@ -36,7 +36,7 @@ package net.imagej.ops;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface BufferFactory<I, O> {
+public interface OutputFactory<I, O> {
 
 	/**
 	 * Create an output object given some input.
@@ -46,5 +46,5 @@ public interface BufferFactory<I, O> {
 	 * 
 	 * @return output, depending on the input
 	 */
-	O createBuffer(I input);
+	O createOutput(I input);
 }
