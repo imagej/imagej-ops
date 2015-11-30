@@ -76,4 +76,31 @@ public final class RTs {
 		return ops.inplace(opType, arg, otherArgs);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <I1, I2, O extends RealType<O>> BinaryComputerOp<I1, I2, O>
+		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
+			final I1 in1, final I2 in2, final Object... otherArgs)
+	{
+		return (BinaryComputerOp) ops.binaryComputer(opType, RealType.class, in1,
+			in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <I1, I2, O extends RealType<O>> BinaryFunctionOp<I1, I2, O>
+		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
+			final I1 in1, I2 in2, final Object... otherArgs)
+	{
+		return (BinaryFunctionOp) ops.binaryFunction(opType, RealType.class, in1,
+			in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <I1, I2, O extends RealType<O>> BinaryHybridOp<I1, I2, O>
+		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
+			final I1 in1, I2 in2, final Object... otherArgs)
+	{
+		return (BinaryHybridOp) ops.binaryHybrid(opType, RealType.class, in1, in2,
+			otherArgs);
+	}
+
 }
