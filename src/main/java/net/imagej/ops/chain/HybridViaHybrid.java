@@ -30,21 +30,25 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.HybridOp;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to other
- * {@link FunctionOp} implementations.
+ * Base class for {@link HybridOp} implementations that delegate to other
+ * {@link HybridOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingFunctionOp<I, O> extends
-	AbstractFunctionOp<I, O> implements
-	DelegatingSpecialOp<FunctionOp<I, O>, I, O>
+public abstract class HybridViaHybrid<I, O> extends AbstractHybridOp<I, O>
+	implements DelegatingSpecialOp<HybridOp<I, O>, I, O>
 {
 
-	private FunctionOp<I, O> worker;
+	private HybridOp<I, O> worker;
+
+	@Override
+	public O createOutput(final I input) {
+		return worker.createOutput(input);
+	}
 
 	@Override
 	public void initialize() {
@@ -52,8 +56,8 @@ public abstract class DelegatingFunctionOp<I, O> extends
 	}
 
 	@Override
-	public O compute(final I input) {
-		return worker.compute(input);
+	public void compute(final I input, final O output) {
+		worker.compute(input, output);
 	}
 
 }

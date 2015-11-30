@@ -33,7 +33,7 @@ package net.imagej.ops.filter.dog;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.DelegatingHybridOp;
+import net.imagej.ops.chain.HybridViaHybrid;
 import net.imagej.ops.chain.RAIs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -55,7 +55,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.DoG.class)
 public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	extends
-	DelegatingHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	HybridViaHybrid<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG, Contingent
 {
 

@@ -39,7 +39,7 @@ import net.imagej.ops.BinaryFunctionOp;
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingBinaryFunctionOp<I1, I2, O> extends
+public abstract class BinaryFunctionViaFunction<I1, I2, O> extends
 	AbstractBinaryFunctionOp<I1, I2, O> implements
 	DelegatingBinaryOp<BinaryFunctionOp<I1, I2, O>, I1, I2, O>
 {

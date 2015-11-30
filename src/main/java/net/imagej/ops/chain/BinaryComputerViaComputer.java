@@ -39,7 +39,7 @@ import net.imagej.ops.BinaryComputerOp;
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingBinaryComputerOp<I1, I2, O> extends
+public abstract class BinaryComputerViaComputer<I1, I2, O> extends
 	AbstractBinaryComputerOp<I1, I2, O> implements
 	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>
 {

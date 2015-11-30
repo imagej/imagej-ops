@@ -30,34 +30,31 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.AbstractBinaryFunctionOp;
+import net.imagej.ops.BinaryFunctionOp;
+import net.imagej.ops.BinaryHybridOp;
 
 /**
- * Base class for {@link HybridOp} implementations that delegate to other
- * {@link HybridOp} implementations.
+ * Base class for {@link BinaryFunctionOp} implementations that delegate to
+ * other {@link BinaryFunctionOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class DelegatingHybridOp<I, O> extends AbstractHybridOp<I, O>
-	implements DelegatingSpecialOp<HybridOp<I, O>, I, O>
+public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
+	AbstractBinaryFunctionOp<I1, I2, O> implements
+	DelegatingBinaryOp<BinaryHybridOp<I1, I2, O>, I1, I2, O>
 {
 
-	private HybridOp<I, O> worker;
-
-	@Override
-	public O createOutput(final I input) {
-		return worker.createOutput(input);
-	}
+	private BinaryHybridOp<I1, I2, O> worker;
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in());
+		worker = createWorker(in1(), in2());
 	}
 
 	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
+	public O compute2(final I1 input1, final I2 input2) {
+		return worker.compute2(input1, input2);
 	}
 
 }
