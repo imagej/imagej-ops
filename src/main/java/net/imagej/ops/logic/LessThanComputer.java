@@ -38,20 +38,20 @@ import net.imglib2.type.BooleanType;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link BinaryComputerOp} that performs a greater-than (>) comparison on two
+ * {@link BinaryComputerOp} that performs a less-than (<) comparison on two
  * {@link Comparable} objects.
  */
-@Plugin(type = Ops.Logic.GreaterThan.class)
-public class GreaterThanComputer<I, O extends BooleanType<O>> extends
+@Plugin(type = Ops.Logic.LessThan.class)
+public class LessThanComputer<I, O extends BooleanType<O>> extends
 	AbstractBinaryComputerOp<Comparable<I>, I, O> implements
-	Ops.Logic.GreaterThan
+	Ops.Logic.LessThan
 {
 
 	@Override
 	public void compute2(final Comparable<I> input1, final I input2,
 		final O output)
 	{
-		output.set(input1.compareTo(input2) > 0);
+		output.set(input1.compareTo(input2) < 0);
 	}
 
 }

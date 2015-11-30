@@ -30,28 +30,59 @@
 
 package net.imagej.ops.logic;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryComputerOp;
-import net.imagej.ops.special.BinaryComputerOp;
-import net.imglib2.type.BooleanType;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link BinaryComputerOp} that performs a greater-than (>) comparison on two
- * {@link Comparable} objects.
+ * Generated logical ops with primitive types.
+ *
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Logic.GreaterThan.class)
-public class GreaterThanComputer<I, O extends BooleanType<O>> extends
-	AbstractBinaryComputerOp<Comparable<I>, I, O> implements
-	Ops.Logic.GreaterThan
-{
+public final class PrimitiveLogic {
 
-	@Override
-	public void compute2(final Comparable<I> input1, final I input2,
-		final O output)
-	{
-		output.set(input1.compareTo(input2) > 0);
+	private PrimitiveLogic() {
+		// NB: Prevent instantiation of utility class.
 	}
+#foreach ($type in $types)
+#foreach ($op in $ops)
+#if ($op.codes.contains($type.code))
+#set ($iface = "Ops.Logic.$op.name")
+
+	/** Op that $op.verbs#if ($op.unary) a $type.primitive value#else two $type.primitive values#end. */
+	@Plugin(type = ${iface}.class#if ($type.priority), priority = $type.priority#end)
+	public static class $type.name$op.name extends AbstractOp
+		implements $iface
+	{
+		@Parameter(type = ItemIO.OUTPUT)
+		private boolean result;
+
+		@Parameter
+		private $type.primitive a;
+#if (!$op.unary)
+
+		@Parameter
+		private $type.primitive b;
+#end
+
+		@Override
+		public void run() {
+#if ($op.unary && $op.operator)
+			result = ${op.operator}a;
+#elseif ($op.unary)
+			result = ${op.function}(a);
+#elseif ($op.operator)
+			result = a $op.operator b;
+#else
+			result = ${op.function}(a, b);
+#end
+		}
+	}
+#end
+#end
+#end
 
 }

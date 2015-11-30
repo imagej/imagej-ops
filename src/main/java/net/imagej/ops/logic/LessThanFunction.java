@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,27 +31,37 @@
 package net.imagej.ops.logic;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.BinaryComputerOp;
-import net.imglib2.type.BooleanType;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imglib2.type.logic.BoolType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link BinaryComputerOp} that performs a greater-than (>) comparison on two
+ * {@link BinaryFunctionOp} that performs a greater-than (>) comparison on two
  * {@link Comparable} objects.
  */
-@Plugin(type = Ops.Logic.GreaterThan.class)
-public class GreaterThanComputer<I, O extends BooleanType<O>> extends
-	AbstractBinaryComputerOp<Comparable<I>, I, O> implements
-	Ops.Logic.GreaterThan
+@Plugin(type = Ops.Logic.LessThan.class)
+public class LessThanFunction<I> extends
+	AbstractBinaryFunctionOp<Comparable<I>, I, BoolType> implements
+	Ops.Logic.LessThan
 {
 
+	private BinaryComputerOp<Comparable<I>, I, BoolType> op;
+
 	@Override
-	public void compute2(final Comparable<I> input1, final I input2,
-		final O output)
-	{
-		output.set(input1.compareTo(input2) > 0);
+	public void initialize() {
+		op =
+			ops().binaryComputer(Ops.Logic.LessThan.class, BoolType.class, in1(),
+				in2());
+	}
+
+	@Override
+	public BoolType compute2(final Comparable<I> input1, final I input2) {
+		final BoolType output = new BoolType();
+		op.compute2(input1, input2, output);
+		return output;
 	}
 
 }
