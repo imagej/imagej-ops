@@ -40,7 +40,7 @@ import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
 import net.imagej.ops.map.MapIterableIntervalToRAI;
 import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
-import net.imagej.ops.map.MapParallel;
+import net.imagej.ops.map.MapIterableInplaceParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -106,6 +106,6 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestThreadedMapperInplace() {
-		ops.run(new MapParallel<ByteType>(), in.copy(), addConstantInplace);
+		ops.run(new MapIterableInplaceParallel<ByteType>(), in.copy(), addConstantInplace);
 	}
 }

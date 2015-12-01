@@ -35,7 +35,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.map.MapIterableToIterableParallel;
 import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
-import net.imagej.ops.map.MapParallel;
+import net.imagej.ops.map.MapIterableInplaceParallel;
 import net.imagej.ops.math.ConstantToArrayImage;
 import net.imagej.ops.math.ConstantToArrayImageP;
 import net.imagej.ops.math.ConstantToImageFunctional;
@@ -92,7 +92,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void inTestDefaultInplaceMapperP() {
-		ops.run(MapParallel.class, in, ops.op(
+		ops.run(MapIterableInplaceParallel.class, in, ops.op(
 			AddConstantInplace.class, NumericType.class, new ByteType((byte) 10)));
 	}
 

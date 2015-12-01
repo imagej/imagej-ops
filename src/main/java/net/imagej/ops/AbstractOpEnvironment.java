@@ -497,7 +497,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result =
-			(IterableInterval<A>) run(net.imagej.ops.map.MapParallel.class, arg, op);
+			(IterableInterval<A>) run(net.imagej.ops.map.MapIterableInplaceParallel.class, arg, op);
 		return result;
 	}
 

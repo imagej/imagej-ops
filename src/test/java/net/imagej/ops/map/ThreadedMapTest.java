@@ -119,7 +119,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapParallel.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIterableInplaceParallel.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
