@@ -534,7 +534,7 @@ public interface OpEnvironment extends Contextual {
 	<A> IterableInterval<A> map(IterableInterval<A> arg, InplaceOp<A> op);
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapIterableToIterableParallel.class,
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
 	<A, B> IterableInterval<B> map(IterableInterval<B> out,
 		IterableInterval<A> in, ComputerOp<A, B> op);
