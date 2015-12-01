@@ -45,7 +45,7 @@ import org.junit.Test;
 
 /**
  * Testing multi threaded implementation ({@link MapIterableIntervalToRAIParallel} and
- * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapIterableIntervalToIterableIntervalParallel}) of the mappers. Assumption: Naive Implementation of
  * {@link MapIterableIntervalToRAI} works fine.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -100,7 +100,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(MapIterableToIterableParallel.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToIterableIntervalParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
