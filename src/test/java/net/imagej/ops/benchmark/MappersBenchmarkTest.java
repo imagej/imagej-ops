@@ -39,7 +39,7 @@ import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
 import net.imagej.ops.map.MapIterableIntervalToRAI;
 import net.imagej.ops.map.MapIterableToIterableParallel;
-import net.imagej.ops.map.MapIterableToRAIParallel;
+import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
 import net.imagej.ops.map.MapParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
@@ -53,7 +53,7 @@ import org.junit.rules.TestRule;
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
  * {@link MapIterableIntervalToRAI}, {@link MapIterableIntervalToIterableInterval},
- * {@link MapIterableToRAIParallel}, {@link MapIterableToIterableParallel}
+ * {@link MapIterableIntervalToRAIParallel}, {@link MapIterableToIterableParallel}
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -90,7 +90,7 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestThreadedMapper() {
-		ops.run(new MapIterableToRAIParallel<ByteType, ByteType>(), out, in, addConstant);
+		ops.run(new MapIterableIntervalToRAIParallel<ByteType, ByteType>(), out, in, addConstant);
 	}
 
 	@Test

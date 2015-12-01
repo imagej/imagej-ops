@@ -540,7 +540,7 @@ public interface OpEnvironment extends Contextual {
 		IterableInterval<A> in, ComputerOp<A, B> op);
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapIterableToRAIParallel.class,
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToRAIParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToRAI.class })
 	<A, B> RandomAccessibleInterval<B> map(RandomAccessibleInterval<B> out,
 		IterableInterval<A> in, ComputerOp<A, B> op);
