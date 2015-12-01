@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @param <B> mapped from {@code <A>}
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableToRAIParallel<A, B> extends
+public class MapIterableIntervalToRAIParallel<A, B> extends
 	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
 	implements Parallel
 {

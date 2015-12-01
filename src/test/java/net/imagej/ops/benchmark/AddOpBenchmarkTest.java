@@ -34,7 +34,7 @@ import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
 import net.imagej.ops.map.MapIterableToIterableParallel;
-import net.imagej.ops.map.MapIterableToRAIParallel;
+import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
 import net.imagej.ops.map.MapParallel;
 import net.imagej.ops.math.ConstantToArrayImage;
 import net.imagej.ops.math.ConstantToArrayImageP;
@@ -80,7 +80,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTestDefaultMapperP() {
-		ops.run(MapIterableToRAIParallel.class, out, in, ops.op(
+		ops.run(MapIterableIntervalToRAIParallel.class, out, in, ops.op(
 			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
