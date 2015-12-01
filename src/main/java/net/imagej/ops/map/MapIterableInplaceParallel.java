@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -60,7 +60,7 @@ public class MapIterableInplaceParallel<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, A> safe = getOp().getIndependentInstance();
+				final InplaceOp<A> safe = getOp().getIndependentInstance();
 				final Cursor<A> inCursor = arg.cursor();
 
 				setToStart(inCursor, startIndex);
@@ -68,7 +68,7 @@ public class MapIterableInplaceParallel<A> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					final A t = inCursor.get();
-					safe.compute(t, t);
+					safe.compute(t);
 					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
