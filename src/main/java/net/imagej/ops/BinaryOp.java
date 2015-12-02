@@ -44,21 +44,20 @@ package net.imagej.ops;
  * @see BinaryFunctionOp
  * @see BinaryHybridOp
  */
-public interface BinaryOp<I1, I2, O> extends SpecialOp<BinaryInput<I1, I2>, O>,
+public interface BinaryOp<I1, I2, O> extends SpecialOp<I1, O>,
 	BinaryInput<I1, I2>
 {
 
 	// -- Input methods --
 
 	@Override
-	default BinaryInput<I1, I2> in() {
-		return this;
+	default I1 in() {
+		return in1();
 	}
 
 	@Override
-	default void setInput(final BinaryInput<I1, I2> input) {
-		setInput1(input.in1());
-		setInput2(input.in2());
+	default void setInput(final I1 input) {
+		setInput1(input);
 	}
 
 	// -- Threadable methods --
