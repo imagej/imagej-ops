@@ -52,8 +52,10 @@ import org.junit.rules.TestRule;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link MapIterableIntervalToRAI}, {@link MapIterableIntervalToIterableInterval},
- * {@link MapIterableIntervalToRAIParallel}, {@link MapIterableIntervalToIterableIntervalParallel}
+ * {@link MapIterableIntervalToRAI},
+ * {@link MapIterableIntervalToIterableInterval},
+ * {@link MapIterableIntervalToRAIParallel},
+ * {@link MapIterableIntervalToIterableIntervalParallel}
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -74,8 +76,12 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 		in = generateByteTestImg(true, 1000, 1000);
 		out = generateByteTestImg(false, 1000, 1000);
 
-		addConstant = ops.op(Ops.Math.Add.class, null, NumericType.class, new ByteType((byte) 5));
-		addConstantInplace = ops.op(AddConstantInplace.class, NumericType.class, new ByteType((byte) 5));
+		addConstant =
+			ops.op(Ops.Math.Add.class, null, NumericType.class,
+				new ByteType((byte) 5));
+		addConstantInplace =
+			ops.op(AddConstantInplace.class, NumericType.class,
+				new ByteType((byte) 5));
 	}
 
 	@Test
@@ -95,8 +101,8 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
-		ops.run(MapIterableIntervalToIterableIntervalParallel.class,
-			out, in, addConstant, out);
+		ops.run(MapIterableIntervalToIterableIntervalParallel.class, out, in,
+			addConstant, out);
 	}
 
 	@Test
@@ -106,6 +112,7 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestThreadedMapperInplace() {
-		ops.run(MapIterableIntervalInplaceParallel.class, in.copy(), addConstantInplace);
+		ops.run(MapIterableIntervalInplaceParallel.class, in.copy(),
+			addConstantInplace);
 	}
 }
