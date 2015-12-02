@@ -102,7 +102,7 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
 		ops.run(MapIterableIntervalToIterableIntervalParallel.class, out, in,
-			addConstant, out);
+			addConstant);
 	}
 
 	@Test
