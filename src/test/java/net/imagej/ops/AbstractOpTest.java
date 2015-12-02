@@ -37,6 +37,7 @@ import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
@@ -101,7 +102,7 @@ public abstract class AbstractOpTest {
 		return seed = 3170425 * seed + 132102;
 	}
 
-	public Img<ByteType> generateByteTestImg(final boolean fill,
+	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(final boolean fill,
 		final long... dims)
 	{
 		final byte[] array =
@@ -117,7 +118,7 @@ public abstract class AbstractOpTest {
 		return ArrayImgs.bytes(array, dims);
 	}
 
-	public Img<UnsignedByteType> generateUnsignedByteTestImg(final boolean fill,
+	public ArrayImg<UnsignedByteType, ByteArray> generateUnsignedByteArrayTestImg(final boolean fill,
 		final long... dims)
 	{
 		final byte[] array =

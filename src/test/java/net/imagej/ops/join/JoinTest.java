@@ -59,8 +59,8 @@ public class JoinTest extends AbstractOpTest {
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
-		in = generateByteTestImg(false, dims);
-		out = generateByteTestImg(false, dims);
+		in = generateByteArrayTestImg(false, dims);
+		out = generateByteArrayTestImg(false, dims);
 		inplaceOp = ops.op(MapOp.class, Img.class, new AddOneInplace());
 		computerOp =
 			ops.op(MapOp.class, Img.class, Img.class, new AddOneComputer());

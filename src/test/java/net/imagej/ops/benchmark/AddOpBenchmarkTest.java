@@ -41,7 +41,8 @@ import net.imagej.ops.math.ConstantToArrayImageP;
 import net.imagej.ops.math.ConstantToImageFunctional;
 import net.imagej.ops.math.ConstantToImageInPlace;
 import net.imagej.ops.math.NumericTypeBinaryMath;
-import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImg;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -58,8 +59,8 @@ import org.junit.rules.TestRule;
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
-	private Img<ByteType> in;
-	private Img<ByteType> out;
+	private ArrayImg<ByteType, ByteArray> in;
+	private ArrayImg<ByteType, ByteArray> out;
 
 	/** Needed for JUnit-Benchmarks */
 	@Rule
@@ -68,8 +69,8 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	/** Sets up test images */
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 5000, 5000);
-		out = generateByteTestImg(false, 5000, 5000);
+		in = generateByteArrayTestImg(true, 5000, 5000);
+		out = generateByteArrayTestImg(false, 5000, 5000);
 	}
 
 	@Test

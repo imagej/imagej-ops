@@ -82,8 +82,8 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 	 */
 	@Before
 	public void before() throws Exception {
-		in = generateByteTestImg(true, new long[] { 10, 10 });
-		out = generateByteTestImg(false, new long[] { 10, 10 });
+		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		out = generateByteArrayTestImg(false, new long[] { 10, 10 });
 		shape = new RectangleShape(1, false);
 	}
 

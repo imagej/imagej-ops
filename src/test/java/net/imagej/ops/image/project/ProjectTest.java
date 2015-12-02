@@ -54,7 +54,7 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateUnsignedByteTestImg(false, 10, 10, 10);
+		in = generateUnsignedByteArrayTestImg(false, 10, 10, 10);
 
 		final RandomAccess<UnsignedByteType> randomAccess = in.randomAccess();
 
@@ -68,8 +68,8 @@ public class ProjectTest extends AbstractOpTest {
 			}
 		}
 
-		out1 = generateUnsignedByteTestImg(false, 10, 10);
-		out2 = generateUnsignedByteTestImg(false, 10, 10);
+		out1 = generateUnsignedByteArrayTestImg(false, 10, 10);
+		out2 = generateUnsignedByteArrayTestImg(false, 10, 10);
 
 		op = ops.op(Ops.Stats.Sum.class, RealType.class, out1);
 	}

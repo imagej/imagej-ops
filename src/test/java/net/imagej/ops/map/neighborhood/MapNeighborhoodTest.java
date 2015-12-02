@@ -58,8 +58,8 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 11, 10);
-		out = generateByteTestImg(false, 11, 10);
+		in = generateByteArrayTestImg(true, 11, 10);
+		out = generateByteArrayTestImg(false, 11, 10);
 	}
 
 	/**
