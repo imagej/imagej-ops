@@ -36,7 +36,7 @@ package net.imagej.ops;
  * @author Curtis Rueden
  */
 public abstract class AbstractBinaryOp<I1, I2, O> extends
-	AbstractSpecialOp<BinaryInput<I1, I2>, O> implements BinaryOp<I1, I2, O>
+	AbstractSpecialOp<I1, O> implements BinaryOp<I1, I2, O>
 {
 	// NB: No implementation needed.
 }

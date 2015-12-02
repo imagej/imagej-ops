@@ -42,7 +42,7 @@ package net.imagej.ops;
  * @see BinaryHybridOp
  */
 public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
-	FunctionOp<BinaryInput<I1, I2>, O>
+	FunctionOp<I1, O>
 {
 
 	/**
@@ -57,8 +57,8 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	// -- FunctionOp methods --
 
 	@Override
-	default O compute(final BinaryInput<I1, I2> input) {
-		return compute2(input.in1(), input.in2());
+	default O compute(final I1 input) {
+		return compute2(input, in2());
 	}
 
 	// -- Threadable methods --
