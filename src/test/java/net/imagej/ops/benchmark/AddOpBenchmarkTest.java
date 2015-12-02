@@ -86,7 +86,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTtestAddConstantToImage() {
-		ops.run(new ConstantToImageFunctional.Add<ByteType>(), out, in,
+		ops.run(ConstantToImageFunctional.Add.class, out, in,
 			new ByteType((byte) 10));
 	}
 
@@ -98,17 +98,17 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.run(new ConstantToImageInPlace.Add<ByteType>(), in, new ByteType(
+		ops.run(ConstantToImageInPlace.Add.class, in, new ByteType(
 			(byte) 10));
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImage() {
-		ops.run(new ConstantToArrayImage.AddByte(), in, (byte) 10);
+		ops.run(ConstantToArrayImage.AddByte.class, in, (byte) 10);
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImageP() {
-		ops.run(new ConstantToArrayImageP.AddByte(), in, (byte) 10);
+		ops.run(ConstantToArrayImageP.AddByte.class, in, (byte) 10);
 	}
 }
