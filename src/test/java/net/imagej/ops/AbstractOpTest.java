@@ -72,7 +72,8 @@ public abstract class AbstractOpTest {
 
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class, CacheService.class);
+		return new Context(OpService.class, OpMatchingService.class,
+			CacheService.class);
 	}
 
 	/** Sets up a SciJava context with {@link OpService}. */
@@ -149,8 +150,8 @@ public abstract class AbstractOpTest {
 	}
 
 	public Img<UnsignedByteType>
-	generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
-		long tempSeed)
+		generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
+			long tempSeed)
 	{
 
 		Img<UnsignedByteType> img = ArrayImgs.unsignedBytes(dims);
@@ -165,6 +166,7 @@ public abstract class AbstractOpTest {
 	}
 
 	public static class NoOp extends AbstractOp {
+
 		@Override
 		public void run() {
 			// NB: No implementation needed.

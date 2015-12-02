@@ -74,14 +74,16 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTestIterableIntervalMapperP() {
-		ops.run(MapIterableIntervalToIterableIntervalParallel.class, out, in, ops.op(
-			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
+		ops.run(MapIterableIntervalToIterableIntervalParallel.class, out, in, ops
+			.op(NumericTypeBinaryMath.Add.class, null, NumericType.class,
+				new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTestDefaultMapperP() {
 		ops.run(MapIterableIntervalToRAIParallel.class, out, in, ops.op(
-			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType(
+				(byte) 10)));
 	}
 
 	@Test
