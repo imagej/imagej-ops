@@ -61,6 +61,8 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	private ArrayImg<ByteType, ByteArray> in;
 	private ArrayImg<ByteType, ByteArray> out;
+	private byte[] arrIn;
+	private byte[] arrOut;
 
 	/** Needed for JUnit-Benchmarks */
 	@Rule
@@ -71,6 +73,8 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	public void initImg() {
 		in = generateByteArrayTestImg(true, 5000, 5000);
 		out = generateByteArrayTestImg(false, 5000, 5000);
+		arrIn = in.update(null).getCurrentStorageArray();
+		arrOut = in.update(null).getCurrentStorageArray();
 	}
 
 	@Test
@@ -113,5 +117,13 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	@Test
 	public void inTestAddConstantToArrayByteImageP() {
 		ops.run(ConstantToArrayImageP.AddByte.class, in, (byte) 10);
+	}
+
+	@Test
+	public void testAddConstantToArrayByteImageDirect() {
+
+		for (int i = 0; i < arrIn.length; i++) {
+			arrOut[i] += arrIn[i] + 10;
+		}
 	}
 }
