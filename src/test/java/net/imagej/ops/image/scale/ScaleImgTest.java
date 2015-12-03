@@ -47,7 +47,7 @@ public class ScaleImgTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
-		Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		double[] scaleFactors = new double[] { 2, 2 };
 		Img<ByteType> out =
 			ops.image().scale(in, scaleFactors,

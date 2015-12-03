@@ -53,7 +53,7 @@ public class GaussTest extends AbstractOpTest {
 	@Test
 	public void gaussRegressionTest() {
 
-		final Img<ByteType> in = generateByteTestImg(true, new long[] { 10, 10 });
+		final Img<ByteType> in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		final Img<ByteType> out1 =
 			ops.create().img(in, Util.getTypeFromInterval(in));
 		final double sigma = 5;

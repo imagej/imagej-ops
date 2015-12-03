@@ -59,9 +59,9 @@ public class MapTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 10, 10);
-		out = generateByteTestImg(false, 10, 10);
-		outDiffDims = generateByteTestImg(false, 10, 10, 15);
+		in = generateByteArrayTestImg(true, 10, 10);
+		out = generateByteArrayTestImg(false, 10, 10);
+		outDiffDims = generateByteArrayTestImg(false, 10, 10, 15);
 	}
 
 	@Test

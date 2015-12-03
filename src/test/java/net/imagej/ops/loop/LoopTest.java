@@ -60,8 +60,8 @@ public class LoopTest extends AbstractOpTest {
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
-		in = generateByteTestImg(false, dims);
-		out = generateByteTestImg(false, dims);
+		in = generateByteArrayTestImg(false, dims);
+		out = generateByteArrayTestImg(false, dims);
 		numIterations = 10;
 		functionalOp = ops.op(MapOp.class, out, in, new AddOneFunctional());
 		inplaceOp = ops.op(MapOp.class, in, new AddOneInplace());

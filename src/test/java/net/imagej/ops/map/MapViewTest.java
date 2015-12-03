@@ -56,7 +56,7 @@ public class MapViewTest extends AbstractOpTest {
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
-		in = generateByteTestImg(false, dims);
+		in = generateByteArrayTestImg(false, dims);
 		op =
 			ops.op(NumericTypeBinaryMath.Add.class, null, NumericType.class,
 				new ByteType((byte) 10));

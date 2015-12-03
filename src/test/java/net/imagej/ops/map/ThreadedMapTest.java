@@ -57,8 +57,8 @@ public class ThreadedMapTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 10, 10);
-		out = generateByteTestImg(false, 10, 10);
+		in = generateByteArrayTestImg(true, 10, 10);
+		out = generateByteArrayTestImg(false, 10, 10);
 	}
 
 	@Test

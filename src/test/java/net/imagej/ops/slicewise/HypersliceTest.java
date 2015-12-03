@@ -161,7 +161,7 @@ public class HypersliceTest extends AbstractOpTest {
 		final int numSlices = 25;
 		final int numTimePoints = 5;
 
-		final Img<UnsignedByteType> testImage = generateUnsignedByteTestImg(
+		final Img<UnsignedByteType> testImage = generateUnsignedByteArrayTestImg(
 				true, xSize, ySize, numChannels, numSlices, numTimePoints);
 
 		final int[] axisIndices = new int[3];

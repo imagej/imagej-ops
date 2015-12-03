@@ -73,8 +73,8 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 1000, 1000);
-		out = generateByteTestImg(false, 1000, 1000);
+		in = generateByteArrayTestImg(true, 1000, 1000);
+		out = generateByteArrayTestImg(false, 1000, 1000);
 
 		addConstant =
 			ops.op(Ops.Math.Add.class, null, NumericType.class,

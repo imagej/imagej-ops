@@ -77,7 +77,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Before
 	public void before() throws Exception {
-		in = generateByteTestImg(true, new long[] { 10, 10 });
+		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
 	}
