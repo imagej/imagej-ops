@@ -12,6 +12,7 @@ ops = ```
 	[name: "eval",        iface: "Eval"],
 	[name: "help",        iface: "Help"],
 	[name: "identity",    iface: "Identity"],
+	[name: "if",          iface: "If"],
 	[name: "join",        iface: "Join"],
 	[name: "loop",        iface: "Loop"],
 	[name: "map",         iface: "Map"],
