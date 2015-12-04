@@ -35,6 +35,8 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.type.BooleanType;
+import net.imglib2.type.Type;
 import net.imglib2.type.logic.BoolType;
 
 import org.scijava.plugin.Plugin;
@@ -108,6 +110,28 @@ public class LogicNamespace extends AbstractNamespace {
 		final BoolType result =
 			(BoolType) ops().run(net.imagej.ops.logic.BooleanCondition.class,
 				out, in);
+		return result;
+	}
+
+	// -- conditional --
+
+	@OpMethod(op = net.imagej.ops.logic.If.class)
+	public <I extends BooleanType<I>, O extends Type<O>> O conditional(
+		final O out, final I in, final O ifTrueVal, final O ifFalseVal)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.logic.If.class, out, in,
+			ifTrueVal, ifFalseVal);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.logic.If.class)
+	public <I extends BooleanType<I>, O extends Type<O>> O conditional(final I in,
+		final O ifTrueVal, final O ifFalseVal)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.logic.If.class, in, ifTrueVal,
+			ifFalseVal);
 		return result;
 	}
 
