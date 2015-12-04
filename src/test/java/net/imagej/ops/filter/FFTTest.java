@@ -53,6 +53,8 @@ import org.junit.Test;
  * @author Brian Northan
  */
 public class FFTTest extends AbstractOpTest {
+	
+	private boolean expensiveTestsEnabled = "enabled".equals(System.getProperty("imagej.ops.expensive.tests"));
 
 	/**
 	 * test that a forward transform followed by an inverse transform gives us
@@ -61,7 +63,9 @@ public class FFTTest extends AbstractOpTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testFFT3DOp() {
-		for (int i = 115; i < 120; i++) {
+		final int min = expensiveTestsEnabled ? 115 : 15;
+		final int max = expensiveTestsEnabled ? 120 : 20;
+		for (int i = min; i < max; i++) {
 
 			Dimensions dimensions = new FinalDimensions(new long[] { i, i, i });
 
@@ -87,11 +91,14 @@ public class FFTTest extends AbstractOpTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testFastFFT3DOp() {
-
-		for (int i = 115; i < 135; i++) {
+		
+		final int min = expensiveTestsEnabled ? 115 : 15;
+		final int max = expensiveTestsEnabled ? 135 : 35;
+		final int size = expensiveTestsEnabled ? 129 : 29;
+		for (int i = min; i < max; i++) {
 
 			// define the original dimensions
-			long[] originalDimensions = new long[] { i, 129, 129 };
+			long[] originalDimensions = new long[] { i, size, size };
 
 			// arrays for the fast dimensions
 			long[] fastDimensions = new long[3];
