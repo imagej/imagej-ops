@@ -147,12 +147,12 @@ public class ConvolveTest extends AbstractOpTest {
 
 		// run convolve using the rai version with the memory created above
 		ops.filter().convolve(out2, createMemory.getRAIExtendedInput(),
-			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
-			createMemory.getFFTKernel());
+			createMemory.getRAIExtendedKernel(), createMemory.getFFTImgInterval(),
+			createMemory.getFFTKernelInterval());
 
 		ops.filter().convolve(out3, createMemory.getRAIExtendedInput(),
-			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
-			createMemory.getFFTKernel(), true, false);
+			createMemory.getRAIExtendedKernel(), createMemory.getFFTImgInterval(),
+			createMemory.getFFTKernelInterval(), true, false);
 
 		ops.stats().sum(outSum, Views.iterable(out));
 		ops.stats().sum(outSum2, out2);

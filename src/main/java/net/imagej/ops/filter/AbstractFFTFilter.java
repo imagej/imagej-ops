@@ -83,8 +83,8 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 
 		// run the filter, pass in the memory created above
 		runFilter(createMemory.getRAIExtendedInput(), createMemory
-			.getRAIExtendedKernel(), createMemory.getFFTImg(), createMemory
-			.getFFTKernel(), output, createMemory.getImgConvolutionInterval());
+			.getRAIExtendedKernel(), createMemory.getFFTImgInterval(), createMemory
+			.getFFTKernelInterval(), output, createMemory.getImgConvolutionInterval());
 
 		return output;
 
