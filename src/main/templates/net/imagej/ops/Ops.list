@@ -203,6 +203,7 @@ namespaces = ```
 	[name: "logic", iface: "Logic", ops: [
 		[name: "and",                         iface: "And"],
 		[name: "bool",                        iface: "Bool"],
+		[name: "conditional",                 iface: "Conditional"],
 		[name: "equal",                       iface: "Equal"],
 		[name: "greaterThan",                 iface: "GreaterThan",         aliases: ["gt"]],
 		[name: "greaterThanOrEqual",          iface: "GreaterThanOrEqual",  aliases: ["gtoe"]],
