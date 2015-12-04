@@ -27,7 +27,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.PadInput.class, name = Ops.Filter.PadInput.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PadInput<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends RandomAccessibleInterval<T>>
-	extends AbstractFunctionOp<I, O>
+	extends AbstractFunctionOp<I, O> implements Ops.Filter.PadInput
 {
 
 	@Parameter

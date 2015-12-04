@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
 public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
-	extends AbstractFunctionOp<I, O>
+	extends AbstractFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
 	/**

@@ -27,7 +27,7 @@ import org.scijava.plugin.Plugin;
 	name = Ops.Filter.PaddingIntervalCentered.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PaddingIntervalCentered<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
-	extends AbstractFunctionOp<I, O>
+	extends AbstractFunctionOp<I, O> implements Ops.Filter.PaddingIntervalCentered
 {
 
 	@Parameter
