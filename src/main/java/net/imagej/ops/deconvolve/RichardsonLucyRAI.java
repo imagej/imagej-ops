@@ -32,11 +32,9 @@ package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.IterativeFFTFilterRAI;
-import net.imglib2.Cursor;
-import net.imglib2.RandomAccessibleInterval;
+import net.imagej.ops.math.divide.DivideHandleZero;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
@@ -55,7 +53,8 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeFFTFilterRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucy
+	extends IterativeFFTFilterRAI<I, O, K, C> implements
+	Ops.Deconvolve.RichardsonLucy
 {
 
 	/**
@@ -68,7 +67,8 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// previous iteration in order to calculate error stats)
 
 		// 2. divide observed image by reblurred
-		inPlaceDivide(getRAIExtendedReblurred(), in());
+		ops().run(DivideHandleZero.class, getRAIExtendedReblurred(), in(),
+			getRAIExtendedReblurred());
 
 		// 3. correlate psf with the output of step 2.
 		ops().filter().correlate(getRAIExtendedReblurred(),
@@ -83,84 +83,16 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 
 		// normalize for non-circulant deconvolution
 		if (getNonCirculant()) {
-			inPlaceDivide2(getNormalization(), getRAIExtendedEstimate());
+
+			ops().run(DivideHandleZero.class, getRAIExtendedEstimate(),
+				getRAIExtendedEstimate(), getNormalization());
+
 		}
 
 	}
 
 	public void ComputeEstimate() {
-		inPlaceMultiply(getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
-
-	// TODO: replace this function with divide op
-	protected void inPlaceDivide(RandomAccessibleInterval<O> denominatorOutput,
-		RandomAccessibleInterval<I> numerator)
-	{
-
-		final Cursor<O> cursorDenominatorOutput =
-			Views.iterable(denominatorOutput).cursor();
-		final Cursor<I> cursorNumerator = Views.iterable(numerator).cursor();
-
-		while (cursorDenominatorOutput.hasNext()) {
-			cursorDenominatorOutput.fwd();
-			cursorNumerator.fwd();
-
-			float num = cursorNumerator.get().getRealFloat();
-			float div = cursorDenominatorOutput.get().getRealFloat();
-			float res = 0;
-
-			if (div > 0) {
-				res = num / div;
-			}
-			else {
-				res = 0;
-			}
-
-			cursorDenominatorOutput.get().setReal(res);
-		}
-	}
-
-	// TODO: replace this function with divide op
-	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
-		RandomAccessibleInterval<O> numeratorOutput)
-	{
-
-		final Cursor<O> cursorDenominator = Views.iterable(denominator).cursor();
-		final Cursor<O> cursorNumeratorOutput =
-			Views.iterable(numeratorOutput).cursor();
-
-		while (cursorDenominator.hasNext()) {
-			cursorDenominator.fwd();
-			cursorNumeratorOutput.fwd();
-
-			float num = cursorNumeratorOutput.get().getRealFloat();
-			float div = cursorDenominator.get().getRealFloat();
-			float res = 0;
-
-			if (div > 0) {
-				res = num / div;
-			}
-			else {
-				res = 0;
-			}
-
-			cursorNumeratorOutput.get().setReal(res);
-		}
-	}
-
-	// TODO replace with op
-	protected void inPlaceMultiply(RandomAccessibleInterval<O> inputOutput,
-		RandomAccessibleInterval<O> input)
-	{
-
-		final Cursor<O> cursorInputOutput = Views.iterable(inputOutput).cursor();
-		final Cursor<O> cursorInput = Views.iterable(input).cursor();
-
-		while (cursorInputOutput.hasNext()) {
-			cursorInputOutput.fwd();
-			cursorInput.fwd();
-
-			cursorInputOutput.get().mul(cursorInput.get());
-		}
+		ops().run(Ops.Math.Multiply.class, getRAIExtendedEstimate(),
+			getRAIExtendedEstimate(), getRAIExtendedReblurred());
 	}
 }

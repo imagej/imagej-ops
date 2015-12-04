@@ -406,34 +406,4 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 
 		SimpleMultiThreading.startAndJoin(threads);
 	}
-
-	// TODO: replace this function with divide op
-	@Override
-	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
-		RandomAccessibleInterval<O> numeratorOutput)
-	{
-
-		final Cursor<O> cursorDenominator = Views.iterable(denominator).cursor();
-		final Cursor<O> cursorNumeratorOutput =
-			Views.iterable(numeratorOutput).cursor();
-
-		while (cursorDenominator.hasNext()) {
-			cursorDenominator.fwd();
-			cursorNumeratorOutput.fwd();
-
-			float num = cursorNumeratorOutput.get().getRealFloat();
-			float div = cursorDenominator.get().getRealFloat();
-			float res = 0;
-
-			if (div > 0) {
-				res = num / div;
-			}
-			else {
-				res = 0;
-			}
-
-			cursorNumeratorOutput.get().setReal(res);
-		}
-	}
-
 }
