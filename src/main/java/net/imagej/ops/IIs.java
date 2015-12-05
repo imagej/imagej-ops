@@ -30,16 +30,16 @@
 
 package net.imagej.ops;
 
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.IterableInterval;
 
 /**
- * Utility class for working with {@link RandomAccessibleInterval}s.
+ * Utility class for working with {@link IterableInterval}s.
  *
- * @author Curtis Rueden
+ * @author Zach Petersen
  */
-public final class RAIs {
+public final class IIs {
 
-	private RAIs() {
+	private IIs() {
 		// NB: prevent instantiation of utility class.
 	}
 
@@ -50,7 +50,7 @@ public final class RAIs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (ComputerOp) ops.computer(opType, RandomAccessibleInterval.class, in, otherArgs);
+		return (ComputerOp) ops.computer(opType, IterableInterval.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -58,22 +58,22 @@ public final class RAIs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (FunctionOp) ops.function(opType, RandomAccessibleInterval.class, in, otherArgs);
+		return (FunctionOp) ops.function(opType, IterableInterval.class, in, otherArgs);
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <I, O> HybridOp<I, O> hybrid(
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class, in, otherArgs);
+		return (HybridOp) ops.hybrid(opType, IterableInterval.class, in, otherArgs);
 	}
 
-	public static <T> InplaceOp<RandomAccessibleInterval<T>> inplace(
-		final OpEnvironment ops, final Class<? extends Op> opType,
-		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
-	{
-		return ops.inplace(opType, arg, otherArgs);
-	}
-	
+	public static <T> InplaceOp<IterableInterval<T>> inplace(
+			final OpEnvironment ops, final Class<? extends Op> opType,
+			final IterableInterval<T> arg, final Object... otherArgs)
+		{
+			return ops.inplace(opType, arg, otherArgs);
+		}
+
 }
