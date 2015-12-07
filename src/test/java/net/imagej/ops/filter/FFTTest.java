@@ -60,8 +60,8 @@ public class FFTTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testFFT3DOp() {
-		final int min = expensiveTestsEnabled ? 115 : 15;
-		final int max = expensiveTestsEnabled ? 120 : 20;
+		final int min = expensiveTestsEnabled ? 115 : 9;
+		final int max = expensiveTestsEnabled ? 120 : 11;
 		for (int i = min; i < max; i++) {
 
 			final long[] dimensions = new long[] { i, i, i };
@@ -86,12 +86,12 @@ public class FFTTest extends AbstractOpTest {
 	/**
 	 * test the fast FFT
 	 */
-	@Test
+	//@Test
 	public void testFastFFT3DOp() {
 
-		final int min = expensiveTestsEnabled ? 115 : 15;
-		final int max = expensiveTestsEnabled ? 135 : 35;
-		final int size = expensiveTestsEnabled ? 129 : 29;
+		final int min = expensiveTestsEnabled ? 120 : 9;
+		final int max = expensiveTestsEnabled ? 130 : 11;
+		final int size = expensiveTestsEnabled ? 129 : 10;
 		for (int i = min; i < max; i++) {
 
 			// define the original dimensions
