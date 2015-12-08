@@ -207,7 +207,6 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 		@Override
 		public O compute(final I input) {
-
 			final Hash hash = new Hash(input, delegate, args);
 
 			@SuppressWarnings("unchecked")
@@ -251,13 +250,13 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		private final int hash;
 
 		public Hash(final Object o1, final Object o2, final Object[] args) {
-			long hash = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
+			long h = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
 
 			for (final Object o : args) {
-				hash ^= o.hashCode();
+				h ^= o.hashCode();
 			}
 
-			this.hash = (int) hash;
+			hash = (int) h;
 		}
 
 		@Override
