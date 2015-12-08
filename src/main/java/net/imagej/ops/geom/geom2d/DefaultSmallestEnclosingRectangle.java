@@ -63,10 +63,10 @@ public class DefaultSmallestEnclosingRectangle extends
 
 	@Override
 	public void initialize() {
-		convexhullFunc = ops().function(Ops.Geometric.ConvexHull.class, Polygon.class, in());
-		centroidFunc = ops().function(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
-		areaFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
-		boundingBoxFunc = ops().function(Ops.Geometric.BoundingBox.class, Polygon.class, in());
+		convexhullFunc = ops().function1(Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		centroidFunc = ops().function1(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		areaFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		boundingBoxFunc = ops().function1(Ops.Geometric.BoundingBox.class, Polygon.class, in());
 	}
 
 	/**

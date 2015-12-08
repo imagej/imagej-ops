@@ -56,7 +56,7 @@ public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleT
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		function = (UnaryFunctionOp) ops().function(Ops.Geometric.Feret.class, Pair.class, in());
+		function = (UnaryFunctionOp) ops().function1(Ops.Geometric.Feret.class, Pair.class, in());
 	}
 
 	@Override

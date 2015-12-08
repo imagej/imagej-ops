@@ -62,10 +62,10 @@ public class DefaultCorrelation<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
-		coocStdXFunc = ops().function(CoocStdX.class, DoubleType.class, double[][].class);
-		coocStdYFunc = ops().function(CoocStdY.class, DoubleType.class, double[][].class);
+		coocMeanXFunc = ops().function1(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = ops().function1(CoocMeanY.class, DoubleType.class, double[][].class);
+		coocStdXFunc = ops().function1(CoocStdX.class, DoubleType.class, double[][].class);
+		coocStdYFunc = ops().function1(CoocStdY.class, DoubleType.class, double[][].class);
 	}
 	
 	@Override

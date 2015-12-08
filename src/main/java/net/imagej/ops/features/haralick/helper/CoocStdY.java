@@ -51,9 +51,9 @@ public class CoocStdY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class,
+		coocMeanYFunc = ops().function1(CoocMeanY.class, DoubleType.class,
 			double[][].class);
-		coocPYFunc = ops().function(CoocPY.class, double[].class, double[][].class);
+		coocPYFunc = ops().function1(CoocPY.class, double[].class, double[][].class);
 	}
 
 	@Override

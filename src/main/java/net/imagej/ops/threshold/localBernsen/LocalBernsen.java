@@ -65,7 +65,7 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp) ops().function1(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

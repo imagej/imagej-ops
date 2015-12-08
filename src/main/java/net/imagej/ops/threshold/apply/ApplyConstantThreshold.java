@@ -60,7 +60,7 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		applyThreshold = (UnaryComputerOp<T, BitType>) ops().computer(
+		applyThreshold = (UnaryComputerOp<T, BitType>) ops().computer1(
 			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
 			threshold);
 	}

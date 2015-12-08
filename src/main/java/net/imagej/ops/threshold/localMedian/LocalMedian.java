@@ -58,7 +58,7 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Override
 	public void initialize() {
-		median = ops().computer(Ops.Stats.Median.class, DoubleType.class, in().getB());
+		median = ops().computer1(Ops.Stats.Median.class, DoubleType.class, in().getB());
 	}
 
 	@Override

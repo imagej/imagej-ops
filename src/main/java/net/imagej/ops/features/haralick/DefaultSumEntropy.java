@@ -58,7 +58,7 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXPlusFunc = ops().function(CoocPXPlusY.class, double[].class, double[][].class);
+		coocPXPlusFunc = ops().function1(CoocPXPlusY.class, double[].class, double[][].class);
 	}
 	
 	@Override

@@ -76,8 +76,8 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		imgA = generateByteArrayTestImg(true, new long[] { 10, 10 });
 		imgB = generateByteArrayTestImg(true, new long[] { 10, 10 });
 
-		func = env.function(Ops.Stats.Min.class, DoubleType.class, imgA);
-		hybrid = env.hybrid(Ops.Stats.Min.class, DoubleType.class, imgA);
+		func = env.function1(Ops.Stats.Min.class, DoubleType.class, imgA);
+		hybrid = env.hybrid1(Ops.Stats.Min.class, DoubleType.class, imgA);
 	}
 
 	@Test

@@ -59,7 +59,7 @@ public final class RTs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (UnaryComputerOp) ops.computer(opType, RealType.class, in, otherArgs);
+		return (UnaryComputerOp) ops.computer1(opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,7 +67,7 @@ public final class RTs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (UnaryFunctionOp) ops.function(opType, RealType.class, in, otherArgs);
+		return (UnaryFunctionOp) ops.function1(opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -75,7 +75,7 @@ public final class RTs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (UnaryHybridOp) ops.hybrid(opType, RealType.class, in, otherArgs);
+		return (UnaryHybridOp) ops.hybrid1(opType, RealType.class, in, otherArgs);
 	}
 
 	public static <A extends RealType<A>> InplaceOp<A> inplace(
@@ -90,7 +90,7 @@ public final class RTs {
 		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, final I2 in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) ops.binaryComputer(opType, RealType.class, in1,
+		return (BinaryComputerOp) ops.computer2(opType, RealType.class, in1,
 			in2, otherArgs);
 	}
 
@@ -99,7 +99,7 @@ public final class RTs {
 		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) ops.binaryFunction(opType, RealType.class, in1,
+		return (BinaryFunctionOp) ops.function2(opType, RealType.class, in1,
 			in2, otherArgs);
 	}
 
@@ -108,7 +108,7 @@ public final class RTs {
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) ops.binaryHybrid(opType, RealType.class, in1, in2,
+		return (BinaryHybridOp) ops.hybrid2(opType, RealType.class, in1, in2,
 			otherArgs);
 	}
 

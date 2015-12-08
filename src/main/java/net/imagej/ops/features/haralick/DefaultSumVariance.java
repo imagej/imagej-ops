@@ -57,9 +57,9 @@ public class DefaultSumVariance<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXPlusYFunc = ops().function(CoocPXPlusY.class, double[].class,
+		coocPXPlusYFunc = ops().function1(CoocPXPlusY.class, double[].class,
 			double[][].class);
-		sumAverageFunc = ops().function(Ops.Haralick.SumAverage.class, RealType.class, in(),
+		sumAverageFunc = ops().function1(Ops.Haralick.SumAverage.class, RealType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 

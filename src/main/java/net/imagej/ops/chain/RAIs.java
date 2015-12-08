@@ -60,7 +60,7 @@ public final class RAIs {
 		computer(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryComputerOp) ops.computer(opType, RandomAccessibleInterval.class,
+		return (UnaryComputerOp) ops.computer1(opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -70,7 +70,7 @@ public final class RAIs {
 		function(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryFunctionOp) ops.function(opType, RandomAccessibleInterval.class,
+		return (UnaryFunctionOp) ops.function1(opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -80,7 +80,7 @@ public final class RAIs {
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridOp) ops.hybrid(opType, RandomAccessibleInterval.class,
+		return (UnaryHybridOp) ops.hybrid1(opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -99,7 +99,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) ops.binaryComputer(opType,
+		return (BinaryComputerOp) ops.computer2(opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -111,7 +111,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) ops.binaryFunction(opType,
+		return (BinaryFunctionOp) ops.function2(opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -123,7 +123,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) ops.binaryHybrid(opType,
+		return (BinaryHybridOp) ops.hybrid2(opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 

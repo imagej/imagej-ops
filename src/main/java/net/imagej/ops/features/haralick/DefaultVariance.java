@@ -57,9 +57,9 @@ public class DefaultVariance<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class,
+		coocMeanXFunc = ops().function1(CoocMeanX.class, DoubleType.class,
 			double[][].class);
-		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class,
+		coocMeanYFunc = ops().function1(CoocMeanY.class, DoubleType.class,
 			double[][].class);
 	}
 

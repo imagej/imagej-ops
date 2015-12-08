@@ -59,7 +59,7 @@ public abstract class AbstractBoxivity<I> extends
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
-		smallestEnclosingRectangleFunc = ops().function(
+		smallestEnclosingRectangleFunc = ops().function1(
 			Ops.Geometric.SmallestEnclosingBoundingBox.class, inType, in());
 	}
 

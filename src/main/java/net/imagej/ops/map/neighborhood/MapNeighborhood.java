@@ -69,7 +69,7 @@ public class MapNeighborhood<I, O> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (UnaryComputerOp) ops().computer(Map.class, RandomAccessibleInterval.class,
+		map = (UnaryComputerOp) ops().computer1(Map.class, RandomAccessibleInterval.class,
 			in() != null ? shape.neighborhoodsSafe(in()) : IterableInterval.class,
 			getOp());
 	}

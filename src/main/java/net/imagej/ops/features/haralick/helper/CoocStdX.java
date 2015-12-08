@@ -50,8 +50,8 @@ public class CoocStdX extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
+		coocMeanXFunc = ops().function1(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocPXFunc = ops().function1(CoocPX.class, double[].class, double[][].class);
 	}
 	
 	@Override

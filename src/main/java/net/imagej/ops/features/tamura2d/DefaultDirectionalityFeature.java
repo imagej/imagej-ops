@@ -69,8 +69,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@Override
 	public void initialize() {
-		stdOp = ops().function(Ops.Stats.StdDev.class, RealType.class, Iterable.class);
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
+		stdOp = ops().function1(Ops.Stats.StdDev.class, RealType.class, Iterable.class);
+		histOp = ops().function1(HistogramCreate.class, Histogram1d.class,
 			Iterable.class, histogramSize);
 	}
 

@@ -59,7 +59,7 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		centroid = ops().function(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		centroid = ops().function1(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
 	}
 
 	@Override

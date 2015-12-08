@@ -59,7 +59,7 @@ public class LocalMean<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Override
 	public void initialize() {
-			mean =  ops().computer(Ops.Stats.Mean.class, DoubleType.class, in().getB());
+			mean =  ops().computer1(Ops.Stats.Mean.class, DoubleType.class, in().getB());
 	}
 	
 	@Override

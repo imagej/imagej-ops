@@ -77,7 +77,7 @@ public class MapNeighborhoodWithCenter<I, O>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (UnaryComputerOp) ops().computer(Map.class, Iterable.class,
+		map = (UnaryComputerOp) ops().computer1(Map.class, Iterable.class,
 			NeighborhoodWithCenterIterableInterval.class, getOp());
 	}
 

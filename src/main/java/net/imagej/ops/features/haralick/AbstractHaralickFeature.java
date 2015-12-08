@@ -71,7 +71,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 
 	@Override
 	public void initialize() {
-		coocFunc = ops().function(Ops.Image.CooccurrenceMatrix.class,
+		coocFunc = ops().function1(Ops.Image.CooccurrenceMatrix.class,
 			double[][].class, in(), numGreyLevels, distance, orientation);
 	}
 

@@ -206,7 +206,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer1(
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
@@ -231,7 +231,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer1(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
@@ -256,7 +256,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer1(
 		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
@@ -280,7 +280,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function(
+	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
@@ -305,7 +305,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function(
+	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
@@ -330,7 +330,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(final Class<OP> opType,
 		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
@@ -354,7 +354,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(final Class<OP> opType,
 		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
@@ -378,7 +378,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(final Class<OP> opType,
 		final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
@@ -452,7 +452,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> computer2(
 		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
@@ -479,7 +479,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> computer2(
 		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
 		final Object... otherArgs)
 	{
@@ -505,7 +505,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binaryComputer(
+	default <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> computer2(
 		final Class<OP> opType, final O out, final I1 in1, final I2 in2,
 		final Object... otherArgs)
 	{
@@ -534,7 +534,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+	default <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> function2(
 		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
@@ -561,7 +561,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binaryFunction(
+	default <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> function2(
 		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
 		final Object... otherArgs)
 	{
@@ -590,7 +590,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> hybrid2(
 		final Class<OP> opType, final Class<O> outType, final Class<I1> in1Type,
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
@@ -617,7 +617,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> hybrid2(
 		final Class<OP> opType, final Class<O> outType, final I1 in1, final I2 in2,
 		final Object... otherArgs)
 	{
@@ -643,7 +643,7 @@ public interface OpEnvironment extends Contextual {
 	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binaryHybrid(
+	default <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> hybrid2(
 		final Class<OP> opType, final O out, final I1 in1, final I2 in2,
 		final Object... otherArgs)
 	{

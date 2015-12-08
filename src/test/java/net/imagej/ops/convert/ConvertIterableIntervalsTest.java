@@ -116,7 +116,7 @@ public class ConvertIterableIntervalsTest extends AbstractOpTest {
 
 	private void addNoise(final Iterable<ShortType> image) {
 		final UnaryComputerOp<ShortType, ShortType> noiseOp =
-			ops.computer(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
+			ops.computer1(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
 				-32768, 32767, 10000);
 		ops.map(image, image, noiseOp);
 	}

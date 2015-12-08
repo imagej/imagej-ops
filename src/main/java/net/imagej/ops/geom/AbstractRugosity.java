@@ -50,8 +50,8 @@ public abstract class AbstractRugosity<I> extends
 
 	@Override
 	public void initialize() {
-		boundarySize = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
-		convexHullBoundarySize = ops().function(Ops.Geometric.BoundarySizeConvexHull.class,
+		boundarySize = ops().function1(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		convexHullBoundarySize = ops().function1(Ops.Geometric.BoundarySizeConvexHull.class,
 			DoubleType.class, in());
 	}
 

@@ -56,9 +56,9 @@ public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType
 
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function(Ops.Geometric.BoundaryPixelCount.class,
+		surfacePixel = ops().function1(Ops.Geometric.BoundaryPixelCount.class,
 			DoubleType.class, in());
-		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

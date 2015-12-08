@@ -54,7 +54,7 @@ public class BoundaryPixelCountConvexHullPolygon extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = ops().function(Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		convexHullFunc = ops().function1(Ops.Geometric.ConvexHull.class, Polygon.class, in());
 	}
 
 	@Override

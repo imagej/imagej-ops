@@ -55,7 +55,7 @@ public class DefaultMinorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(DefaultMinorMajorAxis.class, Pair.class,
+		minorMajorAxisFunc = ops().function1(DefaultMinorMajorAxis.class, Pair.class,
 			in());
 	}
 

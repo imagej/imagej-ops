@@ -60,7 +60,7 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

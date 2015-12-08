@@ -63,13 +63,13 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		mainElongation = ops().function(Ops.Geometric.MainElongation.class, DoubleType.class,
+		mainElongation = ops().function1(Ops.Geometric.MainElongation.class, DoubleType.class,
 			in());
-		medianElongation = ops().function(Ops.Geometric.MedianElongation.class, DoubleType.class,
+		medianElongation = ops().function1(Ops.Geometric.MedianElongation.class, DoubleType.class,
 			in());
-		multivar = ops().function(DefaultSecondMultiVariate3D.class,
+		multivar = ops().function1(DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
-		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

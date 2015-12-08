@@ -50,8 +50,8 @@ public abstract class AbstractSolidity<I> extends
 
 	@Override
 	public void initialize() {
-		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
-		convexHullVolume = ops().function(Ops.Geometric.SizeConvexHull.class,
+		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullVolume = ops().function1(Ops.Geometric.SizeConvexHull.class,
 			DoubleType.class, in());
 	}
 

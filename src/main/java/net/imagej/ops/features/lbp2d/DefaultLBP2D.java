@@ -70,7 +70,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@Override
 	public void initialize() {
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
+		histOp = ops().function1(HistogramCreate.class, Histogram1d.class,
 			ArrayList.class, histogramSize);
 	}
 

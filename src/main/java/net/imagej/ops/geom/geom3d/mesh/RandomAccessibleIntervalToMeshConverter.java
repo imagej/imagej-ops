@@ -62,7 +62,7 @@ public class RandomAccessibleIntervalToMeshConverter extends
 	@Override
 	public <T> T convert(Object src, Class<T> dest) {
 		if (marchingCubesFunc == null) {
-			marchingCubesFunc = ops.function(Ops.Geometric.MarchingCubes.class, Mesh.class,
+			marchingCubesFunc = ops.function1(Ops.Geometric.MarchingCubes.class, Mesh.class,
 				(RandomAccessibleInterval) src);
 		}
 		if (src instanceof IterableInterval<?>) {

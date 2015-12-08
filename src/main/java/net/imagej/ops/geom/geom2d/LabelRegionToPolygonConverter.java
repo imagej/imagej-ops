@@ -64,7 +64,7 @@ public class LabelRegionToPolygonConverter extends
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
-			contourFunc = (UnaryFunctionOp) ops.function(Ops.Geometric.Contour.class, dest, src, true,
+			contourFunc = (UnaryFunctionOp) ops.function1(Ops.Geometric.Contour.class, dest, src, true,
 				true);
 		}
 		// FIXME: can we make this faster?

@@ -55,7 +55,7 @@ public class DefaultContrast<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXMinusYFunc = ops().function(CoocPXMinusY.class, double[].class, double[][].class);
+		coocPXMinusYFunc = ops().function1(CoocPXMinusY.class, double[].class, double[][].class);
 	}
 	
 	@Override

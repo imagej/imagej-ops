@@ -57,8 +57,8 @@ public abstract class AbstractSizeConvexHull<I> extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = ops().function(Ops.Geometric.ConvexHull.class, inType, in());
-		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullFunc = ops().function1(Ops.Geometric.ConvexHull.class, inType, in());
+		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

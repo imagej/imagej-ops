@@ -62,8 +62,8 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public void initialize() {
-		raiCopyOp = ops().computer(Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
-		mappingCopyOp = ops().computer(Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		raiCopyOp = ops().computer1(Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
+		mappingCopyOp = ops().computer1(Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
 	}
 	
 	@Override

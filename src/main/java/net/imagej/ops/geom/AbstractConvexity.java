@@ -50,8 +50,8 @@ public abstract class AbstractConvexity<I> extends
 
 	@Override
 	public void initialize() {
-		boundarySize = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
-		boundarySizeConvexHull = ops().function(Ops.Geometric.BoundarySizeConvexHull.class,
+		boundarySize = ops().function1(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		boundarySizeConvexHull = ops().function1(Ops.Geometric.BoundarySizeConvexHull.class,
 			DoubleType.class, in());
 	}
 

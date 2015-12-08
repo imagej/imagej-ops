@@ -53,8 +53,8 @@ public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 	public void initialize() {
 		super.initialize();
 
-		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
-		coocPYFunc = ops().function(CoocPY.class, double[].class, double[][].class);
+		coocPXFunc = ops().function1(CoocPX.class, double[].class, double[][].class);
+		coocPYFunc = ops().function1(CoocPY.class, double[].class, double[][].class);
 	}
 
 	@Override

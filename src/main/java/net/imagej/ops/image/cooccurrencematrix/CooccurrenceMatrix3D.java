@@ -69,7 +69,7 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		minmax = (UnaryFunctionOp) ops().function(MinMax.class, Pair.class, in());
+		minmax = (UnaryFunctionOp) ops().function1(MinMax.class, Pair.class, in());
 	}
 	
 	@Override

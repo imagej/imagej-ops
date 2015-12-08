@@ -73,7 +73,7 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			@Override
 			public void compute(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
-					variance = ops().computer(Ops.Stats.Variance.class,
+					variance = ops().computer1(Ops.Stats.Variance.class,
 						DoubleType.class, input.getB());
 				}
 

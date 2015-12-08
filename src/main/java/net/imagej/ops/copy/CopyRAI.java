@@ -78,7 +78,7 @@ public class CopyRAI<T> extends
 			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
 		final UnaryComputerOp<T, ?> typeComputer =
-			ops.computer(Ops.Copy.Type.class, outTypeClass, inType);
+			ops.computer1(Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
 	}

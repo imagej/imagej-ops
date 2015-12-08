@@ -64,8 +64,8 @@ public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Override
 	public void initialize() {
 		//FIXME: make sure Mean is used inStdDev.
-		mean = ops().computer(Ops.Stats.Mean.class, new DoubleType(), in().getB());
-		stdDeviation = ops().computer(Ops.Stats.StdDev.class, new DoubleType(), in().getB());
+		mean = ops().computer1(Ops.Stats.Mean.class, new DoubleType(), in().getB());
+		stdDeviation = ops().computer1(Ops.Stats.StdDev.class, new DoubleType(), in().getB());
 	}
 
 	@Override

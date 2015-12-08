@@ -58,7 +58,7 @@ public class HistogramCreate<T extends RealType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class,
+		minMaxFunc = (UnaryFunctionOp) ops().function1(Ops.Stats.MinMax.class, Pair.class,
 				in() != null ? in() : Iterable.class);
 	}
 

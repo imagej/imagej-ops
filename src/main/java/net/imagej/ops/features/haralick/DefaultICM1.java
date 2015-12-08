@@ -57,9 +57,9 @@ public class DefaultICM1<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocHXYFunc = ops().function(CoocHXY.class, double[].class,
+		coocHXYFunc = ops().function1(CoocHXY.class, double[].class,
 			double[][].class);
-		entropy = ops().function(Ops.Haralick.Entropy.class, DoubleType.class, in(),
+		entropy = ops().function1(Ops.Haralick.Entropy.class, DoubleType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 

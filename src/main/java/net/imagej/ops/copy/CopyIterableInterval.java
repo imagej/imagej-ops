@@ -60,8 +60,8 @@ public class CopyIterableInterval<T> extends
 	
 	@Override
 	public void initialize() {
-		map = ops.computer(Ops.Map.class, in(), in(),
-				ops.computer(Ops.Copy.Type.class, 
+		map = ops.computer1(Ops.Map.class, in(), in(),
+				ops.computer1(Ops.Copy.Type.class, 
 						in().firstElement().getClass(), 
 						in().firstElement().getClass()));
 	}

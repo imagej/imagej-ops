@@ -54,7 +54,7 @@ public class DefaultSphericity extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 
 	@Override
 	public void initialize() {
-		compactness = ops().function(Ops.Geometric.Compactness.class, DoubleType.class, in());
+		compactness = ops().function1(Ops.Geometric.Compactness.class, DoubleType.class, in());
 	}
 
 	@Override

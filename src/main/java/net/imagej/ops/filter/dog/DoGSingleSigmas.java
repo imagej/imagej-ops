@@ -79,7 +79,7 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 		Arrays.fill(sigmas1, sigma1);
 		Arrays.fill(sigmas2, sigma2);
 
-		op = ops().computer(Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
+		op = ops().computer1(Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
 			fac);
 	}
 

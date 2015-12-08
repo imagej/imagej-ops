@@ -59,7 +59,7 @@ public class DefaultMedianElongation<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		multivar = ops().function(DefaultSecondMultiVariate3D.class,
+		multivar = ops().function1(DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
 	}
 
