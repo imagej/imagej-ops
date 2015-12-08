@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
 import net.imglib2.roi.geometric.Polygon;
@@ -46,12 +46,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Roundness.class,
 	label = "Geometric (2D): Roundness")
-public class DefaultRoundness extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultRoundness extends AbstractUnaryFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.Roundness
 {
 
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, DoubleType> majorAxisFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> majorAxisFunc;
 
 	@Override
 	public void initialize() {

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.convolve;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Convolve.class)
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
-	AbstractComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>
 	implements Ops.Filter.Convolve, Contingent
 {
 

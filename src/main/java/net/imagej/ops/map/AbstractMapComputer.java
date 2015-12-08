@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -45,19 +45,19 @@ import org.scijava.plugin.Parameter;
  * @param <D> provides {@code <B>}s
  */
 public abstract class AbstractMapComputer<A, B, C, D> extends
-	AbstractComputerOp<C, D> implements MapOp<A, B, ComputerOp<A, B>>
+	AbstractUnaryComputerOp<C, D> implements MapOp<A, B, UnaryComputerOp<A, B>>
 {
 
 	@Parameter
-	private ComputerOp<A, B> op;
+	private UnaryComputerOp<A, B> op;
 
 	@Override
-	public ComputerOp<A, B> getOp() {
+	public UnaryComputerOp<A, B> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final ComputerOp<A, B> op) {
+	public void setOp(final UnaryComputerOp<A, B> op) {
 		this.op = op;
 	}
 }

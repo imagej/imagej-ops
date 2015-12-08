@@ -33,7 +33,7 @@ package net.imagej.ops.copy;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.LabelingMapping.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
-		AbstractHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
+		AbstractUnaryHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
 		Ops.Copy.LabelingMapping {
 
 	@Override

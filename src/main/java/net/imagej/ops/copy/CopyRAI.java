@@ -30,10 +30,10 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RAIs;
@@ -54,16 +54,16 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Copy.RAI, Contingent
 {
 
 	@Parameter
 	protected OpService ops;
 
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
 
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
@@ -77,7 +77,7 @@ public class CopyRAI<T> extends
 		final Class<?> outTypeClass =
 			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
-		final ComputerOp<T, ?> typeComputer =
+		final UnaryComputerOp<T, ?> typeComputer =
 			ops.computer(Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);

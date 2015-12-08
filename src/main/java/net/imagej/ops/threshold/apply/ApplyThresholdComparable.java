@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Apply.class)
 public class ApplyThresholdComparable<T> extends
-	AbstractComputerOp<Comparable<? super T>, BitType> implements
+	AbstractUnaryComputerOp<Comparable<? super T>, BitType> implements
 	ApplyThreshold<Comparable<? super T>, BitType>
 {
 

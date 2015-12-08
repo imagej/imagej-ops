@@ -31,7 +31,7 @@ package net.imagej.ops.features.zernike.helper;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.types.BigComplex;
 import net.imglib2.Cursor;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class ZernikeComputer<T extends RealType<T>> extends
-	AbstractFunctionOp<IterableInterval<T>, ZernikeMoment>
+	AbstractUnaryFunctionOp<IterableInterval<T>, ZernikeMoment>
 {
 
 	@Parameter

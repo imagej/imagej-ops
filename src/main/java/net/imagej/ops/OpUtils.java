@@ -73,10 +73,10 @@ public final class OpUtils {
 	/**
 	 * Looks up an op of the given type, similar to
 	 * {@link OpEnvironment#op(Class, Object...)}, but with an additional type
-	 * constraint&mdash;e.g., matches could be restricted to {@link ComputerOp}s.
+	 * constraint&mdash;e.g., matches could be restricted to {@link UnaryComputerOp}s.
 	 * 
 	 * @param opType The type of op to match.
-	 * @param specialType The additional constraint (e.g., {@link ComputerOp}).
+	 * @param specialType The additional constraint (e.g., {@link UnaryComputerOp}).
 	 * @param outType The type of the op's primary output, or null for any type.
 	 * @param args The arguments to use when matching.
 	 * @return The matched op.
@@ -140,7 +140,7 @@ public final class OpUtils {
 	 * 
 	 * @param module The module to unwrap.
 	 * @param type The expected type of {@link Op}.
-	 * @param types Other required types for the op (e.g., {@link ComputerOp}).
+	 * @param types Other required types for the op (e.g., {@link UnaryComputerOp}).
 	 * @return The unwrapped {@link Op}.
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.

@@ -35,7 +35,7 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface BinaryOutputFactory<I1, I2, O> extends OutputFactory<I1, O> {
+public interface BinaryOutputFactory<I1, I2, O> extends UnaryOutputFactory<I1, O> {
 
 	/**
 	 * Create an output object given two inputs.

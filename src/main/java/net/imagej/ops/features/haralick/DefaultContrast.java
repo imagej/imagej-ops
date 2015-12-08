@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultContrast<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.Contrast {
 	
-	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
 	
 	@Override
 	public void initialize() {

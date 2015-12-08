@@ -31,16 +31,35 @@
 package net.imagej.ops;
 
 /**
- * Interface for objects with a typed input parameter.
+ * A <em>function</em> computes a result from the given input, returning it as a
+ * new object. The contents of the input are not affected.
  * 
- * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
- * @see Output
+ * @author Curtis Rueden
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see UnaryComputerOp
+ * @see UnaryHybridOp
+ * @see InplaceOp
  */
-public interface Input<I> {
+public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O> {
 
-	I in();
+	/**
+	 * Computes the output given some input.
+	 * 
+	 * @param input Argument to the function
+	 * @return output Result of the function
+	 */
+	O compute(I input);
 
-	void setInput(I input);
+	// -- Threadable methods --
+
+	@Override
+	default UnaryFunctionOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

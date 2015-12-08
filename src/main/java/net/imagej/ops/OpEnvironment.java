@@ -191,198 +191,198 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/**
-	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * Gets the best {@link UnaryComputerOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link ComputerOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link ComputerOp}s implement), then the
-	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          {@link UnaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryComputerOp}s implement), then the
+	 *          best {@link UnaryComputerOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link ComputerOp} typed output.
-	 * @param inType The {@link Class} of the {@link ComputerOp} typed input.
+	 * @param outType The {@link Class} of the {@link UnaryComputerOp} typed output.
+	 * @param inType The {@link Class} of the {@link UnaryComputerOp} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> ComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		return (ComputerOp<I, O>) OpUtils.specialOp(this, opType, ComputerOp.class,
+		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
 			null, args);
 	}
 
 	/**
-	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * Gets the best {@link UnaryComputerOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link ComputerOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link ComputerOp}s implement), then the
-	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          {@link UnaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryComputerOp}s implement), then the
+	 *          best {@link UnaryComputerOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link ComputerOp} typed output.
+	 * @param outType The {@link Class} of the {@link UnaryComputerOp} typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and output
 	 *          values.
-	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> ComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		return (ComputerOp<I, O>) OpUtils.specialOp(this, opType, ComputerOp.class,
+		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
 			null, args);
 	}
 
 	/**
-	 * Gets the best {@link ComputerOp} implementation for the given types and
+	 * Gets the best {@link UnaryComputerOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link ComputerOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link ComputerOp}s implement), then the
-	 *          best {@link ComputerOp} implementation to use will be selected
+	 *          {@link UnaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryComputerOp}s implement), then the
+	 *          best {@link UnaryComputerOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link ComputerOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> ComputerOp<I, O> computer(
+	default <I, O, OP extends Op> UnaryComputerOp<I, O> computer(
 		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		return (ComputerOp<I, O>) OpUtils.specialOp(this, opType, ComputerOp.class,
+		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
 			null, args);
 	}
 
 	/**
-	 * Gets the best {@link FunctionOp} implementation for the given types and
+	 * Gets the best {@link UnaryFunctionOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link FunctionOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link FunctionOp}s implement), then the
-	 *          best {@link FunctionOp} implementation to use will be selected
+	 *          {@link UnaryFunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryFunctionOp}s implement), then the
+	 *          best {@link UnaryFunctionOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link FunctionOp} typed output.
-	 * @param inType The {@link Class} of the {@link FunctionOp} typed input.
+	 * @param outType The {@link Class} of the {@link UnaryFunctionOp} typed output.
+	 * @param inType The {@link Class} of the {@link UnaryFunctionOp} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link FunctionOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> FunctionOp<I, O> function(
+	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function(
 		final Class<OP> opType, final Class<O> outType, final Class<I> inType,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, inType);
-		return (FunctionOp<I, O>) OpUtils.specialOp(this, opType, FunctionOp.class,
+		return (UnaryFunctionOp<I, O>) OpUtils.specialOp(this, opType, UnaryFunctionOp.class,
 			outType, args);
 	}
 
 	/**
-	 * Gets the best {@link FunctionOp} implementation for the given types and
+	 * Gets the best {@link UnaryFunctionOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link FunctionOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link FunctionOp}s implement), then the
-	 *          best {@link FunctionOp} implementation to use will be selected
+	 *          {@link UnaryFunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryFunctionOp}s implement), then the
+	 *          best {@link UnaryFunctionOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link FunctionOp} typed output.
+	 * @param outType The {@link Class} of the {@link UnaryFunctionOp} typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link FunctionOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> FunctionOp<I, O> function(
+	default <I, O, OP extends Op> UnaryFunctionOp<I, O> function(
 		final Class<OP> opType, final Class<O> outType, final I in,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in);
-		return (FunctionOp<I, O>) OpUtils.specialOp(this, opType, FunctionOp.class,
+		return (UnaryFunctionOp<I, O>) OpUtils.specialOp(this, opType, UnaryFunctionOp.class,
 			outType, args);
 	}
 
 	/**
-	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link HybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link HybridOp}s implement), then the
-	 *          best {@link HybridOp} implementation to use will be selected
+	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridOp}s implement), then the
+	 *          best {@link UnaryHybridOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link HybridOp} typed output.
-	 * @param inType The {@link Class} of the {@link HybridOp} typed input.
+	 * @param outType The {@link Class} of the {@link UnaryHybridOp} typed output.
+	 * @param inType The {@link Class} of the {@link UnaryHybridOp} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
 		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		return (HybridOp<I, O>) OpUtils.specialOp(this, opType, HybridOp.class,
+		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
 			null, args);
 	}
 
 	/**
-	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link HybridOp}s share this type (e.g., the type is an interface
-	 *          which multiple {@link HybridOp}s implement), then the best
-	 *          {@link HybridOp} implementation to use will be selected
+	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link UnaryHybridOp}s implement), then the best
+	 *          {@link UnaryHybridOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link HybridOp} typed output.
+	 * @param outType The {@link Class} of the {@link UnaryHybridOp} typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
 		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		return (HybridOp<I, O>) OpUtils.specialOp(this, opType, HybridOp.class,
+		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
 			null, args);
 	}
 
 	/**
-	 * Gets the best {@link HybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link HybridOp}s share this type (e.g., the type is an interface
-	 *          which multiple {@link HybridOp}s implement), then the best
-	 *          {@link HybridOp} implementation to use will be selected
+	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link UnaryHybridOp}s implement), then the best
+	 *          {@link UnaryHybridOp} implementation to use will be selected
 	 *          automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link HybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	default <I, O, OP extends Op> HybridOp<I, O> hybrid(final Class<OP> opType,
+	default <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid(final Class<OP> opType,
 		final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		return (HybridOp<I, O>) OpUtils.specialOp(this, opType, HybridOp.class,
+		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
 			null, args);
 	}
 
@@ -827,8 +827,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	default <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second)
+	default <A, B, C> C join(final C out, final A in, final UnaryComputerOp<A, B> first,
+		final UnaryComputerOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -839,8 +839,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	default <A, B, C> C join(final C out, final A in, final ComputerOp<A, B> first,
-		final ComputerOp<B, C> second, final OutputFactory<A, B> outputFactory)
+	default <A, B, C> C join(final C out, final A in, final UnaryComputerOp<A, B> first,
+		final UnaryComputerOp<B, C> second, final UnaryOutputFactory<A, B> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final C result =
@@ -864,8 +864,8 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputers.class)
 	default <A> A join(final A out, final A in,
-		final List<? extends ComputerOp<A, A>> ops,
-		final OutputFactory<A, A> outputFactory)
+		final List<? extends UnaryComputerOp<A, A>> ops,
+		final UnaryOutputFactory<A, A> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
@@ -886,7 +886,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
 	default <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final ComputerOp<A, B> second)
+		final UnaryComputerOp<A, B> second)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -898,7 +898,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
 	default <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final ComputerOp<A, B> second, final OutputFactory<A, A> outputFactory)
+		final UnaryComputerOp<A, B> second, final UnaryOutputFactory<A, A> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -909,7 +909,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
-	default <A, B> B join(final B out, final A in, final ComputerOp<A, B> first,
+	default <A, B> B join(final B out, final A in, final UnaryComputerOp<A, B> first,
 		final InplaceOp<B> second)
 	{
 		@SuppressWarnings("unchecked")
@@ -921,8 +921,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
-	default <A, B> B join(final B out, final A in, final ComputerOp<A, B> first,
-		final InplaceOp<B> second, final OutputFactory<A, B> outputFactory)
+	default <A, B> B join(final B out, final A in, final UnaryComputerOp<A, B> first,
+		final InplaceOp<B> second, final UnaryOutputFactory<A, B> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
 		final B result =
@@ -939,7 +939,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	default <I> I loop(final I arg, final ComputerOp<I, I> op, final int n) {
+	default <I> I loop(final I arg, final UnaryComputerOp<I, I> op, final int n) {
 		@SuppressWarnings("unchecked")
 		final I result =
 			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, op, n);
@@ -948,8 +948,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopComputer.class)
-	default <A> A loop(final A out, final A in, final ComputerOp<A, A> op,
-		final OutputFactory<A, A> outputFactory, final int n)
+	default <A> A loop(final A out, final A in, final UnaryComputerOp<A, A> op,
+		final UnaryOutputFactory<A, A> outputFactory, final int n)
 	{
 		@SuppressWarnings("unchecked")
 		final A result =
@@ -967,7 +967,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapConvertRAIToRAI.class)
 	default <A, B extends Type<B>> RandomAccessibleInterval<B> map(
-		final RandomAccessibleInterval<A> input, final ComputerOp<A, B> op,
+		final RandomAccessibleInterval<A> input, final UnaryComputerOp<A, B> op,
 		final B type)
 	{
 		@SuppressWarnings("unchecked")
@@ -980,7 +980,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapConvertRandomAccessToRandomAccess.class)
 	default <A, B extends Type<B>> RandomAccessible<B> map(
-		final RandomAccessible<A> input, final ComputerOp<A, B> op, final B type)
+		final RandomAccessible<A> input, final UnaryComputerOp<A, B> op, final B type)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessible<B> result =
@@ -993,7 +993,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalToView.class)
 	default <A, B extends Type<B>> IterableInterval<B> map(
-		final IterableInterval<A> input, final ComputerOp<A, B> op, final B type)
+		final IterableInterval<A> input, final UnaryComputerOp<A, B> op, final B type)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
@@ -1019,7 +1019,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
 	default <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final IterableInterval<A> in, final ComputerOp<A, B> op)
+		final IterableInterval<A> in, final UnaryComputerOp<A, B> op)
 	{
 		// net.imagej.ops.map.MapIterableToIterableParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToIterableInterval.class
@@ -1034,7 +1034,7 @@ public interface OpEnvironment extends Contextual {
 		net.imagej.ops.map.MapIterableIntervalToRAI.class })
 	default <A, B> RandomAccessibleInterval<B> map(
 		final RandomAccessibleInterval<B> out, final IterableInterval<A> in,
-		final ComputerOp<A, B> op)
+		final UnaryComputerOp<A, B> op)
 	{
 		// net.imagej.ops.map.MapIterableToRAIParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToRAI.class
@@ -1057,7 +1057,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapRAIToIterableInterval.class)
 	default <A, B> IterableInterval<B> map(final IterableInterval<B> out,
-		final RandomAccessibleInterval<A> in, final ComputerOp<A, B> op)
+		final RandomAccessibleInterval<A> in, final UnaryComputerOp<A, B> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<B> result =
@@ -1070,7 +1070,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
 	default <I, O> RandomAccessibleInterval<O> map(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final ComputerOp<Iterable<I>, O> op,
+		final RandomAccessibleInterval<I> in, final UnaryComputerOp<Iterable<I>, O> op,
 		final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
@@ -1098,7 +1098,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableToIterable.class)
 	default <A, B> Iterable<B> map(final Iterable<B> out, final Iterable<A> in,
-		final ComputerOp<A, B> op)
+		final UnaryComputerOp<A, B> op)
 	{
 		@SuppressWarnings("unchecked")
 		final Iterable<B> result =
@@ -1117,7 +1117,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	default <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> op,
+		final RandomAccessibleInterval<I> in, final UnaryComputerOp<I, O> op,
 		final int... axisIndices)
 	{
 		@SuppressWarnings("unchecked")
@@ -1132,7 +1132,7 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	default <I, O> RandomAccessibleInterval<O> slicewise(
 		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final ComputerOp<I, O> op,
+		final RandomAccessibleInterval<I> in, final UnaryComputerOp<I, O> op,
 		final int[] axisIndices, final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")

@@ -33,9 +33,9 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
@@ -52,14 +52,14 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.SmallestEnclosingBoundingBox.class,
 	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
-	AbstractFunctionOp<Polygon, Polygon> implements Contingent,
+	AbstractUnaryFunctionOp<Polygon, Polygon> implements Contingent,
 	Ops.Geometric.SmallestEnclosingBoundingBox
 {
 
-	private FunctionOp<Polygon, Polygon> convexhullFunc;
-	private FunctionOp<Polygon, RealLocalizable> centroidFunc;
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, Polygon> boundingBoxFunc;
+	private UnaryFunctionOp<Polygon, Polygon> convexhullFunc;
+	private UnaryFunctionOp<Polygon, RealLocalizable> centroidFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon, Polygon> boundingBoxFunc;
 
 	@Override
 	public void initialize() {

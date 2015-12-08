@@ -33,7 +33,7 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour<B extends BooleanType<B>> extends
-	AbstractFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
 	Contingent, Ops.Geometric.Contour
 {
 

@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.SecondMultiVariate.class)
 public class DefaultMinorMajorAxis extends
-	AbstractFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
+	AbstractUnaryFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
 	Ops.Geometric.SecondMultiVariate
 {
 

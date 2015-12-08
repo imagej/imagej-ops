@@ -34,27 +34,27 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link ComputerOp}s.
+ * Joins a list of {@link UnaryComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Join.class)
 public class DefaultJoinComputers<A> extends
-	AbstractJoinComputers<A, ComputerOp<A, A>>
+	AbstractJoinComputers<A, UnaryComputerOp<A, A>>
 {
 
 	@Override
 	public void compute(final A input, final A output) {
-		final List<? extends ComputerOp<A, A>> ops = getOps();
-		final Iterator<? extends ComputerOp<A, A>> it = ops.iterator();
-		final ComputerOp<A, A> first = it.next();
+		final List<? extends UnaryComputerOp<A, A>> ops = getOps();
+		final Iterator<? extends UnaryComputerOp<A, A>> it = ops.iterator();
+		final UnaryComputerOp<A, A> first = it.next();
 
 		if (ops.size() == 1) {
 			first.compute(input, output);
@@ -87,8 +87,8 @@ public class DefaultJoinComputers<A> extends
 
 		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
 
-		final ArrayList<ComputerOp<A, A>> ops = new ArrayList<ComputerOp<A, A>>();
-		for (final ComputerOp<A, A> op : getOps()) {
+		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>();
+		for (final UnaryComputerOp<A, A> op : getOps()) {
 			ops.add(op.getIndependentInstance());
 		}
 

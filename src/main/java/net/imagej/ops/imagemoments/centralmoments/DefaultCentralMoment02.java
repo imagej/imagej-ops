@@ -30,7 +30,7 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -55,9 +55,9 @@ public class DefaultCentralMoment02<I extends RealType<I>, O extends RealType<O>
 {
 
 	// Required
-	private FunctionOp<IterableInterval<I>, O> moment00Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> moment00Func;
 	
-	private FunctionOp<IterableInterval<I>, O> moment01Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> moment01Func;
 
 	@Override
 	public void initialize() {

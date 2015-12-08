@@ -30,7 +30,7 @@
 
 package net.imagej.ops.imagemoments.hu;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -53,11 +53,11 @@ public class DefaultHuMoment2<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.HuMoment2
 {
 
-	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment20Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> normalizedCentralMoment20Func;
 
-	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment02Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> normalizedCentralMoment02Func;
 
-	private FunctionOp<IterableInterval<I>, O> normalizedCentralMoment11Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> normalizedCentralMoment11Func;
 
 	@Override
 	public void initialize() {

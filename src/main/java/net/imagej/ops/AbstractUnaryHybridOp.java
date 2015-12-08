@@ -34,13 +34,13 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link HybridOp} implementations.
+ * Abstract superclass for {@link UnaryHybridOp} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
-	implements HybridOp<I, O>
+public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
+	implements UnaryHybridOp<I, O>
 {
 
 	// -- Parameters --

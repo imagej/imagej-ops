@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link ComputerOp} which calculates a result from two given inputs,
+ * A binary {@link UnaryComputerOp} which calculates a result from two given inputs,
  * storing it into the specified output reference.
  * 
  * @author Curtis Rueden
@@ -42,7 +42,7 @@ package net.imagej.ops;
  * @see BinaryHybridOp
  */
 public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
-	ComputerOp<I1, O>
+	UnaryComputerOp<I1, O>
 {
 
 	/**

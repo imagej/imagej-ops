@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryFunctionOp;
 
 /**
  * A {@link MapOp} which virtually converts entries in I and O from A to B.
@@ -42,8 +42,8 @@ import net.imagej.ops.FunctionOp;
  * @param <I> holding <A>s
  * @param <O> type of resulting output
  */
-public interface MapView<A, B, I, O> extends MapOp<A, B, ComputerOp<A, B>>,
-	FunctionOp<I, O>
+public interface MapView<A, B, I, O> extends MapOp<A, B, UnaryComputerOp<A, B>>,
+	UnaryFunctionOp<I, O>
 {
 
 	/**

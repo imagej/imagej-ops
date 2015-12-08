@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
@@ -77,8 +77,8 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	private double r = 0.5;
 
 	// FIXME: Faster calculation of mean and std-dev
-	private ComputerOp<Iterable<T>, DoubleType> mean;
-	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
+	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	private double p = 2.0;
 	private double q = 10.0;

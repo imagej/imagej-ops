@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Geometric.SecondMultiVariate;
 import net.imglib2.roi.geometric.Polygon;
@@ -47,12 +47,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.MajorAxis.class,
 	label = "Geometric (2D): Major Axis")
-public class DefaultMajorAxis extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultMajorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.MajorAxis
 {
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private UnaryFunctionOp<Polygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {

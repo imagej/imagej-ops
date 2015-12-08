@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.max;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
 import net.imglib2.RandomAccessibleInterval;
@@ -53,10 +53,10 @@ public class DefaultMaxFilter<T extends RealType<T>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
+	protected UnaryComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
 		Class<?> outClass)
 	{
-		return (ComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Max.class, outClass, Iterable.class);
+		return (UnaryComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Max.class, outClass, Iterable.class);
 	}
 
 }

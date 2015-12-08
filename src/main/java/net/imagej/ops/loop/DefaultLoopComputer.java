@@ -32,27 +32,27 @@ package net.imagej.ops.loop;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.join.DefaultJoinComputers;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link ComputerOp} multiple times to an image.
+ * Applies a {@link UnaryComputerOp} multiple times to an image.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Loop.class)
 public class DefaultLoopComputer<A> extends
-	AbstractLoopComputer<ComputerOp<A, A>, A>
+	AbstractLoopComputer<UnaryComputerOp<A, A>, A>
 {
 
 	@Override
 	public void compute(final A input, final A output) {
 		final int n = getLoopCount();
 
-		final ArrayList<ComputerOp<A, A>> ops = new ArrayList<ComputerOp<A, A>>(n);
+		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>(n);
 		for (int i = 0; i < n; i++)
 			ops.add(getOp());
 

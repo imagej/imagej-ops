@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link HybridOp} which calculates a result from two given inputs.
+ * A binary {@link UnaryHybridOp} which calculates a result from two given inputs.
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input
@@ -40,7 +40,7 @@ package net.imagej.ops;
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
  */
-public interface BinaryHybridOp<I1, I2, O> extends HybridOp<I1, O>,
+public interface BinaryHybridOp<I1, I2, O> extends UnaryHybridOp<I1, O>,
 	BinaryComputerOp<I1, I2, O>, BinaryFunctionOp<I1, I2, O>,
 	BinaryOutputFactory<I1, I2, O>
 {

@@ -32,8 +32,8 @@ package net.imagej.ops.filter.dog;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -53,7 +53,7 @@ import org.scijava.thread.ThreadService;
  */
 @Plugin(type = Ops.Filter.DoG.class, priority = 1.0)
 public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 
@@ -66,7 +66,7 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 	@Parameter
 	private double sigma2;
 
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> op;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> op;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;

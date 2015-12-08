@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OutputFactory;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -41,34 +41,34 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractLoopComputer<C extends ComputerOp<I, I>, I>
-	extends AbstractComputerOp<I, I> implements LoopComputer<I>
+public abstract class AbstractLoopComputer<C extends UnaryComputerOp<I, I>, I>
+	extends AbstractUnaryComputerOp<I, I> implements LoopComputer<I>
 {
 
 	@Parameter
-	private ComputerOp<I, I> op;
+	private UnaryComputerOp<I, I> op;
 
 	@Parameter
-	private OutputFactory<I, I> outputFactory;
+	private UnaryOutputFactory<I, I> outputFactory;
 
 	@Parameter
 	private int n;
 
-	public OutputFactory<I, I> getOutputFactory() {
+	public UnaryOutputFactory<I, I> getOutputFactory() {
 		return outputFactory;
 	}
 
-	public void setOutputFactory(final OutputFactory<I, I> outputFactory) {
+	public void setOutputFactory(final UnaryOutputFactory<I, I> outputFactory) {
 		this.outputFactory = outputFactory;
 	}
 
 	@Override
-	public ComputerOp<I, I> getOp() {
+	public UnaryComputerOp<I, I> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final ComputerOp<I, I> op) {
+	public void setOp(final UnaryComputerOp<I, I> op) {
 		this.op = op;
 	}
 	

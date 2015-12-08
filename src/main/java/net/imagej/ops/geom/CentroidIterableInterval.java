@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Centroid.class, priority = 1)
 public class CentroidIterableInterval
 		extends
-			AbstractFunctionOp<IterableInterval<?>, RealLocalizable>
+			AbstractUnaryFunctionOp<IterableInterval<?>, RealLocalizable>
 		implements
 			Ops.Geometric.Centroid {
 

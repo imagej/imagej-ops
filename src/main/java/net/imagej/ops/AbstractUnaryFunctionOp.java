@@ -30,21 +30,50 @@
 
 package net.imagej.ops;
 
-/**
- * Factory which creates an output object of type <O> given the input of type
- * <I>
- * 
- * @author Christian Dietz (University of Konstanz)
- */
-public interface OutputFactory<I, O> {
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
-	/**
-	 * Create an output object given some input.
-	 * 
-	 * @param input
-	 *            which determines how to create the output
-	 * 
-	 * @return output, depending on the input
-	 */
-	O createOutput(I input);
+/**
+ * Abstract superclass for {@link UnaryFunctionOp} implementations.
+ * 
+ * @author Curtis Rueden
+ */
+public abstract class AbstractUnaryFunctionOp<I, O> extends AbstractUnaryOp<I, O>
+	implements UnaryFunctionOp<I, O>
+{
+
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- Runnable methods --
+
+	@Override
+	public void run() {
+		out = compute(in());
+	}
+
+	// -- Input methods --
+
+	@Override
+	public I in() {
+		return in;
+	}
+
+	@Override
+	public void setInput(final I input) {
+		in = input;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public O out() {
+		return out;
+	}
+
 }

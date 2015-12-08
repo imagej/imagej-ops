@@ -30,7 +30,7 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
 import net.imglib2.IterableInterval;
@@ -50,9 +50,9 @@ public class DefaultSumVariance<T extends RealType<T>> extends
 	AbstractHaralickFeature<T>implements Ops.Haralick.SumVariance
 {
 
-	private FunctionOp<double[][], double[]> coocPXPlusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXPlusYFunc;
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<IterableInterval<T>, RealType> sumAverageFunc;
+	private UnaryFunctionOp<IterableInterval<T>, RealType> sumAverageFunc;
 
 	@Override
 	public void initialize() {

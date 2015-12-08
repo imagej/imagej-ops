@@ -30,8 +30,8 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -49,14 +49,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
 public class CopyIterableInterval<T> extends
-		AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
+		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>> implements
 		Ops.Copy.IterableInterval, Contingent {
 
 	@Parameter
 	protected OpService ops;
 
 	// used internally
-	private ComputerOp<IterableInterval<T>, IterableInterval<T>> map;
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
 	
 	@Override
 	public void initialize() {

@@ -32,7 +32,7 @@ package net.imagej.ops.copy;
 
 import java.lang.reflect.Array;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.Img.class, priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyArrayImg<T extends NativeType<T>, A extends ArrayDataAccess<A>>
 		extends
-		AbstractHybridOp<ArrayImg<T, A>, ArrayImg<T, A>>
+		AbstractUnaryHybridOp<ArrayImg<T, A>, ArrayImg<T, A>>
 		implements Ops.Copy.Img, Contingent {
 
 	@Override

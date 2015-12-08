@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,13 +46,13 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
+public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 	implements Ops.Geometric.Compactness
 {
 
-	private FunctionOp<Mesh, DoubleType> surfacePixel;
+	private UnaryFunctionOp<Mesh, DoubleType> surfacePixel;
 
-	private FunctionOp<Mesh, DoubleType> volume;
+	private UnaryFunctionOp<Mesh, DoubleType> volume;
 
 	@Override
 	public void initialize() {

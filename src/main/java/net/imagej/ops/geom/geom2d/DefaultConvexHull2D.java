@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.RealLocalizable;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygon>
 	implements GeometricOp<Polygon, Polygon>, Ops.Geometric.ConvexHull
 {
 

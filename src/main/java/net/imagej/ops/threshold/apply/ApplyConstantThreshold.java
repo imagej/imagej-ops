@@ -30,8 +30,8 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -49,18 +49,18 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractComputerOp<Iterable<T>, Iterable<BitType>> implements
+	AbstractUnaryComputerOp<Iterable<T>, Iterable<BitType>> implements
 	Ops.Threshold.Apply
 {
 
 	@Parameter
 	private T threshold;
-	private ComputerOp<T, BitType> applyThreshold;
+	private UnaryComputerOp<T, BitType> applyThreshold;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		applyThreshold = (ComputerOp<T, BitType>) ops().computer(
+		applyThreshold = (UnaryComputerOp<T, BitType>) ops().computer(
 			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
 			threshold);
 	}

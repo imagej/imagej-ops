@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -42,13 +42,13 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractBoundarySizeConvexHull<I> extends
-	AbstractFunctionOp<I, DoubleType> implements
+	AbstractUnaryFunctionOp<I, DoubleType> implements
 	Ops.Geometric.BoundarySizeConvexHull
 {
 
-	private FunctionOp<I, I> convexHullFunc;
+	private UnaryFunctionOp<I, I> convexHullFunc;
 
-	private FunctionOp<I, DoubleType> perimeterFunc;
+	private UnaryFunctionOp<I, DoubleType> perimeterFunc;
 
 	private Class<I> inType;
 

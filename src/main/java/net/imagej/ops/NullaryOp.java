@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A <em>nullary</em> operation is a {@link SpecialOp} with zero input
+ * A <em>nullary</em> operation is a {@link UnaryOp} with zero input
  * parameters, rather than just one. They come in two major flavors:
  * {@link NullaryComputerOp} and {@link NullaryFunctionOp}. And there is one
  * additional type, {@link NullaryHybridOp}, which unions both flavors.

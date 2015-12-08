@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -40,7 +40,7 @@ import net.imglib2.view.Views;
 import org.scijava.plugin.Parameter;
 
 public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
-	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter

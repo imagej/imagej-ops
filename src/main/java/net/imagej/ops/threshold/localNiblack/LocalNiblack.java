@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
@@ -57,9 +57,9 @@ public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private double k;
 
-	private ComputerOp<Iterable<T>, DoubleType> mean;
+	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
 
-	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	@Override
 	public void initialize() {

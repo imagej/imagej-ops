@@ -32,9 +32,9 @@ package net.imagej.ops.join;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OutputFactory;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -44,25 +44,25 @@ import org.scijava.plugin.Parameter;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinComputers<A, C extends ComputerOp<A, A>>
-	extends AbstractComputerOp<A, A> implements JoinComputers<A, C>
+public abstract class AbstractJoinComputers<A, C extends UnaryComputerOp<A, A>>
+	extends AbstractUnaryComputerOp<A, A> implements JoinComputers<A, C>
 {
 
 	@Parameter
 	private List<? extends C> ops;
 
 	@Parameter
-	private OutputFactory<A, A> outputFactory;
+	private UnaryOutputFactory<A, A> outputFactory;
 
 	private A buffer;
 
 	@Override
-	public OutputFactory<A, A> getOutputFactory() {
+	public UnaryOutputFactory<A, A> getOutputFactory() {
 		return outputFactory;
 	}
 
 	@Override
-	public void setOutputFactory(final OutputFactory<A, A> outputFactory) {
+	public void setOutputFactory(final UnaryOutputFactory<A, A> outputFactory) {
 		this.outputFactory = outputFactory;
 	}
 

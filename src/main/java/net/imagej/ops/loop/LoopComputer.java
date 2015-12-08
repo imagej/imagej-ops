@@ -30,14 +30,14 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
- * Loops over an injected {@link ComputerOp}. A {@link LoopComputer} applies a
- * {@link ComputerOp} n-times to an input.
+ * Loops over an injected {@link UnaryComputerOp}. A {@link LoopComputer} applies a
+ * {@link UnaryComputerOp} n-times to an input.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopComputer<I> extends ComputerOp<I, I>, LoopOp<I> {
+public interface LoopComputer<I> extends UnaryComputerOp<I, I>, LoopOp<I> {
 	// NB: Marker interface
 }

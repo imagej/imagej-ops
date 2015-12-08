@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A <em>binary</em> operation is a {@link SpecialOp} with two input parameters,
+ * A <em>binary</em> operation is a {@link UnaryOp} with two input parameters,
  * rather than just one. They come in two major flavors:
  * {@link BinaryComputerOp} and {@link BinaryFunctionOp}. And there is one
  * additional type, {@link BinaryHybridOp}, which unions both flavors.
@@ -44,7 +44,7 @@ package net.imagej.ops;
  * @see BinaryFunctionOp
  * @see BinaryHybridOp
  */
-public interface BinaryOp<I1, I2, O> extends SpecialOp<I1, O>,
+public interface BinaryOp<I1, I2, O> extends UnaryOp<I1, O>,
 	BinaryInput<I1, I2>
 {
 

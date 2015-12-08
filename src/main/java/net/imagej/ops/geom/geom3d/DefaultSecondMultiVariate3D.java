@@ -30,9 +30,9 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -51,11 +51,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.SecondMultiVariate.class)
 public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
-	AbstractFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
+	AbstractUnaryFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D>
 	implements Ops.Geometric.SecondMultiVariate, Contingent
 {
 
-	private FunctionOp<IterableRegion<B>, RealLocalizable> centroid;
+	private UnaryFunctionOp<IterableRegion<B>, RealLocalizable> centroid;
 
 	@Override
 	public void initialize() {

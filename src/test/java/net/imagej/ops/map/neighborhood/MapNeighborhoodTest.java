@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
@@ -121,7 +121,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	 * @author Jonathan Hale
 	 */
 	private static class CountNeighbors extends
-		AbstractComputerOp<Iterable<ByteType>, ByteType>
+		AbstractUnaryComputerOp<Iterable<ByteType>, ByteType>
 	{
 
 		@Override
@@ -168,7 +168,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	 *
 	 * @author Jonathan Hale
 	 */
-	private static class Increment extends AbstractComputerOp<ByteType, ByteType>
+	private static class Increment extends AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override

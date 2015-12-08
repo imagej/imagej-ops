@@ -32,7 +32,7 @@ package net.imagej.ops.geom;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -50,7 +50,7 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = Ops.Geometric.CenterOfGravity.class)
 public class DefaultCenterOfGravity<T extends RealType<T>> extends
-	AbstractFunctionOp<IterableInterval<T>, RealLocalizable> implements
+	AbstractUnaryFunctionOp<IterableInterval<T>, RealLocalizable> implements
 	Ops.Geometric.CenterOfGravity
 {
 

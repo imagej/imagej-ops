@@ -31,9 +31,9 @@ package net.imagej.ops.image.cooccurrencematrix;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imglib2.Cursor;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.CooccurrenceMatrix.class)
 public class CooccurrenceMatrix2D<T extends RealType<T>> extends
-		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
+		AbstractUnaryFunctionOp<IterableInterval<T>, double[][]> implements
 		Ops.Image.CooccurrenceMatrix, Contingent {
 
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
@@ -65,13 +65,13 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 	@Parameter(label = "Matrix Orientation")
 	private MatrixOrientation orientation;
 
-	private FunctionOp<IterableInterval<T>, Pair<T, T>> minmax;
+	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minmax;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
 		super.initialize();
-		minmax = (FunctionOp) ops().function(MinMax.class, Pair.class, in());
+		minmax = (UnaryFunctionOp) ops().function(MinMax.class, Pair.class, in());
 	}
 
 	@Override

@@ -33,7 +33,7 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.BoundingBox.class)
-public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultBoundingBox extends AbstractUnaryFunctionOp<Polygon, Polygon>
 	implements Ops.Geometric.BoundingBox
 {
 

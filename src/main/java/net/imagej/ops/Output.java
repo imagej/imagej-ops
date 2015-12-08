@@ -39,7 +39,7 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
- * @see Input
+ * @see UnaryInput
  */
 public interface Output<O> {
 

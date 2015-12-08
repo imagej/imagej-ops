@@ -32,7 +32,7 @@ package net.imagej.ops.math;
 
 import java.util.Random;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -59,7 +59,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Abs.class)
 	public static class Abs<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Abs
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Abs
 	{
 
 		@Override
@@ -74,7 +74,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Add.class)
 	public static class Add<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Add
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Add
 	{
 
 		@Parameter
@@ -92,7 +92,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.And.class)
 	public static class AndConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.And
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.And
 	{
 
 		@Parameter
@@ -110,7 +110,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccos.class)
 	public static class Arccos<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccos
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccos
 	{
 
 		@Override
@@ -125,7 +125,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccosh.class)
 	public static class Arccosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccosh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccosh
 	{
 
 		@Override
@@ -143,7 +143,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccot.class)
 	public static class Arccot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccot
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccot
 	{
 
 		@Override
@@ -160,7 +160,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccoth.class)
 	public static class Arccoth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccoth
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccoth
 	{
 
 		@Override
@@ -176,7 +176,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsc.class)
 	public static class Arccsc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsc
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccsc
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -207,7 +207,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsch.class)
 	public static class Arccsch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsch
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccsch
 	{
 
 		@Override
@@ -224,7 +224,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsec.class)
 	public static class Arcsec<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsec
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsec
 	{
 
 		private final static Arcsin<DoubleType, DoubleType> asin =
@@ -257,7 +257,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsech.class)
 	public static class Arcsech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsech
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsech
 	{
 
 		@Override
@@ -274,7 +274,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsin.class)
 	public static class Arcsin<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsin
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsin
 	{
 
 		@Override
@@ -289,7 +289,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsinh.class)
 	public static class Arcsinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsinh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsinh
 	{
 
 		@Override
@@ -306,7 +306,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctan.class)
 	public static class Arctan<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arctan
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arctan
 	{
 
 		@Override
@@ -321,7 +321,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctanh.class)
 	public static class Arctanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Arctanh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arctanh
 	{
 
 		@Override
@@ -337,7 +337,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ceil.class)
 	public static class Ceil<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Ceil
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Ceil
 	{
 
 		@Override
@@ -352,7 +352,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cos.class)
 	public static class Cos<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Cos
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Cos
 	{
 
 		@Override
@@ -367,7 +367,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cosh.class)
 	public static class Cosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Cosh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Cosh
 	{
 
 		@Override
@@ -382,7 +382,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cot.class)
 	public static class Cot<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Cot
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Cot
 	{
 
 		@Override
@@ -397,7 +397,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Coth.class)
 	public static class Coth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Coth
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Coth
 	{
 
 		@Override
@@ -412,7 +412,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csc.class)
 	public static class Csc<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Csc
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Csc
 	{
 
 		@Override
@@ -427,7 +427,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csch.class)
 	public static class Csch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Csch
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Csch
 	{
 
 		@Override
@@ -442,7 +442,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.CubeRoot.class)
 	public static class CubeRoot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.CubeRoot
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.CubeRoot
 	{
 
 		@Override
@@ -457,7 +457,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Divide.class)
 	public static class Divide<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Divide
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Divide
 	{
 
 		@Parameter
@@ -482,7 +482,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Exp.class)
 	public static class Exp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Exp
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Exp
 	{
 
 		@Override
@@ -497,7 +497,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.ExpMinusOne.class)
 	public static class ExpMinusOne<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.ExpMinusOne
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.ExpMinusOne
 	{
 
 		@Override
@@ -512,7 +512,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Floor.class)
 	public static class Floor<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Floor
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Floor
 	{
 
 		@Override
@@ -527,7 +527,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Gamma.class)
 	public static class GammaConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Gamma
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Gamma
 	{
 
 		@Parameter
@@ -549,7 +549,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Invert.class)
 	public static class Invert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Invert
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Invert
 	{
 
 		@Parameter
@@ -569,7 +569,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log.class)
 	public static class Log<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Log
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Log
 	{
 
 		@Override
@@ -584,7 +584,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log10.class)
 	public static class Log10<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Log10
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Log10
 	{
 
 		@Override
@@ -599,7 +599,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log2.class)
 	public static class Log2<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Log2
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Log2
 	{
 
 		@Override
@@ -615,7 +615,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.LogOnePlusX.class)
 	public static class LogOnePlusX<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.LogOnePlusX
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.LogOnePlusX
 	{
 
 		@Override
@@ -631,7 +631,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Max.class)
 	public static class MaxConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Max
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Max
 	{
 
 		@Parameter
@@ -653,7 +653,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Min.class)
 	public static class MinConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Min
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Min
 	{
 
 		@Parameter
@@ -673,7 +673,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Multiply.class)
 	public static class Multiply<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Multiply
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Multiply
 	{
 
 		@Parameter
@@ -691,7 +691,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.NearestInt.class)
 	public static class NearestInt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.NearestInt
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.NearestInt
 	{
 
 		@Override
@@ -706,7 +706,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Negate.class)
 	public static class Negate<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Negate
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Negate
 	{
 
 		@Override
@@ -721,7 +721,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Or.class)
 	public static class OrConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Or
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Or
 	{
 
 		@Parameter
@@ -739,7 +739,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Power.class)
 	public static class PowerConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Power
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Power
 	{
 
 		@Parameter
@@ -759,7 +759,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomGaussian.class)
 	public static class RandomGaussian<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.RandomGaussian
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.RandomGaussian
 	{
 
 		@Parameter(required = false)
@@ -788,7 +788,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomUniform.class)
 	public static class RandomUniform<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.RandomUniform
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.RandomUniform
 	{
 
 		@Parameter(required = false)
@@ -818,7 +818,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Reciprocal.class)
 	public static class Reciprocal<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Reciprocal
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Reciprocal
 	{
 
 		@Parameter
@@ -838,7 +838,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Round.class)
 	public static class Round<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Round
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Round
 	{
 
 		@Override
@@ -853,7 +853,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sec.class)
 	public static class Sec<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Sec
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sec
 	{
 
 		@Override
@@ -868,7 +868,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sech.class)
 	public static class Sech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Sech
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sech
 	{
 
 		@Override
@@ -885,7 +885,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Signum.class)
 	public static class Signum<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Signum
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Signum
 	{
 
 		@Override
@@ -900,7 +900,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sin.class)
 	public static class Sin<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Sin
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sin
 	{
 
 		@Override
@@ -916,7 +916,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinc.class)
 	public static class Sinc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Sinc
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinc
 	{
 
 		@Override
@@ -936,7 +936,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.SincPi.class)
 	public static class SincPi<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.SincPi
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.SincPi
 	{
 
 		@Override
@@ -955,7 +955,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinh.class)
 	public static class Sinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Sinh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinh
 	{
 
 		@Override
@@ -970,7 +970,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqr.class)
 	public static class Sqr<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Sqr
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqr
 	{
 
 		@Override
@@ -986,7 +986,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqrt.class)
 	public static class Sqrt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Sqrt
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqrt
 	{
 
 		@Override
@@ -1003,7 +1003,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Step.class)
 	public static class Step<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Step
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Step
 	{
 
 		@Override
@@ -1019,7 +1019,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Subtract.class)
 	public static class Subtract<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Subtract
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Subtract
 	{
 
 		@Parameter
@@ -1037,7 +1037,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tan.class)
 	public static class Tan<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Tan
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Tan
 	{
 
 		@Override
@@ -1052,7 +1052,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tanh.class)
 	public static class Tanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Tanh
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Tanh
 	{
 
 		@Override
@@ -1069,7 +1069,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ulp.class)
 	public static class Ulp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractComputerOp<I, O> implements Ops.Math.Ulp
+		AbstractUnaryComputerOp<I, O> implements Ops.Math.Ulp
 	{
 
 		@Override
@@ -1084,7 +1084,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Xor.class)
 	public static class XorConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Xor
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Xor
 	{
 
 		@Parameter
@@ -1101,7 +1101,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Zero.class)
 	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractComputerOp<I, O> implements Ops.Math.Zero
+		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Zero
 	{
 
 		@Override

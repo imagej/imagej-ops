@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localMedian;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
@@ -54,7 +54,7 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private double c;
 
-	private ComputerOp<Iterable<T>, DoubleType> median;
+	private UnaryComputerOp<Iterable<T>, DoubleType> median;
 
 	@Override
 	public void initialize() {

@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.Chunk;
@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW_PRIORITY)
-public class RunDefaultChunkerArray<A> extends AbstractComputerOp<A[], A[]>
+public class RunDefaultChunkerArray<A> extends AbstractUnaryComputerOp<A[], A[]>
 	implements Parallel
 {
 	

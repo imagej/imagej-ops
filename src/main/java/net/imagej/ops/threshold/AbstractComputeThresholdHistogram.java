@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Curtis Rueden
  */
 public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
-	extends AbstractHybridOp<Histogram1d<T>, T> implements
+	extends AbstractUnaryHybridOp<Histogram1d<T>, T> implements
 	ComputeThresholdHistogram<T>
 {
 

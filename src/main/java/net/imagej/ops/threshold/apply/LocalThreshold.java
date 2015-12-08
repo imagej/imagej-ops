@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Threshold.Apply.class)
 public class LocalThreshold<T extends RealType<T>>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
 	implements Ops.Threshold.Apply
 {
 

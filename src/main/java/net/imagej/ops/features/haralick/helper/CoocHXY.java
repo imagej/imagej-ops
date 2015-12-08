@@ -30,8 +30,8 @@
 
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 
 import org.scijava.plugin.Plugin;
 
@@ -42,12 +42,12 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocHXY.class)
-public class CoocHXY extends AbstractFunctionOp<double[][], double[]> {
+public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
 	private static final double EPSILON = 0.00000001f;
 
-	private FunctionOp<double[][], double[]> coocPXFunc;
-	private FunctionOp<double[][], double[]> coocPYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPYFunc;
 
 	@Override
 	public void initialize() {

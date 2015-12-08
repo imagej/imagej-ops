@@ -30,20 +30,20 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a {@link ComputerOp} with an {@link InplaceOp}.
+ * Joins a {@link UnaryComputerOp} with an {@link InplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Join.class)
 public class DefaultJoinComputerAndInplace<A, B> extends
-	AbstractJoinComputerAndComputer<A, B, B, ComputerOp<A, B>, InplaceOp<B>>
+	AbstractJoinComputerAndComputer<A, B, B, UnaryComputerOp<A, B>, InplaceOp<B>>
 {
 
 	@Override

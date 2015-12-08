@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -52,7 +52,7 @@ public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.StdDev
 {
 	
-	private FunctionOp<Iterable<I>, O> varianceFunc;
+	private UnaryFunctionOp<Iterable<I>, O> varianceFunc;
 
 	@Override
 	public void initialize() {

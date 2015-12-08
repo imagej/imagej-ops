@@ -33,7 +33,7 @@ package net.imagej.ops.map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
@@ -265,7 +265,7 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	private static class AddOneFunctional extends
-		AbstractComputerOp<ByteType, ByteType>
+		AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override

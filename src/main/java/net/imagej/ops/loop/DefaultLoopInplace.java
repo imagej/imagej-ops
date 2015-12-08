@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 import org.scijava.plugin.Plugin;
@@ -46,7 +46,7 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 	@Override
 	public void compute(final I arg) {
 		final int n = getLoopCount();
-		final ComputerOp<I, I> op = getOp();
+		final UnaryComputerOp<I, I> op = getOp();
 		for (int i = 0; i < n; i++) {
 			op.compute(arg, arg);
 		}

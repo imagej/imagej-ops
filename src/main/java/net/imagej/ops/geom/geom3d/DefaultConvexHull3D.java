@@ -36,7 +36,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.Horizon;
@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
+public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	implements Ops.Geometric.ConvexHull
 {
 

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Feret.class)
 public class DefaultFeret extends
-	AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
+	AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
 	Ops.Geometric.Feret
 {
 

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
@@ -60,12 +60,12 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Parameter
 	private double halfMaxValue;
 
-	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
@@ -47,16 +47,16 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.FeretsAngle.class,
 	label = "Geometric (2D): Ferets Angle")
-public class DefaultFeretsAngle extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.FeretsAngle
 {
 
-	private FunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
+	private UnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		function = (FunctionOp) ops().function(Ops.Geometric.Feret.class, Pair.class, in());
+		function = (UnaryFunctionOp) ops().function(Ops.Geometric.Feret.class, Pair.class, in());
 	}
 
 	@Override

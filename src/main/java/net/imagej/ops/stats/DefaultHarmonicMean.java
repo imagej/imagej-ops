@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -52,9 +52,9 @@ public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.HarmonicMean
 {
 	
-	private FunctionOp<Iterable<I>, O> sizeFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sizeFunc;
 
-	private FunctionOp<Iterable<I>, O> sumOfInversesFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sumOfInversesFunc;
 
 	@Override
 	public void initialize() {

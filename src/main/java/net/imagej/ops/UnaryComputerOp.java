@@ -31,12 +31,45 @@
 package net.imagej.ops;
 
 /**
- * Abstract base class for {@link SpecialOp} implementations.
+ * A <em>computer</em> calculates a result from the given input, storing it into
+ * the specified output reference.
  * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see UnaryFunctionOp
+ * @see UnaryHybridOp
+ * @see InplaceOp
  */
-public abstract class AbstractSpecialOp<I, O> extends AbstractOp implements
-	SpecialOp<I, O>
+public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
+	OutputMutable<O>
 {
-	// NB: No implementation needed.
+
+	/**
+	 * Computes the output given some input.
+	 * 
+	 * @param input Argument to the computation
+	 * @param output Object where the computation's result will be stored
+	 */
+	void compute(I input, O output);
+
+	// -- Threadable methods --
+
+	@Override
+	default UnaryComputerOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		compute(in(), out());
+	}
+
 }

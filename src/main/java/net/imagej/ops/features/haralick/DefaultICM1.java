@@ -30,7 +30,7 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
 import net.imglib2.IterableInterval;
@@ -51,8 +51,8 @@ public class DefaultICM1<T extends RealType<T>> extends
 	AbstractHaralickFeature<T> implements Ops.Haralick.ICM1
 {
 
-	private FunctionOp<double[][], double[]> coocHXYFunc;
-	private FunctionOp<IterableInterval<T>, DoubleType> entropy;
+	private UnaryFunctionOp<double[][], double[]> coocHXYFunc;
+	private UnaryFunctionOp<IterableInterval<T>, DoubleType> entropy;
 
 	@Override
 	public void initialize() {

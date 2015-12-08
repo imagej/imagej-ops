@@ -28,43 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.UnaryOp;
 
 /**
- * A <em>hybrid</em> operation can be used as either a {@link FunctionOp} or as
- * a {@link ComputerOp}. To compute a new output object, call
- * {@link FunctionOp#compute}; to populate a preexisting output object, call
- * {@link ComputerOp#compute}.
+ * Base class for {@link UnaryOp} implementations that delegate to other
+ * {@link UnaryOp} implementations.
  * 
  * @author Curtis Rueden
- * @author Christian Dietz (University of Konstanz)
- * @param <I> type of input
- * @param <O> type of output
- * @see ComputerOp
- * @see FunctionOp
- * @see InplaceOp
  */
-public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O>,
-	OutputFactory<I, O>
+public interface DelegatingUnaryOp<T extends UnaryOp<I, O>, I, O> extends
+	UnaryOp<I, O>
 {
 
-	// -- FunctionOp methods --
-
-	@Override
-	default O compute(final I input) {
-		final O output = createOutput(input);
-		compute(input, output);
-		return output;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	default HybridOp<I, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
+	T createWorker(I t);
 
 }

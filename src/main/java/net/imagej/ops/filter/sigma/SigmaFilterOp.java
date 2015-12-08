@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.sigma;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -38,6 +38,6 @@ import net.imagej.ops.Ops;
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface SigmaFilterOp<I> extends Ops.Filter.Sigma, ComputerOp<I, I> {
+public interface SigmaFilterOp<I> extends Ops.Filter.Sigma, UnaryComputerOp<I, I> {
 	// NB: Marker interface.
 }

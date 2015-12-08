@@ -30,9 +30,9 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
@@ -49,17 +49,17 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Spareness.class,
 	label = "Geometric (3D): Spareness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSpareness<B extends BooleanType<B>> extends
-	AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
+	AbstractUnaryFunctionOp<IterableRegion<B>, DoubleType> implements
 	Ops.Geometric.Spareness, Contingent
 {
 
-	private FunctionOp<IterableRegion<B>, DoubleType> mainElongation;
+	private UnaryFunctionOp<IterableRegion<B>, DoubleType> mainElongation;
 
-	private FunctionOp<IterableRegion<B>, DoubleType> medianElongation;
+	private UnaryFunctionOp<IterableRegion<B>, DoubleType> medianElongation;
 
-	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
+	private UnaryFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
 
-	private FunctionOp<IterableRegion<B>, DoubleType> volume;
+	private UnaryFunctionOp<IterableRegion<B>, DoubleType> volume;
 
 	@Override
 	public void initialize() {

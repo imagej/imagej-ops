@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
 import net.imglib2.RandomAccessibleInterval;
@@ -48,9 +48,9 @@ import org.scijava.plugin.Plugin;
 public class DefaultContrastFeature<I extends RealType<I>, O extends RealType<O>>
 		extends AbstractTamuraFeature<I, O> implements Ops.Tamura.Contrast {
 
-	private FunctionOp<RandomAccessibleInterval<I>, O> m4Op;
-	private FunctionOp<RandomAccessibleInterval<I>, O> varOp;
-	private FunctionOp<RandomAccessibleInterval<I>, O> stdOp;
+	private UnaryFunctionOp<RandomAccessibleInterval<I>, O> m4Op;
+	private UnaryFunctionOp<RandomAccessibleInterval<I>, O> varOp;
+	private UnaryFunctionOp<RandomAccessibleInterval<I>, O> stdOp;
 
 	@Override
 	public void initialize() {

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
@@ -51,8 +51,8 @@ public class DefaultVariance<T extends RealType<T>> extends
 	AbstractHaralickFeature<T>implements Ops.Haralick.Variance
 {
 
-	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanYFunc;
 
 	@Override
 	public void initialize() {

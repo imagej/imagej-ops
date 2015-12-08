@@ -30,52 +30,17 @@
 
 package net.imagej.ops;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link ComputerOp} implementations.
+ * Interface for objects with a typed input parameter.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @see Output
  */
-public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
-	implements ComputerOp<I, O>
-{
+public interface UnaryInput<I> {
 
-	// -- Parameters --
+	I in();
 
-	@Parameter(type = ItemIO.BOTH)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- Input methods --
-
-	@Override
-	public I in() {
-		return in;
-	}
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public O out() {
-		return out;
-	}
-
-	// -- OutputMutable methods --
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
+	void setInput(I input);
 
 }

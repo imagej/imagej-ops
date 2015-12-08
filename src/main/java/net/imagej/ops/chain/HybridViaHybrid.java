@@ -30,20 +30,20 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryHybridOp;
 
 /**
- * Base class for {@link HybridOp} implementations that delegate to other
- * {@link HybridOp} implementations.
+ * Base class for {@link UnaryHybridOp} implementations that delegate to other
+ * {@link UnaryHybridOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HybridViaHybrid<I, O> extends AbstractHybridOp<I, O>
-	implements DelegatingSpecialOp<HybridOp<I, O>, I, O>
+public abstract class HybridViaHybrid<I, O> extends AbstractUnaryHybridOp<I, O>
+	implements DelegatingUnaryOp<UnaryHybridOp<I, O>, I, O>
 {
 
-	private HybridOp<I, O> worker;
+	private UnaryHybridOp<I, O> worker;
 
 	@Override
 	public O createOutput(final I input) {

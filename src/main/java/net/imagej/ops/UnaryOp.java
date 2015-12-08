@@ -28,20 +28,34 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
-
-import net.imagej.ops.SpecialOp;
+package net.imagej.ops;
 
 /**
- * Base class for {@link SpecialOp} implementations that delegate to other
- * {@link SpecialOp} implementations.
+ * A <em>special</em> operation is one intended to be used repeatedly from other
+ * ops. They come in two major flavors: {@link UnaryComputerOp} and
+ * {@link UnaryFunctionOp}. And there are two additional types, {@link UnaryHybridOp} and
+ * {@link InplaceOp}, which specialize behavior further.
  * 
  * @author Curtis Rueden
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see UnaryComputerOp
+ * @see UnaryFunctionOp
+ * @see UnaryHybridOp
+ * @see InplaceOp
  */
-public interface DelegatingSpecialOp<T extends SpecialOp<I, O>, I, O> extends
-	SpecialOp<I, O>
+public interface UnaryOp<I, O> extends Op, UnaryInput<I>, Output<O>,
+	Initializable, Threadable
 {
 
-	T createWorker(I t);
+	// -- Threadable methods --
+
+	@Override
+	default UnaryOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

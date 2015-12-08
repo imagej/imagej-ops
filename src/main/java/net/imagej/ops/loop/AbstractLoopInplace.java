@@ -31,7 +31,7 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -46,19 +46,19 @@ public abstract class AbstractLoopInplace<I> extends AbstractInplaceOp<I>
 
 	/** Op used for looping. */
 	@Parameter
-	private ComputerOp<I, I> op;
+	private UnaryComputerOp<I, I> op;
 
 	/** Number of loops. */
 	@Parameter
 	private int n;
 
 	@Override
-	public ComputerOp<I, I> getOp() {
+	public UnaryComputerOp<I, I> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final ComputerOp<I, I> op) {
+	public void setOp(final UnaryComputerOp<I, I> op) {
 		this.op = op;
 	}
 

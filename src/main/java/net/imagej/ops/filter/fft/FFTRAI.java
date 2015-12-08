@@ -33,7 +33,7 @@ package net.imagej.ops.filter.fft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
@@ -60,7 +60,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
 public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.FFT
 {
 

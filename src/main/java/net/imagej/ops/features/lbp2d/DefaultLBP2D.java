@@ -36,7 +36,7 @@ import java.util.Iterator;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
@@ -66,7 +66,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 	private int histogramSize = 256;
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<ArrayList, Histogram1d> histOp;
+	private UnaryFunctionOp<ArrayList, Histogram1d> histOp;
 
 	@Override
 	public void initialize() {

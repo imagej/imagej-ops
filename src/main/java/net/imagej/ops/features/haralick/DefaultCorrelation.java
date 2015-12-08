@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
@@ -54,10 +54,10 @@ public class DefaultCorrelation<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.Correlation {
 
 	// required functions
-	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
-	private FunctionOp<double[][], DoubleType> coocStdYFunc;
-	private FunctionOp<double[][], DoubleType> coocStdXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocStdYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocStdXFunc;
 
 	@Override
 	public void initialize() {

@@ -30,9 +30,9 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
@@ -51,12 +51,12 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Centroid")
-public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
+public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		implements
 			Ops.Geometric.Centroid,
 			Contingent {
 
-	private FunctionOp<Mesh, DoubleType> sizeFunc;
+	private UnaryFunctionOp<Mesh, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {

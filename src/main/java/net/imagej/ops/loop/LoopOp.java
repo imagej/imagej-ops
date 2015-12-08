@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -41,22 +41,22 @@ import net.imagej.ops.Ops;
 public interface LoopOp<A> extends Ops.Loop {
 
 	/**
-	 * @return the {@link ComputerOp} used for looping
+	 * @return the {@link UnaryComputerOp} used for looping
 	 */
-	ComputerOp<A, A> getOp();
+	UnaryComputerOp<A, A> getOp();
 
 	/**
-	 * @param op the {@link ComputerOp} used for looping
+	 * @param op the {@link UnaryComputerOp} used for looping
 	 */
-	void setOp(ComputerOp<A, A> op);
+	void setOp(UnaryComputerOp<A, A> op);
 	
 	/**
-	 * @param n number how often {@link ComputerOp} is looped
+	 * @param n number how often {@link UnaryComputerOp} is looped
 	 */
 	void setLoopCount(int n);
 	
 	/**
-	 * @return number how often the {@link ComputerOp} is looped
+	 * @return number how often the {@link UnaryComputerOp} is looped
 	 */
 	int getLoopCount();
 

@@ -51,19 +51,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testComputer() {
-		final ComputerOp<Apple, Apple> computerAA =
+		final UnaryComputerOp<Apple, Apple> computerAA =
 			ops.computer(FruitOp.class, Apple.class, Apple.class);
 		assertSame(computerAA.getClass(), ComputerAA.class);
 
-		final ComputerOp<Apple, Orange> computerAO =
+		final UnaryComputerOp<Apple, Orange> computerAO =
 			ops.computer(FruitOp.class, Orange.class, Apple.class);
 		assertSame(computerAO.getClass(), ComputerAO.class);
 
-		final ComputerOp<Orange, Apple> computerOA =
+		final UnaryComputerOp<Orange, Apple> computerOA =
 			ops.computer(FruitOp.class, Apple.class, Orange.class);
 		assertSame(computerOA.getClass(), ComputerOA.class);
 
-		final ComputerOp<Orange, Orange> computerOO =
+		final UnaryComputerOp<Orange, Orange> computerOO =
 			ops.computer(FruitOp.class, Orange.class, Orange.class);
 		assertSame(computerOO.getClass(), ComputerOO.class);
 	}
@@ -77,19 +77,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final ComputerOp<Apple, Apple> computerAA =
+		final UnaryComputerOp<Apple, Apple> computerAA =
 			ops.computer(FruitOp.class, Apple.class, a);
 		assertSame(computerAA.getClass(), ComputerAA.class);
 
-		final ComputerOp<Apple, Orange> computerAO =
+		final UnaryComputerOp<Apple, Orange> computerAO =
 			ops.computer(FruitOp.class, Orange.class, a);
 		assertSame(computerAO.getClass(), ComputerAO.class);
 
-		final ComputerOp<Orange, Apple> computerOA =
+		final UnaryComputerOp<Orange, Apple> computerOA =
 			ops.computer(FruitOp.class, Apple.class, o);
 		assertSame(computerOA.getClass(), ComputerOA.class);
 
-		final ComputerOp<Orange, Orange> computerOO =
+		final UnaryComputerOp<Orange, Orange> computerOO =
 			ops.computer(FruitOp.class, Orange.class, o);
 		assertSame(computerOO.getClass(), ComputerOO.class);
 	}
@@ -103,19 +103,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final ComputerOp<Apple, Apple> computerAA =
+		final UnaryComputerOp<Apple, Apple> computerAA =
 			ops.computer(FruitOp.class, a, a);
 		assertSame(computerAA.getClass(), ComputerAA.class);
 
-		final ComputerOp<Apple, Orange> computerAO =
+		final UnaryComputerOp<Apple, Orange> computerAO =
 			ops.computer(FruitOp.class, o, a);
 		assertSame(computerAO.getClass(), ComputerAO.class);
 
-		final ComputerOp<Orange, Apple> computerOA =
+		final UnaryComputerOp<Orange, Apple> computerOA =
 			ops.computer(FruitOp.class, a, o);
 		assertSame(computerOA.getClass(), ComputerOA.class);
 
-		final ComputerOp<Orange, Orange> computerOO =
+		final UnaryComputerOp<Orange, Orange> computerOO =
 			ops.computer(FruitOp.class, o, o);
 		assertSame(computerOO.getClass(), ComputerOO.class);
 	}
@@ -126,19 +126,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testFunction() {
-		final FunctionOp<Apple, Apple> functionAA =
+		final UnaryFunctionOp<Apple, Apple> functionAA =
 			ops.function(FruitOp.class, Apple.class, Apple.class);
 		assertSame(functionAA.getClass(), FunctionAA.class);
 
-		final FunctionOp<Apple, Orange> functionAO =
+		final UnaryFunctionOp<Apple, Orange> functionAO =
 			ops.function(FruitOp.class, Orange.class, Apple.class);
 		assertSame(functionAO.getClass(), FunctionAO.class);
 
-		final FunctionOp<Orange, Apple> functionOA =
+		final UnaryFunctionOp<Orange, Apple> functionOA =
 			ops.function(FruitOp.class, Apple.class, Orange.class);
 		assertSame(functionOA.getClass(), FunctionOA.class);
 
-		final FunctionOp<Orange, Orange> functionOO =
+		final UnaryFunctionOp<Orange, Orange> functionOO =
 			ops.function(FruitOp.class, Orange.class, Orange.class);
 		assertSame(functionOO.getClass(), FunctionOO.class);
 	}
@@ -152,19 +152,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final FunctionOp<Apple, Apple> functionAA =
+		final UnaryFunctionOp<Apple, Apple> functionAA =
 			ops.function(FruitOp.class, Apple.class, a);
 		assertSame(functionAA.getClass(), FunctionAA.class);
 
-		final FunctionOp<Apple, Orange> functionAO =
+		final UnaryFunctionOp<Apple, Orange> functionAO =
 			ops.function(FruitOp.class, Orange.class, a);
 		assertSame(functionAO.getClass(), FunctionAO.class);
 
-		final FunctionOp<Orange, Apple> functionOA =
+		final UnaryFunctionOp<Orange, Apple> functionOA =
 			ops.function(FruitOp.class, Apple.class, o);
 		assertSame(functionOA.getClass(), FunctionOA.class);
 
-		final FunctionOp<Orange, Orange> functionOO =
+		final UnaryFunctionOp<Orange, Orange> functionOO =
 			ops.function(FruitOp.class, Orange.class, o);
 		assertSame(functionOO.getClass(), FunctionOO.class);
 	}
@@ -175,19 +175,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testHybrid() {
-		final HybridOp<Apple, Apple> hybridAA =
+		final UnaryHybridOp<Apple, Apple> hybridAA =
 			ops.hybrid(FruitOp.class, Apple.class, Apple.class);
 		assertSame(hybridAA.getClass(), HybridAA.class);
 
-		final HybridOp<Apple, Orange> hybridAO =
+		final UnaryHybridOp<Apple, Orange> hybridAO =
 			ops.hybrid(FruitOp.class, Orange.class, Apple.class);
 		assertSame(hybridAO.getClass(), HybridAO.class);
 
-		final HybridOp<Orange, Apple> hybridOA =
+		final UnaryHybridOp<Orange, Apple> hybridOA =
 			ops.hybrid(FruitOp.class, Apple.class, Orange.class);
 		assertSame(hybridOA.getClass(), HybridOA.class);
 
-		final HybridOp<Orange, Orange> hybridOO =
+		final UnaryHybridOp<Orange, Orange> hybridOO =
 			ops.hybrid(FruitOp.class, Orange.class, Orange.class);
 		assertSame(hybridOO.getClass(), HybridOO.class);
 	}
@@ -201,19 +201,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final HybridOp<Apple, Apple> hybridAA =
+		final UnaryHybridOp<Apple, Apple> hybridAA =
 			ops.hybrid(FruitOp.class, Apple.class, a);
 		assertSame(hybridAA.getClass(), HybridAA.class);
 
-		final HybridOp<Apple, Orange> hybridAO =
+		final UnaryHybridOp<Apple, Orange> hybridAO =
 			ops.hybrid(FruitOp.class, Orange.class, a);
 		assertSame(hybridAO.getClass(), HybridAO.class);
 
-		final HybridOp<Orange, Apple> hybridOA =
+		final UnaryHybridOp<Orange, Apple> hybridOA =
 			ops.hybrid(FruitOp.class, Apple.class, o);
 		assertSame(hybridOA.getClass(), HybridOA.class);
 
-		final HybridOp<Orange, Orange> hybridOO =
+		final UnaryHybridOp<Orange, Orange> hybridOO =
 			ops.hybrid(FruitOp.class, Orange.class, o);
 		assertSame(hybridOO.getClass(), HybridOO.class);
 	}
@@ -227,19 +227,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final HybridOp<Apple, Apple> hybridAA =
+		final UnaryHybridOp<Apple, Apple> hybridAA =
 			ops.hybrid(FruitOp.class, a, a);
 		assertSame(hybridAA.getClass(), HybridAA.class);
 
-		final HybridOp<Apple, Orange> hybridAO =
+		final UnaryHybridOp<Apple, Orange> hybridAO =
 			ops.hybrid(FruitOp.class, o, a);
 		assertSame(hybridAO.getClass(), HybridAO.class);
 
-		final HybridOp<Orange, Apple> hybridOA =
+		final UnaryHybridOp<Orange, Apple> hybridOA =
 			ops.hybrid(FruitOp.class, a, o);
 		assertSame(hybridOA.getClass(), HybridOA.class);
 
-		final HybridOp<Orange, Orange> hybridOO =
+		final UnaryHybridOp<Orange, Orange> hybridOO =
 			ops.hybrid(FruitOp.class, o, o);
 		assertSame(hybridOO.getClass(), HybridOO.class);
 	}
@@ -500,7 +500,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class FruitComputer<I, O> extends
-		AbstractComputerOp<I, O> implements FruitOp
+		AbstractUnaryComputerOp<I, O> implements FruitOp
 	{
 
 		@Override
@@ -510,7 +510,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class FruitFunction<I, O> extends
-		AbstractFunctionOp<I, O> implements FruitOp
+		AbstractUnaryFunctionOp<I, O> implements FruitOp
 	{
 
 		@Override
@@ -520,7 +520,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class FruitHybrid<I, O> extends
-		AbstractHybridOp<I, O> implements FruitOp
+		AbstractUnaryHybridOp<I, O> implements FruitOp
 	{
 
 		@Override

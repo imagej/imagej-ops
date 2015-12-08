@@ -30,21 +30,21 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to other
- * {@link FunctionOp} implementations.
+ * Base class for {@link UnaryFunctionOp} implementations that delegate to other
+ * {@link UnaryFunctionOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class FunctionViaFunction<I, O> extends
-	AbstractFunctionOp<I, O> implements
-	DelegatingSpecialOp<FunctionOp<I, O>, I, O>
+	AbstractUnaryFunctionOp<I, O> implements
+	DelegatingUnaryOp<UnaryFunctionOp<I, O>, I, O>
 {
 
-	private FunctionOp<I, O> worker;
+	private UnaryFunctionOp<I, O> worker;
 
 	@Override
 	public void initialize() {

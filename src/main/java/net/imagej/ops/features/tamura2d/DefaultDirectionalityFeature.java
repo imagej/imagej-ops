@@ -31,7 +31,7 @@ package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
@@ -64,8 +64,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 	@Parameter(required = true)
 	private int histogramSize = 16;
 
-	private FunctionOp<Iterable, Histogram1d> histOp;
-	private FunctionOp<Iterable, RealType> stdOp;
+	private UnaryFunctionOp<Iterable, Histogram1d> histOp;
+	private UnaryFunctionOp<Iterable, RealType> stdOp;
 
 	@Override
 	public void initialize() {

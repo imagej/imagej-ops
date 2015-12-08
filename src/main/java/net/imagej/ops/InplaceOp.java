@@ -31,16 +31,16 @@
 package net.imagej.ops;
 
 /**
- * An <em>inplace</em> operation is a {@link ComputerOp} whose input and output
+ * An <em>inplace</em> operation is a {@link UnaryComputerOp} whose input and output
  * are the same object. In other words: the given input object is mutated.
  * 
  * @author Curtis Rueden
  * @param <A> type of argument
- * @see ComputerOp
- * @see FunctionOp
- * @see HybridOp
+ * @see UnaryComputerOp
+ * @see UnaryFunctionOp
+ * @see UnaryHybridOp
  */
-public interface InplaceOp<A> extends ComputerOp<A, A> {
+public interface InplaceOp<A> extends UnaryComputerOp<A, A> {
 
 	/**
 	 * Mutates the given input argument in-place.

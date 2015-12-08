@@ -32,40 +32,40 @@ package net.imagej.ops.join;
 
 import java.util.List;
 
-import net.imagej.ops.OutputFactory;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * A join operation which joins a list of {@link ComputerOp}s.
+ * A join operation which joins a list of {@link UnaryComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinComputers<A, C extends ComputerOp<A, A>> extends
-	ComputerOp<A, A>, Ops.Join
+public interface JoinComputers<A, C extends UnaryComputerOp<A, A>> extends
+	UnaryComputerOp<A, A>, Ops.Join
 {
 
 	/**
-	 * @return {@link OutputFactory} used to create intermediate results
+	 * @return {@link UnaryOutputFactory} used to create intermediate results
 	 */
-	OutputFactory<A, A> getOutputFactory();
+	UnaryOutputFactory<A, A> getOutputFactory();
 
 	/**
-	 * Sets the {@link OutputFactory} which is used to create intermediate
+	 * Sets the {@link UnaryOutputFactory} which is used to create intermediate
 	 * results.
 	 * 
 	 * @param outputFactory used to create intermediate results
 	 */
-	void setOutputFactory(OutputFactory<A, A> outputFactory);
+	void setOutputFactory(UnaryOutputFactory<A, A> outputFactory);
 
 	/**
-	 * @return {@link List} of {@link ComputerOp}s which are joined by this op
+	 * @return {@link List} of {@link UnaryComputerOp}s which are joined by this op
 	 */
 	List<? extends C> getOps();
 
 	/**
-	 * Sets the {@link ComputerOp}s which are joined in this op.
+	 * Sets the {@link UnaryComputerOp}s which are joined in this op.
 	 * 
 	 * @param ops joined in this op
 	 */

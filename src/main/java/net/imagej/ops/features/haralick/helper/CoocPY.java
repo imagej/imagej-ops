@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 
 import org.scijava.plugin.Plugin;
 
@@ -40,7 +40,7 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocPY.class)
-public class CoocPY extends AbstractFunctionOp<double[][], double[]> {
+public class CoocPY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
 	@Override
 	public double[] compute(final double[][] matrix) {

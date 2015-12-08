@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localSauvola;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
@@ -71,8 +71,8 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	private double r = 0.5d;
 
 	// FIXME: Faster calculation of mean and std-dev.
-	private ComputerOp<Iterable<T>, DoubleType> mean;
-	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
+	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	@Override
 	public void initialize() {

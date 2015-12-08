@@ -32,7 +32,7 @@ package net.imagej.ops.map.neighborhood;
 
 import java.util.Iterator;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
@@ -72,12 +72,12 @@ public class MapNeighborhoodWithCenter<I, O>
 
 	@Parameter
 	private Shape shape;
-	private ComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
+	private UnaryComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (ComputerOp) ops().computer(Map.class, Iterable.class,
+		map = (UnaryComputerOp) ops().computer(Map.class, Iterable.class,
 			NeighborhoodWithCenterIterableInterval.class, getOp());
 	}
 

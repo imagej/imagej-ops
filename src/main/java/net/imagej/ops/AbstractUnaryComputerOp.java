@@ -34,28 +34,23 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link FunctionOp} implementations.
+ * Abstract superclass for {@link UnaryComputerOp} implementations.
  * 
+ * @author Christian Dietz (University of Konstanz)
+ * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
-	implements FunctionOp<I, O>
+public abstract class AbstractUnaryComputerOp<I, O> extends AbstractUnaryOp<I, O>
+	implements UnaryComputerOp<I, O>
 {
 
 	// -- Parameters --
 
-	@Parameter(type = ItemIO.OUTPUT)
+	@Parameter(type = ItemIO.BOTH)
 	private O out;
 
 	@Parameter
 	private I in;
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		out = compute(in());
-	}
 
 	// -- Input methods --
 
@@ -74,6 +69,13 @@ public abstract class AbstractFunctionOp<I, O> extends AbstractSpecialOp<I, O>
 	@Override
 	public O out() {
 		return out;
+	}
+
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

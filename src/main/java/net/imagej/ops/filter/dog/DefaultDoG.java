@@ -30,9 +30,9 @@
 
 package net.imagej.ops.filter.dog;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -57,21 +57,21 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.DoG.class)
 public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 
 	@Parameter
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
 
 	@Parameter
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2;
 
 	@Parameter
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator;
 
 	@Parameter
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;

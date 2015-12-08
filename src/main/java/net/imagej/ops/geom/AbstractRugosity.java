@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -41,12 +41,12 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractRugosity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Rugosity
+	AbstractUnaryFunctionOp<I, DoubleType> implements Ops.Geometric.Rugosity
 {
 
-	private FunctionOp<I, DoubleType> boundarySize;
+	private UnaryFunctionOp<I, DoubleType> boundarySize;
 
-	private FunctionOp<I, DoubleType> convexHullBoundarySize;
+	private UnaryFunctionOp<I, DoubleType> convexHullBoundarySize;
 
 	@Override
 	public void initialize() {

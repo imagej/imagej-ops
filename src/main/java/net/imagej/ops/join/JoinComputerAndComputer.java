@@ -30,38 +30,38 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * A join operation which joins two {@link ComputerOp}s. The resulting operation
- * will take the input of the first {@link ComputerOp} as input and the output
- * of the second {@link ComputerOp} as the output.
+ * A join operation which joins two {@link UnaryComputerOp}s. The resulting operation
+ * will take the input of the first {@link UnaryComputerOp} as input and the output
+ * of the second {@link UnaryComputerOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
-	extends ComputerOp<A, C>, Ops.Join
+public interface JoinComputerAndComputer<A, B, C, C1 extends UnaryComputerOp<A, B>, C2 extends UnaryComputerOp<B, C>>
+	extends UnaryComputerOp<A, C>, Ops.Join
 {
 
 	/**
-	 * @return first {@link ComputerOp} to be joined
+	 * @return first {@link UnaryComputerOp} to be joined
 	 */
 	C1 getFirst();
 
 	/**
-	 * @param first {@link ComputerOp} to be joined
+	 * @param first {@link UnaryComputerOp} to be joined
 	 */
 	void setFirst(C1 first);
 
 	/**
-	 * @return second {@link ComputerOp} to be joined
+	 * @return second {@link UnaryComputerOp} to be joined
 	 */
 	C2 getSecond();
 
 	/**
-	 * @param second {@link ComputerOp} to be joined
+	 * @param second {@link UnaryComputerOp} to be joined
 	 */
 	void setSecond(C2 second);
 

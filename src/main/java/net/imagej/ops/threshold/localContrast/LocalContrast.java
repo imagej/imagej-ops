@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold.localContrast;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -50,12 +50,12 @@ import org.scijava.plugin.Plugin;
 public class LocalContrast<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
-	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp)ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp)ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

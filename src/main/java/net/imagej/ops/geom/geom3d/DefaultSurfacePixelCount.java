@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric3D: Surface Pixel Count",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSurfacePixelCount extends
-	AbstractFunctionOp<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
+	AbstractUnaryFunctionOp<Mesh, DoubleType> implements GeometricOp<Mesh, DoubleType>,
 	Ops.Geometric.BoundaryPixelCount
 {
 

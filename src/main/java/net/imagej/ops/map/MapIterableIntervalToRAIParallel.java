@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
@@ -66,7 +66,7 @@ public class MapIterableIntervalToRAIParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
+				final UnaryComputerOp<A, B> safe = getOp().getIndependentInstance();
 				final Cursor<A> cursor = input.localizingCursor();
 
 				setToStart(cursor, startIndex);

@@ -30,24 +30,24 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
- * Typed interface for "map" ops. A {@link MapOp} is a {@link ComputerOp} which
+ * Typed interface for "map" ops. A {@link MapOp} is a {@link UnaryComputerOp} which
  * maps values from <A> to <B>.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface MapOp<A, B, C extends ComputerOp<A, B>> extends Ops.Map {
+public interface MapOp<A, B, C extends UnaryComputerOp<A, B>> extends Ops.Map {
 
 	/**
-	 * @return the {@link ComputerOp} used for mapping
+	 * @return the {@link UnaryComputerOp} used for mapping
 	 */
 	C getOp();
 
 	/**
-	 * @param op the {@link ComputerOp} used for mapping
+	 * @param op the {@link UnaryComputerOp} used for mapping
 	 */
 	void setOp(C op);
 }

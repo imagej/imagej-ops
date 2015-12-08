@@ -31,31 +31,20 @@
 package net.imagej.ops;
 
 /**
- * A <em>special</em> operation is one intended to be used repeatedly from other
- * ops. They come in two major flavors: {@link ComputerOp} and
- * {@link FunctionOp}. And there are two additional types, {@link HybridOp} and
- * {@link InplaceOp}, which specialize behavior further.
+ * Factory which creates an output object of type <O> given the input of type
+ * <I>
  * 
- * @author Curtis Rueden
- * @param <I> type of input
- * @param <O> type of output
- * @see ComputerOp
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>,
-	Initializable, Threadable
-{
+public interface UnaryOutputFactory<I, O> {
 
-	// -- Threadable methods --
-
-	@Override
-	default SpecialOp<I, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
-	}
-
+	/**
+	 * Create an output object given some input.
+	 * 
+	 * @param input
+	 *            which determines how to create the output
+	 * 
+	 * @return output, depending on the input
+	 */
+	O createOutput(I input);
 }

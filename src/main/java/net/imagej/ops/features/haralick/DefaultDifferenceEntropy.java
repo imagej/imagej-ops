@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
@@ -53,7 +53,7 @@ public class DefaultDifferenceEntropy<T extends RealType<T>> extends
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
 
-	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
 	
 	@Override
 	public void initialize() {

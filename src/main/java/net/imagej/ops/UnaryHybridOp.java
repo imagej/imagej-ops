@@ -31,31 +31,36 @@
 package net.imagej.ops;
 
 /**
- * A <em>function</em> computes a result from the given input, returning it as a
- * new object. The contents of the input are not affected.
+ * A <em>hybrid</em> operation can be used as either a {@link UnaryFunctionOp} or as
+ * a {@link UnaryComputerOp}. To compute a new output object, call
+ * {@link UnaryFunctionOp#compute}; to populate a preexisting output object, call
+ * {@link UnaryComputerOp#compute}.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
- * @see ComputerOp
- * @see HybridOp
+ * @see UnaryComputerOp
+ * @see UnaryFunctionOp
  * @see InplaceOp
  */
-public interface FunctionOp<I, O> extends SpecialOp<I, O> {
+public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>, UnaryFunctionOp<I, O>,
+	UnaryOutputFactory<I, O>
+{
 
-	/**
-	 * Computes the output given some input.
-	 * 
-	 * @param input Argument to the function
-	 * @return output Result of the function
-	 */
-	O compute(I input);
+	// -- FunctionOp methods --
+
+	@Override
+	default O compute(final I input) {
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
+	}
 
 	// -- Threadable methods --
 
 	@Override
-	default FunctionOp<I, O> getIndependentInstance() {
+	default UnaryHybridOp<I, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

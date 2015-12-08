@@ -30,21 +30,21 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
- * Base class for {@link ComputerOp} implementations that delegate to other
- * {@link ComputerOp} implementations.
+ * Base class for {@link UnaryComputerOp} implementations that delegate to other
+ * {@link UnaryComputerOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class ComputerViaComputer<I, O> extends
-	AbstractComputerOp<I, O> implements
-	DelegatingSpecialOp<ComputerOp<I, O>, I, O>
+	AbstractUnaryComputerOp<I, O> implements
+	DelegatingUnaryOp<UnaryComputerOp<I, O>, I, O>
 {
 
-	private ComputerOp<I, O> worker;
+	private UnaryComputerOp<I, O> worker;
 
 	@Override
 	public void initialize() {

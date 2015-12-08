@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.BoundarySize.class,
 	label = "Geometric (2D): Perimeter")
 public class DefaultPerimeterLength extends
-	AbstractFunctionOp<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
+	AbstractUnaryFunctionOp<Polygon, DoubleType> implements Ops.Geometric.BoundarySize
 {
 
 	@Override

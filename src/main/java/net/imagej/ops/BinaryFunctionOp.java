@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link FunctionOp} which computes a result from two given inputs,
+ * A binary {@link UnaryFunctionOp} which computes a result from two given inputs,
  * returning it as a new object. The contents of the inputs are not affected.
  * 
  * @author Curtis Rueden
@@ -42,7 +42,7 @@ package net.imagej.ops;
  * @see BinaryHybridOp
  */
 public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
-	FunctionOp<I1, O>
+	UnaryFunctionOp<I1, O>
 {
 
 	/**

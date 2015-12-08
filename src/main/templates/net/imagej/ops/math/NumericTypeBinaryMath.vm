@@ -30,7 +30,7 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.NumericType;
 
@@ -53,7 +53,7 @@ public final class NumericTypeBinaryMath {
 	/** Op that $op.verbs two NumericType values. */
 	@Plugin(type = ${iface}.class)
 	public static class $op.name<T extends NumericType<T>>
-		extends AbstractHybridOp<T, T> implements $iface
+		extends AbstractUnaryHybridOp<T, T> implements $iface
 	{
 
 		@Parameter

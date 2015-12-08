@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.OpService;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -44,7 +44,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <O> output type
  */
 public abstract class AbstractStatsOp<I, O extends RealType<O>> extends
-	AbstractHybridOp<I, O> implements StatsOp<I, O>
+	AbstractUnaryHybridOp<I, O> implements StatsOp<I, O>
 {
 
 	@SuppressWarnings("unchecked")

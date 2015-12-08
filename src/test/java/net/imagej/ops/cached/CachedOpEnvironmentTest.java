@@ -34,10 +34,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.UnaryHybridOp;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
@@ -62,9 +62,9 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	private Img<ByteType> imgA, imgB;
 
-	private FunctionOp<Img<ByteType>, DoubleType> func;
+	private UnaryFunctionOp<Img<ByteType>, DoubleType> func;
 
-	private HybridOp<Img<ByteType>, DoubleType> hybrid;
+	private UnaryHybridOp<Img<ByteType>, DoubleType> hybrid;
 
 	@Before
 	public void initCustomOps() {
@@ -105,7 +105,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 	}
 
 	// some specialized ops to track number of counts
-	public static class MyMin extends AbstractHybridOp<Img<ByteType>, DoubleType>
+	public static class MyMin extends AbstractUnaryHybridOp<Img<ByteType>, DoubleType>
 		implements Ops.Stats.Min
 	{
 

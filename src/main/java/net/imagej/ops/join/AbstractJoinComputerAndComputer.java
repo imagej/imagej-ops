@@ -30,9 +30,9 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.OutputFactory;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -41,8 +41,8 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends ComputerOp<A, B>, C2 extends ComputerOp<B, C>>
-	extends AbstractComputerOp<A, C> implements
+public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends UnaryComputerOp<A, B>, C2 extends UnaryComputerOp<B, C>>
+	extends AbstractUnaryComputerOp<A, C> implements
 	JoinComputerAndComputer<A, B, C, C1, C2>
 {
 
@@ -53,7 +53,7 @@ public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends Comput
 	private C2 second;
 
 	@Parameter(required = false)
-	private OutputFactory<A, B> outputFactory;
+	private UnaryOutputFactory<A, B> outputFactory;
 
 	private B buffer;
 
@@ -62,11 +62,11 @@ public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends Comput
 		return buffer;
 	}
 
-	public OutputFactory<A, B> getOutputFactory() {
+	public UnaryOutputFactory<A, B> getOutputFactory() {
 		return outputFactory;
 	}
 
-	public void setOutputFactory(final OutputFactory<A, B> outputFactory) {
+	public void setOutputFactory(final UnaryOutputFactory<A, B> outputFactory) {
 		this.outputFactory = outputFactory;
 	}
 

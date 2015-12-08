@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom.geom3d.mesh;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
@@ -56,7 +56,7 @@ public class RandomAccessibleIntervalToMeshConverter extends
 
 	@Parameter
 	private OpService ops;
-	private FunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
+	private UnaryFunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
 
 	@SuppressWarnings("unchecked")
 	@Override

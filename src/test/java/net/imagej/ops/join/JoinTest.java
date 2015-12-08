@@ -35,11 +35,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.OutputFactory;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
@@ -112,8 +112,8 @@ public class JoinTest extends AbstractOpTest {
 
 	@Test
 	public void testComputerAndComputerJoin() {
-		final OutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
-			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
+			new UnaryOutputFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
 				public Img<ByteType> createOutput(final Img<ByteType> input) {
@@ -135,15 +135,15 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testJoinComputers() {
 
-		final List<ComputerOp<Img<ByteType>, Img<ByteType>>> computers =
-			new ArrayList<ComputerOp<Img<ByteType>, Img<ByteType>>>();
+		final List<UnaryComputerOp<Img<ByteType>, Img<ByteType>>> computers =
+			new ArrayList<UnaryComputerOp<Img<ByteType>, Img<ByteType>>>();
 
 		for (int i = 0; i < 5; i++) {
 			computers.add(new AddOneComputerImg());
 		}
 
-		final OutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
-			new OutputFactory<Img<ByteType>, Img<ByteType>>() {
+		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
+			new UnaryOutputFactory<Img<ByteType>, Img<ByteType>>() {
 
 				@Override
 				public Img<ByteType> createOutput(final Img<ByteType> input) {
@@ -171,7 +171,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneComputer extends AbstractComputerOp<ByteType, ByteType> {
+	class AddOneComputer extends AbstractUnaryComputerOp<ByteType, ByteType> {
 
 		@Override
 		public void compute(final ByteType input, final ByteType output) {
@@ -181,7 +181,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	class AddOneComputerImg extends
-		AbstractComputerOp<Img<ByteType>, Img<ByteType>>
+		AbstractUnaryComputerOp<Img<ByteType>, Img<ByteType>>
 	{
 
 		@Override

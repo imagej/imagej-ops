@@ -30,7 +30,7 @@
 
 package net.imagej.ops.convert.imageType;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.RealTypeConverter;
 import net.imglib2.IterableInterval;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Convert.ImageType.class)
 public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
+	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
 	implements Ops.Convert.ImageType
 {
 
