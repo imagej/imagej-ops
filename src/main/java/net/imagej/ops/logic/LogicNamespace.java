@@ -135,6 +135,16 @@ public class LogicNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.logic.Default.class)
+	public <I extends BooleanType<I>, O extends Type<O>> O conditional(
+		final O out, final I in, final O defaultVal)
+	{
+		@SuppressWarnings("unchecked")
+		final O result = (O) ops().run(net.imagej.ops.logic.Default.class, out, in,
+			defaultVal);
+		return result;
+	}
+
 	// -- equal --
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class)
