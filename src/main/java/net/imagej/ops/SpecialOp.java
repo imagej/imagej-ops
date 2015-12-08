@@ -31,26 +31,27 @@
 package net.imagej.ops;
 
 /**
- * A <em>nullary</em> operation computes a result in a vacuum, without any input
- * values.
+ * A <em>special</em> operation is one intended to be used repeatedly from other
+ * ops.
  * <p>
- * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
- * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridOp},
- * unions both flavors.
+ * Special ops come in two major flavors: <em>computer</em> and
+ * <em>function</em>. The <em>hybrid</em> op unions both flavors.
+ * </p>
+ * <p>
+ * They are three arities implemented: {@link NullaryOp}, {@link UnaryOp} and
+ * {@link BinaryOp}. These arities correspond to the number of <em>typed</em>
+ * input parameters. Additional input parameters are allowed, but not strongly
+ * typed at the interface level.
  * </p>
  * 
  * @author Curtis Rueden
- * @param <O> type of output
- * @see NullaryComputerOp
- * @see NullaryFunctionOp
- * @see NullaryHybridOp
  */
-public interface NullaryOp<O> extends SpecialOp, Output<O> {
+public interface SpecialOp extends Op, Initializable, Threadable {
 
 	// -- Threadable methods --
 
 	@Override
-	default NullaryOp<O> getIndependentInstance() {
+	default SpecialOp getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.
