@@ -30,35 +30,15 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerConverter;
-import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.InplaceOp;
 
 /**
- * Map values of {@link RandomAccessibleInterval} to a View
+ * Typed interface for "map" {@link InplaceOp}s.
  * 
- * @author Christian Dietz (University of Konstanz)
- * 
- * @param <A>
- * @param <B>
+ * @author Curtis Rueden
+ * @param <EA> element type of inplace arguments
+ * @param <OP> type of {@link InplaceOp} which processes each element
  */
-@Plugin(type = Ops.Map.class)
-public class MapConvertRAIToRAI<A, B extends Type<B>>
-	extends
-	AbstractMapView<A, B, RandomAccessibleInterval<A>, RandomAccessibleInterval<B>>
-{
-
-	@Override
-	public RandomAccessibleInterval<B> compute1(
-		final RandomAccessibleInterval<A> input)
-	{
-		final ComputerConverter<A, B> converter = new ComputerConverter<>(getOp());
-		return new ConvertedRandomAccessibleInterval<>(input, converter,
-			getType());
-	}
-
+public interface MapInplace<EA, OP extends InplaceOp<EA>> extends MapOp<OP> {
+	// NB: Marker interface.
 }

@@ -32,29 +32,30 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
-import net.imglib2.RandomAccessible;
-import net.imglib2.converter.read.ConvertedRandomAccessible;
+import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Maps values of a {@link RandomAccessible} in View.
+ * {@link MapView} which converts an {@link IterableInterval} between element
+ * types.
  * 
  * @author Christian Dietz (University of Konstanz)
- * 
- * @param <A>
- * @param <B>
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class)
-public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
-	AbstractMapView<A, B, RandomAccessible<A>, RandomAccessible<B>>
+public class MapViewIterableIntervalToIterableInterval<EI, EO extends Type<EO>> extends
+	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
 {
 
 	@Override
-	public RandomAccessible<B> compute1(final RandomAccessible<A> input) {
-		final ComputerConverter<A, B> converter = new ComputerConverter<>(getOp());
-		return new ConvertedRandomAccessible<>(input, converter, getType());
+	public IterableInterval<EO> compute1(final IterableInterval<EI> input) {
+		final ComputerConverter<EI, EO> converter =
+			new ComputerConverter<>(getOp());
+		return new ConvertedIterableInterval<>(input, converter, getType());
 	}
 
 }

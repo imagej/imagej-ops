@@ -39,38 +39,38 @@ import org.scijava.plugin.Parameter;
  * Abstract base class for {@link MapView} implementations.
  *
  * @author Christian Dietz (University of Konstanz)
- * @param <A> type to be converted to <B>
- * @param <B> result of conversion
- * @param <I> holding <A>s
- * @param <O> type of resulting output
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
+ * @param <PI> producer of inputs
+ * @param <PO> producer of outputs
  */
-public abstract class AbstractMapView<A, B, I, O> extends
-	AbstractUnaryFunctionOp<I, O> implements MapView<A, B, I, O>
+public abstract class AbstractMapView<EI, EO, PI, PO> extends
+	AbstractUnaryFunctionOp<PI, PO> implements MapView<EI, EO, PI, PO>
 {
 
 	@Parameter
-	private UnaryComputerOp<A, B> op;
+	private UnaryComputerOp<EI, EO> op;
 
 	@Parameter
-	private B type;
+	private EO type;
 
 	@Override
-	public UnaryComputerOp<A, B> getOp() {
+	public UnaryComputerOp<EI, EO> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final UnaryComputerOp<A, B> op) {
+	public void setOp(final UnaryComputerOp<EI, EO> op) {
 		this.op = op;
 	}
 
 	@Override
-	public B getType() {
+	public EO getType() {
 		return type;
 	}
 
 	@Override
-	public void setType(final B type) {
+	public void setType(final EO type) {
 		this.type = type;
 	}
 

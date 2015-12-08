@@ -31,69 +31,17 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.ChunkerOp;
-import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
- * same iteration order.
+ * Typed interface for "map" {@link UnaryComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
+ * @param <OP> type of {@link UnaryComputerOp} which processes each element
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 3)
-public class MapIterableIntervalToIterableIntervalParallel<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
-	implements Contingent, Parallel
+public interface MapComputer<EI, EO, OP extends UnaryComputerOp<EI, EO>> extends
+	MapOp<OP>
 {
-
-	@Override
-	public boolean conforms() {
-		return out() == null || isValid(in(), out());
-	}
-
-	private boolean isValid(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		return input.iterationOrder().equals(output.iterationOrder());
-	}
-
-	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
-
-				final Cursor<EI> inCursor = input.cursor();
-				final Cursor<EO> outCursor = output.cursor();
-
-				setToStart(inCursor, startIndex);
-				setToStart(outCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					safe.compute1(inCursor.get(), outCursor.get());
-					inCursor.jumpFwd(stepSize);
-					outCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-	}
+	// NB: Marker interface.
 }

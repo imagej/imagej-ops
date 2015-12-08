@@ -39,16 +39,19 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapOp} from {@link IterableInterval} to {@link IterableInterval}.
- * Conforms if the {@link IterableInterval}s have the same IterationOrder.
+ * {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order.
  * 
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
-public class MapIterableIntervalToIterableInterval<A, B> extends
-	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent
+public class MapIterableIntervalToIterableInterval<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
+	implements Contingent
 {
 
 	@Override
@@ -56,18 +59,18 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 		return out() == null || isValid(in(), out());
 	}
 
-	private boolean isValid(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	private boolean isValid(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
 		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
-	public void compute1(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public void compute1(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
-		final Cursor<A> inCursor = input.cursor();
-		final Cursor<B> outCursor = output.cursor();
+		final Cursor<EI> inCursor = input.cursor();
+		final Cursor<EO> outCursor = output.cursor();
 
 		while (inCursor.hasNext()) {
 			getOp().compute1(inCursor.next(), outCursor.next());

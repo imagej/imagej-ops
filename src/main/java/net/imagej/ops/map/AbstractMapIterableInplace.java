@@ -30,23 +30,16 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerConverter;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableInterval;
-import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
-
-@Plugin(type = Ops.Map.class)
-public class MapIterableIntervalToView<A, B extends Type<B>> extends
-	AbstractMapView<A, B, IterableInterval<A>, IterableInterval<B>>
+/**
+ * Abstract base class for {@link MapInplace} implementations that operate on
+ * {@link Iterable}s.
+ * 
+ * @author Christian Dietz (University of Konstanz)
+ * @param <EA> element type of inplace arguments
+ * @param <PA> producer of arguments
+ */
+public abstract class AbstractMapIterableInplace<EA, PA extends Iterable<EA>>
+	extends AbstractMapInplace<EA, PA>
 {
-
-	@Override
-	public IterableInterval<B> compute1(final IterableInterval<A> input) {
-		final ComputerConverter<A, B> converter = new ComputerConverter<>(getOp());
-		return new ConvertedIterableInterval<>(input, converter, getType());
-	}
-
+	// NB: No implementation needed.
 }

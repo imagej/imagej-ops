@@ -176,12 +176,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapIterableIntervalToView() {
 
 		final Op functional =
-			ops.op(MapIterableIntervalToView.class, in, new AddOneFunctional(),
+			ops.op(MapViewIterableIntervalToIterableInterval.class, in, new AddOneFunctional(),
 				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final IterableInterval<ByteType> o =
-			(IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
+			(IterableInterval<ByteType>) ((MapViewIterableIntervalToIterableInterval) functional)
 				.out();
 
 		final RandomAccess<ByteType> inputRA = in.randomAccess();
@@ -215,12 +215,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapConvertRAIToRAI() {
 
 		final Op functional =
-			ops.op(MapConvertRAIToRAI.class, in, new AddOneFunctional(),
+			ops.op(MapViewRAIToRAI.class, in, new AddOneFunctional(),
 				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessibleInterval<ByteType> output =
-			(RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
+			(RandomAccessibleInterval<ByteType>) ((MapViewRAIToRAI) functional)
 				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();
@@ -237,12 +237,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapConvertRandomAccessToRandomAccess() {
 
 		final Op functional =
-			ops.op(MapConvertRandomAccessToRandomAccess.class, in,
+			ops.op(MapViewRandomAccessToRandomAccess.class, in,
 				new AddOneFunctional(), new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessible<ByteType> output =
-			(RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
+			(RandomAccessible<ByteType>) ((MapViewRandomAccessToRandomAccess) functional)
 				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();

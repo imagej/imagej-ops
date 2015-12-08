@@ -42,14 +42,14 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapIterableInplace}
+ * Parallelized {@link MapInplace} over an {@link IterableInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on <A>
+ * @param <A> element type of inplace arguments
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
 public class MapIterableIntervalInplaceParallel<A> extends
-	AbstractMapInplace<A, IterableInterval<A>> implements Parallel
+	AbstractMapIterableInplace<A, IterableInterval<A>> implements Parallel
 {
 
 	@Override

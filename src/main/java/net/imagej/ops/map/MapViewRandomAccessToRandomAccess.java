@@ -30,70 +30,32 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.Contingent;
+import net.imagej.ops.ComputerConverter;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.thread.chunker.ChunkerOp;
-import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessible;
+import net.imglib2.converter.read.ConvertedRandomAccessible;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
- * same iteration order.
+ * {@link MapView} which converts a {@link RandomAccessible} between element
+ * types.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 3)
-public class MapIterableIntervalToIterableIntervalParallel<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
-	implements Contingent, Parallel
+@Plugin(type = Ops.Map.class)
+public class MapViewRandomAccessToRandomAccess<EI, EO extends Type<EO>> extends
+	AbstractMapView<EI, EO, RandomAccessible<EI>, RandomAccessible<EO>>
 {
 
 	@Override
-	public boolean conforms() {
-		return out() == null || isValid(in(), out());
+	public RandomAccessible<EO> compute1(final RandomAccessible<EI> input) {
+		final ComputerConverter<EI, EO> converter =
+			new ComputerConverter<>(getOp());
+		return new ConvertedRandomAccessible<>(input, converter, getType());
 	}
 
-	private boolean isValid(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		return input.iterationOrder().equals(output.iterationOrder());
-	}
-
-	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
-
-				final Cursor<EI> inCursor = input.cursor();
-				final Cursor<EO> outCursor = output.cursor();
-
-				setToStart(inCursor, startIndex);
-				setToStart(outCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					safe.compute1(inCursor.get(), outCursor.get());
-					inCursor.jumpFwd(stepSize);
-					outCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
-	}
 }
