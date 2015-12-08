@@ -38,8 +38,8 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceOp<A> extends AbstractUnaryOp<A, A>
-	implements InplaceOp<A>
+public abstract class AbstractInplaceOp<A> extends AbstractOp implements
+	InplaceOp<A>
 {
 
 	// -- Parameters --
@@ -47,30 +47,16 @@ public abstract class AbstractInplaceOp<A> extends AbstractUnaryOp<A, A>
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- UnaryInput methods --
+	// -- InplaceOp methods --
 
 	@Override
-	public A in() {
+	public A arg() {
 		return arg;
 	}
 
 	@Override
-	public void setInput(final A input) {
-		arg = input;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public A out() {
-		return arg;
-	}
-
-	// -- OutputMutable methods --
-
-	@Override
-	public void setOutput(final A output) {
-		arg = output;
+	public void setArg(final A arg) {
+		this.arg = arg;
 	}
 
 }

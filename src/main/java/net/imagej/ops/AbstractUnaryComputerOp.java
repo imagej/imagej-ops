@@ -40,8 +40,8 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractUnaryComputerOp<I, O> extends AbstractUnaryOp<I, O>
-	implements UnaryComputerOp<I, O>
+public abstract class AbstractUnaryComputerOp<I, O> extends
+	AbstractUnaryOp<I, O> implements UnaryComputerOp<I, O>
 {
 
 	// -- Parameters --

@@ -39,15 +39,15 @@ import net.imagej.ops.InplaceOp;
  * 
  * @author Curtis Rueden
  */
-public abstract class InplaceViaInplace<A> extends
-	AbstractInplaceOp<A> implements DelegatingUnaryOp<InplaceOp<A>, A, A>
-{
+public abstract class InplaceViaInplace<A> extends AbstractInplaceOp<A> {
 
 	private InplaceOp<A> worker;
 
+	public abstract InplaceOp<A> createWorker(A t);
+
 	@Override
 	public void initialize() {
-		worker = createWorker(in());
+		worker = createWorker(arg());
 	}
 
 	@Override
