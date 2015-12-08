@@ -47,4 +47,5 @@ public interface UnaryOutputFactory<I, O> {
 	 * @return output, depending on the input
 	 */
 	O createOutput(I input);
+
 }

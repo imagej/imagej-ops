@@ -52,7 +52,7 @@ public abstract class AbstractUnaryComputerOp<I, O> extends AbstractUnaryOp<I, O
 	@Parameter
 	private I in;
 
-	// -- Input methods --
+	// -- UnaryInput methods --
 
 	@Override
 	public I in() {

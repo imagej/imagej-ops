@@ -44,12 +44,7 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 	ComputeThresholdHistogram<T>
 {
 
-	@Override
-	public T createOutput(final Histogram1d<T> input) {
-		return input.firstDataValue().createVariable();
-	}
-
-	// -- ComputerOp methods --
+	// -- UnaryComputerOp methods --
 
 	@Override
 	public void compute1(final Histogram1d<T> input, final T output) {
@@ -57,6 +52,13 @@ public abstract class AbstractComputeThresholdHistogram<T extends RealType<T>>
 
 		// convert bin number to corresponding gray level
 		input.getCenterValue(binPos, output);
+	}
+
+	// -- UnaryOutputFactory methods --
+
+	@Override
+	public T createOutput(final Histogram1d<T> input) {
+		return input.firstDataValue().createVariable();
 	}
 
 }

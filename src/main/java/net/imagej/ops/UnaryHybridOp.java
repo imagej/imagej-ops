@@ -50,7 +50,7 @@ public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
 	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>, NullaryHybridOp<O>
 {
 
-	// -- FunctionOp methods --
+	// -- UnaryFunctionOp methods --
 
 	@Override
 	default O compute1(final I input) {

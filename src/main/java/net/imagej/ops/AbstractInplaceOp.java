@@ -47,7 +47,7 @@ public abstract class AbstractInplaceOp<A> extends AbstractUnaryOp<A, A>
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- Input methods --
+	// -- UnaryInput methods --
 
 	@Override
 	public A in() {

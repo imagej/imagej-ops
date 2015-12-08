@@ -49,7 +49,7 @@ public interface InplaceOp<A> extends UnaryComputerOp<A, A> {
 	 */
 	void compute(A arg);
 
-	// -- ComputerOp methods --
+	// -- UnaryComputerOp methods --
 
 	@Override
 	default void compute1(final A input, final A output) {

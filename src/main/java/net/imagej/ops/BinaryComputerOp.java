@@ -60,7 +60,7 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	void compute2(I1 input1, I2 input2, O output);
 
-	// -- ComputerOp methods --
+	// -- UnaryComputerOp methods --
 
 	@Override
 	default void compute1(final I1 input, final O output) {

@@ -59,7 +59,7 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	O compute2(I1 input1, I2 input2);
 
-	// -- FunctionOp methods --
+	// -- UnaryFunctionOp methods --
 
 	@Override
 	default O compute1(final I1 input) {

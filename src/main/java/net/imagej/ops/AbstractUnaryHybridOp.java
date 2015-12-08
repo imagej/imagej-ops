@@ -59,7 +59,7 @@ public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
 		else compute1(in(), out());
 	}
 
-	// -- Input methods --
+	// -- UnaryInput methods --
 
 	@Override
 	public I in() {

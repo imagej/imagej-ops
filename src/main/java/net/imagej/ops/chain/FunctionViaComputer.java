@@ -62,20 +62,20 @@ public abstract class FunctionViaComputer<I, O> extends AbstractUnaryFunctionOp<
 
 	private UnaryComputerOp<I, O> worker;
 
-	// -- Initializable methods --
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	// -- FunctionOp methods --
+	// -- UnaryFunctionOp methods --
 
 	@Override
 	public O compute1(final I input) {
 		final O output = createOutput(input);
 		worker.compute1(input, output);
 		return output;
+	}
+
+	// -- Initializable methods --
+
+	@Override
+	public void initialize() {
+		worker = createWorker(in());
 	}
 
 }

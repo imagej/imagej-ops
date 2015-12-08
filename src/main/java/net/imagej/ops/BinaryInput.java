@@ -43,7 +43,7 @@ public interface BinaryInput<I1, I2> extends UnaryInput<I1> {
 	void setInput1(I1 input1);
 	void setInput2(I2 input2);
 
-	// -- Input methods --
+	// -- UnaryInput methods --
 
 	@Override
 	default I1 in() {

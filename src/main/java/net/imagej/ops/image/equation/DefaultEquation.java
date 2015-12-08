@@ -75,18 +75,7 @@ public class DefaultEquation<T extends RealType<T>> extends
 	@Parameter
 	private LogService log;
 
-	// -- HybridOp methods --
-
-	@Override
-	public IterableInterval<T> createOutput(final String input) {
-		// produce a 256x256 float64 array-backed image by default
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		final IterableInterval<T> newImage =
-			(IterableInterval) ArrayImgs.doubles(256, 256);
-		return newImage;
-	}
-
-	// -- ComputerOp methods --
+	// -- UnaryComputerOp methods --
 
 	@Override
 	public void compute1(final String input,
@@ -138,6 +127,17 @@ public class DefaultEquation<T extends RealType<T>> extends
 		catch (final ScriptException exc) {
 			log.error(exc);
 		}
+	}
+
+	// -- UnaryOutputFactory methods --
+
+	@Override
+	public IterableInterval<T> createOutput(final String input) {
+		// produce a 256x256 float64 array-backed image by default
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final IterableInterval<T> newImage =
+			(IterableInterval) ArrayImgs.doubles(256, 256);
+		return newImage;
 	}
 
 }
