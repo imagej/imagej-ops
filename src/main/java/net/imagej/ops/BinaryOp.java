@@ -48,18 +48,6 @@ public interface BinaryOp<I1, I2, O> extends SpecialOp<I1, O>,
 	BinaryInput<I1, I2>
 {
 
-	// -- Input methods --
-
-	@Override
-	default I1 in() {
-		return in1();
-	}
-
-	@Override
-	default void setInput(final I1 input) {
-		setInput1(input);
-	}
-
 	// -- Threadable methods --
 
 	@Override

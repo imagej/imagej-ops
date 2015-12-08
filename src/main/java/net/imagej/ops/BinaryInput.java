@@ -35,12 +35,24 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface BinaryInput<I1, I2> {
+public interface BinaryInput<I1, I2> extends Input<I1> {
 
 	I1 in1();
 	I2 in2();
 
 	void setInput1(I1 input1);
 	void setInput2(I2 input2);
+
+	// -- Input methods --
+
+	@Override
+	default I1 in() {
+		return in1();
+	}
+
+	@Override
+	default void setInput(final I1 input) {
+		setInput1(input);
+	}
 
 }
