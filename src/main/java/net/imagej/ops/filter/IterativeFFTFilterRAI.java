@@ -91,34 +91,36 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	/**
 	 * TODO: review and document! - k is the size of the measurement window. That
-	 * is the size of the acquired image before extension k is required to
+	 * is the size of the acquired image before extension, k is required to
 	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private Dimensions k;
 
 	/**
-	 * TODO: review and document! - l is the size of the psf. l is required to
+	 * TODO: review and document! - l is the size of the psf, l is required to
 	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private Dimensions l;
 
 	/**
-	 * TODO: review boolean which indicates whether to perform non-circulant
-	 * deconvolution
+	 * TODO: review and document! a boolean which indicates whether to perform
+	 * non-circulant deconvolution
 	 */
 	@Parameter(required = false)
 	private boolean nonCirculant = false;
 
 	/**
-	 * TODO: review boolean which indicates whether to perform acceleration
+	 * TODO: review and document! a boolean which indicates whether to perform
+	 * acceleration
 	 */
 	@Parameter(required = false)
 	private boolean accelerate = false;
 
 	/**
-	 * TODO: review An OutOfBoundsFactory which defines the extension strategy
+	 * TODO: review and document! An OutOfBoundsFactory which defines the
+	 * extension strategy
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
@@ -165,17 +167,30 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		if (nonCirculant) {
 
-			// create image for the estimate
+			// if non-circulant mode create actual image buffers for the estimate and
+			// reblurred
+			// this is done because the algorithm attempts to reconstruct the out of
+			// bounds data
+
+			// create image for the estimate, this image is defined over the entire
+			// convolution interval
 			estimate =
 				imgFactory
 					.create(getImgConvolutionInterval(), outType.createVariable());
 
+			// set first guess to be a constant = to the average value
+
+			// so first compute the sum...
 			final O sum = ops().stats().<I, O> sum(Views.iterable(in()));
 
+			// then the number of pixels
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
+
+			// then the average value...
 			final double average = sum.getRealDouble() / (numPixels);
 
-			// TODO: make this an op
+			// set first guess as the average value coputed above (TODO: make this an
+			// op)
 			for (final O type : estimate) {
 				type.setReal(average);
 			}
@@ -188,7 +203,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			raiExtendedEstimate = estimate;
 			raiExtendedReblurred = reblurred;
 		}
+		// if NOT non-circulant mode
 		else {
+
 			// create image for the reblurred
 			reblurred = imgFactory.create(out(), outType.createVariable());
 
