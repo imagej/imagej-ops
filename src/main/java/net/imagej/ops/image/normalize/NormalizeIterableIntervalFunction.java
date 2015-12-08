@@ -69,7 +69,7 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 	private boolean isLazy = true;
 
 	@Override
-	public IterableInterval<T> compute(final IterableInterval<T> input) {
+	public IterableInterval<T> compute1(final IterableInterval<T> input) {
 		if (isLazy) {
 			return new ConvertedIterableInterval<T, T>(input,
 				new NormalizeRealTypeComputer<T>(ops(), sourceMin, sourceMax, targetMin,

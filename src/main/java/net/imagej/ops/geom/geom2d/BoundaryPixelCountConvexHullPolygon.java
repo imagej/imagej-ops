@@ -58,8 +58,8 @@ public class BoundaryPixelCountConvexHullPolygon extends
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(convexHullFunc.compute(input).getVertices().size());
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(convexHullFunc.compute1(input).getVertices().size());
 	}
 
 }

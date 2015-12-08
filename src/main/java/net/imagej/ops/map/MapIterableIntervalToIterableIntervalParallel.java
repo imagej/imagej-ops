@@ -68,7 +68,7 @@ public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
@@ -87,7 +87,7 @@ public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					safe.compute(inCursor.get(), outCursor.get());
+					safe.compute1(inCursor.get(), outCursor.get());
 					inCursor.jumpFwd(stepSize);
 					outCursor.jumpFwd(stepSize);
 					ctr++;

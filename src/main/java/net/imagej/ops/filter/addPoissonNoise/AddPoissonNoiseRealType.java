@@ -68,7 +68,7 @@ public class AddPoissonNoiseRealType<I extends RealType<I>, O extends RealType<O
 	}
 	
 	@Override
-	public void compute(final I input, final O output) {
+	public void compute1(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
 		double l = Math.exp(-(input.getRealDouble()));
 		int k = 0;

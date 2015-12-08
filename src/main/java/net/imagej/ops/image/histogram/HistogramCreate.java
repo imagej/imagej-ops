@@ -63,8 +63,8 @@ public class HistogramCreate<T extends RealType<T>> extends
 	}
 
 	@Override
-	public Histogram1d<T> compute(final Iterable<T> input) {
-		final Pair<T, T> res = minMaxFunc.compute(input);
+	public Histogram1d<T> compute1(final Iterable<T> input) {
+		final Pair<T, T> res = minMaxFunc.compute1(input);
 
 		final Histogram1d<T> histogram1d = new Histogram1d<T>(
 				new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()

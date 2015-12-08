@@ -59,7 +59,7 @@ public class ApplyThresholdComparator<T> extends AbstractUnaryComputerOp<T, BitT
 	private Comparator<? super T> comparator;
 
 	@Override
-	public void compute(final T input, final BitType output) {
+	public void compute1(final T input, final BitType output) {
 		output.set(comparator.compare(input, threshold) > 0);
 	}
 

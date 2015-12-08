@@ -74,7 +74,7 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 	private long[] paddedSize;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<C> output)
 	{
 		RandomAccessibleInterval<T> inputRAI;

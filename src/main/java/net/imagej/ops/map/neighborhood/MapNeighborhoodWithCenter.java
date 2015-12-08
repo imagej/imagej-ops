@@ -82,10 +82,10 @@ public class MapNeighborhoodWithCenter<I, O>
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		map.compute(new NeighborhoodWithCenterIterableInterval(
+		map.compute1(new NeighborhoodWithCenterIterableInterval(
 			shape.neighborhoodsSafe(input), input), Views.iterable(output));
 	}
 

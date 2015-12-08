@@ -46,13 +46,13 @@ public interface NullaryComputerOp<O> extends NullaryOp<O>, OutputMutable<O> {
 	 * 
 	 * @param output Object where the computation's result will be stored
 	 */
-	void compute(O output);
+	void compute0(O output);
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		compute(out());
+		compute0(out());
 	}
 
 	// -- Threadable methods --

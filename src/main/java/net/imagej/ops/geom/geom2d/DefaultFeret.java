@@ -51,7 +51,7 @@ public class DefaultFeret extends
 {
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
+	public Pair<RealLocalizable, RealLocalizable> compute1(final Polygon input) {
 		double distance = Double.NEGATIVE_INFINITY;
 		int in0 = -1;
 		int in1 = -1;

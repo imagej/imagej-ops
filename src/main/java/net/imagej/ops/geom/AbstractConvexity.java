@@ -56,8 +56,8 @@ public abstract class AbstractConvexity<I> extends
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(boundarySizeConvexHull.compute(input).get() /
-			boundarySize.compute(input).get());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(boundarySizeConvexHull.compute1(input).get() /
+			boundarySize.compute1(input).get());
 	}
 }

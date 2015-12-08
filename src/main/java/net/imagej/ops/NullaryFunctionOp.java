@@ -46,7 +46,7 @@ public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 	 * 
 	 * @return output result of the function
 	 */
-	O compute();
+	O compute0();
 
 	// -- Threadable methods --
 

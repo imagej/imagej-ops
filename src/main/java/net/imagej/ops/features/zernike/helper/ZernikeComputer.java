@@ -64,7 +64,7 @@ public class ZernikeComputer<T extends RealType<T>> extends
 	}
 
 	@Override
-	public ZernikeMoment compute(IterableInterval<T> ii) {
+	public ZernikeMoment compute1(IterableInterval<T> ii) {
 
 		// what is the acutal N
 		final double width = ii.dimension(0);

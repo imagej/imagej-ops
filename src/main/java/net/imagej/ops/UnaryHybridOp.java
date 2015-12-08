@@ -51,9 +51,9 @@ public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>, UnaryFunctio
 	// -- FunctionOp methods --
 
 	@Override
-	default O compute(final I input) {
+	default O compute1(final I input) {
 		final O output = createOutput(input);
-		compute(input, output);
+		compute1(input, output);
 		return output;
 	}
 

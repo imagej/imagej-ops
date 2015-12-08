@@ -75,10 +75,10 @@ public class MapNeighborhood<I, O> extends
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		map.compute(shape.neighborhoodsSafe(input), output);
+		map.compute1(shape.neighborhoodsSafe(input), output);
 	}
 
 }

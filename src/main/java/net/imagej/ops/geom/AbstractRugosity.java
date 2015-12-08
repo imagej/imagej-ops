@@ -56,9 +56,9 @@ public abstract class AbstractRugosity<I> extends
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(boundarySize.compute(input).get() /
-			convexHullBoundarySize.compute(input).get());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(boundarySize.compute1(input).get() /
+			convexHullBoundarySize.compute1(input).get());
 	}
 
 }

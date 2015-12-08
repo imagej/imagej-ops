@@ -58,8 +58,8 @@ public class BoundaryPixelCountConvexHullMesh extends
 	}
 
 	@Override
-	public DoubleType compute(final Mesh input) {
-		return new DoubleType(convexHullFunc.compute(input).getVertices().size());
+	public DoubleType compute1(final Mesh input) {
+		return new DoubleType(convexHullFunc.compute1(input).getVertices().size());
 	}
 
 }

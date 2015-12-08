@@ -105,9 +105,9 @@ public class DefaultSmallestEnclosingRectangle extends
 	}
 
 	@Override
-	public Polygon compute(final Polygon input) {
-		Polygon ch = convexhullFunc.compute(input);
-		RealLocalizable cog = centroidFunc.compute(ch);
+	public Polygon compute1(final Polygon input) {
+		Polygon ch = convexhullFunc.compute1(input);
+		RealLocalizable cog = centroidFunc.compute1(ch);
 
 		Polygon minBounds = null;
 		double minArea = Double.POSITIVE_INFINITY;
@@ -123,11 +123,11 @@ public class DefaultSmallestEnclosingRectangle extends
 			final Polygon rotatedPoly = rotate(ch, -angle, cog);
 
 			// get the bounds
-			final Polygon bounds = boundingBoxFunc.compute(rotatedPoly);
+			final Polygon bounds = boundingBoxFunc.compute1(rotatedPoly);
 
 			// calculate the area of the bounds
 			// double area = getBoundsArea(bounds);
-			double area = areaFunc.compute(rotatedPoly).get();
+			double area = areaFunc.compute1(rotatedPoly).get();
 
 			// if the area of the bounds is smaller, rotate it to match the
 			// original polygon and save it.

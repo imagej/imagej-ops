@@ -66,7 +66,7 @@ public class RandomAccessibleIntervalToMeshConverter extends
 				(RandomAccessibleInterval) src);
 		}
 		if (src instanceof IterableInterval<?>) {
-			return (T) marchingCubesFunc.compute((RandomAccessibleInterval) src);
+			return (T) marchingCubesFunc.compute1((RandomAccessibleInterval) src);
 		}
 		return null;
 	}

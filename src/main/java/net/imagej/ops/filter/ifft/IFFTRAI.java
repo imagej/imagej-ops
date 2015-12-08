@@ -57,7 +57,7 @@ public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 {
 
 	@Override
-	public void compute(final RandomAccessibleInterval<C> input,
+	public void compute1(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		// TODO: proper use of Executor service

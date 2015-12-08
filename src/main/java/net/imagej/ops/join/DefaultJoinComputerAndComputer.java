@@ -46,10 +46,10 @@ public class DefaultJoinComputerAndComputer<A, B, C> extends
 {
 
 	@Override
-	public void compute(final A input, final C output) {
+	public void compute1(final A input, final C output) {
 		final B buffer = getBuffer(input);
-		getFirst().compute(input, buffer);
-		getSecond().compute(buffer, output);
+		getFirst().compute1(input, buffer);
+		getSecond().compute1(buffer, output);
 	}
 
 	@Override

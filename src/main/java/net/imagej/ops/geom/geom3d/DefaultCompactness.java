@@ -62,9 +62,9 @@ public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType
 	}
 
 	@Override
-	public DoubleType compute(final Mesh input) {
-		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
-		double v2 = Math.pow(volume.compute(input).get(), 2);
+	public DoubleType compute1(final Mesh input) {
+		double s3 = Math.pow(surfacePixel.compute1(input).get(), 3);
+		double v2 = Math.pow(volume.compute1(input).get(), 2);
 
 		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
 	}

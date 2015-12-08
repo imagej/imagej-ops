@@ -75,7 +75,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
+	public DefaultMesh compute1(final RandomAccessibleInterval<T> input) {
 		DefaultMesh output = new DefaultMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extendValue(input, (T) new BoolType(false));

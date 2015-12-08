@@ -51,13 +51,13 @@ public class DefaultJoinComputers<A> extends
 {
 
 	@Override
-	public void compute(final A input, final A output) {
+	public void compute1(final A input, final A output) {
 		final List<? extends UnaryComputerOp<A, A>> ops = getOps();
 		final Iterator<? extends UnaryComputerOp<A, A>> it = ops.iterator();
 		final UnaryComputerOp<A, A> first = it.next();
 
 		if (ops.size() == 1) {
-			first.compute(input, output);
+			first.compute1(input, output);
 			return;
 		}
 
@@ -72,13 +72,13 @@ public class DefaultJoinComputers<A> extends
 			tmpInput = output;
 		}
 
-		first.compute(input, tmpOutput);
+		first.compute1(input, tmpOutput);
 
 		while (it.hasNext()) {
 			tmp = tmpInput;
 			tmpInput = tmpOutput;
 			tmpOutput = tmp;
-			it.next().compute(tmpInput, tmpOutput);
+			it.next().compute1(tmpInput, tmpOutput);
 		}
 	}
 

@@ -60,9 +60,9 @@ public class DefaultFeretsAngle extends AbstractUnaryFunctionOp<Polygon, DoubleT
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		double result;
-		final Pair<RealLocalizable, RealLocalizable> ferets = function.compute(
+		final Pair<RealLocalizable, RealLocalizable> ferets = function.compute1(
 			input);
 
 		RealLocalizable p1 = ferets.getA();

@@ -64,7 +64,7 @@ public class CreateImgFromInterval<T extends Type<T>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Img<T> compute(final Interval interval) {
+	public Img<T> compute1(final Interval interval) {
 		Img<T> output =
 			(Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
 		long[] min = new long[interval.numDimensions()];

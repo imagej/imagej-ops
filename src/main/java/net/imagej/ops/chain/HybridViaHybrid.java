@@ -56,8 +56,8 @@ public abstract class HybridViaHybrid<I, O> extends AbstractUnaryHybridOp<I, O>
 	}
 
 	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
+	public void compute1(final I input, final O output) {
+		worker.compute1(input, output);
 	}
 
 }

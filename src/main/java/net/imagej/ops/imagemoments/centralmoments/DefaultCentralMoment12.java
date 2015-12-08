@@ -68,10 +68,10 @@ public class DefaultCentralMoment12<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = moment00Func.compute(input).getRealDouble();
-		final double moment01 = moment01Func.compute(input).getRealDouble();
-		final double moment10 = moment10Func.compute(input).getRealDouble();
+	public void compute1(final IterableInterval<I> input, final O output) {
+		final double moment00 = moment00Func.compute1(input).getRealDouble();
+		final double moment01 = moment01Func.compute1(input).getRealDouble();
+		final double moment10 = moment10Func.compute1(input).getRealDouble();
 		final double centerX = moment10 / moment00;
 		final double centerY = moment01 / moment00;
 

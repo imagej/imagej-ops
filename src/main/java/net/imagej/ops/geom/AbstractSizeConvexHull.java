@@ -62,8 +62,8 @@ public abstract class AbstractSizeConvexHull<I> extends
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return sizeFunc.compute(convexHullFunc.compute(input));
+	public DoubleType compute1(final I input) {
+		return sizeFunc.compute1(convexHullFunc.compute1(input));
 	}
 
 }

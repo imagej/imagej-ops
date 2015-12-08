@@ -64,16 +64,16 @@ public class DefaultICM1<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
 
-		final double[] coochxy = coocHXYFunc.compute(matrix);
+		final double[] coochxy = coocHXYFunc.compute1(matrix);
 
-		res = (entropy.compute(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
+		res = (entropy.compute1(input).get() - coochxy[2]) / (coochxy[0] > coochxy[1]
 			? coochxy[0] : coochxy[1]);
 
 		output.set(res);

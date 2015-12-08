@@ -203,7 +203,7 @@ public class HypersliceTest extends AbstractOpTest {
 			AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public void compute(final Iterable<ByteType> input,
+		public void compute1(final Iterable<ByteType> input,
 			final Iterable<ByteType> output)
 		{
 			final Iterator<ByteType> itA = input.iterator();

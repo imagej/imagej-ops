@@ -51,7 +51,7 @@ public abstract class AbstractNullaryFunctionOp<O> extends AbstractNullaryOp<O>
 
 	@Override
 	public void run() {
-		out = compute();
+		out = compute0();
 	}
 
 	// -- Output methods --

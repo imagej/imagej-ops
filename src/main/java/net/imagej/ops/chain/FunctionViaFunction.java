@@ -52,8 +52,8 @@ public abstract class FunctionViaFunction<I, O> extends
 	}
 
 	@Override
-	public O compute(final I input) {
-		return worker.compute(input);
+	public O compute1(final I input) {
+		return worker.compute1(input);
 	}
 
 }

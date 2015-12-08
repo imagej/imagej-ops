@@ -76,7 +76,7 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input, final O output) {
+	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
 
 		// List to store all directions occuring within the image on borders
 		ArrayList<DoubleType> dirList = new ArrayList<DoubleType>();
@@ -123,8 +123,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 		// Otherwise compute histogram over all occuring directions
 		// and calculate inverse second moment on it as output
 		else {
-			Histogram1d<Integer> hist = histOp.compute(dirList);
-			double std = stdOp.compute(hist).getRealDouble();
+			Histogram1d<Integer> hist = histOp.compute1(dirList);
+			double std = stdOp.compute1(hist).getRealDouble();
 			output.setReal(1 / std);
 		}
 	}

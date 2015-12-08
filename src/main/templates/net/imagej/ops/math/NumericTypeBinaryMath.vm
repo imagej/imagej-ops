@@ -65,7 +65,7 @@ public final class NumericTypeBinaryMath {
 		}
 
 		@Override
-		public void compute(final T input, final T output) {
+		public void compute1(final T input, final T output) {
 			if(output== b)
 			{
 				output.$!{op.function}(input);

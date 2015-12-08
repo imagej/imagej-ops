@@ -55,7 +55,7 @@ public class DefaultCenterOfGravity<T extends RealType<T>> extends
 {
 
 	@Override
-	public RealLocalizable compute(final IterableInterval<T> input) {
+	public RealLocalizable compute1(final IterableInterval<T> input) {
 		final int numDimensions = input.numDimensions();
 
 		final double[] output = new double[numDimensions];

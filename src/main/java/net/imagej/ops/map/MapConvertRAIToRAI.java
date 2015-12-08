@@ -53,7 +53,7 @@ public class MapConvertRAIToRAI<A, B extends Type<B>>
 {
 
 	@Override
-	public RandomAccessibleInterval<B> compute(
+	public RandomAccessibleInterval<B> compute1(
 		final RandomAccessibleInterval<A> input)
 	{
 		final ComputerConverter<A, B> converter =

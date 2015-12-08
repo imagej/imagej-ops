@@ -49,7 +49,7 @@ public class RunInterleavedChunker<A extends RealType<A>> extends
 {
 	
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final IterableInterval<A> output)
 	{
 		ops().run(ChunkerInterleaved.class, new CursorBasedChunk() {

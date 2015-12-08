@@ -504,7 +504,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute(final I in, final O out) {
+		public void compute1(final I in, final O out) {
 			// NB: No implementation needed.
 		}
 	}
@@ -514,7 +514,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public O compute(final I in) {
+		public O compute1(final I in) {
 			return null;
 		}
 	}
@@ -529,7 +529,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute(final I in, final O out) {
+		public void compute1(final I in, final O out) {
 			// NB: No implementation needed.
 		}
 	}

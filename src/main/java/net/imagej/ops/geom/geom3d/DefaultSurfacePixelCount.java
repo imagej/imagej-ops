@@ -53,7 +53,7 @@ public class DefaultSurfacePixelCount extends
 {
 
 	@Override
-	public DoubleType compute(final Mesh input) {
+	public DoubleType compute1(final Mesh input) {
 		return new DoubleType(input.getVertices().size());
 	}
 }

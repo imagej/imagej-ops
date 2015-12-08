@@ -52,7 +52,7 @@ public class CopyType<T extends Type<T>> extends AbstractUnaryHybridOp<T, T>
 	}
 
 	@Override
-	public void compute(final T input, final T output) {
+	public void compute1(final T input, final T output) {
 		output.set(input);
 	}
 

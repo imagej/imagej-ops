@@ -57,7 +57,7 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	// -- ComputerOp methods --
 
 	@Override
-	default void compute(final I1 input, final O output) {
+	default void compute1(final I1 input, final O output) {
 		compute2(input, in2(), output);
 	}
 

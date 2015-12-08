@@ -48,7 +48,7 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 		final int n = getLoopCount();
 		final UnaryComputerOp<I, I> op = getOp();
 		for (int i = 0; i < n; i++) {
-			op.compute(arg, arg);
+			op.compute1(arg, arg);
 		}
 	}
 

@@ -57,11 +57,11 @@ public class CoocStdY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	}
 
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 		double res = 0;
 
-		final double meany = coocMeanYFunc.compute(input).getRealDouble();
-		final double[] py = coocPYFunc.compute(input);
+		final double meany = coocMeanYFunc.compute1(input).getRealDouble();
+		final double[] py = coocPYFunc.compute1(input);
 
 		for (int i = 0; i < py.length; i++) {
 			res += ((i - meany) * (i - meany)) * py[i];

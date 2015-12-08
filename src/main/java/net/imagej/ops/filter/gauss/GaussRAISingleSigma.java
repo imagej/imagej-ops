@@ -65,7 +65,7 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<V> output)
 	{
 		final double[] sigmas = new double[input.numDimensions()];

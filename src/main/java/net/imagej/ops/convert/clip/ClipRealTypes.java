@@ -50,7 +50,7 @@ public class ClipRealTypes<I extends RealType<I>, O extends RealType<O>>
 	private double outMin;
 
 	@Override
-	public void compute(final I input, final O output) {
+	public void compute1(final I input, final O output) {
 		final double v = input.getRealDouble();
 		if (v > outMax) {
 			output.setReal(outMax);

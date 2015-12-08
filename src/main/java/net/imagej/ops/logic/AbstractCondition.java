@@ -44,7 +44,7 @@ public abstract class AbstractCondition<T> extends
 	}
 
 	@Override
-	public void compute(final T input, final BoolType output) {
+	public void compute1(final T input, final BoolType output) {
 		output.set(isTrue(input));
 	}
 

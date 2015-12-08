@@ -60,8 +60,8 @@ public class DefaultFeretsDiameter extends
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
+	public DoubleType compute1(final Polygon input) {
+		Pair<RealLocalizable, RealLocalizable> ferets = function.compute1(input);
 
 		RealLocalizable p1 = ferets.getA();
 		RealLocalizable p2 = ferets.getB();

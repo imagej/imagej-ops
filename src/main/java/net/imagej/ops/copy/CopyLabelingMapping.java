@@ -59,7 +59,7 @@ public class CopyLabelingMapping<L> extends
 	}
 
 	@Override
-	public void compute(final LabelingMapping<L> input,
+	public void compute1(final LabelingMapping<L> input,
 			final LabelingMapping<L> output) {
 
 		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<L>(

@@ -61,9 +61,9 @@ public class DefaultMinorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		Polygon polygon = input;
-		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute(polygon);
+		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(polygon);
 		return compute.getA();
 	}
 }

@@ -45,7 +45,7 @@ public class RunInterleavedChunkerArray<A> extends
 {
 	
 	@Override
-	public void compute(final A[] input, final A[] output) {
+	public void compute1(final A[] input, final A[] output) {
 		ops().run(ChunkerInterleaved.class, new Chunk() {
 
 			@Override

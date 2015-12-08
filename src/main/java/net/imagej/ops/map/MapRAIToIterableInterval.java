@@ -59,7 +59,7 @@ public class MapRAIToIterableInterval<A, B> extends
 {
 
 	@Override
-	public void compute(final RandomAccessibleInterval<A> input,
+	public void compute1(final RandomAccessibleInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		final Cursor<B> cursor = output.localizingCursor();
@@ -68,7 +68,7 @@ public class MapRAIToIterableInterval<A, B> extends
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			getOp().compute(rndAccess.get(), cursor.get());
+			getOp().compute1(rndAccess.get(), cursor.get());
 		}
 	}
 

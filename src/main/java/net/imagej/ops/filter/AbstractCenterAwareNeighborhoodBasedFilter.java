@@ -50,7 +50,7 @@ public abstract class AbstractCenterAwareNeighborhoodBasedFilter<I, O> extends
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory;
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> input,
+	public void compute1(RandomAccessibleInterval<I> input,
 		RandomAccessibleInterval<O> output)
 	{
 		// optionally extend input if outOfBoundsFactory is set

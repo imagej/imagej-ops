@@ -90,13 +90,13 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	}
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
 
 		final DoubleType meanValue = new DoubleType();
-		mean.compute(input.getB(), meanValue);
+		mean.compute1(input.getB(), meanValue);
 
 		final DoubleType stdDevValue = new DoubleType();
-		stdDeviation.compute(input.getB(), stdDevValue);
+		stdDeviation.compute1(input.getB(), stdDevValue);
 
 		double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue.get()) + k * ((stdDevValue.get()/r) - 1.0));
 		

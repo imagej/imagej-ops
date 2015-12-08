@@ -51,8 +51,8 @@ public abstract class AbstractNullaryHybridOp<O> extends AbstractNullaryOp<O>
 
 	@Override
 	public void run() {
-		if (out() == null) out = compute();
-		else compute(out());
+		if (out() == null) out = compute0();
+		else compute0(out());
 	}
 
 	// -- Output methods --

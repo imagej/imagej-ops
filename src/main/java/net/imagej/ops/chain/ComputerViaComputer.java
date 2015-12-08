@@ -52,8 +52,8 @@ public abstract class ComputerViaComputer<I, O> extends
 	}
 
 	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
+	public void compute1(final I input, final O output) {
+		worker.compute1(input, output);
 	}
 
 }

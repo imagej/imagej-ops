@@ -51,7 +51,7 @@ public class SizeIterableInterval extends
 {
 
 	@Override
-	public DoubleType compute(IterableInterval<?> input) {
+	public DoubleType compute1(IterableInterval<?> input) {
 		return new DoubleType(input.size());
 	}
 

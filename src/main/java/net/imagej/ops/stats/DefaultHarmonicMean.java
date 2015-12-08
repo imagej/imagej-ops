@@ -63,9 +63,9 @@ public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		final double area = sizeFunc.compute(input).getRealDouble();
-		final double sumOfInverses = sumOfInversesFunc.compute(input).getRealDouble();
+	public void compute1(final Iterable<I> input, final O output) {
+		final double area = sizeFunc.compute1(input).getRealDouble();
+		final double sumOfInverses = sumOfInversesFunc.compute1(input).getRealDouble();
 
 		if (sumOfInverses != 0) {
 			output.setReal(area / sumOfInverses);

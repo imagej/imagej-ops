@@ -81,7 +81,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(RandomAccessibleInterval<I> input,
+	public void compute1(RandomAccessibleInterval<I> input,
 		ArrayList<LongType> output)
 	{
 		ArrayList<LongType> numberList = new ArrayList<LongType>();
@@ -107,7 +107,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 			numberList.add(new LongType(resultBinaryValue));
 		}
 
-		Histogram1d<Integer> hist = histOp.compute(numberList);
+		Histogram1d<Integer> hist = histOp.compute1(numberList);
 		Iterator<LongType> c = hist.iterator();
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));

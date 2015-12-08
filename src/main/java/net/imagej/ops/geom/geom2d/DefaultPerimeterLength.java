@@ -49,7 +49,7 @@ public class DefaultPerimeterLength extends
 {
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		double perimeter = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 			int nexti = i + 1;

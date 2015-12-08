@@ -62,10 +62,10 @@ public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
 	}
 	
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		final double moment3 =
-				moment3AboutMeanFunc.compute(input).getRealDouble();
-		final double std = stdDevFunc.compute(input).getRealDouble();
+				moment3AboutMeanFunc.compute1(input).getRealDouble();
+		final double std = stdDevFunc.compute1(input).getRealDouble();
 
 		output.setReal(Double.NaN);
 		if (std != 0) {

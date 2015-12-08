@@ -53,7 +53,7 @@ public class CentroidIterableInterval
 			Ops.Geometric.Centroid {
 
 	@Override
-	public RealLocalizable compute(final IterableInterval<?> input) {
+	public RealLocalizable compute1(final IterableInterval<?> input) {
 		int numDimensions = input.numDimensions();
 		double[] output = new double[numDimensions];
 		Cursor<?> c = input.localizingCursor();

@@ -69,9 +69,9 @@ public class LocalBernsen<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();
 		final double midGrey = (maxValue + minValue) / 2.0;

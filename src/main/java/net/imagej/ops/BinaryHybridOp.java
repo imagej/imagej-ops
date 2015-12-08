@@ -57,14 +57,14 @@ public interface BinaryHybridOp<I1, I2, O> extends UnaryHybridOp<I1, O>,
 	// -- ComputerOp methods --
 
 	@Override
-	default void compute(final I1 input, final O output) {
+	default void compute1(final I1 input, final O output) {
 		compute2(input, in2(), output);
 	}
 
 	// -- FunctionOp methods --
 
 	@Override
-	default O compute(final I1 input) {
+	default O compute1(final I1 input) {
 		return compute2(input, in2());
 	}
 

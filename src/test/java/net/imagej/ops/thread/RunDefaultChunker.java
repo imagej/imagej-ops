@@ -50,7 +50,7 @@ public class RunDefaultChunker<A extends RealType<A>> extends
 
 
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final IterableInterval<A> output)
 	{
 		ops().run(DefaultChunker.class, new CursorBasedChunk() {

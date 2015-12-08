@@ -59,9 +59,9 @@ public class LocalContrast<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
 		final double diffMin = centerValue - outputs.getA().getRealDouble();

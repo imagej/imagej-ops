@@ -53,7 +53,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	 * @param input Argument to the computation
 	 * @param output Object where the computation's result will be stored
 	 */
-	void compute(I input, O output);
+	void compute1(I input, O output);
 
 	// -- Threadable methods --
 
@@ -69,7 +69,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 
 	@Override
 	default void run() {
-		compute(in(), out());
+		compute1(in(), out());
 	}
 
 }

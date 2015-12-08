@@ -49,7 +49,7 @@ public class DefaultLoopComputer<A> extends
 {
 
 	@Override
-	public void compute(final A input, final A output) {
+	public void compute1(final A input, final A output) {
 		final int n = getLoopCount();
 
 		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>(n);
@@ -60,7 +60,7 @@ public class DefaultLoopComputer<A> extends
 		joiner.setOps(ops);
 		joiner.setOutputFactory(getOutputFactory());
 
-		joiner.compute(input, output);
+		joiner.compute1(input, output);
 	}
 
 	@Override

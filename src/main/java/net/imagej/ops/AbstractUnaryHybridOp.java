@@ -55,8 +55,8 @@ public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
 
 	@Override
 	public void run() {
-		if (out() == null) out = compute(in());
-		else compute(in(), out());
+		if (out() == null) out = compute1(in());
+		else compute1(in(), out());
 	}
 
 	// -- Input methods --

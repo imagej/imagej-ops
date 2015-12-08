@@ -136,10 +136,10 @@ public class RealMathTest extends AbstractOpTest {
 		@SuppressWarnings("unchecked")
 		final RealMath.RandomGaussian<DoubleType, DoubleType> op =
 			ops.op(RealMath.RandomGaussian.class, in.createVariable(), in, seed);
-		op.compute(in, out);
+		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
-		op.compute(in, out);
+		op.compute1(in, out);
 		assertEquals(o2, out.get(), 0);
 	}
 
@@ -167,10 +167,10 @@ public class RealMathTest extends AbstractOpTest {
 		@SuppressWarnings("unchecked")
 		final RealMath.RandomUniform<DoubleType, DoubleType> op =
 			ops.op(RealMath.RandomUniform.class, in.createVariable(), in, seed);
-		op.compute(in, out);
+		op.compute1(in, out);
 		assertEquals(o, out.get(), 0);
 		in.set(i2);
-		op.compute(in, out);
+		op.compute1(in, out);
 		assertEquals(o2, out.get(), 0);
 	}
 }

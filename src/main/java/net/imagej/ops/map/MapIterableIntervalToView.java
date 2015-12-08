@@ -44,7 +44,7 @@ public class MapIterableIntervalToView<A, B extends Type<B>> extends
 {
 
 	@Override
-	public IterableInterval<B> compute(final IterableInterval<A> input) {
+	public IterableInterval<B> compute1(final IterableInterval<A> input) {
 		final ComputerConverter<A, B> converter =
 			new ComputerConverter<A, B>(getOp());
 		return new ConvertedIterableInterval<A, B>(input, converter, getType());

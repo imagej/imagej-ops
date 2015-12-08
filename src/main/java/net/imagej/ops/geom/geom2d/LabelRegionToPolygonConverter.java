@@ -68,7 +68,7 @@ public class LabelRegionToPolygonConverter extends
 				true);
 		}
 		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute(src);
+		final Polygon p = (Polygon) contourFunc.compute1(src);
 		return (T) p;
 	}
 

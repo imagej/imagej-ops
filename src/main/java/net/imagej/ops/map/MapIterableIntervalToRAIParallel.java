@@ -57,7 +57,7 @@ public class MapIterableIntervalToRAIParallel<A, B> extends
 {
 
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final RandomAccessibleInterval<B> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
@@ -76,7 +76,7 @@ public class MapIterableIntervalToRAIParallel<A, B> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					rndAccess.setPosition(cursor);
-					safe.compute(cursor.get(), rndAccess.get());
+					safe.compute1(cursor.get(), rndAccess.get());
 					cursor.jumpFwd(stepSize);
 					ctr++;
 				}

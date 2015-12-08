@@ -64,7 +64,7 @@ public class NormalizeIterableComputer<T extends RealType<T>> extends
 	private T targetMax;
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
 		ops().map(output, input, new NormalizeRealTypeComputer<T>(ops(), sourceMin,

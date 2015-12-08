@@ -54,10 +54,10 @@ public class CoocMeanY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	}
 
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 
 		double res = 0;
-		final double[] py = coocPYFunc.compute(input);
+		final double[] py = coocPYFunc.compute1(input);
 		for (int i = 0; i < py.length; i++) {
 			res += i * py[i];
 		}

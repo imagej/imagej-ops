@@ -58,8 +58,8 @@ public class DefaultSphericity extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 	}
 
 	@Override
-	public DoubleType compute(final Mesh input) {
-		return new DoubleType(Math.pow(compactness.compute(input).get(), (1 / 3d)));
+	public DoubleType compute1(final Mesh input) {
+		return new DoubleType(Math.pow(compactness.compute1(input).get(), (1 / 3d)));
 	}
 
 }

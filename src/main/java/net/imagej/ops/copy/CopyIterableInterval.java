@@ -75,9 +75,9 @@ public class CopyIterableInterval<T> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 			final IterableInterval<T> output) {
-		map.compute(input, output);
+		map.compute1(input, output);
 	}
 
 	@Override

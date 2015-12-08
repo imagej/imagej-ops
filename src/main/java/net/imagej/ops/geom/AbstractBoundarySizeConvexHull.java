@@ -63,8 +63,8 @@ public abstract class AbstractBoundarySizeConvexHull<I> extends
 	}
 
 	@Override
-	public DoubleType compute(I input) {
-		return perimeterFunc.compute(convexHullFunc.compute(input));
+	public DoubleType compute1(I input) {
+		return perimeterFunc.compute1(convexHullFunc.compute1(input));
 	}
 
 }

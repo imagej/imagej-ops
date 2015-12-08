@@ -52,7 +52,7 @@ public class DefaultMinMax<I extends RealType<I>> extends
 {
 
 	@Override
-	public Pair<I, I> compute(final Iterable<I> input) {
+	public Pair<I, I> compute1(final Iterable<I> input) {
 		double tmpMin = Double.MAX_VALUE;
 		double tmpMax = Double.MIN_VALUE;
 

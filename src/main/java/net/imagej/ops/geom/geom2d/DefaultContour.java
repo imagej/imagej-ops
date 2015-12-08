@@ -195,7 +195,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public Polygon compute(final RandomAccessibleInterval<B> input) {
+	public Polygon compute1(final RandomAccessibleInterval<B> input) {
 		List<RealPoint> p = new ArrayList<RealPoint>();
 
 		final B var = Util.getTypeFromInterval(input).createVariable();

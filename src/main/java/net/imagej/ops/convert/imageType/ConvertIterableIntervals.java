@@ -52,7 +52,7 @@ public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<
 	private RealTypeConverter<I, O> pixConvert;
 
 	@Override
-	public void compute(final IterableInterval<I> input,
+	public void compute1(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
 		pixConvert.checkInput(input.firstElement().createVariable(), output

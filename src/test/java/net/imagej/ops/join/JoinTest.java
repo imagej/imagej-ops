@@ -174,7 +174,7 @@ public class JoinTest extends AbstractOpTest {
 	class AddOneComputer extends AbstractUnaryComputerOp<ByteType, ByteType> {
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}
@@ -185,7 +185,7 @@ public class JoinTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute(final Img<ByteType> input,
+		public void compute1(final Img<ByteType> input,
 			final Img<ByteType> output)
 		{
 			ops.run(MapOp.class, output, input, new AddOneComputer());

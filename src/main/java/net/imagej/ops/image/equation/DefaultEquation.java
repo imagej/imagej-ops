@@ -89,7 +89,7 @@ public class DefaultEquation<T extends RealType<T>> extends
 	// -- ComputerOp methods --
 
 	@Override
-	public void compute(final String input,
+	public void compute1(final String input,
 		final IterableInterval<T> output)
 	{
 		final String equation = input + ";";

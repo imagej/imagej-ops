@@ -49,7 +49,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 {
 
 	@Override
-	public void compute(final IterableInterval<I> input,
+	public void compute1(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
 		I inType = input.firstElement().createVariable();
@@ -68,7 +68,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	{
 
 		@Override
-		public void compute(final II x, final OO output) {
+		public void compute1(final II x, final OO output) {
 			final double value = x.getRealDouble() * -1.0 - 1;
 			output.setReal(value);
 		}
@@ -89,7 +89,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		}
 
 		@Override
-		public void compute(final II x, final OO output) {
+		public void compute1(final II x, final OO output) {
 			final double value = max - x.getRealDouble();
 			output.setReal(value);
 		}

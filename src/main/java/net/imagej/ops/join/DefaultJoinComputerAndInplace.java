@@ -47,8 +47,8 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 {
 
 	@Override
-	public void compute(final A input, final B output) {
-		getFirst().compute(input, output);
+	public void compute1(final A input, final B output) {
+		getFirst().compute1(input, output);
 		getSecond().compute(output);
 	}
 

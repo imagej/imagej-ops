@@ -62,10 +62,10 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 	}
 
 	@Override
-	public void compute(Pair<T, Iterable<T>> input, BitType output) {
+	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
 
 		final DoubleType m = new DoubleType();
-		median.compute(input.getB(), m);
+		median.compute1(input.getB(), m);
 		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
 	}
 }

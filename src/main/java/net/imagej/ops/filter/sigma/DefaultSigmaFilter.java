@@ -71,14 +71,14 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
 			@Override
-			public void compute(Pair<T, Iterable<T>> input, T output) {
+			public void compute1(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
 					variance = ops().computer1(Ops.Stats.Variance.class,
 						DoubleType.class, input.getB());
 				}
 
 				DoubleType varianceResult = new DoubleType();
-				variance.compute(input.getB(), varianceResult);
+				variance.compute1(input.getB(), varianceResult);
 				double varianceValue = varianceResult.getRealDouble() * range;
 
 				final double centerValue = input.getA().getRealDouble();

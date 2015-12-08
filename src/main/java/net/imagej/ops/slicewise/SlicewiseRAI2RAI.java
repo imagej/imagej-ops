@@ -65,7 +65,7 @@ public class SlicewiseRAI2RAI<I, O> extends
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
 		ops().run(Ops.Map.class, new Hyperslice<O>(ops(), output, axisIndices,

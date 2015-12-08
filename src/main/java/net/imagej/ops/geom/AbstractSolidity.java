@@ -56,9 +56,9 @@ public abstract class AbstractSolidity<I> extends
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(volume.compute(input).get() / convexHullVolume
-			.compute(input).get());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(volume.compute1(input).get() / convexHullVolume
+			.compute1(input).get());
 	}
 
 }

@@ -75,13 +75,13 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 	}
 
 	@Override
-	public double[][] compute(final IterableInterval<T> input) {
+	public double[][] compute1(final IterableInterval<T> input) {
 
 		final double[][] output = new double[nrGreyLevels][nrGreyLevels];
 
 		final Cursor<? extends RealType<?>> cursor = input.localizingCursor();
 
-		final Pair<T, T> minMax = minmax.compute(input);
+		final Pair<T, T> minMax = minmax.compute1(input);
 
 		final double localMin = minMax.getA().getRealDouble();
 		final double localMax = minMax.getB().getRealDouble();

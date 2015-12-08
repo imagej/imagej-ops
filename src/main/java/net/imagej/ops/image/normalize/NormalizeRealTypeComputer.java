@@ -93,7 +93,7 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final T input, final T output) {
+	public void compute1(final T input, final T output) {
 
 		final double res = (input.getRealDouble() - sourceMin) * factor + targetMin;
 
@@ -110,6 +110,6 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 
 	@Override
 	public void convert(T input, T output) {
-		compute(input, output);
+		compute1(input, output);
 	}
 }

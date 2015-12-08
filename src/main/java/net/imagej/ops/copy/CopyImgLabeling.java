@@ -73,10 +73,10 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	
 	@Override
-	public void compute(final ImgLabeling<L, T> input,
+	public void compute1(final ImgLabeling<L, T> input,
 			final ImgLabeling<L, T> output) {
-		raiCopyOp.compute(input.getIndexImg(), output.getIndexImg());
-		mappingCopyOp.compute(input.getMapping(), output.getMapping());
+		raiCopyOp.compute1(input.getIndexImg(), output.getIndexImg());
+		mappingCopyOp.compute1(input.getMapping(), output.getMapping());
 	}
 
 	@Override

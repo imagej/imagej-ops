@@ -61,7 +61,7 @@ public class DefaultCentralMoment00<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		moment00Cmp.compute(input, output);
+	public void compute1(final IterableInterval<I> input, final O output) {
+		moment00Cmp.compute1(input, output);
 	}
 }

@@ -66,7 +66,7 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final Iterable<T> input, final Iterable<BitType> output) {
+	public void compute1(final Iterable<T> input, final Iterable<BitType> output) {
 		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
 		ops().map(output, input, applyThreshold);
 	}

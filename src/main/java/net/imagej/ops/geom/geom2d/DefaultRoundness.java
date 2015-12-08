@@ -60,9 +60,9 @@ public class DefaultRoundness extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(4 * (areaFunc.compute(input).getRealDouble() /
-			(Math.PI * Math.pow(majorAxisFunc.compute(input).getRealDouble(), 2))));
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(4 * (areaFunc.compute1(input).getRealDouble() /
+			(Math.PI * Math.pow(majorAxisFunc.compute1(input).getRealDouble(), 2))));
 	}
 
 }

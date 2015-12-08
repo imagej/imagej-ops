@@ -53,7 +53,7 @@ public class DefaultSizePolygon extends AbstractUnaryFunctionOp<Polygon, DoubleT
 {
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 

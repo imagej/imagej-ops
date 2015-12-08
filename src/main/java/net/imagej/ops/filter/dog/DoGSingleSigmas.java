@@ -92,9 +92,9 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		op.compute(input, output);
+		op.compute1(input, output);
 	}
 }

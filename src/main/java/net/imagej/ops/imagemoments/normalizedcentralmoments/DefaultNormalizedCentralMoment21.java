@@ -65,9 +65,9 @@ public class DefaultNormalizedCentralMoment21<I extends RealType<I>, O extends R
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		double centralMoment00 = centralMoment00Func.compute(input).getRealDouble();
-		double centralMoment21 = centralMoment21Func.compute(input).getRealDouble();
+	public void compute1(final IterableInterval<I> input, final O output) {
+		double centralMoment00 = centralMoment00Func.compute1(input).getRealDouble();
+		double centralMoment21 = centralMoment21Func.compute1(input).getRealDouble();
 
 		output.setReal(centralMoment21 /
 			Math.pow(centralMoment00, 1 + ((2 + 1) / 2)));

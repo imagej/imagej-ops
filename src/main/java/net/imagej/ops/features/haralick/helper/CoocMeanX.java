@@ -54,10 +54,10 @@ public class CoocMeanX extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 
 	
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 
 		double res = 0;
-		final double[] px = coocPXFunc.compute(input);
+		final double[] px = coocPXFunc.compute1(input);
 		for (int i = 0; i < px.length; i++) {
 			res += i * px[i];
 		}

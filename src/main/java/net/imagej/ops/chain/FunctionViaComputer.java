@@ -72,9 +72,9 @@ public abstract class FunctionViaComputer<I, O> extends AbstractUnaryFunctionOp<
 	// -- FunctionOp methods --
 
 	@Override
-	public O compute(final I input) {
+	public O compute1(final I input) {
 		final O output = createOutput(input);
-		worker.compute(input, output);
+		worker.compute1(input, output);
 		return output;
 	}
 

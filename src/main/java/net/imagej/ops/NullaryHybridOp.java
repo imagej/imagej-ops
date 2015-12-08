@@ -48,9 +48,9 @@ public interface NullaryHybridOp<O> extends NullaryComputerOp<O>,
 	// -- NullaryFunctionOp methods --
 
 	@Override
-	default O compute() {
+	default O compute0() {
 		final O output = createOutput();
-		compute(output);
+		compute0(output);
 		return output;
 	}
 

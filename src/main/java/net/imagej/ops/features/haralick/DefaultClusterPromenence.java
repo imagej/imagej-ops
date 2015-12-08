@@ -62,13 +62,13 @@ public class DefaultClusterPromenence<T extends RealType<T>> extends AbstractHar
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final int nrGrayLevels = matrix.length;
 
-		final double mux = coocMeanXFunc.compute(matrix).getRealDouble();
-		final double muy = coocMeanYFunc.compute(matrix).getRealDouble();
+		final double mux = coocMeanXFunc.compute1(matrix).getRealDouble();
+		final double muy = coocMeanYFunc.compute1(matrix).getRealDouble();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

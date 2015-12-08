@@ -85,11 +85,11 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		ctr = 0;
 
 		// Calling it twice should result in the same result
-		assertEquals(1.0, func.compute(imgA).get(), 0.0);
-		assertEquals(1.0, func.compute(imgA).get(), 0.0);
+		assertEquals(1.0, func.compute1(imgA).get(), 0.0);
+		assertEquals(1.0, func.compute1(imgA).get(), 0.0);
 
 		// Should be increased
-		assertEquals(2.0, func.compute(imgB).getRealDouble(), 0.0);
+		assertEquals(2.0, func.compute1(imgB).getRealDouble(), 0.0);
 	}
 
 	@Test
@@ -97,11 +97,11 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		ctr = 0;
 
 		// Calling it twice should result in the same result
-		assertEquals(1.0, hybrid.compute(imgA).get(), 0.0);
-		assertEquals(1.0, hybrid.compute(imgA).get(), 0.0);
+		assertEquals(1.0, hybrid.compute1(imgA).get(), 0.0);
+		assertEquals(1.0, hybrid.compute1(imgA).get(), 0.0);
 
 		// Should be increased
-		assertEquals(2.0, hybrid.compute(imgB).getRealDouble(), 0.0);
+		assertEquals(2.0, hybrid.compute1(imgB).getRealDouble(), 0.0);
 	}
 
 	// some specialized ops to track number of counts
@@ -115,7 +115,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute(final Img<ByteType> input, final DoubleType output) {
+		public void compute1(final Img<ByteType> input, final DoubleType output) {
 			ctr++;
 			output.set(ctr);
 		}

@@ -52,7 +52,7 @@ public class DefaultSurfaceArea extends AbstractUnaryFunctionOp<Mesh, DoubleType
 {
 
 	@Override
-	public DoubleType compute(final Mesh input) {
+	public DoubleType compute1(final Mesh input) {
 		return new DoubleType(input.getSurfaceArea());
 	}
 

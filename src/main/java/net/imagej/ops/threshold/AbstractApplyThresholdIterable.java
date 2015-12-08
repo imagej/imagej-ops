@@ -46,7 +46,7 @@ public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O
 {
 
 	@Override
-	public void compute(final I input, final O output) {
+	public void compute1(final I input, final O output) {
 		ops().threshold().apply(output, input, getThreshold(input));
 	}
 

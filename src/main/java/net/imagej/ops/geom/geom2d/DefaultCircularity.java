@@ -60,9 +60,9 @@ public class DefaultCircularity extends AbstractUnaryFunctionOp<Polygon, DoubleT
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(4 * Math.PI * (areaFunc.compute(input)
-			.getRealDouble() / Math.pow(perimiterFunc.compute(input).getRealDouble(),
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(4 * Math.PI * (areaFunc.compute1(input)
+			.getRealDouble() / Math.pow(perimiterFunc.compute1(input).getRealDouble(),
 				2)));
 	}
 

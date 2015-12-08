@@ -134,7 +134,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public O compute(final I input) {
+		public O compute1(final I input) {
 
 			final Hash hash = new Hash(input, delegate, args);
 
@@ -142,7 +142,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 			O output = (O) cache.get(hash);
 
 			if (output == null) {
-				output = delegate.compute(input);
+				output = delegate.compute1(input);
 				cache.put(hash, output);
 			}
 			return output;
@@ -206,7 +206,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public O compute(final I input) {
+		public O compute1(final I input) {
 			final Hash hash = new Hash(input, delegate, args);
 
 			@SuppressWarnings("unchecked")
@@ -214,7 +214,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 			if (output == null) {
 				output = createOutput(input);
-				compute(input, output);
+				compute1(input, output);
 				cache.put(hash, output);
 			}
 			return output;
@@ -226,8 +226,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public void compute(final I input, final O output) {
-			delegate.compute(input, output);
+		public void compute1(final I input, final O output) {
+			delegate.compute1(input, output);
 		}
 
 		@Override

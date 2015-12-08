@@ -51,7 +51,7 @@ public class CentroidLabelRegion extends
 {
 
 	@Override
-	public RealLocalizable compute(final LabelRegion<?> input) {
+	public RealLocalizable compute1(final LabelRegion<?> input) {
 
 		return new RealPoint(input.getCenterOfMass());
 	}

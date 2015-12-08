@@ -52,7 +52,7 @@ public interface InplaceOp<A> extends UnaryComputerOp<A, A> {
 	// -- ComputerOp methods --
 
 	@Override
-	default void compute(final A input, final A output) {
+	default void compute1(final A input, final A output) {
 		if (input != output) {
 			throw new IllegalArgumentException("Input and output must match");
 		}

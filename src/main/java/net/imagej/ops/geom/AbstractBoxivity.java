@@ -64,9 +64,9 @@ public abstract class AbstractBoxivity<I> extends
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(areaFunc.compute(input).getRealDouble() / areaFunc
-			.compute(smallestEnclosingRectangleFunc.compute(input)).getRealDouble());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(areaFunc.compute1(input).getRealDouble() / areaFunc
+			.compute1(smallestEnclosingRectangleFunc.compute1(input)).getRealDouble());
 	}
 
 }

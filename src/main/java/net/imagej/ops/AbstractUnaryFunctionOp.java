@@ -54,7 +54,7 @@ public abstract class AbstractUnaryFunctionOp<I, O> extends AbstractUnaryOp<I, O
 
 	@Override
 	public void run() {
-		out = compute(in());
+		out = compute1(in());
 	}
 
 	// -- Input methods --

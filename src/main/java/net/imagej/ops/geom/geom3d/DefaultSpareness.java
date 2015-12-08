@@ -73,15 +73,15 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public DoubleType compute(final IterableRegion<B> input) {
+	public DoubleType compute1(final IterableRegion<B> input) {
 
-		double r1 = Math.sqrt(5.0 * multivar.compute(input).getEigenvalue(0));
-		double r2 = r1 / mainElongation.compute(input).get();
-		double r3 = r2 / medianElongation.compute(input).get();
+		double r1 = Math.sqrt(5.0 * multivar.compute1(input).getEigenvalue(0));
+		double r2 = r1 / mainElongation.compute1(input).get();
+		double r3 = r2 / medianElongation.compute1(input).get();
 
 		double volumeEllipsoid = (4.18879 * r1 * r2 * r3);
 
-		return new DoubleType(volume.compute(input).get() / volumeEllipsoid);
+		return new DoubleType(volume.compute1(input).get() / volumeEllipsoid);
 	}
 
 	@Override

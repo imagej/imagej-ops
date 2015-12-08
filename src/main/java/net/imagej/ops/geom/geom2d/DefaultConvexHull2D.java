@@ -54,7 +54,7 @@ public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygo
 {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public Polygon compute1(final Polygon input) {
 		// create a copy of points because se will get resorted, etc.
 		List<? extends RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(input.getVertices());
 

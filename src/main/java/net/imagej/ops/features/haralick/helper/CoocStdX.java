@@ -55,12 +55,12 @@ public class CoocStdX extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	}
 	
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 
 		double res = 0;
 
-		final double meanx = coocMeanXFunc.compute(input).get();
-		final double[] px = coocPXFunc.compute(input);
+		final double meanx = coocMeanXFunc.compute1(input).get();
+		final double[] px = coocPXFunc.compute1(input);
 
 		for (int i = 0; i < px.length; i++) {
 			res += ((i - meanx) * (i - meanx)) * px[i];

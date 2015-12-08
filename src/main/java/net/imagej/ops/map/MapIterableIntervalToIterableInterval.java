@@ -63,14 +63,14 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
 		final Cursor<A> inCursor = input.cursor();
 		final Cursor<B> outCursor = output.cursor();
 
 		while (inCursor.hasNext()) {
-			getOp().compute(inCursor.next(), outCursor.next());
+			getOp().compute1(inCursor.next(), outCursor.next());
 		}
 	}
 }

@@ -60,9 +60,9 @@ public class DefaultEccentricity extends AbstractUnaryFunctionOp<Polygon, Double
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(majorAxisFunc.compute(input).getRealDouble() /
-			minorAxisFunc.compute(input).getRealDouble());
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(majorAxisFunc.compute1(input).getRealDouble() /
+			minorAxisFunc.compute1(input).getRealDouble());
 	}
 
 }

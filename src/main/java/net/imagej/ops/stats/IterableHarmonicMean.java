@@ -52,7 +52,7 @@ public class IterableHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double size = 0;
 		double sumOfInverses = 0;
 		for (final I in : input) {

@@ -60,9 +60,9 @@ public class DefaultElongation extends AbstractUnaryFunctionOp<Polygon, DoubleTy
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(1d - minorAxisFunc.compute(input).getRealDouble() /
-			majorAxisFunc.compute(input).getRealDouble());
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(1d - minorAxisFunc.compute1(input).getRealDouble() /
+			majorAxisFunc.compute1(input).getRealDouble());
 	}
 
 }

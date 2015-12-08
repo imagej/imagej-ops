@@ -50,7 +50,7 @@ public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O> {
 	 * @param input Argument to the function
 	 * @return output Result of the function
 	 */
-	O compute(I input);
+	O compute1(I input);
 
 	// -- Threadable methods --
 
