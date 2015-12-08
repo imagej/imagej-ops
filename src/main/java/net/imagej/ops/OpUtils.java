@@ -30,7 +30,9 @@
 
 package net.imagej.ops;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -53,6 +55,54 @@ public final class OpUtils {
 	}
 
 	// -- Utility methods --
+
+	public static Object run(final Module module) {
+		module.run();
+		return result(module);
+	}
+
+	public static Object result(final Module module) {
+		final List<Object> outputs = new ArrayList<Object>();
+		for (final ModuleItem<?> output : module.getInfo().outputs()) {
+			final Object value = output.getValue(module);
+			outputs.add(value);
+		}
+		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	/**
+	 * Looks up an op of the given type, similar to
+	 * {@link OpEnvironment#op(Class, Object...)}, but with an additional type
+	 * constraint&mdash;e.g., matches could be restricted to {@link ComputerOp}s.
+	 * 
+	 * @param opType The type of op to match.
+	 * @param specialType The additional constraint (e.g., {@link ComputerOp}).
+	 * @param outType The type of the op's primary output, or null for any type.
+	 * @param args The arguments to use when matching.
+	 * @return The matched op.
+	 */
+	public static <OP extends Op> OP specialOp(final OpEnvironment ops,
+		final Class<OP> opType, final Class<?> specialType, final Class<?> outType,
+		final Object... args)
+	{
+		final OpRef<OP> ref =
+			new OpRef<OP>(Collections.singleton(specialType), opType, args);
+		if (outType != null) ref.setOutputs(Collections.singleton(outType));
+		final Module module = ops.matcher().findModule(ops, ref);
+		return OpUtils.unwrap(module, ref);
+	}
+
+	public static Object[] args(final Object[] latter, final Object... former) {
+		final Object[] result = new Object[former.length + latter.length];
+		int i = 0;
+		for (final Object o : former) {
+			result[i++] = o;
+		}
+		for (final Object o : latter) {
+			result[i++] = o;
+		}
+		return result;
+	}
 
 	/** Gets the namespace portion of the given op name. */
 	public static String getNamespace(final String opName) {

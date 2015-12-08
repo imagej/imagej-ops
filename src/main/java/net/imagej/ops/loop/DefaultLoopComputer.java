@@ -58,7 +58,7 @@ public class DefaultLoopComputer<A> extends
 
 		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
 		joiner.setOps(ops);
-		joiner.setBufferFactory(getBufferFactory());
+		joiner.setOutputFactory(getOutputFactory());
 
 		joiner.compute(input, output);
 	}
@@ -68,7 +68,7 @@ public class DefaultLoopComputer<A> extends
 		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
 
 		looper.setOp(getOp().getIndependentInstance());
-		looper.setBufferFactory(getBufferFactory());
+		looper.setOutputFactory(getOutputFactory());
 
 		return looper;
 	}

@@ -30,10 +30,6 @@
 
 package net.imagej.ops.filter.dog;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.ComputerOp;
 import net.imagej.ops.FunctionOp;
@@ -48,6 +44,9 @@ import net.imglib2.type.numeric.NumericType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 /**
  * Low-level difference of Gaussians (DoG) implementation which leans on other
  * ops to do the work.
@@ -61,9 +60,6 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
-
-	@Parameter
-	private ThreadService ts;
 
 	@Parameter
 	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;

@@ -33,7 +33,7 @@ package net.imagej.ops.geom;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RTs;
+import net.imagej.ops.chain.RTs;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**

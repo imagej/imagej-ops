@@ -209,6 +209,7 @@
 
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
+		<scijava.jvm.version>1.8</scijava.jvm.version>
 		<imglib2.version>2.5.0</imglib2.version>
 	</properties>
 

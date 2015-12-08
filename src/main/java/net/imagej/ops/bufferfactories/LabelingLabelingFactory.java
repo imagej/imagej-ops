@@ -30,22 +30,22 @@
 
 package net.imagej.ops.bufferfactories;
 
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.OutputFactory;
 import net.imglib2.labeling.Labeling;
 
 /**
- * {@link BufferFactory} used to create an empty output {@link Labeling} of same
+ * {@link OutputFactory} used to create an empty output {@link Labeling} of same
  * type and dimensionality as the input {@link Labeling}
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <L>
  */
 public class LabelingLabelingFactory<L extends Comparable<L>> implements
-	BufferFactory<Labeling<L>, Labeling<L>>
+	OutputFactory<Labeling<L>, Labeling<L>>
 {
 
 	@Override
-	public Labeling<L> createBuffer(final Labeling<L> input) {
+	public Labeling<L> createOutput(final Labeling<L> input) {
 		return input.<L> factory().create(input);
 	}
 

@@ -28,23 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.SpecialOp;
 
 /**
- * Factory which creates an output object of type <O> given the input of type
- * <I>
+ * Base class for {@link SpecialOp} implementations that delegate to other
+ * {@link SpecialOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public interface BufferFactory<I, O> {
+public interface DelegatingSpecialOp<T extends SpecialOp<I, O>, I, O> extends
+	SpecialOp<I, O>
+{
 
-	/**
-	 * Create an output object given some input.
-	 * 
-	 * @param input
-	 *            which determines how to create the output
-	 * 
-	 * @return output, depending on the input
-	 */
-	O createBuffer(I input);
+	T createWorker(I t);
+
 }

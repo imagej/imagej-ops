@@ -31,27 +31,12 @@
 package net.imagej.ops;
 
 /**
- * Base class for {@link ComputerOp} implementations that delegate to other,
- * lower level {@link ComputerOp} implementations.
+ * Abstract base class for {@link BinaryOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HighLevelComputerOp<I, O> extends
-	AbstractComputerOp<I, O>
+public abstract class AbstractBinaryOp<I1, I2, O> extends
+	AbstractSpecialOp<BinaryInput<I1, I2>, O> implements BinaryOp<I1, I2, O>
 {
-
-	private ComputerOp<I, O> worker;
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void compute(final I input, final O output) {
-		worker.compute(input, output);
-	}
-
-	protected abstract ComputerOp<I, O> createWorker(I t);
-
+	// NB: No implementation needed.
 }

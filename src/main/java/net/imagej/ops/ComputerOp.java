@@ -45,9 +45,29 @@ package net.imagej.ops;
  */
 public interface ComputerOp<I, O> extends SpecialOp<I, O> {
 
+	/**
+	 * Computes the output given some input.
+	 * 
+	 * @param input Argument to the computation
+	 * @param output Object where the computation's result will be stored
+	 */
 	void compute(I input, O output);
 
+	// -- Threadable methods --
+
 	@Override
-	ComputerOp<I, O> getIndependentInstance();
+	default ComputerOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		compute(in(), out());
+	}
 
 }

@@ -52,13 +52,6 @@ public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
 	@Parameter
 	private I in;
 
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		compute(in(), out());
-	}
-
 	// -- Input methods --
 
 	@Override
@@ -76,16 +69,6 @@ public abstract class AbstractComputerOp<I, O> extends AbstractSpecialOp<I, O>
 	@Override
 	public O out() {
 		return out;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public ComputerOp<I, O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
 	}
 
 }

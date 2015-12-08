@@ -44,16 +44,27 @@ package net.imagej.ops;
  * @see FunctionOp
  * @see InplaceOp
  */
-public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O> {
+public interface HybridOp<I, O> extends ComputerOp<I, O>, FunctionOp<I, O>,
+	OutputFactory<I, O>
+{
 
-	/**
-	 * Creates an output object of type O, given some input. The output can then
-	 * be used to call {@link ComputerOp#compute}, which will fill the output with
-	 * the result.
-	 */
-	O createOutput(I input);
+	// -- FunctionOp methods --
 
 	@Override
-	HybridOp<I, O> getIndependentInstance();
+	default O compute(final I input) {
+		final O output = createOutput(input);
+		compute(input, output);
+		return output;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default HybridOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

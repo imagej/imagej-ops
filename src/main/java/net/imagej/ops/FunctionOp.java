@@ -45,14 +45,21 @@ package net.imagej.ops;
 public interface FunctionOp<I, O> extends SpecialOp<I, O> {
 
 	/**
-	 * Compute the output given some input.
+	 * Computes the output given some input.
 	 * 
-	 * @param input of the {@link FunctionOp}
-	 * @return output
+	 * @param input Argument to the function
+	 * @return output Result of the function
 	 */
 	O compute(I input);
 
+	// -- Threadable methods --
+
 	@Override
-	FunctionOp<I, O> getIndependentInstance();
+	default FunctionOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }

@@ -31,27 +31,44 @@
 package net.imagej.ops;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to other,
- * lower level {@link FunctionOp} implementations.
+ * A binary {@link FunctionOp} which computes a result from two given inputs,
+ * returning it as a new object. The contents of the inputs are not affected.
  * 
  * @author Curtis Rueden
+ * @param <I1> type of first input
+ * @param <I2> type of second input
+ * @param <O> type of output
+ * @see BinaryComputerOp
+ * @see BinaryHybridOp
  */
-public abstract class HighLevelFunctionOp<I, O> extends
-	AbstractFunctionOp<I, O>
+public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
+	FunctionOp<BinaryInput<I1, I2>, O>
 {
 
-	private FunctionOp<I, O> worker;
+	/**
+	 * Computes the output given two inputs.
+	 * 
+	 * @param input1 first argument to the function
+	 * @param input2 second argument to the function
+	 * @return output result of the function
+	 */
+	O compute2(I1 input1, I2 input2);
+
+	// -- FunctionOp methods --
 
 	@Override
-	public void initialize() {
-		worker = createWorker(in());
+	default O compute(final BinaryInput<I1, I2> input) {
+		return compute2(input.in1(), input.in2());
 	}
+
+	// -- Threadable methods --
 
 	@Override
-	public O compute(final I input) {
-		return worker.compute(input);
+	default BinaryFunctionOp<I1, I2, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
-
-	protected abstract FunctionOp<I, O> createWorker(I t);
 
 }

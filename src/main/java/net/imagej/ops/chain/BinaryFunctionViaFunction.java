@@ -28,30 +28,32 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
+
+import net.imagej.ops.AbstractBinaryFunctionOp;
+import net.imagej.ops.BinaryFunctionOp;
 
 /**
- * Base class for {@link InplaceOp} implementations that delegate to other,
- * lower level {@link InplaceOp} implementations.
+ * Base class for {@link BinaryFunctionOp} implementations that delegate to
+ * other {@link BinaryFunctionOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HighLevelInplaceOp<A> extends
-	AbstractInplaceOp<A>
+public abstract class BinaryFunctionViaFunction<I1, I2, O> extends
+	AbstractBinaryFunctionOp<I1, I2, O> implements
+	DelegatingBinaryOp<BinaryFunctionOp<I1, I2, O>, I1, I2, O>
 {
 
-	private InplaceOp<A> worker;
+	private BinaryFunctionOp<I1, I2, O> worker;
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in());
+		worker = createWorker(in1(), in2());
 	}
 
 	@Override
-	public void compute(final A arg) {
-		worker.compute(arg);
+	public O compute2(final I1 input1, final I2 input2) {
+		return worker.compute2(input1, input2);
 	}
-
-	protected abstract InplaceOp<A> createWorker(A t);
 
 }

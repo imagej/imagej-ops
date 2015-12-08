@@ -28,8 +28,17 @@
  * #L%
  */
 
-package net.imagej.ops;
+package net.imagej.ops.chain;
 
+import net.imagej.ops.BinaryComputerOp;
+import net.imagej.ops.BinaryFunctionOp;
+import net.imagej.ops.BinaryHybridOp;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.HybridOp;
+import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.OpEnvironment;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
@@ -80,6 +89,42 @@ public final class RAIs {
 		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
 	{
 		return ops.inplace(opType, arg, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryComputerOp) ops.binaryComputer(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryFunctionOp) ops.binaryFunction(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static
+		<T>
+		BinaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in1,
+			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+	{
+		return (BinaryHybridOp) ops.binaryHybrid(opType,
+			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
 }

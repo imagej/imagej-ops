@@ -48,7 +48,14 @@ public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>,
 	Initializable, Threadable
 {
 
+	// -- Threadable methods --
+
 	@Override
-	SpecialOp<I, O> getIndependentInstance();
+	default SpecialOp<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
+	}
 
 }
