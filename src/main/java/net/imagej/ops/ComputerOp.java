@@ -43,7 +43,7 @@ package net.imagej.ops;
  * @see HybridOp
  * @see InplaceOp
  */
-public interface ComputerOp<I, O> extends SpecialOp<I, O> {
+public interface ComputerOp<I, O> extends SpecialOp<I, O>, OutputMutable<O> {
 
 	/**
 	 * Computes the output given some input.

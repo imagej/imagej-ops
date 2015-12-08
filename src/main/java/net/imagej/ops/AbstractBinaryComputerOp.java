@@ -82,4 +82,11 @@ public abstract class AbstractBinaryComputerOp<I1, I2, O> extends
 		return out;
 	}
 
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
+
 }

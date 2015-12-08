@@ -232,6 +232,11 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
+		public void setOutput(final O output) {
+			delegate.setOutput(output);
+		}
+
+		@Override
 		public CachedHybridOp<I, O> getIndependentInstance() {
 			return this;
 		}

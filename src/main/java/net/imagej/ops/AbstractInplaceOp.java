@@ -66,4 +66,11 @@ public abstract class AbstractInplaceOp<A> extends AbstractSpecialOp<A, A>
 		return arg;
 	}
 
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final A output) {
+		arg = output;
+	}
+
 }

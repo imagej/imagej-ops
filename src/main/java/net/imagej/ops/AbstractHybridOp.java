@@ -78,4 +78,11 @@ public abstract class AbstractHybridOp<I, O> extends AbstractSpecialOp<I, O>
 		return out;
 	}
 
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
+	}
+
 }
