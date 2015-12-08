@@ -32,9 +32,12 @@ package net.imagej.ops;
 
 /**
  * A <em>hybrid</em> nullary operation can be used as either a
- * {@link NullaryFunctionOp} or as a {@link NullaryComputerOp}. To compute a new
- * output object, call {@link NullaryFunctionOp#compute}; to populate a
- * preexisting output object, call {@link NullaryComputerOp#compute}.
+ * {@link NullaryFunctionOp} or as a {@link NullaryComputerOp}.
+ * <p>
+ * To compute a new output object, call {@link NullaryFunctionOp#compute0}; to
+ * populate an already-existing output object, call
+ * {@link NullaryComputerOp#compute0}.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <O> type of output

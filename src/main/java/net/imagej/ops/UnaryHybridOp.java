@@ -31,10 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A <em>hybrid</em> operation can be used as either a {@link UnaryFunctionOp} or as
- * a {@link UnaryComputerOp}. To compute a new output object, call
- * {@link UnaryFunctionOp#compute}; to populate a preexisting output object, call
- * {@link UnaryComputerOp#compute}.
+ * A unary <em>hybrid</em> operation can be used as either a
+ * {@link UnaryFunctionOp} or as a {@link UnaryComputerOp}.
+ * <p>
+ * To compute a new output object, call {@link UnaryFunctionOp#compute1}; to
+ * populate an already-existing output object, call
+ * {@link UnaryComputerOp#compute1}.
+ * </p>
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
@@ -42,10 +45,9 @@ package net.imagej.ops;
  * @param <O> type of output
  * @see UnaryComputerOp
  * @see UnaryFunctionOp
- * @see InplaceOp
  */
-public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>, UnaryFunctionOp<I, O>,
-	UnaryOutputFactory<I, O>
+public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
+	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>
 {
 
 	// -- FunctionOp methods --

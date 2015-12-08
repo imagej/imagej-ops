@@ -31,8 +31,7 @@
 package net.imagej.ops;
 
 /**
- * A {@link NullaryOp} which calculates a result without any inputs, returning
- * it as a new object.
+ * A nullary <em>function</em> computes a result, returning it as a new object.
  * 
  * @author Curtis Rueden
  * @param <O> type of output

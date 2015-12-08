@@ -31,8 +31,8 @@
 package net.imagej.ops;
 
 /**
- * A {@link NullaryOp} which calculates a result without any inputs,
- * storing it into the specified output reference.
+ * A nullary <em>computer</em> computes a result, storing it into the specified
+ * output reference.
  * 
  * @author Curtis Rueden
  * @param <O> type of output

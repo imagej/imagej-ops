@@ -31,8 +31,14 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link UnaryComputerOp} which calculates a result from two given inputs,
- * storing it into the specified output reference.
+ * A binary <em>computer</em> computes a result from two given inputs, storing
+ * it into the specified output reference. The contents of the inputs are not
+ * affected.
+ * <p>
+ * A binary computer may be treated as a {@link UnaryComputerOp} by holding the
+ * second input constant, or treated as a {@link NullaryComputerOp} by holding
+ * both inputs constant.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input

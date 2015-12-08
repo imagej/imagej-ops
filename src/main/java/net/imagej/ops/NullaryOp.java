@@ -31,10 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A <em>nullary</em> operation is a {@link UnaryOp} with zero input
- * parameters, rather than just one. They come in two major flavors:
- * {@link NullaryComputerOp} and {@link NullaryFunctionOp}. And there is one
- * additional type, {@link NullaryHybridOp}, which unions both flavors.
+ * A <em>nullary</em> operation computes a result in a vacuum, without any input
+ * values.
+ * <p>
+ * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
+ * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridOp},
+ * unions both flavors.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <O> type of output

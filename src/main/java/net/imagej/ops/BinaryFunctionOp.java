@@ -31,8 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link UnaryFunctionOp} which computes a result from two given inputs,
- * returning it as a new object. The contents of the inputs are not affected.
+ * A binary <em>function</em> computes a result from two given inputs, returning
+ * it as a new object. The contents of the inputs are not affected.
+ * <p>
+ * A binary function may be treated as a {@link UnaryFunctionOp} by holding the
+ * second input constant, or treated as a {@link NullaryFunctionOp} by holding
+ * both inputs constant.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input

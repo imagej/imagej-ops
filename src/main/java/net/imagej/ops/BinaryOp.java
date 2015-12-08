@@ -31,10 +31,17 @@
 package net.imagej.ops;
 
 /**
- * A <em>binary</em> operation is a {@link UnaryOp} with two input parameters,
- * rather than just one. They come in two major flavors:
- * {@link BinaryComputerOp} and {@link BinaryFunctionOp}. And there is one
- * additional type, {@link BinaryHybridOp}, which unions both flavors.
+ * A <em>binary</em> operation computes a result from two given inputs. The
+ * contents of the inputs are not affected.
+ * <p>
+ * Binary ops come in two major flavors: {@link BinaryComputerOp} and
+ * {@link BinaryFunctionOp}. An additional type, {@link BinaryHybridOp}, unions
+ * both flavors.
+ * </p>
+ * <p>
+ * A binary op may be treated as a {@link UnaryOp} by holding the second input
+ * constant, or treated as a {@link NullaryOp} by holding both inputs constant.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input

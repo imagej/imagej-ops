@@ -31,8 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A <em>computer</em> calculates a result from the given input, storing it into
- * the specified output reference.
+ * A unary <em>computer</em> calculates a result from the given input, storing
+ * it into the specified output reference. The contents of the input are
+ * unaffected.
+ * <p>
+ * A unary computer may be treated as a {@link NullaryComputerOp} by holding the
+ * input constant.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
@@ -41,7 +46,6 @@ package net.imagej.ops;
  * @param <O> type of output
  * @see UnaryFunctionOp
  * @see UnaryHybridOp
- * @see InplaceOp
  */
 public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	OutputMutable<O>

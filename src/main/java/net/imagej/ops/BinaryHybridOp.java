@@ -31,7 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link UnaryHybridOp} which calculates a result from two given inputs.
+ * A <em>hybrid</em> binary operation can be used as either a
+ * {@link BinaryFunctionOp} or as a {@link BinaryComputerOp}.
+ * <p>
+ * To compute a new output object, call {@link BinaryFunctionOp#compute2}; to
+ * populate an already-existing output object, call
+ * {@link BinaryComputerOp#compute2}.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input

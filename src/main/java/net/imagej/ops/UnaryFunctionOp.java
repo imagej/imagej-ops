@@ -31,8 +31,12 @@
 package net.imagej.ops;
 
 /**
- * A <em>function</em> computes a result from the given input, returning it as a
- * new object. The contents of the input are not affected.
+ * A unary <em>function</em> computes a result from the given input, returning
+ * it as a new object. The contents of the input are not affected.
+ * <p>
+ * A unary function may be treated as a {@link NullaryFunctionOp} by holding the
+ * input constant.
+ * </p>
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
@@ -40,7 +44,6 @@ package net.imagej.ops;
  * @param <O> type of output
  * @see UnaryComputerOp
  * @see UnaryHybridOp
- * @see InplaceOp
  */
 public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O> {
 

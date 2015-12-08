@@ -31,10 +31,17 @@
 package net.imagej.ops;
 
 /**
- * A <em>special</em> operation is one intended to be used repeatedly from other
- * ops. They come in two major flavors: {@link UnaryComputerOp} and
- * {@link UnaryFunctionOp}. And there are two additional types, {@link UnaryHybridOp} and
- * {@link InplaceOp}, which specialize behavior further.
+ * A <em>unary</em> operation computes a result from a given input. The contents
+ * of the input are not affected.
+ * <p>
+ * Unary ops come in two major flavors: {@link UnaryComputerOp} and
+ * {@link UnaryFunctionOp}. An additional type, {@link UnaryHybridOp}, unions
+ * both flavors.
+ * </p>
+ * <p>
+ * A unary op may be treated as a {@link NullaryOp} by holding the input
+ * constant.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I> type of input
@@ -42,7 +49,6 @@ package net.imagej.ops;
  * @see UnaryComputerOp
  * @see UnaryFunctionOp
  * @see UnaryHybridOp
- * @see InplaceOp
  */
 public interface UnaryOp<I, O> extends Op, UnaryInput<I>, Output<O>,
 	Initializable, Threadable
