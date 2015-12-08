@@ -48,7 +48,7 @@ package net.imagej.ops;
  * @see UnaryHybridOp
  */
 public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
-	OutputMutable<O>
+	NullaryComputerOp<O>
 {
 
 	/**
@@ -59,6 +59,20 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	 */
 	void compute1(I input, O output);
 
+	// -- NullaryComputerOp methods --
+
+	@Override
+	default void compute0(final O output) {
+		compute1(in(), output);
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		compute1(in(), out());
+	}
+
 	// -- Threadable methods --
 
 	@Override
@@ -67,13 +81,6 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.
 		return this;
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	default void run() {
-		compute1(in(), out());
 	}
 
 }

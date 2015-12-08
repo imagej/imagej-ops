@@ -45,7 +45,9 @@ package net.imagej.ops;
  * @see UnaryComputerOp
  * @see UnaryHybridOp
  */
-public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O> {
+public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O>,
+	NullaryFunctionOp<O>
+{
 
 	/**
 	 * Computes the output given some input.
@@ -54,6 +56,13 @@ public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O> {
 	 * @return output Result of the function
 	 */
 	O compute1(I input);
+
+	// -- NullaryFunctionOp methods --
+
+	@Override
+	default O compute0() {
+		return compute1(in());
+	}
 
 	// -- Threadable methods --
 

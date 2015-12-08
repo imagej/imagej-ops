@@ -46,9 +46,9 @@ package net.imagej.ops;
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
  */
-public interface BinaryHybridOp<I1, I2, O> extends UnaryHybridOp<I1, O>,
-	BinaryComputerOp<I1, I2, O>, BinaryFunctionOp<I1, I2, O>,
-	BinaryOutputFactory<I1, I2, O>
+public interface BinaryHybridOp<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
+	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>,
+	UnaryHybridOp<I1, O>
 {
 
 	// -- BinaryFunctionOp methods --
@@ -63,15 +63,15 @@ public interface BinaryHybridOp<I1, I2, O> extends UnaryHybridOp<I1, O>,
 	// -- ComputerOp methods --
 
 	@Override
-	default void compute1(final I1 input, final O output) {
-		compute2(input, in2(), output);
+	default O compute1(final I1 input) {
+		return compute2(input, in2());
 	}
 
 	// -- FunctionOp methods --
 
 	@Override
-	default O compute1(final I1 input) {
-		return compute2(input, in2());
+	default O createOutput(final I1 input) {
+		return createOutput(input, in2());
 	}
 
 	// -- Threadable methods --

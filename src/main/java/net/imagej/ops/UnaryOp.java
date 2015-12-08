@@ -50,9 +50,7 @@ package net.imagej.ops;
  * @see UnaryFunctionOp
  * @see UnaryHybridOp
  */
-public interface UnaryOp<I, O> extends Op, UnaryInput<I>, Output<O>,
-	Initializable, Threadable
-{
+public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 
 	// -- Threadable methods --
 
