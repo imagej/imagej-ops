@@ -261,6 +261,24 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.stats.DefaultPercentile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O percentile(
+		final Iterable<T> in, final double percent)
+	{
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultPercentile.class, in, percent);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.DefaultPercentile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O percentile(final O out,
+		final Iterable<T> in, final double percent)
+	{
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultPercentile.class, out, in, percent);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(
 		final IterableInterval<T> in)

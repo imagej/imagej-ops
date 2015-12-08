@@ -30,58 +30,50 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapOp}.
+ * Parallelized {@link MapIterableInplace}
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
+ * @param <A> mapped on <A>
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableToRAIParallel<A, B> extends
-	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
-	implements Parallel
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
+public class MapIterableIntervalInplaceParallel<A> extends
+	AbstractMapInplace<A, IterableInterval<A>> implements Parallel
 {
 
 	@Override
-	public void compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
-	{
+	public void compute(final IterableInterval<A> arg) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
-				final Cursor<A> cursor = input.localizingCursor();
+				final InplaceOp<A> safe = getOp().getIndependentInstance();
+				final Cursor<A> inCursor = arg.cursor();
 
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<B> rndAccess = output.randomAccess();
+				setToStart(inCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					safe.compute(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
+					final A t = inCursor.get();
+					safe.compute(t);
+					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, input.size());
+		}, arg.size());
 	}
 
 }

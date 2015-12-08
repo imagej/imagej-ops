@@ -66,11 +66,6 @@ public class MapIterableIntervalToIterableInterval<A, B> extends
 	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		if (!isValid(input, output)) {
-			throw new IllegalArgumentException(
-				"Input and Output don't have the same iteration order!");
-		}
-
 		final Cursor<A> inCursor = input.cursor();
 		final Cursor<B> outCursor = output.cursor();
 

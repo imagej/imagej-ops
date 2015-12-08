@@ -35,17 +35,13 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface BinaryOutputFactory<I1, I2, O> extends
-	OutputFactory<BinaryInput<I1, I2>, O>
-{
+public interface BinaryOutputFactory<I1, I2, O> extends OutputFactory<I1, O> {
 
 	/**
 	 * Create an output object given two inputs.
 	 * 
-	 * @param input1
-	 *            first input which determines how to create the output
-	 * @param input2
-	 *            second input which determines how to create the output
+	 * @param input1 first input which determines how to create the output
+	 * @param input2 second input which determines how to create the output
 	 * @return output, depending on the input
 	 */
 	O createOutput(I1 input1, I2 input2);
@@ -53,8 +49,8 @@ public interface BinaryOutputFactory<I1, I2, O> extends
 	// -- OutputFactory methods --
 
 	@Override
-	default O createOutput(final BinaryInput<I1, I2> input) {
-		return createOutput(input.in1(), input.in2());
+	default O createOutput(final I1 input) {
+		return createOutput(input, null);
 	}
 
 }

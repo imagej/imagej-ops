@@ -47,7 +47,7 @@ public class NormalizeTest extends AbstractOpTest {
 	@Test
 	public void testNormalize() {
 
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> in = generateByteArrayTestImg(true, 5, 5);
 		Img<ByteType> out = in.factory().create(in, new ByteType());
 
 		ops.image().normalize(out, in);

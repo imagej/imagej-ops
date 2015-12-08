@@ -48,7 +48,7 @@ public class InvertTest extends AbstractOpTest {
 	public void testInvertSigned() {
 
 		// signed type test
-		Img<ByteType> in = generateByteTestImg(true, 5, 5);
+		Img<ByteType> in = generateByteArrayTestImg(true, 5, 5);
 		Img<ByteType> out = in.factory().create(in, new ByteType());
 
 		ops.image().invert(out, in);
@@ -64,7 +64,7 @@ public class InvertTest extends AbstractOpTest {
 	public void testInvertUnsigned() {
 
 		// unsigned type test
-		Img<UnsignedByteType> in = generateUnsignedByteTestImg(true, 5, 5);
+		Img<UnsignedByteType> in = generateUnsignedByteArrayTestImg(true, 5, 5);
 		Img<UnsignedByteType> out = in.factory().create(in, new UnsignedByteType());
 
 		ops.image().invert(out, in);

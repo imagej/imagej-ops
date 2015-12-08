@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
  * @param <B> mapped from {@code <A>}
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 3)
-public class MapIterableToIterableParallel<A, B> extends
+public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
 	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
 	Contingent, Parallel
 {
@@ -71,11 +71,6 @@ public class MapIterableToIterableParallel<A, B> extends
 	public void compute(final IterableInterval<A> input,
 		final IterableInterval<B> output)
 	{
-		if (!isValid(input, output)) {
-			throw new IllegalArgumentException(
-				"Input and Output do not have the same iteration order!");
-		}
-
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override

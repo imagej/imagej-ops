@@ -37,43 +37,51 @@ import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapIterableInplace}
+ * Parallelized {@link MapOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on <A>
+ * @param <A> mapped on {@code <B>}
+ * @param <B> mapped from {@code <A>}
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
-public class MapParallel<A> extends
-	AbstractMapInplace<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
+public class MapIterableIntervalToRAIParallel<A, B> extends
+	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+	implements Parallel
 {
 
 	@Override
-	public void compute(final IterableInterval<A> arg) {
+	public void compute(final IterableInterval<A> input,
+		final RandomAccessibleInterval<B> output)
+	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, A> safe = getOp().getIndependentInstance();
-				final Cursor<A> inCursor = arg.cursor();
+				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
+				final Cursor<A> cursor = input.localizingCursor();
 
-				setToStart(inCursor, startIndex);
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<B> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					safe.compute(t, t);
-					inCursor.jumpFwd(stepSize);
+					rndAccess.setPosition(cursor);
+					safe.compute(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, arg.size());
+		}, input.size());
 	}
 
 }

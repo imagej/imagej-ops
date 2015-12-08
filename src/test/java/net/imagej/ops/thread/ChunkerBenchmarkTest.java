@@ -117,8 +117,8 @@ public class ChunkerBenchmarkTest extends AbstractOpBenchmark {
 		if (size > 1024) {
 			assumeTrue(expensiveTestsEnabled);
 		}
-		in = generateByteTestImg(true, size, size);
-		out = generateByteTestImg(false, size, size);
+		in = generateByteArrayTestImg(true, size, size);
+		out = generateByteArrayTestImg(false, size, size);
 	}
 
 	private void generateByteArrays(int size) {

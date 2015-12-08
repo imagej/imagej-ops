@@ -42,7 +42,7 @@ package net.imagej.ops;
  * @see BinaryHybridOp
  */
 public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
-	ComputerOp<BinaryInput<I1, I2>, O>
+	ComputerOp<I1, O>
 {
 
 	/**
@@ -57,15 +57,8 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	// -- ComputerOp methods --
 
 	@Override
-	default void compute(final BinaryInput<I1, I2> input, final O output) {
-		compute2(input.in1(), input.in2(), output);
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	default void run() {
-		compute2(in1(), in2(), out());
+	default void compute(final I1 input, final O output) {
+		compute2(input, in2(), output);
 	}
 
 	// -- Threadable methods --

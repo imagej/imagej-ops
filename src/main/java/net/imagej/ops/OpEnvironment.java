@@ -1004,18 +1004,19 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.map.MapParallel.class)
+	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalInplaceParallel.class)
 	default <A> IterableInterval<A> map(final IterableInterval<A> arg,
 		final InplaceOp<A> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result =
-			(IterableInterval<A>) run(net.imagej.ops.map.MapParallel.class, arg, op);
+			(IterableInterval<A>) run(
+				net.imagej.ops.map.MapIterableIntervalInplaceParallel.class, arg, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapIterableToIterableParallel.class,
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
 	default <A, B> IterableInterval<B> map(final IterableInterval<B> out,
 		final IterableInterval<A> in, final ComputerOp<A, B> op)
@@ -1029,7 +1030,7 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapIterableToRAIParallel.class,
+	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToRAIParallel.class,
 		net.imagej.ops.map.MapIterableIntervalToRAI.class })
 	default <A, B> RandomAccessibleInterval<B> map(
 		final RandomAccessibleInterval<B> out, final IterableInterval<A> in,
