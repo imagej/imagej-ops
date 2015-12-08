@@ -61,13 +61,6 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 		compute2(input, in2(), output);
 	}
 
-	// -- Runnable methods --
-
-	@Override
-	default void run() {
-		compute2(in1(), in2(), out());
-	}
-
 	// -- Threadable methods --
 
 	@Override
