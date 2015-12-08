@@ -51,8 +51,8 @@ public abstract class InplaceViaInplace<A> extends
 	}
 
 	@Override
-	public void compute(final A arg) {
-		worker.compute(arg);
+	public void mutate(final A arg) {
+		worker.mutate(arg);
 	}
 
 }

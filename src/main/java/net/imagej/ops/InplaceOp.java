@@ -47,7 +47,7 @@ public interface InplaceOp<A> extends UnaryComputerOp<A, A> {
 	 * 
 	 * @param arg of the {@link InplaceOp}
 	 */
-	void compute(A arg);
+	void mutate(A arg);
 
 	// -- UnaryComputerOp methods --
 
@@ -56,14 +56,14 @@ public interface InplaceOp<A> extends UnaryComputerOp<A, A> {
 		if (input != output) {
 			throw new IllegalArgumentException("Input and output must match");
 		}
-		compute(input);
+		mutate(input);
 	}
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		compute(in());
+		mutate(in());
 	}
 
 	// -- Threadable methods --

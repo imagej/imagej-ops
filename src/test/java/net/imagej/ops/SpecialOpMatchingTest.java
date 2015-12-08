@@ -539,7 +539,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute(final A arg) {
+		public void mutate(final A arg) {
 			// NB: No implementation needed.
 		}
 	}

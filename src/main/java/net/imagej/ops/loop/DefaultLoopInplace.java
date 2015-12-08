@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override
-	public void compute(final I arg) {
+	public void mutate(final I arg) {
 		final int n = getLoopCount();
 		final UnaryComputerOp<I, I> op = getOp();
 		for (int i = 0; i < n; i++) {

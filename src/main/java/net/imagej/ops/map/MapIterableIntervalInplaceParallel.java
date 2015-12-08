@@ -53,7 +53,7 @@ public class MapIterableIntervalInplaceParallel<A> extends
 {
 
 	@Override
-	public void compute(final IterableInterval<A> arg) {
+	public void mutate(final IterableInterval<A> arg) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
@@ -68,7 +68,7 @@ public class MapIterableIntervalInplaceParallel<A> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					final A t = inCursor.get();
-					safe.compute(t);
+					safe.mutate(t);
 					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
