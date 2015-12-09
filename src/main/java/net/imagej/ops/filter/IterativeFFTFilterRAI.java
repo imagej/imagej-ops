@@ -159,8 +159,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// if no output out of bounds factory exists create the obf for output
 		if (getObfOutput() == null) {
-			setObfOutput(new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(
-				Util.getTypeFromInterval(out()).createVariable()));
+			setObfOutput(
+				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+					.getTypeFromInterval(out()).createVariable()));
 		}
 
 		Type<O> outType = Util.getTypeFromInterval(out());
@@ -174,9 +175,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			// create image for the estimate, this image is defined over the entire
 			// convolution interval
-			estimate =
-				imgFactory
-					.create(getImgConvolutionInterval(), outType.createVariable());
+			estimate = imgFactory.create(getImgConvolutionInterval(), outType
+				.createVariable());
 
 			// set first guess to be a constant = to the average value
 
@@ -196,9 +196,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			}
 
 			// create image for the reblurred
-			reblurred =
-				imgFactory
-					.create(getImgConvolutionInterval(), outType.createVariable());
+			reblurred = imgFactory.create(getImgConvolutionInterval(), outType
+				.createVariable());
 
 			raiExtendedEstimate = estimate;
 			raiExtendedReblurred = reblurred;
@@ -210,14 +209,12 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			reblurred = imgFactory.create(out(), outType.createVariable());
 
 			// extend the output and use it as a buffer to store the estimate
-			raiExtendedEstimate =
-				Views.interval(Views.extend(out(), getObfOutput()),
-					getImgConvolutionInterval());
+			raiExtendedEstimate = Views.interval(Views.extend(out(), getObfOutput()),
+				getImgConvolutionInterval());
 
 			// assemble the extended view of the reblurred
-			raiExtendedReblurred =
-				Views.interval(Views.extend(reblurred, getObfOutput()),
-					getImgConvolutionInterval());
+			raiExtendedReblurred = Views.interval(Views.extend(reblurred,
+				getObfOutput()), getImgConvolutionInterval());
 
 			// set first guess of estimate
 			// TODO: implement logic for various first guesses.
@@ -240,8 +237,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 		// if non-circulant decon mode create image for normalization
 		if (nonCirculant) {
-			normalization =
-				getImgFactory().create(raiExtendedEstimate, outType.createVariable());
+			normalization = getImgFactory().create(raiExtendedEstimate, outType
+				.createVariable());
 
 			this.createNormalizationImageSemiNonCirculant();
 		}
@@ -299,16 +296,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				end[d] = start[d] + k.dimension(d) - 1;
 			}
 
-			Img<O> temp = ops().create().img(getNormalization());
+			RandomAccessibleInterval<O> temp = ops().image().crop(
+				getRAIExtendedEstimate(), new FinalInterval(start, end));
 
-			// TODO: get rid of extra copy after bug in the crop is fixed
-			copy2(getRAIExtendedEstimate(), temp);
-
-			RandomAccessibleInterval<O> temp2 =
-				ops().image().crop(getRAIExtendedEstimate(),
-					new FinalInterval(start, end));
-
-			copy2(temp2, out());
+			ops().copy().rai(out(), temp);
 
 		}
 	}
@@ -374,8 +365,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		drawCube(mask, maskStart, maskSize, 1.0);
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, normalization,
-			this.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
+		ops().run(CorrelateFFTRAI.class, normalization, normalization, this
+			.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 		// threshold small values that can cause numerical instability
 		threshold(normalization, 1e-7f);
@@ -506,22 +497,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	public Accelerator<O> getAccelerator() {
 		return accelerator;
-	}
-
-	// TODO replace with op
-	protected void copy2(RandomAccessibleInterval<O> input,
-		RandomAccessibleInterval<O> output)
-	{
-
-		final Cursor<O> cursorInput = Views.iterable(input).cursor();
-		final Cursor<O> cursorOutput = Views.iterable(output).cursor();
-
-		while (cursorInput.hasNext()) {
-			cursorInput.fwd();
-			cursorOutput.fwd();
-
-			cursorOutput.get().set(cursorInput.get());
-		}
 	}
 
 //TODO replace with op
