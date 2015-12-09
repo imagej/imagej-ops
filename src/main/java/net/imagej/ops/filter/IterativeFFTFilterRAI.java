@@ -368,9 +368,16 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		ops().run(CorrelateFFTRAI.class, normalization, normalization, this
 			.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
-		// threshold small values that can cause numerical instability
-		threshold(normalization, 1e-7f);
+		final Cursor<O> cursorN = normalization.cursor();
 
+		while (cursorN.hasNext()) {
+			cursorN.fwd();
+
+			if (cursorN.get().getRealFloat() <= 1e-7f) {
+				cursorN.get().setReal(0.0f);
+
+			}
+		}
 	}
 
 	/**
@@ -497,23 +504,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	public Accelerator<O> getAccelerator() {
 		return accelerator;
-	}
-
-//TODO replace with op
-	protected <T extends RealType<T>> void threshold(final Img<T> inputOutput,
-		final float t)
-	{
-		final Cursor<T> cursorInputOutput = inputOutput.cursor();
-
-		while (cursorInputOutput.hasNext()) {
-			cursorInputOutput.fwd();
-
-			if (cursorInputOutput.get().getRealFloat() <= t) {
-				cursorInputOutput.get().setReal(0.0f);
-
-			}
-		}
-
 	}
 
 }
