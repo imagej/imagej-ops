@@ -30,43 +30,24 @@
 
 package net.imagej.ops.join;
 
-import java.util.ArrayList;
-
 import net.imagej.ops.InplaceOp;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
- * Joins a list of {@link InplaceOp}s.
+ * Joins an {@link InplaceOp} with a {@link UnaryComputerOp}.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class)
-public class DefaultJoinInplaces<A> extends AbstractJoinInplaces<A> {
+public interface JoinComputerAndInplace<A, B> extends
+	UnaryComputerOp<A, B>, Join2Ops<UnaryComputerOp<A, B>, InplaceOp<B>>
+{
+
+	// -- UnaryComputerOp methods --
 
 	@Override
-	public void mutate(final A input) {
-		for (final InplaceOp<A> inplace : getOps()) {
-			inplace.mutate(input);
-		}
-	}
-
-	@Override
-	public DefaultJoinInplaces<A> getIndependentInstance() {
-		final DefaultJoinInplaces<A> joiner =
-			new DefaultJoinInplaces<A>();
-
-		final ArrayList<InplaceOp<A>> funcs =
-			new ArrayList<InplaceOp<A>>();
-		for (final InplaceOp<A> func : getOps()) {
-			funcs.add(func.getIndependentInstance());
-		}
-
-		joiner.setOps(funcs);
-
-		return joiner;
+	default void compute1(final A input, final B output) {
+		getFirst().compute1(input, output);
+		getSecond().mutate(output);
 	}
 
 }

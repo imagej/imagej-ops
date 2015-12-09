@@ -30,10 +30,12 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -43,14 +45,38 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Join.class)
 public class DefaultJoinInplaceAndComputer<A, B> extends
-	AbstractJoinComputerAndComputer<A, A, B, InplaceOp<A>, UnaryComputerOp<A, B>>
+	AbstractUnaryComputerOp<A, B> implements JoinInplaceAndComputer<A, B>
 {
 
+	@Parameter
+	private InplaceOp<A> first;
+
+	@Parameter
+	private UnaryComputerOp<A, B> second;
+
+	// -- Join2Ops methods --
+
 	@Override
-	public void compute1(final A input, final B output) {
-		getFirst().mutate(input);
-		getSecond().compute1(input, output);
+	public InplaceOp<A> getFirst() {
+		return first;
 	}
+
+	@Override
+	public void setFirst(final InplaceOp<A> first) {
+		this.first = first;
+	}
+
+	@Override
+	public UnaryComputerOp<A,B> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final UnaryComputerOp<A,B> second) {
+		this.second = second;
+	}
+
+	// -- Threadable methods --
 
 	@Override
 	public DefaultJoinInplaceAndComputer<A, B> getIndependentInstance() {
@@ -62,4 +88,5 @@ public class DefaultJoinInplaceAndComputer<A, B> extends
 
 		return joiner;
 	}
+
 }

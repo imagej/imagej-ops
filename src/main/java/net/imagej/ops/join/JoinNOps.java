@@ -30,35 +30,35 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.InplaceOp;
-import net.imagej.ops.Ops;
+import java.util.List;
 
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
- * Joins two {@link InplaceOp}s.
+ * A join operation which joins two {@link UnaryComputerOp}s. The resulting
+ * operation will take the input of the first {@link UnaryComputerOp} as input
+ * and the output of the second {@link UnaryComputerOp} as the output.
  * 
+ * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Join.class)
-public class DefaultJoinInplaceAndInplace<A> extends
-	AbstractJoinInplaceAndInplace<A>
-{
+public interface JoinNOps<OP extends Op> extends Ops.Join {
 
-	@Override
-	public void mutate(final A arg) {
-		getFirst().mutate(arg);
-		getSecond().mutate(arg);
-	}
+	// TODO: Change to Collection<? extends OP> once
+	// imagej-ops depends on scijava-common 2.50.1 or later.
 
-	@Override
-	public DefaultJoinInplaceAndInplace<A> getIndependentInstance() {
-		final DefaultJoinInplaceAndInplace<A> joiner =
-			new DefaultJoinInplaceAndInplace<A>();
+	/**
+	 * @return {@link Op}s which are joined by this op
+	 */
+	List<? extends OP> getOps();
 
-		joiner.setFirst(getFirst());
-		joiner.setSecond(getSecond());
+	/**
+	 * Sets the {@link Op}s which are joined in this op.
+	 * 
+	 * @param ops joined in this op
+	 */
+	void setOps(List<? extends OP> ops);
 
-		return joiner;
-	}
 }

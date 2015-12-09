@@ -31,37 +31,27 @@
 package net.imagej.ops.join;
 
 import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.Ops;
-
-import org.scijava.plugin.Plugin;
 
 /**
- * Joins two {@link UnaryComputerOp}s.
+ * A join operation which joins two {@link UnaryComputerOp}s. The resulting
+ * operation will take the input of the first {@link UnaryComputerOp} as input
+ * and the output of the second {@link UnaryComputerOp} as the output.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-@Plugin(type = Ops.Join.class)
-public class DefaultJoinComputerAndComputer<A, B, C> extends
-	AbstractJoinComputerAndComputer<A, B, C, UnaryComputerOp<A, B>, UnaryComputerOp<B, C>>
+public interface Join2Computers<A, B, C> extends UnaryComputerOp<A, C>,
+	Join2Ops<UnaryComputerOp<A, B>, UnaryComputerOp<B, C>>,
+	BufferFactory<A, B>
 {
 
+	// -- UnaryComputerOp methods --
+
 	@Override
-	public void compute1(final A input, final C output) {
+	default void compute1(final A input, final C output) {
 		final B buffer = getBuffer(input);
 		getFirst().compute1(input, buffer);
 		getSecond().compute1(buffer, output);
 	}
 
-	@Override
-	public DefaultJoinComputerAndComputer<A, B, C> getIndependentInstance() {
-
-		final DefaultJoinComputerAndComputer<A, B, C> joiner =
-			new DefaultJoinComputerAndComputer<A, B, C>();
-
-		joiner.setFirst(getFirst().getIndependentInstance());
-		joiner.setSecond(getSecond().getIndependentInstance());
-		joiner.setOutputFactory(getOutputFactory());
-
-		return joiner;
-	}
 }

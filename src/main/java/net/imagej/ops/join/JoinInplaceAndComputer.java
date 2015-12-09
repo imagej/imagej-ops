@@ -30,64 +30,24 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
-import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.UnaryComputerOp;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass of {@link JoinComputerAndComputer} implementations.
+ * Joins an {@link InplaceOp} with a {@link UnaryComputerOp}.
  * 
- * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinComputerAndComputer<A, B, C, C1 extends UnaryComputerOp<A, B>, C2 extends UnaryComputerOp<B, C>>
-	extends AbstractUnaryComputerOp<A, C> implements
-	JoinComputerAndComputer<A, B, C, C1, C2>
+public interface JoinInplaceAndComputer<A, B> extends
+	UnaryComputerOp<A, B>, Join2Ops<InplaceOp<A>, UnaryComputerOp<A, B>>
 {
 
-	@Parameter
-	private C1 first;
-
-	@Parameter
-	private C2 second;
-
-	@Parameter(required = false)
-	private UnaryOutputFactory<A, B> outputFactory;
-
-	private B buffer;
-
-	public B getBuffer(final A input) {
-		if (buffer == null) buffer = outputFactory.createOutput(input);
-		return buffer;
-	}
-
-	public UnaryOutputFactory<A, B> getOutputFactory() {
-		return outputFactory;
-	}
-
-	public void setOutputFactory(final UnaryOutputFactory<A, B> outputFactory) {
-		this.outputFactory = outputFactory;
-	}
+	// -- UnaryComputerOp methods --
 
 	@Override
-	public C1 getFirst() {
-		return first;
-	}
-
-	@Override
-	public void setFirst(final C1 first) {
-		this.first = first;
-	}
-
-	@Override
-	public C2 getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final C2 second) {
-		this.second = second;
+	default void compute1(final A input, final B output) {
+		getFirst().mutate(input);
+		getSecond().compute1(input, output);
 	}
 
 }

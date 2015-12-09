@@ -30,45 +30,84 @@
 
 package net.imagej.ops.join;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.UnaryOutputFactory;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A join operation which joins a list of {@link UnaryComputerOp}s.
+ * Joins a list of {@link UnaryComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinComputers<A, C extends UnaryComputerOp<A, A>> extends
-	UnaryComputerOp<A, A>, Ops.Join
+@Plugin(type = Ops.Join.class)
+public class DefaultJoinNComputers<A> extends AbstractUnaryComputerOp<A, A>
+	implements JoinNComputers<A>
 {
 
-	/**
-	 * @return {@link UnaryOutputFactory} used to create intermediate results
-	 */
-	UnaryOutputFactory<A, A> getOutputFactory();
+	@Parameter
+	private List<? extends UnaryComputerOp<A, A>> ops;
 
-	/**
-	 * Sets the {@link UnaryOutputFactory} which is used to create intermediate
-	 * results.
-	 * 
-	 * @param outputFactory used to create intermediate results
-	 */
-	void setOutputFactory(UnaryOutputFactory<A, A> outputFactory);
+	@Parameter
+	private UnaryOutputFactory<A, A> outputFactory;
 
-	/**
-	 * @return {@link List} of {@link UnaryComputerOp}s which are joined by this op
-	 */
-	List<? extends C> getOps();
+	private A buffer;
 
-	/**
-	 * Sets the {@link UnaryComputerOp}s which are joined in this op.
-	 * 
-	 * @param ops joined in this op
-	 */
-	void setOps(List<? extends C> ops);
+	// -- JoinNOps methods --
+
+	@Override
+	public List<? extends UnaryComputerOp<A,A>> getOps() {
+		return ops;
+	}
+
+	@Override
+	public void setOps(final List<? extends UnaryComputerOp<A,A>> ops) {
+		this.ops = ops;
+	}
+
+	// -- BufferFactory methods --
+
+	@Override
+	public UnaryOutputFactory<A, A> getOutputFactory() {
+		return outputFactory;
+	}
+
+	@Override
+	public void setOutputFactory(final UnaryOutputFactory<A, A> outputFactory) {
+		this.outputFactory = outputFactory;
+	}
+
+	@Override
+	public A getBuffer(final A input) {
+		if (buffer == null) {
+			buffer = outputFactory.createOutput(input);
+		}
+		return buffer;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public DefaultJoinNComputers<A> getIndependentInstance() {
+		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<A>();
+
+		final ArrayList<UnaryComputerOp<A, A>> opsCopy =
+			new ArrayList<UnaryComputerOp<A, A>>();
+		for (final UnaryComputerOp<A, A> op : getOps()) {
+			opsCopy.add(op.getIndependentInstance());
+		}
+
+		joiner.setOps(opsCopy);
+		joiner.setOutputFactory(getOutputFactory());
+
+		return joiner;
+	}
 
 }

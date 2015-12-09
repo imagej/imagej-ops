@@ -826,60 +826,57 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	default <A, B, C> C join(final C out, final A in, final UnaryComputerOp<A, B> first,
-		final UnaryComputerOp<B, C> second)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Computers.class)
+	default <A, B, C> C join(final C out, final A in,
+		final UnaryComputerOp<A, B> first, final UnaryComputerOp<B, C> second)
 	{
 		@SuppressWarnings("unchecked")
-		final C result =
-			(C) run(net.imagej.ops.join.DefaultJoinComputerAndComputer.class, out,
-				in, first, second);
+		final C result = (C) run(net.imagej.ops.join.DefaultJoin2Computers.class,
+			out, in, first, second);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndComputer.class)
-	default <A, B, C> C join(final C out, final A in, final UnaryComputerOp<A, B> first,
-		final UnaryComputerOp<B, C> second, final UnaryOutputFactory<A, B> outputFactory)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Computers.class)
+	default <A, B, C> C join(final C out, final A in,
+		final UnaryComputerOp<A, B> first, final UnaryComputerOp<B, C> second,
+		final UnaryOutputFactory<A, B> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
-		final C result =
-			(C) run(net.imagej.ops.join.DefaultJoinComputerAndComputer.class, out,
-				in, first, second, outputFactory);
+		final C result = (C) run(net.imagej.ops.join.DefaultJoin2Computers.class,
+			out, in, first, second, outputFactory);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndInplace.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Inplaces.class)
 	default <A> A join(final A arg, final InplaceOp<A> first,
 		final InplaceOp<A> second)
 	{
 		@SuppressWarnings("unchecked")
-		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinInplaceAndInplace.class, arg,
-				first, second);
+		final A result = (A) run(net.imagej.ops.join.DefaultJoin2Inplaces.class,
+			arg, first, second);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputers.class)
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinNComputers.class)
 	default <A> A join(final A out, final A in,
 		final List<? extends UnaryComputerOp<A, A>> ops,
 		final UnaryOutputFactory<A, A> outputFactory)
 	{
 		@SuppressWarnings("unchecked")
-		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinComputers.class, out, in,
-				ops, outputFactory);
+		final A result = (A) run(net.imagej.ops.join.DefaultJoinNComputers.class,
+			out, in, ops, outputFactory);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaces.class)
-	default <A> A join(final A arg, final List<InplaceOp<A>> ops) {
+	@OpMethod(op = net.imagej.ops.join.DefaultJoinNInplaces.class)
+	default <A> A join(final A arg, final List<? extends InplaceOp<A>> ops) {
 		@SuppressWarnings("unchecked")
-		final A result =
-			(A) run(net.imagej.ops.join.DefaultJoinInplaces.class, arg, ops);
+		final A result = (A) run(net.imagej.ops.join.DefaultJoinNInplaces.class,
+			arg, ops);
 		return result;
 	}
 
@@ -889,45 +886,21 @@ public interface OpEnvironment extends Contextual {
 		final UnaryComputerOp<A, B> second)
 	{
 		@SuppressWarnings("unchecked")
-		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in,
-				first, second);
-		return result;
-	}
-
-	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
-	default <A, B> B join(final B out, final A in, final InplaceOp<A> first,
-		final UnaryComputerOp<A, B> second, final UnaryOutputFactory<A, A> outputFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in,
-				first, second, outputFactory);
+		final B result = (B) run(
+			net.imagej.ops.join.DefaultJoinInplaceAndComputer.class, out, in, first,
+			second);
 		return result;
 	}
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
-	default <A, B> B join(final B out, final A in, final UnaryComputerOp<A, B> first,
-		final InplaceOp<B> second)
+	default <A, B> B join(final B out, final A in,
+		final UnaryComputerOp<A, B> first, final InplaceOp<B> second)
 	{
 		@SuppressWarnings("unchecked")
-		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in,
-				first, second);
-		return result;
-	}
-
-	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
-	default <A, B> B join(final B out, final A in, final UnaryComputerOp<A, B> first,
-		final InplaceOp<B> second, final UnaryOutputFactory<A, B> outputFactory)
-	{
-		@SuppressWarnings("unchecked")
-		final B result =
-			(B) run(net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in,
-				first, second, outputFactory);
+		final B result = (B) run(
+			net.imagej.ops.join.DefaultJoinComputerAndInplace.class, out, in, first,
+			second);
 		return result;
 	}
 

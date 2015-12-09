@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,34 +30,87 @@
 
 package net.imagej.ops.join;
 
-import java.util.List;
-
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass of {@link JoinInplaces} implementations.
- * 
+ * Joins two {@link UnaryComputerOp}s.
+ *
  * @author Christian Dietz (University of Konstanz)
- * @author Curtis Rueden
  */
-public abstract class AbstractJoinInplaces<A> extends AbstractInplaceOp<A>
-	implements JoinInplaces<A>
+@Plugin(type = Ops.Join.class)
+public class DefaultJoin2Computers<A, B, C> extends
+	AbstractUnaryComputerOp<A, C> implements Join2Computers<A, B, C>
 {
 
 	@Parameter
-	private List<InplaceOp<A>> ops;
+	private UnaryComputerOp<A, B> first;
+
+	@Parameter
+	private UnaryComputerOp<B, C> second;
+
+	@Parameter(required = false)
+	private UnaryOutputFactory<A, B> bufferFactory;
+
+	private B buffer;
+
+	// -- Join2Ops methods --
 
 	@Override
-	public void setOps(final List<InplaceOp<A>> ops) {
-		this.ops = ops;
+	public UnaryComputerOp<A, B> getFirst() {
+		return first;
 	}
 
 	@Override
-	public List<InplaceOp<A>> getOps() {
-		return ops;
+	public void setFirst(final UnaryComputerOp<A, B> first) {
+		this.first = first;
+	}
+
+	@Override
+	public UnaryComputerOp<B, C> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final UnaryComputerOp<B, C> second) {
+		this.second = second;
+	}
+
+	// -- BufferFactory methods --
+
+	@Override
+	public UnaryOutputFactory<A, B> getOutputFactory() {
+		return bufferFactory;
+	}
+
+	@Override
+	public void setOutputFactory(final UnaryOutputFactory<A, B> bufferFactory) {
+		this.bufferFactory = bufferFactory;
+	}
+
+	@Override
+	public B getBuffer(final A input) {
+		if (buffer == null) buffer = bufferFactory.createOutput(input);
+		return buffer;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public DefaultJoin2Computers<A, B, C> getIndependentInstance() {
+		final DefaultJoin2Computers<A, B, C> joiner =
+			new DefaultJoin2Computers<A, B, C>();
+
+		joiner.setFirst(getFirst().getIndependentInstance());
+		joiner.setSecond(getSecond().getIndependentInstance());
+		joiner.setOutputFactory(getOutputFactory());
+
+		return joiner;
 	}
 
 }

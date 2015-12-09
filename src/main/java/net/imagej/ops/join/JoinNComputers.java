@@ -30,61 +30,53 @@
 
 package net.imagej.ops.join;
 
+import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
-import net.imagej.ops.UnaryOutputFactory;
 import net.imagej.ops.UnaryComputerOp;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass of {@link JoinComputers} implementations.
+ * A join operation which joins a list of {@link UnaryComputerOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractJoinComputers<A, C extends UnaryComputerOp<A, A>>
-	extends AbstractUnaryComputerOp<A, A> implements JoinComputers<A, C>
+public interface JoinNComputers<A> extends UnaryComputerOp<A, A>,
+	JoinNOps<UnaryComputerOp<A, A>>, BufferFactory<A, A>
 {
 
-	@Parameter
-	private List<? extends C> ops;
-
-	@Parameter
-	private UnaryOutputFactory<A, A> outputFactory;
-
-	private A buffer;
+	// -- UnaryComputerOp methods --
 
 	@Override
-	public UnaryOutputFactory<A, A> getOutputFactory() {
-		return outputFactory;
-	}
+	default void compute1(final A input, final A output) {
+		final List<? extends UnaryComputerOp<A, A>> ops = getOps();
+		final Iterator<? extends UnaryComputerOp<A, A>> it = ops.iterator();
+		final UnaryComputerOp<A, A> first = it.next();
 
-	@Override
-	public void setOutputFactory(final UnaryOutputFactory<A, A> outputFactory) {
-		this.outputFactory = outputFactory;
-	}
-
-	@Override
-	public List<? extends C> getOps() {
-		return ops;
-	}
-
-	@Override
-	public void setOps(final List<? extends C> ops) {
-		this.ops = ops;
-	}
-
-	/**
-	 * @param input helping to create the buffer
-	 * @return the buffer which can be used for the join.
-	 */
-	protected A getBuffer(final A input) {
-		if (buffer == null) {
-			buffer = outputFactory.createOutput(input);
+		if (ops.size() == 1) {
+			first.compute1(input, output);
+			return;
 		}
-		return buffer;
+
+		final A buffer = getBuffer(input);
+
+		A tmpOutput = output;
+		A tmpInput = buffer;
+		A tmp;
+
+		if (ops.size() % 2 == 0) {
+			tmpOutput = buffer;
+			tmpInput = output;
+		}
+
+		first.compute1(input, tmpOutput);
+
+		while (it.hasNext()) {
+			tmp = tmpInput;
+			tmpInput = tmpOutput;
+			tmpOutput = tmp;
+			it.next().compute1(tmpInput, tmpOutput);
+		}
 	}
 
 }

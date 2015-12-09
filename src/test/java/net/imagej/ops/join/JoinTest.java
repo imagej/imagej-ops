@@ -35,12 +35,13 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.UnaryOutputFactory;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -67,9 +68,8 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testInplaceJoin() {
-		final Op op =
-			ops.op(DefaultJoinInplaceAndInplace.class, in, inplaceOp, inplaceOp);
+	public void testJoin2Inplaces() {
+		final Op op = ops.op(DefaultJoin2Inplaces.class, in, inplaceOp, inplaceOp);
 		op.run();
 
 		// test
@@ -81,7 +81,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testComputerInplaceJoin() {
+	public void testJoinComputerAndInplace() {
 		final Op op =
 			ops.op(DefaultJoinComputerAndInplace.class, out, in, computerOp,
 				inplaceOp);
@@ -96,7 +96,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testInplaceComputerJoin() {
+	public void testJoinInplaceAndComputer() {
 		final Op op =
 			ops.op(DefaultJoinInplaceAndComputer.class, out, in, inplaceOp,
 				computerOp);
@@ -111,16 +111,9 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testComputerAndComputerJoin() {
+	public void testJoin2Computers() {
 		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
-			new UnaryOutputFactory<Img<ByteType>, Img<ByteType>>() {
-
-				@Override
-				public Img<ByteType> createOutput(final Img<ByteType> input) {
-					return input.factory().create(input,
-						input.firstElement().createVariable());
-				}
-			};
+			new ImgImgSameTypeFactory<>();
 
 		ops.join(out, in, computerOp, computerOp, outputFactory);
 
@@ -133,8 +126,7 @@ public class JoinTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testJoinComputers() {
-
+	public void testJoinNComputers() {
 		final List<UnaryComputerOp<Img<ByteType>, Img<ByteType>>> computers =
 			new ArrayList<UnaryComputerOp<Img<ByteType>, Img<ByteType>>>();
 
@@ -143,14 +135,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 
 		final UnaryOutputFactory<Img<ByteType>, Img<ByteType>> outputFactory =
-			new UnaryOutputFactory<Img<ByteType>, Img<ByteType>>() {
-
-				@Override
-				public Img<ByteType> createOutput(final Img<ByteType> input) {
-					return input.factory().create(input,
-						input.firstElement().createVariable());
-				}
-			};
+			new ImgImgSameTypeFactory<>();
 
 		ops.join(out, in, computers, outputFactory);
 
@@ -162,8 +147,9 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	// Helper classes
-	class AddOneInplace extends AbstractInplaceOp<ByteType> {
+	// -- Helper classes --
+
+	private class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
 		public void mutate(final ByteType arg) {
@@ -171,7 +157,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneComputer extends AbstractUnaryComputerOp<ByteType, ByteType> {
+	private class AddOneComputer extends AbstractUnaryComputerOp<ByteType, ByteType> {
 
 		@Override
 		public void compute1(final ByteType input, final ByteType output) {
@@ -180,7 +166,7 @@ public class JoinTest extends AbstractOpTest {
 		}
 	}
 
-	class AddOneComputerImg extends
+	private class AddOneComputerImg extends
 		AbstractUnaryComputerOp<Img<ByteType>, Img<ByteType>>
 	{
 

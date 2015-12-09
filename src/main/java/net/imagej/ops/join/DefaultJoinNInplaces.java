@@ -31,70 +31,64 @@
 package net.imagej.ops.join;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.AbstractInplaceOp;
+import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins a list of {@link UnaryComputerOp}s.
+ * Joins a list of {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Join.class)
-public class DefaultJoinComputers<A> extends
-	AbstractJoinComputers<A, UnaryComputerOp<A, A>>
+public class DefaultJoinNInplaces<A> extends AbstractInplaceOp<A> implements
+	JoinNInplaces<A>
 {
 
+	@Parameter
+	private List<? extends InplaceOp<A>> ops;
+
+	// -- InplaceOp methods --
+
 	@Override
-	public void compute1(final A input, final A output) {
-		final List<? extends UnaryComputerOp<A, A>> ops = getOps();
-		final Iterator<? extends UnaryComputerOp<A, A>> it = ops.iterator();
-		final UnaryComputerOp<A, A> first = it.next();
-
-		if (ops.size() == 1) {
-			first.compute1(input, output);
-			return;
-		}
-
-		final A buffer = getBuffer(input);
-
-		A tmpOutput = output;
-		A tmpInput = buffer;
-		A tmp;
-
-		if (ops.size() % 2 == 0) {
-			tmpOutput = buffer;
-			tmpInput = output;
-		}
-
-		first.compute1(input, tmpOutput);
-
-		while (it.hasNext()) {
-			tmp = tmpInput;
-			tmpInput = tmpOutput;
-			tmpOutput = tmp;
-			it.next().compute1(tmpInput, tmpOutput);
+	public void mutate(final A input) {
+		for (final InplaceOp<A> inplace : getOps()) {
+			inplace.mutate(input);
 		}
 	}
 
+	// -- JoinNOps methods --
+
 	@Override
-	public DefaultJoinComputers<A> getIndependentInstance() {
+	public void setOps(final List<? extends InplaceOp<A>> ops) {
+		this.ops = ops;
+	}
 
-		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
+	@Override
+	public List<? extends InplaceOp<A>> getOps() {
+		return ops;
+	}
 
-		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>();
-		for (final UnaryComputerOp<A, A> op : getOps()) {
-			ops.add(op.getIndependentInstance());
+	// -- Threadable methods --
+
+	@Override
+	public DefaultJoinNInplaces<A> getIndependentInstance() {
+		final DefaultJoinNInplaces<A> joiner = new DefaultJoinNInplaces<A>();
+
+		final ArrayList<InplaceOp<A>> opsCopy = new ArrayList<InplaceOp<A>>();
+		for (final InplaceOp<A> func : getOps()) {
+			opsCopy.add(func.getIndependentInstance());
 		}
 
-		joiner.setOps(ops);
-		joiner.setOutputFactory(getOutputFactory());
+		joiner.setOps(opsCopy);
 
 		return joiner;
 	}
+
 }

@@ -30,17 +30,62 @@
 
 package net.imagej.ops.join;
 
+import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Ops;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * A join operation which joins two {@link InplaceOp}s. The resulting operation
- * will take the input of the first {@link InplaceOp} as input and the output of
- * the second {@link InplaceOp} as the output.
+ * Joins two {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface JoinInplaceAndInplace<A> extends
-	JoinComputerAndComputer<A, A, A, InplaceOp<A>, InplaceOp<A>>
+@Plugin(type = Ops.Join.class)
+public class DefaultJoin2Inplaces<A> extends AbstractInplaceOp<A> implements
+	Join2Inplaces<A>
 {
-	// NB: Marker interface.
+
+	@Parameter
+	private InplaceOp<A> first;
+
+	@Parameter
+	private InplaceOp<A> second;
+
+	// -- Join2Ops methods --
+
+	@Override
+	public InplaceOp<A> getFirst() {
+		return first;
+	}
+
+	@Override
+	public void setFirst(final InplaceOp<A> first) {
+		this.first = first;
+	}
+
+	@Override
+	public InplaceOp<A> getSecond() {
+		return second;
+	}
+
+	@Override
+	public void setSecond(final InplaceOp<A> second) {
+		this.second = second;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public DefaultJoin2Inplaces<A> getIndependentInstance() {
+		final DefaultJoin2Inplaces<A> joiner =
+			new DefaultJoin2Inplaces<A>();
+
+		joiner.setFirst(getFirst());
+		joiner.setSecond(getSecond());
+
+		return joiner;
+	}
+
 }

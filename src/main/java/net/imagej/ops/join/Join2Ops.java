@@ -30,21 +30,38 @@
 
 package net.imagej.ops.join;
 
-import java.util.List;
-
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
- * A join operation which joins a list of {@link InplaceOp}s.
+ * A join operation which joins two {@link UnaryComputerOp}s. The resulting
+ * operation will take the input of the first {@link UnaryComputerOp} as input
+ * and the output of the second {@link UnaryComputerOp} as the output.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface JoinInplaces<A> extends InplaceOp<A>, Ops.Join {
+public interface Join2Ops<OP1 extends Op, OP2 extends Op> extends Ops.Join {
 
-	void setOps(List<InplaceOp<A>> ops);
+	/**
+	 * @return first {@link Op} to be joined
+	 */
+	OP1 getFirst();
 
-	List<InplaceOp<A>> getOps();
+	/**
+	 * @param first {@link Op} to be joined
+	 */
+	void setFirst(OP1 first);
+
+	/**
+	 * @return second {@link Op} to be joined
+	 */
+	OP2 getSecond();
+
+	/**
+	 * @param second {@link Op} to be joined
+	 */
+	void setSecond(OP2 second);
 
 }

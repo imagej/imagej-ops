@@ -30,39 +30,33 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryOutputFactory;
 
 /**
- * A join operation which joins two {@link UnaryComputerOp}s. The resulting operation
- * will take the input of the first {@link UnaryComputerOp} as input and the output
- * of the second {@link UnaryComputerOp} as the output.
+ * An object which can produce buffers using a {@link UnaryOutputFactory}.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
  */
-public interface JoinComputerAndComputer<A, B, C, C1 extends UnaryComputerOp<A, B>, C2 extends UnaryComputerOp<B, C>>
-	extends UnaryComputerOp<A, C>, Ops.Join
-{
+public interface BufferFactory<A, B> {
 
 	/**
-	 * @return first {@link UnaryComputerOp} to be joined
+	 * @return {@link UnaryOutputFactory} used to create intermediate results
 	 */
-	C1 getFirst();
+	UnaryOutputFactory<A, B> getOutputFactory();
 
 	/**
-	 * @param first {@link UnaryComputerOp} to be joined
+	 * Sets the {@link UnaryOutputFactory} which is used to create intermediate
+	 * results.
+	 * 
+	 * @param outputFactory used to create intermediate results
 	 */
-	void setFirst(C1 first);
+	void setOutputFactory(UnaryOutputFactory<A, B> outputFactory);
 
 	/**
-	 * @return second {@link UnaryComputerOp} to be joined
+	 * @param input helping to create the buffer
+	 * @return the buffer which can be used for the join.
 	 */
-	C2 getSecond();
-
-	/**
-	 * @param second {@link UnaryComputerOp} to be joined
-	 */
-	void setSecond(C2 second);
+	B getBuffer(A input);
 
 }

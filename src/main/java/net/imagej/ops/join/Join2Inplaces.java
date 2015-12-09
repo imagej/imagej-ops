@@ -28,48 +28,25 @@
  * #L%
  */
 
-package net.imagej.ops.loop;
+package net.imagej.ops.join;
 
-import java.util.ArrayList;
-
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.Ops;
-import net.imagej.ops.join.DefaultJoinNComputers;
-
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.InplaceOp;
 
 /**
- * Applies a {@link UnaryComputerOp} multiple times to an image.
+ * A join operation which joins two {@link InplaceOp}s. The joined
+ * {@link InplaceOp} mutates each argument using the first {@link InplaceOp}
+ * followed by the second {@link InplaceOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-@Plugin(type = Ops.Loop.class)
-public class DefaultLoopComputer<A> extends
-	AbstractLoopComputer<UnaryComputerOp<A, A>, A>
+public interface Join2Inplaces<A> extends InplaceOp<A>,
+	Join2Ops<InplaceOp<A>, InplaceOp<A>>
 {
 
 	@Override
-	public void compute1(final A input, final A output) {
-		final int n = getLoopCount();
-
-		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>(n);
-		for (int i = 0; i < n; i++)
-			ops.add(getOp());
-
-		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<A>();
-		joiner.setOps(ops);
-		joiner.setOutputFactory(getOutputFactory());
-
-		joiner.compute1(input, output);
+	default void mutate(final A arg) {
+		getFirst().mutate(arg);
+		getSecond().mutate(arg);
 	}
 
-	@Override
-	public DefaultLoopComputer<A> getIndependentInstance() {
-		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
-
-		looper.setOp(getOp().getIndependentInstance());
-		looper.setOutputFactory(getOutputFactory());
-
-		return looper;
-	}
 }

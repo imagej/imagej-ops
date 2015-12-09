@@ -30,44 +30,14 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.InplaceOp;
 
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass of {@link JoinInplaceAndInplace} implementations.
+ * A join operation which joins a list of {@link InplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
-public abstract class AbstractJoinInplaceAndInplace<A> extends AbstractInplaceOp<A>
-	implements JoinInplaceAndInplace<A>
-{
-
-	@Parameter
-	private InplaceOp<A> first;
-
-	@Parameter
-	private InplaceOp<A> second;
-
-	@Override
-	public InplaceOp<A> getFirst() {
-		return first;
-	}
-
-	@Override
-	public void setFirst(final InplaceOp<A> first) {
-		this.first = first;
-	}
-
-	@Override
-	public InplaceOp<A> getSecond() {
-		return second;
-	}
-
-	@Override
-	public void setSecond(final InplaceOp<A> second) {
-		this.second = second;
-	}
-
+public interface JoinNInplaces<A> extends InplaceOp<A>, JoinNOps<InplaceOp<A>> {
+	// NB: Marker interface.
 }
