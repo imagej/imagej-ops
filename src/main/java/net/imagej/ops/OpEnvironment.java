@@ -912,10 +912,10 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	default <I> I loop(final I arg, final UnaryComputerOp<I, I> op, final int n) {
+	default <A> A loop(final A arg, final InplaceOp<A> op, final int n) {
 		@SuppressWarnings("unchecked")
-		final I result =
-			(I) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg, op, n);
+		final A result = (A) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg,
+			op, n);
 		return result;
 	}
 
@@ -925,9 +925,8 @@ public interface OpEnvironment extends Contextual {
 		final UnaryOutputFactory<A, A> outputFactory, final int n)
 	{
 		@SuppressWarnings("unchecked")
-		final A result =
-			(A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out, in, op,
-				outputFactory, n);
+		final A result = (A) run(net.imagej.ops.loop.DefaultLoopComputer.class, out,
+			in, op, outputFactory, n);
 		return result;
 	}
 
