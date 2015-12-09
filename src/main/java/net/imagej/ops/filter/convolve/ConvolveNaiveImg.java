@@ -32,9 +32,8 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFilterImg;
+import net.imagej.ops.filter.AbstractFilter;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -50,11 +49,16 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
 public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractFilterImg<I, O, K> implements Ops.Filter.Convolve, Contingent
+	extends AbstractFilter<I, O, K> implements Ops.Filter.Convolve, Contingent
 {
 
 	@Override
-	public void compute(final Img<I> img, final Img<O> out) {
+	public RandomAccessibleInterval<O> compute(
+		final RandomAccessibleInterval<I> img)
+	{
+
+		RandomAccessibleInterval<O> out = createOutput(img);
+
 		if (getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
 				Util.getTypeFromInterval(img).createVariable()));
@@ -78,6 +82,8 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 			Views.interval(Views.extend(out, obfOutput), out);
 
 		ops().filter().convolve(extendedOut, extendedIn, getKernel());
+
+		return out;
 	}
 
 	@Override

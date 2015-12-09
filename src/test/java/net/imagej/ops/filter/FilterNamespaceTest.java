@@ -36,7 +36,7 @@ import org.junit.Test;
 
 /**
  * Tests {@link FilterNamespace}.
- *
+ * 
  * @author Curtis Rueden
  */
 public class FilterNamespaceTest extends AbstractNamespaceTest {

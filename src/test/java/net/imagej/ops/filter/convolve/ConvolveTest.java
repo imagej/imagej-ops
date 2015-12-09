@@ -38,12 +38,14 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.CreateFFTFilterMemory;
 import net.imglib2.Point;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.view.Views;
 
 import org.junit.Test;
 
@@ -71,7 +73,7 @@ public class ConvolveTest extends AbstractOpTest {
 		assertSame(ConvolveNaiveImg.class, op.getClass());
 
 		// make sure it runs
-		Img<FloatType> out = ops.filter().convolve(in, kernel);
+		RandomAccessibleInterval<FloatType> out = ops.filter().convolve(in, kernel);
 
 		assertEquals(out.dimension(0), 20);
 
@@ -83,7 +85,7 @@ public class ConvolveTest extends AbstractOpTest {
 		op = ops.op(Ops.Filter.Convolve.class, in, kernel);
 
 		// this time we should get ConvolveFFT
-		assertSame(ConvolveFFTImg.class, op.getClass());
+		assertSame(ConvolveFFT.class, op.getClass());
 
 		// make sure it runs
 		out = ops.filter().convolve(in, kernel);
@@ -125,7 +127,8 @@ public class ConvolveTest extends AbstractOpTest {
 		ops.stats().sum(kernelSum, kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> out = ops.filter().convolve(null, in, kernel, borderSize);
+		RandomAccessibleInterval<FloatType> out =
+			ops.filter().convolve(in, kernel, borderSize);
 
 		// create an output for the next test
 		Img<FloatType> out2 =
@@ -143,14 +146,15 @@ public class ConvolveTest extends AbstractOpTest {
 		createMemory.run();
 
 		// run convolve using the rai version with the memory created above
-		ops.filter().convolve(createMemory.getRAIExtendedInput(),
-			createMemory.getRAIExtendedKernel(), createMemory.getFFTImg(),
-			createMemory.getFFTKernel(), out2);
+		ops.filter().convolve(out2, createMemory.getRAIExtendedInput(),
+			createMemory.getRAIExtendedKernel(), createMemory.getFFTImgInterval(),
+			createMemory.getFFTKernelInterval());
 
-		ops.filter().convolve(createMemory.getRAIExtendedInput(), null,
-			createMemory.getFFTImg(), createMemory.getFFTKernel(), out3, true, false);
+		ops.filter().convolve(out3, createMemory.getRAIExtendedInput(),
+			createMemory.getRAIExtendedKernel(), createMemory.getFFTImgInterval(),
+			createMemory.getFFTKernelInterval(), true, false);
 
-		ops.stats().sum(outSum, out);
+		ops.stats().sum(outSum, Views.iterable(out));
 		ops.stats().sum(outSum2, out2);
 		ops.stats().sum(outSum3, out3);
 

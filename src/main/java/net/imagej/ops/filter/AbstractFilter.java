@@ -30,11 +30,9 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.AbstractFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
@@ -51,61 +49,61 @@ import org.scijava.plugin.Parameter;
  * @param <O>
  * @param <K>
  */
-public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
-	extends AbstractHybridOp<Img<I>, Img<O>>
+public abstract class AbstractFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
+	extends
+	AbstractFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	/**
-	 * the kernel (psf)
+	 * The kernel (psf)
 	 */
 	@Parameter
 	private RandomAccessibleInterval<K> kernel;
 
 	/**
-	 * Border size in each dimension. If null default border size will be added.
+	 * Border size in each dimension. If null default border size will be calculated and added.
 	 */
 	@Parameter(required = false)
 	private long[] borderSize = null;
 
 	/**
-	 * generates the out of bounds strategy for the extended area of the input
+	 * Defines the out of bounds strategy for the extended area of the input
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> obfInput;
 
 	/**
-	 * generates the out of bounds strategy for the extended area of the kernel
+	 * Defines the out of bounds strategy for the extended area of the kernel
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel;
 
 	/**
-	 * The output type. If null default output type will be used.
+	 * The output type. If null a default output type will be used.
 	 */
 	@Parameter(required = false)
 	private Type<O> outType;
 
 	/**
-	 * Factory to create output Img
+	 * Factory to create output Img.  If null a default output factory will be used
 	 */
 	@Parameter(required = false)
 	private ImgFactory<O> outFactory;
 
 	/**
-	 * Create the output using the outFactory and outType if they exist. If these
-	 * are null use a default factory and type
+	 * Create the output using the outFactory and outType if they exist. If
+	 * these are null use a default factory and type
 	 */
-	@Override
-	public Img<O> createOutput(Img<I> input) {
-
-		// if the outType is null
+	@SuppressWarnings("unchecked")
+	public RandomAccessibleInterval<O> createOutput(RandomAccessibleInterval<I> input) {
+		
 		if (outType == null) {
 
 			// if the input type and kernel type are the same use this type
-			if (input.firstElement().getClass() == Util.getTypeFromInterval(kernel)
+			if (Util.getTypeFromInterval(input).getClass() == Util.getTypeFromInterval(kernel)
 				.getClass())
 			{
-				Object temp = input.firstElement().createVariable();
+				Object temp = Util.getTypeFromInterval(input).createVariable();
 				outType = (Type<O>) temp;
 
 			}
@@ -115,14 +113,12 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 				outType = (Type<O>) temp;
 			}
 		}
-
-		// if the outFactory is null use a PlanarImgFactory to create the output
-		if (outFactory == null) {
-			Object temp = new PlanarImgFactory();
-			outFactory = (ImgFactory<O>) temp;
+		
+		if (outFactory==null) {
+			outFactory=(ImgFactory<O>)(ops().create().imgFactory(input, outType));
 		}
-
-		return outFactory.create(input, outType.createVariable());
+		
+		return ops().create().img(input, outType.createVariable(), outFactory);
 	}
 
 	protected RandomAccessibleInterval<K> getKernel() {
@@ -151,6 +147,10 @@ public abstract class AbstractFilterImg<I extends RealType<I>, O extends RealTyp
 		OutOfBoundsFactory<K, RandomAccessibleInterval<K>> obfKernel)
 	{
 		this.obfKernel = obfKernel;
+	}
+	
+	protected ImgFactory<O> getOutFactory() {
+		return outFactory;
 	}
 
 }

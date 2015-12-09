@@ -28,23 +28,22 @@
  * #L%
  */
 
-package net.imagej.ops.filter.convolve;
+package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
+import net.imagej.ops.filter.AbstractFFTFilter;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convolve op for (@link Img)
+ * Richardson Lucy op that operates on (@link Img) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,29 +51,46 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve,
-	Contingent
+@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyFunction<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilter<I, O, K, C> implements
+	Ops.Deconvolve.RichardsonLucy
 {
 
 	/**
-	 * run the filter (ConvolveFFTRAI) on the rais
+	 * max number of iterations
+	 */
+	@Parameter
+	private int maxIterations;
+
+	/**
+	 * indicates whether to use non-circulant edge handling
+	 */
+	@Parameter(required = false)
+	private boolean nonCirculant = false;
+
+	/**
+	 * indicates whether to use acceleration
+	 */
+	@Parameter(required = false)
+	private boolean accelerate = false;
+
+	/**
+	 * run RichardsonLucyRAI
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
-		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
-	}
 
-	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
+		ops().deconvolve().richardsonLucy(output, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+			imgConvolutionInterval, getOutFactory(), in(), getKernel(), nonCirculant,
+			accelerate);
+
 	}
 
 }

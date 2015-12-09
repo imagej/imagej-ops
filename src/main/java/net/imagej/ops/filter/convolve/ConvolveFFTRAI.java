@@ -32,8 +32,7 @@ package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.LinearFFTFilterRAI;
-import net.imglib2.Cursor;
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -55,19 +54,12 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 {
 
 	/**
-	 * Perform convolution by multiplying the FFTs in the frequency domain TODO
-	 * use an op here??
+	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
-	protected void frequencyOperation(Img<C> a, Img<C> b) {
-		final Cursor<C> cursorA = a.cursor();
-		final Cursor<C> cursorB = b.cursor();
-
-		while (cursorA.hasNext()) {
-			cursorA.fwd();
-			cursorB.fwd();
-
-			cursorA.get().mul(cursorB.get());
-		}
+	protected void frequencyOperation(RandomAccessibleInterval<C> a,
+		RandomAccessibleInterval<C> b)
+	{
+		ops().run(Ops.Math.Multiply.class, a, b, a);
 	}
 }

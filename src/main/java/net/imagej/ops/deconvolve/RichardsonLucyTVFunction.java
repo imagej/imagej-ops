@@ -28,56 +28,75 @@
  * #L%
  */
 
-package net.imagej.ops.filter.correlate;
+package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
+import net.imagej.ops.filter.AbstractFFTFilter;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Correlate op for (@link Img)
+ * Richardson Lucy with total variation op that operates on (@link Img)
+ * Richardson-Lucy algorithm with total variation regularization for 3D confocal
+ * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6
  * 
- * @author Brian Northan
+ * @author bnorthan
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Correlate.class,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent,
-	Ops.Filter.Correlate
+@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilter<I, O, K, C> implements
+	Ops.Deconvolve.RichardsonLucyTV
 {
 
 	/**
-	 * run the filter (CorrelateFFTRAI) on the rais
+	 * max number of iterations
+	 */
+	@Parameter
+	int maxIterations;
+
+	/**
+	 * the regularization factor determines smoothness of solution
+	 */
+	@Parameter
+	float regularizationFactor = 0.01f;
+
+	/**
+	 * indicates whether to use non-circulant edge handling
+	 */
+	@Parameter(required = false)
+	private boolean nonCirculant = false;
+
+	/**
+	 * indicates whether to use acceleration
+	 */
+	@Parameter(required = false)
+	private boolean accelerate = false;
+
+	/**
+	 * run RichardsonLucyTVRAI
 	 */
 	@Override
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops().filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+		ops().run(RichardsonLucyTVRAI.class, output, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+			imgConvolutionInterval, getOutFactory(), in(), getKernel(), nonCirculant,
+			accelerate, regularizationFactor);
 
 	}
-
-	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
-	}
-
 }

@@ -30,6 +30,9 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.app.StatusService;
+import org.scijava.plugin.Parameter;
+
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
@@ -49,9 +52,6 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
-
-import org.scijava.app.StatusService;
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI. Boundary
@@ -78,7 +78,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private int maxIterations;
 
 	/**
-	 * The interval to process
+	 * The interval to process TODO: this is probably redundant - remove
 	 */
 	@Parameter
 	private Interval imgConvolutionInterval;
@@ -91,34 +91,36 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 	/**
 	 * TODO: review and document! - k is the size of the measurement window. That
-	 * is the size of the acquired image before extension k is required to
+	 * is the size of the acquired image before extension, k is required to
 	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private Dimensions k;
 
 	/**
-	 * TODO: review and document! - l is the size of the psf. l is required to
+	 * TODO: review and document! - l is the size of the psf, l is required to
 	 * calculate the non-circulant normalization factor
 	 */
 	@Parameter(required = false)
 	private Dimensions l;
 
 	/**
-	 * TODO: review boolean which indicates whether to perform non-circulant
-	 * deconvolution
+	 * TODO: review and document! a boolean which indicates whether to perform
+	 * non-circulant deconvolution
 	 */
 	@Parameter(required = false)
 	private boolean nonCirculant = false;
 
 	/**
-	 * TODO: review boolean which indicates whether to perform acceleration
+	 * TODO: review and document! a boolean which indicates whether to perform
+	 * acceleration
 	 */
 	@Parameter(required = false)
 	private boolean accelerate = false;
 
 	/**
-	 * TODO: review An OutOfBoundsFactory which defines the extension strategy
+	 * TODO: review and document! An OutOfBoundsFactory which defines the
+	 * extension strategy
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
@@ -138,7 +140,9 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private Accelerator<O> accelerator = null;
 
 	@Override
-	public void run() {
+	public void compute(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> out)
+	{
 
 		initialize();
 
@@ -150,65 +154,73 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	/**
 	 * initialize TODO: review this function
 	 */
-	protected void initialize() {
+	@Override
+	public void initialize() {
 
 		// if no output out of bounds factory exists create the obf for output
 		if (getObfOutput() == null) {
-			setObfOutput(new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(
-				Util.getTypeFromInterval(getOutput()).createVariable()));
+			setObfOutput(
+				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+					.getTypeFromInterval(out()).createVariable()));
 		}
 
-		Type<O> outType = Util.getTypeFromInterval(getOutput());
+		Type<O> outType = Util.getTypeFromInterval(out());
 
 		if (nonCirculant) {
 
-			// create image for the estimate
-			estimate =
-				imgFactory
-					.create(getImgConvolutionInterval(), outType.createVariable());
-			final O sum =
-				ops().stats().<I, O> sum(Views.iterable(getRAIExtendedInput()));
+			// if non-circulant mode create actual image buffers for the estimate and
+			// reblurred
+			// this is done because the algorithm attempts to reconstruct the out of
+			// bounds data
 
+			// create image for the estimate, this image is defined over the entire
+			// convolution interval
+			estimate = imgFactory.create(getImgConvolutionInterval(), outType
+				.createVariable());
+
+			// set first guess to be a constant = to the average value
+
+			// so first compute the sum...
+			final O sum = ops().stats().<I, O> sum(Views.iterable(in()));
+
+			// then the number of pixels
 			final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
+
+			// then the average value...
 			final double average = sum.getRealDouble() / (numPixels);
 
-			// TODO: make this an op
+			// set first guess as the average value coputed above (TODO: make this an
+			// op)
 			for (final O type : estimate) {
 				type.setReal(average);
 			}
 
 			// create image for the reblurred
-			reblurred =
-				imgFactory
-					.create(getImgConvolutionInterval(), outType.createVariable());
+			reblurred = imgFactory.create(getImgConvolutionInterval(), outType
+				.createVariable());
 
-			// TODO: review this step
-			// extend the output and use it as a buffer to store the estimate
 			raiExtendedEstimate = estimate;
-
-			// assemble the extended view of the reblurred
 			raiExtendedReblurred = reblurred;
 		}
+		// if NOT non-circulant mode
 		else {
-			// create image for the reblurred
-			reblurred = imgFactory.create(getOutput(), outType.createVariable());
 
-			// TODO: review this step
+			// create image for the reblurred
+			reblurred = imgFactory.create(out(), outType.createVariable());
+
 			// extend the output and use it as a buffer to store the estimate
-			raiExtendedEstimate =
-				Views.interval(Views.extend(getOutput(), getObfOutput()),
-					getImgConvolutionInterval());
+			raiExtendedEstimate = Views.interval(Views.extend(out(), getObfOutput()),
+				getImgConvolutionInterval());
 
 			// assemble the extended view of the reblurred
-			raiExtendedReblurred =
-				Views.interval(Views.extend(reblurred, getObfOutput()),
-					getImgConvolutionInterval());
+			raiExtendedReblurred = Views.interval(Views.extend(reblurred,
+				getObfOutput()), getImgConvolutionInterval());
 
 			// set first guess of estimate
 			// TODO: implement logic for various first guesses.
 			// for now just set to original image
 			Cursor<O> c = Views.iterable(raiExtendedEstimate).cursor();
-			Cursor<I> cIn = Views.iterable(getRAIExtendedInput()).cursor();
+			Cursor<I> cIn = Views.iterable(in()).cursor();
 
 			while (c.hasNext()) {
 				c.fwd();
@@ -218,20 +230,18 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 
 		// perform fft of input
-		ops().filter().fft(getFFTInput(), getRAIExtendedInput());
+		ops().filter().fft(getFFTInput(), in());
 
 		// perform fft of psf
 		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
 
 		// if non-circulant decon mode create image for normalization
 		if (nonCirculant) {
-			normalization =
-				getImgFactory().create(raiExtendedEstimate, outType.createVariable());
+			normalization = getImgFactory().create(raiExtendedEstimate, outType
+				.createVariable());
 
 			this.createNormalizationImageSemiNonCirculant();
 		}
-
-		createReblurred();
 
 		if (getAccelerate()) {
 			accelerator = new VectorAccelerator<O>(this.getImgFactory());
@@ -259,10 +269,13 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 	}
 
+	/**
+	 * convolve estimate with kernel to create reblurred
+	 */
 	protected void createReblurred() {
-		// perform convolution -- kernel FFT should allready exist
-		ops().filter().convolve(raiExtendedEstimate, null, getFFTInput(),
-			getFFTKernel(), raiExtendedReblurred, true, false);
+
+		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate,
+			getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 	}
 
@@ -283,16 +296,10 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				end[d] = start[d] + k.dimension(d) - 1;
 			}
 
-			Img<O> temp = ops().create().img(getNormalization());
+			RandomAccessibleInterval<O> temp = ops().image().crop(
+				getRAIExtendedEstimate(), new FinalInterval(start, end));
 
-			// TODO: get rid of extra copy after bug in the crop is fixed
-			copy2(getRAIExtendedEstimate(), temp);
-
-			RandomAccessibleInterval<O> temp2 =
-				ops().image().crop(getRAIExtendedEstimate(),
-					new FinalInterval(start, end));
-
-			copy2(temp2, getOutput());
+			ops().copy().rai(out(), temp);
 
 		}
 	}
@@ -358,8 +365,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		drawCube(mask, maskStart, maskSize, 1.0);
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, null, getFFTInput(),
-			getFFTKernel(), normalization, true, false);
+		ops().run(CorrelateFFTRAI.class, normalization, normalization, this
+			.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 		// threshold small values that can cause numerical instability
 		threshold(normalization, 1e-7f);
@@ -492,22 +499,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		return accelerator;
 	}
 
-	// TODO replace with op
-	protected void copy2(RandomAccessibleInterval<O> input,
-		RandomAccessibleInterval<O> output)
-	{
-
-		final Cursor<O> cursorInput = Views.iterable(input).cursor();
-		final Cursor<O> cursorOutput = Views.iterable(output).cursor();
-
-		while (cursorInput.hasNext()) {
-			cursorInput.fwd();
-			cursorOutput.fwd();
-
-			cursorOutput.get().set(cursorInput.get());
-		}
-	}
-
 //TODO replace with op
 	protected <T extends RealType<T>> void threshold(final Img<T> inputOutput,
 		final float t)
@@ -521,23 +512,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				cursorInputOutput.get().setReal(0.0f);
 
 			}
-		}
-
-	}
-
-	// TODO replace with op
-	protected <T extends RealType<T>> void inPlaceMultiply(
-		final Img<T> inputOutput, final Img<T> input)
-	{
-		final Cursor<T> cursorInputOutput = inputOutput.cursor();
-		final Cursor<T> cursorInput = input.cursor();
-
-		while (cursorInputOutput.hasNext()) {
-			cursorInputOutput.fwd();
-			cursorInput.fwd();
-
-			cursorInputOutput.get().mul(cursorInput.get());
-
 		}
 
 	}

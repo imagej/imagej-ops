@@ -33,12 +33,9 @@ package net.imagej.ops.filter;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imglib2.FinalDimensions;
-import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
@@ -94,15 +91,15 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
-	Img<C> fftImg;
+	private RandomAccessibleInterval<C> fftImgInterval;
 
-	Img<C> fftKernel;
+	private RandomAccessibleInterval<C> fftKernelInterval;
 
-	RandomAccessibleInterval<I> raiExtendedInput;
+	private RandomAccessibleInterval<I> raiExtendedInput;
 
-	RandomAccessibleInterval<K> raiExtendedKernel;
+	private RandomAccessibleInterval<K> raiExtendedKernel;
 
-	protected Interval imgConvolutionInterval;
+	private Interval imgConvolutionInterval;
 
 	@Override
 	public void run() {
@@ -127,21 +124,21 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 					Util.getTypeFromInterval(kernel).createVariable());
 		}
 
-		// //////////////////////////////////////////////////////////////////////
-		// the first few lines of code here calculate the extended sizes and
-		// corresponding intervals of the input image and the kernel.
-		// Extension is needed to avoid edge artifacts
-		// Also, since the FFT is faster at certain sizes, we want to extend to
-		// an
-		// efficient FFT size
-		// //////////////////////////////////////////////////////////////////////
+		/*
+		 the first few lines of code here calculate the extended sizes and
+		 corresponding intervals of the input image and the kernel.
+		 Extension is needed to avoid edge artifacts
+		 Also, since the FFT is faster at certain sizes, we want to extend to
+		 an efficient FFT size
+		*/
 		final int numDimensions = input.numDimensions();
 
 		// 1. Calculate desired extended size of the image
+
 		final long[] newDimensions = new long[numDimensions];
 
 		if (borderSize == null) {
-			// if no borderSize was passed in extend based on kernel size
+			// if no borderSize was passed in, then extend based on kernel size
 			for (int d = 0; d < numDimensions; ++d) {
 				newDimensions[d] =
 					(int) input.dimension(d) + (int) kernel.dimension(d) - 1;
@@ -166,41 +163,39 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 		final long[] paddedDimensions = new long[numDimensions];
 		final long[] fftDimensions = new long[numDimensions];
 
-		FFTMethods.dimensionsRealToComplexFast(FinalDimensions.wrap(newDimensions),
-			paddedDimensions, fftDimensions);
+		ops().filter().fftSize(FinalDimensions.wrap(newDimensions),
+			paddedDimensions, fftDimensions, true, true);
 
 		// 3. Using the size calculated above compute the new interval for
 		// the input image
+
 		imgConvolutionInterval =
-			FFTMethods.paddingIntervalCentered(input, FinalDimensions
-				.wrap(paddedDimensions));
+			ops().filter().paddingIntervalCentered(input,
+				FinalDimensions.wrap(paddedDimensions));
 
 		// 4. compute the new interval for the kernel image
+
 		final Interval kernelConvolutionInterval =
-			FFTMethods.paddingIntervalCentered(kernel, FinalDimensions
-				.wrap(paddedDimensions));
+			ops().filter().paddingIntervalCentered(kernel,
+				FinalDimensions.wrap(paddedDimensions));
+
+		// assemble the extended view of the image
+		raiExtendedInput =
+			Views.interval(Views.extend(input, obfInput), imgConvolutionInterval);
 
 		// compute where to place the final Interval for the kernel so that the
 		// coordinate in the center
 		// of the kernel is at position (0,0).
-		final long[] min = new long[numDimensions];
-		final long[] max = new long[numDimensions];
 
-		for (int d = 0; d < numDimensions; ++d) {
-			min[d] = kernel.min(d) + kernel.dimension(d) / 2;
-			max[d] = min[d] + kernelConvolutionInterval.dimension(d) - 1;
-		}
+		final Interval kernelConvolutionIntervalOrigin =
+			ops().filter().paddingIntervalOrigin(kernel, kernelConvolutionInterval);
 
 		// assemble the kernel (size of the input + extended periodic +
 		// top left at center of input kernel)
 		raiExtendedKernel =
 			Views.interval(Views.extendPeriodic(Views.interval(Views.extendValue(
 				kernel, Util.getTypeFromInterval(kernel).createVariable()),
-				kernelConvolutionInterval)), new FinalInterval(min, max));
-
-		// assemble the extended view of the image
-		raiExtendedInput =
-			Views.interval(Views.extend(input, obfInput), imgConvolutionInterval);
+				kernelConvolutionInterval)), kernelConvolutionIntervalOrigin);
 
 		// if fftType, and/or fftFactory do not exist, create them using defaults
 		if (fftType == null) {
@@ -220,18 +215,18 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 
 		// TODO: the ffts could have been allready created. Need to modify this
 		// step for the case where FFT memory allready exists
-		fftImg = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
+		fftImgInterval = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
 
-		fftKernel = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
+		fftKernelInterval = ((ImgFactory) fftFactory).create(fftDimensions, fftType);
 
 	}
 
-	public Img<C> getFFTImg() {
-		return fftImg;
+	public RandomAccessibleInterval<C> getFFTImgInterval() {
+		return fftImgInterval;
 	}
 
-	public Img<C> getFFTKernel() {
-		return fftKernel;
+	public RandomAccessibleInterval<C> getFFTKernelInterval() {
+		return fftKernelInterval;
 	}
 
 	public RandomAccessibleInterval<I> getRAIExtendedInput() {

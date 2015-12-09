@@ -35,10 +35,12 @@ import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.Point;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.region.hypersphere.HyperSphere;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.view.Views;
 
 import org.junit.Test;
 
@@ -63,20 +65,22 @@ public class DeconvolveTest extends AbstractOpTest {
 		placeSphereInCenter(kernel);
 
 		// convolve and calculate the sum of output
-		Img<FloatType> convolved = ops.filter().convolve(in, kernel);
+		RandomAccessibleInterval<FloatType> convolved =
+			ops.filter().convolve(in, kernel);
 
-		final Img<FloatType> deconvolved2 =
+		final RandomAccessibleInterval<FloatType> deconvolved2 =
 			ops.deconvolve().richardsonLucy(convolved, kernel, 10);
 
 		assertEquals(size[0], deconvolved2.dimension(0));
 		assertEquals(size[1], deconvolved2.dimension(1));
-		final Cursor<FloatType> deconvolved2Cursor = deconvolved2.cursor();
+		final Cursor<FloatType> deconvolved2Cursor =
+			Views.iterable(deconvolved2).cursor();
 		float[] deconvolved2Values =
 			{ 1.0936068E-14f, 2.9685445E-14f, 4.280788E-15f, 3.032084E-18f,
 				1.1261E-39f, 0.0f, -8.7E-44f, -8.11881E-31f, -2.821192E-18f,
 				1.8687104E-20f, -2.927517E-23f, 1.2815774E-29f, -1.0611375E-19f,
 				-5.2774515E-21f, -6.154334E-20f };
-		for (int i=0; i<deconvolved2Values.length; i++) {
+		for (int i = 0; i < deconvolved2Values.length; i++) {
 			assertEquals(deconvolved2Values[i], deconvolved2Cursor.next().get(), 0.0f);
 		}
 	}
