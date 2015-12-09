@@ -189,7 +189,7 @@ public class DefaultMinorMajorAxis extends
 	@Override
 	public Pair<DoubleType, DoubleType> compute1(final Polygon input) {
 		
-		List<RealLocalizable> points = new ArrayList<RealLocalizable>(input
+		List<RealLocalizable> points = new ArrayList<>(input
 			.getVertices());
 
 		// Sort RealLocalizables of P by x-coordinate (in case of a tie,
@@ -213,7 +213,7 @@ public class DefaultMinorMajorAxis extends
 
 		// calculate minor and major axis
 		double[] minorMajorAxis = getMinorMajorAxis(input, points);
-		return new ValuePair<DoubleType, DoubleType>(new DoubleType(
+		return new ValuePair<>(new DoubleType(
 			minorMajorAxis[0]), new DoubleType(minorMajorAxis[1]));
 	}
 }

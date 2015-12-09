@@ -55,7 +55,7 @@ public abstract class AbstractHelp extends AbstractOp implements Ops.Help {
 	private String help;
 
 	protected <OP extends Op> void help(final List<OpCandidate<OP>> candidates) {
-		final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
+		final ArrayList<OpInfo> infos = new ArrayList<>();
 		for (final OpCandidate<OP> candidate : candidates) {
 			infos.add(candidate.opInfo());
 		}

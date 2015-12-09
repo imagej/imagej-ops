@@ -58,7 +58,7 @@ public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 
 	@Override
 	public void run() {
-		output = new LabelingMapping<L>(ops().create().integerType(maxNumSets));
+		output = new LabelingMapping<>(ops().create().integerType(maxNumSets));
 	}
 
 	@Override

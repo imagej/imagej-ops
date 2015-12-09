@@ -82,7 +82,7 @@ public class DefaultSmallestEnclosingRectangle extends
 		final RealLocalizable center)
 	{
 
-		List<RealLocalizable> out = new ArrayList<RealLocalizable>();
+		List<RealLocalizable> out = new ArrayList<>();
 
 		for (RealLocalizable RealPoint : inPoly.getVertices()) {
 

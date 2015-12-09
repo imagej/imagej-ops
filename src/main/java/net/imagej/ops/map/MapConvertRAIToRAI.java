@@ -56,9 +56,8 @@ public class MapConvertRAIToRAI<A, B extends Type<B>>
 	public RandomAccessibleInterval<B> compute1(
 		final RandomAccessibleInterval<A> input)
 	{
-		final ComputerConverter<A, B> converter =
-			new ComputerConverter<A, B>(getOp());
-		return new ConvertedRandomAccessibleInterval<A, B>(input, converter,
+		final ComputerConverter<A, B> converter = new ComputerConverter<>(getOp());
+		return new ConvertedRandomAccessibleInterval<>(input, converter,
 			getType());
 	}
 

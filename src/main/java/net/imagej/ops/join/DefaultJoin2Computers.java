@@ -104,7 +104,7 @@ public class DefaultJoin2Computers<A, B, C> extends
 	@Override
 	public DefaultJoin2Computers<A, B, C> getIndependentInstance() {
 		final DefaultJoin2Computers<A, B, C> joiner =
-			new DefaultJoin2Computers<A, B, C>();
+			new DefaultJoin2Computers<>();
 
 		joiner.setFirst(getFirst().getIndependentInstance());
 		joiner.setSecond(getSecond().getIndependentInstance());

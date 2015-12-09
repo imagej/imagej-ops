@@ -68,7 +68,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	@Before
 	public void initCustomOps() {
-		final ArrayList<OpInfo> customOps = new ArrayList<OpInfo>();
+		final ArrayList<OpInfo> customOps = new ArrayList<>();
 		customOps.add(new OpInfo(MyMin.class));
 
 		env = new CachedOpEnvironment(ops, customOps);

@@ -89,9 +89,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testOpMethods() {
 		final BitType out = new BitType();
-		final Pair<ByteType, Iterable<ByteType>> in =
-			new ValuePair<ByteType, Iterable<ByteType>>(new ByteType(), Arrays
-				.asList(new ByteType(), new ByteType()));
+		final Pair<ByteType, Iterable<ByteType>> in = new ValuePair<>(
+			new ByteType(), Arrays.asList(new ByteType(), new ByteType()));
 
 		ops.threshold().localBernsen(out, in, 1.0, Double.MAX_VALUE * 0.5);
 		ops.threshold().localContrast(out, in);

@@ -79,8 +79,8 @@ public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygo
 		// Initialize U and L as empty lists.
 		// lists will hold vertices of upper and lower hulls
 		// respectively.
-		final List<RealLocalizable> U = new ArrayList<RealLocalizable>();
-		final List<RealLocalizable> L = new ArrayList<RealLocalizable>();
+		final List<RealLocalizable> U = new ArrayList<>();
+		final List<RealLocalizable> L = new ArrayList<>();
 		// build lower hull
 		for (final RealLocalizable p : RealPoints) {
 			// while L contains at least two RealPoints and sequence of last

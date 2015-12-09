@@ -81,7 +81,7 @@ public class DefaultJoinInplaceAndComputer<A, B> extends
 	@Override
 	public DefaultJoinInplaceAndComputer<A, B> getIndependentInstance() {
 		final DefaultJoinInplaceAndComputer<A, B> joiner =
-			new DefaultJoinInplaceAndComputer<A, B>();
+			new DefaultJoinInplaceAndComputer<>();
 
 		joiner.setFirst(getFirst().getIndependentInstance());
 		joiner.setSecond(getSecond().getIndependentInstance());

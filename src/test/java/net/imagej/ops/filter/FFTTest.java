@@ -184,7 +184,7 @@ public class FFTTest extends AbstractOpTest {
 		for (int d = 0; d < img.numDimensions(); d++)
 			center.setPosition(img.dimension(d) / 2, d);
 
-		final HyperSphere<FloatType> hyperSphere = new HyperSphere<FloatType>(img,
+		final HyperSphere<FloatType> hyperSphere = new HyperSphere<>(img,
 			center, 2);
 
 		for (final FloatType value : hyperSphere) {

@@ -86,7 +86,7 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	@Override
 	public void initialize() {
 		if (fac == null) {
-			fac = new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+			fac = new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 		}
 	}

@@ -93,7 +93,7 @@ public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
 
 			if (obf == null) {
 				obf =
-					new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
+					new OutOfBoundsConstantValueFactory<>(
 						Util.getTypeFromInterval(input).createVariable());
 			}
 

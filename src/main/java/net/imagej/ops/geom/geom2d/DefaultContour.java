@@ -196,7 +196,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 
 	@Override
 	public Polygon compute1(final RandomAccessibleInterval<B> input) {
-		List<RealPoint> p = new ArrayList<RealPoint>();
+		List<RealPoint> p = new ArrayList<>();
 
 		final B var = Util.getTypeFromInterval(input).createVariable();
 		var.set(!isInverted);
@@ -205,7 +205,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 			.randomAccess();
 		final Cursor<B> cInput = Views.flatIterable(input).cursor();
 		final ClockwiseMooreNeighborhoodIterator<B> cNeigh =
-			new ClockwiseMooreNeighborhoodIterator<B>(raInput);
+			new ClockwiseMooreNeighborhoodIterator<>(raInput);
 
 		double[] position = new double[2];
 		double[] startPos = new double[2];

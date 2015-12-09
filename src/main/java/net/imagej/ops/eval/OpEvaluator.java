@@ -58,7 +58,7 @@ public class OpEvaluator extends AbstractStandardStackEvaluator {
 
 	public OpEvaluator(final OpEnvironment ops) {
 		this.ops = ops;
-		opMap = new HashMap<Operator, String>();
+		opMap = new HashMap<>();
 
 		// Map each standard SJEP operator to its associated op name.
 		// TODO: Consider creating a plugin extension point for defining these.

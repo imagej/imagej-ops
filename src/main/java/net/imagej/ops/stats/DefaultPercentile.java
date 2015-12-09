@@ -60,7 +60,7 @@ public class DefaultPercentile<I extends RealType<I>, O extends RealType<O>>
 	
 	@Override
 	public void compute1(final Iterable<I> input, final O output) {
-		final ArrayList<Double> statistics = new ArrayList<Double>();
+		final ArrayList<Double> statistics = new ArrayList<>();
 
 		final Iterator<I> it = input.iterator();
 		while (it.hasNext()) {

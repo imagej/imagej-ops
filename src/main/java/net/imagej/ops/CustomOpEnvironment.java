@@ -131,7 +131,7 @@ public class CustomOpEnvironment extends AbstractContextual implements
 		
 		@Override
 		public Collection<OpInfo> values() {
-			final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
+			final ArrayList<OpInfo> infos = new ArrayList<>();
 			infos.addAll(super.values());
 			Collections.sort(infos);
 			return infos;

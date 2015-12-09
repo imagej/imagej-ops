@@ -76,7 +76,7 @@ public class DefaultFeret extends
 			}
 		}
 
-		return new ValuePair<RealLocalizable, RealLocalizable>(input.getVertices()
+		return new ValuePair<>(input.getVertices()
 			.get(in0), input.getVertices().get(in1));
 	}
 

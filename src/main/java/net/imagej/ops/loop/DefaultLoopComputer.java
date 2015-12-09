@@ -52,11 +52,11 @@ public class DefaultLoopComputer<A> extends
 	public void compute1(final A input, final A output) {
 		final int n = getLoopCount();
 
-		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<UnaryComputerOp<A, A>>(n);
+		final ArrayList<UnaryComputerOp<A, A>> ops = new ArrayList<>(n);
 		for (int i = 0; i < n; i++)
 			ops.add(getOp());
 
-		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<A>();
+		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<>();
 		joiner.setOps(ops);
 		joiner.setOutputFactory(getOutputFactory());
 
@@ -65,7 +65,7 @@ public class DefaultLoopComputer<A> extends
 
 	@Override
 	public DefaultLoopComputer<A> getIndependentInstance() {
-		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
+		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<>();
 
 		looper.setOp(getOp().getIndependentInstance());
 		looper.setOutputFactory(getOutputFactory());

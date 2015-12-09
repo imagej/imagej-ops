@@ -73,7 +73,7 @@ public class DefaultBoundingBox extends AbstractUnaryFunctionOp<Polygon, Polygon
 			}
 		}
 
-		final List<RealLocalizable> bounds = new ArrayList<RealLocalizable>();
+		final List<RealLocalizable> bounds = new ArrayList<>();
 
 		bounds.add(new RealPoint(min_x, min_y));
 		bounds.add(new RealPoint(min_x, max_y));

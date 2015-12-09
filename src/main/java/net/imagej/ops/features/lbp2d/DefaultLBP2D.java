@@ -76,7 +76,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@Override
 	public ArrayList<LongType> createOutput(RandomAccessibleInterval<I> input) {
-		return new ArrayList<LongType>();
+		return new ArrayList<>();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,11 +84,11 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 	public void compute1(RandomAccessibleInterval<I> input,
 		ArrayList<LongType> output)
 	{
-		ArrayList<LongType> numberList = new ArrayList<LongType>();
+		ArrayList<LongType> numberList = new ArrayList<>();
 		RandomAccess<I> raInput = Views.extendZero(input).randomAccess();
 		final Cursor<I> cInput = Views.flatIterable(input).cursor();
 		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh =
-			new ClockwiseDistanceNeighborhoodIterator<I>(raInput, distance);
+			new ClockwiseDistanceNeighborhoodIterator<>(raInput, distance);
 
 		while (cInput.hasNext()) {
 			cInput.next();

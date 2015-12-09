@@ -76,7 +76,7 @@ public class CropTest extends AbstractOpTest {
 
 		// check if result is ImgPlus
 		final Object imgPlus =
-			ops.image().crop(new ImgPlus<ByteType>(in), defInterval);
+			ops.image().crop(new ImgPlus<>(in), defInterval);
 		assertTrue(imgPlus instanceof ImgPlus);
 
 		// check if result is RandomAccessibleInterval

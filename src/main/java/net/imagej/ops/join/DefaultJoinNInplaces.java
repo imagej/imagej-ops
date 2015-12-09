@@ -79,9 +79,9 @@ public class DefaultJoinNInplaces<A> extends AbstractInplaceOp<A> implements
 
 	@Override
 	public DefaultJoinNInplaces<A> getIndependentInstance() {
-		final DefaultJoinNInplaces<A> joiner = new DefaultJoinNInplaces<A>();
+		final DefaultJoinNInplaces<A> joiner = new DefaultJoinNInplaces<>();
 
-		final ArrayList<InplaceOp<A>> opsCopy = new ArrayList<InplaceOp<A>>();
+		final ArrayList<InplaceOp<A>> opsCopy = new ArrayList<>();
 		for (final InplaceOp<A> func : getOps()) {
 			opsCopy.add(func.getIndependentInstance());
 		}

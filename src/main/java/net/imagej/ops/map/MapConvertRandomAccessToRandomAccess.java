@@ -53,9 +53,8 @@ public class MapConvertRandomAccessToRandomAccess<A, B extends Type<B>> extends
 
 	@Override
 	public RandomAccessible<B> compute1(final RandomAccessible<A> input) {
-		final ComputerConverter<A, B> converter =
-			new ComputerConverter<A, B>(getOp());
-		return new ConvertedRandomAccessible<A, B>(input, converter, getType());
+		final ComputerConverter<A, B> converter = new ComputerConverter<>(getOp());
+		return new ConvertedRandomAccessible<>(input, converter, getType());
 	}
 
 }

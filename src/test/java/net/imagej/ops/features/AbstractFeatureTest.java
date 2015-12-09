@@ -255,7 +255,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		// read simple polygon image
 		BufferedImage read = ImageIO.read(AbstractFeatureTest.class.getResourceAsStream("cZgkFsK.png"));
 
-		ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
+		ImgLabeling<String, IntType> img = new ImgLabeling<>(
 				ArrayImgs.ints(read.getWidth(), read.getHeight()));
 
 		// at each black pixel of the polygon add a "1" label.
@@ -270,7 +270,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			}
 		}
 
-		LabelRegions<String> labelRegions = new LabelRegions<String>(img);
+		LabelRegions<String> labelRegions = new LabelRegions<>(img);
 		return labelRegions.getLabelRegion("1");
 
 	}
@@ -282,7 +282,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		"3d_geometric_features_testlabel.tif").getPath());
 
 	final ImgLabeling<String, IntType> labeling =
-		new ImgLabeling<String, IntType>(ArrayImgs.ints(104, 102, 81));
+		new ImgLabeling<>(ArrayImgs.ints(104, 102, 81));
 
 	final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
 	final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
@@ -296,7 +296,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			ra.get().add("1");
 		}
 	}
-	final LabelRegions<String> labelRegions = new LabelRegions<String>(
+	final LabelRegions<String> labelRegions = new LabelRegions<>(
 		labeling);
 
 	return labelRegions.getLabelRegion("1");

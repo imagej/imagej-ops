@@ -71,8 +71,8 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 	@Override
 	public IterableInterval<T> compute1(final IterableInterval<T> input) {
 		if (isLazy) {
-			return new ConvertedIterableInterval<T, T>(input,
-				new NormalizeRealTypeComputer<T>(ops(), sourceMin, sourceMax, targetMin,
+			return new ConvertedIterableInterval<>(input,
+				new NormalizeRealTypeComputer<>(ops(), sourceMin, sourceMax, targetMin,
 					targetMax, input), input.firstElement().createVariable());
 		}
 		final Img<T> output =

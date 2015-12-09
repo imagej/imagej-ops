@@ -62,9 +62,9 @@ public class CopyLabelingMapping<L> extends
 	public void compute1(final LabelingMapping<L> input,
 			final LabelingMapping<L> output) {
 
-		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<L>(
+		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<>(
 				output);
-		access.setLabelSets(new LabelingMappingSerializationAccess<L>(input)
+		access.setLabelSets(new LabelingMappingSerializationAccess<>(input)
 				.getLabelSets());
 	}
 

@@ -62,7 +62,7 @@ public final class OpUtils {
 	}
 
 	public static Object result(final Module module) {
-		final List<Object> outputs = new ArrayList<Object>();
+		final List<Object> outputs = new ArrayList<>();
 		for (final ModuleItem<?> output : module.getInfo().outputs()) {
 			final Object value = output.getValue(module);
 			outputs.add(value);
@@ -86,7 +86,7 @@ public final class OpUtils {
 		final Object... args)
 	{
 		final OpRef<OP> ref =
-			new OpRef<OP>(Collections.singleton(specialType), opType, args);
+			new OpRef<>(Collections.singleton(specialType), opType, args);
 		if (outType != null) ref.setOutputs(Collections.singleton(outType));
 		final Module module = ops.matcher().findModule(ops, ref);
 		return OpUtils.unwrap(module, ref);

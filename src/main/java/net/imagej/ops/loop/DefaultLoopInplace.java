@@ -54,7 +54,7 @@ public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
 
 	@Override
 	public DefaultLoopInplace<I> getIndependentInstance() {
-		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<I>();
+		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<>();
 		looper.setOp(getOp().getIndependentInstance());
 		looper.setLoopCount(getLoopCount());
 		return looper;

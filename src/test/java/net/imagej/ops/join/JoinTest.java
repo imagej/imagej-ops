@@ -128,7 +128,7 @@ public class JoinTest extends AbstractOpTest {
 	@Test
 	public void testJoinNComputers() {
 		final List<UnaryComputerOp<Img<ByteType>, Img<ByteType>>> computers =
-			new ArrayList<UnaryComputerOp<Img<ByteType>, Img<ByteType>>>();
+			new ArrayList<>();
 
 		for (int i = 0; i < 5; i++) {
 			computers.add(new AddOneComputerImg());

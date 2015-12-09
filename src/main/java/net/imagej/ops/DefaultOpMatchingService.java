@@ -114,11 +114,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
-		final ArrayList<OpCandidate<OP>> candidates =
-			new ArrayList<OpCandidate<OP>>();
+		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<OP>(ops, ref, info));
+				candidates.add(new OpCandidate<>(ops, ref, info));
 			}
 		}
 		return candidates;
@@ -128,7 +127,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<Module> findMatches(
 		final List<OpCandidate<OP>> candidates)
 	{
-		final ArrayList<Module> matches = new ArrayList<Module>();
+		final ArrayList<Module> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
 		for (final OpCandidate<?> candidate : candidates) {

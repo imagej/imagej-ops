@@ -55,10 +55,10 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		I inType = input.firstElement().createVariable();
 		UnaryComputerOp<I, O> invert;
 		if (inType.getMinValue() < 0) {
-			invert = new SignedRealInvert<I, O>();
+			invert = new SignedRealInvert<>();
 		}
 		else {
-			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
+			invert = new UnsignedRealInvert<>(inType.getMaxValue());
 		}
 		ops().map(output, input, invert);
 	}

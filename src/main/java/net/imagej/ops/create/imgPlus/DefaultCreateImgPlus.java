@@ -66,10 +66,10 @@ public class DefaultCreateImgPlus<T> extends AbstractOp implements
 	public void run() {
 
 		if (metadata != null) {
-			output = new ImgPlus<T>(img, metadata);
+			output = new ImgPlus<>(img, metadata);
 		}
 		else {
-			output = new ImgPlus<T>(img);
+			output = new ImgPlus<>(img);
 		}
 
 	}

@@ -79,7 +79,7 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
 
 		// List to store all directions occuring within the image on borders
-		ArrayList<DoubleType> dirList = new ArrayList<DoubleType>();
+		ArrayList<DoubleType> dirList = new ArrayList<>();
 
 		// Dimension of input region
 		long[] dims = new long[input.numDimensions()];

@@ -74,7 +74,7 @@ public class DefaultMinMax<I extends RealType<I>> extends
 		final I max = input.iterator().next().createVariable();
 		max.setReal(tmpMax);
 
-		return new ValuePair<I, I>(min, max);
+		return new ValuePair<>(min, max);
 	}
 
 }

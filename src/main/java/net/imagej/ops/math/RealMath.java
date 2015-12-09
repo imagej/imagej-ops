@@ -179,8 +179,7 @@ public final class RealMath {
 		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccsc
 	{
 
-		private final static Arcsin<DoubleType, DoubleType> asin =
-			new Arcsin<DoubleType, DoubleType>();
+		private final static Arcsin<DoubleType, DoubleType> asin = new Arcsin<>();
 
 		private final DoubleType angle = new DoubleType();
 
@@ -227,8 +226,7 @@ public final class RealMath {
 		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsec
 	{
 
-		private final static Arcsin<DoubleType, DoubleType> asin =
-			new Arcsin<DoubleType, DoubleType>();
+		private final static Arcsin<DoubleType, DoubleType> asin = new Arcsin<>();
 
 		private final DoubleType angle = new DoubleType();
 

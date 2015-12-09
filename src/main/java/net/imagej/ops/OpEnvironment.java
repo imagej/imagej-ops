@@ -662,7 +662,7 @@ public interface OpEnvironment extends Contextual {
 	 *         inputs, ready to run.
 	 */
 	default Module module(final String name, final Object... args) {
-		return matcher().findModule(this, new OpRef<Op>(name, args));
+		return matcher().findModule(this, new OpRef<>(name, args));
 	}
 
 	/**
@@ -680,7 +680,7 @@ public interface OpEnvironment extends Contextual {
 	default <OP extends Op> Module module(final Class<OP> type,
 		final Object... args)
 	{
-		return matcher().findModule(this, new OpRef<OP>(type, args));
+		return matcher().findModule(this, new OpRef<>(type, args));
 	}
 
 	/**
@@ -715,13 +715,13 @@ public interface OpEnvironment extends Contextual {
 	/** Gets the fully qualified names of all available operations. */
 	default Collection<String> ops() {
 		// collect list of unique operation names
-		final HashSet<String> operations = new HashSet<String>();
+		final HashSet<String> operations = new HashSet<>();
 		for (final OpInfo info : infos()) {
 			if (info.isNamed()) operations.add(info.getName());
 		}
 
 		// convert the set into a sorted list
-		final ArrayList<String> sorted = new ArrayList<String>(operations);
+		final ArrayList<String> sorted = new ArrayList<>(operations);
 		Collections.sort(sorted);
 		return sorted;
 	}

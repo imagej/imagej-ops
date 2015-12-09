@@ -82,7 +82,7 @@ public class DefaultJoinComputerAndInplace<A, B> extends
 	public DefaultJoinComputerAndInplace<A, B> getIndependentInstance() {
 
 		final DefaultJoinComputerAndInplace<A, B> joiner =
-			new DefaultJoinComputerAndInplace<A, B>();
+			new DefaultJoinComputerAndInplace<>();
 
 		joiner.setFirst(getFirst().getIndependentInstance());
 		joiner.setSecond(getSecond().getIndependentInstance());

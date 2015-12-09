@@ -75,7 +75,7 @@ public class Convolve<I extends RealType<I>, K extends RealType<K>, O extends Re
 	// TODO: needs to be selected by the user, but is not a plugin -> probably
 	// needs to be wrapped?
 	@Parameter
-	private OutOfBoundsFactory<I, ImgPlus<I>> outOfBounds = new OutOfBoundsMirrorFactory<I, ImgPlus<I>>(
+	private OutOfBoundsFactory<I, ImgPlus<I>> outOfBounds = new OutOfBoundsMirrorFactory<>(
 			Boundary.SINGLE);
 
 	@Parameter

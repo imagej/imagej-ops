@@ -48,7 +48,7 @@ public class EvalTest extends AbstractOpTest {
 
 	@Test
 	public void testMath() {
-		final Map<String, Object> vars = new HashMap<String, Object>();
+		final Map<String, Object> vars = new HashMap<>();
 		vars.put("a", 2);
 		vars.put("b", 3);
 		vars.put("c", 5);

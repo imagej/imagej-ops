@@ -90,13 +90,13 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	@Override
 	public Mesh compute1(final Mesh input) {
 		DefaultMesh output = new DefaultMesh();
-		vertices = new LinkedHashSet<Vertex>();
+		vertices = new LinkedHashSet<>();
 		for (final RealLocalizable v : input.getVertices()) {
 			vertices.add(new Vertex(v.getDoublePosition(0), v.getDoublePosition(1), v
 				.getDoublePosition(2)));
 		}
-		facets = new ArrayList<TriangularFacet>();
-		facetsWithPointInFront = new ArrayList<TriangularFacet>();
+		facets = new ArrayList<>();
+		facetsWithPointInFront = new ArrayList<>();
 		computeHull();
 		for (TriangularFacet f : facets) {
 			output.addFace(f);
@@ -139,7 +139,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	private List<TriangularFacet> createFacets(final Horizon horizon,
 		final Vertex vTop)
 	{
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+		List<TriangularFacet> newFacets = new ArrayList<>();
 		Vertex vLeft, vRight;
 
 		// triangles 1 to n
@@ -422,7 +422,7 @@ public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 		assert f2.distanceToPlane(v0) < epsilon;
 		assert f3.distanceToPlane(v1) < epsilon;
 
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+		List<TriangularFacet> newFacets = new ArrayList<>();
 		newFacets.add(f0);
 		newFacets.add(f1);
 		newFacets.add(f2);

@@ -79,7 +79,7 @@ public class GeomTest extends AbstractFeatureTest {
 		img2d = ImageJFunctions
 				.convertFloat(new Opener().openImage(GeomTest.class.getResource("cZgkFsK.png").getPath()));
 
-		final ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
+		final ImgLabeling<String, IntType> img = new ImgLabeling<>(
 			ArrayImgs.ints(read.getWidth(), read.getHeight()));
 
 		// at each black pixel of the polygon add a "1" label.
@@ -94,7 +94,7 @@ public class GeomTest extends AbstractFeatureTest {
 			}
 		}
 
-		final LabelRegions<String> labelRegions = new LabelRegions<String>(img);
+		final LabelRegions<String> labelRegions = new LabelRegions<>(img);
 		region2D = labelRegions.getLabelRegion("1");
 		region3D = createLabelRegion3D();
 	}

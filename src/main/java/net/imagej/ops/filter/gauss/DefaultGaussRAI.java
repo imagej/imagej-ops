@@ -79,7 +79,7 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	{
 
 		if (outOfBounds == null) outOfBounds =
-			new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+			new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 
 		final RandomAccessible<FloatType> eIn =

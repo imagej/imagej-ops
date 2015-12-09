@@ -96,10 +96,9 @@ public class DefaultJoinNComputers<A> extends AbstractUnaryComputerOp<A, A>
 
 	@Override
 	public DefaultJoinNComputers<A> getIndependentInstance() {
-		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<A>();
+		final DefaultJoinNComputers<A> joiner = new DefaultJoinNComputers<>();
 
-		final ArrayList<UnaryComputerOp<A, A>> opsCopy =
-			new ArrayList<UnaryComputerOp<A, A>>();
+		final ArrayList<UnaryComputerOp<A, A>> opsCopy = new ArrayList<>();
 		for (final UnaryComputerOp<A, A> op : getOps()) {
 			opsCopy.add(op.getIndependentInstance());
 		}

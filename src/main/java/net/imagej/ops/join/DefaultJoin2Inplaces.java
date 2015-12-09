@@ -80,7 +80,7 @@ public class DefaultJoin2Inplaces<A> extends AbstractInplaceOp<A> implements
 	@Override
 	public DefaultJoin2Inplaces<A> getIndependentInstance() {
 		final DefaultJoin2Inplaces<A> joiner =
-			new DefaultJoin2Inplaces<A>();
+			new DefaultJoin2Inplaces<>();
 
 		joiner.setFirst(getFirst());
 		joiner.setSecond(getSecond());

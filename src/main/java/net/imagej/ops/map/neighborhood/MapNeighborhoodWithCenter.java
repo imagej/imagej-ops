@@ -360,7 +360,7 @@ public class MapNeighborhoodWithCenter<I, O>
 		@Override
 		public final Pair<I, Iterable<I>> get() {
 			raIn.setPosition(cNeigh);
-			return new ValuePair<I, Iterable<I>>(raIn.get(), cNeigh.get());
+			return new ValuePair<>(raIn.get(), cNeigh.get());
 		}
 
 		@Override
@@ -412,7 +412,7 @@ public class MapNeighborhoodWithCenter<I, O>
 
 		@Override
 		public final Pair<I, Iterable<I>> get() {
-			return new ValuePair<I, Iterable<I>>(cIn.get(), cNeigh.get());
+			return new ValuePair<>(cIn.get(), cNeigh.get());
 		}
 
 		@Override

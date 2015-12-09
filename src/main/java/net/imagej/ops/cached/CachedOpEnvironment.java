@@ -73,7 +73,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	public <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(final Class<OP> opType,
 		final Class<O> outType, final Class<I> inType, Object... otherArgs)
 	{
-		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<I, O>(
+		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<>(
 			super.function1(opType, outType, inType, otherArgs), otherArgs);
 		getContext().inject(cached);
 		return cached;
@@ -83,7 +83,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	public <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(final Class<OP> opType,
 		final Class<O> outType, I in, Object... otherArgs)
 	{
-		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<I, O>(
+		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<>(
 			super.function1(opType, outType, in, otherArgs), otherArgs);
 		getContext().inject(cached);
 		return cached;
@@ -93,7 +93,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	public <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(Class<OP> opType,
 		Class<O> outType, Class<I> inType, Object... otherArgs)
 	{
-		final CachedHybridOp<I, O> cached = new CachedHybridOp<I, O>(super.hybrid1(
+		final CachedHybridOp<I, O> cached = new CachedHybridOp<>(super.hybrid1(
 			opType, outType, inType, otherArgs), otherArgs);
 		getContext().inject(cached);
 		return cached;
@@ -103,7 +103,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	public <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(Class<OP> opType,
 		Class<O> outType, I in, Object... otherArgs)
 	{
-		final CachedHybridOp<I, O> cached = new CachedHybridOp<I, O>(super.hybrid1(
+		final CachedHybridOp<I, O> cached = new CachedHybridOp<>(super.hybrid1(
 			opType, outType, in, otherArgs), otherArgs);
 		getContext().inject(cached);
 		return cached;
