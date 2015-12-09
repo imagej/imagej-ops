@@ -30,6 +30,9 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.app.StatusService;
+import org.scijava.plugin.Parameter;
+
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
@@ -49,9 +52,6 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
-
-import org.scijava.app.StatusService;
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI. Boundary
