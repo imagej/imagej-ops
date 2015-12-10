@@ -30,6 +30,8 @@
 
 package net.imagej.ops;
 
+import net.imagej.ops.special.UnaryComputerOp;
+
 /**
  * Interface for objects intended to be reused across multiple threads
  * simultaneously.
