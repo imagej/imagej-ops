@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
-import net.imagej.ops.special.UnaryComputerOp;
 
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
@@ -118,7 +117,7 @@ public final class OpUtils {
 	 * 
 	 * @param module The module to unwrap.
 	 * @param type The expected type of {@link Op}.
-	 * @param types Other required types for the op (e.g., {@link UnaryComputerOp}).
+	 * @param types Other required types for the op.
 	 * @return The unwrapped {@link Op}.
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.

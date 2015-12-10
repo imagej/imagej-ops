@@ -34,8 +34,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import net.imagej.ops.special.UnaryComputerOp;
-
 import org.scijava.util.MiscUtils;
 
 /**
@@ -94,7 +92,7 @@ public class OpRef<OP extends Op> {
 	 * Creates a new op reference.
 	 * 
 	 * @param type type of op, or null for any type.
-	 * @param extraType the additional constraint (e.g., {@link UnaryComputerOp}).
+	 * @param extraType the additional type constraint.
 	 * @param outType the type of the op's primary output, or null for any type.
 	 * @param args arguments to the op.
 	 */

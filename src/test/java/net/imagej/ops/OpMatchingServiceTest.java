@@ -38,7 +38,6 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import net.imagej.ops.special.AbstractInplaceOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
@@ -162,13 +161,15 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.nan")
-	public static class NaNOp extends AbstractInplaceOp<DoubleType> {
+	public static class NaNOp extends AbstractOp {
+
+		@Parameter(type = ItemIO.BOTH)
+		private DoubleType arg;
 
 		@Override
-		public void mutate(final DoubleType argument) {
-			argument.set(Double.NaN);
+		public void run() {
+			arg.set(Double.NaN);
 		}
-
 	}
 
 	@Plugin(type = Op.class)
