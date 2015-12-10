@@ -54,8 +54,9 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	/**
 	 * Computes the output given some input.
 	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
+	 * @param input Argument to the computation, which <em>must be non-null</em>
+	 * @param output Object where the computation's result will be stored, which
+	 * <em>must be non-null and a different object than {@code input}</em>
 	 */
 	void compute1(I input, O output);
 
