@@ -72,7 +72,7 @@ public final class Hybrids {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType);
 		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (NullaryHybridOp<O>) ops.op(ref);
 	}
 
@@ -97,8 +97,9 @@ public final class Hybrids {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (NullaryHybridOp<O>) ops.op(ref);
 	}
 
@@ -125,7 +126,7 @@ public final class Hybrids {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (UnaryHybridOp<I, O>) ops.op(ref);
 	}
 
@@ -152,7 +153,7 @@ public final class Hybrids {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (UnaryHybridOp<I, O>) ops.op(ref);
 	}
 
@@ -178,8 +179,9 @@ public final class Hybrids {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (UnaryHybridOp<I, O>) ops.op(ref);
 	}
 
@@ -211,7 +213,7 @@ public final class Hybrids {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
 	}
 
@@ -240,7 +242,7 @@ public final class Hybrids {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
 	}
 
@@ -267,8 +269,9 @@ public final class Hybrids {
 		final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
-			null, args);
+			outType, args);
 		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
 	}
 

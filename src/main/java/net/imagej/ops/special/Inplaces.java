@@ -67,7 +67,7 @@ public final class Inplaces {
 		final Class<OP> opType, final Class<A> argType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, argType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, null,
+		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, argType,
 			args);
 		return (InplaceOp<A>) ops.op(ref);
 	}
@@ -92,7 +92,8 @@ public final class Inplaces {
 		final Class<OP> opType, final A arg, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, arg);
-		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, null,
+		final Class<?> argType = arg == null ? null : arg.getClass();
+		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, argType,
 			args);
 		return (InplaceOp<A>) ops.op(ref);
 	}

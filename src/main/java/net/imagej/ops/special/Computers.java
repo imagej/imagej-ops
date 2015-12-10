@@ -72,7 +72,7 @@ public final class Computers {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType);
 		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (NullaryComputerOp<O>) ops.op(ref);
 	}
 
@@ -97,8 +97,9 @@ public final class Computers {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (NullaryComputerOp<O>) ops.op(ref);
 	}
 
@@ -126,7 +127,7 @@ public final class Computers {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
@@ -154,7 +155,7 @@ public final class Computers {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
@@ -180,8 +181,9 @@ public final class Computers {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
@@ -213,7 +215,7 @@ public final class Computers {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
 	}
 
@@ -242,7 +244,7 @@ public final class Computers {
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
 	}
 
@@ -269,8 +271,9 @@ public final class Computers {
 		final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
+		final Class<?> outType = out == null ? null : out.getClass();
 		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
+			outType, args);
 		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
 	}
 
