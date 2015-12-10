@@ -38,6 +38,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 
 import org.junit.Test;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -58,15 +59,15 @@ public class HelpCandidatesTest extends AbstractOpTest {
 	public void testName() {
 		final String expectedApple = "" + //
 			"Available operations:\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyApple()";
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyApple()\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()";
 		final String apple = ops.help("test.apple");
 		assertEquals(expectedApple, apple);
 
 		final String expectedOrange = "" + //
 			"Available operations:\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyOrange()";
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YummyOrange()\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()";
 		final String orange = ops.help("test.orange");
 		assertEquals(expectedOrange, orange);
 	}
@@ -82,8 +83,8 @@ public class HelpCandidatesTest extends AbstractOpTest {
 
 		final String expectedYucky = "" + //
 			"Available operations:\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()\n" + //
-			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()";
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyOrange()\n" + //
+			"\tnet.imagej.ops.help.HelpCandidatesTest$YuckyApple()";
 		final String yucky = ops.help(null, Yucky.class);
 		assertEquals(expectedYucky, yucky);
 	}
@@ -128,22 +129,26 @@ public class HelpCandidatesTest extends AbstractOpTest {
 		// NB: Marker interface.
 	}
 
-	@Plugin(type = Yummy.class, name = "test.apple")
+	@Plugin(type = Yummy.class, name = "test.apple",
+		priority = Priority.VERY_HIGH_PRIORITY)
 	public static class YummyApple extends NoOp implements Yummy {
 		// NB: No implementation needed.
 	}
 
-	@Plugin(type = Yucky.class, name = "test.apple")
+	@Plugin(type = Yucky.class, name = "test.apple",
+		priority = Priority.VERY_LOW_PRIORITY)
 	public static class YuckyApple extends NoOp implements Yucky {
 		// NB: No implementation needed.
 	}
 
-	@Plugin(type = Yummy.class, name = "test.orange")
+	@Plugin(type = Yummy.class, name = "test.orange",
+		priority = Priority.HIGH_PRIORITY)
 	public static class YummyOrange extends NoOp implements Yummy {
 		// NB: No implementation needed.
 	}
 
-	@Plugin(type = Yucky.class, name = "test.orange")
+	@Plugin(type = Yucky.class, name = "test.orange",
+		priority = Priority.LOW_PRIORITY)
 	public static class YuckyOrange extends NoOp implements Yucky {
 		// NB: No implementation needed.
 	}
