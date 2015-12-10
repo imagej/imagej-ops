@@ -51,6 +51,88 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 
 	/**
 	 * Tests
+	 * {@link Computers#nullary(OpEnvironment, Class, Class, Object...)}
+	 * (i.e.: without the output specified).
+	 */
+	@Test
+	public void testNullaryComputer() {
+		final NullaryComputerOp<Apple> nullaryComputerA = Computers.nullary(ops,
+			FruitOp.class, Apple.class);
+		assertSame(nullaryComputerA.getClass(), NullaryComputerA.class);
+
+		final NullaryComputerOp<Orange> nullaryComputerO = Computers.nullary(ops,
+			FruitOp.class, Orange.class);
+		assertSame(nullaryComputerO.getClass(), NullaryComputerO.class);
+	}
+
+	/**
+	 * Tests
+	 * {@link Computers#nullary(OpEnvironment, Class, Object, Object...)}
+	 * (i.e.: with the output specified).
+	 */
+	@Test
+	public void testNullaryComputerOut() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+
+		final NullaryComputerOp<Apple> nullaryComputerA = Computers.nullary(ops,
+			FruitOp.class, a);
+		assertSame(nullaryComputerA.getClass(), NullaryComputerA.class);
+
+		final NullaryComputerOp<Orange> nullaryComputerO = Computers.nullary(ops,
+			FruitOp.class, o);
+		assertSame(nullaryComputerO.getClass(), NullaryComputerO.class);
+	}
+
+	/**
+	 * Tests {@link Functions#nullary(OpEnvironment, Class, Class, Object...)}.
+	 */
+	@Test
+	public void testNullaryFunction() {
+		final NullaryFunctionOp<Apple> nullaryFunctionA = Functions.nullary(ops,
+			FruitOp.class, Apple.class);
+		assertSame(nullaryFunctionA.getClass(), NullaryFunctionA.class);
+
+		final NullaryFunctionOp<Orange> nullaryFunctionO = Functions.nullary(ops,
+			FruitOp.class, Orange.class);
+		assertSame(nullaryFunctionO.getClass(), NullaryFunctionO.class);
+	}
+
+	/**
+	 * Tests {@link Hybrids#nullary(OpEnvironment, Class, Class, Object...)}
+	 * (i.e.: without the output specified).
+	 */
+	@Test
+	public void testNullaryHybrid() {
+		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+			FruitOp.class, Apple.class);
+		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
+
+		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+			FruitOp.class, Orange.class);
+		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
+	}
+
+	/**
+	 * Tests {@link Hybrids#nullary(OpEnvironment, Class, Object, Object...)}
+	 * (i.e.: with the output specified).
+	 */
+	@Test
+	public void testNullaryHybridOut() {
+		final Apple a = new Apple();
+		final Orange o = new Orange();
+
+		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+			FruitOp.class, a);
+		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
+
+		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+			FruitOp.class, o);
+		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
+	}
+
+	/**
+	 * Tests
 	 * {@link Computers#unary(OpEnvironment, Class, Class, Class, Object...)}
 	 * (i.e.: with neither output nor input specified).
 	 */
@@ -512,6 +594,41 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		// NB: Marker interface.
 	}
 
+	public abstract static class NullaryFruitComputer<O> extends
+		AbstractNullaryComputerOp<O> implements FruitOp
+	{
+
+		@Override
+		public void compute0(final O out) {
+			// NB: No implementation needed.
+		}
+	}
+
+	public abstract static class NullaryFruitFunction<O> extends
+		AbstractNullaryFunctionOp<O> implements FruitOp
+	{
+
+		@Override
+		public O compute0() {
+			return null;
+		}
+	}
+
+	public abstract static class NullaryFruitHybrid<O> extends
+		AbstractNullaryHybridOp<O> implements FruitOp
+	{
+
+		@Override
+		public O createOutput() {
+			return null;
+		}
+
+		@Override
+		public void compute0(final O out) {
+			// NB: No implementation needed.
+		}
+	}
+
 	public abstract static class UnaryFruitComputer<I, O> extends
 		AbstractUnaryComputerOp<I, O> implements FruitOp
 	{
@@ -558,6 +675,39 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class AbstractFruitOp extends NoOp implements FruitOp {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryComputerA")
+	public static class NullaryComputerA extends NullaryFruitComputer<Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryComputerO")
+	public static class NullaryComputerO extends NullaryFruitComputer<Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryFunctionA",
+		priority = Priority.HIGH_PRIORITY)
+	public static class NullaryFunctionA extends NullaryFruitFunction<Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryFunctionO")
+	public static class NullaryFunctionO extends NullaryFruitFunction<Orange> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryHybridA",
+		priority = Priority.LOW_PRIORITY + 1)
+	public static class NullaryHybridA extends NullaryFruitHybrid<Apple> {
+		// NB: No implementation needed.
+	}
+
+	@Plugin(type = FruitOp.class, name = "test.nullaryHybridO",
+		priority = Priority.LOW_PRIORITY + 1)
+	public static class NullaryHybridO extends NullaryFruitHybrid<Orange> {
 		// NB: No implementation needed.
 	}
 
