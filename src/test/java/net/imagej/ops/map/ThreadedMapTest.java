@@ -32,7 +32,7 @@ package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
@@ -133,17 +133,17 @@ public class ThreadedMapTest extends AbstractOpTest {
 	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public void compute(final ByteType arg) {
+		public void mutate(final ByteType arg) {
 			arg.inc();
 		}
 	}
 
 	private static class AddOneFunctional extends
-		AbstractComputerOp<ByteType, ByteType>
+		AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}

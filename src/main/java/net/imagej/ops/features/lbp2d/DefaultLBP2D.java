@@ -36,7 +36,7 @@ import java.util.Iterator;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
@@ -66,29 +66,29 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 	private int histogramSize = 256;
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<ArrayList, Histogram1d> histOp;
+	private UnaryFunctionOp<ArrayList, Histogram1d> histOp;
 
 	@Override
 	public void initialize() {
-		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
+		histOp = ops().function1(HistogramCreate.class, Histogram1d.class,
 			ArrayList.class, histogramSize);
 	}
 
 	@Override
 	public ArrayList<LongType> createOutput(RandomAccessibleInterval<I> input) {
-		return new ArrayList<LongType>();
+		return new ArrayList<>();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(RandomAccessibleInterval<I> input,
+	public void compute1(RandomAccessibleInterval<I> input,
 		ArrayList<LongType> output)
 	{
-		ArrayList<LongType> numberList = new ArrayList<LongType>();
+		ArrayList<LongType> numberList = new ArrayList<>();
 		RandomAccess<I> raInput = Views.extendZero(input).randomAccess();
 		final Cursor<I> cInput = Views.flatIterable(input).cursor();
 		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh =
-			new ClockwiseDistanceNeighborhoodIterator<I>(raInput, distance);
+			new ClockwiseDistanceNeighborhoodIterator<>(raInput, distance);
 
 		while (cInput.hasNext()) {
 			cInput.next();
@@ -107,7 +107,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 			numberList.add(new LongType(resultBinaryValue));
 		}
 
-		Histogram1d<Integer> hist = histOp.compute(numberList);
+		Histogram1d<Integer> hist = histOp.compute1(numberList);
 		Iterator<LongType> c = hist.iterator();
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));

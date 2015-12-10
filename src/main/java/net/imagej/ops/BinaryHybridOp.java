@@ -31,7 +31,13 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link HybridOp} which calculates a result from two given inputs.
+ * A <em>hybrid</em> binary operation can be used as either a
+ * {@link BinaryFunctionOp} or as a {@link BinaryComputerOp}.
+ * <p>
+ * To compute a new output object, call {@link BinaryFunctionOp#compute2}; to
+ * populate an already-existing output object, call
+ * {@link BinaryComputerOp#compute2}.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input
@@ -40,9 +46,9 @@ package net.imagej.ops;
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
  */
-public interface BinaryHybridOp<I1, I2, O> extends HybridOp<I1, O>,
-	BinaryComputerOp<I1, I2, O>, BinaryFunctionOp<I1, I2, O>,
-	BinaryOutputFactory<I1, I2, O>
+public interface BinaryHybridOp<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
+	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>,
+	UnaryHybridOp<I1, O>
 {
 
 	// -- BinaryFunctionOp methods --
@@ -54,18 +60,18 @@ public interface BinaryHybridOp<I1, I2, O> extends HybridOp<I1, O>,
 		return output;
 	}
 
-	// -- ComputerOp methods --
+	// -- UnaryFunctionOp methods --
 
 	@Override
-	default void compute(final I1 input, final O output) {
-		compute2(input, in2(), output);
+	default O compute1(final I1 input) {
+		return compute2(input, in2());
 	}
 
-	// -- FunctionOp methods --
+	// -- UnaryOutputFactory methods --
 
 	@Override
-	default O compute(final I1 input) {
-		return compute2(input, in2());
+	default O createOutput(final I1 input) {
+		return createOutput(input, in2());
 	}
 
 	// -- Threadable methods --

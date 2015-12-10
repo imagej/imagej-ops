@@ -56,7 +56,7 @@ public class IterableVariance<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		int n = 0;
 		double mean = 0.0;
 		double M2 = 0.0;

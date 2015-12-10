@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Evaluates a {@link ComputerOp} for each {@link Neighborhood} on the input
+ * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the input
  * {@link RandomAccessibleInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -53,8 +53,8 @@ import org.scijava.plugin.Plugin;
  * @param <I> input type
  * @param <O> output type
  * @see OpService#map(RandomAccessibleInterval, RandomAccessibleInterval, Shape,
- *      ComputerOp)
- * @see ComputerOp
+ *      UnaryComputerOp)
+ * @see UnaryComputerOp
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
@@ -64,21 +64,21 @@ public class MapNeighborhood<I, O> extends
 	@Parameter
 	private Shape shape;
 
-	private ComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<O>> map;
+	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (ComputerOp) ops().computer(Map.class, RandomAccessibleInterval.class,
+		map = (UnaryComputerOp) ops().computer1(Map.class, RandomAccessibleInterval.class,
 			in() != null ? shape.neighborhoodsSafe(in()) : IterableInterval.class,
 			getOp());
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		map.compute(shape.neighborhoodsSafe(input), output);
+		map.compute1(shape.neighborhoodsSafe(input), output);
 	}
 
 }

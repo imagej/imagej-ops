@@ -69,8 +69,8 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	 * A new empty facet container.
 	 */
 	public DefaultMesh() {
-		facets = new ArrayList<Facet>();
-		vertices = new LinkedHashSet<RealLocalizable>();
+		facets = new ArrayList<>();
+		vertices = new LinkedHashSet<>();
 		area = 0;
 	}
 
@@ -78,7 +78,7 @@ public class DefaultMesh implements Mesh, Iterable<Facet> {
 	 * A new empty facet container.
 	 */
 	public DefaultMesh(final Set<RealLocalizable> vertices) {
-		facets = new ArrayList<Facet>();
+		facets = new ArrayList<>();
 		area = 0;
 		this.vertices = vertices;
 	}

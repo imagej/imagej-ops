@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
@@ -43,17 +43,18 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapOp}, which is specialized for the case, that the two
- * incoming {@link IterableInterval}s have the same IterationOrder.
+ * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 3)
-public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
-	AbstractMapComputer<A, B, IterableInterval<A>, IterableInterval<B>> implements
-	Contingent, Parallel
+public class MapIterableIntervalToIterableIntervalParallel<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
+	implements Contingent, Parallel
 {
 
 	@Override
@@ -61,15 +62,15 @@ public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
 		return out() == null || isValid(in(), out());
 	}
 
-	private boolean isValid(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	private boolean isValid(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
 		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
-	public void compute(final IterableInterval<A> input,
-		final IterableInterval<B> output)
+	public void compute1(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
@@ -77,17 +78,17 @@ public class MapIterableIntervalToIterableIntervalParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
-				
-				final Cursor<A> inCursor = input.cursor();
-				final Cursor<B> outCursor = output.cursor();
+				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
+
+				final Cursor<EI> inCursor = input.cursor();
+				final Cursor<EO> outCursor = output.cursor();
 
 				setToStart(inCursor, startIndex);
 				setToStart(outCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					safe.compute(inCursor.get(), outCursor.get());
+					safe.compute1(inCursor.get(), outCursor.get());
 					inCursor.jumpFwd(stepSize);
 					outCursor.jumpFwd(stepSize);
 					ctr++;

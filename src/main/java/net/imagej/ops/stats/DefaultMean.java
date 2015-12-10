@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -54,9 +54,9 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Mean
 {
 	
-	private FunctionOp<Iterable<I>, O> sumFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sumFunc;
 	
-	private FunctionOp<Iterable<I>, O> areaFunc;
+	private UnaryFunctionOp<Iterable<I>, O> areaFunc;
 
 	@Override
 	public void initialize() {
@@ -65,8 +65,8 @@ public class DefaultMean<I extends RealType<I>, O extends RealType<O>> extends
 	}
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(sumFunc.compute(input).getRealDouble() /
-			areaFunc.compute(input).getRealDouble());
+	public void compute1(final Iterable<I> input, final O output) {
+		output.setReal(sumFunc.compute1(input).getRealDouble() /
+			areaFunc.compute1(input).getRealDouble());
 	}
 }

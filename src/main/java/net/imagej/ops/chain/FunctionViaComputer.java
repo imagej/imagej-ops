@@ -30,52 +30,52 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.HybridOp;
-import net.imagej.ops.OutputFactory;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.UnaryOutputFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Base class for {@link FunctionOp} implementations that delegate to
- * {@link ComputerOp} implementations.
+ * Base class for {@link UnaryFunctionOp} implementations that delegate to
+ * {@link UnaryComputerOp} implementations.
  * <p>
- * This is mostly useful when the {@link ComputerOp} in question has a
+ * This is mostly useful when the {@link UnaryComputerOp} in question has a
  * generic type as output, which needs to be narrowed to a concrete type for the
- * purposes of the {@link FunctionOp} portion's return type. In this scenario, a
- * {@link HybridOp} cannot be used directly with type-safe generics.
+ * purposes of the {@link UnaryFunctionOp} portion's return type. In this scenario, a
+ * {@link UnaryHybridOp} cannot be used directly with type-safe generics.
  * </p>
  * <p>
- * For example, a {@link ComputerOp} whose output variable is a
- * {@code T extends RealType<T>} cannot be a {@link HybridOp} because we do not
+ * For example, a {@link UnaryComputerOp} whose output variable is a
+ * {@code T extends RealType<T>} cannot be a {@link UnaryHybridOp} because we do not
  * know at runtime which sort of {@link RealType} matches the caller's {@code T}
- * parameter. However, a separate {@link FunctionOp} can be created whose output
+ * parameter. However, a separate {@link UnaryFunctionOp} can be created whose output
  * is typed on e.g. {@link DoubleType}, with the computation delegating to the
- * wrapped {@link ComputerOp}.
+ * wrapped {@link UnaryComputerOp}.
  * </p>
  */
-public abstract class FunctionViaComputer<I, O> extends AbstractFunctionOp<I, O>
-	implements DelegatingSpecialOp<ComputerOp<I, O>, I, O>, OutputFactory<I, O>
+public abstract class FunctionViaComputer<I, O> extends AbstractUnaryFunctionOp<I, O>
+	implements DelegatingUnaryOp<UnaryComputerOp<I, O>, I, O>, UnaryOutputFactory<I, O>
 {
 
-	private ComputerOp<I, O> worker;
+	private UnaryComputerOp<I, O> worker;
+
+	// -- UnaryFunctionOp methods --
+
+	@Override
+	public O compute1(final I input) {
+		final O output = createOutput(input);
+		worker.compute1(input, output);
+		return output;
+	}
 
 	// -- Initializable methods --
 
 	@Override
 	public void initialize() {
 		worker = createWorker(in());
-	}
-
-	// -- FunctionOp methods --
-
-	@Override
-	public O compute(final I input) {
-		final O output = createOutput(input);
-		worker.compute(input, output);
-		return output;
 	}
 
 }

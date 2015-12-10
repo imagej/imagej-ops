@@ -33,21 +33,21 @@ package net.imagej.ops;
 import net.imglib2.converter.Converter;
 
 /**
- * A {@link Converter} backed by a {@link ComputerOp}.
+ * A {@link Converter} backed by a {@link UnaryComputerOp}.
  * 
  * @author Curtis Rueden
  */
 public class ComputerConverter<A, B> implements Converter<A, B> {
 
-	private final ComputerOp<A, B> op;
+	private final UnaryComputerOp<A, B> op;
 
-	public ComputerConverter(final ComputerOp<A, B> op) {
+	public ComputerConverter(final UnaryComputerOp<A, B> op) {
 		this.op = op;
 	}
 
 	@Override
 	public void convert(final A input, final B output) {
-		op.compute(input, output);
+		op.compute1(input, output);
 	}
 
 }

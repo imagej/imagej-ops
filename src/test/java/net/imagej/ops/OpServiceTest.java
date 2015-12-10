@@ -233,7 +233,7 @@ public class OpServiceTest extends AbstractOpTest {
 	public static class InfinityOp extends AbstractInplaceOp<DoubleType> {
 
 		@Override
-		public void compute(final DoubleType arg) {
+		public void mutate(final DoubleType arg) {
 			arg.set(Double.POSITIVE_INFINITY);
 		}
 	}

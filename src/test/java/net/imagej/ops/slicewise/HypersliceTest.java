@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
 import net.imglib2.Cursor;
@@ -200,10 +200,10 @@ public class HypersliceTest extends AbstractOpTest {
 	}
 
 	class DummyOp extends
-			AbstractComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
+			AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public void compute(final Iterable<ByteType> input,
+		public void compute1(final Iterable<ByteType> input,
 			final Iterable<ByteType> output)
 		{
 			final Iterator<ByteType> itA = input.iterator();

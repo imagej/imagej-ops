@@ -30,10 +30,10 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
@@ -50,28 +50,28 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
-		AbstractHybridOp<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
+		AbstractUnaryHybridOp<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
 	
-	private ComputerOp<Iterable<T>, Iterable<T>> copyComputer;
+	private UnaryComputerOp<Iterable<T>, Iterable<T>> copyComputer;
 
-	private FunctionOp<Img<T>, Img<T>> createFunc;
+	private UnaryFunctionOp<Img<T>, Img<T>> createFunc;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = (ComputerOp)ops().computer(CopyIterableInterval.class, in(), in());
-		createFunc = (FunctionOp) ops().function(Ops.Create.Img.class, Img.class, 
+		copyComputer = (UnaryComputerOp)ops().computer1(CopyIterableInterval.class, in(), in());
+		createFunc = (UnaryFunctionOp) ops().function1(Ops.Create.Img.class, Img.class, 
 				in());
 	}
 	
 	@Override
 	public Img<T> createOutput(final Img<T> input) {
-		return createFunc.compute(input);
+		return createFunc.compute1(input);
 	}
 
 	@Override
-	public void compute(final Img<T> input, final Img<T> output) {
-		copyComputer.compute(input, output);
+	public void compute1(final Img<T> input, final Img<T> output) {
+		copyComputer.compute1(input, output);
 	}
 
 	@Override

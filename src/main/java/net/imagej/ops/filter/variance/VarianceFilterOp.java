@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.variance;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 
 /**
@@ -39,7 +39,7 @@ import net.imagej.ops.Ops;
  * @author Jonathan Hale (University of Konstanz)
  */
 public interface VarianceFilterOp<I> extends Ops.Filter.Variance,
-	ComputerOp<I, I>
+	UnaryComputerOp<I, I>
 {
 	// NB: Marker interface.
 }

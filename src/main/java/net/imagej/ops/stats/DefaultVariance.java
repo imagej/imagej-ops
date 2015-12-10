@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -55,7 +55,7 @@ public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Variance
 {
 	
-	private FunctionOp<Iterable<I>, O> meanOp;
+	private UnaryFunctionOp<Iterable<I>, O> meanOp;
 
 	@Override
 	public void initialize() {
@@ -63,9 +63,9 @@ public class DefaultVariance<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 
-		double mean = meanOp.compute(input).getRealDouble();
+		double mean = meanOp.compute1(input).getRealDouble();
 
 		int n = 0;
 		double sum = 0d;

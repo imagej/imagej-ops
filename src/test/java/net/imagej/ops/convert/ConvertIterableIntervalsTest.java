@@ -33,7 +33,7 @@ package net.imagej.ops.convert;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
@@ -115,8 +115,8 @@ public class ConvertIterableIntervalsTest extends AbstractOpTest {
 	}
 
 	private void addNoise(final Iterable<ShortType> image) {
-		final ComputerOp<ShortType, ShortType> noiseOp =
-			ops.computer(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
+		final UnaryComputerOp<ShortType, ShortType> noiseOp =
+			ops.computer1(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
 				-32768, 32767, 10000);
 		ops.map(image, image, noiseOp);
 	}

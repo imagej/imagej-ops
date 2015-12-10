@@ -32,8 +32,8 @@ package net.imagej.ops.image.project;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
@@ -50,19 +50,19 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Image.Project.class, priority = Priority.LOW_PRIORITY + 1)
 public class DefaultProjectParallel<T, V> extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
 	implements Contingent, Parallel, Ops.Image.Project
 {
 
 	@Parameter
-	private ComputerOp<Iterable<T>, V> method;
+	private UnaryComputerOp<Iterable<T>, V> method;
 
 	// dimension which will be projected
 	@Parameter
 	private int dim;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
@@ -85,7 +85,7 @@ public class DefaultProjectParallel<T, V> extends
 						}
 					}
 
-					method.compute(new DimensionIterable(input.dimension(dim), access),
+					method.compute1(new DimensionIterable(input.dimension(dim), access),
 						cursor.get());
 
 					cursor.jumpFwd(stepSize);

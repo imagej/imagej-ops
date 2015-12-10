@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
@@ -50,19 +50,19 @@ import org.scijava.plugin.Plugin;
 public class DefaultDifferenceVariance<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.DifferenceVariance {
 
-	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
 	
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXMinusYFunc = ops().function(CoocPXMinusY.class, double[].class, double[][].class);
+		coocPXMinusYFunc = ops().function1(CoocPXMinusY.class, double[].class, double[][].class);
 	}
 	
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxminusy = coocPXMinusYFunc.compute(matrix);
+		final double[] pxminusy = coocPXMinusYFunc.compute1(matrix);
 		double sum = 0.0d;
 		double res = 0;
 		for (int k = 0; k < pxminusy.length; k++) {

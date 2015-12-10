@@ -66,7 +66,7 @@ public class DefaultChunker extends AbstractChunker {
 		
 		final int numChunks = (int) (numberOfElements / numSteps);
 
-		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numChunks);
+		final ArrayList<Future<?>> futures = new ArrayList<>(numChunks);
 
 		for (int i = 0; i < numChunks - 1; i++) {
 			final int j = i;

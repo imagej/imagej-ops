@@ -52,7 +52,7 @@ public class IterableStandardDeviation<I extends RealType<I>, O extends RealType
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double sum = 0;
 		double sumSqr = 0;
 		int n = 0;

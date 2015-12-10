@@ -78,7 +78,7 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops().create().img(dims, outType, fac));
+		output = new ImgLabeling<>(ops().create().img(dims, outType, fac));
 	}
 
 	@Override

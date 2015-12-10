@@ -117,13 +117,13 @@ public class CreateFFTFilterMemory<I extends RealType<I>, O extends RealType<O>,
 
 		if (obfInput == null) {
 			obfInput =
-				new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
+				new OutOfBoundsConstantValueFactory<>(
 					Util.getTypeFromInterval(input).createVariable());
 		}
 
 		if ((obfKernel == null) && (kernel != null)) {
 			obfKernel =
-				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
+				new OutOfBoundsConstantValueFactory<>(
 					Util.getTypeFromInterval(kernel).createVariable());
 		}
 

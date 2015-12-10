@@ -30,7 +30,7 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
 import net.imglib2.IterableInterval;
@@ -51,27 +51,27 @@ public class DefaultICM2<T extends RealType<T>> extends
 	AbstractHaralickFeature<T> implements Ops.Haralick.ICM2
 {
 
-	private FunctionOp<double[][], double[]> coocHXYFunc;
-	private FunctionOp<IterableInterval<T>, DoubleType> entropy;
+	private UnaryFunctionOp<double[][], double[]> coocHXYFunc;
+	private UnaryFunctionOp<IterableInterval<T>, DoubleType> entropy;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocHXYFunc = ops().function(CoocHXY.class, double[].class,
+		coocHXYFunc = ops().function1(CoocHXY.class, double[].class,
 			double[][].class);
-		entropy = ops().function(Ops.Haralick.Entropy.class, DoubleType.class, in(),
+		entropy = ops().function1(Ops.Haralick.Entropy.class, DoubleType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		double res = 0;
-		final double[] coochxy = coocHXYFunc.compute(matrix);
-		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - entropy.compute(input)
+		final double[] coochxy = coocHXYFunc.compute1(matrix);
+		res = Math.sqrt(1 - Math.exp(-2 * (coochxy[3] - entropy.compute1(input)
 			.get())));
 
 		// if NaN

@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imglib2.RealLocalizable;
@@ -49,12 +49,12 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygon>
 	implements GeometricOp<Polygon, Polygon>, Ops.Geometric.ConvexHull
 {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public Polygon compute1(final Polygon input) {
 		// create a copy of points because se will get resorted, etc.
 		List<? extends RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(input.getVertices());
 
@@ -79,8 +79,8 @@ public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
 		// Initialize U and L as empty lists.
 		// lists will hold vertices of upper and lower hulls
 		// respectively.
-		final List<RealLocalizable> U = new ArrayList<RealLocalizable>();
-		final List<RealLocalizable> L = new ArrayList<RealLocalizable>();
+		final List<RealLocalizable> U = new ArrayList<>();
+		final List<RealLocalizable> L = new ArrayList<>();
 		// build lower hull
 		for (final RealLocalizable p : RealPoints) {
 			// while L contains at least two RealPoints and sequence of last

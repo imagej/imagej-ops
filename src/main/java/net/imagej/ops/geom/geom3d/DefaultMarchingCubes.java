@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
@@ -62,7 +62,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.MarchingCubes.class)
 public class DefaultMarchingCubes<T extends BooleanType<T>> extends
-	AbstractFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, Mesh> implements
 	Ops.Geometric.MarchingCubes, Contingent
 {
 
@@ -75,7 +75,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
+	public DefaultMesh compute1(final RandomAccessibleInterval<T> input) {
 		DefaultMesh output = new DefaultMesh();
 		ExtendedRandomAccessibleInterval<T, RandomAccessibleInterval<T>> extended =
 			Views.extendValue(input, (T) new BoolType(false));

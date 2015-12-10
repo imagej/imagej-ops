@@ -73,7 +73,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 
 		output =
 			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
-				? new ArrayImgFactory<T>() : new CellImgFactory<T>();
+				? new ArrayImgFactory<>() : new CellImgFactory<>();
 	}
 
 	@Override

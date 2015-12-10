@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -52,9 +52,9 @@ public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Kurtosis
 {
 
-	private FunctionOp<Iterable<I>, O> stdDevFunc;
+	private UnaryFunctionOp<Iterable<I>, O> stdDevFunc;
 	
-	private FunctionOp<Iterable<I>, O> moment4AboutMeanFunc;
+	private UnaryFunctionOp<Iterable<I>, O> moment4AboutMeanFunc;
 
 	@Override
 	public void initialize() {
@@ -63,12 +63,12 @@ public class DefaultKurtosis<I extends RealType<I>, O extends RealType<O>>
 	}
 	
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		output.setReal(Double.NaN);
 
-		final double std = stdDevFunc.compute(input).getRealDouble();
+		final double std = stdDevFunc.compute1(input).getRealDouble();
 		final double moment4 =
-				moment4AboutMeanFunc.compute(input).getRealDouble();
+				moment4AboutMeanFunc.compute1(input).getRealDouble();
 
 		if (std != 0) {
 			output.setReal((moment4) / (std * std * std * std));

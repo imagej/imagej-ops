@@ -52,7 +52,7 @@ public class IterableMin<I extends RealType<I>, O extends RealType<O>> extends
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double min = Double.MAX_VALUE;
 		for (final I in : input) {
 			final double n = in.getRealDouble();

@@ -43,7 +43,7 @@ public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplac
 	private T value;
 
 	@Override
-	public void compute(final T arg) {
+	public void mutate(final T arg) {
 		arg.add(value);
 	}
 

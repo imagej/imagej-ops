@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
@@ -50,22 +50,22 @@ import org.scijava.plugin.Plugin;
 public class DefaultClusterShade<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.ClusterShade {
 
-	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanYFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
+		coocMeanXFunc = ops().function1(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = ops().function1(CoocMeanY.class, DoubleType.class, double[][].class);
 	}
 	
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double mux = coocMeanXFunc.compute(matrix).getRealDouble();
-		final double muy = coocMeanYFunc.compute(matrix).getRealDouble();
+		final double mux = coocMeanXFunc.compute1(matrix).getRealDouble();
+		final double muy = coocMeanYFunc.compute1(matrix).getRealDouble();
 
 
 		double res = 0;

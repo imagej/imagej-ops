@@ -45,7 +45,7 @@ public class DefaultIdentity<A> extends AbstractIdentity<A> implements
 {
 
 	@Override
-	public void compute(final A input) {
+	public void mutate(final A input) {
 		// NB: No implementation needed.
 	}
 

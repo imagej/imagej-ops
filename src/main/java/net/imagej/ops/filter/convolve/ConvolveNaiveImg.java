@@ -54,7 +54,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 {
 
 	@Override
-	public void compute(final Img<I> img, final Img<O> out) {
+	public void compute1(final Img<I> img, final Img<O> out) {
 		if (getOBFInput() == null) {
 			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
 				Util.getTypeFromInterval(img).createVariable()));
@@ -70,7 +70,7 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 			Views.interval(Views.extend(img, getOBFInput()), img);
 
 		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
-			new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+			new OutOfBoundsConstantValueFactory<>(Util
 				.getTypeFromInterval(out).createVariable());
 
 		// extend the output

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
@@ -47,20 +47,20 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Center of Gravity")
 public class CentroidPolygon extends
-	AbstractFunctionOp<Polygon, RealLocalizable> implements Ops.Geometric.Centroid
+	AbstractUnaryFunctionOp<Polygon, RealLocalizable> implements Ops.Geometric.Centroid
 {
 
-	private FunctionOp<Polygon, DoubleType> sizeFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override
-	public RealLocalizable compute(final Polygon input) {
+	public RealLocalizable compute1(final Polygon input) {
 
-		double area = sizeFunc.compute(input).get();
+		double area = sizeFunc.compute1(input).get();
 		double cx = 0;
 		double cy = 0;
 		for (int i = 0; i < input.getVertices().size() - 1; i++) {

@@ -32,7 +32,7 @@ package net.imagej.ops.filter.addNoise;
 
 import java.util.Random;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imglib2.type.numeric.RealType;
 
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.AddNoise.class)
 public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<I, O> implements Ops.Filter.AddNoise
+	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddNoise
 {
 
 	@Parameter
@@ -71,7 +71,7 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	}
 	
 	@Override
-	public void compute(final I input, final O output) {
+	public void compute1(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
 		int i = 0;
 		do {

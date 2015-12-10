@@ -35,7 +35,7 @@ package net.imagej.ops;
  * 
  * @author Curtis Rueden
  */
-public interface BinaryInput<I1, I2> extends Input<I1> {
+public interface BinaryInput<I1, I2> extends UnaryInput<I1> {
 
 	I1 in1();
 	I2 in2();
@@ -43,7 +43,7 @@ public interface BinaryInput<I1, I2> extends Input<I1> {
 	void setInput1(I1 input1);
 	void setInput2(I2 input2);
 
-	// -- Input methods --
+	// -- UnaryInput methods --
 
 	@Override
 	default I1 in() {

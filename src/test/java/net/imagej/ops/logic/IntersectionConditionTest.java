@@ -45,8 +45,7 @@ public class IntersectionConditionTest extends AbstractOpTest {
 
 	@Test
 	public void test() {
-		final ArrayList<Condition<Double>> condition =
-			new ArrayList<Condition<Double>>();
+		final ArrayList<Condition<Double>> condition = new ArrayList<>();
 
 		@SuppressWarnings("unchecked")
 		final Condition<Double> c1 =

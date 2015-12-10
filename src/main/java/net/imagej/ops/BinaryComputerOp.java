@@ -31,8 +31,14 @@
 package net.imagej.ops;
 
 /**
- * A binary {@link ComputerOp} which calculates a result from two given inputs,
- * storing it into the specified output reference.
+ * A binary <em>computer</em> computes a result from two given inputs, storing
+ * it into the specified output reference. The contents of the inputs are not
+ * affected.
+ * <p>
+ * A binary computer may be treated as a {@link UnaryComputerOp} by holding the
+ * second input constant, or treated as a {@link NullaryComputerOp} by holding
+ * both inputs constant.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input
@@ -42,7 +48,7 @@ package net.imagej.ops;
  * @see BinaryHybridOp
  */
 public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
-	ComputerOp<I1, O>
+	UnaryComputerOp<I1, O>
 {
 
 	/**
@@ -54,10 +60,10 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	void compute2(I1 input1, I2 input2, O output);
 
-	// -- ComputerOp methods --
+	// -- UnaryComputerOp methods --
 
 	@Override
-	default void compute(final I1 input, final O output) {
+	default void compute1(final I1 input, final O output) {
 		compute2(input, in2(), output);
 	}
 

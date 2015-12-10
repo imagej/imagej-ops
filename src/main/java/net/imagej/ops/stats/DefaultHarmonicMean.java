@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -52,9 +52,9 @@ public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.HarmonicMean
 {
 	
-	private FunctionOp<Iterable<I>, O> sizeFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sizeFunc;
 
-	private FunctionOp<Iterable<I>, O> sumOfInversesFunc;
+	private UnaryFunctionOp<Iterable<I>, O> sumOfInversesFunc;
 
 	@Override
 	public void initialize() {
@@ -63,9 +63,9 @@ public class DefaultHarmonicMean<I extends RealType<I>, O extends RealType<O>>
 	}
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		final double area = sizeFunc.compute(input).getRealDouble();
-		final double sumOfInverses = sumOfInversesFunc.compute(input).getRealDouble();
+	public void compute1(final Iterable<I> input, final O output) {
+		final double area = sizeFunc.compute1(input).getRealDouble();
+		final double sumOfInverses = sumOfInversesFunc.compute1(input).getRealDouble();
 
 		if (sumOfInverses != 0) {
 			output.setReal(area / sumOfInverses);

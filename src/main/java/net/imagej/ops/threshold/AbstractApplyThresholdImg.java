@@ -45,7 +45,7 @@ public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
 	AbstractApplyThresholdIterable<T, I, Img<BitType>>
 {
 
-	// -- HybridOp methods --
+	// -- UnaryOutputFactory methods --
 
 	@Override
 	public Img<BitType> createOutput(final I input) {

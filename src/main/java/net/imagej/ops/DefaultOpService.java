@@ -78,7 +78,7 @@ public class DefaultOpService extends AbstractPTService<Op> implements
 	public Collection<OpInfo> infos() {
 		// TODO: Consider maintaining a separate and efficient
 		// OpInfo data structure in AbstractOpEnvironment.
-		final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
+		final ArrayList<OpInfo> infos = new ArrayList<>();
 		for (final CommandInfo cInfo : commandService.getCommandsOfType(Op.class)) {
 			infos.add(new OpInfo(cInfo));
 		}

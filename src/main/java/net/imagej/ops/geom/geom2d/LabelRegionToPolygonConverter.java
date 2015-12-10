@@ -39,7 +39,7 @@ import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imglib2.roi.geometric.Polygon;
@@ -58,17 +58,17 @@ public class LabelRegionToPolygonConverter extends
 
 	@Parameter
 	private OpService ops;
-	private FunctionOp<Object, Object> contourFunc;
+	private UnaryFunctionOp<Object, Object> contourFunc;
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
-			contourFunc = (FunctionOp) ops.function(Ops.Geometric.Contour.class, dest, src, true,
+			contourFunc = (UnaryFunctionOp) ops.function1(Ops.Geometric.Contour.class, dest, src, true,
 				true);
 		}
 		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute(src);
+		final Polygon p = (Polygon) contourFunc.compute1(src);
 		return (T) p;
 	}
 

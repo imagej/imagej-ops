@@ -32,26 +32,26 @@ package net.imagej.ops;
 
 /**
  * A <em>special</em> operation is one intended to be used repeatedly from other
- * ops. They come in two major flavors: {@link ComputerOp} and
- * {@link FunctionOp}. And there are two additional types, {@link HybridOp} and
- * {@link InplaceOp}, which specialize behavior further.
+ * ops.
+ * <p>
+ * Special ops come in two major flavors: <em>computer</em> and
+ * <em>function</em>. The <em>hybrid</em> op unions both flavors.
+ * </p>
+ * <p>
+ * They are three arities implemented: {@link NullaryOp}, {@link UnaryOp} and
+ * {@link BinaryOp}. These arities correspond to the number of <em>typed</em>
+ * input parameters. Additional input parameters are allowed, but not strongly
+ * typed at the interface level.
+ * </p>
  * 
  * @author Curtis Rueden
- * @param <I> type of input
- * @param <O> type of output
- * @see ComputerOp
- * @see FunctionOp
- * @see HybridOp
- * @see InplaceOp
  */
-public interface SpecialOp<I, O> extends Op, Input<I>, Output<O>,
-	Initializable, Threadable
-{
+public interface SpecialOp extends Op, Initializable, Threadable {
 
 	// -- Threadable methods --
 
 	@Override
-	default SpecialOp<I, O> getIndependentInstance() {
+	default SpecialOp getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

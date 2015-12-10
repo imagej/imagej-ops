@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imglib2.IterableInterval;
@@ -53,19 +53,19 @@ public class DefaultDifferenceEntropy<T extends RealType<T>> extends
 	// Avoid log 0
 	private static final double EPSILON = 0.00000001f;
 
-	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
 	
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXMinusYFunc = ops().function(CoocPXMinusY.class, double[].class, double[][].class);
+		coocPXMinusYFunc = ops().function1(CoocPXMinusY.class, double[].class, double[][].class);
 	}
 	
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxminusy = coocPXMinusYFunc.compute(matrix);
+		final double[] pxminusy = coocPXMinusYFunc.compute1(matrix);
 		final int nrGrayLevels = matrix.length;
 
 		double res = 0;

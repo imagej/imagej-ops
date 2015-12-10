@@ -30,7 +30,7 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
@@ -54,8 +54,8 @@ public class DefaultCentralMoment03<I extends RealType<I>, O extends RealType<O>
 	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.CentralMoment03
 {
 	
-	private FunctionOp<IterableInterval<I>, O> moment00Func;
-	private FunctionOp<IterableInterval<I>, O> moment01Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> moment00Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> moment01Func;
 
 	@Override
 	public void initialize() {
@@ -64,9 +64,9 @@ public class DefaultCentralMoment03<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		final double moment00 = moment00Func.compute(input).getRealDouble();
-		final double moment01 = moment01Func.compute(input).getRealDouble();
+	public void compute1(final IterableInterval<I> input, final O output) {
+		final double moment00 = moment00Func.compute1(input).getRealDouble();
+		final double moment01 = moment01Func.compute1(input).getRealDouble();
 		
 		final double centerY = moment01 / moment00;
 

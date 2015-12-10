@@ -65,7 +65,7 @@ public class ProjectCommand<T extends RealType<T>> implements Command {
 	public void run() {
 		if (out == null) {
 			Img<T> img = in.factory().create(in, in.firstElement().createVariable());
-			out = new ImgPlus<T>(img, in);
+			out = new ImgPlus<>(img, in);
 		}
 		int axisIndex = in.dimensionIndex(axis.type());
 		ops.image().project(out, in, method, axisIndex);

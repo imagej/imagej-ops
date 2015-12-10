@@ -51,7 +51,7 @@ public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
 {
 
 	@Override
-	public void compute(final Img<ComplexFloatType> input, final O output) {
+	public void compute1(final Img<ComplexFloatType> input, final O output) {
 		ops().filter().ifft(output, input);
 	}
 }

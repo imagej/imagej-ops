@@ -90,7 +90,7 @@ public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
 	}
 
 	@Override
-	public void compute(final I input, final Img<ComplexFloatType> output) {
+	public void compute1(final I input, final Img<ComplexFloatType> output) {
 		ops().filter().fft(output, input, getOBF(), paddedSize);
 	}
 }
