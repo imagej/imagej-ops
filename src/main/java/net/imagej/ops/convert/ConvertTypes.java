@@ -31,7 +31,6 @@
 package net.imagej.ops.convert;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;

@@ -32,10 +32,10 @@ package net.imagej.ops.commands.convolve;
 
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axis;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;

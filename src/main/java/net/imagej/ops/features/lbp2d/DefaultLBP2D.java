@@ -33,11 +33,8 @@ package net.imagej.ops.features.lbp2d;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -46,6 +43,9 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of 2d local binary patterns

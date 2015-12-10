@@ -33,9 +33,9 @@ package net.imagej.ops.image.project;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractUnaryComputerOp;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;

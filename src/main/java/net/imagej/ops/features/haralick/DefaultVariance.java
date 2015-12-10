@@ -30,8 +30,8 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
 import net.imglib2.IterableInterval;

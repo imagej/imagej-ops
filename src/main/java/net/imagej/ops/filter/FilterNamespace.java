@@ -33,11 +33,11 @@ package net.imagej.ops.filter;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
 import net.imglib2.RandomAccessible;

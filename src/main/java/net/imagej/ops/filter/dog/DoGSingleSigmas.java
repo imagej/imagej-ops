@@ -33,8 +33,8 @@ package net.imagej.ops.filter.dog;
 import java.util.Arrays;
 
 import net.imagej.ops.AbstractUnaryHybridOp;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;

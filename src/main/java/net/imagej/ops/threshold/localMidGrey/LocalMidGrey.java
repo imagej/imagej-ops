@@ -30,8 +30,8 @@
 
 package net.imagej.ops.threshold.localMidGrey;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;

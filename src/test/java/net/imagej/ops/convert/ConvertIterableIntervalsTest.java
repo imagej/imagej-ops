@@ -33,8 +33,8 @@ package net.imagej.ops.convert;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
 import net.imagej.ops.convert.imageType.ConvertIterableIntervals;

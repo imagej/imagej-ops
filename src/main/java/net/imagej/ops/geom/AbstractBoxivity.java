@@ -31,8 +31,8 @@
 package net.imagej.ops.geom;
 
 import net.imagej.ops.AbstractUnaryFunctionOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.chain.RTs;
 import net.imglib2.type.numeric.real.DoubleType;
 

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.equation;
 
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 
 /**

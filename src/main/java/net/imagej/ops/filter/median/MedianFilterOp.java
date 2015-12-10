@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter.median;
 
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
  * A typed "median" filter.

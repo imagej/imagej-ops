@@ -29,9 +29,6 @@
  */
 package net.imagej.ops.features;
 
-import ij.ImagePlus;
-import ij.io.Opener;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -63,6 +60,9 @@ import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Before;
 import org.scijava.Context;
+
+import ij.ImagePlus;
+import ij.io.Opener;
 
 /**
  * @author Daniel Seebacher (University of Konstanz)

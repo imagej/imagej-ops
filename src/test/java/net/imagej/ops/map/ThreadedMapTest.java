@@ -32,9 +32,9 @@ package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;

@@ -29,8 +29,8 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.chain.RTs;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;

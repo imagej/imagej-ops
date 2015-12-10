@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter.mean;
 
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 
 /**
  * A typed "mean" filter.

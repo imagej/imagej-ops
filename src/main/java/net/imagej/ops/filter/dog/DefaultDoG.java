@@ -31,9 +31,9 @@
 package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.UnaryFunctionOp;
-import net.imagej.ops.Ops;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;

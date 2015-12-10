@@ -31,8 +31,8 @@
 package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractUnaryFunctionOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imglib2.type.numeric.real.DoubleType;
 

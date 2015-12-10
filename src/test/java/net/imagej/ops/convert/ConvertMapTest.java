@@ -32,6 +32,7 @@ package net.imagej.ops.convert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.convert.ConvertTypes.ComplexToFloat32;
 import net.imagej.ops.convert.ConvertTypes.ComplexToUint8;

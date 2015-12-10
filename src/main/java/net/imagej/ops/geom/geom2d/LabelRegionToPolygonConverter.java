@@ -32,18 +32,18 @@ package net.imagej.ops.geom.geom2d;
 
 import java.lang.reflect.Type;
 
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
+
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.UnaryFunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * Converts a {@link LabelRegion} to a polygon

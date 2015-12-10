@@ -32,10 +32,10 @@ package net.imagej.ops.image;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;

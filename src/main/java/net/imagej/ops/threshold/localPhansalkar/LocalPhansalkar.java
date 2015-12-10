@@ -30,11 +30,10 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;

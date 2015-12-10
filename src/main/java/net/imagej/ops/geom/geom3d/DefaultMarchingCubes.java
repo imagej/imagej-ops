@@ -32,7 +32,6 @@ package net.imagej.ops.geom.geom3d;
 
 import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;

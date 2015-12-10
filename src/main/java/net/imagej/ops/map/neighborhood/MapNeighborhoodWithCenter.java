@@ -32,10 +32,10 @@ package net.imagej.ops.map.neighborhood;
 
 import java.util.Iterator;
 
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
+import net.imagej.ops.UnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Positionable;

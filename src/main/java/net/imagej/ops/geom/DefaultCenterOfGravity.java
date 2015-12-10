@@ -30,8 +30,6 @@
 
 package net.imagej.ops.geom;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
@@ -41,6 +39,8 @@ import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the center of gravity of a {@link IterableRegion}

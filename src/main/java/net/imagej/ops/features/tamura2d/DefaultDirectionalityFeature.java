@@ -31,8 +31,8 @@ package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;

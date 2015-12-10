@@ -32,8 +32,8 @@ package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
 import net.imglib2.IterableInterval;

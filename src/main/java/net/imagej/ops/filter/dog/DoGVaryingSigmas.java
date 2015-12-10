@@ -31,8 +31,8 @@
 package net.imagej.ops.filter.dog;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.UnaryHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.UnaryHybridOp;
 import net.imagej.ops.chain.HybridViaHybrid;
 import net.imagej.ops.chain.RAIs;
 import net.imglib2.RandomAccessibleInterval;
