@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.ifft;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 
 /**
  * Abstract superclass for inverse fft implementations.

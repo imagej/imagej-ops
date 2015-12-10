@@ -32,9 +32,9 @@ package net.imagej.ops.loop;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.UnaryOutputFactory;
 import net.imagej.ops.join.DefaultJoinNComputers;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryOutputFactory;
 
 /**
  * Loops over an injected {@link UnaryComputerOp}. A {@link LoopComputer}

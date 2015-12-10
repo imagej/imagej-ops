@@ -30,7 +30,7 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.UnaryOp;
+import net.imagej.ops.special.UnaryOp;
 
 /**
  * Base class for {@link UnaryOp} implementations that delegate to other

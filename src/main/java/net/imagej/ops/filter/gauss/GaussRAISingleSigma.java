@@ -32,8 +32,8 @@ package net.imagej.ops.filter.gauss;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;

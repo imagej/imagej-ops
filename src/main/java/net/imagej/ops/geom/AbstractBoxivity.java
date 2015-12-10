@@ -30,11 +30,11 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**

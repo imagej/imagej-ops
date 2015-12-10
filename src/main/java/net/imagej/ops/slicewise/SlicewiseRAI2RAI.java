@@ -30,9 +30,9 @@
 
 package net.imagej.ops.slicewise;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;

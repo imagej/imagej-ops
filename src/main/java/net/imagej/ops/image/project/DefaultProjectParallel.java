@@ -32,11 +32,11 @@ package net.imagej.ops.image.project;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;

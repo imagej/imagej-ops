@@ -30,13 +30,13 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;

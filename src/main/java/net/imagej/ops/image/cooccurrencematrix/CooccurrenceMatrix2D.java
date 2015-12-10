@@ -31,12 +31,12 @@ package net.imagej.ops.image.cooccurrencematrix;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;

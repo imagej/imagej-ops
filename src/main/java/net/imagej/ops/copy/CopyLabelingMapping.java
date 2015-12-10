@@ -33,8 +33,8 @@ package net.imagej.ops.copy;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
 

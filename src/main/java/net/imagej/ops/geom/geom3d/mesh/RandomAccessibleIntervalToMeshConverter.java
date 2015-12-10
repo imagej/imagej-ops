@@ -32,8 +32,8 @@ package net.imagej.ops.geom.geom3d.mesh;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 

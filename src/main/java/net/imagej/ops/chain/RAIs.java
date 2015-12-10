@@ -30,19 +30,19 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.BinaryComputerOp;
-import net.imagej.ops.BinaryFunctionOp;
-import net.imagej.ops.BinaryHybridOp;
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.UnaryFunctionOp;
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.InplaceOp;
 import net.imagej.ops.special.Inplaces;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 
 /**

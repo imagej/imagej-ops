@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractBinaryComputerOp;
-import net.imagej.ops.BinaryComputerOp;
+import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
 
 /**
  * Base class for {@link BinaryComputerOp} implementations that delegate to

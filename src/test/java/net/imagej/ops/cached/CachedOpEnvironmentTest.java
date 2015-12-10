@@ -35,13 +35,13 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryFunctionOp;
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;

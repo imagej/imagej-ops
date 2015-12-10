@@ -39,8 +39,8 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.OpRef;
-import net.imagej.ops.UnaryFunctionOp;
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 import org.scijava.Priority;
 import org.scijava.cache.CacheService;

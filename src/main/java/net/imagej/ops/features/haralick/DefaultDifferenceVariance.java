@@ -30,9 +30,9 @@
 package net.imagej.ops.features.haralick;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

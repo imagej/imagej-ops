@@ -32,9 +32,9 @@ package net.imagej.ops.copy;
 
 import java.lang.reflect.Array;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.type.NativeType;

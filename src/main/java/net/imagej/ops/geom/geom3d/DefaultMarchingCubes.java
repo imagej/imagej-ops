@@ -30,7 +30,6 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.BitTypeVertexInterpolator;
@@ -39,6 +38,7 @@ import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.geom.geom3d.mesh.Vertex;
 import net.imagej.ops.geom.geom3d.mesh.VertexInterpolator;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;

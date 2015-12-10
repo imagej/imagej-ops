@@ -33,7 +33,7 @@ package net.imagej.ops.features.lbp2d;
 import java.util.ArrayList;
 
 import net.imagej.ops.Ops.LBP.LBP2D;
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;

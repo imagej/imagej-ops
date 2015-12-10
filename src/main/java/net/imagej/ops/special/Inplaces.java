@@ -30,7 +30,6 @@
 
 package net.imagej.ops.special;
 
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpRef;

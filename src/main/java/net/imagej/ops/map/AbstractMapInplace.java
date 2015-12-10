@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 import org.scijava.plugin.Parameter;
 

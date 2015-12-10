@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.min;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * A typed "min" filter.

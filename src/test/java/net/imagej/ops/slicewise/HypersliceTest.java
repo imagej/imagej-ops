@@ -35,8 +35,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;

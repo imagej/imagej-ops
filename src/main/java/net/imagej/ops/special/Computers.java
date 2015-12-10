@@ -30,13 +30,10 @@
 
 package net.imagej.ops.special;
 
-import net.imagej.ops.BinaryComputerOp;
-import net.imagej.ops.NullaryComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
-import net.imagej.ops.UnaryComputerOp;
 
 /**
  * Utility class for looking up computer ops in a type-safe way.

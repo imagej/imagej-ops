@@ -35,8 +35,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Iterator;
 
 import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;

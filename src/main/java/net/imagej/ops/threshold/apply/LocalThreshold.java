@@ -30,8 +30,8 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;

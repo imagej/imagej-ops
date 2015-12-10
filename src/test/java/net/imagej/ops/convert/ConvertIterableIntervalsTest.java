@@ -34,12 +34,12 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
 import net.imagej.ops.convert.imageType.ConvertIterableIntervals;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalDimensions;
 import net.imglib2.IterableInterval;

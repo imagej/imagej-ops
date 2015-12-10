@@ -30,7 +30,7 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * marker interface for statistic ops.

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter.gauss;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;

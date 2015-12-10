@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 
 import org.scijava.plugin.Plugin;
 

@@ -30,6 +30,11 @@
 
 package net.imagej.ops;
 
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
+
 import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;

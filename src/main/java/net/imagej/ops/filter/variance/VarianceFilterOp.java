@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.variance;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * A typed "variance" filter.
