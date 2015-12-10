@@ -31,7 +31,7 @@
 package net.imagej.ops.special;
 
 /**
- * Interface for objects containing two typed input variables.
+ * Interface for objects with two typed input parameters.
  * 
  * @author Curtis Rueden
  */
