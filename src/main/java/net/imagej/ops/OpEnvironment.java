@@ -662,7 +662,7 @@ public interface OpEnvironment extends Contextual {
 	 *         inputs, ready to run.
 	 */
 	default Module module(final String name, final Object... args) {
-		return matcher().findModule(this, new OpRef<>(name, args));
+		return matcher().findModule(this, OpRef.create(name, args));
 	}
 
 	/**
@@ -680,7 +680,7 @@ public interface OpEnvironment extends Contextual {
 	default <OP extends Op> Module module(final Class<OP> type,
 		final Object... args)
 	{
-		return matcher().findModule(this, new OpRef<>(type, args));
+		return matcher().findModule(this, OpRef.create(type, args));
 	}
 
 	/**
