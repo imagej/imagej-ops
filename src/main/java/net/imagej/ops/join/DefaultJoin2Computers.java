@@ -54,7 +54,7 @@ public class DefaultJoin2Computers<A, B, C> extends
 	@Parameter
 	private UnaryComputerOp<B, C> second;
 
-	@Parameter(required = false)
+	@Parameter
 	private UnaryOutputFactory<A, B> bufferFactory;
 
 	private B buffer;

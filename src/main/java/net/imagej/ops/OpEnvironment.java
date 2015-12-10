@@ -828,17 +828,6 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Computers.class)
 	default <A, B, C> C join(final C out, final A in,
-		final UnaryComputerOp<A, B> first, final UnaryComputerOp<B, C> second)
-	{
-		@SuppressWarnings("unchecked")
-		final C result = (C) run(net.imagej.ops.join.DefaultJoin2Computers.class,
-			out, in, first, second);
-		return result;
-	}
-
-	/** Executes the "join" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Computers.class)
-	default <A, B, C> C join(final C out, final A in,
 		final UnaryComputerOp<A, B> first, final UnaryComputerOp<B, C> second,
 		final UnaryOutputFactory<A, B> outputFactory)
 	{
