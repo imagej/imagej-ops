@@ -39,6 +39,7 @@ import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
 import net.imagej.ops.convert.imageType.ConvertIterableIntervals;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
+import net.imagej.ops.special.Computers;
 import net.imglib2.Cursor;
 import net.imglib2.FinalDimensions;
 import net.imglib2.IterableInterval;
@@ -116,7 +117,7 @@ public class ConvertIterableIntervalsTest extends AbstractOpTest {
 
 	private void addNoise(final Iterable<ShortType> image) {
 		final UnaryComputerOp<ShortType, ShortType> noiseOp =
-			ops.computer1(Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
+			Computers.unary(ops, Ops.Filter.AddNoise.class, ShortType.class, ShortType.class,
 				-32768, 32767, 10000);
 		ops.map(image, image, noiseOp);
 	}

@@ -36,6 +36,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -71,7 +72,7 @@ public class CooccurrenceMatrix2D<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		minmax = (UnaryFunctionOp) ops().function1(MinMax.class, Pair.class, in());
+		minmax = (UnaryFunctionOp) Functions.unary(ops(), MinMax.class, Pair.class, in());
 	}
 
 	@Override

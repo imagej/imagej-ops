@@ -35,6 +35,7 @@ import java.lang.reflect.Type;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 
@@ -64,7 +65,7 @@ public class LabelRegionToPolygonConverter extends
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
-			contourFunc = (UnaryFunctionOp) ops.function1(Ops.Geometric.Contour.class, dest, src, true,
+			contourFunc = (UnaryFunctionOp) Functions.unary(ops, Ops.Geometric.Contour.class, dest, src, true,
 				true);
 		}
 		// FIXME: can we make this faster?

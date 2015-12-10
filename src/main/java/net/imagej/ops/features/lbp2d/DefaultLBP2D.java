@@ -36,6 +36,7 @@ import java.util.Iterator;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.histogram.HistogramCreate;
+import net.imagej.ops.special.Functions;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -70,7 +71,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 
 	@Override
 	public void initialize() {
-		histOp = ops().function1(HistogramCreate.class, Histogram1d.class,
+		histOp = Functions.unary(ops(), HistogramCreate.class, Histogram1d.class,
 			ArrayList.class, histogramSize);
 	}
 

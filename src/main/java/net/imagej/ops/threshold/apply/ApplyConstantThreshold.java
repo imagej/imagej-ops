@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -60,7 +61,7 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		applyThreshold = (UnaryComputerOp<T, BitType>) ops().computer1(
+		applyThreshold = (UnaryComputerOp<T, BitType>) Computers.unary(ops(),
 			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
 			threshold);
 	}

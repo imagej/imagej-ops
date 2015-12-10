@@ -39,6 +39,10 @@ import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.Inplaces;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
@@ -60,7 +64,7 @@ public final class RAIs {
 		computer(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryComputerOp) ops.computer1(opType, RandomAccessibleInterval.class,
+		return (UnaryComputerOp) Computers.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -70,7 +74,7 @@ public final class RAIs {
 		function(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryFunctionOp) ops.function1(opType, RandomAccessibleInterval.class,
+		return (UnaryFunctionOp) Functions.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -80,7 +84,7 @@ public final class RAIs {
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridOp) ops.hybrid1(opType, RandomAccessibleInterval.class,
+		return (UnaryHybridOp) Hybrids.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -88,7 +92,7 @@ public final class RAIs {
 		final OpEnvironment ops, final Class<? extends Op> opType,
 		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
 	{
-		return ops.inplace(opType, arg, otherArgs);
+		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -99,7 +103,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) ops.computer2(opType,
+		return (BinaryComputerOp) Computers.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -111,7 +115,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) ops.function2(opType,
+		return (BinaryFunctionOp) Functions.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -123,7 +127,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) ops.hybrid2(opType,
+		return (BinaryHybridOp) Hybrids.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 

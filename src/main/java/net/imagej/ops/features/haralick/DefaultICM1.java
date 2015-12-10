@@ -33,6 +33,7 @@ package net.imagej.ops.features.haralick;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.features.haralick.helper.CoocHXY;
+import net.imagej.ops.special.Functions;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -57,9 +58,9 @@ public class DefaultICM1<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocHXYFunc = ops().function1(CoocHXY.class, double[].class,
+		coocHXYFunc = Functions.unary(ops(), CoocHXY.class, double[].class,
 			double[][].class);
-		entropy = ops().function1(Ops.Haralick.Entropy.class, DoubleType.class, in(),
+		entropy = Functions.unary(ops(), Ops.Haralick.Entropy.class, DoubleType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 

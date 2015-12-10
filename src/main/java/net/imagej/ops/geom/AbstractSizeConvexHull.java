@@ -33,6 +33,7 @@ package net.imagej.ops.geom;
 import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -57,8 +58,8 @@ public abstract class AbstractSizeConvexHull<I> extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = ops().function1(Ops.Geometric.ConvexHull.class, inType, in());
-		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, inType, in());
+		sizeFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

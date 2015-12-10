@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -75,8 +76,8 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Override
 	public void initialize() {
-		mean = ops().computer1(Mean.class, DoubleType.class, in().getB());
-		stdDeviation = ops().computer1(StdDev.class, DoubleType.class, in().getB());
+		mean = Computers.unary(ops(), Mean.class, DoubleType.class, in().getB());
+		stdDeviation = Computers.unary(ops(), StdDev.class, DoubleType.class, in().getB());
 	}
 
 	@Override

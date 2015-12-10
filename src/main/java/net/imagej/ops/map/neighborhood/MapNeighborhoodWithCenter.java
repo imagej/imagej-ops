@@ -36,6 +36,7 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Positionable;
@@ -77,7 +78,7 @@ public class MapNeighborhoodWithCenter<I, O>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (UnaryComputerOp) ops().computer1(Map.class, Iterable.class,
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, Iterable.class,
 			NeighborhoodWithCenterIterableInterval.class, getOp());
 	}
 

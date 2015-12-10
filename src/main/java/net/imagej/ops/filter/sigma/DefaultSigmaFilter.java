@@ -35,6 +35,7 @@ import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -73,7 +74,7 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			@Override
 			public void compute1(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
-					variance = ops().computer1(Ops.Stats.Variance.class,
+					variance = Computers.unary(ops(), Ops.Stats.Variance.class,
 						DoubleType.class, input.getB());
 				}
 

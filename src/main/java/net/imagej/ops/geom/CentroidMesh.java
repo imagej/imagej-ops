@@ -36,6 +36,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
+import net.imagej.ops.special.Functions;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -60,7 +61,7 @@ public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		sizeFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

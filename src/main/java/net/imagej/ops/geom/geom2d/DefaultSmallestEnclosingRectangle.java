@@ -37,6 +37,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -63,10 +64,10 @@ public class DefaultSmallestEnclosingRectangle extends
 
 	@Override
 	public void initialize() {
-		convexhullFunc = ops().function1(Ops.Geometric.ConvexHull.class, Polygon.class, in());
-		centroidFunc = ops().function1(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
-		areaFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
-		boundingBoxFunc = ops().function1(Ops.Geometric.BoundingBox.class, Polygon.class, in());
+		convexhullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		centroidFunc = Functions.unary(ops(), Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		areaFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		boundingBoxFunc = Functions.unary(ops(), Ops.Geometric.BoundingBox.class, Polygon.class, in());
 	}
 
 	/**

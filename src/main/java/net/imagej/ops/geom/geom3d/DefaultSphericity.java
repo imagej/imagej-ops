@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -54,7 +55,7 @@ public class DefaultSphericity extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 
 	@Override
 	public void initialize() {
-		compactness = ops().function1(Ops.Geometric.Compactness.class, DoubleType.class, in());
+		compactness = Functions.unary(ops(), Ops.Geometric.Compactness.class, DoubleType.class, in());
 	}
 
 	@Override

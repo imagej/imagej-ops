@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -54,7 +55,7 @@ public class BoundaryPixelCountConvexHullMesh extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = ops().function1(Ops.Geometric.ConvexHull.class, Mesh.class, in());
+		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Mesh.class, in());
 	}
 
 	@Override

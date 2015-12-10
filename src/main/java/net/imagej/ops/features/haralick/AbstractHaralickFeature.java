@@ -36,6 +36,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
+import net.imagej.ops.special.Functions;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -71,7 +72,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 
 	@Override
 	public void initialize() {
-		coocFunc = ops().function1(Ops.Image.CooccurrenceMatrix.class,
+		coocFunc = Functions.unary(ops(), Ops.Image.CooccurrenceMatrix.class,
 			double[][].class, in(), numGreyLevels, distance, orientation);
 	}
 

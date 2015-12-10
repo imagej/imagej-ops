@@ -33,6 +33,7 @@ package net.imagej.ops.geom.geom2d;
 import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -56,7 +57,7 @@ public class DefaultFeretsDiameter extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		function = (UnaryFunctionOp) ops().function1(Ops.Geometric.Feret.class, Pair.class, in());
+		function = (UnaryFunctionOp) Functions.unary(ops(), Ops.Geometric.Feret.class, Pair.class, in());
 	}
 
 	@Override

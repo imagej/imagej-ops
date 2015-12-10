@@ -35,6 +35,8 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
@@ -59,9 +61,9 @@ public class CopyImg<T extends NativeType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = (UnaryComputerOp)ops().computer1(CopyIterableInterval.class, in(), in());
-		createFunc = (UnaryFunctionOp) ops().function1(Ops.Create.Img.class, Img.class, 
-				in());
+		copyComputer = Computers.unary(ops(), CopyIterableInterval.class, in(), in());
+		createFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in());
 	}
 	
 	@Override

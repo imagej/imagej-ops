@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -59,7 +60,7 @@ public abstract class AbstractBoxivity<I> extends
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
-		smallestEnclosingRectangleFunc = ops().function1(
+		smallestEnclosingRectangleFunc = Functions.unary(ops(), 
 			Ops.Geometric.SmallestEnclosingBoundingBox.class, inType, in());
 	}
 

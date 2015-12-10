@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -56,9 +57,9 @@ public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType
 
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function1(Ops.Geometric.BoundaryPixelCount.class,
+		surfacePixel = Functions.unary(ops(), Ops.Geometric.BoundaryPixelCount.class,
 			DoubleType.class, in());
-		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

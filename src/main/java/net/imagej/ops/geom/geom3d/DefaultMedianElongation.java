@@ -34,6 +34,7 @@ import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -59,7 +60,7 @@ public class DefaultMedianElongation<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		multivar = ops().function1(DefaultSecondMultiVariate3D.class,
+		multivar = Functions.unary(ops(), DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
 	}
 

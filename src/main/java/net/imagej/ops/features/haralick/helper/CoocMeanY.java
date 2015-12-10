@@ -32,6 +32,7 @@ package net.imagej.ops.features.haralick.helper;
 
 import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.Functions;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -50,7 +51,7 @@ public class CoocMeanY extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPYFunc = ops().function1(CoocPY.class, double[].class, double[][].class);
+		coocPYFunc = Functions.unary(ops(), CoocPY.class, double[].class, double[][].class);
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 
@@ -60,8 +61,8 @@ public class CopyIterableInterval<T> extends
 	
 	@Override
 	public void initialize() {
-		map = ops.computer1(Ops.Map.class, in(), in(),
-				ops.computer1(Ops.Copy.Type.class, 
+		map = Computers.unary(ops, Ops.Map.class, in(), in(),
+				Computers.unary(ops, Ops.Copy.Type.class, 
 						in().firstElement().getClass(), 
 						in().firstElement().getClass()));
 	}

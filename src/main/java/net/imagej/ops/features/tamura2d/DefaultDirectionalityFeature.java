@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import net.imagej.ops.Ops;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.image.histogram.HistogramCreate;
+import net.imagej.ops.special.Functions;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gradient.PartialDerivative;
@@ -69,8 +70,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 
 	@Override
 	public void initialize() {
-		stdOp = ops().function1(Ops.Stats.StdDev.class, RealType.class, Iterable.class);
-		histOp = ops().function1(HistogramCreate.class, Histogram1d.class,
+		stdOp = Functions.unary(ops(), Ops.Stats.StdDev.class, RealType.class, Iterable.class);
+		histOp = Functions.unary(ops(), HistogramCreate.class, Histogram1d.class,
 			Iterable.class, histogramSize);
 	}
 
