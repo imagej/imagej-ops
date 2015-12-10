@@ -41,7 +41,6 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
 import net.imglib2.Point;
-import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -327,40 +326,54 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		// create the normalization image
 		final O type = Util.getTypeFromInterval(raiExtendedReblurred);
 		normalization = getImgFactory().create(raiExtendedReblurred, type);
-		Img<O> mask = getImgFactory().create(raiExtendedReblurred, type);
 
 		// size of the measurement window
 		Point size = new Point(length);
+		long[] sizel = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			size.setPosition(k.dimension(d), d);
+			sizel[d] = k.dimension(d);
 		}
 
 		// starting point of the measurement window when it is centered in fft space
 		Point start = new Point(length);
+		long[] startl = new long[length];
+		long[] endl = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			start.setPosition((nFFT[d] - k.dimension(d)) / 2, d);
+			startl[d] = (nFFT[d] - k.dimension(d)) / 2;
+			endl[d] = startl[d] + sizel[d] - 1;
 		}
 
 		// size of the object space
 		Point maskSize = new Point(length);
+		long[] maskSizel = new long[length];
+
 		for (int d = 0; d < length; d++) {
 			maskSize.setPosition(Math.min(n[d], nFFT[d]), d);
+			maskSizel[d] = Math.min(n[d], nFFT[d]);
 		}
 
 		// starting point of the object space within the fft space
 		Point maskStart = new Point(length);
+		long[] maskStartl = new long[length];
 
 		for (int d = 0; d < length; d++) {
 			maskStart.setPosition((Math.max(0, nFFT[d] - n[d]) / 2), d);
+			maskStartl[d] = (Math.max(0, nFFT[d] - n[d]) / 2);
 		}
 
-		// draw a cube the size of the measurement space
-		drawCube(normalization, start, size, 1.0);
+		RandomAccessibleInterval<O> temp = Views.interval(normalization,
+			new FinalInterval(startl, endl));
+		Cursor<O> normCursor = Views.iterable(temp).cursor();
 
-		// draw a cube the size of the object space
-		drawCube(mask, maskStart, maskSize, 1.0);
+		// draw a cube the size of the measurement space
+		while (normCursor.hasNext()) {
+			normCursor.fwd();
+			normCursor.get().setReal(1.0);
+		}
 
 		// 3. correlate psf with the output of step 2.
 		ops().run(CorrelateFFTRAI.class, normalization, normalization, this
@@ -383,72 +396,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	 * function.
 	 */
 	abstract protected void performIteration();
-
-	/**
-	 * TODO: Make this function an op or separate into utility
-	 * 
-	 * @param randomAccessible
-	 * @param position
-	 * @param intensity
-	 */
-	public static <T extends RealType<T>> void drawPoint(
-		final RandomAccessibleInterval<T> randomAccessible, final Point position,
-		final double intensity)
-	{
-		RandomAccess<T> randomAccess = randomAccessible.randomAccess();
-
-		randomAccess.setPosition(position);
-
-		randomAccess.get().setReal(intensity);
-	}
-
-	/**
-	 * TODO: Make this function an op or separate into utility
-	 * 
-	 * @param randomAccessible
-	 * @param start
-	 * @param size
-	 * @param intensity
-	 */
-	public static <T extends RealType<T>> void drawCube(
-		final RandomAccessibleInterval<T> randomAccessible, final Point start,
-		final Point size, final double intensity)
-	{
-		// assume 2-D or 3-D space for now
-		if (start.numDimensions() == 2) {
-			Point position = new Point(2);
-
-			int yStart = start.getIntPosition(1);
-			int xStart = start.getIntPosition(0);
-
-			for (int y = 0; y < size.getIntPosition(1); y++) {
-				position.setPosition(y + yStart, 1);
-				for (int x = 0; x < size.getIntPosition(0); x++) {
-					position.setPosition(x + xStart, 0);
-					drawPoint(randomAccessible, position, intensity);
-				}
-			}
-		}
-		if (start.numDimensions() == 3) {
-			Point position = new Point(3);
-
-			int zStart = start.getIntPosition(2);
-			int yStart = start.getIntPosition(1);
-			int xStart = start.getIntPosition(0);
-
-			for (int z = 0; z < size.getIntPosition(2); z++) {
-				position.setPosition(z + zStart, 2);
-				for (int y = 0; y < size.getIntPosition(1); y++) {
-					position.setPosition(y + yStart, 1);
-					for (int x = 0; x < size.getIntPosition(0); x++) {
-						position.setPosition(x + xStart, 0);
-						drawPoint(randomAccessible, position, intensity);
-					}
-				}
-			}
-		}
-
-	}
 
 	protected RandomAccessibleInterval<O> getRAIExtendedReblurred() {
 		return raiExtendedReblurred;
