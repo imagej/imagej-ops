@@ -29,9 +29,10 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -58,7 +59,7 @@ public class DefaultSumEntropy<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXPlusFunc = ops().function1(CoocPXPlusY.class, double[].class, double[][].class);
+		coocPXPlusFunc = Functions.unary(ops(), CoocPXPlusY.class, double[].class, double[][].class);
 	}
 	
 	@Override

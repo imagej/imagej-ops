@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * Typed interface for "map" {@link UnaryComputerOp}s.

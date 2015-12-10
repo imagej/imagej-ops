@@ -30,10 +30,11 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
@@ -62,8 +63,8 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	@Override
 	public void initialize() {
-		raiCopyOp = ops().computer1(Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
-		mappingCopyOp = ops().computer1(Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		raiCopyOp = Computers.unary(ops(), Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
+		mappingCopyOp = Computers.unary(ops(), Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
 	}
 	
 	@Override

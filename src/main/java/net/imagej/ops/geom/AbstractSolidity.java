@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -50,8 +51,8 @@ public abstract class AbstractSolidity<I> extends
 
 	@Override
 	public void initialize() {
-		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
-		convexHullVolume = ops().function1(Ops.Geometric.SizeConvexHull.class,
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullVolume = Functions.unary(ops(), Ops.Geometric.SizeConvexHull.class,
 			DoubleType.class, in());
 	}
 

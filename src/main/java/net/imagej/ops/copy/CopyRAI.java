@@ -30,13 +30,14 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RAIs;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
@@ -78,7 +79,7 @@ public class CopyRAI<T> extends
 			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
 		final UnaryComputerOp<T, ?> typeComputer =
-			ops.computer1(Ops.Copy.Type.class, outTypeClass, inType);
+			Computers.unary(ops, Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
 	}

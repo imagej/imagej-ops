@@ -30,9 +30,9 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

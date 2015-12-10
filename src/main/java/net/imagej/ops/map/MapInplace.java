@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 /**
  * Typed interface for "map" {@link InplaceOp}s.

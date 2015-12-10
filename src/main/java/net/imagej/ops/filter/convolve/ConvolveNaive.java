@@ -30,9 +30,9 @@
 
 package net.imagej.ops.filter.convolve;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;

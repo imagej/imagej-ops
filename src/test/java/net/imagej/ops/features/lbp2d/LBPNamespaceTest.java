@@ -30,9 +30,9 @@
 
 package net.imagej.ops.features.lbp2d;
 
-import org.junit.Test;
-
 import net.imagej.ops.AbstractNamespaceTest;
+
+import org.junit.Test;
 
 /**
  * Test the {@Link Lbp2dNamespace}

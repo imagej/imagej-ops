@@ -30,10 +30,10 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryOutputFactory;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.type.logic.BoolType;
 
 /** Abstract superclass for {@link Condition} ops. */

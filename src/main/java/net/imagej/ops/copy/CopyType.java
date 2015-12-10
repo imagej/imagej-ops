@@ -30,8 +30,8 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;

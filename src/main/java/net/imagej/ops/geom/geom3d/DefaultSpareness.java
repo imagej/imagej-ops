@@ -30,10 +30,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -63,13 +64,13 @@ public class DefaultSpareness<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		mainElongation = ops().function1(Ops.Geometric.MainElongation.class, DoubleType.class,
+		mainElongation = Functions.unary(ops(), Ops.Geometric.MainElongation.class, DoubleType.class,
 			in());
-		medianElongation = ops().function1(Ops.Geometric.MedianElongation.class, DoubleType.class,
+		medianElongation = Functions.unary(ops(), Ops.Geometric.MedianElongation.class, DoubleType.class,
 			in());
-		multivar = ops().function1(DefaultSecondMultiVariate3D.class,
+		multivar = Functions.unary(ops(), DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
-		volume = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

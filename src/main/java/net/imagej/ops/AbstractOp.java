@@ -31,7 +31,7 @@
 package net.imagej.ops;
 
 /**
- * Abstract superclass for {@link UnaryComputerOp} implementations.
+ * Abstract superclass for {@link Op} implementations.
  * 
  * @author Curtis Rueden
  */

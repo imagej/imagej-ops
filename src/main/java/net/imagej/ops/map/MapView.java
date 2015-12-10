@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.UnaryComputerOp;
-import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 
 /**
  * A {@link MapComputer} {@link UnaryFunctionOp} which converts entries on

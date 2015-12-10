@@ -30,7 +30,7 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.special.UnaryOutputFactory;
 
 /**
  * An object which can produce buffers using a {@link UnaryOutputFactory}.

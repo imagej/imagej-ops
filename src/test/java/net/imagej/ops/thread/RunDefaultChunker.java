@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Parallel;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imagej.ops.thread.chunker.DefaultChunker;
 import net.imglib2.Cursor;

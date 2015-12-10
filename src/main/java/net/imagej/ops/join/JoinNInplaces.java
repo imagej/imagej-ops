@@ -30,7 +30,7 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 /**
  * A join operation which joins a list of {@link InplaceOp}s.

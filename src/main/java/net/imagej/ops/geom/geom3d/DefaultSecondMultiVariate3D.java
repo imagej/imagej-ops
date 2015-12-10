@@ -30,11 +30,12 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.IterableRegion;
@@ -59,7 +60,7 @@ public class DefaultSecondMultiVariate3D<B extends BooleanType<B>> extends
 
 	@Override
 	public void initialize() {
-		centroid = ops().function1(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		centroid = Functions.unary(ops(), Ops.Geometric.Centroid.class, RealLocalizable.class, in());
 	}
 
 	@Override

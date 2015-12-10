@@ -30,7 +30,7 @@
 
 package net.imagej.ops.bufferfactories;
 
-import net.imagej.ops.UnaryOutputFactory;
+import net.imagej.ops.special.UnaryOutputFactory;
 import net.imglib2.img.Img;
 import net.imglib2.type.Type;
 

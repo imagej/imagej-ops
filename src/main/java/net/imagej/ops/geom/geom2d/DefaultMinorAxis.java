@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -55,7 +56,7 @@ public class DefaultMinorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleTyp
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function1(DefaultMinorMajorAxis.class, Pair.class,
+		minorMajorAxisFunc = Functions.unary(ops(), DefaultMinorMajorAxis.class, Pair.class,
 			in());
 	}
 

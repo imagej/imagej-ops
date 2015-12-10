@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractUnaryFunctionOp;
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -54,7 +55,7 @@ public class CentroidPolygon extends
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function1(Ops.Geometric.Size.class, DoubleType.class, in());
+		sizeFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override

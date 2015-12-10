@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * An algorithm for computing a threshold value that divides an object into two

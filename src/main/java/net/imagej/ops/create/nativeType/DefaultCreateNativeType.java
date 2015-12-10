@@ -32,7 +32,7 @@ package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.real.DoubleType;
 

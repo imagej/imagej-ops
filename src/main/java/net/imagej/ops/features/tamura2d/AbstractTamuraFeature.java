@@ -29,8 +29,8 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

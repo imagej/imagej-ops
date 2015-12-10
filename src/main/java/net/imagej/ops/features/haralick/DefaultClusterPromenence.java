@@ -29,10 +29,11 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -57,8 +58,8 @@ public class DefaultClusterPromenence<T extends RealType<T>> extends AbstractHar
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function1(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocMeanYFunc = ops().function1(CoocMeanY.class, DoubleType.class, double[][].class);
+		coocMeanXFunc = Functions.unary(ops(), CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = Functions.unary(ops(), CoocMeanY.class, DoubleType.class, double[][].class);
 	}
 
 	@Override

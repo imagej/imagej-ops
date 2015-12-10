@@ -30,7 +30,7 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.UnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.type.logic.BoolType;
 
 /**

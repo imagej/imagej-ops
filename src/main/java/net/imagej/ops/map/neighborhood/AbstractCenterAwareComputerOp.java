@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.AbstractUnaryComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.util.Pair;
 
 /**

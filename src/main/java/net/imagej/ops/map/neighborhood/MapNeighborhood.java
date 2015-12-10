@@ -30,11 +30,12 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.AbstractMapComputer;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
@@ -69,7 +70,7 @@ public class MapNeighborhood<I, O> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (UnaryComputerOp) ops().computer1(Map.class, RandomAccessibleInterval.class,
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, RandomAccessibleInterval.class,
 			in() != null ? shape.neighborhoodsSafe(in()) : IterableInterval.class,
 			getOp());
 	}

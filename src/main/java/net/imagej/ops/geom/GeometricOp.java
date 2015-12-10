@@ -30,7 +30,7 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 
 /**
  * Simple marker interface for Geoemtric ops.

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * Base class for {@link UnaryHybridOp} implementations that delegate to other

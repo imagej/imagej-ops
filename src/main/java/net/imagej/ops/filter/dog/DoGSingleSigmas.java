@@ -32,9 +32,10 @@ package net.imagej.ops.filter.dog;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractUnaryHybridOp;
-import net.imagej.ops.UnaryComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -79,7 +80,7 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 		Arrays.fill(sigmas1, sigma1);
 		Arrays.fill(sigmas2, sigma2);
 
-		op = ops().computer1(Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
+		op = Computers.unary(ops(), Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
 			fac);
 	}
 

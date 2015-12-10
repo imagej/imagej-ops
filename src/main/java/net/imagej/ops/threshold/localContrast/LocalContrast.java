@@ -30,9 +30,10 @@
 
 package net.imagej.ops.threshold.localContrast;
 
-import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -55,7 +56,7 @@ public class LocalContrast<T extends RealType<T>> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp)ops().function1(Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp)Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override

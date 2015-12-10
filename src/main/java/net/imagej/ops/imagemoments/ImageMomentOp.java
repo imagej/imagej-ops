@@ -30,7 +30,7 @@
 
 package net.imagej.ops.imagemoments;
 
-import net.imagej.ops.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * marker interface for image moment ops.
