@@ -32,7 +32,6 @@ package net.imagej.ops;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -85,9 +84,7 @@ public final class OpUtils {
 		final Class<OP> opType, final Class<?> specialType, final Class<?> outType,
 		final Object... args)
 	{
-		final OpRef<OP> ref =
-			new OpRef<>(Collections.singleton(specialType), opType, args);
-		if (outType != null) ref.setOutputs(Collections.singleton(outType));
+		final OpRef<OP> ref = OpRef.createTypes(opType, specialType, outType, args);
 		final Module module = ops.matcher().findModule(ops, ref);
 		return OpUtils.unwrap(module, ref);
 	}
@@ -131,7 +128,7 @@ public final class OpUtils {
 	public static <OP extends Op> OP unwrap(final Module module,
 		final OpRef<OP> ref)
 	{
-		return unwrap(module, ref.getType(), ref.getTypes());
+		return unwrap(module, ref.getType(), ref.getExtraTypes());
 	}
 
 	/**
