@@ -69,26 +69,6 @@ public final class OpUtils {
 		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
-	/**
-	 * Looks up an op of the given type, similar to
-	 * {@link OpEnvironment#op(Class, Object...)}, but with an additional type
-	 * constraint&mdash;e.g., matches could be restricted to {@link UnaryComputerOp}s.
-	 * 
-	 * @param opType The type of op to match.
-	 * @param specialType The additional constraint (e.g., {@link UnaryComputerOp}).
-	 * @param outType The type of the op's primary output, or null for any type.
-	 * @param args The arguments to use when matching.
-	 * @return The matched op.
-	 */
-	public static <OP extends Op> OP specialOp(final OpEnvironment ops,
-		final Class<OP> opType, final Class<?> specialType, final Class<?> outType,
-		final Object... args)
-	{
-		final OpRef<OP> ref = OpRef.createTypes(opType, specialType, outType, args);
-		final Module module = ops.matcher().findModule(ops, ref);
-		return OpUtils.unwrap(module, ref);
-	}
-
 	public static Object[] args(final Object[] latter, final Object... former) {
 		final Object[] result = new Object[former.length + latter.length];
 		int i = 0;

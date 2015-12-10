@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import net.imagej.ops.cached.CachedOpEnvironment;
 import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
@@ -191,6 +192,25 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/**
+	 * Looks up an op whose constraints are specified by the given {@link OpRef}
+	 * descriptor.
+	 * <p>
+	 * NB: While it is typically the case that the returned {@link Op} instance is
+	 * of the requested type(s), it may differ in certain circumstances. For
+	 * example, the {@link CachedOpEnvironment} wraps the matching {@link Op}
+	 * instance in some cases so that the values it computes can be cached for
+	 * performance reasons.
+	 * </p>
+	 * 
+	 * @param ref The {@link OpRef} describing the op to match.
+	 * @return The matched op.
+	 */
+	default Op op(final OpRef<?> ref) {
+		final Module module = matcher().findModule(this, ref);
+		return OpUtils.unwrap(module, ref);
+	}
+
+	/**
 	 * Gets the best {@link UnaryComputerOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
@@ -211,8 +231,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
 			null, args);
+		return (UnaryComputerOp<I, O>) op(ref);
 	}
 
 	/**
@@ -236,8 +257,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
 			null, args);
+		return (UnaryComputerOp<I, O>) op(ref);
 	}
 
 	/**
@@ -260,8 +282,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<OP> opType, final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		return (UnaryComputerOp<I, O>) OpUtils.specialOp(this, opType, UnaryComputerOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
 			null, args);
+		return (UnaryComputerOp<I, O>) op(ref);
 	}
 
 	/**
@@ -285,8 +308,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, inType);
-		return (UnaryFunctionOp<I, O>) OpUtils.specialOp(this, opType, UnaryFunctionOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryFunctionOp.class,
 			outType, args);
+		return (UnaryFunctionOp<I, O>) op(ref);
 	}
 
 	/**
@@ -310,8 +334,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in);
-		return (UnaryFunctionOp<I, O>) OpUtils.specialOp(this, opType, UnaryFunctionOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryFunctionOp.class,
 			outType, args);
+		return (UnaryFunctionOp<I, O>) op(ref);
 	}
 
 	/**
@@ -334,8 +359,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<O> outType, final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
 			null, args);
+		return (UnaryHybridOp<I, O>) op(ref);
 	}
 
 	/**
@@ -358,8 +384,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<O> outType, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
 			null, args);
+		return (UnaryHybridOp<I, O>) op(ref);
 	}
 
 	/**
@@ -382,8 +409,9 @@ public interface OpEnvironment extends Contextual {
 		final O out, final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		return (UnaryHybridOp<I, O>) OpUtils.specialOp(this, opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
 			null, args);
+		return (UnaryHybridOp<I, O>) op(ref);
 	}
 
 	/**
@@ -405,8 +433,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<A> argType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, argType);
-		return (InplaceOp<A>) OpUtils.specialOp(this, opType, InplaceOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class,
 			null, args);
+		return (InplaceOp<A>) op(ref);
 	}
 
 	/**
@@ -428,8 +457,9 @@ public interface OpEnvironment extends Contextual {
 		final A arg, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, arg);
-		return (InplaceOp<A>) OpUtils.specialOp(this, opType, InplaceOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class,
 			null, args);
+		return (InplaceOp<A>) op(ref);
 	}
 
 	/**
@@ -457,8 +487,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
-		return (BinaryComputerOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryComputerOp.class, null, args);
+		return (BinaryComputerOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -484,8 +515,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
-		return (BinaryComputerOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryComputerOp.class, null, args);
+		return (BinaryComputerOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -510,8 +542,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
-		return (BinaryComputerOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryComputerOp.class, null, args);
+		return (BinaryComputerOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -539,8 +572,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in1Type, in2Type);
-		return (BinaryFunctionOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryFunctionOp.class, outType, args);
+		return (BinaryFunctionOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -566,8 +600,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in1, in2);
-		return (BinaryFunctionOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryFunctionOp.class, outType, args);
+		return (BinaryFunctionOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -595,8 +630,9 @@ public interface OpEnvironment extends Contextual {
 		final Class<I2> in2Type, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
-		return (BinaryHybridOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryHybridOp.class, null, args);
+		return (BinaryHybridOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -622,8 +658,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
-		return (BinaryHybridOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryHybridOp.class, null, args);
+		return (BinaryHybridOp<I1, I2, O>) op(ref);
 	}
 
 	/**
@@ -648,8 +685,9 @@ public interface OpEnvironment extends Contextual {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
-		return (BinaryHybridOp<I1, I2, O>) OpUtils.specialOp(this, opType,
+		final OpRef<OP> ref = OpRef.createTypes(opType,
 			BinaryHybridOp.class, null, args);
+		return (BinaryHybridOp<I1, I2, O>) op(ref);
 	}
 
 	/**
