@@ -50,6 +50,59 @@ public final class Hybrids {
 	}
 
 	/**
+	 * Gets the best {@link NullaryHybridOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link NullaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryHybridOp}s implement), then
+	 *          the best {@link NullaryHybridOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link NullaryHybridOp} typed
+	 *          output.
+	 * @param otherArgs The operation's arguments, excluding the typed output
+	 *          value.
+	 * @return A {@link NullaryHybridOp} with populated inputs, ready to use.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O, OP extends Op> NullaryHybridOp<O> nullary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType);
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
+			null, args);
+		return (NullaryHybridOp<O>) ops.op(ref);
+	}
+
+	/**
+	 * Gets the best {@link NullaryHybridOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link NullaryHybridOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryHybridOp}s implement), then
+	 *          the best {@link NullaryHybridOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param otherArgs The operation's arguments, excluding the typed output
+	 *          value.
+	 * @return A {@link NullaryHybridOp} with populated inputs, ready to use.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O, OP extends Op> NullaryHybridOp<O> nullary(
+		final OpEnvironment ops, final Class<OP> opType, final O out,
+		final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, out);
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
+			null, args);
+		return (NullaryHybridOp<O>) ops.op(ref);
+	}
+
+	/**
 	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
