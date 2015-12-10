@@ -30,6 +30,7 @@
 
 package net.imagej.ops.cached;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import net.imagej.ops.AbstractOp;
@@ -37,11 +38,15 @@ import net.imagej.ops.CustomOpEnvironment;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpInfo;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.UnaryFunctionOp;
 import net.imagej.ops.UnaryHybridOp;
 
 import org.scijava.Priority;
 import org.scijava.cache.CacheService;
+import org.scijava.command.CommandInfo;
+import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -70,44 +75,51 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	@Override
-	public <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(final Class<OP> opType,
-		final Class<O> outType, final Class<I> inType, Object... otherArgs)
-	{
-		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<>(
-			super.function1(opType, outType, inType, otherArgs), otherArgs);
-		getContext().inject(cached);
-		return cached;
+	public Op op(final OpRef<?> ref) {
+		final Op op = super.op(ref);
+		final Op cachedOp;
+		if (op instanceof UnaryHybridOp) {
+			cachedOp = wrapUnaryHybrid((UnaryHybridOp<?, ?>) op);
+		}
+		else if (op instanceof UnaryFunctionOp) {
+			cachedOp = wrapUnaryFunction((UnaryFunctionOp<?, ?>) op);
+		}
+		else return op;
+
+		getContext().inject(cachedOp);
+		return cachedOp;
 	}
 
-	@Override
-	public <I, O, OP extends Op> UnaryFunctionOp<I, O> function1(final Class<OP> opType,
-		final Class<O> outType, I in, Object... otherArgs)
+	// -- Helper methods --
+
+	private <I, O> CachedFunctionOp<I, O> wrapUnaryFunction(
+		final UnaryFunctionOp<I, O> op)
 	{
-		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<>(
-			super.function1(opType, outType, in, otherArgs), otherArgs);
-		getContext().inject(cached);
-		return cached;
+		return new CachedFunctionOp<>(op, otherArgs(op, 1));
 	}
 
-	@Override
-	public <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(Class<OP> opType,
-		Class<O> outType, Class<I> inType, Object... otherArgs)
+	private <I, O> CachedHybridOp<I, O> wrapUnaryHybrid(
+		final UnaryHybridOp<I, O> op)
 	{
-		final CachedHybridOp<I, O> cached = new CachedHybridOp<>(super.hybrid1(
-			opType, outType, inType, otherArgs), otherArgs);
-		getContext().inject(cached);
-		return cached;
+		return new CachedHybridOp<>(op, otherArgs(op, 2));
 	}
 
-	@Override
-	public <I, O, OP extends Op> UnaryHybridOp<I, O> hybrid1(Class<OP> opType,
-		Class<O> outType, I in, Object... otherArgs)
-	{
-		final CachedHybridOp<I, O> cached = new CachedHybridOp<>(super.hybrid1(
-			opType, outType, in, otherArgs), otherArgs);
-		getContext().inject(cached);
-		return cached;
+	/**
+	 * Gets the given {@link Op} instance's argument value, starting at the
+	 * specified offset.
+	 */
+	private Object[] otherArgs(final Op op, final int offset) {
+		final CommandInfo cInfo = info(op).cInfo();
+		final Module module = cInfo.createModule(op);
+		final ArrayList<Object> args = new ArrayList<>();
+		int i = 0;
+		for (final ModuleItem<?> input : cInfo.inputs()) {
+			if (i++ >= offset) args.add(input.getValue(module));
+		}
+		return args.toArray();
 	}
+
+	// -- Helper classes --
 
 	/**
 	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will result
