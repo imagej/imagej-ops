@@ -54,9 +54,13 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	/**
 	 * Computes the output given two inputs.
 	 * 
-	 * @param input1 first argument to the computation
-	 * @param input2 second argument to the computation
-	 * @param output object where the computation's result will be stored
+	 * @param input1 first argument to the computation, which
+	 *          <em>must be non-null</em>
+	 * @param input2 second argument to the computation, which
+	 *          <em>must be non-null</em>
+	 * @param output object where the computation's result will be stored, which
+	 *          <em>must be non-null and a different object than
+	 *          {@code input1} and {@code input2}</em>
 	 */
 	void compute2(I1 input1, I2 input2, O output);
 

@@ -44,7 +44,8 @@ public interface NullaryComputerOp<O> extends NullaryOp<O>, OutputMutable<O> {
 	/**
 	 * Computes the output value.
 	 * 
-	 * @param output Object where the computation's result will be stored
+	 * @param output Object where the computation's result will be stored, which
+	 * <em>must be non-null</em>
 	 */
 	void compute0(O output);
 
