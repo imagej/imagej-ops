@@ -50,6 +50,33 @@ public final class Functions {
 	}
 
 	/**
+	 * Gets the best {@link NullaryFunctionOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link NullaryFunctionOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryFunctionOp}s implement),
+	 *          then the best {@link NullaryFunctionOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link NullaryFunctionOp} typed
+	 *          output.
+	 * @param otherArgs The operation's arguments, excluding the typed output
+	 *          value.
+	 * @return A {@link NullaryFunctionOp} with populated inputs, ready to use.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O, OP extends Op> NullaryFunctionOp<O> nullary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs);
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryFunctionOp.class,
+			outType, args);
+		return (NullaryFunctionOp<O>) ops.op(ref);
+	}
+
+	/**
 	 * Gets the best {@link UnaryFunctionOp} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *

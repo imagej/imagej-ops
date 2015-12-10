@@ -50,6 +50,59 @@ public final class Computers {
 	}
 
 	/**
+	 * Gets the best {@link NullaryComputerOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link NullaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryComputerOp}s implement),
+	 *          then the best {@link NullaryComputerOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param outType The {@link Class} of the {@link NullaryComputerOp} typed
+	 *          output.
+	 * @param otherArgs The operation's arguments, excluding the typed output
+	 *          value.
+	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
+		final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, outType);
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
+			null, args);
+		return (NullaryComputerOp<O>) ops.op(ref);
+	}
+
+	/**
+	 * Gets the best {@link NullaryComputerOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link NullaryComputerOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryComputerOp}s implement),
+	 *          then the best {@link NullaryComputerOp} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param out The typed output.
+	 * @param otherArgs The operation's arguments, excluding the typed output
+	 *          value.
+	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
+		final OpEnvironment ops, final Class<OP> opType, final O out,
+		final Object... otherArgs)
+	{
+		final Object[] args = OpUtils.args(otherArgs, out);
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
+			null, args);
+		return (NullaryComputerOp<O>) ops.op(ref);
+	}
+
+	/**
 	 * Gets the best {@link UnaryComputerOp} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *
