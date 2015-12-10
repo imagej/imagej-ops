@@ -144,8 +144,6 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		RandomAccessibleInterval<O> out)
 	{
 
-		initialize();
-
 		performIterations();
 
 		postProcess();
