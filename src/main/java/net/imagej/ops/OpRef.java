@@ -131,9 +131,9 @@ public class OpRef<OP extends Op> {
 		final Collection<? extends Class<?>> outTypes, final Object... args)
 	{
 		this.name = name;
+		this.type = type;
 		this.extraTypes = extraTypes;
 		this.outTypes = outTypes;
-		this.type = type;
 		this.args = args;
 	}
 
@@ -168,23 +168,23 @@ public class OpRef<OP extends Op> {
 	public String getLabel() {
 		final StringBuilder sb = new StringBuilder();
 		append(sb, name);
+		if (type != null) append(sb, type.getName());
 		if (extraTypes != null) {
 			for (final Class<?> t : extraTypes) {
 				append(sb, t.getName());
 			}
 		}
-		if (type != null) append(sb, type.getName());
 		return sb.toString();
 	}
 
 	/** Determines whether the op's required types match the given class. */
 	public boolean typesMatch(final Class<?> c) {
+		if (type != null && !type.isAssignableFrom(c)) return false;
 		if (extraTypes != null) {
 			for (final Class<?> t : extraTypes) {
 				if (!t.isAssignableFrom(c)) return false;
 			}
 		}
-		if (type != null && !type.isAssignableFrom(c)) return false;
 		return true;
 	}
 
@@ -218,8 +218,8 @@ public class OpRef<OP extends Op> {
 		if (getClass() != obj.getClass()) return false;
 		final OpRef<?> other = (OpRef<?>) obj;
 		if (!MiscUtils.equal(name, other.name)) return false;
-		if (!MiscUtils.equal(extraTypes, other.extraTypes)) return false;
 		if (!MiscUtils.equal(type, other.type)) return false;
+		if (!MiscUtils.equal(extraTypes, other.extraTypes)) return false;
 		if (!Arrays.equals(args, other.args)) return false;
 		return true;
 	}
