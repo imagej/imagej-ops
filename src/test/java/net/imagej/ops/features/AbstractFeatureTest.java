@@ -250,6 +250,11 @@ public class AbstractFeatureTest extends AbstractOpTest {
 			return img;
 		}
 	}
+	
+	protected static Img<FloatType> getTestImage2D() {
+		return ImageJFunctions
+				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource("cZgkFsK.png").getPath()));
+	}
 
 	protected LabelRegion<?> createLabelRegion2D() throws MalformedURLException, IOException {
 		// read simple polygon image
@@ -272,7 +277,12 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 		LabelRegions<String> labelRegions = new LabelRegions<>(img);
 		return labelRegions.getLabelRegion("1");
-
+		
+	}
+	
+	protected static Img<FloatType> getTestImage3D() {
+		return ImageJFunctions
+				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource("3d_geometric_features_testlabel.tif").getPath()));
 	}
 
 	protected static LabelRegion<String> createLabelRegion3D() {
