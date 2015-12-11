@@ -73,29 +73,8 @@ public class GeomTest extends AbstractFeatureTest {
 
 	@BeforeClass
 	public static void setupBefore() throws MalformedURLException, IOException {
-		// read simple polygon image
-		final BufferedImage read = ImageIO.read(GeomTest.class.getResourceAsStream(
-			"cZgkFsK.png"));
-		img2d = ImageJFunctions
-				.convertFloat(new Opener().openImage(GeomTest.class.getResource("cZgkFsK.png").getPath()));
-
-		final ImgLabeling<String, IntType> img = new ImgLabeling<>(
-			ArrayImgs.ints(read.getWidth(), read.getHeight()));
-
-		// at each black pixel of the polygon add a "1" label.
-		final RandomAccess<LabelingType<String>> randomAccess = img.randomAccess();
-		for (int y = 0; y < read.getHeight(); y++) {
-			for (int x = 0; x < read.getWidth(); x++) {
-				randomAccess.setPosition(new int[] { x, y });
-				final Color c = new Color(read.getRGB(x, y));
-				if (c.getRed() == Color.black.getRed()) {
-					randomAccess.get().add("1");
-				}
-			}
-		}
-
-		final LabelRegions<String> labelRegions = new LabelRegions<>(img);
-		region2D = labelRegions.getLabelRegion("1");
+		img2d = getTestImage2D();
+		region2D = createLabelRegion2D();
 		region3D = createLabelRegion3D();
 	}
 
