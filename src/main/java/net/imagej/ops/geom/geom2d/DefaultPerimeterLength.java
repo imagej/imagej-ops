@@ -30,8 +30,11 @@
 
 package net.imagej.ops.geom.geom2d;
 
+import java.util.List;
+
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -51,16 +54,15 @@ public class DefaultPerimeterLength extends
 	@Override
 	public DoubleType compute1(final Polygon input) {
 		double perimeter = 0;
-		for (int i = 0; i < input.getVertices().size(); i++) {
-			int nexti = i + 1;
-			if (nexti == input.getVertices().size()) nexti = 0;
+		final List<? extends RealLocalizable> vertices = input.getVertices();
+		final int size = vertices.size();
+		for (int i = 0; i < size; i++) {
+			final int nexti = (i + 1) % size;
 
-			double dx2 = input.getVertices().get(nexti).getDoublePosition(0) - input
-				.getVertices().get(i).getDoublePosition(0);
-			double dy2 = input.getVertices().get(nexti).getDoublePosition(1) - input
-				.getVertices().get(i).getDoublePosition(1);
+			final double dx2 = vertices.get(nexti).getDoublePosition(0) - vertices.get(i).getDoublePosition(0);
+			final double dy2 = vertices.get(nexti).getDoublePosition(1) - vertices.get(i).getDoublePosition(1);
 
-			perimeter += Math.sqrt(Math.pow(dx2, 2) + Math.pow(dy2, 2));
+			perimeter += Math.sqrt(dx2 * dx2 + dy2 * dy2);
 		}
 
 		return new DoubleType(perimeter);
