@@ -118,6 +118,13 @@ public final class Computers {
 		return output;
 	}
 
+	public static <I1, I2, O> void compute(final BinaryComputerOp<I1, I2, O> op,
+		final I1 input1, final I2 input2, final O output)
+	{
+		// START HERE
+		op.compute2(input1, input2, output);
+	}
+
 	/**
 	 * Gets the best {@link NullaryComputerOp} implementation for the given types
 	 * and arguments, populating its inputs.
