@@ -77,6 +77,12 @@ public class GeomTest extends AbstractFeatureTest {
 		region2D = createLabelRegion2D();
 		region3D = createLabelRegion3D();
 	}
+	
+	@Override
+	public void setup() {
+		// no implementation is needed since the tests in this class will not use
+		// the features provided in super#setup()
+	}
 
 	@Test
 	public void createPolygon() {
