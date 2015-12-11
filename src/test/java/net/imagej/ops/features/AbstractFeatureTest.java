@@ -70,6 +70,9 @@ import ij.io.Opener;
  */
 public class AbstractFeatureTest extends AbstractOpTest {
 
+	protected static final boolean expensiveTestsEnabled = "enabled".equals(System
+		.getProperty("imagej.ops.expensive.tests"));
+
 	/**
 	 * Really small number, used for assertEquals with floating or double
 	 * values.
@@ -252,13 +255,15 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 	
 	protected static Img<FloatType> getTestImage2D() {
+		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png" : "cZgkFsK.png";
 		return ImageJFunctions
-				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource("cZgkFsK.png").getPath()));
+				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource(imageName).getPath()));
 	}
 
 	protected static LabelRegion<String> createLabelRegion2D() throws MalformedURLException, IOException {
+		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png" : "cZgkFsK.png";
 		// read simple polygon image
-		BufferedImage read = ImageIO.read(AbstractFeatureTest.class.getResourceAsStream("cZgkFsK.png"));
+		BufferedImage read = ImageIO.read(AbstractFeatureTest.class.getResourceAsStream(imageName));
 
 		ImgLabeling<String, IntType> img = new ImgLabeling<>(
 				ArrayImgs.ints(read.getWidth(), read.getHeight()));
@@ -281,15 +286,17 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 	
 	protected static Img<FloatType> getTestImage3D() {
+		final String imageName = expensiveTestsEnabled ? "3d_geometric_features_testlabel_expensive.tif" : "3d_geometric_features_testlabel.tif";
 		return ImageJFunctions
-				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource("3d_geometric_features_testlabel.tif").getPath()));
+				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource(imageName).getPath()));
 	}
 
 	protected static LabelRegion<String> createLabelRegion3D() {
+		final String imageName = expensiveTestsEnabled ? "3d_geometric_features_testlabel_expensive.tif" : "3d_geometric_features_testlabel.tif";
 
 	final Opener o = new Opener();
 	final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(
-		"3d_geometric_features_testlabel.tif").getPath());
+		imageName).getPath());
 
 	final ImgLabeling<String, IntType> labeling =
 		new ImgLabeling<>(ArrayImgs.ints(104, 102, 81));
