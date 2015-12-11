@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableComputer<T extends RealType<T>> extends
-	AbstractComputerOp<IterableInterval<T>, IterableInterval<T>> implements
+	AbstractUnaryComputerOp<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Normalize
 {
 
@@ -64,10 +64,10 @@ public class NormalizeIterableComputer<T extends RealType<T>> extends
 	private T targetMax;
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		ops().map(output, input, new NormalizeRealTypeComputer<T>(ops(), sourceMin,
+		ops().map(output, input, new NormalizeRealTypeComputer<>(ops(), sourceMin,
 			sourceMax, targetMin, targetMax, input));
 	}
 }

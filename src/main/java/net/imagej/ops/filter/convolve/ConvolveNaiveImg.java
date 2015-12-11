@@ -30,6 +30,9 @@
 
 package net.imagej.ops.filter.convolve;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFilter;
@@ -41,9 +44,6 @@ import net.imglib2.util.Intervals;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
-
 /**
  * Convolves an image naively (no FFTs).
  */
@@ -53,33 +53,35 @@ public class ConvolveNaiveImg<I extends RealType<I>, O extends RealType<O>, K ex
 {
 
 	@Override
-	public RandomAccessibleInterval<O> compute(
+	public RandomAccessibleInterval<O> compute1(
 		final RandomAccessibleInterval<I> img)
 	{
 
 		RandomAccessibleInterval<O> out = createOutput(img);
 
 		if (getOBFInput() == null) {
-			setOBFInput(new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(
-				Util.getTypeFromInterval(img).createVariable()));
+			setOBFInput(
+				new OutOfBoundsConstantValueFactory<I, RandomAccessibleInterval<I>>(Util
+					.getTypeFromInterval(img).createVariable()));
 		}
 
 		if ((getOBFKernel() == null) && (getKernel() != null)) {
-			setOBFKernel(new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(
-				Util.getTypeFromInterval(getKernel()).createVariable()));
+			setOBFKernel(
+				new OutOfBoundsConstantValueFactory<K, RandomAccessibleInterval<K>>(Util
+					.getTypeFromInterval(getKernel()).createVariable()));
 		}
 
 		// extend the input
-		RandomAccessibleInterval<I> extendedIn =
-			Views.interval(Views.extend(img, getOBFInput()), img);
+		RandomAccessibleInterval<I> extendedIn = Views.interval(Views.extend(img,
+			getOBFInput()), img);
 
 		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput =
-			new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
-				.getTypeFromInterval(out).createVariable());
+			new OutOfBoundsConstantValueFactory<>(Util.getTypeFromInterval(out)
+				.createVariable());
 
 		// extend the output
-		RandomAccessibleInterval<O> extendedOut =
-			Views.interval(Views.extend(out, obfOutput), out);
+		RandomAccessibleInterval<O> extendedOut = Views.interval(Views.extend(out,
+			obfOutput), out);
 
 		ops().filter().convolve(extendedOut, extendedIn, getKernel());
 

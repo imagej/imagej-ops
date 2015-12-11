@@ -32,9 +32,10 @@ package net.imagej.ops.filter.dog;
 
 import java.util.Arrays;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -53,7 +54,7 @@ import org.scijava.thread.ThreadService;
  */
 @Plugin(type = Ops.Filter.DoG.class, priority = 1.0)
 public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 
@@ -66,7 +67,7 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 	@Parameter
 	private double sigma2;
 
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> op;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> op;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
@@ -79,7 +80,7 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 		Arrays.fill(sigmas1, sigma1);
 		Arrays.fill(sigmas2, sigma2);
 
-		op = ops().computer(Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
+		op = Computers.unary(ops(), Ops.Filter.DoG.class, out(), in(), sigmas1, sigmas2,
 			fac);
 	}
 
@@ -92,9 +93,9 @@ public class DoGSingleSigmas<T extends NumericType<T> & NativeType<T>> extends
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		op.compute(input, output);
+		op.compute1(input, output);
 	}
 }

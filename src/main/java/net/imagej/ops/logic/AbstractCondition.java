@@ -30,12 +30,12 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.type.logic.BoolType;
 
 /** Abstract superclass for {@link Condition} ops. */
 public abstract class AbstractCondition<T> extends
-	AbstractHybridOp<T, BoolType> implements Condition<T>
+	AbstractUnaryHybridOp<T, BoolType> implements Condition<T>
 {
 
 	@Override
@@ -44,7 +44,7 @@ public abstract class AbstractCondition<T> extends
 	}
 
 	@Override
-	public void compute(final T input, final BoolType output) {
+	public void compute1(final T input, final BoolType output) {
 		output.set(isTrue(input));
 	}
 

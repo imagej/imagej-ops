@@ -30,7 +30,7 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.BinaryOp;
+import net.imagej.ops.special.BinaryOp;
 
 /**
  * Base class for {@link BinaryOp} implementations that delegate to other

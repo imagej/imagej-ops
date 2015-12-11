@@ -30,10 +30,11 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.roi.labeling.LabelingMapping;
@@ -52,18 +53,18 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.ImgLabeling.class)
 public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
-		extends AbstractHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
+		extends AbstractUnaryHybridOp<ImgLabeling<L, T>, ImgLabeling<L, T>>
 		implements Ops.Copy.ImgLabeling, Contingent {
 	
 	
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;
-	private ComputerOp<LabelingMapping<L>, LabelingMapping<L>> mappingCopyOp;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;
+	private UnaryComputerOp<LabelingMapping<L>, LabelingMapping<L>> mappingCopyOp;
 
 
 	@Override
 	public void initialize() {
-		raiCopyOp = ops().computer(Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
-		mappingCopyOp = ops().computer(Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		raiCopyOp = Computers.unary(ops(), Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
+		mappingCopyOp = Computers.unary(ops(), Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
 	}
 	
 	@Override
@@ -73,10 +74,10 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 
 	
 	@Override
-	public void compute(final ImgLabeling<L, T> input,
+	public void compute1(final ImgLabeling<L, T> input,
 			final ImgLabeling<L, T> output) {
-		raiCopyOp.compute(input.getIndexImg(), output.getIndexImg());
-		mappingCopyOp.compute(input.getMapping(), output.getMapping());
+		raiCopyOp.compute1(input.getIndexImg(), output.getIndexImg());
+		mappingCopyOp.compute1(input.getMapping(), output.getMapping());
 	}
 
 	@Override

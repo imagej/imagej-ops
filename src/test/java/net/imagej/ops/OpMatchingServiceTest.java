@@ -60,7 +60,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 		final DoubleType value = new DoubleType(123.456);
 
 		final Module moduleByName =
-			matcher.findModule(ops, new OpRef<Op>("test.nan", value));
+			matcher.findModule(ops, OpRef.create("test.nan", value));
 		assertSame(value, moduleByName.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -69,7 +69,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 		value.set(987.654);
 		final Module moduleByType =
-			matcher.findModule(ops, new OpRef<NaNOp>(NaNOp.class, value));
+			matcher.findModule(ops, OpRef.create(NaNOp.class, value));
 		assertSame(value, moduleByType.getInput("arg"));
 
 		assertFalse(Double.isNaN(value.get()));
@@ -128,8 +128,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 	// -- Helper methods --
 
 	private Module optionalParamsModule(Object... args) {
-		return matcher.findModule(ops,
-			new OpRef<OptionalParams>(OptionalParams.class, args));
+		return matcher.findModule(ops, OpRef.create(OptionalParams.class, args));
 	}
 
 	private void assertValues(final Module m, final int a, final int b,
@@ -150,7 +149,7 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	private void assertMatches(final String name, Class<?>... opTypes) {
 		final List<OpCandidate<Op>> candidates =
-			matcher.findCandidates(ops, new OpRef<Op>(name));
+			matcher.findCandidates(ops, OpRef.create(name));
 		final List<Module> matches = matcher.findMatches(candidates);
 		assertEquals(opTypes.length, matches.size());
 		for (int i=0; i<opTypes.length; i++) {
@@ -162,13 +161,15 @@ public class OpMatchingServiceTest extends AbstractOpTest {
 
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.nan")
-	public static class NaNOp extends AbstractInplaceOp<DoubleType> {
+	public static class NaNOp extends AbstractOp {
+
+		@Parameter(type = ItemIO.BOTH)
+		private DoubleType arg;
 
 		@Override
-		public void compute(final DoubleType argument) {
-			argument.set(Double.NaN);
+		public void run() {
+			arg.set(Double.NaN);
 		}
-
 	}
 
 	@Plugin(type = Op.class)

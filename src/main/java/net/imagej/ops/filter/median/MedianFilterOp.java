@@ -30,14 +30,14 @@
 
 package net.imagej.ops.filter.median;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * A typed "median" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MedianFilterOp<I> extends Ops.Filter.Median, ComputerOp<I, I> {
+public interface MedianFilterOp<I> extends Ops.Filter.Median, UnaryComputerOp<I, I> {
 	// NB: Marker interface.
 }

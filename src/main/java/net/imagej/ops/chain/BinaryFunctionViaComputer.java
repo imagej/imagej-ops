@@ -30,13 +30,13 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractBinaryFunctionOp;
-import net.imagej.ops.BinaryComputerOp;
-import net.imagej.ops.BinaryHybridOp;
-import net.imagej.ops.BinaryOutputFactory;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryOutputFactory;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -46,16 +46,16 @@ import net.imglib2.type.numeric.real.DoubleType;
  * <p>
  * This is mostly useful when the {@link BinaryComputerOp} in question has a
  * generic type as output, which needs to be narrowed to a concrete type for the
- * purposes of the {@link FunctionOp} portion's return type. In this scenario, a
+ * purposes of the {@link UnaryFunctionOp} portion's return type. In this scenario, a
  * {@link BinaryHybridOp} cannot be used directly with type-safe generics.
  * </p>
  * <p>
- * For example, a {@link ComputerOp} whose output variable is a
- * {@code T extends RealType<T>} cannot be a {@link HybridOp} because we do not
+ * For example, a {@link UnaryComputerOp} whose output variable is a
+ * {@code T extends RealType<T>} cannot be a {@link UnaryHybridOp} because we do not
  * know at runtime which sort of {@link RealType} matches the caller's {@code T}
- * parameter. However, a separate {@link FunctionOp} can be created whose output
+ * parameter. However, a separate {@link UnaryFunctionOp} can be created whose output
  * is typed on e.g. {@link DoubleType}, with the computation delegating to the
- * wrapped {@link ComputerOp}.
+ * wrapped {@link UnaryComputerOp}.
  * </p>
  */
 public abstract class BinaryFunctionViaComputer<I1, I2, O> extends

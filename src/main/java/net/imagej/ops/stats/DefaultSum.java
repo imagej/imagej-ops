@@ -50,7 +50,7 @@ public class DefaultSum<I extends RealType<I>, O extends RealType<O>> extends
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double sum = 0;
 		for (final I in : input) {
 			sum += in.getRealDouble();

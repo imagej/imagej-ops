@@ -1,21 +1,21 @@
 
 package net.imagej.ops.math.divide;
 
-import net.imagej.ops.AbstractHybridOp;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 @Plugin(type = Ops.Math.Divide.class, priority = Priority.LOW_PRIORITY)
 public class DivideHandleZero<T extends RealType<T>> extends
-	AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
+	AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Math.Divide, Contingent
 {
 
@@ -43,7 +43,7 @@ public class DivideHandleZero<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
 		final Cursor<T> cursor = ii.cursor();

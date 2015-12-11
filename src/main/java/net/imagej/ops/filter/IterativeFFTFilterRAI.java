@@ -140,7 +140,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 	private Accelerator<O> accelerator = null;
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> in,
+	public void compute1(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<O> out)
 	{
 
@@ -244,7 +244,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		}
 
 		if (getAccelerate()) {
-			accelerator = new VectorAccelerator<O>(this.getImgFactory());
+			accelerator = new VectorAccelerator<>(this.getImgFactory());
 		}
 
 	}

@@ -32,7 +32,7 @@ package net.imagej.ops.create.integerType;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;

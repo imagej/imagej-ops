@@ -30,8 +30,8 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Threshold.Apply.class)
 public class LocalThreshold<T extends RealType<T>>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
 	implements Ops.Threshold.Apply
 {
 
@@ -67,7 +67,7 @@ public class LocalThreshold<T extends RealType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
 	{
 		RandomAccessibleInterval<T> extendedInput = input;

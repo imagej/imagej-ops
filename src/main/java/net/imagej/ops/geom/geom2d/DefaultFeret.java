@@ -30,8 +30,8 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.util.Pair;
@@ -46,12 +46,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Feret.class)
 public class DefaultFeret extends
-	AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
+	AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
 	Ops.Geometric.Feret
 {
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
+	public Pair<RealLocalizable, RealLocalizable> compute1(final Polygon input) {
 		double distance = Double.NEGATIVE_INFINITY;
 		int in0 = -1;
 		int in1 = -1;
@@ -76,7 +76,7 @@ public class DefaultFeret extends
 			}
 		}
 
-		return new ValuePair<RealLocalizable, RealLocalizable>(input.getVertices()
+		return new ValuePair<>(input.getVertices()
 			.get(in0), input.getVertices().get(in1));
 	}
 

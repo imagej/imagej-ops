@@ -67,7 +67,7 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	 * compute output by extending the input(s) and running the filter
 	 */
 	@Override
-	public RandomAccessibleInterval<O> compute(
+	public RandomAccessibleInterval<O> compute1(
 		final RandomAccessibleInterval<I> input)
 	{
 

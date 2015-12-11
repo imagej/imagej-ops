@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -43,6 +43,6 @@ import net.imglib2.type.numeric.real.DoubleType;
  *            type of the incoming {@link IterableInterval}
  */
 public interface HaralickFeature<T extends RealType<T>> extends
-		HybridOp<IterableInterval<T>, DoubleType> {
+		UnaryHybridOp<IterableInterval<T>, DoubleType> {
 
 }

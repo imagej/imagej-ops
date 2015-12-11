@@ -1,18 +1,18 @@
 
 package net.imagej.ops.filter.pad;
 
-import net.imagej.ops.AbstractFunctionOp;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * Op used to calculate and return a centered padding interval given an input
@@ -27,7 +27,8 @@ import org.scijava.plugin.Plugin;
 	name = Ops.Filter.PaddingIntervalCentered.NAME,
 	priority = Priority.HIGH_PRIORITY)
 public class PaddingIntervalCentered<T extends RealType<T>, I extends RandomAccessibleInterval<T>, O extends Interval>
-	extends AbstractFunctionOp<I, O> implements Ops.Filter.PaddingIntervalCentered
+	extends AbstractUnaryFunctionOp<I, O> implements
+	Ops.Filter.PaddingIntervalCentered
 {
 
 	@Parameter
@@ -35,14 +36,13 @@ public class PaddingIntervalCentered<T extends RealType<T>, I extends RandomAcce
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute(final I input) {
+	public O compute1(final I input) {
 
 		final long[] paddedSize = new long[paddedDimensions.numDimensions()];
 		paddedDimensions.dimensions(paddedSize);
 
-		O inputInterval =
-			(O) FFTMethods.paddingIntervalCentered(input, FinalDimensions
-				.wrap(paddedSize));
+		O inputInterval = (O) FFTMethods.paddingIntervalCentered(input,
+			FinalDimensions.wrap(paddedSize));
 
 		return inputInterval;
 	}

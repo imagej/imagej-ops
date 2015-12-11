@@ -48,7 +48,7 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 {
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> in,
+	public void compute1(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<O> out)
 	{
 

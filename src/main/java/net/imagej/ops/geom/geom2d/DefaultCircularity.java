@@ -30,10 +30,10 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -46,12 +46,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Circularity.class,
 	label = "Geometric (2D): Circularity")
-public class DefaultCircularity extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultCircularity extends AbstractUnaryFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.Circularity
 {
 
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, DoubleType> perimiterFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> perimiterFunc;
 
 	@Override
 	public void initialize() {
@@ -60,9 +60,9 @@ public class DefaultCircularity extends AbstractFunctionOp<Polygon, DoubleType>
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		return new DoubleType(4 * Math.PI * (areaFunc.compute(input)
-			.getRealDouble() / Math.pow(perimiterFunc.compute(input).getRealDouble(),
+	public DoubleType compute1(final Polygon input) {
+		return new DoubleType(4 * Math.PI * (areaFunc.compute1(input)
+			.getRealDouble() / Math.pow(perimiterFunc.compute1(input).getRealDouble(),
 				2)));
 	}
 

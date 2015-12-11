@@ -30,15 +30,19 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.BinaryComputerOp;
-import net.imagej.ops.BinaryFunctionOp;
-import net.imagej.ops.BinaryHybridOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.HybridOp;
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.Inplaces;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
@@ -56,31 +60,31 @@ public final class RAIs {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T>
-		ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		computer(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (ComputerOp) ops.computer(opType, RandomAccessibleInterval.class,
+		return (UnaryComputerOp) Computers.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T>
-		FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		function(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (FunctionOp) ops.function(opType, RandomAccessibleInterval.class,
+		return (UnaryFunctionOp) Functions.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T>
-		HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
+		UnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class,
+		return (UnaryHybridOp) Hybrids.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -88,7 +92,7 @@ public final class RAIs {
 		final OpEnvironment ops, final Class<? extends Op> opType,
 		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
 	{
-		return ops.inplace(opType, arg, otherArgs);
+		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -99,7 +103,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) ops.binaryComputer(opType,
+		return (BinaryComputerOp) Computers.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -111,7 +115,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) ops.binaryFunction(opType,
+		return (BinaryFunctionOp) Functions.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 
@@ -123,7 +127,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) ops.binaryHybrid(opType,
+		return (BinaryHybridOp) Hybrids.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 

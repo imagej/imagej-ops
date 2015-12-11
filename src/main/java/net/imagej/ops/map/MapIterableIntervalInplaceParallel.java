@@ -30,9 +30,9 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
+import net.imagej.ops.special.InplaceOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
@@ -42,18 +42,18 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapIterableInplace}
+ * Parallelized {@link MapInplace} over an {@link IterableInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on <A>
+ * @param <A> element type of inplace arguments
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
 public class MapIterableIntervalInplaceParallel<A> extends
-	AbstractMapInplace<A, IterableInterval<A>> implements Parallel
+	AbstractMapIterableInplace<A, IterableInterval<A>> implements Parallel
 {
 
 	@Override
-	public void compute(final IterableInterval<A> arg) {
+	public void mutate(final IterableInterval<A> arg) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
@@ -68,7 +68,7 @@ public class MapIterableIntervalInplaceParallel<A> extends
 				int ctr = 0;
 				while (ctr < numSteps) {
 					final A t = inCursor.get();
-					safe.compute(t);
+					safe.mutate(t);
 					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}

@@ -35,8 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.SecondMultiVariate.class)
 public class DefaultMinorMajorAxis extends
-	AbstractFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
+	AbstractUnaryFunctionOp<Polygon, Pair<DoubleType, DoubleType>> implements
 	Ops.Geometric.SecondMultiVariate
 {
 
@@ -187,9 +187,9 @@ public class DefaultMinorMajorAxis extends
 	}
 
 	@Override
-	public Pair<DoubleType, DoubleType> compute(final Polygon input) {
+	public Pair<DoubleType, DoubleType> compute1(final Polygon input) {
 		
-		List<RealLocalizable> points = new ArrayList<RealLocalizable>(input
+		List<RealLocalizable> points = new ArrayList<>(input
 			.getVertices());
 
 		// Sort RealLocalizables of P by x-coordinate (in case of a tie,
@@ -213,7 +213,7 @@ public class DefaultMinorMajorAxis extends
 
 		// calculate minor and major axis
 		double[] minorMajorAxis = getMinorMajorAxis(input, points);
-		return new ValuePair<DoubleType, DoubleType>(new DoubleType(
+		return new ValuePair<>(new DoubleType(
 			minorMajorAxis[0]), new DoubleType(minorMajorAxis[1]));
 	}
 }

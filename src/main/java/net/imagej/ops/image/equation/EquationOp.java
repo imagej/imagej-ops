@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.equation;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 
 /**
@@ -40,7 +40,7 @@ import net.imglib2.IterableInterval;
  * 
  * @author Curtis Rueden
  */
-public interface EquationOp<T> extends Ops.Image.Equation, ComputerOp<String,
+public interface EquationOp<T> extends Ops.Image.Equation, UnaryComputerOp<String,
 	IterableInterval<T>>
 {
 	// NB: Marker interface.

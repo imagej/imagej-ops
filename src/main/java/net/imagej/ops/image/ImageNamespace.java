@@ -32,11 +32,11 @@ package net.imagej.ops.image;
 
 import net.imagej.ImgPlus;
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
@@ -410,7 +410,7 @@ public class ImageNamespace extends AbstractNamespace {
 			net.imagej.ops.image.project.ProjectRAIToIterableInterval.class })
 	public <T, V> IterableInterval<V> project(final IterableInterval<V> out,
 			final RandomAccessibleInterval<T> in,
-			final ComputerOp<Iterable<T>, V> method, final int dim) {
+			final UnaryComputerOp<Iterable<T>, V> method, final int dim) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<V> result = (IterableInterval<V>) ops().run(
 				net.imagej.ops.Ops.Image.Project.class, out, in, method, dim);

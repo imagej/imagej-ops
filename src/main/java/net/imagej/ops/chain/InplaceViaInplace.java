@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 /**
  * Base class for {@link InplaceOp} implementations that delegate to other
@@ -39,20 +39,20 @@ import net.imagej.ops.InplaceOp;
  * 
  * @author Curtis Rueden
  */
-public abstract class InplaceViaInplace<A> extends
-	AbstractInplaceOp<A> implements DelegatingSpecialOp<InplaceOp<A>, A, A>
-{
+public abstract class InplaceViaInplace<A> extends AbstractInplaceOp<A> {
 
 	private InplaceOp<A> worker;
 
+	public abstract InplaceOp<A> createWorker(A t);
+
 	@Override
 	public void initialize() {
-		worker = createWorker(in());
+		worker = createWorker(arg());
 	}
 
 	@Override
-	public void compute(final A arg) {
-		worker.compute(arg);
+	public void mutate(final A arg) {
+		worker.mutate(arg);
 	}
 
 }

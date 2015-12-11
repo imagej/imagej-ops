@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -47,7 +47,7 @@ import org.scijava.plugin.Parameter;
  * @param <C>
  */
 public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	/**

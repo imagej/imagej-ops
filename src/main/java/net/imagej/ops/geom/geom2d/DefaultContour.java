@@ -33,9 +33,9 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Contour.class)
 public class DefaultContour<B extends BooleanType<B>> extends
-	AbstractFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<B>, Polygon> implements
 	Contingent, Ops.Geometric.Contour
 {
 
@@ -195,8 +195,8 @@ public class DefaultContour<B extends BooleanType<B>> extends
 	}
 
 	@Override
-	public Polygon compute(final RandomAccessibleInterval<B> input) {
-		List<RealPoint> p = new ArrayList<RealPoint>();
+	public Polygon compute1(final RandomAccessibleInterval<B> input) {
+		List<RealPoint> p = new ArrayList<>();
 
 		final B var = Util.getTypeFromInterval(input).createVariable();
 		var.set(!isInverted);
@@ -205,7 +205,7 @@ public class DefaultContour<B extends BooleanType<B>> extends
 			.randomAccess();
 		final Cursor<B> cInput = Views.flatIterable(input).cursor();
 		final ClockwiseMooreNeighborhoodIterator<B> cNeigh =
-			new ClockwiseMooreNeighborhoodIterator<B>(raInput);
+			new ClockwiseMooreNeighborhoodIterator<>(raInput);
 
 		double[] position = new double[2];
 		double[] startPos = new double[2];

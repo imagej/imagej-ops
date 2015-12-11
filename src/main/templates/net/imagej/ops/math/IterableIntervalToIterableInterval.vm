@@ -30,7 +30,7 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -61,7 +61,7 @@ public final class IterableIntervalToIterableInterval {
 	
 		@Plugin(type = ${iface}.class, priority = Priority.NORMAL_PRIORITY)
 		public static class ${op.name}<T extends RealType<T>> extends
-			AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements $iface, Contingent
+			AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>> implements $iface, Contingent
 		{
 		
 			
@@ -87,7 +87,7 @@ public final class IterableIntervalToIterableInterval {
 			}
 
 			@Override
-			public void compute(final IterableInterval<T> input, final IterableInterval<T> output) {
+			public void compute1(final IterableInterval<T> input, final IterableInterval<T> output) {
 			
 					final Cursor<T> cursor = a.cursor();
 					final Cursor<T> cursorI = input.cursor();

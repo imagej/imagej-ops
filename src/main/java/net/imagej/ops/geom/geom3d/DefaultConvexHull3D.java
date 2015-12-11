@@ -36,13 +36,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.DefaultMesh;
 import net.imagej.ops.geom.geom3d.mesh.Horizon;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.geom.geom3d.mesh.Vertex;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -58,7 +58,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
+public class DefaultConvexHull3D extends AbstractUnaryFunctionOp<Mesh, Mesh>
 	implements Ops.Geometric.ConvexHull
 {
 
@@ -88,15 +88,15 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 	private final double DOUBLE_PREC = 2.2204460492503131e-16;
 
 	@Override
-	public Mesh compute(final Mesh input) {
+	public Mesh compute1(final Mesh input) {
 		DefaultMesh output = new DefaultMesh();
-		vertices = new LinkedHashSet<Vertex>();
+		vertices = new LinkedHashSet<>();
 		for (final RealLocalizable v : input.getVertices()) {
 			vertices.add(new Vertex(v.getDoublePosition(0), v.getDoublePosition(1), v
 				.getDoublePosition(2)));
 		}
-		facets = new ArrayList<TriangularFacet>();
-		facetsWithPointInFront = new ArrayList<TriangularFacet>();
+		facets = new ArrayList<>();
+		facetsWithPointInFront = new ArrayList<>();
 		computeHull();
 		for (TriangularFacet f : facets) {
 			output.addFace(f);
@@ -139,7 +139,7 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 	private List<TriangularFacet> createFacets(final Horizon horizon,
 		final Vertex vTop)
 	{
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+		List<TriangularFacet> newFacets = new ArrayList<>();
 		Vertex vLeft, vRight;
 
 		// triangles 1 to n
@@ -422,7 +422,7 @@ public class DefaultConvexHull3D extends AbstractFunctionOp<Mesh, Mesh>
 		assert f2.distanceToPlane(v0) < epsilon;
 		assert f3.distanceToPlane(v1) < epsilon;
 
-		List<TriangularFacet> newFacets = new ArrayList<TriangularFacet>();
+		List<TriangularFacet> newFacets = new ArrayList<>();
 		newFacets.add(f0);
 		newFacets.add(f1);
 		newFacets.add(f2);

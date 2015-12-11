@@ -102,7 +102,7 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	private Accelerator<O> accelerator = null;
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> in,
+	public void compute1(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<O> out)
 	{
 

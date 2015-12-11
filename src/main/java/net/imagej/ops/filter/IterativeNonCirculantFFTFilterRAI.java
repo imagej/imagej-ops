@@ -87,7 +87,7 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 	private Img<O> normalization = null;
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> in,
+	public void compute1(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<O> out)
 	{
 

@@ -30,8 +30,12 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.AbstractFunctionOp;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.RandomAccessibleInterval;
@@ -43,10 +47,6 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
  * Forward FFT function that operates on RAI
  * 
@@ -56,7 +56,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
 public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
-	extends AbstractFunctionOp<I, O> implements Ops.Filter.FFT
+	extends AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
 	/**
@@ -92,10 +92,10 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 	 */
 	@Parameter(required = false)
 	private Type<C> fftType;
-	
-	private Dimensions paddedDimensions; 
-	
-	//@Override
+
+	private Dimensions paddedDimensions;
+
+	// @Override
 	public O createOutput(final I input) {
 		long[] inputWithBordersSize = new long[input.numDimensions()];
 
@@ -129,12 +129,12 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public O compute(final I input) {		
+	public O compute1(final I input) {
 
-		O output=createOutput(input);
+		O output = createOutput(input);
 
 		I paddedInput;
-				
+
 		// pad the input if necessary
 		if (!FFTMethods.dimensionsEqual(input, paddedDimensions)) {
 
@@ -144,7 +144,7 @@ public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInte
 			paddedInput = input;
 		}
 
-		return (O)(ops().filter().fft(output, paddedInput));
+		return (O) (ops().filter().fft(output, paddedInput));
 
 	}
 

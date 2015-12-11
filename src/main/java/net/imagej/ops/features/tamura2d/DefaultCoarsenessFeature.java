@@ -70,8 +70,8 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input, final O output) {
-		HashMap<Integer, Img<I>> meanImages = new HashMap<Integer, Img<I>>();
+	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
+		HashMap<Integer, Img<I>> meanImages = new HashMap<>();
 
 		// get mean images
 		for (int i = 1; i <= 5; i++) {
@@ -110,7 +110,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 		long[] dim = new long[input.numDimensions()];
 		input.dimensions(dim);
 
-		ArrayList<Double> maxDifferences = new ArrayList<Double>();
+		ArrayList<Double> maxDifferences = new ArrayList<>();
 		Cursor<I> cursor = meanImages.get(1).cursor();
 
 		while (cursor.hasNext()) {
@@ -166,7 +166,7 @@ public class DefaultCoarsenessFeature<I extends RealType<I>, O extends RealType<
 		final byte[] array = new byte[(int) Intervals.numElements(new FinalInterval(dims))];
 		Img<I> meanImg = (Img<I>) ArrayImgs.unsignedBytes(array, dims);
 
-		OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory = new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
+		OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory = new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 
 		ops.run(MeanFilterOp.class, meanImg, input, new RectangleShape(i, true), oobFactory);

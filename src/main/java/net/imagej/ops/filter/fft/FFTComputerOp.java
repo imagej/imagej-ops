@@ -33,16 +33,16 @@ package net.imagej.ops.filter.fft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractComputerOp;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Forward FFT computer that operates on an RAI and wraps FFTMethods. The input
@@ -57,7 +57,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.NORMAL_PRIORITY)
 public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.FFT, Contingent
 {
 
@@ -65,7 +65,7 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	 * Compute an ND FFT
 	 */
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<C> output)
 	{
 

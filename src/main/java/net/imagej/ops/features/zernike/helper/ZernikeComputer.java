@@ -31,8 +31,8 @@ package net.imagej.ops.features.zernike.helper;
 
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imagej.types.BigComplex;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Op.class)
 public class ZernikeComputer<T extends RealType<T>> extends
-	AbstractFunctionOp<IterableInterval<T>, ZernikeMoment>
+	AbstractUnaryFunctionOp<IterableInterval<T>, ZernikeMoment>
 {
 
 	@Parameter
@@ -64,7 +64,7 @@ public class ZernikeComputer<T extends RealType<T>> extends
 	}
 
 	@Override
-	public ZernikeMoment compute(IterableInterval<T> ii) {
+	public ZernikeMoment compute1(IterableInterval<T> ii) {
 
 		// what is the acutal N
 		final double width = ii.dimension(0);

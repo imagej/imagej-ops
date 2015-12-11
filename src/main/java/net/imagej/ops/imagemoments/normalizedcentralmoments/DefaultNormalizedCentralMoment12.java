@@ -30,11 +30,11 @@
 
 package net.imagej.ops.imagemoments.normalizedcentralmoments;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -54,9 +54,9 @@ public class DefaultNormalizedCentralMoment12<I extends RealType<I>, O extends R
 	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.NormalizedCentralMoment12
 {
 
-	private FunctionOp<IterableInterval<I>, O> centralMoment00Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> centralMoment00Func;
 
-	private FunctionOp<IterableInterval<I>, O> centralMoment12Func;
+	private UnaryFunctionOp<IterableInterval<I>, O> centralMoment12Func;
 
 	@Override
 	public void initialize() {
@@ -65,9 +65,9 @@ public class DefaultNormalizedCentralMoment12<I extends RealType<I>, O extends R
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		double centralMoment00 = centralMoment00Func.compute(input).getRealDouble();
-		double centralMoment12 = centralMoment12Func.compute(input).getRealDouble();
+	public void compute1(final IterableInterval<I> input, final O output) {
+		double centralMoment00 = centralMoment00Func.compute1(input).getRealDouble();
+		double centralMoment12 = centralMoment12Func.compute1(input).getRealDouble();
 
 		output.setReal(centralMoment12 /
 			Math.pow(centralMoment00, 1 + ((1 + 2) / 2)));

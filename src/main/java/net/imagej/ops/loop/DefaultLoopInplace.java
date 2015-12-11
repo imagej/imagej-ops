@@ -30,33 +30,60 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of a {@link AbstractLoopInplace}
+ * Default implementation of a {@link LoopInplace}.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Curtis Rueden
  */
 @Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<I> extends AbstractLoopInplace<I> {
+public class DefaultLoopInplace<A> extends AbstractInplaceOp<A> implements
+	LoopInplace<A>
+{
+
+	@Parameter
+	private InplaceOp<A> op;
+
+	@Parameter
+	private int n;
+
+	// -- LoopOp methods --
 
 	@Override
-	public void compute(final I arg) {
-		final int n = getLoopCount();
-		final ComputerOp<I, I> op = getOp();
-		for (int i = 0; i < n; i++) {
-			op.compute(arg, arg);
-		}
+	public InplaceOp<A> getOp() {
+		return op;
 	}
 
 	@Override
-	public DefaultLoopInplace<I> getIndependentInstance() {
-		final DefaultLoopInplace<I> looper = new DefaultLoopInplace<I>();
+	public void setOp(final InplaceOp<A> op) {
+		this.op = op;
+	}
+
+	@Override
+	public int getLoopCount() {
+		return n;
+	}
+
+	@Override
+	public void setLoopCount(final int n) {
+		this.n = n;
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	public DefaultLoopInplace<A> getIndependentInstance() {
+		final DefaultLoopInplace<A> looper = new DefaultLoopInplace<>();
 		looper.setOp(getOp().getIndependentInstance());
 		looper.setLoopCount(getLoopCount());
 		return looper;
 	}
+
 }

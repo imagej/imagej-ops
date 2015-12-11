@@ -30,15 +30,19 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.BinaryComputerOp;
-import net.imagej.ops.BinaryFunctionOp;
-import net.imagej.ops.BinaryHybridOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.HybridOp;
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.Inplaces;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -55,34 +59,34 @@ public final class RTs {
 	// -- Utility methods --
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <I, O extends RealType<O>> ComputerOp<I, O> computer(
+	public static <I, O extends RealType<O>> UnaryComputerOp<I, O> computer(
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (ComputerOp) ops.computer(opType, RealType.class, in, otherArgs);
+		return (UnaryComputerOp) Computers.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <I, O extends RealType<O>> FunctionOp<I, O> function(
+	public static <I, O extends RealType<O>> UnaryFunctionOp<I, O> function(
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (FunctionOp) ops.function(opType, RealType.class, in, otherArgs);
+		return (UnaryFunctionOp) Functions.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <I, O extends RealType<O>> HybridOp<I, O> hybrid(
+	public static <I, O extends RealType<O>> UnaryHybridOp<I, O> hybrid(
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (HybridOp) ops.hybrid(opType, RealType.class, in, otherArgs);
+		return (UnaryHybridOp) Hybrids.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	public static <A extends RealType<A>> InplaceOp<A> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
 		final Object... otherArgs)
 	{
-		return ops.inplace(opType, arg, otherArgs);
+		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -90,7 +94,7 @@ public final class RTs {
 		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, final I2 in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) ops.binaryComputer(opType, RealType.class, in1,
+		return (BinaryComputerOp) Computers.binary(ops, opType, RealType.class, in1,
 			in2, otherArgs);
 	}
 
@@ -99,7 +103,7 @@ public final class RTs {
 		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) ops.binaryFunction(opType, RealType.class, in1,
+		return (BinaryFunctionOp) Functions.binary(ops, opType, RealType.class, in1,
 			in2, otherArgs);
 	}
 
@@ -108,7 +112,7 @@ public final class RTs {
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) ops.binaryHybrid(opType, RealType.class, in1, in2,
+		return (BinaryHybridOp) Hybrids.binary(ops, opType, RealType.class, in1, in2,
 			otherArgs);
 	}
 

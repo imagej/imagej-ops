@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -48,20 +49,20 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.FeretsDiameter.class,
 	label = "Geometric (2D): Ferets Diameter")
 public class DefaultFeretsDiameter extends
-	AbstractFunctionOp<Polygon, DoubleType> implements Ops.Geometric.FeretsDiameter
+	AbstractUnaryFunctionOp<Polygon, DoubleType> implements Ops.Geometric.FeretsDiameter
 {
 
-	private FunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
+	private UnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> function;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		function = (FunctionOp) ops().function(Ops.Geometric.Feret.class, Pair.class, in());
+		function = (UnaryFunctionOp) Functions.unary(ops(), Ops.Geometric.Feret.class, Pair.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final Polygon input) {
-		Pair<RealLocalizable, RealLocalizable> ferets = function.compute(input);
+	public DoubleType compute1(final Polygon input) {
+		Pair<RealLocalizable, RealLocalizable> ferets = function.compute1(input);
 
 		RealLocalizable p1 = ferets.getA();
 		RealLocalizable p2 = ferets.getB();

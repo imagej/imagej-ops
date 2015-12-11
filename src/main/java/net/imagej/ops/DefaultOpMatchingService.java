@@ -114,11 +114,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
-		final ArrayList<OpCandidate<OP>> candidates =
-			new ArrayList<OpCandidate<OP>>();
+		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
 		for (final OpInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<OP>(ops, ref, info));
+				candidates.add(new OpCandidate<>(ops, ref, info));
 			}
 		}
 		return candidates;
@@ -128,7 +127,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<Module> findMatches(
 		final List<OpCandidate<OP>> candidates)
 	{
-		final ArrayList<Module> matches = new ArrayList<Module>();
+		final ArrayList<Module> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
 		for (final OpCandidate<?> candidate : candidates) {
@@ -160,7 +159,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return false;
 		final Object[] args = padArgs(candidate);
-		return args == null ? false : typesMatch(candidate, args);
+		return args == null ? false : typesMatch(candidate, args) < 0;
 	}
 
 	@Override
@@ -255,7 +254,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 */
 	private boolean outputsMatch(final OpCandidate<?> candidate) {
 		final Collection<? extends Class<?>> outTypes =
-			candidate.getRef().getOutputs();
+			candidate.getRef().getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
 		final Iterator<ModuleItem<?>> outItems =
@@ -278,8 +277,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		if (!typesMatch(candidate, args)) {
-			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH);
+		final int badIndex = typesMatch(candidate, args);
+		if (badIndex >= 0) {
+			final String message = typeClashMessage(candidate, args, badIndex);
+			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH, message);
 			return null;
 		}
 
@@ -305,15 +306,31 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Checks that each parameter is type-compatible with its corresponding
 	 * argument.
 	 */
-	private <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate,
+	private <OP extends Op> int typesMatch(final OpCandidate<OP> candidate,
 		final Object[] args)
 	{
 		int i = 0;
 		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(candidate, arg, item)) return false;
+			if (!canAssign(candidate, args[i], item)) return i;
+			i++;
 		}
-		return true;
+		return -1;
+	}
+
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
+	private String typeClashMessage(final OpCandidate<?> candidate,
+		final Object[] args, final int index)
+	{
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.opInfo().cInfo().inputs()) {
+			if (i++ == index) {
+				final Object arg = args[index];
+				final String argType = arg == null ? "null" : arg.getClass().getName();
+				final Type inputType = item.getGenericType();
+				return index + ": cannot coerce " + argType + " -> " + inputType;
+			}
+		}
+		throw new IllegalArgumentException("Invalid index: " + index);
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */

@@ -30,9 +30,9 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
@@ -44,21 +44,22 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapOp}.
+ * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link RandomAccessibleInterval} outputs.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> mapped on {@code <B>}
- * @param <B> mapped from {@code <A>}
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableIntervalToRAIParallel<A, B> extends
-	AbstractMapComputer<A, B, IterableInterval<A>, RandomAccessibleInterval<B>>
+public class MapIterableIntervalToRAIParallel<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
 	implements Parallel
 {
 
 	@Override
-	public void compute(final IterableInterval<A> input,
-		final RandomAccessibleInterval<B> output)
+	public void compute1(final IterableInterval<EI> input,
+		final RandomAccessibleInterval<EO> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
@@ -66,17 +67,17 @@ public class MapIterableIntervalToRAIParallel<A, B> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final ComputerOp<A, B> safe = getOp().getIndependentInstance();
-				final Cursor<A> cursor = input.localizingCursor();
+				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
+				final Cursor<EI> cursor = input.localizingCursor();
 
 				setToStart(cursor, startIndex);
 
-				final RandomAccess<B> rndAccess = output.randomAccess();
+				final RandomAccess<EO> rndAccess = output.randomAccess();
 
 				int ctr = 0;
 				while (ctr < numSteps) {
 					rndAccess.setPosition(cursor);
-					safe.compute(cursor.get(), rndAccess.get());
+					safe.compute1(cursor.get(), rndAccess.get());
 					cursor.jumpFwd(stepSize);
 					ctr++;
 				}

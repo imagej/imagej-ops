@@ -30,32 +30,34 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractInplaceOp;
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of an {@link MapIterableInplace}
+ * Abstract base class for {@link MapInplace} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @param <A> type of values to be mapped
- * @param <I> {@link Iterable} of <A>s
+ * @author Curtis Rueden
+ * @param <EA> element type of inplace arguments
+ * @param <PA> producer of arguments
  */
-public abstract class AbstractMapInplace<A, I extends Iterable<A>> extends
-	AbstractInplaceOp<I> implements MapOp<A, A, InplaceOp<A>>
+public abstract class AbstractMapInplace<EA, PA> extends AbstractInplaceOp<PA>
+	implements MapInplace<EA, InplaceOp<EA>>
 {
 
 	@Parameter
-	private InplaceOp<A> op;
+	private InplaceOp<EA> op;
+
+	// -- MapOp methods --
 
 	@Override
-	public InplaceOp<A> getOp() {
+	public InplaceOp<EA> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final InplaceOp<A> op) {
+	public void setOp(final InplaceOp<EA> op) {
 		this.op = op;
 	}
 

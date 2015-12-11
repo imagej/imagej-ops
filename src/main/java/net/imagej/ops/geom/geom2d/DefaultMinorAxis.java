@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
@@ -46,24 +47,24 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.MinorAxis.class,
 	label = "Geometric (2D): Minor Axis")
-public class DefaultMinorAxis extends AbstractFunctionOp<Polygon, DoubleType>
+public class DefaultMinorAxis extends AbstractUnaryFunctionOp<Polygon, DoubleType>
 	implements Ops.Geometric.MinorAxis
 {
 
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<Polygon, Pair> minorMajorAxisFunc;
+	private UnaryFunctionOp<Polygon, Pair> minorMajorAxisFunc;
 
 	@Override
 	public void initialize() {
-		minorMajorAxisFunc = ops().function(DefaultMinorMajorAxis.class, Pair.class,
+		minorMajorAxisFunc = Functions.unary(ops(), DefaultMinorMajorAxis.class, Pair.class,
 			in());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		Polygon polygon = input;
-		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute(polygon);
+		Pair<DoubleType, DoubleType> compute = minorMajorAxisFunc.compute1(polygon);
 		return compute.getA();
 	}
 }

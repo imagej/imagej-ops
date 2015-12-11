@@ -33,8 +33,8 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -47,12 +47,12 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.BoundingBox.class)
-public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultBoundingBox extends AbstractUnaryFunctionOp<Polygon, Polygon>
 	implements Ops.Geometric.BoundingBox
 {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public Polygon compute1(final Polygon input) {
 		double min_x = Double.POSITIVE_INFINITY;
 		double max_x = Double.NEGATIVE_INFINITY;
 		double min_y = Double.POSITIVE_INFINITY;
@@ -73,7 +73,7 @@ public class DefaultBoundingBox extends AbstractFunctionOp<Polygon, Polygon>
 			}
 		}
 
-		final List<RealLocalizable> bounds = new ArrayList<RealLocalizable>();
+		final List<RealLocalizable> bounds = new ArrayList<>();
 
 		bounds.add(new RealPoint(min_x, min_y));
 		bounds.add(new RealPoint(min_x, max_y));

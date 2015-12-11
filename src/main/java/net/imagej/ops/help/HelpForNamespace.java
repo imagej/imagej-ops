@@ -57,7 +57,7 @@ public class HelpForNamespace extends AbstractHelp {
 	@Override
 	public void run() {
 		final Collection<OpInfo> allOps = ops().infos();
-		final List<OpInfo> requestedOps = new ArrayList<OpInfo>();
+		final List<OpInfo> requestedOps = new ArrayList<>();
 
 		for (final OpInfo info : allOps) {
 			if (info.isNamespace(namespace.getName())) {

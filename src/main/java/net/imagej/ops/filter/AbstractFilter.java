@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -51,9 +51,8 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>>
 	extends
-	AbstractFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryFunctionOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
-
 	/**
 	 * The kernel (psf)
 	 */

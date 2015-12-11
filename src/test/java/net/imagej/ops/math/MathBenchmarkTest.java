@@ -1,14 +1,20 @@
 
 package net.imagej.ops.math;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.scijava.plugin.Plugin;
+
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.benchmark.AbstractOpBenchmark;
 import net.imagej.ops.map.MapIterableIntervalToIterableInterval;
 import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
@@ -16,12 +22,6 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.FloatType;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.scijava.plugin.Plugin;
 
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 20)
 public class MathBenchmarkTest extends AbstractOpBenchmark {
@@ -46,11 +46,12 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 	@Rule
 	public TestRule benchmarkRun = new BenchmarkRule();
 
-	private ArrayImg<FloatType, ?> createConstantImg(long[] dims, float constant)
+	private ArrayImg<FloatType, ?> createConstantImg(long[] dims,
+		float constant)
 	{
 		// create an input
-		ArrayImg<FloatType, ?> img =
-			new ArrayImgFactory<FloatType>().create(dims, new FloatType());
+		ArrayImg<FloatType, ?> img = new ArrayImgFactory<FloatType>().create(dims,
+			new FloatType());
 
 		for (final FloatType value : img) {
 			value.setReal(constant);
@@ -68,9 +69,8 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 		img3 = createConstantImg(new long[] { x, y }, 3.0f);
 		imgzero = createConstantImg(new long[] { x, y }, 0.0f);
 
-		byteimg =
-			new ArrayImgFactory<ByteType>().create(new long[] { 20000, 20000 },
-				new ByteType());
+		byteimg = new ArrayImgFactory<ByteType>().create(new long[] { 20000,
+			20000 }, new ByteType());
 
 		float1 = new float[(int) size];
 		float2 = new float[(int) size];
@@ -94,17 +94,17 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void testDivideMap() {
-		ops.run(MapIterableIntervalToIterableInterval.class, img3, img2, ops
-			.create(Divide.class));
+		ops.run(MapIterableIntervalToIterableInterval.class, img3, img2, ops.create(
+			Divide.class));
 	}
 
 	@Plugin(type = Ops.Math.Divide.class)
 	public static class Divide<T extends RealType<T>> extends
-		AbstractComputerOp<T, T> implements Ops.Math.Divide
+		AbstractUnaryComputerOp<T, T> implements Ops.Math.Divide
 	{
 
 		@Override
-		public void compute(final T input, final T output) {
+		public void compute1(final T input, final T output) {
 
 			output.div(input);
 		}

@@ -30,9 +30,9 @@
 
 package net.imagej.ops.imagemoments;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <O> output type
  */
 public abstract class AbstractImageMomentOp<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractHybridOp<IterableInterval<I>, O> implements
+	extends AbstractUnaryHybridOp<IterableInterval<I>, O> implements
 	ImageMomentOp<IterableInterval<I>, O>, Contingent
 {
 

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.AbstractComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -40,7 +40,7 @@ import net.imglib2.type.numeric.RealType;
  * @author Martin Horn (University of Konstanz)
  */
 public abstract class RealTypeConverter<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<I, O>
+	extends AbstractUnaryComputerOp<I, O>
 {
 
 	/**

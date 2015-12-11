@@ -34,7 +34,6 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.Axis;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.threshold.ComputeThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
