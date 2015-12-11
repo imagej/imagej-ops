@@ -81,13 +81,13 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 		// (Note: ComputeEstimate can be overridden to achieve regularization)
 		ComputeEstimate();
 
-		// normalize for non-circulant deconvolution
+	/*	// normalize for non-circulant deconvolution
 		if (getNonCirculant()) {
 
 			ops().run(DivideHandleZero.class, getRAIExtendedEstimate(),
 				getRAIExtendedEstimate(), getNormalization());
 
-		}
+		}*/
 
 	}
 

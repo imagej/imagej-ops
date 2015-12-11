@@ -36,6 +36,7 @@ import org.scijava.plugin.Parameter;
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
+import net.imagej.ops.math.divide.DivideHandleZero;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalInterval;
@@ -204,7 +205,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 
 			// create image for the reblurred
 			reblurred = imgFactory.create(out(), outType.createVariable());
-
+			
 			// extend the output and use it as a buffer to store the estimate
 			raiExtendedEstimate = Views.interval(Views.extend(out(), getObfOutput()),
 				getImgConvolutionInterval());
@@ -224,6 +225,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				cIn.fwd();
 				c.get().setReal(cIn.get().getRealFloat());
 			}
+			
+			
 		}
 
 		// perform fft of input
@@ -256,7 +259,15 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 				status.showProgress(i, maxIterations);
 			}
 			performIteration();
+			
+			// normalize for non-circulant deconvolution
+			if (getNonCirculant()) {
 
+				ops().run(DivideHandleZero.class, getRAIExtendedEstimate(),
+					getRAIExtendedEstimate(), getNormalization());
+
+			}
+			
 			if (getAccelerate()) {
 				getAccelerator().Accelerate(getRAIExtendedEstimate());
 			}
