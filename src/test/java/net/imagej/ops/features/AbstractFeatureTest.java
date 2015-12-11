@@ -256,7 +256,7 @@ public class AbstractFeatureTest extends AbstractOpTest {
 				.convertFloat(new Opener().openImage(AbstractFeatureTest.class.getResource("cZgkFsK.png").getPath()));
 	}
 
-	protected LabelRegion<?> createLabelRegion2D() throws MalformedURLException, IOException {
+	protected static LabelRegion<String> createLabelRegion2D() throws MalformedURLException, IOException {
 		// read simple polygon image
 		BufferedImage read = ImageIO.read(AbstractFeatureTest.class.getResourceAsStream("cZgkFsK.png"));
 
