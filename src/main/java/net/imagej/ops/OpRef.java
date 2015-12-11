@@ -34,8 +34,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import net.imagej.ops.special.UnaryComputerOp;
-
 import org.scijava.util.MiscUtils;
 
 /**

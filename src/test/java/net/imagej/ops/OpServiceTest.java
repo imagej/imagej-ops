@@ -37,7 +37,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import net.imagej.ops.special.AbstractInplaceOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;

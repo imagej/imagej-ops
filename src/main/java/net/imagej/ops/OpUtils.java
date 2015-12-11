@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
-import net.imagej.ops.special.UnaryComputerOp;
 
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
