@@ -29,8 +29,8 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,7 +47,7 @@ import net.imglib2.type.numeric.real.DoubleType;
  *            output type
  */
 public abstract class AbstractTamuraFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractHybridOp<RandomAccessibleInterval<I>, O> implements TamuraFeature<I, O>, Contingent {
+		extends AbstractUnaryHybridOp<RandomAccessibleInterval<I>, O> implements TamuraFeature<I, O>, Contingent {
 
 	@SuppressWarnings("unchecked")
 	@Override

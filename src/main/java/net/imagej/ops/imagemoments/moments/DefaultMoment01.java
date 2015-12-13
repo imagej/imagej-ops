@@ -55,7 +55,7 @@ public class DefaultMoment01<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
+	public void compute1(final IterableInterval<I> input, final O output) {
 
 		double moment01 = 0;
 

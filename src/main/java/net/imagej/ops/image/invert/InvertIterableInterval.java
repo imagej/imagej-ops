@@ -30,9 +30,9 @@
 
 package net.imagej.ops.image.invert;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -44,31 +44,31 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL_PRIORITY + 1)
 public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
+	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
 	implements Ops.Image.Invert
 {
 
 	@Override
-	public void compute(final IterableInterval<I> input,
+	public void compute1(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
 		I inType = input.firstElement().createVariable();
-		ComputerOp<I, O> invert;
+		UnaryComputerOp<I, O> invert;
 		if (inType.getMinValue() < 0) {
-			invert = new SignedRealInvert<I, O>();
+			invert = new SignedRealInvert<>();
 		}
 		else {
-			invert = new UnsignedRealInvert<I, O>(inType.getMaxValue());
+			invert = new UnsignedRealInvert<>(inType.getMaxValue());
 		}
 		ops().map(output, input, invert);
 	}
 
 	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractComputerOp<II, OO>
+		extends AbstractUnaryComputerOp<II, OO>
 	{
 
 		@Override
-		public void compute(final II x, final OO output) {
+		public void compute1(final II x, final OO output) {
 			final double value = x.getRealDouble() * -1.0 - 1;
 			output.setReal(value);
 		}
@@ -76,7 +76,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 	}
 
 	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
-		extends AbstractComputerOp<II, OO>
+		extends AbstractUnaryComputerOp<II, OO>
 	{
 
 		private final double max;
@@ -89,7 +89,7 @@ public class InvertIterableInterval<I extends RealType<I>, O extends RealType<O>
 		}
 
 		@Override
-		public void compute(final II x, final OO output) {
+		public void compute1(final II x, final OO output) {
 			final double value = max - x.getRealDouble();
 			output.setReal(value);
 		}

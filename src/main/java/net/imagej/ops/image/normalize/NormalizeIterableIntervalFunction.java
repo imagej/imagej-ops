@@ -30,8 +30,8 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;
@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
-	AbstractFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
+	AbstractUnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Normalize
 {
 
@@ -69,10 +69,10 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 	private boolean isLazy = true;
 
 	@Override
-	public IterableInterval<T> compute(final IterableInterval<T> input) {
+	public IterableInterval<T> compute1(final IterableInterval<T> input) {
 		if (isLazy) {
-			return new ConvertedIterableInterval<T, T>(input,
-				new NormalizeRealTypeComputer<T>(ops(), sourceMin, sourceMax, targetMin,
+			return new ConvertedIterableInterval<>(input,
+				new NormalizeRealTypeComputer<>(ops(), sourceMin, sourceMax, targetMin,
 					targetMax, input), input.firstElement().createVariable());
 		}
 		final Img<T> output =

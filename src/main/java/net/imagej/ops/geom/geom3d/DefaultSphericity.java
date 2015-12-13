@@ -30,10 +30,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -46,20 +47,20 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Sphericity.class,
 	label = "Geometric (3D): Sphericity", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultSphericity extends AbstractFunctionOp<Mesh, DoubleType>
+public class DefaultSphericity extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 	implements Ops.Geometric.Sphericity
 {
 
-	private FunctionOp<Mesh, DoubleType> compactness;
+	private UnaryFunctionOp<Mesh, DoubleType> compactness;
 
 	@Override
 	public void initialize() {
-		compactness = ops().function(Ops.Geometric.Compactness.class, DoubleType.class, in());
+		compactness = Functions.unary(ops(), Ops.Geometric.Compactness.class, DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final Mesh input) {
-		return new DoubleType(Math.pow(compactness.compute(input).get(), (1 / 3d)));
+	public DoubleType compute1(final Mesh input) {
+		return new DoubleType(Math.pow(compactness.compute1(input).get(), (1 / 3d)));
 	}
 
 }

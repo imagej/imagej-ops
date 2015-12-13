@@ -35,7 +35,9 @@ import net.imagej.ops.Ops;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Logic.Bool.class)
-public class BooleanCondition extends AbstractCondition<Boolean> {
+public class BooleanCondition extends AbstractCondition<Boolean> implements
+	Ops.Logic.Bool
+{
 
 	@Override
 	public boolean isTrue(final Boolean val) {

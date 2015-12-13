@@ -52,7 +52,7 @@ public class Vertex extends Vector3D implements RealLocalizable {
 
 	private double distanceToFaceInFront = 0;
 	
-	private List<TriangularFacet> facesInFront = new ArrayList<TriangularFacet>();
+	private List<TriangularFacet> facesInFront = new ArrayList<>();
 	
 	public Vertex(final double x, final double y, final double z) {
 		super(x, y, z);
@@ -77,7 +77,7 @@ public class Vertex extends Vector3D implements RealLocalizable {
 	
 	public List<Vertex> getPointsInFront() {
 		Iterator<TriangularFacet> it = facesInFront.iterator();
-		List<Vertex> l = new ArrayList<Vertex>();
+		List<Vertex> l = new ArrayList<>();
 		while (it.hasNext()) {
 			l.addAll(it.next().getVerticesInFront());
 		}

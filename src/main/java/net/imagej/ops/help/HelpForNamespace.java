@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,11 +35,10 @@ import java.util.Collection;
 import java.util.List;
 
 import net.imagej.ops.Namespace;
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
 
 import org.scijava.Priority;
-import org.scijava.command.CommandInfo;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -53,18 +52,15 @@ import org.scijava.plugin.Plugin;
 public class HelpForNamespace extends AbstractHelp {
 
 	@Parameter
-	private OpService ops;
-
-	@Parameter
 	private Namespace namespace;
 
 	@Override
 	public void run() {
-		final Collection<CommandInfo> allOps = ops.infos();
-		final List<CommandInfo> requestedOps = new ArrayList<CommandInfo>();
+		final Collection<OpInfo> allOps = ops().infos();
+		final List<OpInfo> requestedOps = new ArrayList<>();
 
-		for (final CommandInfo info : allOps) {
-			if (info.getName().startsWith(namespace.getName() + ".")) {
+		for (final OpInfo info : allOps) {
+			if (info.isNamespace(namespace.getName())) {
 				requestedOps.add(info);
 			}
 		}

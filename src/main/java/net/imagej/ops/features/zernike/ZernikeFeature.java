@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.zernike;
 
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -45,6 +45,6 @@ import net.imglib2.type.numeric.RealType;
  *            Output Type
  *
  */
-public interface ZernikeFeature<I extends RealType<I>, O extends RealType<O>> extends HybridOp<IterableInterval<I>, O> {
+public interface ZernikeFeature<I extends RealType<I>, O extends RealType<O>> extends UnaryHybridOp<IterableInterval<I>, O> {
 	// NB: marker interface
 }

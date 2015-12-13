@@ -30,8 +30,8 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * An algorithm for applying a threshold value to an object.
@@ -39,7 +39,7 @@ import net.imagej.ops.Ops;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface ApplyThreshold<I, O> extends ComputerOp<I, O>,
+public interface ApplyThreshold<I, O> extends UnaryComputerOp<I, O>,
 	Ops.Threshold.Apply
 {
 	// NB: Marker interface.

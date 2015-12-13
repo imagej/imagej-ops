@@ -32,10 +32,10 @@ package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -44,8 +44,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link MapIterableToRAIParallel} and
- * {@link MapIterableToIterableParallel}) of the mappers. Assumption: Naive Implementation of
+ * Testing multi threaded implementation ({@link MapIterableIntervalToRAIParallel} and
+ * {@link MapIterableIntervalToIterableIntervalParallel}) of the mappers. Assumption: Naive Implementation of
  * {@link MapIterableIntervalToRAI} works fine.
  * 
  * @author Christian Dietz (University of Konstanz)
@@ -57,8 +57,8 @@ public class ThreadedMapTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 10, 10);
-		out = generateByteTestImg(false, 10, 10);
+		in = generateByteArrayTestImg(true, 10, 10);
+		out = generateByteArrayTestImg(false, 10, 10);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIRAIP() {
 
 		final Op functional =
-			ops.op(MapIterableToRAIParallel.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToRAIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -100,7 +100,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(MapIterableToIterableParallel.class, out, in, new AddOneFunctional());
+			ops.op(MapIterableIntervalToIterableIntervalParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -119,7 +119,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapParallel.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIterableIntervalInplaceParallel.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
@@ -133,17 +133,17 @@ public class ThreadedMapTest extends AbstractOpTest {
 	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public void compute(final ByteType arg) {
+		public void mutate(final ByteType arg) {
 			arg.inc();
 		}
 	}
 
 	private static class AddOneFunctional extends
-		AbstractComputerOp<ByteType, ByteType>
+		AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}

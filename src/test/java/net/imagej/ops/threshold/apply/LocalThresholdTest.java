@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -43,6 +43,8 @@ import net.imagej.ops.threshold.localMean.LocalMean;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
+import net.imagej.ops.threshold.localSauvola.LocalSauvola;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
@@ -75,7 +77,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Before
 	public void before() throws Exception {
-		in = generateByteTestImg(true, new long[] { 10, 10 });
+		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
 
 		out = in.factory().imgFactory(new BitType()).create(in, new BitType());
 	}
@@ -87,9 +89,8 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@Test
 	public void testOpMethods() {
 		final BitType out = new BitType();
-		final Pair<ByteType, Iterable<ByteType>> in =
-			new ValuePair<ByteType, Iterable<ByteType>>(new ByteType(), Arrays
-				.asList(new ByteType(), new ByteType()));
+		final Pair<ByteType, Iterable<ByteType>> in = new ValuePair<>(
+			new ByteType(), Arrays.asList(new ByteType(), new ByteType()));
 
 		ops.threshold().localBernsen(out, in, 1.0, Double.MAX_VALUE * 0.5);
 		ops.threshold().localContrast(out, in);
@@ -97,6 +98,10 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localMedian(out, in, 1.0);
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
+		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
+		ops.threshold().localPhansalkar(out, in);
+		ops.threshold().localSauvola(out, in, 0.5, 0.5);
+		ops.threshold().localSauvola(out, in);
 	}
 
 	/**
@@ -193,6 +198,38 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), true);
+	}
+
+	/**
+	 * @see LocalPhansalkar
+	 */
+	@Test
+	public void testLocalPhansalkar() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalPhansalkar.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
+	}
+
+	/**	 
+	 * @see LocalSauvola
+	 */
+	@Test
+	public void testLocalSauvola() {
+		ops.threshold().apply(
+			out,
+			in,
+			ops.op(LocalSauvola.class, BitType.class,
+				new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+
+		assertEquals(out.firstElement().get(), false);
 	}
 
 }

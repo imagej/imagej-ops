@@ -32,7 +32,7 @@ package net.imagej.ops.create.imgLabeling;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -78,7 +78,7 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
 
-		output = new ImgLabeling<L, T>(ops().create().img(dims, outType, fac));
+		output = new ImgLabeling<>(ops().create().img(dims, outType, fac));
 	}
 
 	@Override

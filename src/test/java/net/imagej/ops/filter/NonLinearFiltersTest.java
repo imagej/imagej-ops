@@ -73,7 +73,7 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 	Img<ByteType> out;
 	RectangleShape shape;
 	OutOfBoundsMirrorFactory<ByteType, Img<ByteType>> oobFactory =
-		new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE);
+		new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 
 	/**
 	 * Initialize images.
@@ -82,8 +82,8 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 	 */
 	@Before
 	public void before() throws Exception {
-		in = generateByteTestImg(true, new long[] { 10, 10 });
-		out = generateByteTestImg(false, new long[] { 10, 10 });
+		in = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		out = generateByteArrayTestImg(false, new long[] { 10, 10 });
 		shape = new RectangleShape(1, false);
 	}
 
@@ -132,7 +132,7 @@ public class NonLinearFiltersTest extends AbstractOpTest {
 	public void testMedianFilter() {
 		ops.run(MedianFilterOp.class, out, in, shape, oobFactory);
 
-		ArrayList<ByteType> items = new ArrayList<ByteType>();
+		ArrayList<ByteType> items = new ArrayList<>();
 		NeighborhoodsIterableInterval<ByteType> neighborhoods =
 			shape.neighborhoods(Views.interval(Views.extendMirrorSingle(in), in));
 		for (ByteType t : neighborhoods.firstElement()) {

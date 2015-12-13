@@ -33,14 +33,12 @@ package net.imagej.ops.copy;
 import java.util.List;
 import java.util.Set;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -52,24 +50,21 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Copy.LabelingMapping.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class CopyLabelingMapping<L> extends
-		AbstractHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
+		AbstractUnaryHybridOp<LabelingMapping<L>, LabelingMapping<L>> implements
 		Ops.Copy.LabelingMapping {
-
-	@Parameter
-	private OpService ops;
 
 	@Override
 	public LabelingMapping<L> createOutput(final LabelingMapping<L> input) {
-		return ops.create().labelingMapping(input.numSets());
+		return ops().create().labelingMapping(input.numSets());
 	}
 
 	@Override
-	public void compute(final LabelingMapping<L> input,
+	public void compute1(final LabelingMapping<L> input,
 			final LabelingMapping<L> output) {
 
-		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<L>(
+		final LabelingMappingSerializationAccess<L> access = new LabelingMappingSerializationAccess<>(
 				output);
-		access.setLabelSets(new LabelingMappingSerializationAccess<L>(input)
+		access.setLabelSets(new LabelingMappingSerializationAccess<>(input)
 				.getLabelSets());
 	}
 

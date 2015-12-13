@@ -29,12 +29,13 @@
  */
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
 import net.imagej.ops.features.haralick.helper.CoocStdX;
 import net.imagej.ops.features.haralick.helper.CoocStdY;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -54,30 +55,30 @@ public class DefaultCorrelation<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.Correlation {
 
 	// required functions
-	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
-	private FunctionOp<double[][], DoubleType> coocStdYFunc;
-	private FunctionOp<double[][], DoubleType> coocStdXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocStdYFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocStdXFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
-		coocStdXFunc = ops().function(CoocStdX.class, DoubleType.class, double[][].class);
-		coocStdYFunc = ops().function(CoocStdY.class, DoubleType.class, double[][].class);
+		coocMeanXFunc = Functions.unary(ops(), CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = Functions.unary(ops(), CoocMeanY.class, DoubleType.class, double[][].class);
+		coocStdXFunc = Functions.unary(ops(), CoocStdX.class, DoubleType.class, double[][].class);
+		coocStdYFunc = Functions.unary(ops(), CoocStdY.class, DoubleType.class, double[][].class);
 	}
 	
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final int nrGrayLevels = matrix.length;
 
-		final double meanx = coocMeanXFunc.compute(matrix).get();
-		final double meany = coocMeanYFunc.compute(matrix).get();
-		final double stdx = coocStdXFunc.compute(matrix).get();
-		final double stdy = coocStdYFunc.compute(matrix).get();
+		final double meanx = coocMeanXFunc.compute1(matrix).get();
+		final double meany = coocMeanYFunc.compute1(matrix).get();
+		final double stdx = coocStdXFunc.compute1(matrix).get();
+		final double stdy = coocStdYFunc.compute1(matrix).get();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

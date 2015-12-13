@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.util.Pair;
 
 /**
@@ -42,7 +42,7 @@ import net.imglib2.util.Pair;
  * @param <O> type of output
  */
 public interface CenterAwareComputerOp<I, O> extends
-	ComputerOp<Pair<I, Iterable<I>>, O>
+	UnaryComputerOp<Pair<I, Iterable<I>>, O>
 {
 	// NB: Marker interface.
 }

@@ -30,11 +30,11 @@
 
 package net.imagej.ops.imagemoments.centralmoments;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RTs;
+import net.imagej.ops.chain.RTs;
 import net.imagej.ops.imagemoments.AbstractImageMomentOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -53,7 +53,7 @@ public class DefaultCentralMoment00<I extends RealType<I>, O extends RealType<O>
 	extends AbstractImageMomentOp<I, O> implements Ops.ImageMoments.CentralMoment00
 {
 
-	private ComputerOp<IterableInterval<I>, O> moment00Cmp;
+	private UnaryComputerOp<IterableInterval<I>, O> moment00Cmp;
 
 	@Override
 	public void initialize() {
@@ -61,7 +61,7 @@ public class DefaultCentralMoment00<I extends RealType<I>, O extends RealType<O>
 	}
 
 	@Override
-	public void compute(final IterableInterval<I> input, final O output) {
-		moment00Cmp.compute(input, output);
+	public void compute1(final IterableInterval<I> input, final O output) {
+		moment00Cmp.compute1(input, output);
 	}
 }

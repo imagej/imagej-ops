@@ -30,10 +30,10 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RTs;
+import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -52,7 +52,7 @@ public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.StdDev
 {
 	
-	private FunctionOp<Iterable<I>, O> varianceFunc;
+	private UnaryFunctionOp<Iterable<I>, O> varianceFunc;
 
 	@Override
 	public void initialize() {
@@ -60,8 +60,8 @@ public class DefaultStandardDeviation<I extends RealType<I>, O extends RealType<
 	}
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
-		output.setReal(varianceFunc.compute(input).getRealDouble());
+	public void compute1(final Iterable<I> input, final O output) {
+		output.setReal(varianceFunc.compute1(input).getRealDouble());
 	}
 
 }

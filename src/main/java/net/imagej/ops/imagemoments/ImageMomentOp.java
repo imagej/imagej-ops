@@ -30,13 +30,13 @@
 
 package net.imagej.ops.imagemoments;
 
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * marker interface for image moment ops.
  *
  * @author Daniel Seebacher, University of Konstanz
  */
-public interface ImageMomentOp<I, O> extends HybridOp<I, O> {
+public interface ImageMomentOp<I, O> extends UnaryHybridOp<I, O> {
 	// NB: marker interface
 }

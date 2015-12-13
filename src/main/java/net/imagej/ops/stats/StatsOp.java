@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 
 /**
  * marker interface for statistic ops.
  *
  * @author Daniel Seebacher, University of Konstanz
  */
-public interface StatsOp<I, O> extends HybridOp<I, O> {
+public interface StatsOp<I, O> extends UnaryHybridOp<I, O> {
 	// NB: marker interface
 }

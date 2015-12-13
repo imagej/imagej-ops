@@ -2,28 +2,28 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of  University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that  following conditions are met:
+ * modification, are permitted provided that the following conditions are met:
  * 
- * 1. Redistributions of source code must retain  above copyright notice,
- *    this list of conditions and  following disclaimer.
- * 2. Redistributions in binary form must reproduce  above copyright notice,
- *    this list of conditions and  following disclaimer in  documentation
- *    and/or or materials provided with  distribution.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  * 
- * THIS SOFTWARE IS PROVIDED BY  COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL  COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY ORY OF LIABILITY, WHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR ORWISE)
- * ARISING IN ANY WAY OUT OF  USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
@@ -35,9 +35,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 
@@ -49,12 +49,12 @@ import org.scijava.plugin.Plugin;
  * @author Daniel Seebacher, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.ConvexHull.class)
-public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
+public class DefaultConvexHull2D extends AbstractUnaryFunctionOp<Polygon, Polygon>
 	implements GeometricOp<Polygon, Polygon>, Ops.Geometric.ConvexHull
 {
 
 	@Override
-	public Polygon compute(final Polygon input) {
+	public Polygon compute1(final Polygon input) {
 		// create a copy of points because se will get resorted, etc.
 		List<? extends RealLocalizable> RealPoints = new ArrayList<RealLocalizable>(input.getVertices());
 
@@ -79,8 +79,8 @@ public class DefaultConvexHull2D extends AbstractFunctionOp<Polygon, Polygon>
 		// Initialize U and L as empty lists.
 		// lists will hold vertices of upper and lower hulls
 		// respectively.
-		final List<RealLocalizable> U = new ArrayList<RealLocalizable>();
-		final List<RealLocalizable> L = new ArrayList<RealLocalizable>();
+		final List<RealLocalizable> U = new ArrayList<>();
+		final List<RealLocalizable> L = new ArrayList<>();
 		// build lower hull
 		for (final RealLocalizable p : RealPoints) {
 			// while L contains at least two RealPoints and sequence of last

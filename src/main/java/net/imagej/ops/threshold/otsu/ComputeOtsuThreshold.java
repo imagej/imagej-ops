@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Otsu.class)
 public class ComputeOtsuThreshold<T extends RealType<T>> extends
-	AbstractComputeThresholdHistogram<T>
+	AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Otsu
 {
 
 	@Override

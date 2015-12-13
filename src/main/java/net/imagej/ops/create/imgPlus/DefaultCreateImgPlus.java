@@ -35,7 +35,7 @@ import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.img.Img;
 
 import org.scijava.ItemIO;
@@ -66,10 +66,10 @@ public class DefaultCreateImgPlus<T> extends AbstractOp implements
 	public void run() {
 
 		if (metadata != null) {
-			output = new ImgPlus<T>(img, metadata);
+			output = new ImgPlus<>(img, metadata);
 		}
 		else {
-			output = new ImgPlus<T>(img);
+			output = new ImgPlus<>(img);
 		}
 
 	}

@@ -50,7 +50,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.IsoData.class)
 public class ComputeIsoDataThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.IsoData {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private String errMsg = null;

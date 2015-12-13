@@ -30,14 +30,41 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.ComputerOp;
+import java.util.ArrayList;
+
+import net.imagej.ops.join.DefaultJoinNComputers;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryOutputFactory;
 
 /**
- * Loops over an injected {@link ComputerOp}. A {@link LoopComputer} applies a
- * {@link ComputerOp} n-times to an input.
+ * Loops over an injected {@link UnaryComputerOp}. A {@link LoopComputer}
+ * applies a {@link UnaryComputerOp} n-times to an input.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopComputer<I> extends ComputerOp<I, I>, LoopOp<I> {
-	// NB: Marker interface
+public interface LoopComputer<I> extends UnaryComputerOp<I, I>,
+	LoopOp<UnaryComputerOp<I, I>>
+{
+
+	UnaryOutputFactory<I, I> getOutputFactory();
+
+	void setOutputFactory(UnaryOutputFactory<I, I> outputFactory);
+
+	// -- UnaryComputerOp methods --
+
+	@Override
+	default void compute1(final I input, final I output) {
+		final int n = getLoopCount();
+
+		final ArrayList<UnaryComputerOp<I, I>> ops = new ArrayList<>(n);
+		for (int i = 0; i < n; i++)
+			ops.add(getOp());
+
+		final DefaultJoinNComputers<I> joiner = new DefaultJoinNComputers<>();
+		joiner.setOps(ops);
+		joiner.setOutputFactory(getOutputFactory());
+
+		joiner.compute1(input, output);
+	}
+
 }

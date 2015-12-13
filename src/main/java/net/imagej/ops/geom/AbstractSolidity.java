@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -41,24 +42,24 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractSolidity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Solidity
+	AbstractUnaryFunctionOp<I, DoubleType> implements Ops.Geometric.Solidity
 {
 
-	private FunctionOp<I, DoubleType> volume;
+	private UnaryFunctionOp<I, DoubleType> volume;
 
-	private FunctionOp<I, DoubleType> convexHullVolume;
+	private UnaryFunctionOp<I, DoubleType> convexHullVolume;
 
 	@Override
 	public void initialize() {
-		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
-		convexHullVolume = ops().function(Ops.Geometric.SizeConvexHull.class,
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		convexHullVolume = Functions.unary(ops(), Ops.Geometric.SizeConvexHull.class,
 			DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(volume.compute(input).get() / convexHullVolume
-			.compute(input).get());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(volume.compute1(input).get() / convexHullVolume
+			.compute1(input).get());
 	}
 
 }

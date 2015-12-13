@@ -32,7 +32,7 @@ package net.imagej.ops.create.imgFactory;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -73,7 +73,7 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 
 		output =
 			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
-				? new ArrayImgFactory<T>() : new CellImgFactory<T>();
+				? new ArrayImgFactory<>() : new CellImgFactory<>();
 	}
 
 	@Override

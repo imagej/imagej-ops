@@ -30,9 +30,10 @@
 
 package net.imagej.ops.image.histogram;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;
@@ -47,26 +48,26 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Histogram.class)
 public class HistogramCreate<T extends RealType<T>> extends
-		AbstractFunctionOp<Iterable<T>, Histogram1d<T>> implements
+		AbstractUnaryFunctionOp<Iterable<T>, Histogram1d<T>> implements
 		Ops.Image.Histogram {
 
 	@Parameter(required = false)
 	private int numBins = 256;
 
-	private FunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+	private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class,
+		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class,
 				in() != null ? in() : Iterable.class);
 	}
 
 	@Override
-	public Histogram1d<T> compute(final Iterable<T> input) {
-		final Pair<T, T> res = minMaxFunc.compute(input);
+	public Histogram1d<T> compute1(final Iterable<T> input) {
+		final Pair<T, T> res = minMaxFunc.compute1(input);
 
-		final Histogram1d<T> histogram1d = new Histogram1d<T>(
+		final Histogram1d<T> histogram1d = new Histogram1d<>(
 				new Real1dBinMapper<T>(res.getA().getRealDouble(), res.getB()
 						.getRealDouble(), numBins, false));
 
