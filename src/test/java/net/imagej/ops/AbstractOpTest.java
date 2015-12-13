@@ -37,6 +37,7 @@ import net.imglib2.FinalInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
@@ -72,7 +73,8 @@ public abstract class AbstractOpTest {
 
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class, CacheService.class);
+		return new Context(OpService.class, OpMatchingService.class,
+			CacheService.class);
 	}
 
 	/** Sets up a SciJava context with {@link OpService}. */
@@ -100,7 +102,7 @@ public abstract class AbstractOpTest {
 		return seed = 3170425 * seed + 132102;
 	}
 
-	public Img<ByteType> generateByteTestImg(final boolean fill,
+	public ArrayImg<ByteType, ByteArray> generateByteArrayTestImg(final boolean fill,
 		final long... dims)
 	{
 		final byte[] array =
@@ -116,7 +118,7 @@ public abstract class AbstractOpTest {
 		return ArrayImgs.bytes(array, dims);
 	}
 
-	public Img<UnsignedByteType> generateUnsignedByteTestImg(final boolean fill,
+	public ArrayImg<UnsignedByteType, ByteArray> generateUnsignedByteArrayTestImg(final boolean fill,
 		final long... dims)
 	{
 		final byte[] array =
@@ -149,8 +151,8 @@ public abstract class AbstractOpTest {
 	}
 
 	public Img<UnsignedByteType>
-	generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
-		long tempSeed)
+		generateRandomlyFilledUnsignedByteTestImgWithSeed(final long[] dims,
+			long tempSeed)
 	{
 
 		Img<UnsignedByteType> img = ArrayImgs.unsignedBytes(dims);
@@ -165,6 +167,7 @@ public abstract class AbstractOpTest {
 	}
 
 	public static class NoOp extends AbstractOp {
+
 		@Override
 		public void run() {
 			// NB: No implementation needed.

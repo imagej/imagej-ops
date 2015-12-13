@@ -33,10 +33,10 @@ package net.imagej.ops.map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -59,9 +59,9 @@ public class MapTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 10, 10);
-		out = generateByteTestImg(false, 10, 10);
-		outDiffDims = generateByteTestImg(false, 10, 10, 15);
+		in = generateByteArrayTestImg(true, 10, 10);
+		out = generateByteArrayTestImg(false, 10, 10);
+		outDiffDims = generateByteArrayTestImg(false, 10, 10, 15);
 	}
 
 	@Test
@@ -176,12 +176,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapIterableIntervalToView() {
 
 		final Op functional =
-			ops.op(MapIterableIntervalToView.class, in, new AddOneFunctional(),
+			ops.op(MapViewIterableIntervalToIterableInterval.class, in, new AddOneFunctional(),
 				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final IterableInterval<ByteType> o =
-			(IterableInterval<ByteType>) ((MapIterableIntervalToView) functional)
+			(IterableInterval<ByteType>) ((MapViewIterableIntervalToIterableInterval) functional)
 				.out();
 
 		final RandomAccess<ByteType> inputRA = in.randomAccess();
@@ -215,12 +215,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapConvertRAIToRAI() {
 
 		final Op functional =
-			ops.op(MapConvertRAIToRAI.class, in, new AddOneFunctional(),
+			ops.op(MapViewRAIToRAI.class, in, new AddOneFunctional(),
 				new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessibleInterval<ByteType> output =
-			(RandomAccessibleInterval<ByteType>) ((MapConvertRAIToRAI) functional)
+			(RandomAccessibleInterval<ByteType>) ((MapViewRAIToRAI) functional)
 				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();
@@ -237,12 +237,12 @@ public class MapTest extends AbstractOpTest {
 	public void testMapConvertRandomAccessToRandomAccess() {
 
 		final Op functional =
-			ops.op(MapConvertRandomAccessToRandomAccess.class, in,
+			ops.op(MapViewRandomAccessToRandomAccess.class, in,
 				new AddOneFunctional(), new ByteType());
 		functional.run();
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		final RandomAccessible<ByteType> output =
-			(RandomAccessible<ByteType>) ((MapConvertRandomAccessToRandomAccess) functional)
+			(RandomAccessible<ByteType>) ((MapViewRandomAccessToRandomAccess) functional)
 				.out();
 
 		final Cursor<ByteType> inputC = in.cursor();
@@ -259,17 +259,17 @@ public class MapTest extends AbstractOpTest {
 	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public void compute(final ByteType arg) {
+		public void mutate(final ByteType arg) {
 			arg.inc();
 		}
 	}
 
 	private static class AddOneFunctional extends
-		AbstractComputerOp<ByteType, ByteType>
+		AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}

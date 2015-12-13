@@ -30,6 +30,7 @@
 
 package net.imagej.ops;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,6 +54,32 @@ public final class OpUtils {
 	}
 
 	// -- Utility methods --
+
+	public static Object run(final Module module) {
+		module.run();
+		return result(module);
+	}
+
+	public static Object result(final Module module) {
+		final List<Object> outputs = new ArrayList<>();
+		for (final ModuleItem<?> output : module.getInfo().outputs()) {
+			final Object value = output.getValue(module);
+			outputs.add(value);
+		}
+		return outputs.size() == 1 ? outputs.get(0) : outputs;
+	}
+
+	public static Object[] args(final Object[] latter, final Object... former) {
+		final Object[] result = new Object[former.length + latter.length];
+		int i = 0;
+		for (final Object o : former) {
+			result[i++] = o;
+		}
+		for (final Object o : latter) {
+			result[i++] = o;
+		}
+		return result;
+	}
 
 	/** Gets the namespace portion of the given op name. */
 	public static String getNamespace(final String opName) {
@@ -81,7 +108,7 @@ public final class OpUtils {
 	public static <OP extends Op> OP unwrap(final Module module,
 		final OpRef<OP> ref)
 	{
-		return unwrap(module, ref.getType(), ref.getTypes());
+		return unwrap(module, ref.getType(), ref.getExtraTypes());
 	}
 
 	/**
@@ -90,7 +117,7 @@ public final class OpUtils {
 	 * 
 	 * @param module The module to unwrap.
 	 * @param type The expected type of {@link Op}.
-	 * @param types Other required types for the op (e.g., {@link ComputerOp}).
+	 * @param types Other required types for the op.
 	 * @return The unwrapped {@link Op}.
 	 * @throws IllegalStateException if the op does not conform to the expected
 	 *           types.

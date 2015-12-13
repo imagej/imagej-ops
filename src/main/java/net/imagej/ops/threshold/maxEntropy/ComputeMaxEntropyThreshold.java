@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.MaxEntropy.class)
 public class ComputeMaxEntropyThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MaxEntropy {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

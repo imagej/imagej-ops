@@ -30,14 +30,14 @@
 
 package net.imagej.ops.filter.max;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * A typed "max" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MaxFilterOp<I> extends Ops.Filter.Max, ComputerOp<I, I> {
+public interface MaxFilterOp<I> extends Ops.Filter.Max, UnaryComputerOp<I, I> {
 	// NB: Marker interface.
 }

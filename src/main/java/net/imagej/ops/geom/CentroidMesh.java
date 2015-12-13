@@ -30,12 +30,13 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,20 +52,20 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.Centroid.class, label = "Geometric: Centroid")
-public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
+public class CentroidMesh extends AbstractUnaryFunctionOp<Mesh, RealLocalizable>
 		implements
 			Ops.Geometric.Centroid,
 			Contingent {
 
-	private FunctionOp<Mesh, DoubleType> sizeFunc;
+	private UnaryFunctionOp<Mesh, DoubleType> sizeFunc;
 
 	@Override
 	public void initialize() {
-		sizeFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		sizeFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override
-	public RealLocalizable compute(final Mesh input) {
+	public RealLocalizable compute1(final Mesh input) {
 
 		double c_x = 0;
 		double c_y = 0;
@@ -87,7 +88,7 @@ public class CentroidMesh extends AbstractFunctionOp<Mesh, RealLocalizable>
 					+ Math.pow((c.getZ() + a.getZ()), 2));
 		}
 
-		double d = 1 / (2 * sizeFunc.compute(input).get());
+		double d = 1 / (2 * sizeFunc.compute1(input).get());
 		c_x *= d;
 		c_y *= d;
 		c_z *= d;

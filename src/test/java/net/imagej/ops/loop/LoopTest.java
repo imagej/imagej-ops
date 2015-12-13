@@ -30,12 +30,12 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.AbstractInplaceOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
+import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -60,8 +60,8 @@ public class LoopTest extends AbstractOpTest {
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
-		in = generateByteTestImg(false, dims);
-		out = generateByteTestImg(false, dims);
+		in = generateByteArrayTestImg(false, dims);
+		out = generateByteArrayTestImg(false, dims);
 		numIterations = 10;
 		functionalOp = ops.op(MapOp.class, out, in, new AddOneFunctional());
 		inplaceOp = ops.op(MapOp.class, in, new AddOneInplace());
@@ -108,15 +108,15 @@ public class LoopTest extends AbstractOpTest {
 	class AddOneInplace extends AbstractInplaceOp<ByteType> {
 
 		@Override
-		public void compute(final ByteType arg) {
+		public void mutate(final ByteType arg) {
 			arg.inc();
 		}
 	}
 
-	class AddOneFunctional extends AbstractComputerOp<ByteType, ByteType> {
+	class AddOneFunctional extends AbstractUnaryComputerOp<ByteType, ByteType> {
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set(input);
 			output.inc();
 		}

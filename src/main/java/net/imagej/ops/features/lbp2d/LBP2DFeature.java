@@ -32,8 +32,8 @@ package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
 
-import net.imagej.ops.HybridOp;
 import net.imagej.ops.Ops.LBP.LBP2D;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
@@ -46,7 +46,7 @@ import net.imglib2.type.numeric.integer.LongType;
  * @param <O> type of output value
  */
 public interface LBP2DFeature<I extends RealType<I>> extends
-	HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
+	UnaryHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>, LBP2D
 {
 	// NB: marker interface
 }

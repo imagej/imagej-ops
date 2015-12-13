@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 
 /**
  * Abstract superclass for forward fft implementations.
@@ -38,7 +38,7 @@ import net.imagej.ops.AbstractHybridOp;
  * @author Brian Northan
  */
 public abstract class AbstractFFTIterable<C, T, I extends Iterable<C>, O extends Iterable<T>>
-	extends AbstractHybridOp<I, O>
+	extends AbstractUnaryHybridOp<I, O>
 {
 
 }

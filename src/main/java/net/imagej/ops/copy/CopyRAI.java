@@ -30,13 +30,14 @@
 
 package net.imagej.ops.copy;
 
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RAIs;
+import net.imagej.ops.chain.RAIs;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.util.Intervals;
@@ -54,22 +55,22 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Copy.RAI, Contingent
 {
 
 	@Parameter
 	protected OpService ops;
 
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> mapComputer;
 
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> createFunc;
 
 	@Override
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return createFunc.compute(input);
+		return createFunc.compute1(input);
 	}
 
 	@Override
@@ -77,17 +78,17 @@ public class CopyRAI<T> extends
 		final Class<?> outTypeClass =
 			out() == null ? Type.class : Util.getTypeFromInterval(out()).getClass();
 		final T inType = Util.getTypeFromInterval(in());
-		final ComputerOp<T, ?> typeComputer =
-			ops.computer(Ops.Copy.Type.class, outTypeClass, inType);
+		final UnaryComputerOp<T, ?> typeComputer =
+			Computers.unary(ops, Ops.Copy.Type.class, outTypeClass, inType);
 		mapComputer = RAIs.computer(ops(), Ops.Map.class, in(), typeComputer);
 		createFunc = RAIs.function(ops(), Ops.Create.Img.class, in(), inType);
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
-		mapComputer.compute(input, output);
+		mapComputer.compute1(input, output);
 	}
 
 	@Override

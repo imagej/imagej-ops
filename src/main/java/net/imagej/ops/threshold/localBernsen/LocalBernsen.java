@@ -30,8 +30,9 @@
 
 package net.imagej.ops.threshold.localBernsen;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;
@@ -60,18 +61,18 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Parameter
 	private double halfMaxValue;
 
-	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();
 		final double midGrey = (maxValue + minValue) / 2.0;

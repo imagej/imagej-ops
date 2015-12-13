@@ -30,8 +30,8 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
@@ -53,7 +53,7 @@ public final class NumericTypeBinaryMath {
 	/** Op that $op.verbs two NumericType values. */
 	@Plugin(type = ${iface}.class)
 	public static class $op.name<T extends NumericType<T>>
-		extends AbstractHybridOp<T, T> implements $iface
+		extends AbstractUnaryHybridOp<T, T> implements $iface
 	{
 
 		@Parameter
@@ -65,7 +65,7 @@ public final class NumericTypeBinaryMath {
 		}
 
 		@Override
-		public void compute(final T input, final T output) {
+		public void compute1(final T input, final T output) {
 			if(output== b)
 			{
 				output.$!{op.function}(input);

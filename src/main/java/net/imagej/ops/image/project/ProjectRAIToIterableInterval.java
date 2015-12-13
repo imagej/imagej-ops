@@ -32,10 +32,10 @@ package net.imagej.ops.image.project;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -47,19 +47,19 @@ import org.scijava.plugin.Plugin;
 
 @Plugin(type = Ops.Image.Project.class, priority = Priority.LOW_PRIORITY)
 public class ProjectRAIToIterableInterval<T, V> extends
-	AbstractComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<V>>
 	implements Contingent, Ops.Image.Project
 {
 
 	@Parameter
-	private ComputerOp<Iterable<T>, V> method;
+	private UnaryComputerOp<Iterable<T>, V> method;
 
 	// dimension which will be projected
 	@Parameter
 	private int dim;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final IterableInterval<V> output)
 	{
 		final Cursor<V> cursor = output.localizingCursor();
@@ -73,7 +73,7 @@ public class ProjectRAIToIterableInterval<T, V> extends
 				}
 			}
 
-			method.compute(new DimensionIterable(input.dimension(dim), access),
+			method.compute1(new DimensionIterable(input.dimension(dim), access),
 				cursor.get());
 		}
 	}

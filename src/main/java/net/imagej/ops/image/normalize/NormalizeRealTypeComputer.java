@@ -30,21 +30,21 @@
 
 package net.imagej.ops.image.normalize;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.Converter;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
 /**
- * Simple {@link ComputerOp} and {@link Converter} to perform a normalization.
+ * Simple {@link UnaryComputerOp} and {@link Converter} to perform a normalization.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 class NormalizeRealTypeComputer<T extends RealType<T>> extends
-	AbstractComputerOp<T, T> implements Converter<T, T>
+	AbstractUnaryComputerOp<T, T> implements Converter<T, T>
 {
 
 	private double targetMin, targetMax, sourceMin, factor;
@@ -93,7 +93,7 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 	}
 
 	@Override
-	public void compute(final T input, final T output) {
+	public void compute1(final T input, final T output) {
 
 		final double res = (input.getRealDouble() - sourceMin) * factor + targetMin;
 
@@ -110,6 +110,6 @@ class NormalizeRealTypeComputer<T extends RealType<T>> extends
 
 	@Override
 	public void convert(T input, T output) {
-		compute(input, output);
+		compute1(input, output);
 	}
 }

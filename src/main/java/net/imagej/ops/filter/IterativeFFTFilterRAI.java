@@ -234,7 +234,7 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 		createReblurred();
 
 		if (getAccelerate()) {
-			accelerator = new VectorAccelerator<O>(this.getImgFactory());
+			accelerator = new VectorAccelerator<>(this.getImgFactory());
 		}
 
 	}

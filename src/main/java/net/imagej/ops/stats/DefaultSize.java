@@ -50,7 +50,7 @@ public class DefaultSize<I extends RealType<I>, O extends RealType<O>> extends
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double size = 0;
 
 		for (@SuppressWarnings("unused") final I i : input) {

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,14 +30,10 @@
 
 package net.imagej.ops.filter.dog;
 
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-import org.scijava.thread.ThreadService;
-
-import net.imagej.ops.AbstractHybridOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -47,6 +43,9 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
+
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  * Low-level difference of Gaussians (DoG) implementation which leans on other
@@ -58,24 +57,21 @@ import net.imglib2.view.Views;
  */
 @Plugin(type = Ops.Filter.DoG.class)
 public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.DoG
 {
 
 	@Parameter
-	private ThreadService ts;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
 
 	@Parameter
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1;
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2;
 
 	@Parameter
-	private ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator;
 
 	@Parameter
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator;
-
-	@Parameter
-	private FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
@@ -84,19 +80,19 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 	public RandomAccessibleInterval<T> createOutput(
 		final RandomAccessibleInterval<T> input)
 	{
-		return outputCreator.compute(input);
+		return outputCreator.compute1(input);
 	}
 
 	@Override
 	public void initialize() {
 		if (fac == null) {
-			fac = new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+			fac = new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 		}
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		// input may potentially be translated
@@ -104,10 +100,10 @@ public class DefaultDoG<T extends NumericType<T> & NativeType<T>> extends
 		input.min(translation);
 
 		final IntervalView<T> tmpInterval = Views.interval(Views.translate(
-			(RandomAccessible<T>) tmpCreator.compute(input), translation), output);
+			(RandomAccessible<T>) tmpCreator.compute1(input), translation), output);
 
-		gauss1.compute(input, tmpInterval);
-		gauss2.compute(input, output);
+		gauss1.compute1(input, tmpInterval);
+		gauss2.compute1(input, output);
 
 		// TODO: Match the Subtract Op in initialize() once we have BinaryOp
 		ops().run(Ops.Math.Subtract.class, output, output, tmpInterval);

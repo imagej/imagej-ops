@@ -30,11 +30,11 @@
 
 package net.imagej.ops.threshold.localPhansalkar;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.Mean;
 import net.imagej.ops.Ops.Stats.StdDev;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -77,26 +77,26 @@ public class LocalPhansalkar<T extends RealType<T>> extends LocalThresholdMethod
 	private double r = 0.5;
 
 	// FIXME: Faster calculation of mean and std-dev
-	private ComputerOp<Iterable<T>, DoubleType> mean;
-	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
+	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	private double p = 2.0;
 	private double q = 10.0;
 
 	@Override
 	public void initialize() {
-		mean = ops().computer(Mean.class, DoubleType.class, in().getB());
-		stdDeviation = ops().computer(StdDev.class, DoubleType.class, in().getB());
+		mean = Computers.unary(ops(), Mean.class, DoubleType.class, in().getB());
+		stdDeviation = Computers.unary(ops(), StdDev.class, DoubleType.class, in().getB());
 	}
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
 
 		final DoubleType meanValue = new DoubleType();
-		mean.compute(input.getB(), meanValue);
+		mean.compute1(input.getB(), meanValue);
 
 		final DoubleType stdDevValue = new DoubleType();
-		stdDeviation.compute(input.getB(), stdDevValue);
+		stdDeviation.compute1(input.getB(), stdDevValue);
 
 		double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue.get()) + k * ((stdDevValue.get()/r) - 1.0));
 		

@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,9 +30,10 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
@@ -49,24 +50,24 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractComputerOp<Iterable<T>, Iterable<BitType>> implements
+	AbstractUnaryComputerOp<Iterable<T>, Iterable<BitType>> implements
 	Ops.Threshold.Apply
 {
 
 	@Parameter
 	private T threshold;
-	private ComputerOp<T, BitType> applyThreshold;
+	private UnaryComputerOp<T, BitType> applyThreshold;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		applyThreshold = (ComputerOp<T, BitType>) ops().computer(
+		applyThreshold = (UnaryComputerOp<T, BitType>) Computers.unary(ops(),
 			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
 			threshold);
 	}
 
 	@Override
-	public void compute(final Iterable<T> input, final Iterable<BitType> output) {
+	public void compute1(final Iterable<T> input, final Iterable<BitType> output) {
 		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
 		ops().map(output, input, applyThreshold);
 	}

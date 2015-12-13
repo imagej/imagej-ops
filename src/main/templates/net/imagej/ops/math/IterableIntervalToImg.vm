@@ -30,9 +30,9 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -60,7 +60,7 @@ public final class IterableIntervalToImg {
 	
 		@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 		public static class ${op.name}<T extends NumericType<T>> extends
-			AbstractHybridOp<Img<T>, Img<T>> implements $iface, Contingent
+			AbstractUnaryHybridOp<Img<T>, Img<T>> implements $iface, Contingent
 		{
 
 			// TODO: extend common abstract base class which implements Contingent
@@ -84,7 +84,7 @@ public final class IterableIntervalToImg {
 			}
 
 			@Override
-			public void compute(final Img<T> input, final Img<T> output) {
+			public void compute1(final Img<T> input, final Img<T> output) {
 				final Cursor<T> cursor = ii.localizingCursor();
 				final RandomAccess<T> iRA = input.randomAccess();
 				final RandomAccess<T> oRA = output.randomAccess();

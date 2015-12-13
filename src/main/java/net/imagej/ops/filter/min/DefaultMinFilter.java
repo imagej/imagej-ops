@@ -30,9 +30,9 @@
 
 package net.imagej.ops.filter.min;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -53,10 +53,10 @@ public class DefaultMinFilter<T extends RealType<T>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
+	protected UnaryComputerOp<Iterable<T>, T> getComputer(Class<?> inClass,
 		Class<?> outClass)
 	{
-		return (ComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Min.class,
+		return (UnaryComputerOp<Iterable<T>, T>) ops().op(Ops.Stats.Min.class,
 			outClass, Iterable.class);
 	}
 

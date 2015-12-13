@@ -29,9 +29,9 @@
  */
 package net.imagej.ops.geom.geom3d.mesh;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -47,13 +47,13 @@ import org.scijava.plugin.Plugin;
 	priority = Priority.VERY_HIGH_PRIORITY-1)
 public class DefaultVolume
 		extends
-			AbstractFunctionOp<Mesh, DoubleType>
+			AbstractUnaryFunctionOp<Mesh, DoubleType>
 		implements
 			Ops.Geometric.Size,
 			Contingent {
 
 	@Override
-	public DoubleType compute(final Mesh input) {
+	public DoubleType compute1(final Mesh input) {
 		double volume = 0;
 		for (Facet f : input.getFacets()) {
 			TriangularFacet tf = (TriangularFacet) f;

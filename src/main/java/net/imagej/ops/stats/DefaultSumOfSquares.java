@@ -50,7 +50,7 @@ public class DefaultSumOfSquares<I extends RealType<I>, O extends RealType<O>>
 {
 
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		double res = 0.0;
 		for (final I in : input) {
 			final double tmp = in.getRealDouble();

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.identity;
 
-import net.imagej.ops.InplaceOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.InplaceOp;
 
 /**
  * A typed "identity" function.

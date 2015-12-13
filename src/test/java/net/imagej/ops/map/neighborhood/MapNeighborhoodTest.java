@@ -34,9 +34,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -58,8 +58,8 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateByteTestImg(true, 11, 10);
-		out = generateByteTestImg(false, 11, 10);
+		in = generateByteArrayTestImg(true, 11, 10);
+		out = generateByteArrayTestImg(false, 11, 10);
 	}
 
 	/**
@@ -121,11 +121,11 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	 * @author Jonathan Hale
 	 */
 	private static class CountNeighbors extends
-		AbstractComputerOp<Iterable<ByteType>, ByteType>
+		AbstractUnaryComputerOp<Iterable<ByteType>, ByteType>
 	{
 
 		@Override
-		public void compute(final Iterable<ByteType> input, final ByteType output) {
+		public void compute1(final Iterable<ByteType> input, final ByteType output) {
 			for (Iterator<ByteType> iter = input.iterator(); iter.hasNext(); iter
 				.next())
 			{
@@ -145,7 +145,7 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute(final Pair<ByteType, Iterable<ByteType>> input,
+		public void compute1(final Pair<ByteType, Iterable<ByteType>> input,
 			final ByteType output)
 		{
 			ByteType a = input.getA();
@@ -168,11 +168,11 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	 *
 	 * @author Jonathan Hale
 	 */
-	private static class Increment extends AbstractComputerOp<ByteType, ByteType>
+	private static class Increment extends AbstractUnaryComputerOp<ByteType, ByteType>
 	{
 
 		@Override
-		public void compute(final ByteType input, final ByteType output) {
+		public void compute1(final ByteType input, final ByteType output) {
 			output.set((byte) (input.get() + 1));
 		}
 	}

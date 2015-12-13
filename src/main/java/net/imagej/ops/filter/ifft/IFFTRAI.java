@@ -33,8 +33,8 @@ package net.imagej.ops.filter.ifft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.type.numeric.ComplexType;
@@ -52,12 +52,12 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.IFFT.class)
 public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
 	extends
-	AbstractComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
 	implements Ops.Filter.IFFT
 {
 
 	@Override
-	public void compute(final RandomAccessibleInterval<C> input,
+	public void compute1(final RandomAccessibleInterval<C> input,
 		final RandomAccessibleInterval<T> output)
 	{
 		// TODO: proper use of Executor service

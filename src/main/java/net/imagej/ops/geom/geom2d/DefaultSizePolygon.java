@@ -32,9 +32,12 @@ package net.imagej.ops.geom.geom2d;
 
 import java.awt.geom.Area;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+<<<<<<< HEAD
 import net.imagej.ops.Ops.Geometric;
+=======
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+>>>>>>> imagej/master
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -47,15 +50,21 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Daniel Seebacher, University of Konstanz.
  */
+<<<<<<< HEAD
 @Plugin(type = Geometric.Size.class, label = "Geometric (2D): Size",
 	priority = Priority.VERY_HIGH_PRIORITY + 1)
 
 public class DefaultSizePolygon extends AbstractFunctionOp<Polygon, DoubleType>
+=======
+@Plugin(type = Ops.Geometric.Size.class, label = "Geometric (2D): Size",
+	priority = Priority.VERY_HIGH_PRIORITY - 1)
+public class DefaultSizePolygon extends AbstractUnaryFunctionOp<Polygon, DoubleType>
+>>>>>>> imagej/master
 	implements Ops.Geometric.Size
 {
 
 	@Override
-	public DoubleType compute(final Polygon input) {
+	public DoubleType compute1(final Polygon input) {
 		double sum = 0;
 		for (int i = 0; i < input.getVertices().size(); i++) {
 

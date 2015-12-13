@@ -30,9 +30,10 @@
 
 package net.imagej.ops.features.haralick;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -50,28 +51,28 @@ public class DefaultSumVariance<T extends RealType<T>> extends
 	AbstractHaralickFeature<T>implements Ops.Haralick.SumVariance
 {
 
-	private FunctionOp<double[][], double[]> coocPXPlusYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXPlusYFunc;
 	@SuppressWarnings("rawtypes")
-	private FunctionOp<IterableInterval<T>, RealType> sumAverageFunc;
+	private UnaryFunctionOp<IterableInterval<T>, RealType> sumAverageFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXPlusYFunc = ops().function(CoocPXPlusY.class, double[].class,
+		coocPXPlusYFunc = Functions.unary(ops(), CoocPXPlusY.class, double[].class,
 			double[][].class);
-		sumAverageFunc = ops().function(Ops.Haralick.SumAverage.class, RealType.class, in(),
+		sumAverageFunc = Functions.unary(ops(), Ops.Haralick.SumAverage.class, RealType.class, in(),
 			numGreyLevels, distance, orientation);
 	}
 
 	@Override
-	public void compute(final IterableInterval<T> input,
+	public void compute1(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxplusy = coocPXPlusYFunc.compute(matrix);
+		final double[] pxplusy = coocPXPlusYFunc.compute1(matrix);
 		final int nrGrayLevels = matrix.length;
-		final double average = sumAverageFunc.compute(input).getRealDouble();
+		final double average = sumAverageFunc.compute1(input).getRealDouble();
 
 		double res = 0;
 		for (int i = 2; i <= 2 * nrGrayLevels; i++) {

@@ -41,6 +41,7 @@ import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.InstantiableException;
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.module.Module;
 import org.scijava.plugin.Attr;
@@ -230,10 +231,13 @@ public class OpServiceTest extends AbstractOpTest {
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
-	public static class InfinityOp extends AbstractInplaceOp<DoubleType> {
+	public static class InfinityOp extends AbstractOp {
+
+		@Parameter(type = ItemIO.BOTH)
+		private DoubleType arg;
 
 		@Override
-		public void compute(final DoubleType arg) {
+		public void run() {
 			arg.set(Double.POSITIVE_INFINITY);
 		}
 	}

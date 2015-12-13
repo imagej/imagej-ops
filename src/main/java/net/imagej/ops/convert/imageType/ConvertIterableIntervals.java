@@ -30,9 +30,9 @@
 
 package net.imagej.ops.convert.imageType;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.RealTypeConverter;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -44,7 +44,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Convert.ImageType.class)
 public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractComputerOp<IterableInterval<I>, IterableInterval<O>>
+	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
 	implements Ops.Convert.ImageType
 {
 
@@ -52,7 +52,7 @@ public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<
 	private RealTypeConverter<I, O> pixConvert;
 
 	@Override
-	public void compute(final IterableInterval<I> input,
+	public void compute1(final IterableInterval<I> input,
 		final IterableInterval<O> output)
 	{
 		pixConvert.checkInput(input.firstElement().createVariable(), output

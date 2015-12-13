@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -40,7 +40,7 @@ import net.imglib2.view.Views;
 import org.scijava.plugin.Parameter;
 
 public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
-	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter
@@ -50,7 +50,7 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	private OutOfBoundsFactory<I, RandomAccessibleInterval<I>> outOfBoundsFactory;
 
 	@Override
-	public void compute(RandomAccessibleInterval<I> input,
+	public void compute1(RandomAccessibleInterval<I> input,
 		RandomAccessibleInterval<O> output)
 	{
 		// optionally extend input if outOfBoundsFactory is set
@@ -93,7 +93,7 @@ public abstract class AbstractNeighborhoodBasedFilter<I, O> extends
 	 *          {@link RandomAccessibleInterval}
 	 * @return the Computer to map to all neighborhoods of input to output.
 	 */
-	protected abstract ComputerOp<Iterable<I>, O> getComputer(final Class<?> inClass,
+	protected abstract UnaryComputerOp<Iterable<I>, O> getComputer(final Class<?> inClass,
 		final Class<?> outClass);
 
 }

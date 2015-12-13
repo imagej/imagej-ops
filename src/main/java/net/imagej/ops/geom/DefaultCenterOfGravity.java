@@ -30,17 +30,17 @@
 
 package net.imagej.ops.geom;
 
-import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * This {@link Op} computes the center of gravity of a {@link IterableRegion}
@@ -50,12 +50,12 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = Ops.Geometric.CenterOfGravity.class)
 public class DefaultCenterOfGravity<T extends RealType<T>> extends
-	AbstractFunctionOp<IterableInterval<T>, RealLocalizable> implements
+	AbstractUnaryFunctionOp<IterableInterval<T>, RealLocalizable> implements
 	Ops.Geometric.CenterOfGravity
 {
 
 	@Override
-	public RealLocalizable compute(final IterableInterval<T> input) {
+	public RealLocalizable compute1(final IterableInterval<T> input) {
 		final int numDimensions = input.numDimensions();
 
 		final double[] output = new double[numDimensions];

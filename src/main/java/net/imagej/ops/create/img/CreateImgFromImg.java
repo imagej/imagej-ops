@@ -30,8 +30,8 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
@@ -49,11 +49,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, priority = Priority.VERY_HIGH_PRIORITY)
 public class CreateImgFromImg<T extends NativeType<T>> extends
-	AbstractFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
+	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
 
 	@Override
-	public Img<T> compute(final Img<T> input) {
+	public Img<T> compute1(final Img<T> input) {
 		return ops().create().img(input,
 			input.firstElement().createVariable(), input.factory());
 	}

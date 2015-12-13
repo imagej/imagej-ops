@@ -30,9 +30,9 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 import net.imglib2.util.ValuePair;
@@ -48,11 +48,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Stats.MinMax.class, label = "Statistics: MinMax")
 public class DefaultMinMax<I extends RealType<I>> extends
-	AbstractFunctionOp<Iterable<I>, Pair<I, I>>implements Ops.Stats.MinMax
+	AbstractUnaryFunctionOp<Iterable<I>, Pair<I, I>>implements Ops.Stats.MinMax
 {
 
 	@Override
-	public Pair<I, I> compute(final Iterable<I> input) {
+	public Pair<I, I> compute1(final Iterable<I> input) {
 		double tmpMin = Double.MAX_VALUE;
 		double tmpMax = Double.MIN_VALUE;
 
@@ -74,7 +74,7 @@ public class DefaultMinMax<I extends RealType<I>> extends
 		final I max = input.iterator().next().createVariable();
 		max.setReal(tmpMax);
 
-		return new ValuePair<I, I>(min, max);
+		return new ValuePair<>(min, max);
 	}
 
 }

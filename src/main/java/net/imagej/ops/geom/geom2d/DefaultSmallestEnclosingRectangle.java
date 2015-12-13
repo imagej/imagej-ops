@@ -33,10 +33,11 @@ package net.imagej.ops.geom.geom2d;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.geometric.Polygon;
@@ -52,21 +53,21 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.SmallestEnclosingBoundingBox.class,
 	label = "Geometric (2D): Smallest Enclosing Rectangle")
 public class DefaultSmallestEnclosingRectangle extends
-	AbstractFunctionOp<Polygon, Polygon> implements Contingent,
+	AbstractUnaryFunctionOp<Polygon, Polygon> implements Contingent,
 	Ops.Geometric.SmallestEnclosingBoundingBox
 {
 
-	private FunctionOp<Polygon, Polygon> convexhullFunc;
-	private FunctionOp<Polygon, RealLocalizable> centroidFunc;
-	private FunctionOp<Polygon, DoubleType> areaFunc;
-	private FunctionOp<Polygon, Polygon> boundingBoxFunc;
+	private UnaryFunctionOp<Polygon, Polygon> convexhullFunc;
+	private UnaryFunctionOp<Polygon, RealLocalizable> centroidFunc;
+	private UnaryFunctionOp<Polygon, DoubleType> areaFunc;
+	private UnaryFunctionOp<Polygon, Polygon> boundingBoxFunc;
 
 	@Override
 	public void initialize() {
-		convexhullFunc = ops().function(Ops.Geometric.ConvexHull.class, Polygon.class, in());
-		centroidFunc = ops().function(Ops.Geometric.Centroid.class, RealLocalizable.class, in());
-		areaFunc = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
-		boundingBoxFunc = ops().function(Ops.Geometric.BoundingBox.class, Polygon.class, in());
+		convexhullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, Polygon.class, in());
+		centroidFunc = Functions.unary(ops(), Ops.Geometric.Centroid.class, RealLocalizable.class, in());
+		areaFunc = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		boundingBoxFunc = Functions.unary(ops(), Ops.Geometric.BoundingBox.class, Polygon.class, in());
 	}
 
 	/**
@@ -82,7 +83,7 @@ public class DefaultSmallestEnclosingRectangle extends
 		final RealLocalizable center)
 	{
 
-		List<RealLocalizable> out = new ArrayList<RealLocalizable>();
+		List<RealLocalizable> out = new ArrayList<>();
 
 		for (RealLocalizable RealPoint : inPoly.getVertices()) {
 
@@ -105,9 +106,9 @@ public class DefaultSmallestEnclosingRectangle extends
 	}
 
 	@Override
-	public Polygon compute(final Polygon input) {
-		Polygon ch = convexhullFunc.compute(input);
-		RealLocalizable cog = centroidFunc.compute(ch);
+	public Polygon compute1(final Polygon input) {
+		Polygon ch = convexhullFunc.compute1(input);
+		RealLocalizable cog = centroidFunc.compute1(ch);
 
 		Polygon minBounds = null;
 		double minArea = Double.POSITIVE_INFINITY;
@@ -123,11 +124,11 @@ public class DefaultSmallestEnclosingRectangle extends
 			final Polygon rotatedPoly = rotate(ch, -angle, cog);
 
 			// get the bounds
-			final Polygon bounds = boundingBoxFunc.compute(rotatedPoly);
+			final Polygon bounds = boundingBoxFunc.compute1(rotatedPoly);
 
 			// calculate the area of the bounds
 			// double area = getBoundsArea(bounds);
-			double area = areaFunc.compute(rotatedPoly).get();
+			double area = areaFunc.compute1(rotatedPoly).get();
 
 			// if the area of the bounds is smaller, rotate it to match the
 			// original polygon and save it.

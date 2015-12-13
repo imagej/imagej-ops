@@ -31,13 +31,18 @@ package net.imagej.ops.features.tamura2d;
 
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.FunctionOp;
+=======
+>>>>>>> imagej/master
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.image.histogram.HistogramCreate;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gradient.PartialDerivative;
@@ -65,21 +70,27 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 	@Parameter(required = true)
 	private int histogramSize = 16;
 
-	private FunctionOp<Iterable, Histogram1d> histOp;
-	private FunctionOp<Iterable, RealType> stdOp;
+	private UnaryFunctionOp<Iterable, Histogram1d> histOp;
+	private UnaryFunctionOp<Iterable, RealType> stdOp;
 
 	@Override
 	public void initialize() {
+<<<<<<< HEAD
 		stdOp = ops().function(StdDev.class, RealType.class, Iterable.class);
 		histOp = ops().function(HistogramCreate.class, Histogram1d.class, Iterable.class, histogramSize);
+=======
+		stdOp = Functions.unary(ops(), Ops.Stats.StdDev.class, RealType.class, Iterable.class);
+		histOp = Functions.unary(ops(), HistogramCreate.class, Histogram1d.class,
+			Iterable.class, histogramSize);
+>>>>>>> imagej/master
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input, final O output) {
+	public void compute1(final RandomAccessibleInterval<I> input, final O output) {
 
 		// List to store all directions occuring within the image on borders
-		ArrayList<DoubleType> dirList = new ArrayList<DoubleType>();
+		ArrayList<DoubleType> dirList = new ArrayList<>();
 
 		// Dimension of input region
 		long[] dims = new long[input.numDimensions()];
@@ -123,8 +134,8 @@ public class DefaultDirectionalityFeature<I extends RealType<I>, O extends RealT
 		// Otherwise compute histogram over all occuring directions
 		// and calculate inverse second moment on it as output
 		else {
-			Histogram1d<Integer> hist = histOp.compute(dirList);
-			double std = stdOp.compute(hist).getRealDouble();
+			Histogram1d<Integer> hist = histOp.compute1(dirList);
+			double std = stdOp.compute1(hist).getRealDouble();
 			output.setReal(1 / std);
 		}
 	}

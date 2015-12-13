@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
 public class DefaultMagnitudeFeature<T extends RealType<T>, O extends RealType<O>> extends AbstractZernikeFeature<T,O> implements Ops.Zernike.Magnitude {
 
 	@Override
-	public void compute(IterableInterval<T> input, O output) {
+	public void compute1(IterableInterval<T> input, O output) {
 		
 		output.setReal(getZernikeMoment(input).getMagnitude());
 	}

@@ -30,8 +30,9 @@
 
 package net.imagej.ops.threshold.localNiblack;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -57,25 +58,25 @@ public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter
 	private double k;
 
-	private ComputerOp<Iterable<T>, DoubleType> mean;
+	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
 
-	private ComputerOp<Iterable<T>, DoubleType> stdDeviation;
+	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
 
 	@Override
 	public void initialize() {
 		//FIXME: make sure Mean is used inStdDev.
-		mean = ops().computer(Ops.Stats.Mean.class, new DoubleType(), in().getB());
-		stdDeviation = ops().computer(Ops.Stats.StdDev.class, new DoubleType(), in().getB());
+		mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in().getB());
+		stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class, new DoubleType(), in().getB());
 	}
 
 	@Override
-	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
 
 		final DoubleType m = new DoubleType();
-		mean.compute(input.getB(), m);
+		mean.compute1(input.getB(), m);
 
 		final DoubleType stdDev = new DoubleType();
-		stdDeviation.compute(input.getB(), stdDev);
+		stdDeviation.compute1(input.getB(), stdDev);
 
 		output.set(input.getA().getRealDouble() > m.getRealDouble() + k * stdDev
 			.getRealDouble() - c);

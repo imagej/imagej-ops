@@ -32,14 +32,14 @@ package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * Namespace for 2d local binary pattern feature

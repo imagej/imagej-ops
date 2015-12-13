@@ -32,9 +32,9 @@ package net.imagej.ops.labeling.cca;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
@@ -55,7 +55,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Labeling.CCA.class, priority = 1.0)
 public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, ImgLabeling<L, I>>
 	implements Contingent, Ops.Labeling.CCA
 {
 
@@ -70,7 +70,7 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final ImgLabeling<L, I> output)
 	{
 		if (labelGenerator == null) {

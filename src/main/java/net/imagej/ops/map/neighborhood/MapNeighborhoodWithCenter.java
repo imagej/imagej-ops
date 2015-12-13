@@ -32,10 +32,11 @@ package net.imagej.ops.map.neighborhood;
 
 import java.util.Iterator;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.Positionable;
@@ -72,20 +73,20 @@ public class MapNeighborhoodWithCenter<I, O>
 
 	@Parameter
 	private Shape shape;
-	private ComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
+	private UnaryComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		map = (ComputerOp) ops().computer(Map.class, Iterable.class,
+		map = (UnaryComputerOp) Computers.unary(ops(), Map.class, Iterable.class,
 			NeighborhoodWithCenterIterableInterval.class, getOp());
 	}
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		map.compute(new NeighborhoodWithCenterIterableInterval(
+		map.compute1(new NeighborhoodWithCenterIterableInterval(
 			shape.neighborhoodsSafe(input), input), Views.iterable(output));
 	}
 
@@ -360,7 +361,7 @@ public class MapNeighborhoodWithCenter<I, O>
 		@Override
 		public final Pair<I, Iterable<I>> get() {
 			raIn.setPosition(cNeigh);
-			return new ValuePair<I, Iterable<I>>(raIn.get(), cNeigh.get());
+			return new ValuePair<>(raIn.get(), cNeigh.get());
 		}
 
 		@Override
@@ -412,7 +413,7 @@ public class MapNeighborhoodWithCenter<I, O>
 
 		@Override
 		public final Pair<I, Iterable<I>> get() {
-			return new ValuePair<I, Iterable<I>>(cIn.get(), cNeigh.get());
+			return new ValuePair<>(cIn.get(), cNeigh.get());
 		}
 
 		@Override

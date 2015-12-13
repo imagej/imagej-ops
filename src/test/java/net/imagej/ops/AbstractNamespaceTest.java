@@ -134,13 +134,13 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		}
 		else {
 			// filter the methods
-			methods = new ArrayList<Method>();
+			methods = new ArrayList<>();
 			for (final Method method : allMethods) {
 				if (opName.equals(method.getName())) methods.add(method);
 			}
 
 			// filter the ops
-			opList = new ArrayList<OpInfo>();
+			opList = new ArrayList<>();
 			for (final OpInfo op : allOps) {
 				if (qName.equals(op.getName())) opList.add(op);
 			}
@@ -241,7 +241,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	 * the {@link OpMethod} annotation.
 	 */
 	private Set<Class<? extends Op>> opTypes(final Method method) {
-		final Set<Class<? extends Op>> opSet = new HashSet<Class<? extends Op>>();
+		final Set<Class<? extends Op>> opSet = new HashSet<>();
 		final OpMethod ann = method.getAnnotation(OpMethod.class);
 		if (ann != null) {
 			final Class<? extends Op>[] opTypes = ann.ops();
@@ -313,9 +313,9 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		// Then we can pass Types here instead of Class instances.
 		// final Object[] argTypes = method.getGenericParameterTypes();
 		final Object[] argTypes = method.getParameterTypes();
-		final OpRef<Op> ref = new OpRef<Op>(qName, argTypes);
+		final OpRef<Op> ref = OpRef.create(qName, argTypes);
 		final OpInfo info = ops.info(opType);
-		final OpCandidate<Op> candidate = new OpCandidate<Op>(ops, ref, info);
+		final OpCandidate<Op> candidate = new OpCandidate<>(ops, ref, info);
 
 		// check input types
 		if (!inputTypesMatch(candidate)) {
@@ -362,7 +362,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 	private boolean outputTypesMatch(final Type returnType,
 		final OpCandidate<Op> candidate)
 	{
-		final List<Type> outTypes = new ArrayList<Type>();
+		final List<Type> outTypes = new ArrayList<>();
 		for (final ModuleItem<?> output : candidate.cInfo().outputs()) {
 			outTypes.add(output.getGenericType());
 		}
@@ -477,7 +477,7 @@ public abstract class AbstractNamespaceTest extends AbstractOpTest {
 		public void add(final K key, final V value) {
 			Set<V> set = get(key);
 			if (set == null) {
-				set = new HashSet<V>();
+				set = new HashSet<>();
 				put(key, set);
 			}
 			set.add(value);

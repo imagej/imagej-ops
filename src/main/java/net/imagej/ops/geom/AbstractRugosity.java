@@ -30,9 +30,10 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -41,24 +42,24 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractRugosity<I> extends
-	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Rugosity
+	AbstractUnaryFunctionOp<I, DoubleType> implements Ops.Geometric.Rugosity
 {
 
-	private FunctionOp<I, DoubleType> boundarySize;
+	private UnaryFunctionOp<I, DoubleType> boundarySize;
 
-	private FunctionOp<I, DoubleType> convexHullBoundarySize;
+	private UnaryFunctionOp<I, DoubleType> convexHullBoundarySize;
 
 	@Override
 	public void initialize() {
-		boundarySize = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
-		convexHullBoundarySize = ops().function(Ops.Geometric.BoundarySizeConvexHull.class,
+		boundarySize = Functions.unary(ops(), Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		convexHullBoundarySize = Functions.unary(ops(), Ops.Geometric.BoundarySizeConvexHull.class,
 			DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final I input) {
-		return new DoubleType(boundarySize.compute(input).get() /
-			convexHullBoundarySize.compute(input).get());
+	public DoubleType compute1(final I input) {
+		return new DoubleType(boundarySize.compute1(input).get() /
+			convexHullBoundarySize.compute1(input).get());
 	}
 
 }

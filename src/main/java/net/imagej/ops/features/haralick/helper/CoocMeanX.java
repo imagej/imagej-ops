@@ -29,8 +29,9 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -42,22 +43,22 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocMeanX.class)
-public class CoocMeanX extends AbstractFunctionOp<double[][], DoubleType> {
+public class CoocMeanX extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 
-	private FunctionOp<double[][], double[]> coocPXFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
+		coocPXFunc = Functions.unary(ops(), CoocPX.class, double[].class, double[][].class);
 	}
 
 	
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 
 		double res = 0;
-		final double[] px = coocPXFunc.compute(input);
+		final double[] px = coocPXFunc.compute1(input);
 		for (int i = 0; i < px.length; i++) {
 			res += i * px[i];
 		}

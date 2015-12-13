@@ -41,7 +41,9 @@ import org.scijava.plugin.Plugin;
  *
  */
 @Plugin(type = Ops.Geometric.VertexInterpolator.class)
-public class BitTypeVertexInterpolator extends AbstractVertexInterpolator {
+public class BitTypeVertexInterpolator extends AbstractVertexInterpolator 
+	implements Ops.Geometric.VertexInterpolator
+{
 
 	@Override
 	public void run() {

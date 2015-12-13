@@ -32,18 +32,19 @@ package net.imagej.ops.geom.geom2d;
 
 import java.lang.reflect.Type;
 
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imglib2.roi.geometric.Polygon;
+import net.imglib2.roi.labeling.LabelRegion;
+
 import org.scijava.Priority;
 import org.scijava.convert.AbstractConverter;
 import org.scijava.convert.ConversionRequest;
 import org.scijava.convert.Converter;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
-
-import net.imagej.ops.FunctionOp;
-import net.imagej.ops.OpService;
-import net.imagej.ops.Ops;
-import net.imglib2.roi.geometric.Polygon;
-import net.imglib2.roi.labeling.LabelRegion;
 
 /**
  * Converts a {@link LabelRegion} to a polygon
@@ -58,17 +59,17 @@ public class LabelRegionToPolygonConverter extends
 
 	@Parameter
 	private OpService ops;
-	private FunctionOp<Object, Object> contourFunc;
+	private UnaryFunctionOp<Object, Object> contourFunc;
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public <T> T convert(final Object src, final Class<T> dest) {
 		if (contourFunc == null) {
-			contourFunc = (FunctionOp) ops.function(Ops.Geometric.Contour.class, dest, src, true,
+			contourFunc = (UnaryFunctionOp) Functions.unary(ops, Ops.Geometric.Contour.class, dest, src, true,
 				true);
 		}
 		// FIXME: can we make this faster?
-		final Polygon p = (Polygon) contourFunc.compute(src);
+		final Polygon p = (Polygon) contourFunc.compute1(src);
 		return (T) p;
 	}
 

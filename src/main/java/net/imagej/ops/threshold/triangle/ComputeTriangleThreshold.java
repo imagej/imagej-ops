@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Triangle.class)
 public class ComputeTriangleThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Triangle {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {
