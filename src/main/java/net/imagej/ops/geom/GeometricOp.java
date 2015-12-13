@@ -30,13 +30,13 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.FunctionOp;
 
 /**
  * Simple marker interface for Geoemtric ops.
  * 
  * @author Daniel Seebacher, University of Konstanz
  */
-public interface GeometricOp<I, O> extends UnaryFunctionOp<I, O> {
+public interface GeometricOp<I, O> extends FunctionOp<I, O> {
 	// NB: marker interface
 }

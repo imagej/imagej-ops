@@ -30,23 +30,18 @@
 
 package net.imagej.ops.cached;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.CustomOpEnvironment;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.HybridOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpInfo;
-import net.imagej.ops.OpRef;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
 
 import org.scijava.Priority;
 import org.scijava.cache.CacheService;
-import org.scijava.command.CommandInfo;
-import org.scijava.module.Module;
-import org.scijava.module.ModuleItem;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -75,70 +70,63 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	@Override
-	public Op op(final OpRef<?> ref) {
-		final Op op = super.op(ref);
-		final Op cachedOp;
-		if (op instanceof UnaryHybridOp) {
-			cachedOp = wrapUnaryHybrid((UnaryHybridOp<?, ?>) op);
-		}
-		else if (op instanceof UnaryFunctionOp) {
-			cachedOp = wrapUnaryFunction((UnaryFunctionOp<?, ?>) op);
-		}
-		else return op;
-
-		getContext().inject(cachedOp);
-		return cachedOp;
+	public <I, O, OP extends Op> FunctionOp<I, O> function(final Class<OP> opType,
+		final Class<O> outType, final Class<I> inType, Object... otherArgs)
+	{
+		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<I, O>(
+			super.function(opType, outType, inType, otherArgs), otherArgs);
+		getContext().inject(cached);
+		return cached;
 	}
 
-	// -- Helper methods --
-
-	private <I, O> CachedFunctionOp<I, O> wrapUnaryFunction(
-		final UnaryFunctionOp<I, O> op)
+	@Override
+	public <I, O, OP extends Op> FunctionOp<I, O> function(final Class<OP> opType,
+		final Class<O> outType, I in, Object... otherArgs)
 	{
-		return new CachedFunctionOp<>(op, otherArgs(op, 1));
+		final CachedFunctionOp<I, O> cached = new CachedFunctionOp<I, O>(
+			super.function(opType, outType, in, otherArgs), otherArgs);
+		getContext().inject(cached);
+		return cached;
 	}
 
-	private <I, O> CachedHybridOp<I, O> wrapUnaryHybrid(
-		final UnaryHybridOp<I, O> op)
+	@Override
+	public <I, O, OP extends Op> HybridOp<I, O> hybrid(Class<OP> opType,
+		Class<O> outType, Class<I> inType, Object... otherArgs)
 	{
-		return new CachedHybridOp<>(op, otherArgs(op, 2));
+		final CachedHybridOp<I, O> cached = new CachedHybridOp<I, O>(super.hybrid(
+			opType, outType, inType, otherArgs), otherArgs);
+		getContext().inject(cached);
+		return cached;
+	}
+
+	@Override
+	public <I, O, OP extends Op> HybridOp<I, O> hybrid(Class<OP> opType,
+		Class<O> outType, I in, Object... otherArgs)
+	{
+		final CachedHybridOp<I, O> cached = new CachedHybridOp<I, O>(super.hybrid(
+			opType, outType, in, otherArgs), otherArgs);
+		getContext().inject(cached);
+		return cached;
 	}
 
 	/**
-	 * Gets the given {@link Op} instance's argument value, starting at the
-	 * specified offset.
-	 */
-	private Object[] otherArgs(final Op op, final int offset) {
-		final CommandInfo cInfo = info(op).cInfo();
-		final Module module = cInfo.createModule(op);
-		final ArrayList<Object> args = new ArrayList<>();
-		int i = 0;
-		for (final ModuleItem<?> input : cInfo.inputs()) {
-			if (i++ >= offset) args.add(input.getValue(module));
-		}
-		return args.toArray();
-	}
-
-	// -- Helper classes --
-
-	/**
-	 * Wraps a {@link UnaryFunctionOp} and caches the results. New inputs will result
+	 * Wraps a {@link FunctionOp} and caches the results. New inputs will result
 	 * in re-computation of the result.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
 	 * @param <O>
 	 */
-	class CachedFunctionOp<I, O> extends AbstractOp implements UnaryFunctionOp<I, O> {
+	class CachedFunctionOp<I, O> extends AbstractOp implements FunctionOp<I, O> {
 
 		@Parameter
 		private CacheService cache;
 
-		private final UnaryFunctionOp<I, O> delegate;
+		private final FunctionOp<I, O> delegate;
 
 		private final Object[] args;
 
-		public CachedFunctionOp(final UnaryFunctionOp<I, O> delegate,
+		public CachedFunctionOp(final FunctionOp<I, O> delegate,
 			final Object[] args)
 		{
 			this.delegate = delegate;
@@ -146,7 +134,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public O compute1(final I input) {
+		public O compute(final I input) {
 
 			final Hash hash = new Hash(input, delegate.getClass(), args);
 
@@ -154,7 +142,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 			O output = (O) cache.get(hash);
 
 			if (output == null) {
-				output = delegate.compute1(input);
+				output = delegate.compute(input);
 				cache.put(hash, output);
 			}
 			return output;
@@ -193,46 +181,41 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	/**
-	 * Wraps a {@link UnaryHybridOp} and caches the results. New inputs will result in
-	 * re-computation if {@link UnaryHybridOp} is used as {@link UnaryFunctionOp}.
+	 * Wraps a {@link HybridOp} and caches the results. New inputs will result in
+	 * re-computation if {@link HybridOp} is used as {@link FunctionOp}.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
 	 * @param <O>
 	 */
 	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements
-		UnaryHybridOp<I, O>
+		HybridOp<I, O>
 	{
 
 		@Parameter
 		private CacheService cache;
 
-		private final UnaryHybridOp<I, O> delegate;
+		private final HybridOp<I, O> delegate;
 
 		private final Object[] args;
 
-		public CachedHybridOp(final UnaryHybridOp<I, O> delegate, final Object[] args) {
+		public CachedHybridOp(final HybridOp<I, O> delegate, final Object[] args) {
 			super(delegate, args);
 			this.delegate = delegate;
 			this.args = args;
 		}
 
 		@Override
-<<<<<<< HEAD
 		public O compute(final I input) {
 
 			final Hash hash = new Hash(input, delegate.getClass(), args);
-=======
-		public O compute1(final I input) {
-			final Hash hash = new Hash(input, delegate, args);
->>>>>>> imagej/master
 
 			@SuppressWarnings("unchecked")
 			O output = (O) cache.get(hash);
 
 			if (output == null) {
 				output = createOutput(input);
-				compute1(input, output);
+				compute(input, output);
 				cache.put(hash, output);
 			}
 			return output;
@@ -244,13 +227,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
-			delegate.compute1(input, output);
-		}
-
-		@Override
-		public void setOutput(final O output) {
-			delegate.setOutput(output);
+		public void compute(final I input, final O output) {
+			delegate.compute(input, output);
 		}
 
 		@Override
@@ -267,7 +245,6 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 		private final int hash;
 
-<<<<<<< HEAD
 		private Class<?> delegate;
 
 		public Hash(final Object o1, final Class<?> delegate, final Object[] args) {
@@ -282,16 +259,9 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 
 			for (final Object o : args) {
 				hash = hash * 23 + o.hashCode();
-=======
-		public Hash(final Object o1, final Object o2, final Object[] args) {
-			long h = o1.hashCode() ^ o2.getClass().getSimpleName().hashCode();
-
-			for (final Object o : args) {
-				h ^= o.hashCode();
->>>>>>> imagej/master
 			}
 
-			hash = (int) h;
+			this.hash = (int) hash;
 		}
 
 		@Override

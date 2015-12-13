@@ -29,11 +29,10 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocMeanX;
 import net.imagej.ops.features.haralick.helper.CoocMeanY;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -52,24 +51,24 @@ import org.scijava.plugin.Plugin;
 public class DefaultClusterPromenence<T extends RealType<T>> extends AbstractHaralickFeature<T>
 		implements Ops.Haralick.ClusterPromenence {
 
-	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private UnaryFunctionOp<double[][], DoubleType> coocMeanYFunc;
+	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private FunctionOp<double[][], DoubleType> coocMeanYFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = Functions.unary(ops(), CoocMeanX.class, DoubleType.class, double[][].class);
-		coocMeanYFunc = Functions.unary(ops(), CoocMeanY.class, DoubleType.class, double[][].class);
+		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
+		coocMeanYFunc = ops().function(CoocMeanY.class, DoubleType.class, double[][].class);
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input, final DoubleType output) {
+	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final int nrGrayLevels = matrix.length;
 
-		final double mux = coocMeanXFunc.compute1(matrix).getRealDouble();
-		final double muy = coocMeanYFunc.compute1(matrix).getRealDouble();
+		final double mux = coocMeanXFunc.compute(matrix).getRealDouble();
+		final double muy = coocMeanYFunc.compute(matrix).getRealDouble();
 
 		double res = 0;
 		for (int i = 0; i < nrGrayLevels; i++) {

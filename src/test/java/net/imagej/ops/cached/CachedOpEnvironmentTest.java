@@ -34,14 +34,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.FunctionOp;
+import net.imagej.ops.HybridOp;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.Hybrids;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -64,22 +62,22 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	private Img<ByteType> imgA, imgB;
 
-	private UnaryFunctionOp<Img<ByteType>, DoubleType> func;
+	private FunctionOp<Img<ByteType>, DoubleType> func;
 
-	private UnaryHybridOp<Img<ByteType>, DoubleType> hybrid;
+	private HybridOp<Img<ByteType>, DoubleType> hybrid;
 
 	@Before
 	public void initCustomOps() {
-		final ArrayList<OpInfo> customOps = new ArrayList<>();
+		final ArrayList<OpInfo> customOps = new ArrayList<OpInfo>();
 		customOps.add(new OpInfo(MyMin.class));
 
 		env = new CachedOpEnvironment(ops, customOps);
 
-		imgA = generateByteArrayTestImg(true, new long[] { 10, 10 });
-		imgB = generateByteArrayTestImg(true, new long[] { 10, 10 });
+		imgA = generateByteTestImg(true, new long[] { 10, 10 });
+		imgB = generateByteTestImg(true, new long[] { 10, 10 });
 
-		func = Functions.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
-		hybrid = Hybrids.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
+		func = env.function(Ops.Stats.Min.class, DoubleType.class, imgA);
+		hybrid = env.hybrid(Ops.Stats.Min.class, DoubleType.class, imgA);
 	}
 
 	@Test
@@ -87,11 +85,11 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		ctr = 0;
 
 		// Calling it twice should result in the same result
-		assertEquals(1.0, func.compute1(imgA).get(), 0.0);
-		assertEquals(1.0, func.compute1(imgA).get(), 0.0);
+		assertEquals(1.0, func.compute(imgA).get(), 0.0);
+		assertEquals(1.0, func.compute(imgA).get(), 0.0);
 
 		// Should be increased
-		assertEquals(2.0, func.compute1(imgB).getRealDouble(), 0.0);
+		assertEquals(2.0, func.compute(imgB).getRealDouble(), 0.0);
 	}
 
 	@Test
@@ -99,15 +97,15 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		ctr = 0;
 
 		// Calling it twice should result in the same result
-		assertEquals(1.0, hybrid.compute1(imgA).get(), 0.0);
-		assertEquals(1.0, hybrid.compute1(imgA).get(), 0.0);
+		assertEquals(1.0, hybrid.compute(imgA).get(), 0.0);
+		assertEquals(1.0, hybrid.compute(imgA).get(), 0.0);
 
 		// Should be increased
-		assertEquals(2.0, hybrid.compute1(imgB).getRealDouble(), 0.0);
+		assertEquals(2.0, hybrid.compute(imgB).getRealDouble(), 0.0);
 	}
 
 	// some specialized ops to track number of counts
-	public static class MyMin extends AbstractUnaryHybridOp<Img<ByteType>, DoubleType>
+	public static class MyMin extends AbstractHybridOp<Img<ByteType>, DoubleType>
 		implements Ops.Stats.Min
 	{
 
@@ -117,7 +115,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		}
 
 		@Override
-		public void compute1(final Img<ByteType> input, final DoubleType output) {
+		public void compute(final Img<ByteType> input, final DoubleType output) {
 			ctr++;
 			output.set(ctr);
 		}

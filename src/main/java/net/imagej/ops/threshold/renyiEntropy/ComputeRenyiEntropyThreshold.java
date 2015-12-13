@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.RenyiEntropy.class)
 public class ComputeRenyiEntropyThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.RenyiEntropy {
+		AbstractComputeThresholdHistogram<T> {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

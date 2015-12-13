@@ -30,11 +30,6 @@
 
 package net.imagej.ops;
 
-import net.imagej.ops.special.InplaceOp;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
-
 import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
 import org.scijava.plugin.PluginService;
@@ -97,19 +92,19 @@ import org.scijava.plugin.PluginService;
  * <th>Methods</th>
  * </tr>
  * <tr>
- * <th>{@link UnaryFunctionOp}</th>
+ * <th>{@link FunctionOp}</th>
  * <td>&nbsp;</td>
  * <td>OUTPUT</td>
  * <td>{@code compute(I)}</td>
  * </tr>
  * <tr>
- * <th>{@link UnaryComputerOp}</th>
+ * <th>{@link ComputerOp}</th>
  * <td>&nbsp;</td>
  * <td>BOTH</td>
  * <td>{@code compute(I, O)}</td>
  * </tr>
  * <tr>
- * <th>{@link UnaryHybridOp}</th>
+ * <th>{@link HybridOp}</th>
  * <td>&nbsp;</td>
  * <td>BOTH (optional)</td>
  * <td>{@code compute(I, O)} and {@code compute(I)}</td>

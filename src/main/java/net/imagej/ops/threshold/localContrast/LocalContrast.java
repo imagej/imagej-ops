@@ -30,10 +30,9 @@
 
 package net.imagej.ops.threshold.localContrast;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -51,18 +50,18 @@ import org.scijava.plugin.Plugin;
 public class LocalContrast<T extends RealType<T>> extends
 		LocalThresholdMethod<T> implements Ops.Threshold.LocalContrast {
 
-	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
+	private FunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp)Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (FunctionOp)ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override
-	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
+	public void compute(Pair<T, Iterable<T>> input, BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
 
 		final double centerValue = input.getA().getRealDouble();
 		final double diffMin = centerValue - outputs.getA().getRealDouble();

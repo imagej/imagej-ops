@@ -69,7 +69,7 @@ public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 	public void run() {
 		final RandomAccessibleInterval<T> rai = in;
 		out =
-			new ImgPlus<>(ImgView.wrap(
+			new ImgPlus<T>(ImgView.wrap(
 				ops().image().crop(rai, interval, dropSingleDimensions), in.factory()));
 
 		// TODO remove metadata-util

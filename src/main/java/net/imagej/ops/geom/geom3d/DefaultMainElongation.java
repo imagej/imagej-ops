@@ -30,11 +30,10 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,21 +50,21 @@ import org.scijava.plugin.Plugin;
 	label = "Geometric (3D): Main Elongation",
 	priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultMainElongation<B extends BooleanType<B>> extends
-	AbstractUnaryFunctionOp<IterableRegion<B>, DoubleType> implements
+	AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
 	Ops.Geometric.MainElongation, Contingent
 {
 
-	private UnaryFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
+	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
 
 	@Override
 	public void initialize() {
-		multivar = Functions.unary(ops(), DefaultSecondMultiVariate3D.class,
+		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
 	}
 
 	@Override
-	public DoubleType compute1(final IterableRegion<B> input) {
-		CovarianceOf2ndMultiVariate3D compute = multivar.compute1(input);
+	public DoubleType compute(final IterableRegion<B> input) {
+		CovarianceOf2ndMultiVariate3D compute = multivar.compute(input);
 		return new DoubleType(Math.sqrt(compute.getEigenvalue(0) / compute
 			.getEigenvalue(1)));
 	}

@@ -32,8 +32,8 @@ package net.imagej.ops.math;
 
 import java.util.Random;
 
+import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
@@ -59,11 +59,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Abs.class)
 	public static class Abs<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Abs
+		AbstractComputerOp<I, O> implements Ops.Math.Abs
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.abs(input.getRealDouble()));
 		}
 	}
@@ -74,14 +74,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Add.class)
 	public static class Add<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Add
+		AbstractComputerOp<I, O> implements Ops.Math.Add
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() + constant);
 		}
 	}
@@ -92,14 +92,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.And.class)
 	public static class AndConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.And
+		extends AbstractComputerOp<I, O> implements Ops.Math.And
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant & (long) input.getRealDouble());
 		}
 	}
@@ -110,11 +110,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccos.class)
 	public static class Arccos<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccos
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccos
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.acos(input.getRealDouble()));
 		}
 	}
@@ -125,11 +125,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccosh.class)
 	public static class Arccosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccosh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccosh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			double delta = Math.sqrt(xt * xt - 1);
 			if (xt <= -1) delta = -delta;
@@ -143,11 +143,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccot.class)
 	public static class Arccot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccot
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccot
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			double value = Math.atan(1.0 / input.getRealDouble());
 			if (input.getRealDouble() < 0) value += Math.PI;
 			output.setReal(value);
@@ -160,11 +160,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccoth.class)
 	public static class Arccoth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccoth
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccoth
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((xt + 1) / (xt - 1)));
 		}
@@ -176,17 +176,18 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsc.class)
 	public static class Arccsc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccsc
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsc
 	{
 
-		private final static Arcsin<DoubleType, DoubleType> asin = new Arcsin<>();
+		private final static Arcsin<DoubleType, DoubleType> asin =
+			new Arcsin<DoubleType, DoubleType>();
 
 		private final DoubleType angle = new DoubleType();
 
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arccsc(x) : x out of range");
@@ -194,7 +195,7 @@ public final class RealMath {
 			else if (xt == 1) output.setReal(Math.PI / 2);
 			else {
 				tmp.setReal(1 / xt);
-				asin.compute1(tmp, angle);
+				asin.compute(tmp, angle);
 				output.setReal(angle.getRealDouble());
 			}
 		}
@@ -206,11 +207,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arccsch.class)
 	public static class Arccsch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arccsch
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arccsch
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(1 + (1 / (xt * xt)));
 			output.setReal(Math.log((1 / xt) + delta));
@@ -223,17 +224,18 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsec.class)
 	public static class Arcsec<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsec
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsec
 	{
 
-		private final static Arcsin<DoubleType, DoubleType> asin = new Arcsin<>();
+		private final static Arcsin<DoubleType, DoubleType> asin =
+			new Arcsin<DoubleType, DoubleType>();
 
 		private final DoubleType angle = new DoubleType();
 
 		private final DoubleType tmp = new DoubleType();
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			if ((xt > -1) && (xt < 1)) throw new IllegalArgumentException(
 				"arcsec(x) : x out of range");
@@ -241,7 +243,7 @@ public final class RealMath {
 			else if (xt == 1) output.setReal(0);
 			else {
 				tmp.setReal(Math.sqrt(xt * xt - 1) / xt);
-				asin.compute1(tmp, angle);
+				asin.compute(tmp, angle);
 				double value = angle.getRealDouble();
 				if (xt < -1) value += Math.PI;
 				output.setReal(value);
@@ -255,11 +257,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsech.class)
 	public static class Arcsech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsech
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsech
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double numer = 1 + Math.sqrt(1 - xt * xt);
 			output.setReal(Math.log(numer / xt));
@@ -272,11 +274,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsin.class)
 	public static class Arcsin<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsin
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsin
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.asin(input.getRealDouble()));
 		}
 	}
@@ -287,11 +289,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arcsinh.class)
 	public static class Arcsinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arcsinh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arcsinh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			final double delta = Math.sqrt(xt * xt + 1);
 			output.setReal(Math.log(xt + delta));
@@ -304,11 +306,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctan.class)
 	public static class Arctan<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arctan
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arctan
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.atan(input.getRealDouble()));
 		}
 	}
@@ -319,11 +321,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Arctanh.class)
 	public static class Arctanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Arctanh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Arctanh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double xt = input.getRealDouble();
 			output.setReal(0.5 * Math.log((1 + xt) / (1 - xt)));
 		}
@@ -335,11 +337,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ceil.class)
 	public static class Ceil<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Ceil
+		extends AbstractComputerOp<I, O> implements Ops.Math.Ceil
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ceil(input.getRealDouble()));
 		}
 	}
@@ -350,11 +352,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cos.class)
 	public static class Cos<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Cos
+		AbstractComputerOp<I, O> implements Ops.Math.Cos
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cos(input.getRealDouble()));
 		}
 	}
@@ -365,11 +367,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cosh.class)
 	public static class Cosh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Cosh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Cosh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cosh(input.getRealDouble()));
 		}
 	}
@@ -380,11 +382,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Cot.class)
 	public static class Cot<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Cot
+		AbstractComputerOp<I, O> implements Ops.Math.Cot
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tan(input.getRealDouble()));
 		}
 	}
@@ -395,11 +397,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Coth.class)
 	public static class Coth<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Coth
+		extends AbstractComputerOp<I, O> implements Ops.Math.Coth
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.tanh(input.getRealDouble()));
 		}
 	}
@@ -410,11 +412,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csc.class)
 	public static class Csc<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Csc
+		AbstractComputerOp<I, O> implements Ops.Math.Csc
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sin(input.getRealDouble()));
 		}
 	}
@@ -425,11 +427,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Csch.class)
 	public static class Csch<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Csch
+		extends AbstractComputerOp<I, O> implements Ops.Math.Csch
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.sinh(input.getRealDouble()));
 		}
 	}
@@ -440,11 +442,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.CubeRoot.class)
 	public static class CubeRoot<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.CubeRoot
+		extends AbstractComputerOp<I, O> implements Ops.Math.CubeRoot
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.cbrt(input.getRealDouble()));
 		}
 	}
@@ -455,7 +457,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Divide.class)
 	public static class Divide<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Divide
+		extends AbstractComputerOp<I, O> implements Ops.Math.Divide
 	{
 
 		@Parameter
@@ -464,7 +466,7 @@ public final class RealMath {
 		private double dbzVal;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (constant == 0) {
 				output.setReal(dbzVal);
 			}
@@ -480,11 +482,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Exp.class)
 	public static class Exp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Exp
+		AbstractComputerOp<I, O> implements Ops.Math.Exp
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()));
 		}
 	}
@@ -495,11 +497,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.ExpMinusOne.class)
 	public static class ExpMinusOne<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.ExpMinusOne
+		extends AbstractComputerOp<I, O> implements Ops.Math.ExpMinusOne
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.exp(input.getRealDouble()) - 1);
 		}
 	}
@@ -510,11 +512,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Floor.class)
 	public static class Floor<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Floor
+		extends AbstractComputerOp<I, O> implements Ops.Math.Floor
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.floor(input.getRealDouble()));
 		}
 	}
@@ -525,14 +527,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Gamma.class)
 	public static class GammaConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Gamma
+		extends AbstractComputerOp<I, O> implements Ops.Math.Gamma
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal <= 0) output.setReal(0);
 			else {
@@ -547,7 +549,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Invert.class)
 	public static class Invert<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Invert
+		extends AbstractComputerOp<I, O> implements Ops.Math.Invert
 	{
 
 		@Parameter
@@ -556,7 +558,7 @@ public final class RealMath {
 		private double specifiedMax;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(specifiedMax - (input.getRealDouble() - specifiedMin));
 		}
 	}
@@ -567,11 +569,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log.class)
 	public static class Log<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Log
+		AbstractComputerOp<I, O> implements Ops.Math.Log
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()));
 		}
 	}
@@ -582,11 +584,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log10.class)
 	public static class Log10<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Log10
+		extends AbstractComputerOp<I, O> implements Ops.Math.Log10
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log10(input.getRealDouble()));
 		}
 	}
@@ -597,11 +599,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Log2.class)
 	public static class Log2<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Log2
+		extends AbstractComputerOp<I, O> implements Ops.Math.Log2
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log(input.getRealDouble()) / Math.log(2));
 		}
 	}
@@ -613,11 +615,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.LogOnePlusX.class)
 	public static class LogOnePlusX<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.LogOnePlusX
+		extends AbstractComputerOp<I, O> implements Ops.Math.LogOnePlusX
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.log1p(input.getRealDouble()));
 		}
 	}
@@ -629,14 +631,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Max.class)
 	public static class MaxConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Max
+		extends AbstractComputerOp<I, O> implements Ops.Math.Max
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value < constant) output.setReal(value);
 			else output.setReal(constant);
@@ -651,14 +653,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Min.class)
 	public static class MinConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Min
+		extends AbstractComputerOp<I, O> implements Ops.Math.Min
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			if (value > constant) output.setReal(value);
 			else output.setReal(constant);
@@ -671,14 +673,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Multiply.class)
 	public static class Multiply<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Multiply
+		extends AbstractComputerOp<I, O> implements Ops.Math.Multiply
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() * constant);
 		}
 	}
@@ -689,11 +691,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.NearestInt.class)
 	public static class NearestInt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.NearestInt
+		extends AbstractComputerOp<I, O> implements Ops.Math.NearestInt
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.rint(input.getRealDouble()));
 		}
 	}
@@ -704,11 +706,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Negate.class)
 	public static class Negate<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Negate
+		extends AbstractComputerOp<I, O> implements Ops.Math.Negate
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(-input.getRealDouble());
 		}
 	}
@@ -719,14 +721,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Or.class)
 	public static class OrConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Or
+		extends AbstractComputerOp<I, O> implements Ops.Math.Or
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant | (long) input.getRealDouble());
 		}
 	}
@@ -737,14 +739,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Power.class)
 	public static class PowerConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Power
+		extends AbstractComputerOp<I, O> implements Ops.Math.Power
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.pow(input.getRealDouble(), constant));
 		}
 	}
@@ -757,7 +759,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomGaussian.class)
 	public static class RandomGaussian<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.RandomGaussian
+		extends AbstractComputerOp<I, O> implements Ops.Math.RandomGaussian
 	{
 
 		@Parameter(required = false)
@@ -774,7 +776,7 @@ public final class RealMath {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			output.setReal(rng.nextGaussian() * Math.abs(input.getRealDouble()));
 		}
@@ -786,7 +788,7 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.RandomUniform.class)
 	public static class RandomUniform<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.RandomUniform
+		extends AbstractComputerOp<I, O> implements Ops.Math.RandomUniform
 	{
 
 		@Parameter(required = false)
@@ -803,7 +805,7 @@ public final class RealMath {
 		}
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (rng == null) rng = new Random(seed);
 			final double r = rng.nextDouble();
 			output.setReal(r * input.getRealDouble());
@@ -816,14 +818,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Reciprocal.class)
 	public static class Reciprocal<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Reciprocal
+		extends AbstractComputerOp<I, O> implements Ops.Math.Reciprocal
 	{
 
 		@Parameter
 		private double dbzVal;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double inputVal = input.getRealDouble();
 			if (inputVal == 0) output.setReal(dbzVal);
 			else output.setReal(1.0 / inputVal);
@@ -836,11 +838,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Round.class)
 	public static class Round<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Round
+		extends AbstractComputerOp<I, O> implements Ops.Math.Round
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.round(input.getRealDouble()));
 		}
 	}
@@ -851,11 +853,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sec.class)
 	public static class Sec<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sec
+		AbstractComputerOp<I, O> implements Ops.Math.Sec
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cos(input.getRealDouble()));
 		}
 	}
@@ -866,11 +868,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sech.class)
 	public static class Sech<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sech
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sech
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(1.0 / Math.cosh(input.getRealDouble()));
 		}
 	}
@@ -883,11 +885,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Signum.class)
 	public static class Signum<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Signum
+		extends AbstractComputerOp<I, O> implements Ops.Math.Signum
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.signum(input.getRealDouble()));
 		}
 	}
@@ -898,11 +900,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sin.class)
 	public static class Sin<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sin
+		AbstractComputerOp<I, O> implements Ops.Math.Sin
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sin(input.getRealDouble()));
 		}
 	}
@@ -914,11 +916,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinc.class)
 	public static class Sinc<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinc
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sinc
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
@@ -934,11 +936,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.SincPi.class)
 	public static class SincPi<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.SincPi
+		extends AbstractComputerOp<I, O> implements Ops.Math.SincPi
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double x = input.getRealDouble();
 			double value;
 			if (x == 0) value = 1;
@@ -953,11 +955,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sinh.class)
 	public static class Sinh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sinh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sinh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sinh(input.getRealDouble()));
 		}
 	}
@@ -968,11 +970,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqr.class)
 	public static class Sqr<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqr
+		AbstractComputerOp<I, O> implements Ops.Math.Sqr
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			final double value = input.getRealDouble();
 			output.setReal(value * value);
 		}
@@ -984,11 +986,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Sqrt.class)
 	public static class Sqrt<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Sqrt
+		extends AbstractComputerOp<I, O> implements Ops.Math.Sqrt
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.sqrt(input.getRealDouble()));
 		}
 	}
@@ -1001,11 +1003,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Step.class)
 	public static class Step<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Step
+		extends AbstractComputerOp<I, O> implements Ops.Math.Step
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			if (input.getRealDouble() < 0) output.setZero();
 			else output.setOne();
 		}
@@ -1017,14 +1019,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Subtract.class)
 	public static class Subtract<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Subtract
+		extends AbstractComputerOp<I, O> implements Ops.Math.Subtract
 	{
 
 		@Parameter
 		private double constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(input.getRealDouble() - constant);
 		}
 	}
@@ -1035,11 +1037,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tan.class)
 	public static class Tan<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Tan
+		AbstractComputerOp<I, O> implements Ops.Math.Tan
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tan(input.getRealDouble()));
 		}
 	}
@@ -1050,11 +1052,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Tanh.class)
 	public static class Tanh<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Tanh
+		extends AbstractComputerOp<I, O> implements Ops.Math.Tanh
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.tanh(input.getRealDouble()));
 		}
 	}
@@ -1067,11 +1069,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Ulp.class)
 	public static class Ulp<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Ulp
+		AbstractComputerOp<I, O> implements Ops.Math.Ulp
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(Math.ulp(input.getRealDouble()));
 		}
 	}
@@ -1082,14 +1084,14 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Xor.class)
 	public static class XorConstant<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Xor
+		extends AbstractComputerOp<I, O> implements Ops.Math.Xor
 	{
 
 		@Parameter
 		private long constant;
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setReal(constant ^ (long) input.getRealDouble());
 		}
 	}
@@ -1099,11 +1101,11 @@ public final class RealMath {
 	 */
 	@Plugin(type = Ops.Math.Zero.class)
 	public static class Zero<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractUnaryComputerOp<I, O> implements Ops.Math.Zero
+		extends AbstractComputerOp<I, O> implements Ops.Math.Zero
 	{
 
 		@Override
-		public void compute1(final I input, final O output) {
+		public void compute(final I input, final O output) {
 			output.setZero();
 		}
 	}

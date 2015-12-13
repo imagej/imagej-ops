@@ -42,9 +42,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
 @Plugin(type = Ops.Geometric.VertexInterpolator.class)
-public class DefaultVertexInterpolator extends AbstractVertexInterpolator 
-	implements Ops.Geometric.VertexInterpolator
-{
+public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
 	@Parameter(type = ItemIO.INPUT)
 	double isolevel;

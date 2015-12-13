@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.ComputerOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -39,38 +39,38 @@ import org.scijava.plugin.Parameter;
  * Abstract base class for {@link MapView} implementations.
  *
  * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
- * @param <PI> producer of inputs
- * @param <PO> producer of outputs
+ * @param <A> type to be converted to <B>
+ * @param <B> result of conversion
+ * @param <I> holding <A>s
+ * @param <O> type of resulting output
  */
-public abstract class AbstractMapView<EI, EO, PI, PO> extends
-	AbstractUnaryFunctionOp<PI, PO> implements MapView<EI, EO, PI, PO>
+public abstract class AbstractMapView<A, B, I, O> extends
+	AbstractFunctionOp<I, O> implements MapView<A, B, I, O>
 {
 
 	@Parameter
-	private UnaryComputerOp<EI, EO> op;
+	private ComputerOp<A, B> op;
 
 	@Parameter
-	private EO type;
+	private B type;
 
 	@Override
-	public UnaryComputerOp<EI, EO> getOp() {
+	public ComputerOp<A, B> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final UnaryComputerOp<EI, EO> op) {
+	public void setOp(final ComputerOp<A, B> op) {
 		this.op = op;
 	}
 
 	@Override
-	public EO getType() {
+	public B getType() {
 		return type;
 	}
 
 	@Override
-	public void setType(final EO type) {
+	public void setType(final B type) {
 		this.type = type;
 	}
 

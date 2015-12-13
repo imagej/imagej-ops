@@ -30,11 +30,10 @@
 
 package net.imagej.ops.geom.geom3d;
 
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -50,39 +49,39 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Geometric.Spareness.class,
 	label = "Geometric (3D): Spareness", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultSpareness<B extends BooleanType<B>> extends
-	AbstractUnaryFunctionOp<IterableRegion<B>, DoubleType> implements
+	AbstractFunctionOp<IterableRegion<B>, DoubleType> implements
 	Ops.Geometric.Spareness, Contingent
 {
 
-	private UnaryFunctionOp<IterableRegion<B>, DoubleType> mainElongation;
+	private FunctionOp<IterableRegion<B>, DoubleType> mainElongation;
 
-	private UnaryFunctionOp<IterableRegion<B>, DoubleType> medianElongation;
+	private FunctionOp<IterableRegion<B>, DoubleType> medianElongation;
 
-	private UnaryFunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
+	private FunctionOp<IterableRegion<B>, CovarianceOf2ndMultiVariate3D> multivar;
 
-	private UnaryFunctionOp<IterableRegion<B>, DoubleType> volume;
+	private FunctionOp<IterableRegion<B>, DoubleType> volume;
 
 	@Override
 	public void initialize() {
-		mainElongation = Functions.unary(ops(), Ops.Geometric.MainElongation.class, DoubleType.class,
+		mainElongation = ops().function(Ops.Geometric.MainElongation.class, DoubleType.class,
 			in());
-		medianElongation = Functions.unary(ops(), Ops.Geometric.MedianElongation.class, DoubleType.class,
+		medianElongation = ops().function(Ops.Geometric.MedianElongation.class, DoubleType.class,
 			in());
-		multivar = Functions.unary(ops(), DefaultSecondMultiVariate3D.class,
+		multivar = ops().function(DefaultSecondMultiVariate3D.class,
 			CovarianceOf2ndMultiVariate3D.class, in());
-		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute1(final IterableRegion<B> input) {
+	public DoubleType compute(final IterableRegion<B> input) {
 
-		double r1 = Math.sqrt(5.0 * multivar.compute1(input).getEigenvalue(0));
-		double r2 = r1 / mainElongation.compute1(input).get();
-		double r3 = r2 / medianElongation.compute1(input).get();
+		double r1 = Math.sqrt(5.0 * multivar.compute(input).getEigenvalue(0));
+		double r2 = r1 / mainElongation.compute(input).get();
+		double r3 = r2 / medianElongation.compute(input).get();
 
 		double volumeEllipsoid = (4.18879 * r1 * r2 * r3);
 
-		return new DoubleType(volume.compute1(input).get() / volumeEllipsoid);
+		return new DoubleType(volume.compute(input).get() / volumeEllipsoid);
 	}
 
 	@Override

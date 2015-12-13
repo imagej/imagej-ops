@@ -63,7 +63,7 @@ public class ChunkerInterleaved extends AbstractChunker {
 		final int numStepsFloor = (int) (numberOfElements / numThreads);
 		final int remainder = (int) numberOfElements - (numStepsFloor * numThreads);
 
-		final ArrayList<Future<?>> futures = new ArrayList<>(numThreads);
+		final ArrayList<Future<?>> futures = new ArrayList<Future<?>>(numThreads);
 
 		for (int i = 0; i < numThreads; i++) {
 			final int j = i;

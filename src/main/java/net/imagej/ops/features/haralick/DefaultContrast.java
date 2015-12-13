@@ -29,10 +29,9 @@
  */
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXMinusY;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,19 +50,19 @@ import org.scijava.plugin.Plugin;
 public class DefaultContrast<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.Contrast {
 	
-	private UnaryFunctionOp<double[][], double[]> coocPXMinusYFunc;
+	private FunctionOp<double[][], double[]> coocPXMinusYFunc;
 	
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXMinusYFunc = Functions.unary(ops(), CoocPXMinusY.class, double[].class, double[][].class);
+		coocPXMinusYFunc = ops().function(CoocPXMinusY.class, double[].class, double[][].class);
 	}
 	
 	@Override
-	public void compute1(final IterableInterval<T> input, final DoubleType output) {
+	public void compute(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
-		final double[] pxminusxy = coocPXMinusYFunc.compute1(matrix);
+		final double[] pxminusxy = coocPXMinusYFunc.compute(matrix);
 
 		double res = 0;
 		for (int k = 0; k <= matrix.length - 1; k++) {

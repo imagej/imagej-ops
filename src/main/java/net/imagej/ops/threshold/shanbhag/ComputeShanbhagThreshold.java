@@ -48,7 +48,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Shanbhag.class)
 public class ComputeShanbhagThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Shanbhag {
+		AbstractComputeThresholdHistogram<T> {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.identity;
 
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.AbstractInplaceOp;
 
 /**
  * Abstract superclass of {@link IdentityOp} implementations.

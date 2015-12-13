@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.scijava.AbstractContextual;
 import org.scijava.Context;
 
 /**
@@ -43,9 +42,7 @@ import org.scijava.Context;
  *
  * @author Curtis Rueden
  */
-public class CustomOpEnvironment extends AbstractContextual implements
-	OpEnvironment
-{
+public class CustomOpEnvironment extends AbstractOpEnvironment {
 
 	// -- Fields --
 
@@ -93,11 +90,6 @@ public class CustomOpEnvironment extends AbstractContextual implements
 	// -- OpEnvironment methods --
 
 	@Override
-	public OpMatchingService matcher() {
-		return parent().matcher();
-	}
-
-	@Override
 	public OpInfo info(final Class<? extends Op> type) {
 		return index.get(type.getName());
 	}
@@ -110,11 +102,6 @@ public class CustomOpEnvironment extends AbstractContextual implements
 	@Override
 	public OpEnvironment parent() {
 		return parent;
-	}
-
-	@Override
-	public <NS extends Namespace> NS namespace(Class<NS> nsClass) {
-		return parent().namespace(nsClass);
 	}
 
 	// -- Helper classes --
@@ -131,7 +118,7 @@ public class CustomOpEnvironment extends AbstractContextual implements
 		
 		@Override
 		public Collection<OpInfo> values() {
-			final ArrayList<OpInfo> infos = new ArrayList<>();
+			final ArrayList<OpInfo> infos = new ArrayList<OpInfo>();
 			infos.addAll(super.values());
 			Collections.sort(infos);
 			return infos;
