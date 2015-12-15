@@ -31,17 +31,17 @@
 package net.imagej.ops.deconvolve;
 
 import org.scijava.Priority;
+import org.scijava.app.StatusService;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.IterativeFFTFilterRAI;
+import net.imagej.ops.Op;
+import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
- * L. B. (1974).
- * "An iterative technique for the rectification of observed distributions".)
+ * Richardson Lucy Circulant (standard) version
  * 
  * @author Brian Northan
  * @param <I>
@@ -49,33 +49,44 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+
+@Plugin(type = Op.class, name = "richardsonlucy",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeFFTFilterRAI<I, O, K, C> implements
-	Ops.Deconvolve.RichardsonLucy
+public class RichardsonLucyCirculantRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends IterativeCirculantFFTFilterRAI<I, O, K, C>
 {
 
-	/**
-	 * performs one iteration of the Richardson Lucy Algorithm
-	 */
+	@Parameter(required = false)
+	private StatusService status;
+
 	@Override
-	protected void performIteration() {
+	public void performIterations() {
 
-		// compute correction factor
-		ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
-			in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+		createReblurred();
 
-		// compute estimate -
-		// for standard RL this step will multiply output of correlation step
-		// and current estimate
-		// (Note: ComputeEstimate can be overridden to achieve regularization)
-		ComputeEstimate();
+		for (int i = 0; i < getMaxIterations(); i++) {
 
+			System.out.println("RL Iteration: " + i);
+
+			if (status != null) {
+				status.showProgress(i, getMaxIterations());
+			}
+
+			// compute correction factor
+			ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
+				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+
+			// perform update
+			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+
+			// accelerate
+			if (getAccelerate()) {
+				getAccelerator().Accelerate(getRAIExtendedEstimate());
+			}
+
+			createReblurred();
+
+		}
 	}
 
-	public void ComputeEstimate() {
-		ops().run(Ops.Math.Multiply.class, getRAIExtendedEstimate(),
-			getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
 }

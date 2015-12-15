@@ -30,10 +30,13 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.plugin.Parameter;
+
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -58,6 +61,12 @@ import net.imglib2.view.Views;
 public abstract class IterativeCirculantFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractIterativeFFTFilterRAI<I, O, K, C>
 {
+
+	/**
+	 * An OutOfBoundsFactory which defines the extension strategy
+	 */
+	@Parameter(required = false)
+	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
 	protected void initializeImages() {
 		// if no output out of bounds factory exists create the obf for output
@@ -97,6 +106,16 @@ public abstract class IterativeCirculantFFTFilterRAI<I extends RealType<I>, O ex
 
 		// perform fft of psf
 		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
+	}
+
+	public OutOfBoundsFactory<O, RandomAccessibleInterval<O>> getObfOutput() {
+		return obfOutput;
+	}
+
+	public void setObfOutput(
+		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput)
+	{
+		this.obfOutput = obfOutput;
 	}
 
 }

@@ -30,8 +30,12 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.Priority;
+import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
@@ -39,7 +43,6 @@ import net.imglib2.FinalInterval;
 import net.imglib2.Point;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -57,15 +60,14 @@ import net.imglib2.view.Views;
  * @param <K>
  * @param <C>
  */
+
+
 public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractIterativeFFTFilterRAI<I, O, K, C>
 {
 
-	/**
-	 * The ImgFactory used to create images
-	 */
-	@Parameter
-	private ImgFactory<O> imgFactory;
+	@Parameter(required = false)
+	private StatusService status;
 
 	/**
 	 * TODO: review and document! - k is the size of the measurement window. That
@@ -86,16 +88,6 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 	// http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
 	private Img<O> normalization = null;
 
-	@Override
-	public void compute1(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<O> out)
-	{
-
-		performIterations();
-
-		postProcess();
-	}
-
 	/**
 	 * initialize TODO: review this function
 	 */
@@ -111,8 +103,8 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 
 		// create image for the estimate, this image is defined over the entire
 		// convolution interval
-		Img<O> estimate = imgFactory.create(getImgConvolutionInterval(), outType
-			.createVariable());
+		Img<O> estimate = this.getImgFactory().create(getImgConvolutionInterval(),
+			outType.createVariable());
 
 		// set first guess to be a constant = to the average value
 
@@ -132,8 +124,8 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 		}
 
 		// create image for the reblurred
-		Img<O> reblurred = imgFactory.create(getImgConvolutionInterval(), outType
-			.createVariable());
+		Img<O> reblurred = this.getImgFactory().create(getImgConvolutionInterval(),
+			outType.createVariable());
 
 		setRAIExtendedEstimate(estimate);
 		setRAIExtendedReblurred(reblurred);
@@ -141,13 +133,23 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 		// perform fft of input
 		ops().filter().fft(getFFTInput(), in());
 
-		// perform fft of psf
+		// perform fft of psfs
 		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
 
 		normalization = getImgFactory().create(estimate, outType.createVariable());
 
 		this.createNormalizationImageSemiNonCirculant();
 
+	}
+
+	@Override
+	public void compute1(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<O> out)
+	{
+
+		performIterations();
+
+		postProcess();
 	}
 
 	/**
@@ -263,12 +265,6 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 			}
 		}
 	}
-
-	/**
-	 * perform one iteration of the algorithm. Sub-classes need to implement this
-	 * function.
-	 */
-	abstract protected void performIteration();
 
 	public Dimensions getK() {
 		return k;

@@ -30,17 +30,19 @@
 
 package net.imagej.ops.deconvolve;
 
+
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.IterativeFFTFilterRAI;
-import net.imglib2.type.numeric.ComplexType;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
- * L. B. (1974).
+ * Computes Richardson Lucy correction factor for (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
  * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
@@ -49,33 +51,20 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+@Plugin(type = Op.class, name = "richardsonlucyupdate",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeFFTFilterRAI<I, O, K, C> implements
-	Ops.Deconvolve.RichardsonLucy
+public class RichardsonLucyUpdateRAI<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I>
 {
 
 	/**
-	 * performs one iteration of the Richardson Lucy Algorithm
+	 * performs update step of the Richardson Lucy Algorithm
 	 */
 	@Override
-	protected void performIteration() {
+	public void compute1(I correction, I estimate) {
 
-		// compute correction factor
-		ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
-			in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
-
-		// compute estimate -
-		// for standard RL this step will multiply output of correlation step
-		// and current estimate
-		// (Note: ComputeEstimate can be overridden to achieve regularization)
-		ComputeEstimate();
+		ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
 
 	}
 
-	public void ComputeEstimate() {
-		ops().run(Ops.Math.Multiply.class, getRAIExtendedEstimate(),
-			getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
 }

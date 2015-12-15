@@ -31,16 +31,19 @@
 package net.imagej.ops.deconvolve;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.IterativeFFTFilterRAI;
+import net.imagej.ops.AbstractOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval) (Lucy,
- * L. B. (1974).
+ * Computes Richardson Lucy correction factor for (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
  * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
@@ -49,33 +52,45 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+@Plugin(type = Op.class, name = "richardsonlucycorrection",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeFFTFilterRAI<I, O, K, C> implements
-	Ops.Deconvolve.RichardsonLucy
+public class RichardsonLucyCorrectionRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractOp
 {
+
+	/** buffer to put correction factor in **/
+	@Parameter
+	RandomAccessibleInterval<O> correction;
+
+	/** oberved image **/
+	@Parameter
+	RandomAccessibleInterval<O> observed;
+
+	/** reblurred (simulated) image **/
+	@Parameter
+	RandomAccessibleInterval<O> reblurred;
+
+	/** buffer fft of reblurred (will be computed) **/
+	@Parameter
+	RandomAccessibleInterval<C> fftBuffer;
+
+	/** fft of kernel (needs to be previously computed) **/
+	@Parameter
+	RandomAccessibleInterval<C> fftKernel;
 
 	/**
 	 * performs one iteration of the Richardson Lucy Algorithm
 	 */
 	@Override
-	protected void performIteration() {
+	public void run() {
 
-		// compute correction factor
-		ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
-			in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+		// divide observed image by reblurred
+		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);
 
-		// compute estimate -
-		// for standard RL this step will multiply output of correlation step
-		// and current estimate
-		// (Note: ComputeEstimate can be overridden to achieve regularization)
-		ComputeEstimate();
+		// correlate with psf to compute the correction factor
+		ops().filter().correlate(correction, reblurred, reblurred, fftBuffer, fftKernel,
+			true, false);
 
 	}
 
-	public void ComputeEstimate() {
-		ops().run(Ops.Math.Multiply.class, getRAIExtendedEstimate(),
-			getRAIExtendedEstimate(), getRAIExtendedReblurred());
-	}
 }

@@ -273,6 +273,8 @@ public abstract class IterativeFFTFilterRAI<I extends RealType<I>, O extends Rea
 			}
 
 			createReblurred();
+			
+			System.out.println("even better!");
 
 		}
 	}

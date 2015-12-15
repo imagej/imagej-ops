@@ -30,16 +30,18 @@
 
 package net.imagej.ops.deconvolve;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilter;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * Richardson Lucy with total variation op that operates on (@link Img)
@@ -58,6 +60,9 @@ public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<
 	extends AbstractFFTFilter<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
+
+	@Parameter
+	OpService ops;
 
 	/**
 	 * max number of iterations
@@ -93,10 +98,24 @@ public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<
 		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops().run(RichardsonLucyTVRAI.class, output, raiExtendedInput,
-			raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
-			imgConvolutionInterval, getOutFactory(), in(), getKernel(), nonCirculant,
-			accelerate, regularizationFactor);
+		// create Richardson Lucy TV update op, this will override the base RL
+		// Update.
+		@SuppressWarnings("unchecked")
+		AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp =
+			ops.op(RichardsonLucyTVUpdateRAI.class, output, output,
+				regularizationFactor);
 
+		if (nonCirculant == false) {
+			ops().run(RichardsonLucyCirculantRAI.class, output, raiExtendedInput,
+				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerate);
+		}
+		else {
+
+			ops().run(RichardsonLucyNonCirculantRAI.class, output, raiExtendedInput,
+				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerate,
+				in(), getKernel());
+		}
 	}
 }

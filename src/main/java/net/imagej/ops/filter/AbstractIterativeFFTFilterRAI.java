@@ -35,21 +35,15 @@ import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
 import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI. Boundary
- * conditions are handled by the scheme described at:
- * http://bigwww.epfl.ch/deconvolution/challeng public Interval
- * getImgConvolutionInterval() { return imgConvolutionInterval; } public void
- * setImgConvolutionInterval(Interval imgConvolutionInterval) {
- * this.imgConvolutionInterval = imgConvolutionInterval; }
- * e2013/index.html?p=doc_math_rl)
  * 
  * @author Brian Northan
  * @param <I>
@@ -83,17 +77,17 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	private ImgFactory<O> imgFactory;
 
 	/**
-	 * TODO: make this an op A boolean which indicates whether to perform
-	 * acceleration
+	 * Op that computes Richardson Lucy update
+	 */
+	@Parameter
+	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
+
+	/**
+	 * TODO: make this an op A boolean which indicates w iterOp.run(); hether to
+	 * perform acceleration
 	 */
 	@Parameter(required = false)
 	private boolean accelerate = false;
-
-	/**
-	 * An OutOfBoundsFactory which defines the extension strategy
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
 	private RandomAccessibleInterval<O> raiExtendedReblurred;
 
@@ -123,26 +117,34 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 	abstract protected void initializeImages();
 
-	protected void performIterations() {
-
-		createReblurred();
-
-		for (int i = 0; i < maxIterations; i++) {
-
-			if (status != null) {
-				status.showProgress(i, maxIterations);
-			}
-			performIteration();
-
-			// accelerate
-			if (getAccelerate()) {
-				getAccelerator().Accelerate(getRAIExtendedEstimate());
-			}
-
+	abstract protected void performIterations();
+	/*
+		protected void performIterations() {
+	
 			createReblurred();
-
-		}
-	}
+	
+			for (int i = 0; i < maxIterations; i++) {
+	
+				if (status != null) {
+					status.showProgress(i, maxIterations);
+				}
+	
+				// compute correction factor
+				ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
+					in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+	
+				// perform update
+				update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+	
+				// accelerate
+				if (getAccelerate()) {
+					getAccelerator().Accelerate(getRAIExtendedEstimate());
+				}
+	
+				createReblurred();
+	
+			}
+		}*/
 
 	/**
 	 * convolve estimate with kernel to create reblurred
@@ -153,12 +155,6 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 			getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
 
 	}
-
-	/**
-	 * perform one iteration of the algorithm. Sub-classes need to implement this
-	 * function.
-	 */
-	abstract protected void performIteration();
 
 	protected RandomAccessibleInterval<O> getRAIExtendedReblurred() {
 		return raiExtendedReblurred;
@@ -184,16 +180,6 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 		return imgFactory;
 	}
 
-	public OutOfBoundsFactory<O, RandomAccessibleInterval<O>> getObfOutput() {
-		return obfOutput;
-	}
-
-	public void setObfOutput(
-		OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput)
-	{
-		this.obfOutput = obfOutput;
-	}
-
 	public Interval getImgConvolutionInterval() {
 		return imgConvolutionInterval;
 	}
@@ -208,6 +194,17 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 	public Accelerator<O> getAccelerator() {
 		return accelerator;
+	}
+
+	public int getMaxIterations() {
+		return maxIterations;
+	}
+
+	public
+		AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
+		getUpdate()
+	{
+		return update;
 	}
 
 }
