@@ -78,7 +78,7 @@ AbstractComputerOp<IterableInterval<I>, RandomAccessibleInterval<O>> implements 
 			access.setPosition(pos);
 			if(curY != pos[1])
 			{
-				System.out.println("x: "+pos[0]+ ", y: " + pos[1]);
+				//System.out.println("x: "+pos[0]+ ", y: " + pos[1]);
 				curY = pos[1];
 			}
 			this.wrapper.compute(this.workerClass, cursor.get(), access.get());
