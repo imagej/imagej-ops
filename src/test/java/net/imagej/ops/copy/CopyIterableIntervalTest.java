@@ -32,7 +32,6 @@ package net.imagej.ops.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.sun.source.tree.AssertTree;
 
 import java.util.Random;
 
@@ -41,14 +40,10 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
-import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.array.ArrayImgFactory;
-import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
-import net.imglib2.view.Views;
-
 import org.junit.Before;
 import org.junit.Test;
 
