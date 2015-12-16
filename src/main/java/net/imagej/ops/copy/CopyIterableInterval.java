@@ -66,12 +66,11 @@ public class CopyIterableInterval<T> extends
 						in().firstElement().getClass()));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
 		// FIXME: Assumption here: Create an Img. I would rather like: Create
 		// what ever is best given the input.
-		return (IterableInterval<T>) ops.create().img(input);
+		return (IterableInterval<T>) ops.create().img(input, input.firstElement());
 	}
 
 	@Override

@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>imagej-ops</artifactId>
-	<version>0.23.1-SNAPSHOT</version>
+	<version>0.24.1-SNAPSHOT</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
