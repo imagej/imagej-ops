@@ -96,8 +96,6 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 		Img<FloatType> inputFloat = new ArrayImgFactory<FloatType>().create(
 				new int[] { 120, 100 }, new FloatType());
 
-		final Random r = new Random(System.currentTimeMillis());
-		
 		@SuppressWarnings("unchecked")
 		Img<FloatType> output = (Img<FloatType>) ops
 				.run(CopyIterableInterval.class, inputFloat);
