@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.AbstractFunctionOp;
 
 import org.scijava.plugin.Plugin;
 
@@ -40,10 +40,10 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocPX.class)
-public class CoocPX extends AbstractUnaryFunctionOp<double[][], double[]> {
+public class CoocPX extends AbstractFunctionOp<double[][], double[]> {
 
 	@Override
-	public double[] compute1(double[][] input) {
+	public double[] compute(double[][] input) {
 		final int nrGrayLevels = input.length;
 		final double[] output = new double[nrGrayLevels];
 		for (int i = 0; i < nrGrayLevels; i++) {

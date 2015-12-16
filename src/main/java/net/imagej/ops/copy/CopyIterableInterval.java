@@ -30,12 +30,11 @@
 
 package net.imagej.ops.copy;
 
+import net.imagej.ops.AbstractHybridOp;
+import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 
@@ -50,19 +49,19 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
 public class CopyIterableInterval<T> extends
-		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>> implements
+		AbstractHybridOp<IterableInterval<T>, IterableInterval<T>> implements
 		Ops.Copy.IterableInterval, Contingent {
 
 	@Parameter
 	protected OpService ops;
 
 	// used internally
-	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
+	private ComputerOp<IterableInterval<T>, IterableInterval<T>> map;
 	
 	@Override
 	public void initialize() {
-		map = Computers.unary(ops, Ops.Map.class, in(), in(),
-				Computers.unary(ops, Ops.Copy.Type.class, 
+		map = ops.computer(Ops.Map.class, in(), in(),
+				ops.computer(Ops.Copy.Type.class, 
 						in().firstElement().getClass(), 
 						in().firstElement().getClass()));
 	}
@@ -75,9 +74,9 @@ public class CopyIterableInterval<T> extends
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 			final IterableInterval<T> output) {
-		map.compute1(input, output);
+		map.compute(input, output);
 	}
 
 	@Override

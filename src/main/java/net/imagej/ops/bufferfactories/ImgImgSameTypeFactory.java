@@ -30,23 +30,23 @@
 
 package net.imagej.ops.bufferfactories;
 
-import net.imagej.ops.special.UnaryOutputFactory;
+import net.imagej.ops.BufferFactory;
 import net.imglib2.img.Img;
 import net.imglib2.type.Type;
 
 /**
- * {@link UnaryOutputFactory} used to create an empty output {@link Img} of same type
+ * {@link BufferFactory} used to create an empty output {@link Img} of same type
  * and dimensionality as the input {@link Img}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <T>
  */
 public class ImgImgSameTypeFactory<T extends Type<T>> implements
-	UnaryOutputFactory<Img<T>, Img<T>>
+	BufferFactory<Img<T>, Img<T>>
 {
 
 	@Override
-	public Img<T> createOutput(final Img<T> input) {
+	public Img<T> createBuffer(final Img<T> input) {
 		return input.factory().create(input, input.firstElement().createVariable());
 	}
 }

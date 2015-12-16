@@ -38,8 +38,6 @@ package net.imagej.ops;
 public interface Initializable {
 
 	/** Initializes the object. */
-	default void initialize() {
-		// NB: Do nothing by default.
-	}
+	void initialize();
 
 }

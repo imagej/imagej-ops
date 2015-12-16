@@ -29,12 +29,11 @@
  */
 package net.imagej.ops.image.cooccurrencematrix;
 
+import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Stats.MinMax;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -52,7 +51,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.CooccurrenceMatrix.class)
 public class CooccurrenceMatrix3D<T extends RealType<T>> extends
-		AbstractUnaryFunctionOp<IterableInterval<T>, double[][]> implements
+		AbstractFunctionOp<IterableInterval<T>, double[][]> implements
 		Ops.Image.CooccurrenceMatrix, Contingent {
 
 	@Parameter(label = "Number of Gray Levels", min = "0", max = "128", stepSize = "1", initializer = "32")
@@ -64,22 +63,22 @@ public class CooccurrenceMatrix3D<T extends RealType<T>> extends
 	@Parameter(label = "Matrix Orientation")
 	private MatrixOrientation orientation;
 
-	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minmax;
+	private FunctionOp<IterableInterval<T>, Pair<T, T>> minmax;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
 		super.initialize();
-		minmax = (UnaryFunctionOp) Functions.unary(ops(), MinMax.class, Pair.class, in());
+		minmax = (FunctionOp) ops().function(MinMax.class, Pair.class, in());
 	}
 	
 	@Override
-	public double[][] compute1(final IterableInterval<T> input) {
+	public double[][] compute(final IterableInterval<T> input) {
 
 		double[][] matrix = new double[nrGreyLevels][nrGreyLevels];
 
 		final Cursor<T> cursor = input.localizingCursor();
-	  final Pair<T, T> minMax = minmax.compute1(input);
+	  final Pair<T, T> minMax = minmax.compute(input);
 
 		double localMin = minMax.getA().getRealDouble();
 		double localMax = minMax.getB().getRealDouble();

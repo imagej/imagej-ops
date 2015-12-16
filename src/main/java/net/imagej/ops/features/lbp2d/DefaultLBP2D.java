@@ -33,10 +33,12 @@ package net.imagej.ops.features.lbp2d;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
@@ -44,9 +46,6 @@ import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.view.Views;
-
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of 2d local binary patterns
@@ -67,29 +66,29 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 	private int histogramSize = 256;
 
 	@SuppressWarnings("rawtypes")
-	private UnaryFunctionOp<ArrayList, Histogram1d> histOp;
+	private FunctionOp<ArrayList, Histogram1d> histOp;
 
 	@Override
 	public void initialize() {
-		histOp = Functions.unary(ops(), HistogramCreate.class, Histogram1d.class,
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class,
 			ArrayList.class, histogramSize);
 	}
 
 	@Override
 	public ArrayList<LongType> createOutput(RandomAccessibleInterval<I> input) {
-		return new ArrayList<>();
+		return new ArrayList<LongType>();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute1(RandomAccessibleInterval<I> input,
+	public void compute(RandomAccessibleInterval<I> input,
 		ArrayList<LongType> output)
 	{
-		ArrayList<LongType> numberList = new ArrayList<>();
+		ArrayList<LongType> numberList = new ArrayList<LongType>();
 		RandomAccess<I> raInput = Views.extendZero(input).randomAccess();
 		final Cursor<I> cInput = Views.flatIterable(input).cursor();
 		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh =
-			new ClockwiseDistanceNeighborhoodIterator<>(raInput, distance);
+			new ClockwiseDistanceNeighborhoodIterator<I>(raInput, distance);
 
 		while (cInput.hasNext()) {
 			cInput.next();
@@ -108,7 +107,7 @@ public class DefaultLBP2D<I extends RealType<I>> extends AbstractLBP2DFeature<I>
 			numberList.add(new LongType(resultBinaryValue));
 		}
 
-		Histogram1d<Integer> hist = histOp.compute1(numberList);
+		Histogram1d<Integer> hist = histOp.compute(numberList);
 		Iterator<LongType> c = hist.iterator();
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));

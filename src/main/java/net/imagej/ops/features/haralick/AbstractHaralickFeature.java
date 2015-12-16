@@ -30,13 +30,12 @@
 
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -50,7 +49,7 @@ import org.scijava.plugin.Parameter;
  * @param <T>
  */
 public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
-	AbstractUnaryHybridOp<IterableInterval<T>, DoubleType> implements
+	AbstractHybridOp<IterableInterval<T>, DoubleType> implements
 	HaralickFeature<T>, Contingent
 {
 
@@ -63,7 +62,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 	@Parameter
 	protected MatrixOrientation orientation;
 
-	private UnaryFunctionOp<IterableInterval<T>, double[][]> coocFunc;
+	private FunctionOp<IterableInterval<T>, double[][]> coocFunc;
 
 	@Override
 	public DoubleType createOutput(final IterableInterval<T> input) {
@@ -72,7 +71,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 
 	@Override
 	public void initialize() {
-		coocFunc = Functions.unary(ops(), Ops.Image.CooccurrenceMatrix.class,
+		coocFunc = ops().function(Ops.Image.CooccurrenceMatrix.class,
 			double[][].class, in(), numGreyLevels, distance, orientation);
 	}
 
@@ -83,7 +82,7 @@ public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
 	 * @return the {@link CooccurrenceMatrix2D}
 	 */
 	protected double[][] getCooccurrenceMatrix(final IterableInterval<T> input) {
-		return coocFunc.compute1(input);
+		return coocFunc.compute(input);
 	}
 
 	@Override

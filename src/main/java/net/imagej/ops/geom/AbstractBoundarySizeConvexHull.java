@@ -30,10 +30,9 @@
 
 package net.imagej.ops.geom;
 
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -43,13 +42,13 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractBoundarySizeConvexHull<I> extends
-	AbstractUnaryFunctionOp<I, DoubleType> implements
+	AbstractFunctionOp<I, DoubleType> implements
 	Ops.Geometric.BoundarySizeConvexHull
 {
 
-	private UnaryFunctionOp<I, I> convexHullFunc;
+	private FunctionOp<I, I> convexHullFunc;
 
-	private UnaryFunctionOp<I, DoubleType> perimeterFunc;
+	private FunctionOp<I, DoubleType> perimeterFunc;
 
 	private Class<I> inType;
 
@@ -59,13 +58,13 @@ public abstract class AbstractBoundarySizeConvexHull<I> extends
 
 	@Override
 	public void initialize() {
-		convexHullFunc = Functions.unary(ops(), Ops.Geometric.ConvexHull.class, inType, in());
-		perimeterFunc = Functions.unary(ops(), Ops.Geometric.BoundarySize.class, DoubleType.class, in());
+		convexHullFunc = ops().function(Ops.Geometric.ConvexHull.class, inType, in());
+		perimeterFunc = ops().function(Ops.Geometric.BoundarySize.class, DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute1(I input) {
-		return perimeterFunc.compute1(convexHullFunc.compute1(input));
+	public DoubleType compute(I input) {
+		return perimeterFunc.compute(convexHullFunc.compute(input));
 	}
 
 }

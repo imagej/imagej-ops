@@ -30,77 +30,46 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryOutputFactory;
+import java.util.ArrayList;
 
-import org.scijava.plugin.Parameter;
+import net.imagej.ops.ComputerOp;
+import net.imagej.ops.Ops;
+import net.imagej.ops.join.DefaultJoinComputers;
+
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a {@link UnaryComputerOp} multiple times to an image.
+ * Applies a {@link ComputerOp} multiple times to an image.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 @Plugin(type = Ops.Loop.class)
-public class DefaultLoopComputer<I> extends AbstractUnaryComputerOp<I, I>
-	implements LoopComputer<I>
+public class DefaultLoopComputer<A> extends
+	AbstractLoopComputer<ComputerOp<A, A>, A>
 {
 
-	@Parameter
-	private UnaryComputerOp<I, I> op;
-
-	@Parameter
-	private UnaryOutputFactory<I, I> outputFactory;
-
-	@Parameter
-	private int n;
-
-	// -- LoopComputer methods --
-
 	@Override
-	public UnaryOutputFactory<I, I> getOutputFactory() {
-		return outputFactory;
+	public void compute(final A input, final A output) {
+		final int n = getLoopCount();
+
+		final ArrayList<ComputerOp<A, A>> ops = new ArrayList<ComputerOp<A, A>>(n);
+		for (int i = 0; i < n; i++)
+			ops.add(getOp());
+
+		final DefaultJoinComputers<A> joiner = new DefaultJoinComputers<A>();
+		joiner.setOps(ops);
+		joiner.setBufferFactory(getBufferFactory());
+
+		joiner.compute(input, output);
 	}
 
 	@Override
-	public void setOutputFactory(final UnaryOutputFactory<I, I> outputFactory) {
-		this.outputFactory = outputFactory;
-	}
-
-	// -- LoopOp methods --
-
-	@Override
-	public UnaryComputerOp<I, I> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(final UnaryComputerOp<I, I> op) {
-		this.op = op;
-	}
-
-	@Override
-	public int getLoopCount() {
-		return n;
-	}
-
-	@Override
-	public void setLoopCount(final int n) {
-		this.n = n;
-	}
-
-	// -- Threadable methods --
-
-	@Override
-	public DefaultLoopComputer<I> getIndependentInstance() {
-		final DefaultLoopComputer<I> looper = new DefaultLoopComputer<>();
+	public DefaultLoopComputer<A> getIndependentInstance() {
+		final DefaultLoopComputer<A> looper = new DefaultLoopComputer<A>();
 
 		looper.setOp(getOp().getIndependentInstance());
-		looper.setOutputFactory(getOutputFactory());
+		looper.setBufferFactory(getBufferFactory());
 
 		return looper;
 	}
-
 }

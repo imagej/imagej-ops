@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>14.2.0</version>
+		<version>13.3.0</version>
 		<relativePath />
 	</parent>
 
@@ -209,7 +209,7 @@
 
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
-		<scijava.jvm.version>1.8</scijava.jvm.version>
+		<imglib2-roi.version>0.4.1</imglib2-roi.version>
 	</properties>
 
 	<repositories>
@@ -245,6 +245,10 @@
 		</dependency>
 
 		<!-- SciJava dependencies -->
+		<dependency>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-cache</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-common</artifactId>

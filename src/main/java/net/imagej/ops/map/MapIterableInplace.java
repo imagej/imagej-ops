@@ -36,22 +36,19 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * A {@link MapInplace} over an {@link Iterable}.
+ * Default (slower) implementation of an {@link MapIterableInplace}.
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
- * @param <A> element type of inplace arguments
+ * @param <A>
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapIterableInplace<A> extends
-	AbstractMapIterableInplace<A, Iterable<A>>
-{
+public class MapIterableInplace<A> extends AbstractMapInplace<A, Iterable<A>> {
 
 	@Override
-	public void mutate(final Iterable<A> arg) {
+	public void compute(final Iterable<A> arg) {
 		for (final A t : arg) {
-			getOp().mutate(t);
+			getOp().compute(t);
 		}
 	}
-
 }

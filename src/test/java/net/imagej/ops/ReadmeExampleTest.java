@@ -91,7 +91,8 @@ public class ReadmeExampleTest {
 
 	@Plugin(type = Service.class)
 	public static class Mock extends AbstractService {
-		protected final Map<String, Img<DoubleType>> images = new HashMap<>();
+		protected final Map<String, Img<DoubleType>> images =
+				new HashMap<String, Img<DoubleType>>();
 
 		public OpService op() {
 			return getContext().getService(OpService.class);

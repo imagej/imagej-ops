@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.AbstractComputerOp;
 import net.imglib2.util.Pair;
 
 /**
@@ -39,7 +39,7 @@ import net.imglib2.util.Pair;
  * @author Jonathan Hale (University of Konstanz)
  */
 public abstract class AbstractCenterAwareComputerOp<I, O> extends
-	AbstractUnaryComputerOp<Pair<I, Iterable<I>>, O> implements
+	AbstractComputerOp<Pair<I, Iterable<I>>, O> implements
 	CenterAwareComputerOp<I, O>
 {
 	// NB: Empty.

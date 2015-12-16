@@ -30,9 +30,8 @@
 
 package net.imagej.ops.threshold.localMidGrey;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -55,19 +54,19 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	@Parameter
 	private double c;
 
-	private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
+	private FunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
 		minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+			(FunctionOp) ops().function(Ops.Stats.MinMax.class, Pair.class, in().getB());
 	}
 
 	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute(final Pair<T, Iterable<T>> input, final BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute(input.getB());
 
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();

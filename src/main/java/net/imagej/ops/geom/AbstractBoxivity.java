@@ -30,11 +30,10 @@
 
 package net.imagej.ops.geom;
 
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.RTs;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.RTs;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
@@ -44,12 +43,12 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 public abstract class AbstractBoxivity<I> extends
-	AbstractUnaryFunctionOp<I, DoubleType> implements Ops.Geometric.Boxivity
+	AbstractFunctionOp<I, DoubleType> implements Ops.Geometric.Boxivity
 {
 
-	private UnaryFunctionOp<I, DoubleType> areaFunc;
+	private FunctionOp<I, DoubleType> areaFunc;
 
-	private UnaryFunctionOp<I, I> smallestEnclosingRectangleFunc;
+	private FunctionOp<I, I> smallestEnclosingRectangleFunc;
 
 	private Class<I> inType;
 
@@ -60,14 +59,14 @@ public abstract class AbstractBoxivity<I> extends
 	@Override
 	public void initialize() {
 		areaFunc = RTs.function(ops(), Ops.Geometric.Size.class, in());
-		smallestEnclosingRectangleFunc = Functions.unary(ops(), 
+		smallestEnclosingRectangleFunc = ops().function(
 			Ops.Geometric.SmallestEnclosingBoundingBox.class, inType, in());
 	}
 
 	@Override
-	public DoubleType compute1(final I input) {
-		return new DoubleType(areaFunc.compute1(input).getRealDouble() / areaFunc
-			.compute1(smallestEnclosingRectangleFunc.compute1(input)).getRealDouble());
+	public DoubleType compute(final I input) {
+		return new DoubleType(areaFunc.compute(input).getRealDouble() / areaFunc
+			.compute(smallestEnclosingRectangleFunc.compute(input)).getRealDouble());
 	}
 
 }

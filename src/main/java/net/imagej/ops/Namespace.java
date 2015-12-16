@@ -48,12 +48,5 @@ import org.scijava.plugin.SciJavaPlugin;
 public interface Namespace extends Contextual, Environmental, Named,
 	SciJavaPlugin
 {
-
-	// -- Named methods --
-
-	@Override
-	default void setName(final String name) {
-		throw new UnsupportedOperationException();
-	}
-
+	// NB: Marker interface.
 }

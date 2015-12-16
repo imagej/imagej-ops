@@ -49,7 +49,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Li.class)
 public class ComputeLiThreshold<T extends RealType<T>> extends
-	AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Li
+	AbstractComputeThresholdHistogram<T>
 {
 
 	@Override

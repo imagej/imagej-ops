@@ -30,10 +30,9 @@
 
 package net.imagej.ops.geom.geom3d.mesh;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 
@@ -57,17 +56,17 @@ public class RandomAccessibleIntervalToMeshConverter extends
 
 	@Parameter
 	private OpService ops;
-	private UnaryFunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
+	private FunctionOp<RandomAccessibleInterval, Mesh> marchingCubesFunc;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T convert(Object src, Class<T> dest) {
 		if (marchingCubesFunc == null) {
-			marchingCubesFunc = Functions.unary(ops, Ops.Geometric.MarchingCubes.class, Mesh.class,
+			marchingCubesFunc = ops.function(Ops.Geometric.MarchingCubes.class, Mesh.class,
 				(RandomAccessibleInterval) src);
 		}
 		if (src instanceof IterableInterval<?>) {
-			return (T) marchingCubesFunc.compute1((RandomAccessibleInterval) src);
+			return (T) marchingCubesFunc.compute((RandomAccessibleInterval) src);
 		}
 		return null;
 	}

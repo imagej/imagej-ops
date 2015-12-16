@@ -33,16 +33,15 @@ package net.imagej.ops.benchmark;
 import com.carrotsearch.junitbenchmarks.BenchmarkOptions;
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
 
-import net.imagej.ops.map.MapIterableIntervalInplaceParallel;
-import net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel;
-import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
+import net.imagej.ops.map.MapIterableToIterableParallel;
+import net.imagej.ops.map.MapIterableToRAIParallel;
+import net.imagej.ops.map.MapParallel;
 import net.imagej.ops.math.ConstantToArrayImage;
 import net.imagej.ops.math.ConstantToArrayImageP;
 import net.imagej.ops.math.ConstantToImageFunctional;
 import net.imagej.ops.math.ConstantToImageInPlace;
 import net.imagej.ops.math.NumericTypeBinaryMath;
-import net.imglib2.img.array.ArrayImg;
-import net.imglib2.img.basictypeaccess.array.ByteArray;
+import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -59,10 +58,8 @@ import org.junit.rules.TestRule;
 @BenchmarkOptions(benchmarkRounds = 20, warmupRounds = 1)
 public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
-	private ArrayImg<ByteType, ByteArray> in;
-	private ArrayImg<ByteType, ByteArray> out;
-	private byte[] arrIn;
-	private byte[] arrOut;
+	private Img<ByteType> in;
+	private Img<ByteType> out;
 
 	/** Needed for JUnit-Benchmarks */
 	@Rule
@@ -71,59 +68,47 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 	/** Sets up test images */
 	@Before
 	public void initImg() {
-		in = generateByteArrayTestImg(true, 5000, 5000);
-		out = generateByteArrayTestImg(false, 5000, 5000);
-		arrIn = in.update(null).getCurrentStorageArray();
-		arrOut = in.update(null).getCurrentStorageArray();
+		in = generateByteTestImg(true, 5000, 5000);
+		out = generateByteTestImg(false, 5000, 5000);
 	}
 
 	@Test
 	public void fTestIterableIntervalMapperP() {
-		ops.run(MapIterableIntervalToIterableIntervalParallel.class, out, in, ops
-			.op(NumericTypeBinaryMath.Add.class, null, NumericType.class,
-				new ByteType((byte) 10)));
+		ops.run(MapIterableToIterableParallel.class, out, in, ops.op(
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTestDefaultMapperP() {
-		ops.run(MapIterableIntervalToRAIParallel.class, out, in, ops.op(
-			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType(
-				(byte) 10)));
+		ops.run(MapIterableToRAIParallel.class, out, in, ops.op(
+			NumericTypeBinaryMath.Add.class, null, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void fTtestAddConstantToImage() {
-		ops.run(ConstantToImageFunctional.Add.class, out, in,
+		ops.run(new ConstantToImageFunctional.Add<ByteType>(), out, in,
 			new ByteType((byte) 10));
 	}
 
 	@Test
 	public void inTestDefaultInplaceMapperP() {
-		ops.run(MapIterableIntervalInplaceParallel.class, in, ops.op(
+		ops.run(MapParallel.class, in, ops.op(
 			AddConstantInplace.class, NumericType.class, new ByteType((byte) 10)));
 	}
 
 	@Test
 	public void inTestAddConstantToImageInPlace() {
-		ops.run(ConstantToImageInPlace.Add.class, in, new ByteType(
+		ops.run(new ConstantToImageInPlace.Add<ByteType>(), in, new ByteType(
 			(byte) 10));
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImage() {
-		ops.run(ConstantToArrayImage.AddByte.class, in, (byte) 10);
+		ops.run(new ConstantToArrayImage.AddByte(), in, (byte) 10);
 	}
 
 	@Test
 	public void inTestAddConstantToArrayByteImageP() {
-		ops.run(ConstantToArrayImageP.AddByte.class, in, (byte) 10);
-	}
-
-	@Test
-	public void testAddConstantToArrayByteImageDirect() {
-
-		for (int i = 0; i < arrIn.length; i++) {
-			arrOut[i] += arrIn[i] + 10;
-		}
+		ops.run(new ConstantToArrayImageP.AddByte(), in, (byte) 10);
 	}
 }

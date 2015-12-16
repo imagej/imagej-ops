@@ -30,10 +30,9 @@
 
 package net.imagej.ops.features.haralick;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.haralick.helper.CoocPXPlusY;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -51,21 +50,21 @@ public class DefaultSumAverage<T extends RealType<T>> extends
 	AbstractHaralickFeature<T>implements Ops.Haralick.SumAverage
 {
 
-	private UnaryFunctionOp<double[][], double[]> coocPXPlusFunc;
+	private FunctionOp<double[][], double[]> coocPXPlusFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocPXPlusFunc = Functions.unary(ops(), CoocPXPlusY.class, double[].class,
+		coocPXPlusFunc = ops().function(CoocPXPlusY.class, double[].class,
 			double[][].class);
 	}
 
 	@Override
-	public void compute1(final IterableInterval<T> input,
+	public void compute(final IterableInterval<T> input,
 		final DoubleType output)
 	{
 		final double[][] matrix = getCooccurrenceMatrix(input);
-		final double[] pxplusy = coocPXPlusFunc.compute1(matrix);
+		final double[] pxplusy = coocPXPlusFunc.compute(matrix);
 
 		final int nrGrayLevels = matrix.length;
 

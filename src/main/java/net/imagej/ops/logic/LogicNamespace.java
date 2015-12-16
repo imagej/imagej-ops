@@ -35,7 +35,10 @@ import java.util.List;
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.logic.BoolType;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
 
@@ -55,6 +58,19 @@ public class LogicNamespace extends AbstractNamespace {
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanAnd.class,
 				a, b);
 		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.logic.RealLogic.And.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType and(final A a, final B b) {
+		final BoolType result =
+			(BoolType) ops().run(net.imagej.ops.logic.RealLogic.And.class,
+				a, b);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.logic.IItoRAIRealLogicComputers.And.class)
+	public <I, O extends RealType<O>> void and(final IterableInterval<I> a, final RandomAccessibleInterval<O> b) {
+		ops().run(net.imagej.ops.logic.IItoRAIRealLogicComputers.And.class, a, b);
 	}
 
 	@OpMethod(op = net.imagej.ops.logic.AndCondition.class)
@@ -120,6 +136,14 @@ public class LogicNamespace extends AbstractNamespace {
 				net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class, a, b);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType equal(final A a, B b) {
+		final BoolType result =
+			(BoolType) ops().run(
+				net.imagej.ops.logic.PrimitiveLogic.BooleanEqual.class, a, b);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerEqual.class)
 	public boolean equal(final int a, final int b) {
@@ -168,6 +192,14 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	// -- greaterThan --
+	
+	@OpMethod(op = net.imagej.ops.logic.RealLogic.GreaterThan.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType greaterThan(final A a, final B b) {
+		final BoolType result =
+			(BoolType) ops().run(net.imagej.ops.logic.RealLogic.GreaterThan.class,
+				a, b);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerGreaterThan.class)
 	public boolean greaterThan(final int a, final int b) {
@@ -281,6 +313,14 @@ public class LogicNamespace extends AbstractNamespace {
 	}
 
 	// -- lessThan --
+	
+	@OpMethod(op = net.imagej.ops.logic.RealLogic.LessThan.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType lessThan(final A a, final B b) {
+		final BoolType result =
+			(BoolType) ops().run(net.imagej.ops.logic.RealLogic.LessThan.class,
+				a, b);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.logic.PrimitiveLogic.IntegerLessThan.class)
 	public boolean lessThan(final int a, final int b) {
@@ -483,6 +523,14 @@ public class LogicNamespace extends AbstractNamespace {
 				a, b);
 		return result;
 	}
+	
+	@OpMethod(op = net.imagej.ops.logic.RealLogic.Or.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType or(final A a, final B b) {
+		final BoolType result =
+			(BoolType) ops().run(net.imagej.ops.logic.RealLogic.Or.class,
+				a, b);
+		return result;
+	}
 
 	@OpMethod(op = net.imagej.ops.logic.OrCondition.class)
 	public <T> BoolType or(final Object in, final Condition<T> c1,
@@ -527,6 +575,14 @@ public class LogicNamespace extends AbstractNamespace {
 	public boolean xor(final boolean a, final boolean b) {
 		final boolean result =
 			(Boolean) ops().run(net.imagej.ops.logic.PrimitiveLogic.BooleanXor.class,
+				a, b);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.logic.RealLogic.XOr.class)
+	public <A extends RealType<A>, B extends RealType<B>> BoolType xor(final A a, final B b) {
+		final BoolType result =
+			(BoolType) ops().run(net.imagej.ops.logic.RealLogic.XOr.class,
 				a, b);
 		return result;
 	}

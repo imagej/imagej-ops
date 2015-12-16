@@ -56,4 +56,11 @@ public abstract class AbstractNamespace extends AbstractContextual implements
 		this.ops = ops;
 	}
 
+	// -- Named methods --
+
+	@Override
+	public void setName(final String name) {
+		throw new UnsupportedOperationException();
+	}
+
 }

@@ -40,12 +40,10 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Identity.class)
-public class DefaultIdentity<A> extends AbstractIdentity<A> implements
-	Ops.Identity
-{
+public class DefaultIdentity<A> extends AbstractIdentity<A> {
 
 	@Override
-	public void mutate(final A input) {
+	public void compute(final A input) {
 		// NB: No implementation needed.
 	}
 
