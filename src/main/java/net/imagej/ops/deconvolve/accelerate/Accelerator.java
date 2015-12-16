@@ -30,6 +30,7 @@
 
 package net.imagej.ops.deconvolve.accelerate;
 
+import net.imagej.ops.Op;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;

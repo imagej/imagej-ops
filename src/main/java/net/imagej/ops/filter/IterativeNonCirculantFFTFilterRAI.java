@@ -30,12 +30,9 @@
 
 package net.imagej.ops.filter;
 
-import org.scijava.Priority;
 import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imglib2.Cursor;
 import net.imglib2.Dimensions;
@@ -60,8 +57,6 @@ import net.imglib2.view.Views;
  * @param <K>
  * @param <C>
  */
-
-
 public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends AbstractIterativeFFTFilterRAI<I, O, K, C>
 {

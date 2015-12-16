@@ -36,6 +36,8 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.deconvolve.accelerate.Accelerator;
+import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.filter.AbstractFFTFilter;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Interval;
@@ -44,9 +46,10 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Richardson Lucy with total variation op that operates on (@link Img)
- * Richardson-Lucy algorithm with total variation regularization for 3D confocal
- * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6
+ * Richardson Lucy with total variation function op that operates on (@link
+ * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
+ * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
+ * Apr; 69(4)- 260-6)
  * 
  * @author bnorthan
  * @param <I>
@@ -92,6 +95,7 @@ public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<
 	 * run RichardsonLucyTVRAI
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
 		RandomAccessibleInterval<K> raiExtendedKernel,
 		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
@@ -100,21 +104,27 @@ public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<
 
 		// create Richardson Lucy TV update op, this will override the base RL
 		// Update.
-		@SuppressWarnings("unchecked")
 		AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp =
-			ops.op(RichardsonLucyTVUpdateRAI.class, output, output,
+			ops.op(RichardsonLucyTVUpdate.class, output, output,
 				regularizationFactor);
 
+		Accelerator<O> accelerator = null;
+
+		if (accelerate == true) {
+			accelerator = ops.op(VectorAccelerator.class, output, getOutFactory());
+		}
+
 		if (nonCirculant == false) {
-			ops().run(RichardsonLucyCirculantRAI.class, output, raiExtendedInput,
+			ops().run(RichardsonLucyRAI.class, output, raiExtendedInput,
 				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
-				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerate);
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp,
+				accelerator);
 		}
 		else {
 
 			ops().run(RichardsonLucyNonCirculantRAI.class, output, raiExtendedInput,
 				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
-				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerate,
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerator,
 				in(), getKernel());
 		}
 	}

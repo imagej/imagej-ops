@@ -30,19 +30,19 @@
 
 package net.imagej.ops.deconvolve;
 
-
 import org.scijava.Priority;
+import org.scijava.app.StatusService;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
+import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Computes Richardson Lucy correction factor for (@link
- * RandomAccessibleInterval) (Lucy, L. B. (1974).
+ * Richardson Lucy algorithm for (@link RandomAccessibleInterval) (Lucy, L. B.
+ * (1974).
  * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
@@ -51,20 +51,44 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = "richardsonlucyupdate",
+
+@Plugin(type = Op.class, name = "richardsonlucy",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyUpdateRAI<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
-	extends AbstractUnaryComputerOp<I, I>
+public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends IterativeCirculantFFTFilterRAI<I, O, K, C>
 {
 
-	/**
-	 * performs update step of the Richardson Lucy Algorithm
-	 */
+	@Parameter(required = false)
+	private StatusService status;
+
 	@Override
-	public void compute1(I correction, I estimate) {
+	public void performIterations() {
 
-		ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
+		createReblurred();
 
+		for (int i = 0; i < getMaxIterations(); i++) {
+
+			System.out.println("RL Iteration: " + i);
+
+			if (status != null) {
+				status.showProgress(i, getMaxIterations());
+			}
+
+			// compute correction factor
+			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(),
+				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+
+			// perform update
+			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+
+			// accelerate
+			if (getAccelerator()!=null) {
+				getAccelerator().Accelerate(getRAIExtendedEstimate());
+			}
+
+			createReblurred();
+
+		}
 	}
 
 }

@@ -32,6 +32,7 @@ package net.imagej.ops.filter;
 
 import org.scijava.plugin.Parameter;
 
+import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -45,12 +46,7 @@ import net.imglib2.view.Views;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI. Boundary
- * conditions are handled by the scheme described at:
- * http://bigwww.epfl.ch/deconvolution/challeng public Interval
- * getImgConvolutionInterval() { return imgConvolutionInterval; } public void
- * setImgConvolutionInterval(Interval imgConvolutionInterval) {
- * this.imgConvolutionInterval = imgConvolutionInterval; }
- * e2013/index.html?p=doc_math_rl)
+ * conditions handled by extending the borders of the RAIs with an {@link OutOfBoundsFactory}.  
  * 
  * @author Brian Northan
  * @param <I>

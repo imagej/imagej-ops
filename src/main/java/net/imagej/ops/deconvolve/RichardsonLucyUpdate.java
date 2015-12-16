@@ -31,18 +31,16 @@
 package net.imagej.ops.deconvolve;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Computes Richardson Lucy correction factor for (@link
+ * Implements update step for Richardson-Lucy algortihm (@link
  * RandomAccessibleInterval) (Lucy, L. B. (1974).
  * "An iterative technique for the rectification of observed distributions".)
  * 
@@ -52,45 +50,19 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Op.class, name = "richardsonlucycorrection",
+@Plugin(type = Op.class, name = "richardsonlucyupdate",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyCorrectionRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractOp
+public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I>
 {
 
-	/** buffer to put correction factor in **/
-	@Parameter
-	RandomAccessibleInterval<O> correction;
-
-	/** oberved image **/
-	@Parameter
-	RandomAccessibleInterval<O> observed;
-
-	/** reblurred (simulated) image **/
-	@Parameter
-	RandomAccessibleInterval<O> reblurred;
-
-	/** buffer fft of reblurred (will be computed) **/
-	@Parameter
-	RandomAccessibleInterval<C> fftBuffer;
-
-	/** fft of kernel (needs to be previously computed) **/
-	@Parameter
-	RandomAccessibleInterval<C> fftKernel;
-
 	/**
-	 * performs one iteration of the Richardson Lucy Algorithm
+	 * performs update step of the Richardson Lucy Algorithm
 	 */
 	@Override
-	public void run() {
+	public void compute1(I correction, I estimate) {
 
-		// divide observed image by reblurred
-		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);
-
-		// correlate with psf to compute the correction factor
-		ops().filter().correlate(correction, reblurred, reblurred, fftBuffer, fftKernel,
-			true, false);
-
+		ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
 	}
 
 }

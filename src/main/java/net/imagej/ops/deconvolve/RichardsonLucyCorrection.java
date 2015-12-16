@@ -31,17 +31,20 @@
 package net.imagej.ops.deconvolve;
 
 import org.scijava.Priority;
-import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
+import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Richardson Lucy Circulant (standard) version
+ * Computes Richardson Lucy correction factor for (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -49,44 +52,45 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-
-@Plugin(type = Op.class, name = "richardsonlucy",
+@Plugin(type = Op.class, name = "richardsonlucycorrection",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyCirculantRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeCirculantFFTFilterRAI<I, O, K, C>
+public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractOp
 {
 
-	@Parameter(required = false)
-	private StatusService status;
+	/** buffer to put correction factor in **/
+	@Parameter
+	RandomAccessibleInterval<O> correction;
 
+	/** oberved image **/
+	@Parameter
+	RandomAccessibleInterval<O> observed;
+
+	/** reblurred (simulated) image **/
+	@Parameter
+	RandomAccessibleInterval<O> reblurred;
+
+	/** buffer fft of reblurred (will be computed) **/
+	@Parameter
+	RandomAccessibleInterval<C> fftBuffer;
+
+	/** fft of kernel (needs to be previously computed) **/
+	@Parameter
+	RandomAccessibleInterval<C> fftKernel;
+
+	/**
+	 * computes the correction factor of the Richardson Lucy Algorithm
+	 */
 	@Override
-	public void performIterations() {
+	public void run() {
 
-		createReblurred();
+		// divide observed image by reblCirculant (standard) versionurred
+		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);
 
-		for (int i = 0; i < getMaxIterations(); i++) {
+		// correlate with psf to compute the correction factor
+		ops().filter().correlate(correction, reblurred, reblurred, fftBuffer,
+			fftKernel, true, false);
 
-			System.out.println("RL Iteration: " + i);
-
-			if (status != null) {
-				status.showProgress(i, getMaxIterations());
-			}
-
-			// compute correction factor
-			ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
-				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
-
-			// perform update
-			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
-
-			// accelerate
-			if (getAccelerate()) {
-				getAccelerator().Accelerate(getRAIExtendedEstimate());
-			}
-
-			createReblurred();
-
-		}
 	}
 
 }

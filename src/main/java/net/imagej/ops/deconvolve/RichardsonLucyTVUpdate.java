@@ -47,10 +47,10 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 /**
- * Richardson-Lucy algorithm with total variation regularization for 3D confocal
- * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6 The
- * div_unit_grad function has been adapted from IOCBIOS, Pearu Peterson
- * https://code.google.com/p/iocbio/
+ * Implements update step for Richardson-Lucy algorithm with total variation
+ * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
+ * Apr; 69(4)- 260-6 The div_unit_grad function has been adapted from IOCBIOS,
+ * Pearu Peterson https://code.google.com/p/iocbio/
  * 
  * @author Brian Northan
  * @param <I>
@@ -60,7 +60,7 @@ import net.imglib2.view.Views;
  */
 @Plugin(type = Op.class, name = "richardsonlucytvupdate",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyTVUpdateRAI<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+public class RichardsonLucyTVUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
 	extends AbstractUnaryComputerOp<I, I>
 {
 
@@ -102,7 +102,8 @@ public class RichardsonLucyTVUpdateRAI<T extends RealType<T>, I extends RandomAc
 	}
 
 	static double hypot3(double a, double b, double c) {
-		// return net.jafama.FastMath.sqrtQuick(a * a + b * b + c * c);
+		// return net.jafama.FastMathcorrection factor.sqrtQuick(a * a + b * b + c *
+		// c);
 		return java.lang.Math.sqrt(a * a + b * b + c * c);
 	}
 

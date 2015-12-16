@@ -34,7 +34,6 @@ import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
@@ -83,17 +82,15 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
 
 	/**
-	 * TODO: make this an op A boolean which indicates w iterOp.run(); hether to
-	 * perform acceleration
+	 * TODO: make this an op?? A boolean which indicates whether to perform
+	 * acceleration
 	 */
 	@Parameter(required = false)
-	private boolean accelerate = false;
+	private Accelerator<O> accelerator;
 
 	private RandomAccessibleInterval<O> raiExtendedReblurred;
 
 	private RandomAccessibleInterval<O> raiExtendedEstimate;
-
-	private Accelerator<O> accelerator = null;
 
 	@Override
 	public void compute1(RandomAccessibleInterval<I> in,
@@ -109,42 +106,11 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 		initializeImages();
 
-		if (getAccelerate()) {
-			accelerator = new VectorAccelerator<O>(this.getImgFactory());
-		}
-
 	}
 
 	abstract protected void initializeImages();
 
 	abstract protected void performIterations();
-	/*
-		protected void performIterations() {
-	
-			createReblurred();
-	
-			for (int i = 0; i < maxIterations; i++) {
-	
-				if (status != null) {
-					status.showProgress(i, maxIterations);
-				}
-	
-				// compute correction factor
-				ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
-					in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
-	
-				// perform update
-				update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
-	
-				// accelerate
-				if (getAccelerate()) {
-					getAccelerator().Accelerate(getRAIExtendedEstimate());
-				}
-	
-				createReblurred();
-	
-			}
-		}*/
 
 	/**
 	 * convolve estimate with kernel to create reblurred
@@ -186,10 +152,6 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 	public void setImgConvolutionInterval(Interval imgConvolutionInterval) {
 		this.imgConvolutionInterval = imgConvolutionInterval;
-	}
-
-	public boolean getAccelerate() {
-		return accelerate;
 	}
 
 	public Accelerator<O> getAccelerator() {

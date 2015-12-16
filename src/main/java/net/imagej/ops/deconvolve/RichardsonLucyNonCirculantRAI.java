@@ -42,8 +42,8 @@ import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
 /**
- * Non-circulant Richardson Lucy. Boundary conditions are handled by the scheme
- * described at:
+ * Non-circulant Richardson Lucy algorithm for (@link RandomAccessibleInterval).
+ * Boundary conditions are handled by the scheme described at:
  * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
  * 
  * @author Brian Northan
@@ -53,7 +53,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 
-@Plugin(type = Op.class, name = "iterativenoncirculant",
+@Plugin(type = Op.class, name = "rlnoncirculant",
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends IterativeNonCirculantFFTFilterRAI<I, O, K, C>
@@ -76,7 +76,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 			}
 
 			// compute correction factor
-			ops().run(RichardsonLucyCorrectionRAI.class, getRAIExtendedReblurred(),
+			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(),
 				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
 
 			// perform update
@@ -87,7 +87,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 				getRAIExtendedEstimate(), getNormalization());
 
 			// accelerate
-			if (getAccelerate()) {
+			if (getAccelerator()!=null) {
 				getAccelerator().Accelerate(getRAIExtendedEstimate());
 			}
 
