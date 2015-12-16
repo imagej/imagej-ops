@@ -70,6 +70,6 @@ public class DefaultNormalizedCentralMoment20<I extends RealType<I>, O extends R
 		double centralMoment20 = centralMoment20Func.calculate(input).getRealDouble();
 
 		output.setReal(centralMoment20 /
-			Math.pow(centralMoment00, 1 + ((2 + 0) / 2)));
+			Math.pow(centralMoment00, 1 + ((2 + 0) / 2.0)));
 	}
 }
