@@ -76,6 +76,6 @@ public class DefaultHuMoment2<I extends RealType<I>, O extends RealType<O>>
 		double n20 = normalizedCentralMoment20Func.compute1(input).getRealDouble();
 		double n02 = normalizedCentralMoment02Func.compute1(input).getRealDouble();
 
-		output.setReal(Math.pow(n20 - n02, 2) - 4 * (Math.pow(n11, 2)));
+		output.setReal(Math.pow(n20 - n02, 2) + 4 * (Math.pow(n11, 2)));
 	}
 }
