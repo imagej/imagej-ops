@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.HybridOp;
+import net.imagej.ops.special.UnaryHybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -45,6 +45,6 @@ import net.imglib2.type.numeric.RealType;
  *            output type
  */
 public interface TamuraFeature<I extends RealType<I>, O extends RealType<O>>
-		extends HybridOp<RandomAccessibleInterval<I>, O> {
+		extends UnaryHybridOp<RandomAccessibleInterval<I>, O> {
 	// NB: marker interface
 }

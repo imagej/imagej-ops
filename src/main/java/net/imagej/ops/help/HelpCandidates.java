@@ -58,7 +58,7 @@ public class HelpCandidates extends AbstractHelp {
 
 	@Override
 	public void run() {
-		help(matcher.findCandidates(ops(), new OpRef<Op>(name, opType)));
+		help(matcher.findCandidates(ops(), new OpRef<>(name, opType, null, null)));
 	}
 
 }

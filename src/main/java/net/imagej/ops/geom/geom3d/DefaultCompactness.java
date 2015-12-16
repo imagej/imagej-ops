@@ -30,10 +30,11 @@
 
 package net.imagej.ops.geom.geom3d;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
@@ -46,25 +47,25 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Compactness.class,
 	label = "Geometric (3D): Compactness", priority = Priority.VERY_HIGH_PRIORITY)
-public class DefaultCompactness extends AbstractFunctionOp<Mesh, DoubleType>
+public class DefaultCompactness extends AbstractUnaryFunctionOp<Mesh, DoubleType>
 	implements Ops.Geometric.Compactness
 {
 
-	private FunctionOp<Mesh, DoubleType> surfacePixel;
+	private UnaryFunctionOp<Mesh, DoubleType> surfacePixel;
 
-	private FunctionOp<Mesh, DoubleType> volume;
+	private UnaryFunctionOp<Mesh, DoubleType> volume;
 
 	@Override
 	public void initialize() {
-		surfacePixel = ops().function(Ops.Geometric.BoundaryPixelCount.class,
+		surfacePixel = Functions.unary(ops(), Ops.Geometric.BoundaryPixelCount.class,
 			DoubleType.class, in());
-		volume = ops().function(Ops.Geometric.Size.class, DoubleType.class, in());
+		volume = Functions.unary(ops(), Ops.Geometric.Size.class, DoubleType.class, in());
 	}
 
 	@Override
-	public DoubleType compute(final Mesh input) {
-		double s3 = Math.pow(surfacePixel.compute(input).get(), 3);
-		double v2 = Math.pow(volume.compute(input).get(), 2);
+	public DoubleType compute1(final Mesh input) {
+		double s3 = Math.pow(surfacePixel.compute1(input).get(), 3);
+		double v2 = Math.pow(volume.compute1(input).get(), 2);
 
 		return new DoubleType((v2 * 36.0 * Math.PI) / s3);
 	}

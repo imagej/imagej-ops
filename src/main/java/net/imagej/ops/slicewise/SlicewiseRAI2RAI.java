@@ -30,10 +30,9 @@
 
 package net.imagej.ops.slicewise;
 
-import net.imagej.ops.AbstractComputerOp;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 
 import org.scijava.Priority;
@@ -41,38 +40,37 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link SlicewiseOp} implementation fo {@link RandomAccessibleInterval} input
- * and {@link RandomAccessibleInterval} output.
+ * {@link SlicewiseOp} implementation for {@link RandomAccessibleInterval} input
+ * and {@link RandomAccessibleInterval} output. </br>
+ * The input {@link RandomAccessibleInterval} will be wrapped into a
+ * {@link Hyperslice}, so that the given Op can compute on a per-slice base.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Slicewise.class, priority = Priority.VERY_HIGH_PRIORITY)
 public class SlicewiseRAI2RAI<I, O> extends
-	AbstractComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 	implements
 	SlicewiseOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter
-	private OpService opService;
-
-	@Parameter
-	private ComputerOp<I, O> op;
+	private UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>> op;
 
 	@Parameter
 	private int[] axisIndices;
-	
+
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<I> input,
+	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		opService.run(Ops.Map.class, new Hyperslice(opService,
-				output, axisIndices,dropSingleDimensions), new Hyperslice(opService,
-				input, axisIndices, dropSingleDimensions), op);
+		ops().run(Ops.Map.class, new Hyperslice<>(ops(), output, axisIndices,
+			dropSingleDimensions), new Hyperslice<>(ops(), input, axisIndices,
+				dropSingleDimensions), op);
 	}
 
 }

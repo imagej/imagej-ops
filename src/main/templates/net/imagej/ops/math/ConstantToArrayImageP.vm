@@ -73,9 +73,6 @@ public final class ConstantToArrayImageP {
 	 */
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 11#else + 10#end)
 	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
-		
-		@Parameter
-		private OpService opService;
 
 		@Parameter(type = ItemIO.BOTH)
 		private ArrayImg<${type.name}Type, ${type.name}Array> image;
@@ -86,7 +83,7 @@ public final class ConstantToArrayImageP {
 		@Override
 		public void run() {
 			final ${type.primitive}[] data = image.update(null).getCurrentStorageArray();
-			opService.run(ChunkerOp.class, new Chunk() {
+			ops().run(ChunkerOp.class, new Chunk() {
 
 				@Override
 				public void execute(final int startIndex, final int stepSize,

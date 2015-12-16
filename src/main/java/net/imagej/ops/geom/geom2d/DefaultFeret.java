@@ -2,36 +2,36 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2015 Board of Regents of  University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that  following conditions are met:
+ * modification, are permitted provided that the following conditions are met:
  * 
- * 1. Redistributions of source code must retain  above copyright notice,
- *    this list of conditions and  following disclaimer.
- * 2. Redistributions in binary form must reproduce  above copyright notice,
- *    this list of conditions and  following disclaimer in  documentation
- *    and/or or materials provided with  distribution.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  * 
- * THIS SOFTWARE IS PROVIDED BY  COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL  COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY ORY OF LIABILITY, WHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR ORWISE)
- * ARISING IN ANY WAY OUT OF  USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
 
 package net.imagej.ops.geom.geom2d;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.util.Pair;
@@ -46,12 +46,12 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Feret.class)
 public class DefaultFeret extends
-	AbstractFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
+	AbstractUnaryFunctionOp<Polygon, Pair<RealLocalizable, RealLocalizable>> implements
 	Ops.Geometric.Feret
 {
 
 	@Override
-	public Pair<RealLocalizable, RealLocalizable> compute(final Polygon input) {
+	public Pair<RealLocalizable, RealLocalizable> compute1(final Polygon input) {
 		double distance = Double.NEGATIVE_INFINITY;
 		int in0 = -1;
 		int in1 = -1;
@@ -76,7 +76,7 @@ public class DefaultFeret extends
 			}
 		}
 
-		return new ValuePair<RealLocalizable, RealLocalizable>(input.getVertices()
+		return new ValuePair<>(input.getVertices()
 			.get(in0), input.getVertices().get(in1));
 	}
 

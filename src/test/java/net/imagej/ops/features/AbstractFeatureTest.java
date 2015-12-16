@@ -27,10 +27,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.features;
 
-import ij.ImagePlus;
-import ij.io.Opener;
+package net.imagej.ops.features;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -64,15 +62,20 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Before;
 import org.scijava.Context;
 
+import ij.ImagePlus;
+import ij.io.Opener;
+
 /**
  * @author Daniel Seebacher (University of Konstanz)
  * @author Andreas Graumann (University of Konstanz)
  */
 public class AbstractFeatureTest extends AbstractOpTest {
 
+	protected static final boolean expensiveTestsEnabled = "enabled".equals(System
+		.getProperty("imagej.ops.expensive.tests"));
+
 	/**
-	 * Really small number, used for assertEquals with floating or double
-	 * values.
+	 * Really small number, used for assertEquals with floating or double values.
 	 */
 	protected static final double SMALL_DELTA = 1e-07;
 
@@ -107,9 +110,9 @@ public class AbstractFeatureTest extends AbstractOpTest {
 
 	@Before
 	public void setup() {
-		ImageGenerator dataGenerator = new ImageGenerator(SEED);
-		long[] dim = new long[] { 100, 100 };
-		long[] dim3 = new long[] { 100, 100, 30 };
+		final ImageGenerator dataGenerator = new ImageGenerator(SEED);
+		final long[] dim = new long[] { 100, 100 };
+		final long[] dim3 = new long[] { 100, 100, 30 };
 
 		empty = dataGenerator.getEmptyUnsignedByteImg(dim);
 		constant = dataGenerator.getConstantUnsignedByteImg(dim, 15);
@@ -135,24 +138,22 @@ public class AbstractFeatureTest extends AbstractOpTest {
 	}
 
 	/**
-	 * 
-	 * Simple class to generate empty, randomly filled or constantly filled
-	 * images of various types.
+	 * Simple class to generate empty, randomly filled or constantly filled images
+	 * of various types.
 	 * 
 	 * @author Daniel Seebacher, University of Konstanz.
 	 * @author Andreas Graumann, University of Konstanz
 	 */
 	class ImageGenerator {
 
-		private Random rand;
+		private final Random rand;
 
 		/**
 		 * Create the image generator with a predefined seed.
 		 * 
-		 * @param seed
-		 *            a seed which is used by the random generator.
+		 * @param seed a seed which is used by the random generator.
 		 */
-		public ImageGenerator(long seed) {
+		public ImageGenerator(final long seed) {
 			this.rand = new Random(seed);
 		}
 
@@ -164,28 +165,25 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		}
 
 		/**
-		 * 
-		 * @param dim
-		 *            a long array with the desired dimensions of the image
+		 * @param dim a long array with the desired dimensions of the image
 		 * @return an empty {@link Img} of {@link UnsignedByteType}.
 		 */
-		public Img<UnsignedByteType> getEmptyUnsignedByteImg(long[] dim) {
+		public Img<UnsignedByteType> getEmptyUnsignedByteImg(final long[] dim) {
 			return ArrayImgs.unsignedBytes(dim);
 		}
 
 		/**
-		 * 
-		 * @param dim
-		 *            a long array with the desired dimensions of the image
+		 * @param dim a long array with the desired dimensions of the image
 		 * @return an {@link Img} of {@link UnsignedByteType} filled with random
 		 *         values.
 		 */
-		public Img<UnsignedByteType> getRandomUnsignedByteImg(long[] dim) {
-			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(dim);
+		public Img<UnsignedByteType> getRandomUnsignedByteImg(final long[] dim) {
+			final ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(
+				dim);
 
-			UnsignedByteType type = img.firstElement();
+			final UnsignedByteType type = img.firstElement();
 
-			ArrayCursor<UnsignedByteType> cursor = img.cursor();
+			final ArrayCursor<UnsignedByteType> cursor = img.cursor();
 			while (cursor.hasNext()) {
 				cursor.next().set(rand.nextInt((int) type.getMaxValue()));
 			}
@@ -194,21 +192,23 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		}
 
 		/**
-		 * 
-		 * @param dim
-		 *            a long array with the desired dimensions of the image
-		 * @return an {@link Img} of {@link UnsignedByteType} filled with a
-		 *         constant value.
+		 * @param dim a long array with the desired dimensions of the image
+		 * @return an {@link Img} of {@link UnsignedByteType} filled with a constant
+		 *         value.
 		 */
-		public Img<UnsignedByteType> getConstantUnsignedByteImg(long[] dim, int constant) {
-			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(dim);
+		public Img<UnsignedByteType> getConstantUnsignedByteImg(final long[] dim,
+			final int constant)
+		{
+			final ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(
+				dim);
 
-			UnsignedByteType type = img.firstElement();
+			final UnsignedByteType type = img.firstElement();
 			if (constant < type.getMinValue() || constant >= type.getMaxValue()) {
-				throw new IllegalArgumentException("Can't create image for constant [" + constant + "]");
+				throw new IllegalArgumentException("Can't create image for constant [" +
+					constant + "]");
 			}
 
-			ArrayCursor<UnsignedByteType> cursor = img.cursor();
+			final ArrayCursor<UnsignedByteType> cursor = img.cursor();
 			while (cursor.hasNext()) {
 				cursor.next().set(constant);
 			}
@@ -217,29 +217,32 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		}
 
 		/**
-		 * 
 		 * @param dim
 		 * @param radii
 		 * @return an {@link Img} of {@link BitType} filled with a ellipse
 		 */
-		public Img<UnsignedByteType> getEllipsedBitImage(long[] dim, double[] radii, double[] offset) {
+		public Img<UnsignedByteType> getEllipsedBitImage(final long[] dim,
+			final double[] radii, final double[] offset)
+		{
 
 			// create empty bittype image with desired dimensions
-			ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(dim);
+			final ArrayImg<UnsignedByteType, ByteArray> img = ArrayImgs.unsignedBytes(
+				dim);
 
 			// create ellipse
-			EllipseRegionOfInterest ellipse = new EllipseRegionOfInterest();
+			final EllipseRegionOfInterest ellipse = new EllipseRegionOfInterest();
 			ellipse.setRadii(radii);
 
 			// set origin in the center of image
-			double[] origin = new double[dim.length];
+			final double[] origin = new double[dim.length];
 			for (int i = 0; i < dim.length; i++)
 				origin[i] = dim[i] / 2;
 			ellipse.setOrigin(origin);
 
 			// get iterable intervall and cursor of ellipse
-			IterableInterval<UnsignedByteType> ii = ellipse.getIterableIntervalOverROI(img);
-			Cursor<UnsignedByteType> cursor = ii.cursor();
+			final IterableInterval<UnsignedByteType> ii = ellipse
+				.getIterableIntervalOverROI(img);
+			final Cursor<UnsignedByteType> cursor = ii.cursor();
 
 			// fill image with ellipse
 			while (cursor.hasNext()) {
@@ -251,55 +254,77 @@ public class AbstractFeatureTest extends AbstractOpTest {
 		}
 	}
 
-	protected LabelRegion<?> createLabelRegion2D() throws MalformedURLException, IOException {
-		// read simple polygon image
-		BufferedImage read = ImageIO.read(AbstractFeatureTest.class.getResourceAsStream("cZgkFsK.png"));
+	protected static Img<FloatType> getTestImage2D() {
+		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
+			: "cZgkFsK.png";
+		return ImageJFunctions.convertFloat(new Opener().openImage(
+			AbstractFeatureTest.class.getResource(imageName).getPath()));
+	}
 
-		ImgLabeling<String, IntType> img = new ImgLabeling<String, IntType>(
-				ArrayImgs.ints(read.getWidth(), read.getHeight()));
+	protected static LabelRegion<String> createLabelRegion2D()
+		throws MalformedURLException, IOException
+	{
+		final String imageName = expensiveTestsEnabled ? "cZgkFsK_expensive.png"
+			: "cZgkFsK.png";
+		// read simple polygon image
+		final BufferedImage read = ImageIO.read(AbstractFeatureTest.class
+			.getResourceAsStream(imageName));
+
+		final ImgLabeling<String, IntType> img = new ImgLabeling<>(ArrayImgs.ints(
+			read.getWidth(), read.getHeight()));
 
 		// at each black pixel of the polygon add a "1" label.
-		RandomAccess<LabelingType<String>> randomAccess = img.randomAccess();
+		final RandomAccess<LabelingType<String>> randomAccess = img.randomAccess();
 		for (int y = 0; y < read.getHeight(); y++) {
 			for (int x = 0; x < read.getWidth(); x++) {
 				randomAccess.setPosition(new int[] { x, y });
-				Color c = new Color(read.getRGB(x, y));
+				final Color c = new Color(read.getRGB(x, y));
 				if (c.getRed() == Color.black.getRed()) {
 					randomAccess.get().add("1");
 				}
 			}
 		}
 
-		LabelRegions<String> labelRegions = new LabelRegions<String>(img);
+		final LabelRegions<String> labelRegions = new LabelRegions<>(img);
 		return labelRegions.getLabelRegion("1");
 
 	}
 
-	protected static LabelRegion<String> createLabelRegion3D() {
-
-	final Opener o = new Opener();
-	final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(
-		"3d_geometric_features_testlabel.tif").getPath());
-
-	final ImgLabeling<String, IntType> labeling =
-		new ImgLabeling<String, IntType>(ArrayImgs.ints(104, 102, 81));
-
-	final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
-	final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
-	final Cursor<FloatType> c = img.cursor();
-	while (c.hasNext()) {
-		final FloatType item = c.next();
-		final int[] pos = new int[3];
-		c.localize(pos);
-		ra.setPosition(pos);
-		if (item.get() > 0) {
-			ra.get().add("1");
-		}
+	protected static Img<FloatType> getTestImage3D() {
+		final String imageName = expensiveTestsEnabled
+			? "3d_geometric_features_testlabel_expensive.tif"
+			: "3d_geometric_features_testlabel.tif";
+		return ImageJFunctions.convertFloat(new Opener().openImage(
+			AbstractFeatureTest.class.getResource(imageName).getPath()));
 	}
-	final LabelRegions<String> labelRegions = new LabelRegions<String>(
-		labeling);
 
-	return labelRegions.getLabelRegion("1");
+	protected static LabelRegion<String> createLabelRegion3D() {
+		final String imageName = expensiveTestsEnabled
+			? "3d_geometric_features_testlabel_expensive.tif"
+			: "3d_geometric_features_testlabel.tif";
 
-}
+		final Opener o = new Opener();
+		final ImagePlus imp = o.openImage(AbstractFeatureTest.class.getResource(
+			imageName).getPath());
+
+		final ImgLabeling<String, IntType> labeling = new ImgLabeling<>(ArrayImgs
+			.ints(104, 102, 81));
+
+		final RandomAccess<LabelingType<String>> ra = labeling.randomAccess();
+		final Img<FloatType> img = ImageJFunctions.convertFloat(imp);
+		final Cursor<FloatType> c = img.cursor();
+		while (c.hasNext()) {
+			final FloatType item = c.next();
+			final int[] pos = new int[3];
+			c.localize(pos);
+			ra.setPosition(pos);
+			if (item.get() > 0) {
+				ra.get().add("1");
+			}
+		}
+		final LabelRegions<String> labelRegions = new LabelRegions<>(labeling);
+
+		return labelRegions.getLabelRegion("1");
+
+	}
 }

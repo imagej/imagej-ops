@@ -32,7 +32,7 @@ package net.imagej.ops.slicewise;
 
 import java.util.Iterator;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imglib2.AbstractInterval;
 import net.imglib2.Cursor;
@@ -52,20 +52,20 @@ import net.imglib2.util.Intervals;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public class Hyperslice extends AbstractInterval implements
-	IterableInterval<RandomAccessibleInterval<?>>
+public class Hyperslice<T> extends AbstractInterval implements
+	IterableInterval<RandomAccessibleInterval<T>>
 {
 
 	private final Interval slice;
 
-	private final OpService opService;
+	private final OpEnvironment opEnvironment;
 
 	private final RandomAccessibleInterval<?> source;
 
 	private final boolean dropSingleDimensions;
 
 	/**
-	 * @param opService {@link OpService} used
+	 * @param opEnvironment {@link OpEnvironment} used
 	 * @param source {@link RandomAccessibleInterval} which will be virtually
 	 *          cropped
 	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
@@ -73,8 +73,8 @@ public class Hyperslice extends AbstractInterval implements
 	 * @param dropSingleDimensions if true, dimensions of size one will be
 	 *          discarded in the hyper-sliced images
 	 */
-	public Hyperslice(final OpService opService,
-		final RandomAccessibleInterval<?> source, final int[] axesOfInterest,
+	public Hyperslice(final OpEnvironment opEnvironment,
+		final RandomAccessibleInterval<T> source, final int[] axesOfInterest,
 		final boolean dropSingleDimensions)
 	{
 		super(initIntervals(source, axesOfInterest));
@@ -90,22 +90,22 @@ public class Hyperslice extends AbstractInterval implements
 		}
 
 		this.slice = new FinalInterval(sliceMin, sliceMax);
-		this.opService = opService;
+		this.opEnvironment = opEnvironment;
 		this.source = source;
 		this.dropSingleDimensions = dropSingleDimensions;
 	}
 
 	/**
-	 * @param opService {@link OpService} used
+	 * @param opEnvironment {@link OpEnvironment} used
 	 * @param source {@link RandomAccessibleInterval} which will be virtually
 	 *          cropped
 	 * @param axesOfInterest axes which define a plane, cube, hypercube, ...! All
 	 *          other axes will be iterated.
 	 */
-	public Hyperslice(final OpService opService,
-		final RandomAccessibleInterval<?> source, final int[] axesOfInterest)
+	public Hyperslice(final OpEnvironment opEnvironment,
+		final RandomAccessibleInterval<T> source, final int[] axesOfInterest)
 	{
-		this(opService, source, axesOfInterest, true);
+		this(opEnvironment, source, axesOfInterest, true);
 	}
 
 	// init method
@@ -131,12 +131,12 @@ public class Hyperslice extends AbstractInterval implements
 	}
 
 	@Override
-	public Cursor<RandomAccessibleInterval<?>> cursor() {
-		return new HyperSliceCursor(source, opService, this, slice);
+	public Cursor<RandomAccessibleInterval<T>> cursor() {
+		return new HyperSliceCursor(source, opEnvironment, this, slice);
 	}
 
 	@Override
-	public Cursor<RandomAccessibleInterval<?>> localizingCursor() {
+	public Cursor<RandomAccessibleInterval<T>> localizingCursor() {
 		return cursor();
 	}
 
@@ -146,7 +146,7 @@ public class Hyperslice extends AbstractInterval implements
 	}
 
 	@Override
-	public RandomAccessibleInterval<?> firstElement() {
+	public RandomAccessibleInterval<T> firstElement() {
 		return cursor().next();
 	}
 
@@ -156,7 +156,7 @@ public class Hyperslice extends AbstractInterval implements
 	}
 
 	@Override
-	public Iterator<RandomAccessibleInterval<?>> iterator() {
+	public Iterator<RandomAccessibleInterval<T>> iterator() {
 		return cursor();
 	}
 
@@ -166,21 +166,21 @@ public class Hyperslice extends AbstractInterval implements
 	 * @author Christian Dietz (University of Konstanz)
 	 */
 	private class HyperSliceCursor extends IntervalIterator implements
-		Cursor<RandomAccessibleInterval<?>>
+		Cursor<RandomAccessibleInterval<T>>
 	{
 
 		private final long[] tmpPosition;
-		private final OpService opService;
+		private final OpEnvironment environment;
 		private final RandomAccessibleInterval<?> src;
 		private final long[] sliceMax;
 		private final long[] sliceMin;
 
 		public HyperSliceCursor(final RandomAccessibleInterval<?> src,
-			final OpService service, final Interval fixedAxes, final Interval slice)
+			final OpEnvironment environment, final Interval fixedAxes, final Interval slice)
 		{
 			super(fixedAxes);
 
-			this.opService = service;
+			this.environment = environment;
 			this.src = src;
 			this.tmpPosition = new long[fixedAxes.numDimensions()];
 			this.sliceMax = new long[slice.numDimensions()];
@@ -193,7 +193,7 @@ public class Hyperslice extends AbstractInterval implements
 		private HyperSliceCursor(final HyperSliceCursor cursor) {
 			super(cursor);
 
-			this.opService = cursor.opService;
+			this.environment = cursor.environment;
 			this.src = cursor.src;
 			this.sliceMax = cursor.sliceMax;
 			this.sliceMin = cursor.sliceMin;
@@ -203,28 +203,29 @@ public class Hyperslice extends AbstractInterval implements
 			jumpFwd(cursor.index);
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		public RandomAccessibleInterval<?> get() {
+		public RandomAccessibleInterval<T> get() {
 			localize(tmpPosition);
 
-			final long[] max = tmpPosition.clone();
-			final long[] min = tmpPosition.clone();
+			final long[] maxPos = tmpPosition.clone();
+			final long[] minPos = tmpPosition.clone();
 			for (int d = 0; d < max.length; d++) {
-				max[d] += sliceMax[d];
-				min[d] += sliceMin[d];
+				maxPos[d] += sliceMax[d];
+				minPos[d] += sliceMin[d];
 			}
 
-			return (RandomAccessibleInterval<?>) opService.run(Ops.Image.Crop.class,
-				src, new FinalInterval(min, max), dropSingleDimensions);
+			return (RandomAccessibleInterval<T>) environment.run(Ops.Image.Crop.class,
+				src, new FinalInterval(minPos, maxPos), dropSingleDimensions);
 		}
 
 		@Override
-		public Sampler<RandomAccessibleInterval<?>> copy() {
+		public Sampler<RandomAccessibleInterval<T>> copy() {
 			return copyCursor();
 		}
 
 		@Override
-		public RandomAccessibleInterval<?> next() {
+		public RandomAccessibleInterval<T> next() {
 			fwd();
 			return get();
 		}
@@ -235,7 +236,7 @@ public class Hyperslice extends AbstractInterval implements
 		}
 
 		@Override
-		public Cursor<RandomAccessibleInterval<?>> copyCursor() {
+		public Cursor<RandomAccessibleInterval<T>> copyCursor() {
 			return new HyperSliceCursor(this);
 		}
 	}

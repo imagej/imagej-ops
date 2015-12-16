@@ -30,9 +30,9 @@
 
 package net.imagej.ops.geom;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;
@@ -47,11 +47,11 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Geometric.Centroid.class, priority = 2)
 public class CentroidLabelRegion extends
-	AbstractFunctionOp<LabelRegion<?>, RealLocalizable> implements Ops.Geometric.Centroid
+	AbstractUnaryFunctionOp<LabelRegion<?>, RealLocalizable> implements Ops.Geometric.Centroid
 {
 
 	@Override
-	public RealLocalizable compute(final LabelRegion<?> input) {
+	public RealLocalizable compute1(final LabelRegion<?> input) {
 
 		return new RealPoint(input.getCenterOfMass());
 	}

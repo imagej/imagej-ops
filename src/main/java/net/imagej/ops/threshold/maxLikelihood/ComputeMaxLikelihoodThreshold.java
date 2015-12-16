@@ -53,7 +53,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.MaxLikelihood.class)
 public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.MaxLikelihood
+{
 
 	private static final int MAX_ATTEMPTS = 10000;
 
@@ -97,7 +98,7 @@ public class ComputeMaxLikelihoodThreshold<T extends RealType<T>> extends
 
 		// % The initial estimate for the threshold is found with the MINIMUM
 		// % algorithm.
-		final ComputeMinimumThreshold<T> method = new ComputeMinimumThreshold<T>();
+		final ComputeMinimumThreshold<T> method = new ComputeMinimumThreshold<>();
 		int T = (int) method.computeBin(hist);
 
 		double eps = 0.0000001;

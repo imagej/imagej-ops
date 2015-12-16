@@ -30,9 +30,9 @@
 
 package net.imagej.ops.filter.convolve;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;
@@ -51,7 +51,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Convolve.class)
 public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O extends RealType<O>>
 	extends
-	AbstractComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>
+	AbstractUnaryComputerOp<RandomAccessible<I>, RandomAccessibleInterval<O>>
 	implements Ops.Filter.Convolve, Contingent
 {
 
@@ -59,7 +59,7 @@ public class ConvolveNaive<I extends RealType<I>, K extends RealType<K>, O exten
 	private RandomAccessibleInterval<K> kernel;
 
 	@Override
-	public void compute(final RandomAccessible<I> input,
+	public void compute1(final RandomAccessible<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
 		// TODO: try a decomposition of the kernel into n 1-dim kernels

@@ -35,10 +35,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.junit.Test;
 import org.scijava.InstantiableException;
+import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.module.Module;
 import org.scijava.plugin.Attr;
@@ -153,7 +156,7 @@ public class OpServiceTest extends AbstractOpTest {
 		assertTrue(Double.isInfinite(value.get()));
 	}
 
-	/** Tests {@link OpService#run(String, Object...)}. */
+	/** Tests {@link OpService#run(String, Object...)} with op aliases. */
 	@Test
 	public void testAliases() {
 		final DoubleType value = new DoubleType(123.456);
@@ -195,6 +198,7 @@ public class OpServiceTest extends AbstractOpTest {
 		assertSame(Captain.class, op.getClass());
 	}
 
+	/** Tests that all ops can be successfully instantiated. */
 	@Test
 	public void testInstantiation() {
 		int errors = 0;
@@ -210,13 +214,30 @@ public class OpServiceTest extends AbstractOpTest {
 		assertEquals(0, errors);
 	}
 
+	/** Tests {@link OpService#ops()}. */
+	@Test
+	public void testOps() {
+		final Collection<String> opList = ops.ops();
+		assertTrue(opList.size() > 250);
+		final String[] knownOps =
+			{ "eval", "map", "math.abs", "math.add", "math.sqrt", "stats.mean" };
+		for (String op : knownOps) {
+			assertTrue(op + " is missing", opList.contains(op));
+		}
+	}
+
+	// -- Helper classes --
+
 	/** A test {@link Op}. */
 	@Plugin(type = Op.class, name = "test.infinity",
 		attrs = { @Attr(name = "aliases", value = "inf, infin") })
-	public static class InfinityOp extends AbstractInplaceOp<DoubleType> {
+	public static class InfinityOp extends AbstractOp {
+
+		@Parameter(type = ItemIO.BOTH)
+		private DoubleType arg;
 
 		@Override
-		public void compute(final DoubleType arg) {
+		public void run() {
 			arg.set(Double.POSITIVE_INFINITY);
 		}
 	}

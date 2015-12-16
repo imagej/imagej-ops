@@ -49,7 +49,7 @@ public class MeanTest extends AbstractOpTest {
 
 	@Test
 	public void testMean() {
-		final Img<ByteType> image = generateByteTestImg(true, 40, 50);
+		final Img<ByteType> image = generateByteArrayTestImg(true, 40, 50);
 		final DoubleType mean = new DoubleType();
 		ops.stats().mean(mean, image);
 

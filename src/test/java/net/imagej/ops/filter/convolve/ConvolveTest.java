@@ -173,8 +173,7 @@ public class ConvolveTest extends AbstractOpTest {
 		for (int d = 0; d < img.numDimensions(); d++)
 			center.setPosition(img.dimension(d) / 2, d);
 
-		HyperSphere<FloatType> hyperSphere =
-			new HyperSphere<FloatType>(img, center, 2);
+		HyperSphere<FloatType> hyperSphere = new HyperSphere<>(img, center, 2);
 
 		for (final FloatType value : hyperSphere) {
 			value.setReal(1);

@@ -32,7 +32,7 @@ package net.imagej.ops.create.labelingMapping;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Output;
+import net.imagej.ops.special.Output;
 import net.imglib2.roi.labeling.LabelingMapping;
 
 import org.scijava.ItemIO;
@@ -58,7 +58,7 @@ public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
 
 	@Override
 	public void run() {
-		output = new LabelingMapping<L>(ops().create().integerType(maxNumSets));
+		output = new LabelingMapping<>(ops().create().integerType(maxNumSets));
 	}
 
 	@Override

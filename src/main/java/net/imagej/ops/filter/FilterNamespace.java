@@ -33,13 +33,13 @@ package net.imagej.ops.filter;
 import java.util.List;
 
 import net.imagej.ops.AbstractNamespace;
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.gauss.DefaultGaussRAI;
 import net.imagej.ops.filter.gauss.GaussRAISingleSigma;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -758,10 +758,10 @@ public class FilterNamespace extends AbstractNamespace {
 		RandomAccessibleInterval<T>
 		dog(
 			final RandomAccessibleInterval<T> in,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -778,10 +778,10 @@ public class FilterNamespace extends AbstractNamespace {
 		dog(
 			final RandomAccessibleInterval<T> out,
 			final RandomAccessibleInterval<T> in,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
@@ -798,10 +798,10 @@ public class FilterNamespace extends AbstractNamespace {
 		dog(
 			final RandomAccessibleInterval<T> out,
 			final RandomAccessibleInterval<T> in,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
-			final ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
-			final FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator,
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss1,
+			final UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> gauss2,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> outputCreator,
+			final UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> tmpCreator,
 			final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac)
 	{
 		@SuppressWarnings("unchecked")

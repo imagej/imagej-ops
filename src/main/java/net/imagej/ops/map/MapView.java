@@ -30,30 +30,31 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 
 /**
- * A {@link MapOp} which virtually converts entries in I and O from A to B.
+ * A {@link MapComputer} {@link UnaryFunctionOp} which converts entries on
+ * demand by wrapping in a thin "view" data structure.
  *
  * @author Christian Dietz (University of Konstanz)
- * @param <A> type to be converted to <B>
- * @param <B> result of conversion
- * @param <I> holding <A>s
- * @param <O> type of resulting output
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
+ * @param <PI> producer of inputs
+ * @param <PO> producer of outputs
  */
-public interface MapView<A, B, I, O> extends MapOp<A, B, ComputerOp<A, B>>,
-	FunctionOp<I, O>
+public interface MapView<EI, EO, PI, PO> extends
+	MapComputer<EI, EO, UnaryComputerOp<EI, EO>>, UnaryFunctionOp<PI, PO>
 {
 
 	/**
 	 * @return type of resulting converted output
 	 */
-	B getType();
+	EO getType();
 
 	/**
 	 * @param type of resulting converted output
 	 */
-	void setType(B type);
+	void setType(EO type);
 
 }

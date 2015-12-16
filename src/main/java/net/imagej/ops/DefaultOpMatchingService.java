@@ -40,7 +40,6 @@ import net.imagej.ops.OpCandidate.StatusCode;
 
 import org.scijava.Context;
 import org.scijava.InstantiableException;
-import org.scijava.command.CommandInfo;
 import org.scijava.convert.ConvertService;
 import org.scijava.log.LogService;
 import org.scijava.module.Module;
@@ -115,11 +114,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<OpCandidate<OP>> findCandidates(
 		final OpEnvironment ops, final OpRef<OP> ref)
 	{
-		final ArrayList<OpCandidate<OP>> candidates =
-			new ArrayList<OpCandidate<OP>>();
-		for (final CommandInfo info : ops.infos()) {
+		final ArrayList<OpCandidate<OP>> candidates = new ArrayList<>();
+		for (final OpInfo info : ops.infos()) {
 			if (isCandidate(info, ref)) {
-				candidates.add(new OpCandidate<OP>(ops, ref, info));
+				candidates.add(new OpCandidate<>(ops, ref, info));
 			}
 		}
 		return candidates;
@@ -129,11 +127,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> List<Module> findMatches(
 		final List<OpCandidate<OP>> candidates)
 	{
-		final ArrayList<Module> matches = new ArrayList<Module>();
+		final ArrayList<Module> matches = new ArrayList<>();
 
 		double priority = Double.NaN;
 		for (final OpCandidate<?> candidate : candidates) {
-			final ModuleInfo info = candidate.getInfo();
+			final ModuleInfo info = candidate.cInfo();
 			final double p = info.getPriority();
 			if (p != priority && !matches.isEmpty()) {
 				// NB: Lower priority was reached; stop looking for any more matches.
@@ -161,7 +159,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	public <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate) {
 		if (!valid(candidate)) return false;
 		final Object[] args = padArgs(candidate);
-		return args == null ? false : typesMatch(candidate, args);
+		return args == null ? false : typesMatch(candidate, args) < 0;
 	}
 
 	@Override
@@ -176,7 +174,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	@Override
 	public <OP extends Op> Object[] padArgs(final OpCandidate<OP> candidate) {
 		int inputCount = 0, requiredCount = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			inputCount++;
 			if (item.isRequired()) requiredCount++;
 		}
@@ -204,7 +202,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final int optionalsToFill = optionalCount - argsToPad;
 		final Object[] paddedArgs = new Object[inputCount];
 		int argIndex = 0, paddedIndex = 0, optionalIndex = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
+		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
 			if (!item.isRequired() && optionalIndex++ >= optionalsToFill) {
 				// skip this optional parameter (pad with null)
 				paddedIndex++;
@@ -218,18 +216,18 @@ public class DefaultOpMatchingService extends AbstractService implements
 	// -- Helper methods --
 
 	/** Helper method of {@link #findCandidates}. */
-	private <OP extends Op> boolean isCandidate(final CommandInfo info,
+	private <OP extends Op> boolean isCandidate(final OpInfo info,
 		final OpRef<OP> ref)
 	{
-		if (!nameMatches(info, ref.getName())) return false;
+		if (!info.nameMatches(ref.getName())) return false;
 
 		// the name matches; now check the class
 		final Class<?> opClass;
 		try {
-			opClass = info.loadClass();
+			opClass = info.cInfo().loadClass();
 		}
 		catch (final InstantiableException exc) {
-			log.error("Invalid op: " + info.getClassName());
+			log.error("Invalid op: " + info.cInfo().getClassName());
 			return false;
 		}
 
@@ -243,7 +241,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * </p>
 	 */
 	private <OP extends Op> boolean valid(final OpCandidate<OP> candidate) {
-		if (candidate.getInfo().isValid()) return true;
+		if (candidate.cInfo().isValid()) return true;
 		candidate.setStatus(StatusCode.INVALID_MODULE);
 		return false;
 	}
@@ -256,11 +254,11 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 */
 	private boolean outputsMatch(final OpCandidate<?> candidate) {
 		final Collection<? extends Class<?>> outTypes =
-			candidate.getRef().getOutputs();
+			candidate.getRef().getOutTypes();
 		if (outTypes == null) return true; // no constraints on output types
 
 		final Iterator<ModuleItem<?>> outItems =
-			candidate.getInfo().outputs().iterator();
+			candidate.cInfo().outputs().iterator();
 		for (final Class<?> outType : outTypes) {
 			if (!outItems.hasNext()) {
 				candidate.setStatus(StatusCode.TOO_FEW_OUTPUTS);
@@ -279,8 +277,10 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object[] args)
 	{
 		// check that each parameter is compatible with its argument
-		if (!typesMatch(candidate, args)) {
-			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH);
+		final int badIndex = typesMatch(candidate, args);
+		if (badIndex >= 0) {
+			final String message = typeClashMessage(candidate, args, badIndex);
+			candidate.setStatus(StatusCode.ARG_TYPES_DO_NOT_MATCH, message);
 			return null;
 		}
 
@@ -306,44 +306,31 @@ public class DefaultOpMatchingService extends AbstractService implements
 	 * Checks that each parameter is type-compatible with its corresponding
 	 * argument.
 	 */
-	private <OP extends Op> boolean typesMatch(final OpCandidate<OP> candidate,
+	private <OP extends Op> int typesMatch(final OpCandidate<OP> candidate,
 		final Object[] args)
 	{
 		int i = 0;
-		for (final ModuleItem<?> item : candidate.getInfo().inputs()) {
-			final Object arg = args[i++];
-			if (!canAssign(candidate, arg, item)) return false;
+		for (final ModuleItem<?> item : candidate.cInfo().inputs()) {
+			if (!canAssign(candidate, args[i], item)) return i;
+			i++;
 		}
-		return true;
+		return -1;
 	}
 
-	/** Helper method of {@link #isCandidate}. */
-	private boolean nameMatches(final ModuleInfo info, final String name) {
-		if (name == null) return true; // not filtering on name
-
-		// check if name matches exactly
-		final String infoName = OpUtils.getName(info);
-		if (nameMatches(infoName, name)) return true;
-
-		// check for aliases
-		final String[] aliases = OpUtils.getAliases(info);
-		if (aliases != null) {
-			for (final String a : aliases) {
-				if (nameMatches(a, name)) return true;
+	/** Helper method of {@link #match(OpCandidate, Object[])}. */
+	private String typeClashMessage(final OpCandidate<?> candidate,
+		final Object[] args, final int index)
+	{
+		int i = 0;
+		for (final ModuleItem<?> item : candidate.opInfo().cInfo().inputs()) {
+			if (i++ == index) {
+				final Object arg = args[index];
+				final String argType = arg == null ? "null" : arg.getClass().getName();
+				final Type inputType = item.getGenericType();
+				return index + ": cannot coerce " + argType + " -> " + inputType;
 			}
 		}
-
-		return false;
-	}
-
-	/** Helper method of {@link #nameMatches(ModuleInfo, String)}. */
-	private boolean nameMatches(final String opName, final String name) {
-		if (opName == null) return false;
-		if (name.equals(opName)) return true;
-
-		// check if name matches w/o namespace (e.g., 'add' matches 'math.add')
-		final int dot = opName.lastIndexOf(".");
-		return dot >= 0 && name.equals(opName.substring(dot + 1));
+		throw new IllegalArgumentException("Invalid index: " + index);
 	}
 
 	/** Helper method of {@link #match(OpCandidate, Object[])}. */
@@ -351,7 +338,7 @@ public class DefaultOpMatchingService extends AbstractService implements
 		final Object... args)
 	{
 		// create the module
-		final Module module = moduleService.createModule(candidate.getInfo());
+		final Module module = moduleService.createModule(candidate.cInfo());
 
 		// unwrap the created op
 		final Op op = OpUtils.unwrap(module, candidate.getRef());

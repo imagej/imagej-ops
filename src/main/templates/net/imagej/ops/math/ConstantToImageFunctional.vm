@@ -30,8 +30,8 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -58,14 +58,14 @@ public final class ConstantToImageFunctional {
 
 	@Plugin(type = ${iface}.class, priority = Priority.VERY_LOW_PRIORITY)
 	public static class ${op.name}<T extends NumericType<T>> extends
-			AbstractComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
+			AbstractUnaryComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
 			implements ${iface} {
 
 		@Parameter
 		private T value;
 
 		@Override
-		public void compute(final IterableInterval<T> input,
+		public void compute1(final IterableInterval<T> input,
 				final RandomAccessibleInterval<T> output) {
 			final Cursor<T> c = input.localizingCursor();
 			final RandomAccess<T> ra = output.randomAccess();

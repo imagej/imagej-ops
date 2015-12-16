@@ -56,7 +56,7 @@ public class MapViewTest extends AbstractOpTest {
 	@Before
 	public void init() {
 		final long[] dims = new long[] { 10, 10 };
-		in = generateByteTestImg(false, dims);
+		in = generateByteArrayTestImg(false, dims);
 		op =
 			ops.op(NumericTypeBinaryMath.Add.class, null, NumericType.class,
 				new ByteType((byte) 10));
@@ -66,7 +66,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testRandomAccessibleView() {
 		@SuppressWarnings("unchecked")
 		final RandomAccessible<ByteType> res =
-			(RandomAccessible<ByteType>) ops.run(MapConvertRandomAccessToRandomAccess.class, in, op,
+			(RandomAccessible<ByteType>) ops.run(MapViewRandomAccessToRandomAccess.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable =
@@ -81,7 +81,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testRandomAccessibleIntervalView() {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<ByteType> res =
-			(RandomAccessibleInterval<ByteType>) ops.run(MapConvertRAIToRAI.class, in, op,
+			(RandomAccessibleInterval<ByteType>) ops.run(MapViewRAIToRAI.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable = Views.iterable(res).cursor();
@@ -95,7 +95,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testIterableIntervalView() {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<ByteType> res =
-			(IterableInterval<ByteType>) ops.run(MapIterableIntervalToView.class, in, op,
+			(IterableInterval<ByteType>) ops.run(MapViewIterableIntervalToIterableInterval.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable = res.cursor();

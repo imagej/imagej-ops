@@ -30,19 +30,19 @@
 
 package net.imagej.ops.bufferfactories;
 
-import net.imagej.ops.BufferFactory;
+import net.imagej.ops.special.UnaryOutputFactory;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.type.Type;
 
 /**
- * {@link BufferFactory} used to create an empty output {@link Img} of type <V>
+ * {@link UnaryOutputFactory} used to create an empty output {@link Img} of type <V>
  * and the dimensionality of the input {@link Img}
  * 
  * @author Christian Dietz (University of Konstanz)
  */
 public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
-	BufferFactory<Img<T>, Img<V>>
+	UnaryOutputFactory<Img<T>, Img<V>>
 {
 
 	private final V resType;
@@ -55,7 +55,7 @@ public class ImgImgFactory<T extends Type<T>, V extends Type<V>> implements
 	}
 
 	@Override
-	public Img<V> createBuffer(final Img<T> input) {
+	public Img<V> createOutput(final Img<T> input) {
 		try {
 			return input.factory().imgFactory(resType).create(input, resType);
 		}

@@ -52,7 +52,7 @@ public class ScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 	protected double factor;
 
 	@Override
-	public void compute(final I input, final O output) {
+	public void compute1(final I input, final O output) {
 		output.setReal((input.getRealDouble() - inMin) / factor + outMin);
 	}
 

@@ -48,7 +48,7 @@ public class DefaultMaxProbability<T extends RealType<T>> extends
 		AbstractHaralickFeature<T> implements Ops.Haralick.MaxProbability {
 
 	@Override
-	public void compute(final IterableInterval<T> input, final DoubleType output) {
+	public void compute1(final IterableInterval<T> input, final DoubleType output) {
 		final double[][] matrix = getCooccurrenceMatrix(input);
 
 		final double nrGreyLevel = matrix.length;

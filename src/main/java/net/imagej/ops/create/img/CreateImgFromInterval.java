@@ -30,8 +30,8 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY)
 public class CreateImgFromInterval<T extends Type<T>> extends
-	AbstractFunctionOp<Interval, Img<T>> implements Ops.Create.Img
+	AbstractUnaryFunctionOp<Interval, Img<T>> implements Ops.Create.Img
 {
 
 	@Parameter(required = false)
@@ -64,7 +64,7 @@ public class CreateImgFromInterval<T extends Type<T>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Img<T> compute(final Interval interval) {
+	public Img<T> compute1(final Interval interval) {
 		Img<T> output =
 			(Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
 		long[] min = new long[interval.numDimensions()];

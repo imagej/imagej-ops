@@ -30,8 +30,9 @@
 
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 
 import org.scijava.plugin.Plugin;
 
@@ -42,23 +43,23 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocHXY.class)
-public class CoocHXY extends AbstractFunctionOp<double[][], double[]> {
+public class CoocHXY extends AbstractUnaryFunctionOp<double[][], double[]> {
 
 	private static final double EPSILON = 0.00000001f;
 
-	private FunctionOp<double[][], double[]> coocPXFunc;
-	private FunctionOp<double[][], double[]> coocPYFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPYFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
 
-		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
-		coocPYFunc = ops().function(CoocPY.class, double[].class, double[][].class);
+		coocPXFunc = Functions.unary(ops(), CoocPX.class, double[].class, double[][].class);
+		coocPYFunc = Functions.unary(ops(), CoocPY.class, double[].class, double[][].class);
 	}
 
 	@Override
-	public double[] compute(double[][] matrix) {
+	public double[] compute1(double[][] matrix) {
 		double hx = 0.0d;
 		double hy = 0.0d;
 		double hxy1 = 0.0d;
@@ -66,8 +67,8 @@ public class CoocHXY extends AbstractFunctionOp<double[][], double[]> {
 
 		final int nrGrayLevels = matrix.length;
 
-		final double[] px = coocPXFunc.compute(matrix);
-		final double[] py = coocPYFunc.compute(matrix);
+		final double[] px = coocPXFunc.compute1(matrix);
+		final double[] py = coocPYFunc.compute1(matrix);
 
 		for (int i = 0; i < px.length; i++) {
 			hx += px[i] * Math.log(px[i] + EPSILON);

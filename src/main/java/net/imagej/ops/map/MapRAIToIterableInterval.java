@@ -30,7 +30,6 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
@@ -43,32 +42,32 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapOp} using a {@link ComputerOp} on {@link RandomAccessibleInterval} and
- * {@link IterableInterval}
+ * {@link MapComputer} from {@link RandomAccessibleInterval} input to
+ * {@link IterableInterval} output.
  *
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <A> mapped on <B>
- * @param <B> mapped from <A>
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<A, B> extends
-	AbstractMapComputer<A, B, RandomAccessibleInterval<A>, IterableInterval<B>>
+public class MapRAIToIterableInterval<EI, EO> extends
+	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
 	implements Contingent
 {
 
 	@Override
-	public void compute(final RandomAccessibleInterval<A> input,
-		final IterableInterval<B> output)
+	public void compute1(final RandomAccessibleInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
-		final Cursor<B> cursor = output.localizingCursor();
-		final RandomAccess<A> rndAccess = input.randomAccess();
+		final Cursor<EO> cursor = output.localizingCursor();
+		final RandomAccess<EI> rndAccess = input.randomAccess();
 
 		while (cursor.hasNext()) {
 			cursor.fwd();
 			rndAccess.setPosition(cursor);
-			getOp().compute(rndAccess.get(), cursor.get());
+			getOp().compute1(rndAccess.get(), cursor.get());
 		}
 	}
 
@@ -76,4 +75,5 @@ public class MapRAIToIterableInterval<A, B> extends
 	public boolean conforms() {
 		return Intervals.equalDimensions(out(), in());
 	}
+
 }

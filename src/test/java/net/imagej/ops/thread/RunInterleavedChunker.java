@@ -29,10 +29,9 @@
  */
 package net.imagej.ops.thread;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Parallel;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.thread.chunker.ChunkerInterleaved;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
@@ -40,24 +39,20 @@ import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class, name = "test.chunker",
 	priority = Priority.LOW_PRIORITY)
 public class RunInterleavedChunker<A extends RealType<A>> extends
-	AbstractComputerOp<IterableInterval<A>, IterableInterval<A>> implements
+	AbstractUnaryComputerOp<IterableInterval<A>, IterableInterval<A>> implements
 	Parallel
 {
-
-	@Parameter
-	private OpService opService;
 	
 	@Override
-	public void compute(final IterableInterval<A> input,
+	public void compute1(final IterableInterval<A> input,
 		final IterableInterval<A> output)
 	{
-		opService.run(ChunkerInterleaved.class, new CursorBasedChunk() {
+		ops().run(ChunkerInterleaved.class, new CursorBasedChunk() {
 
 			@Override
 			public void

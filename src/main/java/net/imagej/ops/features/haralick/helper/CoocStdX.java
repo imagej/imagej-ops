@@ -29,8 +29,9 @@
  */
 package net.imagej.ops.features.haralick.helper;
 
-import net.imagej.ops.AbstractFunctionOp;
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
@@ -42,25 +43,25 @@ import org.scijava.plugin.Plugin;
  * @author Christian Dietz, University of Konstanz
  */
 @Plugin(type = CoocStdX.class)
-public class CoocStdX extends AbstractFunctionOp<double[][], DoubleType> {
+public class CoocStdX extends AbstractUnaryFunctionOp<double[][], DoubleType> {
 
-	private FunctionOp<double[][], DoubleType> coocMeanXFunc;
-	private FunctionOp<double[][], double[]> coocPXFunc;
+	private UnaryFunctionOp<double[][], DoubleType> coocMeanXFunc;
+	private UnaryFunctionOp<double[][], double[]> coocPXFunc;
 
 	@Override
 	public void initialize() {
 		super.initialize();
-		coocMeanXFunc = ops().function(CoocMeanX.class, DoubleType.class, double[][].class);
-		coocPXFunc = ops().function(CoocPX.class, double[].class, double[][].class);
+		coocMeanXFunc = Functions.unary(ops(), CoocMeanX.class, DoubleType.class, double[][].class);
+		coocPXFunc = Functions.unary(ops(), CoocPX.class, double[].class, double[][].class);
 	}
 	
 	@Override
-	public DoubleType compute(double[][] input) {
+	public DoubleType compute1(double[][] input) {
 
 		double res = 0;
 
-		final double meanx = coocMeanXFunc.compute(input).get();
-		final double[] px = coocPXFunc.compute(input);
+		final double meanx = coocMeanXFunc.compute1(input).get();
+		final double[] px = coocPXFunc.compute1(input);
 
 		for (int i = 0; i < px.length; i++) {
 			res += ((i - meanx) * (i - meanx)) * px[i];

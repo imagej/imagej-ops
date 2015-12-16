@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Yen.class)
 public class ComputeYenThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Yen {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

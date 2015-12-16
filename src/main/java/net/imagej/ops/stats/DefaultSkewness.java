@@ -30,10 +30,10 @@
 
 package net.imagej.ops.stats;
 
-import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.RTs;
+import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -52,8 +52,8 @@ public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractStatsOp<Iterable<I>, O> implements Ops.Stats.Skewness
 {
 
-	private FunctionOp<Iterable<I>, O> moment3AboutMeanFunc;
-	private FunctionOp<Iterable<I>, O> stdDevFunc;
+	private UnaryFunctionOp<Iterable<I>, O> moment3AboutMeanFunc;
+	private UnaryFunctionOp<Iterable<I>, O> stdDevFunc;
 
 	@Override
 	public void initialize() {
@@ -62,10 +62,10 @@ public class DefaultSkewness<I extends RealType<I>, O extends RealType<O>>
 	}
 	
 	@Override
-	public void compute(final Iterable<I> input, final O output) {
+	public void compute1(final Iterable<I> input, final O output) {
 		final double moment3 =
-				moment3AboutMeanFunc.compute(input).getRealDouble();
-		final double std = stdDevFunc.compute(input).getRealDouble();
+				moment3AboutMeanFunc.compute1(input).getRealDouble();
+		final double std = stdDevFunc.compute1(input).getRealDouble();
 
 		output.setReal(Double.NaN);
 		if (std != 0) {

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.filter.gauss;
 
-import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -60,7 +60,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.Gauss.class)
 public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	extends
-	AbstractHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
+	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Filter.Gauss
 {
 
@@ -74,12 +74,12 @@ public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
 	@Override
-	public void compute(final RandomAccessibleInterval<T> input,
+	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<V> output)
 	{
 
 		if (outOfBounds == null) outOfBounds =
-			new OutOfBoundsMirrorFactory<T, RandomAccessibleInterval<T>>(
+			new OutOfBoundsMirrorFactory<>(
 				Boundary.SINGLE);
 
 		final RandomAccessible<FloatType> eIn =

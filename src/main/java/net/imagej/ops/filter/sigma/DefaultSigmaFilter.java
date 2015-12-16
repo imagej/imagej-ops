@@ -29,12 +29,13 @@
  */
 package net.imagej.ops.filter.sigma;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractCenterAwareNeighborhoodBasedFilter;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -68,17 +69,17 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 		final AbstractCenterAwareComputerOp<T, T> op =
 			new AbstractCenterAwareComputerOp<T, T>() {
 
-			private ComputerOp<Iterable<T>, DoubleType> variance;
+			private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
 			@Override
-			public void compute(Pair<T, Iterable<T>> input, T output) {
+			public void compute1(Pair<T, Iterable<T>> input, T output) {
 				if (variance == null) {
-					variance = ops().computer(Ops.Stats.Variance.class,
+					variance = Computers.unary(ops(), Ops.Stats.Variance.class,
 						DoubleType.class, input.getB());
 				}
 
 				DoubleType varianceResult = new DoubleType();
-				variance.compute(input.getB(), varianceResult);
+				variance.compute1(input.getB(), varianceResult);
 				double varianceValue = varianceResult.getRealDouble() * range;
 
 				final double centerValue = input.getA().getRealDouble();

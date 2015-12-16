@@ -47,7 +47,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Percentile.class)
 public class ComputePercentileThreshold<T extends RealType<T>> extends
-		AbstractComputeThresholdHistogram<T> {
+		AbstractComputeThresholdHistogram<T> implements Ops.Threshold.Percentile {
 
 	@Override
 	public long computeBin(final Histogram1d<T> hist) {

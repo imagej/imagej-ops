@@ -33,11 +33,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.features.AbstractFeatureTest;
 import net.imglib2.type.numeric.integer.LongType;
+
+import org.junit.Test;
 
 /**
  * 

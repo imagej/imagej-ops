@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.InplaceOp;
+import net.imagej.ops.special.InplaceOp;
 
 /**
  * Loops over an injected {@link InplaceOp}. A {@link LoopInplace} applies
@@ -38,6 +38,17 @@ import net.imagej.ops.InplaceOp;
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopInplace<I> extends InplaceOp<I>, LoopOp<I> {
-	// NB: Marker interface
+public interface LoopInplace<A> extends InplaceOp<A>, LoopOp<InplaceOp<A>> {
+
+	// -- InplaceOp methods --
+
+	@Override
+	default void mutate(final A arg) {
+		final int n = getLoopCount();
+		final InplaceOp<A> op = getOp();
+		for (int i = 0; i < n; i++) {
+			op.mutate(arg);
+		}
+	}
+
 }

@@ -68,7 +68,7 @@ public abstract class AbstractFFTFilterImg<I extends RealType<I>, O extends Real
 	 * compute output by extending the input(s) and running the filter
 	 */
 	@Override
-	public void compute(final Img<I> input, final Img<O> output) {
+	public void compute1(final Img<I> input, final Img<O> output) {
 
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm

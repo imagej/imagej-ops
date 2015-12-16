@@ -73,8 +73,8 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * Creates a new empty facet.
 	 */
 	public TriangularFacet() {
-		vertices = new ArrayList<Vertex>();
-		verticesInFront = new ArrayList<Vertex>();
+		vertices = new ArrayList<>();
+		verticesInFront = new ArrayList<>();
 	}
 
 	/**
@@ -84,12 +84,12 @@ public class TriangularFacet extends UpdateablePointSet<TriangularFacet> impleme
 	 * @param v2 the third vertex
 	 */
 	public TriangularFacet(final Vertex v0, final Vertex v1, final Vertex v2) {
-		vertices = new ArrayList<Vertex>();
+		vertices = new ArrayList<>();
 		vertices.add(v0);
 		vertices.add(v1);
 		vertices.add(v2);
-		verticesInFront = new ArrayList<Vertex>();
-		neighbors = new ArrayList<TriangularFacet>();
+		verticesInFront = new ArrayList<>();
+		neighbors = new ArrayList<>();
 	}
 	
 	/**

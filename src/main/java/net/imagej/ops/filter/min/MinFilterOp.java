@@ -30,14 +30,14 @@
 
 package net.imagej.ops.filter.min;
 
-import net.imagej.ops.ComputerOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.UnaryComputerOp;
 
 /**
  * A typed "min" filter.
  * 
  * @author Jonathan Hale (University of Konstanz)
  */
-public interface MinFilterOp<I> extends Ops.Filter.Min, ComputerOp<I, I> {
+public interface MinFilterOp<I> extends Ops.Filter.Min, UnaryComputerOp<I, I> {
 	// NB: Marker interface.
 }

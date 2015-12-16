@@ -7,13 +7,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- *
+ * 
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -54,7 +54,7 @@ public class ProjectTest extends AbstractOpTest {
 
 	@Before
 	public void initImg() {
-		in = generateUnsignedByteTestImg(false, 10, 10, 10);
+		in = generateUnsignedByteArrayTestImg(false, 10, 10, 10);
 
 		final RandomAccess<UnsignedByteType> randomAccess = in.randomAccess();
 
@@ -68,8 +68,8 @@ public class ProjectTest extends AbstractOpTest {
 			}
 		}
 
-		out1 = generateUnsignedByteTestImg(false, 10, 10);
-		out2 = generateUnsignedByteTestImg(false, 10, 10);
+		out1 = generateUnsignedByteArrayTestImg(false, 10, 10);
+		out2 = generateUnsignedByteArrayTestImg(false, 10, 10);
 
 		op = ops.op(Ops.Stats.Sum.class, RealType.class, out1);
 	}

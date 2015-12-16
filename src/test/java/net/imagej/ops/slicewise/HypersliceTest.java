@@ -34,9 +34,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
-import net.imagej.ops.AbstractComputerOp;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpService;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccessibleInterval;
@@ -161,7 +161,7 @@ public class HypersliceTest extends AbstractOpTest {
 		final int numSlices = 25;
 		final int numTimePoints = 5;
 
-		final Img<UnsignedByteType> testImage = generateUnsignedByteTestImg(
+		final Img<UnsignedByteType> testImage = generateUnsignedByteArrayTestImg(
 				true, xSize, ySize, numChannels, numSlices, numTimePoints);
 
 		final int[] axisIndices = new int[3];
@@ -200,10 +200,10 @@ public class HypersliceTest extends AbstractOpTest {
 	}
 
 	class DummyOp extends
-			AbstractComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
+			AbstractUnaryComputerOp<Iterable<ByteType>, Iterable<ByteType>> {
 
 		@Override
-		public void compute(final Iterable<ByteType> input,
+		public void compute1(final Iterable<ByteType> input,
 			final Iterable<ByteType> output)
 		{
 			final Iterator<ByteType> itA = input.iterator();

@@ -5,31 +5,18 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>13.2.0</version>
+		<version>14.2.0</version>
 		<relativePath />
 	</parent>
 
 	<artifactId>imagej-ops</artifactId>
-	<version>0.22.1-SNAPSHOT</version>
+	<version>0.24.0-SNAPSHOT</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
 	<inceptionYear>2014</inceptionYear>
 
 	<developers>
-		<developer>
-			<id>dietzc</id>
-			<name>Christian Dietz</name>
-			<email>christian.dietz@uni-konstanz.de</email>
-			<url>http://www.informatik.uni-konstanz.de/berthold/mitglieder/christian-dietz/</url>
-			<organization>University of Konstanz</organization>
-			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
 		<developer>
 			<id>ctrueden</id>
 			<name>Curtis Rueden</name>
@@ -38,51 +25,93 @@
 			<organization>UW-Madison LOCI</organization>
 			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
 			<roles>
-				<role>architect</role>
+				<role>founder</role>
+				<role>lead</role>
 				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
 			</roles>
 			<timezone>-6</timezone>
 		</developer>
 		<developer>
-			<id>dscho</id>
-			<name>Johannes Schindelin</name>
-			<email>johannes.schindelin@gmx.de</email>
-			<url>http://loci.wisc.edu/people/johannes-schindelin</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-6</timezone>
-		</developer>
-		<developer>
-			<id>hornm</id>
-			<name>Martin Horn</name>
-			<email>martin.horn@uni-konstanz.de</email>
-			<url>http://www.informatik.uni-konstanz.de/berthold/mitglieder/martin-horn/</url>
+			<id>dietzc</id>
+			<name>Christian Dietz</name>
+			<email>christian.dietz@uni-konstanz.de</email>
+			<url>http://imagej.net/User:Dietzc</url>
 			<organization>University of Konstanz</organization>
 			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
 			<roles>
-				<role>architect</role>
+				<role>founder</role>
+				<role>lead</role>
 				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
 			</roles>
 			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>hinerm</id>
+			<name>Mark Hiner</name>
+			<email>hiner@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/mark-hiner</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
+			<roles>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+			<timezone>-6</timezone>
 		</developer>
 		<developer>
 			<id>bnorthan</id>
 			<name>Brian Northan</name>
 			<email>bnorthan@gmail.com</email>
-			<url>www.linkedin.com/pub/brian-northan/6/860/3a7</url>
+			<url>https://www.linkedin.com/in/brian-northan-3a78606</url>
+			<roles>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+			</roles>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>awalter17</id>
+			<name>Alison Walter</name>
+			<email>awalter17@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/alison-walter</url>
+			<organization>UW-Madison LOCI</organization>
+			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
 			<roles>
 				<role>developer</role>
 			</roles>
+			<timezone>-6</timezone>
+		</developer>
+		<developer>
+			<id>tibuch</id>
+			<name>Tim-Oliver Buchholz</name>
+			<email>tim-oliver.buchholz@uni-konstanz.de</email>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+				<role>support</role>
+			</roles>
+			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>Squareys</id>
 			<name>Jonathan Hale</name>
 			<email>squareys@googlemail.com</email>
-			<url>http://squareys.tumblr.com/</url>
+			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
 			<organization>University of Konstanz</organization>
 			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
 			<roles>
@@ -91,10 +120,10 @@
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
-			<id>apal4</id>
-			<name>Aparna Pal</name>
-			<email>apal4@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/aparna-pal</url>
+			<id>LeonYang5114</id>
+			<name>Leon Yang</name>
+			<email>gyang48@wisc.edu</email>
+			<url>http://loci.wisc.edu/people/leon-yang</url>
 			<organization>UW-Madison LOCI</organization>
 			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
 			<roles>
@@ -102,17 +131,65 @@
 			</roles>
 			<timezone>-6</timezone>
 		</developer>
+		<developer>
+			<id>DanielSeebacher</id>
+			<name>Daniel Seebacher</name>
+			<email>daniel.seebacher@gmail.com</email>
+			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>angrauma</id>
+			<name>Andreas Graumann</name>
+			<email>andreas.graumann@uni-konstanz.de</email>
+			<url>http://www.informatik.uni-konstanz.de/en/berthold/members/student-research-assistance/</url>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
 	</developers>
 	<contributors>
 		<contributor>
-			<name>Mark Hiner</name>
-			<email>hiner@wisc.edu</email>
-			<url>http://developer.imagej.net/users/hinerm</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<timezone>-6</timezone>
+			<name>Martin Horn</name>
+			<email>martin.horn@uni-konstanz.de</email>
+			<url>http://www.informatik.uni-konstanz.de/en/dr-martin-horn/</url>
+			<organization>University of Konstanz</organization>
+			<organizationUrl>http://www.informatik.uni-konstanz.de/</organizationUrl>
+			<roles><role>founder</role></roles>
+			<properties><id>hornm</id></properties>
 		</contributor>
-		<contributor><name>Michael Zinsmaier</name></contributor>
+		<contributor>
+			<name>Johannes Schindelin</name>
+			<url>http://imagej.net/User:Schindelin</url>
+			<roles><role>founder</role></roles>
+			<properties><id>dscho</id></properties>
+		</contributor>
+		<contributor>
+			<name>Stefan Helfrich</name>
+			<properties><id>stelfrich</id></properties>
+		</contributor>
+		<contributor>
+			<name>Jan Eglinger</name>
+			<url>http://imagej.net/User:Eglinger</url>
+			<properties><id>imagejan</id></properties>
+		</contributor>
+		<contributor>
+			<name>Aparna Pal</name>
+			<url>http://loci.wisc.edu/people/aparna-pal</url>
+			<properties><id>apal4</id></properties>
+		</contributor>
+		<contributor>
+			<name>Michael Zinsmaier</name>
+			<properties><id>MichaelZinsmaier</id></properties>
+		</contributor>
 	</contributors>
 
 	<scm>
@@ -132,8 +209,7 @@
 
 	<properties>
 		<main-class>net.imagej.ops.Main</main-class>
-		<enforcer.skip>true</enforcer.skip>
-		<imglib2-roi.version>0.4.1</imglib2-roi.version>
+		<scijava.jvm.version>1.8</scijava.jvm.version>
 	</properties>
 
 	<repositories>
