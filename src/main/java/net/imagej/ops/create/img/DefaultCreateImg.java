@@ -34,10 +34,13 @@ import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.Output;
 import net.imglib2.Dimensions;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
+import net.imglib2.util.Util;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -72,11 +75,20 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 	public void run() {
 		// FIXME: not guaranteed to be a T unless a Class<T> is given.
 		if (outType == null) {
-			// HACK: For Java 6 compiler.
-			@SuppressWarnings("rawtypes")
-			final NativeType o = ops().create().nativeType();
-			final T result = (T) o;
-			outType = result;
+			if (dims instanceof IterableInterval) {
+				outType = (T) ((IterableInterval<?>) dims).firstElement();
+			}
+			else if (dims instanceof RandomAccessibleInterval) {
+				outType = (T) Util.getTypeFromInterval(
+					(RandomAccessibleInterval<?>) dims);
+			}
+			else {
+				// HACK: For Java 6 compiler.
+				@SuppressWarnings("rawtypes")
+				final NativeType o = ops().create().nativeType();
+				final T result = (T) o;
+				outType = result;
+			}
 		}
 
 		if (fac == null) {
