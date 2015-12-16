@@ -30,6 +30,8 @@
 package net.imagej.ops.copy;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 import java.util.Random;
 
@@ -38,9 +40,10 @@ import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
-
+import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,6 +85,20 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 			assertEquals(inc.get().get(), outRA.get().get(), 0.0);
 		}
 	}
+	
+	@Test
+	public void copyTypeTest() {
+		Img<FloatType> inputFloat = new ArrayImgFactory<FloatType>().create(
+				new int[] { 120, 100 }, new FloatType());
+
+		@SuppressWarnings("unchecked")
+		Img<FloatType> output = (Img<FloatType>) ops
+				.run(CopyIterableInterval.class, inputFloat);
+
+		
+		assertTrue("Should be FloatType.", output.firstElement() instanceof FloatType);
+	}
+	
 
 	@Test
 	public void copyRAIWithOutputTest() {
