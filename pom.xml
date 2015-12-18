@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>net.imagej</groupId>
 		<artifactId>pom-imagej</artifactId>
-		<version>14.2.0</version>
+		<version>14.4.0</version>
 		<relativePath />
 	</parent>
 
 	<artifactId>imagej-ops</artifactId>
-	<version>0.24.1-SNAPSHOT</version>
+	<version>0.24.2-SNAPSHOT</version>
 
 	<name>ImageJ Ops</name>
 	<description>ImageJ Operations: a framework for reusable algorithms.</description>
