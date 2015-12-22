@@ -27,7 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
+
 package net.imagej.ops.filter.sigma;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
@@ -36,26 +41,21 @@ import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * Default implementation of {@link SigmaFilterOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
- * @param <T>
- *            type
+ * @param <T> type
  */
 @Plugin(type = Ops.Filter.Sigma.class, priority = Priority.LOW_PRIORITY)
-public class DefaultSigmaFilter<T extends RealType<T>> extends
-		AbstractCenterAwareNeighborhoodBasedFilter<T, T> implements
-		SigmaFilterOp<RandomAccessibleInterval<T>>, Contingent {
+public class DefaultSigmaFilter<T extends RealType<T>, V extends RealType<V>>
+	extends AbstractCenterAwareNeighborhoodBasedFilter<T, V> implements
+	SigmaFilterOp<T, V>, Contingent
+{
 
 	@Parameter
 	private Double range;
@@ -64,55 +64,56 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 	private Double minPixelFraction;
 
 	@Override
-	protected CenterAwareComputerOp<T, T> getComputer(Class<?> inClass,
-			Class<?> outClass) {
-		final AbstractCenterAwareComputerOp<T, T> op =
-			new AbstractCenterAwareComputerOp<T, T>() {
+	protected CenterAwareComputerOp<T, V> unaryComputer(final V outType) {
+		final AbstractCenterAwareComputerOp<T, V> op =
+			new AbstractCenterAwareComputerOp<T, V>()
+		{
 
-			private UnaryComputerOp<Iterable<T>, DoubleType> variance;
+				private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
-			@Override
-			public void compute1(Pair<T, Iterable<T>> input, T output) {
-				if (variance == null) {
-					variance = Computers.unary(ops(), Ops.Stats.Variance.class,
-						DoubleType.class, input.getB());
-				}
-
-				DoubleType varianceResult = new DoubleType();
-				variance.compute1(input.getB(), varianceResult);
-				double varianceValue = varianceResult.getRealDouble() * range;
-
-				final double centerValue = input.getA().getRealDouble();
-				double sumAll = 0;
-				double sumWithin = 0;
-				long countAll = 0;
-				long countWithin = 0;
-
-				for (T neighbor : input.getB()) {
-					final double pixelValue = neighbor.getRealDouble();
-					final double diff = centerValue - pixelValue;
-
-					sumAll += pixelValue;
-					++countAll;
-
-					if (diff > varianceValue || diff < -varianceValue) {
-						continue;
+				@Override
+				public void compute1(Pair<T, Iterable<T>> input, V output) {
+					if (variance == null) {
+						variance = Computers.unary(ops(), Ops.Stats.Variance.class,
+							DoubleType.class, input.getB());
 					}
 
-					// pixel within variance range
-					sumWithin += pixelValue;
-					++countWithin;
+					DoubleType varianceResult = new DoubleType();
+					variance.compute1(input.getB(), varianceResult);
+					double varianceValue = varianceResult.getRealDouble() * range;
+
+					final double centerValue = input.getA().getRealDouble();
+					double sumAll = 0;
+					double sumWithin = 0;
+					long countAll = 0;
+					long countWithin = 0;
+
+					for (T neighbor : input.getB()) {
+						final double pixelValue = neighbor.getRealDouble();
+						final double diff = centerValue - pixelValue;
+
+						sumAll += pixelValue;
+						++countAll;
+
+						if (diff > varianceValue || diff < -varianceValue) {
+							continue;
+						}
+
+						// pixel within variance range
+						sumWithin += pixelValue;
+						++countWithin;
+					}
+
+					if (countWithin < (int) (minPixelFraction * countAll)) {
+						output.setReal(sumAll / countAll); // simply mean
+					}
+					else {
+						// mean over pixels in variance range only
+						output.setReal(sumWithin / countWithin);
+					}
 				}
 
-				if (countWithin < (int) (minPixelFraction * countAll)) {
-					output.setReal(sumAll / countAll); // simply mean
-				} else {
-					// mean over pixels in variance range only
-					output.setReal(sumWithin / countWithin);
-				}
-			}
-
-		};
+			};
 		op.setEnvironment(ops());
 		return op;
 	}

@@ -37,7 +37,8 @@ import net.imglib2.util.Pair;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link MapComputer} for {@link CenterAwareComputerOp}.
+ * Abstract implementation of a {@link MapComputer} for
+ * {@link CenterAwareComputerOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @param <A> mapped on {@code <B>}
