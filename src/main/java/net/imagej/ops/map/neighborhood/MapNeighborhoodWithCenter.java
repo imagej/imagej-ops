@@ -66,15 +66,14 @@ import org.scijava.plugin.Plugin;
  * @see CenterAwareComputerOp
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
-public class MapNeighborhoodWithCenter<I, O>
-	extends
+public class MapNeighborhoodWithCenter<I, O> extends
 	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
 {
 
 	@Parameter
 	private Shape shape;
 	private UnaryComputerOp<NeighborhoodWithCenterIterableInterval, Iterable<O>> map;
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
@@ -86,8 +85,8 @@ public class MapNeighborhoodWithCenter<I, O>
 	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		map.compute1(new NeighborhoodWithCenterIterableInterval(
-			shape.neighborhoodsSafe(input), input), Views.iterable(output));
+		map.compute1(new NeighborhoodWithCenterIterableInterval(shape
+			.neighborhoodsSafe(input), input), Views.iterable(output));
 	}
 
 	/**
@@ -216,7 +215,8 @@ public class MapNeighborhoodWithCenter<I, O>
 		public Cursor<Pair<I, Iterable<I>>> localizingCursor() {
 			final IterableInterval<I> inputIterable = Views.iterable(input);
 
-			if (inputIterable.iterationOrder().equals(neighborhoods.iterationOrder()))
+			if (inputIterable.iterationOrder().equals(neighborhoods
+				.iterationOrder()))
 			{
 				// optimizable through cursor use.
 				return new NeighborhoodWithCenterCursorII(neighborhoods, inputIterable);
@@ -383,7 +383,8 @@ public class MapNeighborhoodWithCenter<I, O>
 		private final Cursor<I> cIn;
 
 		public NeighborhoodWithCenterCursorII(
-			IterableInterval<Neighborhood<I>> neighborhoods, IterableInterval<I> input)
+			IterableInterval<Neighborhood<I>> neighborhoods,
+			IterableInterval<I> input)
 		{
 			super(neighborhoods);
 			if (!input.iterationOrder().equals(neighborhoods.iterationOrder())) {
