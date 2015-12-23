@@ -59,25 +59,25 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
 public class MapNeighborhood<I, O> extends
-	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractMapComputer<Iterable<I>, O, RandomAccessibleInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter
 	private Shape shape;
 
-	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, RandomAccessibleInterval<O>> map;
+	private UnaryComputerOp<IterableInterval<Neighborhood<I>>, IterableInterval<O>> map;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		map = (UnaryComputerOp) Computers.unary(ops(), Map.class,
-			RandomAccessibleInterval.class, in() != null ? shape.neighborhoodsSafe(
-				in()) : IterableInterval.class, getOp());
+			IterableInterval.class, in() != null ? shape.neighborhoodsSafe(in())
+				: RandomAccessibleInterval.class, getOp());
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
+		final IterableInterval<O> output)
 	{
 		map.compute1(shape.neighborhoodsSafe(input), output);
 	}
