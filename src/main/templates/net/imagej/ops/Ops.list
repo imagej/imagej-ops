@@ -201,6 +201,8 @@ namespaces = ```
 		[name: "lessThanOrEqual",             iface: "LessThanOrEqual",     aliases: ["ltoe"]],
 		[name: "not",                         iface: "Not"],
 		[name: "notEqual",                    iface: "NotEqual"],
+		[name: "logicalEqual",                iface: "LogicalEqual"],
+		[name: "logicalNotEqual",             iface: "LogicalNotEqual"],
 		[name: "or",                          iface: "Or"],
 		[name: "xor",                         iface: "Xor"],
 	]],
