@@ -30,6 +30,8 @@
 
 package net.imagej.ops.math;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.AbstractNamespace;
 import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
@@ -46,8 +48,6 @@ import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * The math namespace contains arithmetic operations.
@@ -2062,6 +2062,63 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final O result =
 			(O) ops().run(net.imagej.ops.math.RealMath.Zero.class, out, in);
+		return result;
+	}
+	
+	// -- BinaryRealMath
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Add.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O add(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Add.class, out, in1, in2);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Subtract.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O subtract(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Subtract.class, out, in1, in2);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Multiply.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O multiply(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Multiply.class, out, in1, in2);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Divide.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O divide(final O out, final I1 in1, I2 in2, double dbzVal) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Divide.class, out, in1, in2, dbzVal);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Min.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O min(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Min.class, out, in1, in2);
+		return result;
+	}
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Max.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O max(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Max.class, out, in1, in2);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.math.BinaryRealMath.Power.class)
+	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O power(final O out, final I1 in1, I2 in2) {
+		@SuppressWarnings("unchecked")
+		final O result =
+			(O) ops().run(net.imagej.ops.math.BinaryRealMath.Power.class, out, in1, in2);
 		return result;
 	}
 
