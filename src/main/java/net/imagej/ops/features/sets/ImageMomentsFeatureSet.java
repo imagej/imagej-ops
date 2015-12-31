@@ -54,107 +54,86 @@ public class ImageMomentsFeatureSet<T, O extends RealType<O>> extends AbstractOp
 	private static final String PKG = "net.imagej.ops.Ops$ImageMoments$";
 	
 	@Parameter(required = false, label = "CentralMoment00", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment00") })
 	private boolean isCentralMoment00Active = true;
 
-	@Parameter(required = false, label = "X", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
+	@Parameter(required = false, label = "CentralMoment01", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment01") })
 	private boolean isCentralMoment01Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment02", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment02") })
 	private boolean isCentralMoment02Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment03", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment03") })
 	private boolean isCentralMoment03Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment10", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment10") })
 	private boolean isCentralMoment10Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment11", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment11") })
 	private boolean isCentralMoment11Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment12", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment12") })
 	private boolean isCentralMoment12Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment20", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment20") })
 	private boolean isCentralMoment20Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment21", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment21") })
 	private boolean isCentralMoment21Active = true;
 	
 	@Parameter(required = false, label = "CentralMoment30", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "CentralMoment30") })
 	private boolean isCentralMoment30Active = true;
 	
 	@Parameter(required = false, label = "HuMoment1", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment1") })
 	private boolean isHuMoment1Active = true;
 	
 	@Parameter(required = false, label = "HuMoment2", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment2") })
 	private boolean isHuMoment2Active = true;
 	
 	@Parameter(required = false, label = "HuMoment3", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment3") })
 	private boolean isHuMoment3Active = true;
 	
 	@Parameter(required = false, label = "HuMoment4", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment4") })
 	private boolean isHuMoment4Active = true;
 	
 	@Parameter(required = false, label = "HuMoment5", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment5") })
 	private boolean isHuMoment5Active = true;
 	
 	@Parameter(required = false, label = "HuMoment6", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment6") })
 	private boolean isHuMoment6Active = true;
 	
 	@Parameter(required = false, label = "HuMoment7", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "HuMoment7") })
 	private boolean isHuMoment7Active = true;
 	
 	@Parameter(required = false, label = "Moment00", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Moment00") })
 	private boolean isMoment00Active = true;
 	
 	@Parameter(required = false, label = "Moment01", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Moment01") })
 	private boolean isMoment01Active = true;
 	
 	@Parameter(required = false, label = "Moment10", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Moment10") })
 	private boolean isMoment10Active = true;
 	
 	@Parameter(required = false, label = "Moment11", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Moment11") })
 	private boolean isMoment11Active = true;
 
