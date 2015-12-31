@@ -58,72 +58,58 @@ public class Geometric2DFeatureSet<I, O extends RealType<O>> extends AbstractOpR
 	private OpService ops;
 
 	@Parameter(required = false, label = "Size", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Size") })
 	private boolean isSizeActive = true;
 
 	@Parameter(required = false, label = "Circularity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Circularity") })
 	private boolean isCircularityActive = true;
 
 	@Parameter(required = false, label = "Convexity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Convexity") })
 	private boolean isConvexityActive = true;
 
 	@Parameter(required = false, label = "Eccentricity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Eccentricity") })
 	private boolean isEccentricityActive = true;
 
 	@Parameter(required = false, label = "MainElongation", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "MainElongation") })
 	private boolean isMainElongationActive = true;
 
 	@Parameter(required = false, label = "FeretsAngle", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "FeretsAngle") })
 	private boolean isFeretsAngleActive = true;
 
 	@Parameter(required = false, label = "FeretsDiameter", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "FeretsDiameter") })
 	private boolean isFeretsDiameterActive = true;
 
 	@Parameter(required = false, label = "MajorAxis", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "MajorAxis") })
 	private boolean isMajorAxisActive = true;
 
 	@Parameter(required = false, label = "MinorAxis", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "MinorAxis") })
 	private boolean isMinorAxisActive = true;
 
 	@Parameter(required = false, label = "BoundarySize", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "BoundarySize") })
 	private boolean isBoundarySizeActive = true;
 
 	@Parameter(required = false, label = "Boxivity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Boxivity") })
 	private boolean isBoxivityActive = true;
 
 	@Parameter(required = false, label = "Roundness", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Roundness") })
 	private boolean isRoundnessActive = true;
 
 	@Parameter(required = false, label = "Rugosity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Rugosity") })
 	private boolean isRugosityActive = true;
 
 	@Parameter(required = false, label = "Solidity", attrs = { @Attr(name = ATTR_FEATURE),
-			@Attr(name = ATTR_PARAMS, value = ""),
 			@Attr(name = ATTR_TYPE, value = PKG + "Solidity") })
 	private boolean isSolidityActive = true;
 
