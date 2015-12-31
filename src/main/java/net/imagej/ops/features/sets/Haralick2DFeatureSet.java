@@ -40,6 +40,7 @@ import net.imagej.ops.features.haralick.HaralickFeature;
 import net.imagej.ops.featuresets.AbstractOpRefFeatureSet;
 import net.imagej.ops.featuresets.DimensionBoundFeatureSet;
 import net.imagej.ops.featuresets.FeatureSet;
+import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation2D;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -64,9 +65,8 @@ public class Haralick2DFeatureSet<T, O extends RealType<O>> extends AbstractOpRe
 	@Parameter(type = ItemIO.INPUT, label = "Distance", description = "The maximum distance between pairs of pixels which will be added to the co-occurence matrix.", min = "1", max = "2147483647", stepSize = "1")
 	private int distance = 1;
 
-	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "Orientation of the pairs of pixels which will be added to the co-occurence matrix", choices = {
-			"DIAGONAL", "ANTIDIAGONAL", "HORIZONTAL", "VERTICAL" })
-	private String orientation = "HORIZONTAL";
+	@Parameter(type = ItemIO.INPUT, label = "Orientation", description = "Orientation of the pairs of pixels which will be added to the co-occurence matrix (see MatrixOrientation2D class)")
+	private MatrixOrientation2D orientation;
 
 	@Parameter(required = false, label = "ASM", attrs = { @Attr(name = ATTR_FEATURE),
 			@Attr(name = ATTR_PARAMS, value = "numGreyLevels,distance,orientation"),
