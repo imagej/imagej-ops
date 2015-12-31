@@ -227,12 +227,12 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.RealMath.Add.class)
-	public <I extends RealType<I>, O extends RealType<O>> RealType<O> add(
-		final RealType<O> out, final RealType<I> in, final double constant)
+	public <I extends RealType<I>, O extends RealType<O>> O add(final O out,
+		final I in, final double constant)
 	{
 		@SuppressWarnings("unchecked")
-		final RealType<O> result = (RealType<O>) ops().run(
-			net.imagej.ops.math.RealMath.Add.class, out, in, constant);
+		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Add.class, out,
+			in, constant);
 		return result;
 	}
 
