@@ -31,6 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
@@ -39,7 +40,6 @@ import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.ItemIO;
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -60,8 +60,8 @@ public final class ConstantToArrayImage {
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
-	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 1#elseif ($type.name == "Byte")#end)
-	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
+	@Plugin(type = ${iface}.class)
+	public static class ${op.name}${type.name} extends AbstractOp implements Contingent, $iface {
 
 		@Parameter(type = ItemIO.BOTH)
 		private ArrayImg<${type.name}Type, ${type.name}Array> image;
@@ -75,6 +75,14 @@ public final class ConstantToArrayImage {
 			for (int i = 0; i < data.length; i++) {
 				data[i] ${op.operator}= value;
 			}
+		}
+
+		@Override
+		public boolean conforms() {
+			// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
+			// The warning is expected, because the image parameter is assigned via
+			// reflection and hence might not match the declared generic types.
+			return image.firstElement() instanceof ${type.name}Type;
 		}
 	}
 #end
