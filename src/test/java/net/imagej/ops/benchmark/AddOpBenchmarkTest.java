@@ -38,7 +38,7 @@ import net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel;
 import net.imagej.ops.map.MapIterableIntervalToRAIParallel;
 import net.imagej.ops.math.ConstantToArrayImage;
 import net.imagej.ops.math.ConstantToArrayImageP;
-import net.imagej.ops.math.ConstantToImageFunctional;
+import net.imagej.ops.math.ConstantToIIOutputRAI;
 import net.imagej.ops.math.ConstantToImageInPlace;
 import net.imagej.ops.math.NumericTypeBinaryMath;
 import net.imglib2.img.array.ArrayImg;
@@ -93,7 +93,7 @@ public class AddOpBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void fTtestAddConstantToImage() {
-		ops.run(ConstantToImageFunctional.Add.class, out, in,
+		ops.run(ConstantToIIOutputRAI.Add.class, out, in,
 			new ByteType((byte) 10));
 	}
 

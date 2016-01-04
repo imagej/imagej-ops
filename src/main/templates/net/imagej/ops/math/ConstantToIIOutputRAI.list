@@ -1,6 +1,6 @@
-# Generated functional binary arithmetic ops with ArrayImages.
+# Generated functional binary arithmetic ops with II as input and RAI as output.
 
-[ConstantToImageFunctional.java]
+[ConstantToIIOutputRAI.java]
 
 ops = ```
 [

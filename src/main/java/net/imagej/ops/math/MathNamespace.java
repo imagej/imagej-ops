@@ -333,7 +333,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.Add.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Add.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> add(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -341,7 +341,7 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.math.ConstantToImageFunctional.Add.class, out, in,
+				net.imagej.ops.math.ConstantToIIOutputRAI.Add.class, out, in,
 				value);
 		return result;
 	}
@@ -998,7 +998,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.Divide.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Divide.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> divide(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -1006,7 +1006,7 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.math.ConstantToImageFunctional.Divide.class, out, in,
+				net.imagej.ops.math.ConstantToIIOutputRAI.Divide.class, out, in,
 				value);
 		return result;
 	}
@@ -1530,7 +1530,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.Multiply.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Multiply.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> multiply(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -1538,7 +1538,7 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.math.ConstantToImageFunctional.Multiply.class, out, in,
+				net.imagej.ops.math.ConstantToIIOutputRAI.Multiply.class, out, in,
 				value);
 		return result;
 	}
@@ -2249,7 +2249,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageFunctional.Subtract.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputRAI.Subtract.class)
 	public <T extends NumericType<T>> RandomAccessibleInterval<T> subtract(
 		final RandomAccessibleInterval<T> out, final IterableInterval<T> in,
 		final T value)
@@ -2257,7 +2257,7 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<T> result =
 			(RandomAccessibleInterval<T>) ops().run(
-				net.imagej.ops.math.ConstantToImageFunctional.Subtract.class, out, in,
+				net.imagej.ops.math.ConstantToIIOutputRAI.Subtract.class, out, in,
 				value);
 		return result;
 	}
