@@ -1,10 +1,14 @@
-# Generated binary arithmetic ops with PlanarImages of ByteType or DoubleType. 
+# Generated binary arithmetic ops with PlanarImages. 
 
 [ConstantToPlanarImage.java]
 
 types = ```
 [
-	[name: "Double", primitive: "double"], 
+	[name: "Byte",     primitive: "byte"], 
+	[name: "Int",      primitive: "int"], 
+	[name: "Long",     primitive: "long"], 
+	[name: "Float",    primitive: "float"], 
+	[name: "Double",   primitive: "double"]
 ]
 ```
 

@@ -41,11 +41,17 @@ import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.basictypeaccess.array.IntArray;
+import net.imglib2.img.basictypeaccess.array.LongArray;
 import net.imglib2.img.planar.PlanarImg;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.scijava.plugin.Plugin;
 
@@ -102,26 +108,62 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Abs.class, args);
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddByte.class })
-	public ArrayImg<ByteType, ByteArray> add(
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyByte.class })
+	public ArrayImg<ByteType, ByteArray> multiply(
 		final ArrayImg<ByteType, ByteArray> image, final byte value)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<ByteType, ByteArray> result =
-			(ArrayImg<ByteType, ByteArray>) ops().run(Ops.Math.Add.NAME, image,
+			(ArrayImg<ByteType, ByteArray>) ops().run(Ops.Math.Multiply.NAME, image,
 				value);
 		return result;
 	}
 
-	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.AddDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> add(
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyDouble.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyDouble.class })
+	public ArrayImg<DoubleType, DoubleArray> multiply(
 		final ArrayImg<DoubleType, DoubleArray> image, final double value)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Add.NAME, image,
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Multiply.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyFloat.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyFloat.class })
+	public ArrayImg<FloatType, FloatArray> multiply(
+		final ArrayImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<FloatType, FloatArray> result =
+			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Multiply.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyInt.class })
+	public ArrayImg<IntType, IntArray> multiply(
+		final ArrayImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<IntType, IntArray> result =
+			(ArrayImg<IntType, IntArray>) ops().run(Ops.Math.Multiply.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.MultiplyLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.MultiplyLong.class })
+	public ArrayImg<LongType, LongArray> multiply(
+		final ArrayImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<LongType, LongArray> result =
+			(ArrayImg<LongType, LongArray>) ops().run(Ops.Math.Multiply.NAME, image,
 				value);
 		return result;
 	}
@@ -231,6 +273,18 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Add.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddByte.class)
+	public PlanarImg<ByteType, ByteArray> add(
+		final PlanarImg<ByteType, ByteArray> image, final byte value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<ByteType, ByteArray> result =
+			(PlanarImg<ByteType, ByteArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.AddByte.class, image,
+				value);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddDouble.class)
 	public PlanarImg<DoubleType, DoubleArray> add(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
@@ -239,6 +293,42 @@ public class MathNamespace extends AbstractNamespace {
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
 				net.imagej.ops.math.ConstantToPlanarImage.AddDouble.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddFloat.class)
+	public PlanarImg<FloatType, FloatArray> add(
+		final PlanarImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<FloatType, FloatArray> result =
+			(PlanarImg<FloatType, FloatArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.AddFloat.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddInt.class)
+	public PlanarImg<IntType, IntArray> add(
+		final PlanarImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<IntType, IntArray> result =
+			(PlanarImg<IntType, IntArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.AddInt.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.AddLong.class)
+	public PlanarImg<LongType, LongArray> add(
+		final PlanarImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<LongType, LongArray> result =
+			(PlanarImg<LongType, LongArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.AddLong.class, image,
 				value);
 		return result;
 	}
@@ -704,8 +794,7 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.DivideDouble.class,
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideDouble.class,
 		net.imagej.ops.math.ConstantToArrayImage.DivideDouble.class })
 	public ArrayImg<DoubleType, DoubleArray> divide(
 		final ArrayImg<DoubleType, DoubleArray> image, final double value)
@@ -713,6 +802,42 @@ public class MathNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final ArrayImg<DoubleType, DoubleArray> result =
 			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Divide.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideFloat.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideFloat.class })
+	public ArrayImg<FloatType, FloatArray> divide(
+		final ArrayImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<FloatType, FloatArray> result =
+			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Divide.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideInt.class })
+	public ArrayImg<IntType, IntArray> divide(
+		final ArrayImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<IntType, IntArray> result =
+			(ArrayImg<IntType, IntArray>) ops().run(Ops.Math.Divide.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.DivideLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.DivideLong.class })
+	public ArrayImg<LongType, LongArray> divide(
+		final ArrayImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<LongType, LongArray> result =
+			(ArrayImg<LongType, LongArray>) ops().run(Ops.Math.Divide.NAME, image,
 				value);
 		return result;
 	}
@@ -813,6 +938,18 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Divide.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideByte.class)
+	public PlanarImg<ByteType, ByteArray> divide(
+		final PlanarImg<ByteType, ByteArray> image, final byte value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<ByteType, ByteArray> result =
+			(PlanarImg<ByteType, ByteArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.DivideByte.class, image,
+				value);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideDouble.class)
 	public PlanarImg<DoubleType, DoubleArray> divide(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
@@ -821,6 +958,42 @@ public class MathNamespace extends AbstractNamespace {
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
 				net.imagej.ops.math.ConstantToPlanarImage.DivideDouble.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideFloat.class)
+	public PlanarImg<FloatType, FloatArray> divide(
+		final PlanarImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<FloatType, FloatArray> result =
+			(PlanarImg<FloatType, FloatArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.DivideFloat.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideInt.class)
+	public PlanarImg<IntType, IntArray> divide(
+		final PlanarImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<IntType, IntArray> result =
+			(PlanarImg<IntType, IntArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.DivideInt.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.DivideLong.class)
+	public PlanarImg<LongType, LongArray> divide(
+		final PlanarImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<LongType, LongArray> result =
+			(PlanarImg<LongType, LongArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.DivideLong.class, image,
 				value);
 		return result;
 	}
@@ -1131,29 +1304,63 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Min.class, args);
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.MultiplyByte.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyByte.class })
-	public ArrayImg<ByteType, ByteArray> multiply(
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddByte.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddByte.class })
+	public ArrayImg<ByteType, ByteArray> add(
 		final ArrayImg<ByteType, ByteArray> image, final byte value)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<ByteType, ByteArray> result =
-			(ArrayImg<ByteType, ByteArray>) ops().run(Ops.Math.Multiply.NAME, image,
+			(ArrayImg<ByteType, ByteArray>) ops().run(Ops.Math.Add.NAME, image,
 				value);
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.MultiplyDouble.class,
-		net.imagej.ops.math.ConstantToArrayImage.MultiplyDouble.class })
-	public ArrayImg<DoubleType, DoubleArray> multiply(
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddDouble.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddDouble.class })
+	public ArrayImg<DoubleType, DoubleArray> add(
 		final ArrayImg<DoubleType, DoubleArray> image, final double value)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Multiply.NAME,
-				image, value);
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Add.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddFloat.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddFloat.class })
+	public ArrayImg<FloatType, FloatArray> add(
+		final ArrayImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<FloatType, FloatArray> result =
+			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Add.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddInt.class })
+	public ArrayImg<IntType, IntArray> add(
+		final ArrayImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<IntType, IntArray> result =
+			(ArrayImg<IntType, IntArray>) ops().run(Ops.Math.Add.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.AddLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.AddLong.class })
+	public ArrayImg<LongType, LongArray> add(
+		final ArrayImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<LongType, LongArray> result =
+			(ArrayImg<LongType, LongArray>) ops().run(Ops.Math.Add.NAME, image,
+				value);
 		return result;
 	}
 
@@ -1263,6 +1470,18 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Multiply.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyByte.class)
+	public PlanarImg<ByteType, ByteArray> multiply(
+		final PlanarImg<ByteType, ByteArray> image, final byte value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<ByteType, ByteArray> result =
+			(PlanarImg<ByteType, ByteArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.MultiplyByte.class, image,
+				value);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyDouble.class)
 	public PlanarImg<DoubleType, DoubleArray> multiply(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
@@ -1271,6 +1490,42 @@ public class MathNamespace extends AbstractNamespace {
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
 				net.imagej.ops.math.ConstantToPlanarImage.MultiplyDouble.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyFloat.class)
+	public PlanarImg<FloatType, FloatArray> multiply(
+		final PlanarImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<FloatType, FloatArray> result =
+			(PlanarImg<FloatType, FloatArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.MultiplyFloat.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyInt.class)
+	public PlanarImg<IntType, IntArray> multiply(
+		final PlanarImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<IntType, IntArray> result =
+			(PlanarImg<IntType, IntArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.MultiplyInt.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.MultiplyLong.class)
+	public PlanarImg<LongType, LongArray> multiply(
+		final PlanarImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<LongType, LongArray> result =
+			(PlanarImg<LongType, LongArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.MultiplyLong.class, image,
 				value);
 		return result;
 	}
@@ -1768,8 +2023,7 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Step.class, args);
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.SubtractByte.class,
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractByte.class,
 		net.imagej.ops.math.ConstantToArrayImage.SubtractByte.class })
 	public ArrayImg<ByteType, ByteArray> subtract(
 		final ArrayImg<ByteType, ByteArray> image, final byte value)
@@ -1781,16 +2035,51 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(ops = {
-		net.imagej.ops.math.ConstantToArrayImageP.SubtractDouble.class,
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractDouble.class,
 		net.imagej.ops.math.ConstantToArrayImage.SubtractDouble.class })
 	public ArrayImg<DoubleType, DoubleArray> subtract(
 		final ArrayImg<DoubleType, DoubleArray> image, final double value)
 	{
 		@SuppressWarnings("unchecked")
 		final ArrayImg<DoubleType, DoubleArray> result =
-			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Subtract.NAME,
-				image, value);
+			(ArrayImg<DoubleType, DoubleArray>) ops().run(Ops.Math.Subtract.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractFloat.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractFloat.class })
+	public ArrayImg<FloatType, FloatArray> subtract(
+		final ArrayImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<FloatType, FloatArray> result =
+			(ArrayImg<FloatType, FloatArray>) ops().run(Ops.Math.Subtract.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractInt.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractInt.class })
+	public ArrayImg<IntType, IntArray> subtract(
+		final ArrayImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<IntType, IntArray> result =
+			(ArrayImg<IntType, IntArray>) ops().run(Ops.Math.Subtract.NAME, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(ops = { net.imagej.ops.math.ConstantToArrayImageP.SubtractLong.class,
+		net.imagej.ops.math.ConstantToArrayImage.SubtractLong.class })
+	public ArrayImg<LongType, LongArray> subtract(
+		final ArrayImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final ArrayImg<LongType, LongArray> result =
+			(ArrayImg<LongType, LongArray>) ops().run(Ops.Math.Subtract.NAME, image,
+				value);
 		return result;
 	}
 
@@ -1900,6 +2189,18 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Subtract.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractByte.class)
+	public PlanarImg<ByteType, ByteArray> subtract(
+		final PlanarImg<ByteType, ByteArray> image, final byte value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<ByteType, ByteArray> result =
+			(PlanarImg<ByteType, ByteArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.SubtractByte.class, image,
+				value);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractDouble.class)
 	public PlanarImg<DoubleType, DoubleArray> subtract(
 		final PlanarImg<DoubleType, DoubleArray> image, final double value)
@@ -1908,6 +2209,42 @@ public class MathNamespace extends AbstractNamespace {
 		final PlanarImg<DoubleType, DoubleArray> result =
 			(PlanarImg<DoubleType, DoubleArray>) ops().run(
 				net.imagej.ops.math.ConstantToPlanarImage.SubtractDouble.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractFloat.class)
+	public PlanarImg<FloatType, FloatArray> subtract(
+		final PlanarImg<FloatType, FloatArray> image, final float value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<FloatType, FloatArray> result =
+			(PlanarImg<FloatType, FloatArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.SubtractFloat.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractInt.class)
+	public PlanarImg<IntType, IntArray> subtract(
+		final PlanarImg<IntType, IntArray> image, final int value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<IntType, IntArray> result =
+			(PlanarImg<IntType, IntArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.SubtractInt.class, image,
+				value);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.ConstantToPlanarImage.SubtractLong.class)
+	public PlanarImg<LongType, LongArray> subtract(
+		final PlanarImg<LongType, LongArray> image, final long value)
+	{
+		@SuppressWarnings("unchecked")
+		final PlanarImg<LongType, LongArray> result =
+			(PlanarImg<LongType, LongArray>) ops().run(
+				net.imagej.ops.math.ConstantToPlanarImage.SubtractLong.class, image,
 				value);
 		return result;
 	}

@@ -32,15 +32,20 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.thread.chunker.Chunk;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.basictypeaccess.array.IntArray;
+import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.scijava.ItemIO;
 import org.scijava.Priority;
