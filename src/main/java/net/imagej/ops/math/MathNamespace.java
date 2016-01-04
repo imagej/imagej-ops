@@ -2073,13 +2073,11 @@ public class MathNamespace extends AbstractNamespace {
 		return ops().run(net.imagej.ops.Ops.Math.Xor.class, args);
 	}
 
-	@OpMethod(op = net.imagej.ops.math.RealMath.Zero.class)
-	public <I extends RealType<I>, O extends RealType<O>> O zero(final O out,
-		final I in)
-	{
+	@OpMethod(op = net.imagej.ops.math.NumericTypeNullaryMath.Zero.class)
+	public <T extends NumericType<T>> T zero(final T out) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.math.RealMath.Zero.class, out,
-			in);
+		final T result = (T) ops().run(
+			net.imagej.ops.math.NumericTypeNullaryMath.Zero.class, out);
 		return result;
 	}
 

@@ -1094,18 +1094,4 @@ public final class RealMath {
 		}
 	}
 
-	/**
-	 * Sets the real component of an output real number to zero.
-	 */
-	@Plugin(type = Ops.Math.Zero.class)
-	public static class Zero<I extends RealType<I>, O extends RealType<O>> extends
-		AbstractUnaryComputerOp<I, O> implements Ops.Math.Zero
-	{
-
-		@Override
-		public void compute1(final I input, final O output) {
-			output.setZero();
-		}
-	}
-
 }
