@@ -45,14 +45,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for binary math operations between {@link IterableInterval} and 
- * {@link Img}s.
+ * Wrapper class for binary math operations between {@link IterableInterval}s
+ * and write result to {@link IterableInterval}s. 
  *
  * @author Leon Yang
  */
-public final class IterableIntervalToImg {
+public final class IIToIIOutputII {
 	
-	private IterableIntervalToImg() {
+	private IIToIIOutputII() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
