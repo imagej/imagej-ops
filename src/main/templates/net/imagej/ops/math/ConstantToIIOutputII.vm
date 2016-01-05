@@ -30,18 +30,23 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.IterableRealInterval;
+import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.Output;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for in-place binary math operations between constant values 
- * and images in format of (@link IterableRealInterval}.
+ * Wrapper class for functional binary math operations between constant values 
+ * and {@link IterableInterval}s, and write the result
+ * to {@link IterableInterval}s.
  *
  * @author Leon Yang
  */
@@ -54,21 +59,73 @@ public final class ConstantToIIOutputII {
 #set ($iface = "Ops.Math.$op.name")
 
 	@Plugin(type = ${iface}.class)
-	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp implements
-		$iface
+	public static class ${op.name}<T extends NumericType<T>> extends
+		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>>
+		implements InplaceOp<IterableInterval<T>>, Contingent, $iface
 	{
-
-		@Parameter(type = ItemIO.BOTH)
-		private IterableRealInterval<T> image;
 
 		@Parameter
 		private T value;
 
+		private Op outputCreator;
+
 		@Override
-		public void run() {
-			for (final T t : image) {
+		public void initialize() {
+			outputCreator = ops().op(Ops.Create.Img.class, in(), in().firstElement()
+				.createVariable());
+		}
+
+		@Override
+		public void compute1(final IterableInterval<T> input,
+			final IterableInterval<T> output)
+		{
+			final Cursor<T> inCursor = input.cursor();
+			final Cursor<T> outCursor = output.cursor();
+			while (inCursor.hasNext()) {
+				outCursor.next().set(inCursor.next());
+				outCursor.get().${op.function}(value);
+			}
+		}
+
+		@Override
+		public IterableInterval<T> createOutput(
+			final IterableInterval<T> input)
+		{
+			// NB: Temporary approach until DefaultCreateImg and friends are properly
+			// typed as the needed SpecialOp subtypes.
+			outputCreator.run();
+			@SuppressWarnings("unchecked")
+			final IterableInterval<T> created =
+				((Output<IterableInterval<T>>) outputCreator).out();
+			return created;
+		}
+
+		@Override
+		public boolean conforms() {
+			if (out() == null) return true;
+			return in().iterationOrder().equals(out().iterationOrder());
+		}
+
+		@Override
+		public void mutate(final IterableInterval<T> arg) {
+			for (final T t : arg) {
 				t.${op.function}(value);
 			}
+		}
+
+		@Override
+		public IterableInterval<T> arg() {
+			return out();
+		}
+
+		@Override
+		public void setArg(final IterableInterval<T> arg) {
+			setOutput(arg);
+		}
+
+		@Override
+		public ${op.name}<T> getIndependentInstance() {
+			return this;
 		}
 
 	}
