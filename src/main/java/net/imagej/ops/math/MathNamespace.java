@@ -36,7 +36,6 @@ import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -186,22 +185,23 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Add.class)
-	public <T extends NumericType<T>> Img<T> add(final Img<T> out,
-		final Img<T> in, final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> add(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Add.class, out, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Add.class, out, in1, in2);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Add.class)
-	public <T extends NumericType<T>> Img<T> add(final Img<T> in,
-		final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> add(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Add.class, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Add.class, in1, in2);
 		return result;
 	}
 
@@ -867,22 +867,23 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Divide.class)
-	public <T extends NumericType<T>> Img<T> divide(final Img<T> out,
-		final Img<T> in, final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> divide(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Divide.class, out, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Divide.class, out, in1, in2);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Divide.class)
-	public <T extends NumericType<T>> Img<T> divide(final Img<T> in,
-		final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> divide(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Divide.class, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Divide.class, in1, in2);
 		return result;
 	}
 
@@ -1398,22 +1399,23 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Multiply.class)
-	public <T extends NumericType<T>> Img<T> multiply(final Img<T> out,
-		final Img<T> in, final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> multiply(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Multiply.class, out, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Multiply.class, out, in1, in2);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Multiply.class)
-	public <T extends NumericType<T>> Img<T> multiply(final Img<T> in,
-		final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> multiply(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Multiply.class, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Multiply.class, in1, in2);
 		return result;
 	}
 
@@ -2132,22 +2134,23 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Subtract.class)
-	public <T extends NumericType<T>> Img<T> subtract(final Img<T> out,
-		final Img<T> in, final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> subtract(
+		final IterableInterval<T> out, final IterableInterval<T> in1,
+		final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Subtract.class, out, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Subtract.class, out, in1, in2);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Subtract.class)
-	public <T extends NumericType<T>> Img<T> subtract(final Img<T> in,
-		final IterableInterval<T> ii)
+	public <T extends NumericType<T>> IterableInterval<T> subtract(
+		final IterableInterval<T> in1, final IterableInterval<T> in2)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result = (Img<T>) ops().run(
-			net.imagej.ops.math.IIToIIOutputII.Subtract.class, in, ii);
+		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
+			net.imagej.ops.math.IIToIIOutputII.Subtract.class, in1, in2);
 		return result;
 	}
 
