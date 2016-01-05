@@ -44,14 +44,15 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for binary math operations between {@link RandomAccessibleInterval}
- * and {@link IterableInterval}s.
+ * Wrapper class for binary math operations between {@link IterableInterval}s
+ * and {@link RandomAccessibleInterval}s, and writes the result to
+ * {@link IterableInterval}s.
  *
  * @author Leon Yang
  */
-public final class RandomAccessibleIntervalToIterableInterval {
+public final class IIToRAIOutputII {
 	
-	private RandomAccessibleIntervalToIterableInterval() {
+	private IIToRAIOutputII() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)

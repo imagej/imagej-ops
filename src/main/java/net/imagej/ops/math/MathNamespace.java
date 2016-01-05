@@ -213,13 +213,13 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Add.class)
+		op = net.imagej.ops.math.IIToRAIOutputII.Add.class)
 	public <T extends NumericType<T>> IterableInterval<T> add(
 		final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Add.class,
+			net.imagej.ops.math.IIToRAIOutputII.Add.class,
 			a, b);
 		return result;
 	}
@@ -895,13 +895,13 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Divide.class)
+		op = net.imagej.ops.math.IIToRAIOutputII.Divide.class)
 	public <T extends NumericType<T>> IterableInterval<T> divide(
 		final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Divide.class,
+			net.imagej.ops.math.IIToRAIOutputII.Divide.class,
 			a, b);
 		return result;
 	}
@@ -1427,13 +1427,13 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Multiply.class)
+		op = net.imagej.ops.math.IIToRAIOutputII.Multiply.class)
 	public <T extends NumericType<T>> IterableInterval<T> multiply(
 		final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Multiply.class,
+			net.imagej.ops.math.IIToRAIOutputII.Multiply.class,
 			a, b);
 		return result;
 	}
@@ -2162,13 +2162,13 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Subtract.class)
+		op = net.imagej.ops.math.IIToRAIOutputII.Subtract.class)
 	public <T extends NumericType<T>> IterableInterval<T> subtract(
 		final IterableInterval<T> a, final RandomAccessibleInterval<T> b)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-			net.imagej.ops.math.RandomAccessibleIntervalToIterableInterval.Subtract.class,
+			net.imagej.ops.math.IIToRAIOutputII.Subtract.class,
 			a, b);
 		return result;
 	}
