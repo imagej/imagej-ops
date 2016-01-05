@@ -221,13 +221,13 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.Add.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputII.Add.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> add(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result = (IterableRealInterval<T>) ops().run(
-			net.imagej.ops.math.ConstantToImageInPlace.Add.class, image, value);
+			net.imagej.ops.math.ConstantToIIOutputII.Add.class, image, value);
 		return result;
 	}
 
@@ -895,13 +895,13 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.Divide.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputII.Divide.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> divide(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result = (IterableRealInterval<T>) ops().run(
-			net.imagej.ops.math.ConstantToImageInPlace.Divide.class, image, value);
+			net.imagej.ops.math.ConstantToIIOutputII.Divide.class, image, value);
 		return result;
 	}
 
@@ -1417,13 +1417,13 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.Multiply.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputII.Multiply.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> multiply(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result = (IterableRealInterval<T>) ops().run(
-			net.imagej.ops.math.ConstantToImageInPlace.Multiply.class, image, value);
+			net.imagej.ops.math.ConstantToIIOutputII.Multiply.class, image, value);
 		return result;
 	}
 
@@ -2136,13 +2136,13 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.ConstantToImageInPlace.Subtract.class)
+	@OpMethod(op = net.imagej.ops.math.ConstantToIIOutputII.Subtract.class)
 	public <T extends NumericType<T>> IterableRealInterval<T> subtract(
 		final IterableRealInterval<T> image, final T value)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableRealInterval<T> result = (IterableRealInterval<T>) ops().run(
-			net.imagej.ops.math.ConstantToImageInPlace.Subtract.class, image, value);
+			net.imagej.ops.math.ConstantToIIOutputII.Subtract.class, image, value);
 		return result;
 	}
 

@@ -45,9 +45,9 @@ import org.scijava.plugin.Plugin;
  *
  * @author Leon Yang
  */
-public final class ConstantToImageInPlace {
+public final class ConstantToIIOutputII {
 	
-	private ConstantToImageInPlace() {
+	private ConstantToIIOutputII() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
