@@ -55,7 +55,7 @@ import net.imglib2.type.numeric.complex.ComplexFloatType;
  * @param <I>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTFunctionOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
+public class DefaultFFTOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
 	extends AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
