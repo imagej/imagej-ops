@@ -143,7 +143,8 @@ public interface OpEnvironment extends Contextual {
 	 *         outputs will be given.
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByType.class)
-	default <OP extends Op> Object run(final Class<OP> type, final Object... args)
+	default <OP extends Op> Object run(final Class<OP> type,
+		final Object... args)
 	{
 		return OpUtils.run(module(type, args));
 	}
@@ -306,16 +307,16 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
 	default Object eval(final String expression) {
-		final Object result =
-			run(net.imagej.ops.eval.DefaultEval.class, expression);
+		final Object result = run(net.imagej.ops.eval.DefaultEval.class,
+			expression);
 		return result;
 	}
 
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.eval.DefaultEval.class)
 	default Object eval(final String expression, final Map<String, Object> vars) {
-		final Object result =
-			run(net.imagej.ops.eval.DefaultEval.class, expression, vars);
+		final Object result = run(net.imagej.ops.eval.DefaultEval.class, expression,
+			vars);
 		return result;
 	}
 
@@ -335,33 +336,32 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpForNamespace.class)
 	default String help(final Namespace namespace) {
-		final String result =
-			(String) run(net.imagej.ops.help.HelpForNamespace.class, namespace);
+		final String result = (String) run(
+			net.imagej.ops.help.HelpForNamespace.class, namespace);
 		return result;
 	}
-
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
 	default String help() {
-		final String result =
-			(String) run(net.imagej.ops.help.HelpCandidates.class);
+		final String result = (String) run(
+			net.imagej.ops.help.HelpCandidates.class);
 		return result;
 	}
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
 	default String help(final String name) {
-		final String result =
-			(String) run(net.imagej.ops.help.HelpCandidates.class, name);
+		final String result = (String) run(net.imagej.ops.help.HelpCandidates.class,
+			name);
 		return result;
 	}
 
 	/** Executes the "help" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
 	default String help(final String name, final Class<? extends Op> opType) {
-		final String result =
-			(String) run(net.imagej.ops.help.HelpCandidates.class, name, opType);
+		final String result = (String) run(net.imagej.ops.help.HelpCandidates.class,
+			name, opType);
 		return result;
 	}
 
@@ -375,8 +375,8 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.identity.DefaultIdentity.class)
 	default <A> A identity(final A arg) {
 		@SuppressWarnings("unchecked")
-		final A result =
-			(A) run(net.imagej.ops.identity.DefaultIdentity.class, arg);
+		final A result = (A) run(net.imagej.ops.identity.DefaultIdentity.class,
+			arg);
 		return result;
 	}
 
@@ -506,10 +506,9 @@ public interface OpEnvironment extends Contextual {
 		final EO type)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessible<EO> result =
-			(RandomAccessible<EO>) run(
-				net.imagej.ops.map.MapViewRandomAccessToRandomAccess.class, input,
-				op, type);
+		final RandomAccessible<EO> result = (RandomAccessible<EO>) run(
+			net.imagej.ops.map.MapViewRandomAccessToRandomAccess.class, input, op,
+			type);
 		return result;
 	}
 
@@ -521,10 +520,9 @@ public interface OpEnvironment extends Contextual {
 		final EO type)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EO> result =
-			(IterableInterval<EO>) run(
-				net.imagej.ops.map.MapViewIterableIntervalToIterableInterval.class, input, op,
-				type);
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.map.MapViewIterableIntervalToIterableInterval.class, input,
+			op, type);
 		return result;
 	}
 
@@ -534,9 +532,8 @@ public interface OpEnvironment extends Contextual {
 		final InplaceOp<A> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<A> result =
-			(IterableInterval<A>) run(
-				net.imagej.ops.map.MapIterableIntervalInplaceParallel.class, arg, op);
+		final IterableInterval<A> result = (IterableInterval<A>) run(
+			net.imagej.ops.map.MapIterableIntervalInplaceParallel.class, arg, op);
 		return result;
 	}
 
@@ -550,8 +547,8 @@ public interface OpEnvironment extends Contextual {
 		// net.imagej.ops.map.MapIterableToIterableParallel.class
 		// net.imagej.ops.map.MapIterableIntervalToIterableInterval.class
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EO> result =
-			(IterableInterval<EO>) run(net.imagej.ops.Ops.Map.class, out, in, op);
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.Ops.Map.class, out, in, op);
 		return result;
 	}
 
@@ -575,8 +572,8 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
 	default <A> Iterable<A> map(final Iterable<A> arg, final InplaceOp<A> op) {
 		@SuppressWarnings("unchecked")
-		final Iterable<A> result =
-			(Iterable<A>) run(net.imagej.ops.map.MapIterableInplace.class, arg, op);
+		final Iterable<A> result = (Iterable<A>) run(
+			net.imagej.ops.map.MapIterableInplace.class, arg, op);
 		return result;
 	}
 
@@ -586,23 +583,22 @@ public interface OpEnvironment extends Contextual {
 		final RandomAccessibleInterval<EI> in, final UnaryComputerOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final IterableInterval<EO> result =
-			(IterableInterval<EO>) run(
-				net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, op);
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.neighborhood.MapNeighborhood.class)
 	default <I, O> RandomAccessibleInterval<O> map(
-		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final UnaryComputerOp<Iterable<I>, O> op,
-		final Shape shape)
+		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
+		final UnaryComputerOp<Iterable<I>, O> op, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhood.class, out, in, op,
+				shape);
 		return result;
 	}
 
@@ -610,14 +606,14 @@ public interface OpEnvironment extends Contextual {
 	@OpMethod(
 		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
 	default <I, O> RandomAccessibleInterval<O> map(
-		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in,
+		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
 		final CenterAwareComputerOp<Iterable<I>, O> func, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
 			(RandomAccessibleInterval<O>) run(
-				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out, in, func, shape);
+				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out,
+				in, func, shape);
 		return result;
 	}
 
@@ -627,9 +623,8 @@ public interface OpEnvironment extends Contextual {
 		final Iterable<EI> in, final UnaryComputerOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
-		final Iterable<EO> result =
-			(Iterable<EO>) run(net.imagej.ops.map.MapIterableToIterable.class, out,
-				in, op);
+		final Iterable<EO> result = (Iterable<EO>) run(
+			net.imagej.ops.map.MapIterableToIterable.class, out, in, op);
 		return result;
 	}
 
@@ -642,9 +637,8 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	default <I, O> RandomAccessibleInterval<O> slicewise(
-		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final UnaryComputerOp<I, O> op,
-		final int... axisIndices)
+		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
+		final UnaryComputerOp<I, O> op, final int... axisIndices)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -657,9 +651,9 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "slicewise" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.slicewise.SlicewiseRAI2RAI.class)
 	default <I, O> RandomAccessibleInterval<O> slicewise(
-		final RandomAccessibleInterval<O> out,
-		final RandomAccessibleInterval<I> in, final UnaryComputerOp<I, O> op,
-		final int[] axisIndices, final boolean dropSingleDimensions)
+		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
+		final UnaryComputerOp<I, O> op, final int[] axisIndices,
+		final boolean dropSingleDimensions)
 	{
 		@SuppressWarnings("unchecked")
 		final RandomAccessibleInterval<O> result =
@@ -670,7 +664,7 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	// -- Operation shortcuts - other namespaces --
-	
+
 	/** Gateway into ops of the "copy" namespace. */
 	default CopyNamespace copy() {
 		return namespace(CopyNamespace.class);
@@ -695,7 +689,7 @@ public interface OpEnvironment extends Contextual {
 	default FilterNamespace filter() {
 		return namespace(FilterNamespace.class);
 	}
-	
+
 	/** Gateway into ops of the "geom" namespace. */
 	default GeomNamespace geom() {
 		return namespace(GeomNamespace.class);
@@ -715,12 +709,12 @@ public interface OpEnvironment extends Contextual {
 	default ImageMomentsNamespace imagemoments() {
 		return namespace(ImageMomentsNamespace.class);
 	}
-	
+
 	/** Gateway into ops of the "labeling" namespace. */
 	default LabelingNamespace labeling() {
 		return namespace(LabelingNamespace.class);
 	}
-	
+
 	/** Gateway into ops of the "lbp" namespace. */
 	default LBPNamespace lbp() {
 		return namespace(LBPNamespace.class);
@@ -740,7 +734,7 @@ public interface OpEnvironment extends Contextual {
 	default StatsNamespace stats() {
 		return namespace(StatsNamespace.class);
 	}
-	
+
 	/** Gateway into ops of the "tamura" namespace. */
 	default TamuraNamespace tamura() {
 		return namespace(TamuraNamespace.class);
@@ -755,7 +749,7 @@ public interface OpEnvironment extends Contextual {
 	default ThresholdNamespace threshold() {
 		return namespace(ThresholdNamespace.class);
 	}
-	
+
 	/** Gateway into ops of the "zernike" namespace. */
 	default ZernikeNamespace zernike() {
 		return namespace(ZernikeNamespace.class);
