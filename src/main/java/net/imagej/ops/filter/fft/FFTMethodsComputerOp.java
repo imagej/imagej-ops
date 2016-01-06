@@ -55,7 +55,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.NORMAL_PRIORITY)
-public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
+public class FFTMethodsComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.FFT, Contingent
@@ -87,7 +87,9 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 	@Override
 	public boolean conforms() {
 
-		long[] paddedDimensions = new long[in().numDimensions()];
+		 return true;
+
+		/*long[] paddedDimensions = new long[in().numDimensions()];
 		long[] fftDimensions = new long[in().numDimensions()];
 
 		boolean fastSizeConforms = false;
@@ -112,7 +114,7 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
 			smallSizeConforms = true;
 		}
 
-		return fastSizeConforms || smallSizeConforms;
+		return fastSizeConforms || smallSizeConforms;*/
 
 	}
 
