@@ -30,33 +30,29 @@
 
 package net.imagej.ops.create.img;
 
-import net.imagej.ops.AbstractOp;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.AbstractNullaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
  * Default implementation of the "create.img" op.
  *
  * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Brian Northan (True North Intelligent Algorithms)
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class)
-public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
-	Output<Img<T>>
+public class DefaultCreateImg<T> extends AbstractNullaryFunctionOp<Img<T>>
+	implements Ops.Create.Img
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Img<T> output;
 
 	@Parameter
 	private Dimensions dims;
@@ -69,7 +65,7 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
+	public Img<T> compute0() {
 		// FIXME: not guaranteed to be a T unless a Class<T> is given.
 		if (outType == null) {
 			// HACK: For Java 6 compiler.
@@ -104,12 +100,7 @@ public class DefaultCreateImg<T> extends AbstractOp implements Ops.Create.Img,
 			}
 		}
 
-		output = fac.create(dims, outType);
-	}
-
-	@Override
-	public Img<T> out() {
-		return output;
+		return fac.create(dims, outType);
 	}
 
 }
