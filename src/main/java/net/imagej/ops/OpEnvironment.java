@@ -54,6 +54,7 @@ import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.InplaceOp;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryOutputFactory;
@@ -625,6 +626,48 @@ public interface OpEnvironment extends Contextual {
 		@SuppressWarnings("unchecked")
 		final Iterable<EO> result = (Iterable<EO>) run(
 			net.imagej.ops.map.MapIterableToIterable.class, out, in, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIIAndIIToIIParallel.class,
+		net.imagej.ops.map.MapIIAndIIToII.class })
+	default <EI1, EI2, EO> IterableInterval<EO> map(
+		final IterableInterval<EO> out, final IterableInterval<EI1> in1,
+		final IterableInterval<EI2> in2, final BinaryComputerOp<EI1, EI2, EO> op)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EO> result = (IterableInterval<EO>) run(
+			net.imagej.ops.map.MapIIAndIIToII.class, out, in1, in2, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIIAndIIToRAIParallel.class,
+		net.imagej.ops.map.MapIIAndIIToRAI.class })
+	default <EI1, EI2, EO> RandomAccessibleInterval<EO> map(
+		final RandomAccessibleInterval<EO> out, final IterableInterval<EI1> in1,
+		final IterableInterval<EI2> in2, final BinaryComputerOp<EI1, EI2, EO> op)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<EO> result =
+			(RandomAccessibleInterval<EO>) run(
+				net.imagej.ops.map.MapIIAndIIToRAI.class, out, in1, in2, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIIAndRAIToRAIParallel.class,
+		net.imagej.ops.map.MapIIAndRAIToRAI.class })
+	default <EI1, EI2, EO> RandomAccessibleInterval<EO> map(
+		final RandomAccessibleInterval<EO> out, final IterableInterval<EI1> in1,
+		final RandomAccessibleInterval<EI2> in2,
+		final BinaryComputerOp<EI1, EI2, EO> op)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<EO> result =
+			(RandomAccessibleInterval<EO>) run(
+				net.imagej.ops.map.MapIIAndRAIToRAI.class, out, in1, in2, op);
 		return result;
 	}
 
