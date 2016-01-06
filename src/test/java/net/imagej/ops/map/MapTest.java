@@ -31,7 +31,6 @@
 package net.imagej.ops.map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
@@ -46,6 +45,7 @@ import org.junit.Test;
 
 /**
  * @author Christian Dietz (University of Konstanz)
+ * @author Leon Yang
  */
 public class MapTest extends AbstractOpTest {
 
@@ -60,12 +60,10 @@ public class MapTest extends AbstractOpTest {
 		outDiffDims = generateByteArrayTestImg(false, 10, 10, 15);
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToIterableInterval() {
-		final Op functional =
-			ops.op(MapIterableIntervalToIterableInterval.class, out, in,
-				new AddOneFunctional());
-		functional.run();
+		ops.run(MapIterableIntervalToIterableInterval.class, out, in,
+			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
 		final Cursor<ByteType> cursor2 = out.cursor();
@@ -75,28 +73,16 @@ public class MapTest extends AbstractOpTest {
 			cursor2.fwd();
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
+
+		ops.op(MapIterableIntervalToIterableInterval.class, outDiffDims, in,
+			new AddOneFunctional());
 	}
 
-	@Test
-	public void testMapIterableIntervalToIterableIntervalDiffDims() {
-
-		boolean fails = false;
-		try {
-			ops.run(MapIterableIntervalToIterableInterval.class, outDiffDims, in,
-				new AddOneFunctional());
-		}
-		catch (final IllegalArgumentException e) {
-			fails = true;
-		}
-		assertTrue(fails);
-	}
-
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testMapRAIToIterableInterval() {
 
-		final Op functional =
-			ops.op(MapRAIToIterableInterval.class, out, in, new AddOneFunctional());
-		functional.run();
+		ops.run(MapRAIToIterableInterval.class, out, in,
+			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
 		final Cursor<ByteType> cursor2 = out.cursor();
@@ -106,27 +92,16 @@ public class MapTest extends AbstractOpTest {
 			cursor2.fwd();
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
+
+		ops.op(MapRAIToIterableInterval.class, outDiffDims, in,
+			new AddOneFunctional());
 	}
 
-	@Test
-	public void testMapRAIToIterableIntervalDiffDims() {
-		boolean fails = false;
-		try {
-			ops.op(MapRAIToIterableInterval.class, outDiffDims, in,
-				new AddOneFunctional());
-		}
-		catch (final IllegalArgumentException e) {
-			fails = true;
-		}
-		assertTrue(fails);
-	}
-
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToRAI() {
 
-		final Op functional =
-			ops.op(MapIterableIntervalToRAI.class, out, in, new AddOneFunctional());
-		functional.run();
+		ops.run(MapIterableIntervalToRAI.class, out, in,
+			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
 		final Cursor<ByteType> cursor2 = out.cursor();
@@ -136,19 +111,9 @@ public class MapTest extends AbstractOpTest {
 			cursor2.fwd();
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
-	}
-
-	@Test
-	public void testMapIterableIntervalToRAIDiffDims() {
-		boolean fails = false;
-		try {
-			ops.op(MapIterableIntervalToRAI.class, outDiffDims, in,
-				new AddOneFunctional());
-		}
-		catch (final IllegalArgumentException e) {
-			fails = true;
-		}
-		assertTrue(fails);
+		
+		ops.op(MapIterableIntervalToRAI.class, outDiffDims, in,
+			new AddOneFunctional());
 	}
 
 	@Test
@@ -157,8 +122,8 @@ public class MapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional =
-			ops.op(MapIterableInplace.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIterableInplace.class, in,
+			new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {
@@ -171,8 +136,8 @@ public class MapTest extends AbstractOpTest {
 	@Test
 	public void testMapIterableToIterable() {
 
-		final Op functional =
-			ops.op(MapIterableToIterable.class, out, in, new AddOneFunctional());
+		final Op functional = ops.op(MapIterableToIterable.class, out, in,
+			new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
