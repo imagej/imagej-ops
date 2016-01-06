@@ -36,28 +36,42 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.type.Type;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
+import net.imglib2.Interval;
 
 /**
- * Forward FFT function that operates on RAI
+ * Forward FFT
  * 
  * @author Brian Northan
  * @param <T>
- * @param <I>
+ * @param <I>>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class DefaultFFTOp<T extends RealType<T>, I extends RandomAccessibleInterval<T>, C extends ComplexType<C>, O extends RandomAccessibleInterval<C>>
-	extends AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
+public class DefaultFFTOp<I extends Interval, O extends Interval> extends
+	AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
+
+	/**
+	 * Op used to pad the input
+	 */
+	@Parameter
+	private BinaryFunctionOp<I, Dimensions, I> padOp;
+
+	/**
+	 * Op used to create the complex output
+	 */
+	@Parameter
+	private UnaryFunctionOp<Dimensions, O> createOp;
+
+	/**
+	 * Op used to compute the fft
+	 */
+	@Parameter
+	private UnaryComputerOp<I, O> fftOp;
 
 	/**
 	 * The size of border to apply in each dimension
@@ -65,87 +79,32 @@ public class DefaultFFTOp<T extends RealType<T>, I extends RandomAccessibleInter
 	@Parameter(required = false)
 	private long[] borderSize = null;
 
-	/**
-	 * Whether to perform a fast FFT. If true the input will be extended to the
-	 * next fast FFT size. If false the input will be computed using the original
-	 * input dimensions (if possible). If the input dimensions are not supported
-	 * by the underlying FFT implementation the input will be extended to the
-	 * nearest size that is supported.
-	 */
-	@Parameter(required = false)
-	private Boolean fast = true;
+	@Override
+	public O compute1(final I input) {
 
-	/**
-	 * The OutOfBoundsFactory used to extend the image
-	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
+		// calculate the padded size
+		long[] paddedSize = new long[in().numDimensions()];
 
-	/**
-	 * The ImgFactory used to create the output
-	 */
-	@Parameter(required = false)
-	private ImgFactory<?> factory;
-
-	/**
-	 * The complex type of the output
-	 */
-	@Parameter(required = false)
-	private Type<C> fftType;
-
-	private Dimensions paddedDimensions;
-
-	// @Override
-	public O createOutput(final I input) {
-		long[] inputWithBordersSize = new long[input.numDimensions()];
-
-		for (int d = 0; d < input.numDimensions(); d++) {
-			inputWithBordersSize[d] = input.dimension(d);
+		for (int d = 0; d < in().numDimensions(); d++) {
+			paddedSize[d] = in().dimension(d);
 
 			if (borderSize != null) {
-				inputWithBordersSize[d] += borderSize[d];
+				paddedSize[d] += borderSize[d];
 			}
 		}
 
-		long[] paddedSize = new long[input.numDimensions()];
-		long[] fftSize = new long[input.numDimensions()];
+		Dimensions paddedDimensions = new FinalDimensions(paddedSize);
 
-		// calculate the required input (paddedSize) and complex output (fftSize)
-		// sizes for the FFT
-		ops().filter().fftSize(inputWithBordersSize, paddedSize, fftSize, true,
-			fast);
+		// create the complex output
+		O output = createOp.compute1(paddedDimensions);
 
-		paddedDimensions = new FinalDimensions(paddedSize);
-		Dimensions fftDimensions = new FinalDimensions(fftSize);
+		// pad the input
+		I paddedInput = padOp.compute2(input, paddedDimensions);
 
-		// if no type was passed in the default is ComplexFloatType
-		if (fftType == null) {
-			fftType = (C) new ComplexFloatType();
-		}
+		// compute and return fft
+		fftOp.compute1(paddedInput, output);
 
-		// create the complex output image
-		return (O) ops().create().img(fftDimensions, fftType, factory);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public O compute1(final I input) {
-
-		O output = createOutput(input);
-
-		I paddedInput;
-
-		// pad the input if necessary
-		if (!FFTMethods.dimensionsEqual(input, paddedDimensions)) {
-
-			paddedInput = (I) ops().filter().padInput(input, paddedDimensions, obf);
-		}
-		else {
-			paddedInput = input;
-		}
-
-		return (O) (ops().filter().fft(output, paddedInput));
-
+		return output;
 	}
 
 }
