@@ -38,10 +38,6 @@ import net.imagej.ops.Op;
 import net.imagej.ops.special.AbstractInplaceOp;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessible;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 
@@ -173,28 +169,6 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	@Test
-	public void testMapIterableIntervalToView() {
-
-		final Op functional =
-			ops.op(MapViewIterableIntervalToIterableInterval.class, in, new AddOneFunctional(),
-				new ByteType());
-		functional.run();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final IterableInterval<ByteType> o =
-			(IterableInterval<ByteType>) ((MapViewIterableIntervalToIterableInterval) functional)
-				.out();
-
-		final RandomAccess<ByteType> inputRA = in.randomAccess();
-		final Cursor<ByteType> outCursor = o.localizingCursor();
-
-		while (outCursor.hasNext()) {
-			outCursor.fwd();
-			inputRA.setPosition(outCursor);
-			assertEquals((byte) (inputRA.get().get() + 1), outCursor.get().get());
-		}
-	}
-
-	@Test
 	public void testMapIterableToIterable() {
 
 		final Op functional =
@@ -208,50 +182,6 @@ public class MapTest extends AbstractOpTest {
 			cursor1.fwd();
 			cursor2.fwd();
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
-		}
-	}
-
-	@Test
-	public void testMapConvertRAIToRAI() {
-
-		final Op functional =
-			ops.op(MapViewRAIToRAI.class, in, new AddOneFunctional(),
-				new ByteType());
-		functional.run();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final RandomAccessibleInterval<ByteType> output =
-			(RandomAccessibleInterval<ByteType>) ((MapViewRAIToRAI) functional)
-				.out();
-
-		final Cursor<ByteType> inputC = in.cursor();
-		final RandomAccess<ByteType> outputRA = output.randomAccess();
-
-		while (inputC.hasNext()) {
-			inputC.fwd();
-			outputRA.setPosition(inputC);
-			assertEquals((byte) (inputC.get().get() + 1), outputRA.get().get());
-		}
-	}
-
-	@Test
-	public void testMapConvertRandomAccessToRandomAccess() {
-
-		final Op functional =
-			ops.op(MapViewRandomAccessToRandomAccess.class, in,
-				new AddOneFunctional(), new ByteType());
-		functional.run();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		final RandomAccessible<ByteType> output =
-			(RandomAccessible<ByteType>) ((MapViewRandomAccessToRandomAccess) functional)
-				.out();
-
-		final Cursor<ByteType> inputC = in.cursor();
-		final RandomAccess<ByteType> outputRA = output.randomAccess();
-
-		while (inputC.hasNext()) {
-			inputC.fwd();
-			outputRA.setPosition(inputC);
-			assertEquals((byte) (inputC.get().get() + 1), outputRA.get().get());
 		}
 	}
 
