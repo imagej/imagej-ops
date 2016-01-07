@@ -70,7 +70,7 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 	@Parameter
 	RandomAccessibleInterval<O> reblurred;
 
-	/** buffer fft of reblurred (will be computed) **/
+	/** fft of reblurred (will be computed) **/
 	@Parameter
 	RandomAccessibleInterval<C> fftBuffer;
 
@@ -84,7 +84,7 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 	@Override
 	public void run() {
 
-		// divide observed image by reblCirculant (standard) versionurred
+		// divide observed image by reblurred
 		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);
 
 		// correlate with psf to compute the correction factor
