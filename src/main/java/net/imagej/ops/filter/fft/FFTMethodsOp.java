@@ -115,7 +115,7 @@ public class FFTMethodsOp<T extends RealType<T>, C extends ComplexType<C>>
 
 		UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp =
 			(UnaryFunctionOp) Functions.unary(ops(), CreateOutputFFTMethods.class,
-				RandomAccessibleInterval.class, Dimensions.class, fast, fftType);
+				RandomAccessibleInterval.class, Dimensions.class, fftType, fast);
 
 		UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftMethodsOp =
 			(UnaryComputerOp) Computers.nullary(ops(), FFTMethodsComputerOp.class,
