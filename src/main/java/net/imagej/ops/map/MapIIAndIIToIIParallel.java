@@ -32,36 +32,43 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
  * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link RandomAccessibleInterval} outputs.
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order, and the inputs and outputs must have the same
+ * dimensions.
  * 
- * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableIntervalToRAIParallel<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
-	implements Contingent, Parallel
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
+public class MapIIAndIIToIIParallel<EI1, EI2, EO> extends
+	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, IterableInterval<EO>>
+	implements Contingent
 {
 
 	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final RandomAccessibleInterval<EO> output)
+	public boolean conforms() {
+		if (!in1().iterationOrder().equals(in2().iterationOrder())) return false;
+		
+		if (out() == null) return true;
+		return in1().iterationOrder().equals(out().iterationOrder());
+	}
+
+	@Override
+	public void compute2(final IterableInterval<EI1> input1,
+		final IterableInterval<EI2> input2, final IterableInterval<EO> output)
 	{
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
@@ -69,27 +76,26 @@ public class MapIterableIntervalToRAIParallel<EI, EO> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
-				final Cursor<EI> cursor = input.localizingCursor();
+				final BinaryComputerOp<EI1, EI2, EO> safe = getOp()
+					.getIndependentInstance();
 
-				setToStart(cursor, startIndex);
+				final Cursor<EI1> in1Cursor = input1.cursor();
+				final Cursor<EI2> in2Cursor = input2.cursor();
+				final Cursor<EO> outCursor = output.cursor();
 
-				final RandomAccess<EO> rndAccess = output.randomAccess();
+				setToStart(in1Cursor, startIndex);
+				setToStart(in2Cursor, startIndex);
+				setToStart(outCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					safe.compute1(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
+					safe.compute2(in1Cursor.get(), in2Cursor.get(), outCursor.get());
+					in1Cursor.jumpFwd(stepSize);
+					in2Cursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}
-		}, input.size());
+		}, input1.size());
 	}
-
-	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
-	}
-
 }

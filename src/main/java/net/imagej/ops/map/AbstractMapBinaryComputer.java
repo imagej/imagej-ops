@@ -30,50 +30,40 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.scijava.plugin.Parameter;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
+ * Abstract base class for {@link MapBinaryComputer} implementations.
+ * 
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
+ * @param <PI1> producer of first inputs
+ * @param <PI2> producer of second inputs
+ * @param <PO> producer of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
-	implements Contingent
+public abstract class AbstractMapBinaryComputer<EI1, EI2, EO, PI1, PI2, PO>
+	extends AbstractBinaryComputerOp<PI1, PI2, PO> implements
+	MapBinaryComputer<EI1, EI2, EO, BinaryComputerOp<EI1, EI2, EO>>
 {
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
+	@Parameter
+	private BinaryComputerOp<EI1, EI2, EO> op;
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
-		}
+	// -- MapOp methods --
+
+	@Override
+	public BinaryComputerOp<EI1, EI2, EO> getOp() {
+		return op;
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void setOp(final BinaryComputerOp<EI1, EI2, EO> op) {
+		this.op = op;
 	}
 
 }

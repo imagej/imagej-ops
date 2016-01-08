@@ -42,38 +42,42 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
+ * {@link MapComputer} from {@link IterableInterval} and
+ * {@link RandomAccessibleInterval} inputs to {@link RandomAccessibleInterval}
+ * outputs. The inputs and outputs must have the same dimensions.
+ * 
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
+public class MapIIAndRAIToRAI<EI1, EI2, EO> extends
+	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, RandomAccessibleInterval<EI2>, RandomAccessibleInterval<EO>>
 	implements Contingent
 {
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
-		}
+	public boolean conforms() {
+		if (!Intervals.equalDimensions(in1(), in2())) return false;
+		
+		if (out() == null) return true;
+		return Intervals.equalDimensions(in1(), out());
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void compute2(final IterableInterval<EI1> input1,
+		final RandomAccessibleInterval<EI2> input2,
+		final RandomAccessibleInterval<EO> output)
+	{
+		final Cursor<EI1> in1Cursor = input1.localizingCursor();
+		final RandomAccess<EI2> in2Access = input2.randomAccess();
+		final RandomAccess<EO> outAccess = output.randomAccess();
+		while (in1Cursor.hasNext()) {
+			in1Cursor.fwd();
+			in2Access.setPosition(in1Cursor);
+			outAccess.setPosition(in1Cursor);
+			getOp().compute2(in1Cursor.get(), in2Access.get(), outAccess.get());
+		}
 	}
-
 }
