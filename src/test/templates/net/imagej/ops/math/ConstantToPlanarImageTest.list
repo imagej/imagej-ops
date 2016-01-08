@@ -1,6 +1,6 @@
-# Generated binary arithmetic ops with PlanarImages. 
+# Unit tests for binary arithmetic ops with PlanarImages. 
 
-[ConstantToPlanarImage.java]
+[ConstantToPlanarImageTest.java]
 
 types = ```
 [

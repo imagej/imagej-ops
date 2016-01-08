@@ -30,54 +30,49 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import static org.junit.Assert.assertEquals;
+
+import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.img.Img;
+import net.imglib2.img.planar.PlanarImgs;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import org.junit.Test;
 
-/**
- * Wrapper class for functional binary math operations between constant values 
- * and images in format of {@link IterableInterval}s.
- *
- * @author Leon Yang
- */
-public final class ConstantToImageFunctional {
-	
-	private ConstantToImageFunctional() {
-		// NB: Prevent instantiation of utility class.
+public class ConstantToPlanarImageTest extends AbstractOpTest {
+
+#foreach ($type in $types)
+#set ($imglibType = $type.name + "Type")
+#set ($isByte = $type.name == "Byte")
+#set ($isFloat = $type.name == "Float" || $type.name == "Double")
+	private Img<$imglibType> get${type.name}PlanarImg() {
+		final Img<$imglibType> img = PlanarImgs.${type.primitive}s(3, 3);
+		$type.primitive i = 11;
+		for ($imglibType px : img) 
+			px.set(i++);
+		return img;
 	}
+
 #foreach ($op in $ops)
-#set ($iface = "Ops.Math.$op.name")
-
-	@Plugin(type = ${iface}.class, priority = Priority.VERY_LOW_PRIORITY)
-	public static class ${op.name}<T extends NumericType<T>> extends
-			AbstractUnaryComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
-			implements ${iface} {
-
-		@Parameter
-		private T value;
-
-		@Override
-		public void compute1(final IterableInterval<T> input,
-				final RandomAccessibleInterval<T> output) {
-			final Cursor<T> c = input.localizingCursor();
-			final RandomAccess<T> ra = output.randomAccess();
-			while (c.hasNext()) {
-				final T in = c.next();
-				ra.setPosition(c);
-				final T out = ra.get();
-				out.set(in);
-				out.${op.function}(value);
-			}
+#set ($className = $op.name + $type.name)
+	@Test
+	public void test${className}() {
+		final Img<$imglibType> in = get${type.name}PlanarImg();
+		final Img<$imglibType> copy = in.copy();
+		final $type.primitive constant = 3;
+		ops.run(ConstantToPlanarImage.${className}.class, in, constant);
+		final Cursor<$imglibType> inCursor = in.cursor();
+		final Cursor<$imglibType> copyCursor = copy.cursor();
+		while (inCursor.hasNext()) {
+			assertEquals(inCursor.next().get(), #if ($isByte)(byte) #{end}(copyCursor.next().get() $op.operator constant)#if ($isFloat), 0.0#{end});
 		}
-
 	}
+
+#end
 #end
 }

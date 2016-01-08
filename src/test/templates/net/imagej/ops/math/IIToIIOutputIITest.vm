@@ -31,36 +31,55 @@
 package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import net.imagej.ops.AbstractOpTest;
 
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link PrimitiveMath} ops.
- *
- * @author Curtis Rueden
- */
-public class PrimitiveMathTest extends AbstractOpTest {
-#foreach ($test in $tests)
-#if ($types.containsKey($test.code))
-#set ($type = $types.get($test.code))
-#set ($className = "$type.name$test.op")
-#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
+public class IIToRAIOutputIITest extends AbstractOpTest {
 
-	/** Tests {@link PrimitiveMath.$className}. */
-	@Test
-	public void test$className() {
-		final Object result = ops.math().$methodName($test.args);
-		assertTrue(result instanceof $type.name);
-		final $type.primitive value = ($type.name) result;
-#if ($type.delta)
-		assertEquals($test.result, value, $type.delta);
-#else
-		assertEquals($test.result, value);
-#end
+	private Img<FloatType> in1;
+	private Img<FloatType> in2;
+	private Img<FloatType> copy1;
+	private Img<FloatType> out;
+
+	@Before
+	public void initImg() {
+		in1 = generateFloatArrayTestImg(true, 3, 3);
+		in2 = ArrayImgs.floats(new float[] { 11, 12, 13, 14, 15, 16, 17, 18, 19 },
+			3, 3);
+		copy1 = in1.copy();
+		out = ArrayImgs.floats(3, 3);
 	}
-#end
-#end
+	
+#foreach ($op in $ops)
+	@Test
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final IIToRAIOutputII.${op.name}<FloatType> op = ops.op(IIToRAIOutputII.${op.name}.class,
+			out, in1, in2);
+		op.run();
+		final IterableInterval<FloatType> created = op.compute2(in1, in2);
+		op.mutate(in1);
+		final Cursor<FloatType> in1Cursor = in1.cursor();
+		final Cursor<FloatType> copy1Cursor = copy1.cursor();
+		final Cursor<FloatType> in2Cursor = in2.cursor();
+		final Cursor<FloatType> outCursor = out.cursor();
+		final Cursor<FloatType> crtCursor = created.cursor();
+		while (copy1Cursor.hasNext()) {
+			copy1Cursor.next().${op.function}(in2Cursor.next());
+			final float expected = copy1Cursor.get().get();
+			assertEquals(in1Cursor.next().get(), expected, 0.0);
+			assertEquals(outCursor.next().get(), expected, 0.0);
+			assertEquals(crtCursor.next().get(), expected, 0.0);
+		}
+	}
 
+#end
 }

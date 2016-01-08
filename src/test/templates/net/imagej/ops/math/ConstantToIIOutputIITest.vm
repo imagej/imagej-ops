@@ -30,47 +30,52 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.type.numeric.NumericType;
+import static org.junit.Assert.assertEquals;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.FloatType;
 
-/**
- * Wrapper class for in-place binary math operations between constant values 
- * and images in format of (@link IterableRealInterval}.
- *
- * @author Leon Yang
- */
-public final class ConstantToImageInPlace {
-	
-	private ConstantToImageInPlace() {
-		// NB: Prevent instantiation of utility class.
+import org.junit.Before;
+import org.junit.Test;
+
+public class ConstantToIIOutputIITest extends AbstractOpTest {
+
+	final private FloatType constant = new FloatType(3.0f);
+	private Img<FloatType> in;
+	private Img<FloatType> copy;
+	private Img<FloatType> out;
+
+	@Before
+	public void initImg() {
+		in = generateFloatArrayTestImg(true, 3, 3);
+		copy = in.copy();
+		out = generateFloatArrayTestImg(false, 3, 3);
 	}
+
 #foreach ($op in $ops)
-#set ($iface = "Ops.Math.$op.name")
-
-	@Plugin(type = ${iface}.class)
-	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp implements
-		$iface
-	{
-
-		@Parameter(type = ItemIO.BOTH)
-		private IterableRealInterval<T> image;
-
-		@Parameter
-		private T value;
-
-		@Override
-		public void run() {
-			for (final T t : image) {
-				t.${op.function}(value);
-			}
+	@Test
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final ConstantToIIOutputII.${op.name}<FloatType> op = ops.op(
+			ConstantToIIOutputII.${op.name}.class, out, in, constant);
+		op.run();
+		final IterableInterval<FloatType> created = op.compute1(in);
+		op.mutate(in);
+		final Cursor<FloatType> inCursor = in.cursor();
+		final Cursor<FloatType> copyCursor = copy.cursor();
+		final Cursor<FloatType> outCursor = out.cursor();
+		final Cursor<FloatType> crtCursor = created.cursor();
+		while (inCursor.hasNext()) {
+			copyCursor.next().${op.function}(constant);
+			final float expected = copyCursor.get().get();
+			assertEquals(inCursor.next().get(), expected, 0.0);
+			assertEquals(outCursor.next().get(), expected, 0.0);
+			assertEquals(crtCursor.next().get(), expected, 0.0);
 		}
-
 	}
+
 #end
 }

@@ -1,6 +1,7 @@
-# Generated binary arithmetic ops with IterableIntervals and generic images.
+# Generated binary arithmetic ops with IterableIntervals and output to
+# IterableIntervals.
 
-[IterableIntervalToImg.java]
+[IIToIIOutputII.java]
 
 ops = ```
 [

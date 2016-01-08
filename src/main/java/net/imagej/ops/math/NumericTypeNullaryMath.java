@@ -30,37 +30,61 @@
 
 package net.imagej.ops.math;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractNullaryComputerOp;
+import net.imagej.ops.special.InplaceOp;
+import net.imglib2.type.numeric.NumericType;
 
-import org.junit.Test;
+import org.scijava.plugin.Plugin;
 
 /**
- * Tests the {@link PrimitiveMath} ops.
- *
- * @author Curtis Rueden
+ * Nullary Ops of the {@code math} namespace which operate on
+ * {@link NumericType}s.
+ * 
+ * @author Leon Yang
  */
-public class PrimitiveMathTest extends AbstractOpTest {
-#foreach ($test in $tests)
-#if ($types.containsKey($test.code))
-#set ($type = $types.get($test.code))
-#set ($className = "$type.name$test.op")
-#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
+public class NumericTypeNullaryMath {
 
-	/** Tests {@link PrimitiveMath.$className}. */
-	@Test
-	public void test$className() {
-		final Object result = ops.math().$methodName($test.args);
-		assertTrue(result instanceof $type.name);
-		final $type.primitive value = ($type.name) result;
-#if ($type.delta)
-		assertEquals($test.result, value, $type.delta);
-#else
-		assertEquals($test.result, value);
-#end
+	private NumericTypeNullaryMath() {
+		// NB: Prevent instantiation of utility class.
 	}
-#end
-#end
 
+	/**
+	 * Sets the output to zero.
+	 */
+	@Plugin(type = Ops.Math.Zero.class)
+	public static class Zero<T extends NumericType<T>> extends
+		AbstractNullaryComputerOp<T> implements InplaceOp<T>, Ops.Math.Zero
+	{
+
+		@Override
+		public void compute0(final T output) {
+			output.setZero();
+		}
+
+		@Override
+		public void run() {
+			InplaceOp.super.run();
+		}
+
+		@Override
+		public void mutate(T arg) {
+			compute0(arg);
+		}
+
+		@Override
+		public T arg() {
+			return out();
+		}
+
+		@Override
+		public void setArg(T arg) {
+			setOutput(arg);
+		}
+
+		@Override
+		public Zero<T> getIndependentInstance() {
+			return this;
+		}
+	}
 }

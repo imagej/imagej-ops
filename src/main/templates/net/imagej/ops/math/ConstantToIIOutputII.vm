@@ -31,74 +31,103 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.Output;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
-import net.imglib2.util.Intervals;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for binary math operations between {@link IterableInterval} and 
- * {@link Img}s.
+ * Wrapper class for functional binary math operations between constant values 
+ * and {@link IterableInterval}s, and write the result
+ * to {@link IterableInterval}s.
  *
  * @author Leon Yang
  */
-public final class IterableIntervalToImg {
+public final class ConstantToIIOutputII {
 	
-	private IterableIntervalToImg() {
+	private ConstantToIIOutputII() {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
-	
-		@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
-		public static class ${op.name}<T extends NumericType<T>> extends
-			AbstractUnaryHybridOp<Img<T>, Img<T>> implements $iface, Contingent
-		{
 
-			// TODO: extend common abstract base class which implements Contingent
-			// for dimensionality checking.
-			// TODO: code generate this and all add ops to generalize them to other
-			// operators.
+	@Plugin(type = ${iface}.class)
+	public static class ${op.name}<T extends NumericType<T>> extends
+		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>>
+		implements InplaceOp<IterableInterval<T>>, Contingent, $iface
+	{
 
-			@Parameter
-			private IterableInterval<T> ii;
+		@Parameter
+		private T value;
 
-			@Override
-			public boolean conforms() {
-				if (!Intervals.equalDimensions(in(), ii)) return false;
-				if (out() == null) return true;
-				return Intervals.equalDimensions(ii, out());
-			}
+		private Op outputCreator;
 
-			@Override
-			public Img<T> createOutput(final Img<T> input) {
-				return input.factory().create(input, input.firstElement());
-			}
-
-			@Override
-			public void compute1(final Img<T> input, final Img<T> output) {
-				final Cursor<T> cursor = ii.localizingCursor();
-				final RandomAccess<T> iRA = input.randomAccess();
-				final RandomAccess<T> oRA = output.randomAccess();
-				final T tmp = output.firstElement().copy();
-				while (cursor.hasNext()) {
-					cursor.fwd();
-					iRA.setPosition(cursor);
-					oRA.setPosition(cursor);
-					tmp.set(iRA.get());
-					tmp.${op.function}(cursor.get());
-					oRA.get().set(tmp);
-				}
-			}
-
+		@Override
+		public void initialize() {
+			outputCreator = ops().op(Ops.Create.Img.class, in(), in().firstElement()
+				.createVariable());
 		}
+
+		@Override
+		public void compute1(final IterableInterval<T> input,
+			final IterableInterval<T> output)
+		{
+			final Cursor<T> inCursor = input.cursor();
+			final Cursor<T> outCursor = output.cursor();
+			while (inCursor.hasNext()) {
+				outCursor.next().set(inCursor.next());
+				outCursor.get().${op.function}(value);
+			}
+		}
+
+		@Override
+		public IterableInterval<T> createOutput(
+			final IterableInterval<T> input)
+		{
+			// NB: Temporary approach until DefaultCreateImg and friends are properly
+			// typed as the needed SpecialOp subtypes.
+			outputCreator.run();
+			@SuppressWarnings("unchecked")
+			final IterableInterval<T> created =
+				((Output<IterableInterval<T>>) outputCreator).out();
+			return created;
+		}
+
+		@Override
+		public boolean conforms() {
+			if (out() == null) return true;
+			return in().iterationOrder().equals(out().iterationOrder());
+		}
+
+		@Override
+		public void mutate(final IterableInterval<T> arg) {
+			for (final T t : arg) {
+				t.${op.function}(value);
+			}
+		}
+
+		@Override
+		public IterableInterval<T> arg() {
+			return out();
+		}
+
+		@Override
+		public void setArg(final IterableInterval<T> arg) {
+			setOutput(arg);
+		}
+
+		@Override
+		public ${op.name}<T> getIndependentInstance() {
+			return this;
+		}
+
+	}
 #end
 }

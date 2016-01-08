@@ -1,6 +1,6 @@
-# Generated in-place binary arithmetic ops with generic images.
+# Unit tests for functional binary arithmetic ops with II as input and RAI as output.
 
-[ConstantToImageInPlace.java]
+[ConstantToIIOutputRAITest.java]
 
 ops = ```
 [

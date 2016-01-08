@@ -31,36 +31,38 @@
 package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import net.imagej.ops.AbstractOpTest;
 
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.FloatType;
+
+import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link PrimitiveMath} ops.
- *
- * @author Curtis Rueden
- */
-public class PrimitiveMathTest extends AbstractOpTest {
-#foreach ($test in $tests)
-#if ($types.containsKey($test.code))
-#set ($type = $types.get($test.code))
-#set ($className = "$type.name$test.op")
-#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
+public class ConstantToIIOutputRAITest extends AbstractOpTest {
 
-	/** Tests {@link PrimitiveMath.$className}. */
-	@Test
-	public void test$className() {
-		final Object result = ops.math().$methodName($test.args);
-		assertTrue(result instanceof $type.name);
-		final $type.primitive value = ($type.name) result;
-#if ($type.delta)
-		assertEquals($test.result, value, $type.delta);
-#else
-		assertEquals($test.result, value);
-#end
+	final private FloatType constant = new FloatType(3.0f);
+	private Img<FloatType> in;
+	private Img<FloatType> out;
+
+	@Before
+	public void initImg() {
+		in = generateFloatArrayTestImg(true, 3, 3);
+		out = generateFloatArrayTestImg(false, 3, 3);
 	}
-#end
-#end
 
+#foreach ($op in $ops)
+	@Test
+	public void test${op.name}() {
+		ops.run(ConstantToIIOutputRAI.${op.name}.class, out, in, constant);
+		final Cursor<FloatType> inCursor = in.cursor();
+		final Cursor<FloatType> outCursor = out.cursor();
+		while (inCursor.hasNext()) {
+			inCursor.next().${op.function}(constant);
+			assertEquals(outCursor.next().get(), inCursor.get().get(), 0.0);
+		}
+	}
+
+#end
 }

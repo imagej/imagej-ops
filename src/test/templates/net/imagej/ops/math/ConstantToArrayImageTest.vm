@@ -31,36 +31,50 @@
 package net.imagej.ops.math;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
 import org.junit.Test;
 
-/**
- * Tests the {@link PrimitiveMath} ops.
- *
- * @author Curtis Rueden
- */
-public class PrimitiveMathTest extends AbstractOpTest {
-#foreach ($test in $tests)
-#if ($types.containsKey($test.code))
-#set ($type = $types.get($test.code))
-#set ($className = "$type.name$test.op")
-#set ($methodName = $test.op.substring(0, 1).toLowerCase() + $test.op.substring(1))
+public class ConstantToArrayImageTest extends AbstractOpTest {
 
-	/** Tests {@link PrimitiveMath.$className}. */
-	@Test
-	public void test$className() {
-		final Object result = ops.math().$methodName($test.args);
-		assertTrue(result instanceof $type.name);
-		final $type.primitive value = ($type.name) result;
-#if ($type.delta)
-		assertEquals($test.result, value, $type.delta);
-#else
-		assertEquals($test.result, value);
-#end
+#foreach ($type in $types)
+#set ($imglibType = $type.name + "Type")
+#set ($isByte = $type.name == "Byte")
+#set ($isFloat = $type.name == "Float" || $type.name == "Double")
+	private ${type.primitive}[] get${type.name}Array() {
+		return new ${type.primitive}[] { 11, 12, 13, 14, 15, 16, 17, 18, 19 };
 	}
-#end
-#end
 
+#foreach ($op in $ops)
+#set ($className = $op.name + $type.name)
+	@Test
+	public void test${className}() {
+		final Img<$imglibType> in = ArrayImgs.${type.primitive}s(get${type.name}Array(), 3, 3);
+		final Img<$imglibType> copy = in.copy();
+		final ${type.primitive} constant = 3;
+		ops.run(ConstantToArrayImage.${className}.class, in, constant);
+		final Cursor<$imglibType> inCursor = in.cursor();
+		final Cursor<$imglibType> copyCursor = copy.cursor();
+		while (inCursor.hasNext()) {
+			assertEquals(inCursor.next().get(), #if ($isByte)(byte) #{end}(copyCursor.next().get() $op.operator constant)#if ($isFloat), 0.0#{end});
+		}
+		ops.run(ConstantToArrayImageP.${className}.class, copy, constant);
+		inCursor.reset();
+		copyCursor.reset();
+		while (inCursor.hasNext()) {
+			assertEquals(inCursor.next().get(), copyCursor.next().get()#if ($isFloat), 0.0#{end});
+		}
+	}
+
+#end
+#end
 }
