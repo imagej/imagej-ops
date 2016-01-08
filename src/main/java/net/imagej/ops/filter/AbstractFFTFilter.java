@@ -30,13 +30,13 @@
 
 package net.imagej.ops.filter;
 
+import org.scijava.plugin.Parameter;
+
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.plugin.Parameter;
 
 /**
  * Abstract class for FFT based filters that operate on Img.
@@ -63,6 +63,8 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
+	// TODO: create memory related ops as input ops??
+
 	/**
 	 * compute output by extending the input(s) and running the filter
 	 */
@@ -72,19 +74,20 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	{
 
 		RandomAccessibleInterval<O> output = createOutput(input);
-		
+
+		// TODO restructure create memory
 		// run the op that extends the input and kernel and creates the Imgs
 		// required for the fft algorithm
-		final CreateFFTFilterMemory<I, O, K, C> createMemory =
-			ops()
-				.op(CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
+		final CreateFFTFilterMemory<I, O, K, C> createMemory = ops().op(
+			CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
 
 		createMemory.run();
 
-		// run the filter, pass in the memory created above
+		// TODO: this should be an op??
 		runFilter(createMemory.getRAIExtendedInput(), createMemory
 			.getRAIExtendedKernel(), createMemory.getFFTImgInterval(), createMemory
-			.getFFTKernelInterval(), output, createMemory.getImgConvolutionInterval());
+				.getFFTKernelInterval(), output, createMemory
+					.getImgConvolutionInterval());
 
 		return output;
 

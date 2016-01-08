@@ -30,6 +30,7 @@
 
 package net.imagej.ops.filter.convolve;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.LinearFFTFilterRAI;
 import net.imglib2.RandomAccessibleInterval;
@@ -60,6 +61,9 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	protected void frequencyOperation(RandomAccessibleInterval<C> a,
 		RandomAccessibleInterval<C> b)
 	{
-		ops().run(Ops.Math.Multiply.class, a, b, a);
+		Op test=ops().op(Ops.Math.Multiply.class, a, b, a);
+		
+		ops().run(test,a,b,a);
+		//ops().run(Ops.Math.Multiply.class, a, b, a);
 	}
 }
