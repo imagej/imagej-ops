@@ -32,18 +32,17 @@ package net.imagej.ops.eval;
 
 import java.util.Map;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * Evaluates an expression.
  * <p>
- * The expression is parsed using <a
- * href="https://github.com/scijava/scijava-expression-parser">SJEP</a>, then
+ * The expression is parsed using
+ * <a href="https://github.com/scijava/scijava-expression-parser">SJEP</a>, then
  * evaluated by invoking available ops.
  * </p>
  * 
@@ -51,22 +50,18 @@ import org.scijava.plugin.Plugin;
  * @see OpEvaluator
  */
 @Plugin(type = Ops.Eval.class)
-public class DefaultEval extends AbstractOp implements Ops.Eval {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Object result;
-
-	@Parameter
-	private String expression;
+public class DefaultEval extends AbstractUnaryFunctionOp<String, Object>
+	implements Ops.Eval
+{
 
 	@Parameter(required = false)
 	private Map<String, Object> vars;
 
 	@Override
-	public void run() {
+	public Object compute1(final String input) {
 		final OpEvaluator e = new OpEvaluator(ops());
 		if (vars != null) e.setAll(vars);
-		result = e.evaluate(expression);
+		return e.evaluate(input);
 	}
 
 }
