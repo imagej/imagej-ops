@@ -1,0 +1,144 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.math;
+
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractBinaryHybridOp;
+import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.Output;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Intervals;
+
+import org.scijava.plugin.Plugin;
+
+/**
+ * Wrapper class for binary math operations between {@link IterableInterval}s
+ * and {@link RandomAccessibleInterval}s, and writes the result to
+ * {@link IterableInterval}s.
+ *
+ * @author Leon Yang
+ */
+public final class IIToRAIOutputII {
+	
+	private IIToRAIOutputII() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
+
+	@Plugin(type = ${iface}.class)
+	public static class ${op.name}<T extends NumericType<T>> extends
+		AbstractBinaryHybridOp<IterableInterval<T>, RandomAccessibleInterval<T>, IterableInterval<T>>
+		implements $iface, Contingent, InplaceOp<IterableInterval<T>>
+	{
+
+		private Op outputCreator;
+
+		@Override
+		public void initialize() {
+			outputCreator = ops().op(Ops.Create.Img.class, in1(), in1().firstElement()
+				.createVariable());
+		}
+
+		// TODO: extend common abstract base class which implements Contingent
+		// for dimensionality checking.
+
+		@Override
+		public boolean conforms() {
+			if (!Intervals.equalDimensions(in1(), in2())) return false;
+			if (out() == null) return true;
+			return Intervals.equalDimensions(in1(), out()) && in1().iterationOrder()
+				.equals(out().iterationOrder());
+		}
+
+		@Override
+		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
+			final RandomAccessibleInterval<T> input2)
+		{
+			// NB: Temporary approach until DefaultCreateImg and friends are properly
+			// typed as the needed SpecialOp subtypes.
+			outputCreator.run();
+			@SuppressWarnings("unchecked")
+			final IterableInterval<T> created =
+				((Output<IterableInterval<T>>) outputCreator).out();
+			return created;
+		}
+
+		@Override
+		public void compute2(final IterableInterval<T> input1,
+			final RandomAccessibleInterval<T> input2,
+			final IterableInterval<T> output)
+		{
+			final Cursor<T> in1Cursor = input1.localizingCursor();
+			final RandomAccess<T> in2Access = input2.randomAccess();
+			final Cursor<T> outCursor = output.cursor();
+			while (in1Cursor.hasNext()) {
+				outCursor.next().set(in1Cursor.next());
+				in2Access.setPosition(in1Cursor);
+				outCursor.get().${op.function}(in2Access.get());
+			}
+		}
+
+		@Override
+		public void mutate(final IterableInterval<T> arg) {
+			final Cursor<T> argCursor = arg.localizingCursor();
+			final RandomAccess<T> in2Access = in2().randomAccess();
+			while (argCursor.hasNext()) {
+				argCursor.fwd();
+				in2Access.setPosition(argCursor);
+				argCursor.get().${op.function}(in2Access.get());
+			}
+		}
+
+		@Override
+		public IterableInterval<T> arg() {
+			return out();
+		}
+
+		@Override
+		public void setArg(final IterableInterval<T> arg) {
+			setOutput(arg);
+		}
+
+		@Override
+		public ${op.name}<T> getIndependentInstance() {
+			return this;
+		}
+
+	}
+#end
+}

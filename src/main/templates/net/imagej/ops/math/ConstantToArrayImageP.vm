@@ -30,18 +30,23 @@
 
 package net.imagej.ops.math;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.OpService;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractInplaceOp;
 import net.imagej.ops.thread.chunker.Chunk;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
+import net.imglib2.img.basictypeaccess.array.FloatArray;
+import net.imglib2.img.basictypeaccess.array.IntArray;
+import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.type.numeric.integer.ByteType;
+import net.imglib2.type.numeric.integer.IntType;
+import net.imglib2.type.numeric.integer.LongType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.real.FloatType;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -62,6 +67,7 @@ public final class ConstantToArrayImageP {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($type in $types)
+#set ($imgType = "ArrayImg<${type.name}Type, ${type.name}Array>")
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
@@ -71,18 +77,18 @@ public final class ConstantToArrayImageP {
 	 * 
 	 * @author Christian Dietz (University of Konstanz)
 	 */
-	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY#if ($type.name == "Double") + 11#else + 10#end)
-	public static class ${op.name}${type.name} extends AbstractOp implements $iface {
-
-		@Parameter(type = ItemIO.BOTH)
-		private ArrayImg<${type.name}Type, ${type.name}Array> image;
+	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY + 1)
+	public static class ${op.name}${type.name} extends
+		AbstractInplaceOp<$imgType> implements Contingent,
+		$iface
+	{
 
 		@Parameter
 		private ${type.primitive} value;
 
 		@Override
-		public void run() {
-			final ${type.primitive}[] data = image.update(null).getCurrentStorageArray();
+		public void mutate(final $imgType arg) {
+			final ${type.primitive}[] data = arg.update(null).getCurrentStorageArray();
 			ops().run(ChunkerOp.class, new Chunk() {
 
 				@Override
@@ -100,6 +106,14 @@ public final class ConstantToArrayImageP {
 					}
 				}
 			}, data.length);
+		}
+
+		@Override
+		public boolean conforms() {
+			// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
+			// The warning is expected, because the image parameter is assigned via
+			// reflection and hence might not match the declared generic types.
+			return arg().firstElement() instanceof ${type.name}Type;
 		}
 	}
 #end

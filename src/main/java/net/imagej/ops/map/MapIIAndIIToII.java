@@ -34,46 +34,44 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
+ * {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order, and the inputs and outputs must have the same
+ * dimensions.
+ * 
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
+public class MapIIAndIIToII<EI1, EI2, EO> extends
+	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, IterableInterval<EO>>
 	implements Contingent
 {
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
-		}
+	public boolean conforms() {
+		if (!in1().iterationOrder().equals(in2().iterationOrder())) return false;
+		
+		if (out() == null) return true;
+		return in1().iterationOrder().equals(out().iterationOrder());
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void compute2(final IterableInterval<EI1> input1,
+		final IterableInterval<EI2> input2, final IterableInterval<EO> output)
+	{
+		final Cursor<EI1> in1Cursor = input1.cursor();
+		final Cursor<EI2> in2Cursor = input2.cursor();
+		final Cursor<EO> outCursor = output.cursor();
+		while (in1Cursor.hasNext()) {
+			getOp().compute2(in1Cursor.next(), in2Cursor.next(), outCursor.next());
+		}
 	}
-
 }

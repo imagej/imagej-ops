@@ -1,0 +1,12 @@
+# Unit tests for functional binary arithmetic ops with II as both input and output.
+
+[ConstantToIIOutputIITest.java]
+
+ops = ```
+[
+	[name: "Add",      function: "add"],
+	[name: "Subtract", function: "sub"], 
+	[name: "Multiply", function: "mul"], 
+	[name: "Divide",   function: "div"]
+]
+```

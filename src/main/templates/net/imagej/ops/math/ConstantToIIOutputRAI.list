@@ -1,7 +1,6 @@
-# Generated binary arithmetic ops with RandomAccessibleIntervals and
-# IterableIntervals. 
+# Generated functional binary arithmetic ops with II as input and RAI as output.
 
-[RandomAccessibleIntervalToIterableInterval.java]
+[ConstantToIIOutputRAI.java]
 
 ops = ```
 [

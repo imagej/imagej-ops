@@ -28,52 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.math;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
+import static org.junit.Assert.assertEquals;
+
+import net.imagej.ops.AbstractOpTest;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.real.FloatType;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
- */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
-	implements Contingent
-{
+public class ConstantToIIOutputIITest extends AbstractOpTest {
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
+	final private FloatType constant = new FloatType(3.0f);
+	private Img<FloatType> in;
+	private Img<FloatType> copy;
+	private Img<FloatType> out;
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
+	@Before
+	public void initImg() {
+		in = generateFloatArrayTestImg(true, 3, 3);
+		copy = in.copy();
+		out = generateFloatArrayTestImg(false, 3, 3);
+	}
+
+#foreach ($op in $ops)
+	@Test
+	public void test${op.name}() {
+		@SuppressWarnings("unchecked")
+		final ConstantToIIOutputII.${op.name}<FloatType> op = ops.op(
+			ConstantToIIOutputII.${op.name}.class, out, in, constant);
+		op.run();
+		final IterableInterval<FloatType> created = op.compute1(in);
+		op.mutate(in);
+		final Cursor<FloatType> inCursor = in.cursor();
+		final Cursor<FloatType> copyCursor = copy.cursor();
+		final Cursor<FloatType> outCursor = out.cursor();
+		final Cursor<FloatType> crtCursor = created.cursor();
+		while (inCursor.hasNext()) {
+			copyCursor.next().${op.function}(constant);
+			final float expected = copyCursor.get().get();
+			assertEquals(inCursor.next().get(), expected, 0.0);
+			assertEquals(outCursor.next().get(), expected, 0.0);
+			assertEquals(crtCursor.next().get(), expected, 0.0);
 		}
 	}
 
-	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
-	}
-
+#end
 }

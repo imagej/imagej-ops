@@ -28,52 +28,63 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.math;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imagej.ops.special.AbstractNullaryComputerOp;
+import net.imagej.ops.special.InplaceOp;
+import net.imglib2.type.numeric.NumericType;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
+ * Nullary Ops of the {@code math} namespace which operate on
+ * {@link NumericType}s.
+ * 
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
-	implements Contingent
-{
+public class NumericTypeNullaryMath {
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
+	private NumericTypeNullaryMath() {
+		// NB: Prevent instantiation of utility class.
+	}
+
+	/**
+	 * Sets the output to zero.
+	 */
+	@Plugin(type = Ops.Math.Zero.class)
+	public static class Zero<T extends NumericType<T>> extends
+		AbstractNullaryComputerOp<T> implements InplaceOp<T>, Ops.Math.Zero
 	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
+		@Override
+		public void compute0(final T output) {
+			output.setZero();
+		}
+
+		@Override
+		public void run() {
+			InplaceOp.super.run();
+		}
+
+		@Override
+		public void mutate(T arg) {
+			compute0(arg);
+		}
+
+		@Override
+		public T arg() {
+			return out();
+		}
+
+		@Override
+		public void setArg(T arg) {
+			setOutput(arg);
+		}
+
+		@Override
+		public Zero<T> getIndependentInstance() {
+			return this;
 		}
 	}
-
-	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
-	}
-
 }

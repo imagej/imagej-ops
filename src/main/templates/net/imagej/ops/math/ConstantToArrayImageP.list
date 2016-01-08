@@ -1,12 +1,14 @@
-# Generated multi-threaded version of binary arithmetic ops with generic images
-# of ByteType or DoubleType.
+# Generated multi-threaded version of binary arithmetic ops with ArrayImages.
 
 [ConstantToArrayImageP.java]
 
 types = ```
 [
-	[name: "Byte",   primitive: "byte"], 
-	[name: "Double", primitive: "double"]
+	[name: "Byte",     primitive: "byte"], 
+	[name: "Int",      primitive: "int"], 
+	[name: "Long",     primitive: "long"], 
+	[name: "Float",    primitive: "float"], 
+	[name: "Double",   primitive: "double"]
 ]
 ```
 

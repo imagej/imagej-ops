@@ -1,6 +1,6 @@
-# Generated binary arithmetic ops with PlanarImages. 
+# Unit tests for binary arithmetic ops with ArrayImages and their parallelized version.
 
-[ConstantToPlanarImage.java]
+[ConstantToArrayImageTest.java]
 
 types = ```
 [
@@ -17,6 +17,6 @@ ops = ```
 	[name: "Add",      operator: "+"],
 	[name: "Subtract", operator: "-"], 
 	[name: "Multiply", operator: "*"], 
-	[name: "Divide",   operator: "/"],
+	[name: "Divide",   operator: "/"]
 ]
 ```

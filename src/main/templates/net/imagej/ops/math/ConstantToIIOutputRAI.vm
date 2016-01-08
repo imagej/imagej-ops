@@ -28,52 +28,57 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.math;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
+ * Wrapper class for functional binary math operations between constant values 
+ * and {@link IterableInterval}s, and write the result
+ * to {@link RandomAccessibleInterval}s.
  *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
+ * @author Leon Yang
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
-	implements Contingent
-{
+public final class ConstantToIIOutputRAI {
+	
+	private ConstantToIIOutputRAI() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+#set ($iface = "Ops.Math.$op.name")
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
+	@Plugin(type = ${iface}.class, priority = Priority.VERY_LOW_PRIORITY)
+	public static class ${op.name}<T extends NumericType<T>> extends
+			AbstractUnaryComputerOp<IterableInterval<T>, RandomAccessibleInterval<T>>
+			implements ${iface} {
 
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
+		@Parameter
+		private T value;
+
+		@Override
+		public void compute1(final IterableInterval<T> input,
+				final RandomAccessibleInterval<T> output) {
+			final Cursor<T> c = input.localizingCursor();
+			final RandomAccess<T> ra = output.randomAccess();
+			while (c.hasNext()) {
+				final T in = c.next();
+				ra.setPosition(c);
+				final T out = ra.get();
+				out.set(in);
+				out.${op.function}(value);
+			}
 		}
-	}
 
-	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
 	}
-
+#end
 }

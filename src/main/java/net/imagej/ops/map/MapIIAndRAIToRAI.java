@@ -28,72 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.math;
+package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imglib2.util.Intervals;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for binary math operations between {@link RandomAccessibleInterval}
- * and {@link IterableInterval}s.
- *
+ * {@link MapComputer} from {@link IterableInterval} and
+ * {@link RandomAccessibleInterval} inputs to {@link RandomAccessibleInterval}
+ * outputs. The inputs and outputs must have the same dimensions.
+ * 
  * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
+ * @param <EO> element type of outputs
  */
-public final class RandomAccessibleIntervalToIterableInterval {
-	
-	private RandomAccessibleIntervalToIterableInterval() {
-		// NB: Prevent instantiation of utility class.
-	}
-#foreach ($op in $ops)
-#set ($iface = "Ops.Math.$op.name")
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+public class MapIIAndRAIToRAI<EI1, EI2, EO> extends
+	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, RandomAccessibleInterval<EI2>, RandomAccessibleInterval<EO>>
+	implements Contingent
+{
 
-	@Plugin(type = ${iface}.class)
-	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp
-		implements $iface, Contingent
+	@Override
+	public boolean conforms() {
+		if (!Intervals.equalDimensions(in1(), in2())) return false;
+		
+		if (out() == null) return true;
+		return Intervals.equalDimensions(in1(), out());
+	}
+
+	@Override
+	public void compute2(final IterableInterval<EI1> input1,
+		final RandomAccessibleInterval<EI2> input2,
+		final RandomAccessibleInterval<EO> output)
 	{
-
-		@Parameter(type = ItemIO.BOTH)
-		private IterableInterval<T> a;
-
-		@Parameter
-		private RandomAccessibleInterval<T> b;
-
-		@Override
-		public void run() {
-			final long[] pos = new long[a.numDimensions()];
-			final Cursor<T> cursor = a.cursor();
-			final RandomAccess<T> access = b.randomAccess();
-			while (cursor.hasNext()) {
-				cursor.fwd();
-				cursor.localize(pos);
-				access.setPosition(pos);
-				cursor.get().${op.function}(access.get());
-			}
+		final Cursor<EI1> in1Cursor = input1.localizingCursor();
+		final RandomAccess<EI2> in2Access = input2.randomAccess();
+		final RandomAccess<EO> outAccess = output.randomAccess();
+		while (in1Cursor.hasNext()) {
+			in1Cursor.fwd();
+			in2Access.setPosition(in1Cursor);
+			outAccess.setPosition(in1Cursor);
+			getOp().compute2(in1Cursor.get(), in2Access.get(), outAccess.get());
 		}
-
-		@Override
-		public boolean conforms() {
-			int n = a.numDimensions();
-			if (n != b.numDimensions()) return false;
-			long[] dimsA = new long[n], dimsB = new long[n];
-			a.dimensions(dimsA);
-			b.dimensions(dimsB);
-			for (int i = 0; i < n; i++) {
-				if (dimsA[i] != dimsB[i]) return false;
-			}
-			return true;
-		}
-
 	}
-#end
 }

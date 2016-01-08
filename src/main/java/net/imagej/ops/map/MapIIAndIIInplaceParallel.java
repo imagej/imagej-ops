@@ -30,66 +30,69 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.BinaryOp;
+import net.imagej.ops.special.InplaceOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link RandomAccessibleInterval} outputs.
+ * {@link MapBinaryInplace} over 2 {@link IterableInterval}s
  * 
- * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableIntervalToRAIParallel<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
-	implements Contingent, Parallel
+public class MapIIAndIIInplaceParallel<EI1, EI2, EO> extends
+	AbstractMapBinaryInplace<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, IterableInterval<EO>>
 {
 
 	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final RandomAccessibleInterval<EO> output)
-	{
+	public boolean conforms() {
+		if (!super.conforms()) return false;
+		return in1().iterationOrder().equals(in2().iterationOrder());
+	}
+
+	@Override
+	public void mutate(IterableInterval<EO> arg) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
-				final Cursor<EI> cursor = input.localizingCursor();
+				final BinaryOp<EI1, EI2, EO> safe = getOp().getIndependentInstance();
+				@SuppressWarnings("unchecked")
+				final InplaceOp<EO> inplace = (InplaceOp<EO>) safe;
+				final EI1 tmpIn1 = safe.in1();
+				final EI2 tmpIn2 = safe.in2();
+				final Cursor<EI1> in1Cursor = in1().cursor();
+				final Cursor<EI2> in2Cursor = in2().cursor();
+				final Cursor<EO> argCursor = arg().cursor();
 
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<EO> rndAccess = output.randomAccess();
+				setToStart(in1Cursor, startIndex);
+				setToStart(in2Cursor, startIndex);
+				setToStart(argCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					safe.compute1(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
+					final EI1 i1 = in1Cursor.get();
+					final EI2 i2 = in2Cursor.get();
+					final EO a = argCursor.get();
+					safe.setInput1(i1);
+					safe.setInput2(i2);
+					inplace.mutate(a);
+					in1Cursor.jumpFwd(stepSize);
+					in2Cursor.jumpFwd(stepSize);
+					argCursor.jumpFwd(stepSize);
 					ctr++;
 				}
+				safe.setInput1(tmpIn1);
+				safe.setInput2(tmpIn2);
 			}
-		}, input.size());
-	}
-
-	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+		}, arg.size());
 	}
 
 }

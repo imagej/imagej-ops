@@ -28,49 +28,42 @@
  * #L%
  */
 
-package net.imagej.ops.math;
+package net.imagej.ops.map;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Ops;
-import net.imglib2.IterableRealInterval;
-import net.imglib2.type.numeric.NumericType;
+import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
- * Wrapper class for in-place binary math operations between constant values 
- * and images in format of (@link IterableRealInterval}.
- *
+ * Abstract base class for {@link MapBinaryComputer} implementations.
+ * 
  * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
+ * @param <EO> element type of outputs
+ * @param <PI1> producer of first inputs
+ * @param <PI2> producer of second inputs
+ * @param <PO> producer of outputs
  */
-public final class ConstantToImageInPlace {
-	
-	private ConstantToImageInPlace() {
-		// NB: Prevent instantiation of utility class.
+public abstract class AbstractMapBinaryComputer<EI1, EI2, EO, PI1, PI2, PO>
+	extends AbstractBinaryComputerOp<PI1, PI2, PO> implements
+	MapBinaryComputer<EI1, EI2, EO, BinaryComputerOp<EI1, EI2, EO>>
+{
+
+	@Parameter
+	private BinaryComputerOp<EI1, EI2, EO> op;
+
+	// -- MapOp methods --
+
+	@Override
+	public BinaryComputerOp<EI1, EI2, EO> getOp() {
+		return op;
 	}
-#foreach ($op in $ops)
-#set ($iface = "Ops.Math.$op.name")
 
-	@Plugin(type = ${iface}.class)
-	public static class ${op.name}<T extends NumericType<T>> extends AbstractOp implements
-		$iface
-	{
-
-		@Parameter(type = ItemIO.BOTH)
-		private IterableRealInterval<T> image;
-
-		@Parameter
-		private T value;
-
-		@Override
-		public void run() {
-			for (final T t : image) {
-				t.${op.function}(value);
-			}
-		}
-
+	@Override
+	public void setOp(final BinaryComputerOp<EI1, EI2, EO> op) {
+		this.op = op;
 	}
-#end
+
 }

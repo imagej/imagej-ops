@@ -30,50 +30,46 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
+import net.imagej.ops.special.InplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
+ * {@link MapBinaryInplace} over 2 {@link IterableInterval}s
+ * 
+ * @author Leon Yang
+ * @param <EI1> element type of first inputs
+ * @param <EI2> element type of second inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
-	implements Contingent
+public class MapIIAndIIInplace<EI1, EI2, EO> extends
+	AbstractMapBinaryInplace<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, IterableInterval<EO>>
 {
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
-		}
+	public boolean conforms() {
+		if (!super.conforms()) return false;
+		return in1().iterationOrder().equals(in2().iterationOrder());
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void mutate(IterableInterval<EO> arg) {
+		@SuppressWarnings("unchecked")
+		final InplaceOp<EO> inplace = (InplaceOp<EO>) getOp();
+		final EI1 tmpIn1 = getOp().in1();
+		final EI2 tmpIn2 = getOp().in2();
+		final Cursor<EI1> in1Cursor = in1().cursor();
+		final Cursor<EI2> in2Cursor = in2().cursor();
+		final Cursor<EO> argCursor = arg().cursor();
+		while (in1Cursor.hasNext()) {
+			in1Cursor.fwd();
+			in2Cursor.fwd();
+			getOp().setInput1(in1Cursor.get());
+			getOp().setInput2(in2Cursor.get());
+			inplace.mutate(argCursor.get());
+		}
+		getOp().setInput1(tmpIn1);
+		getOp().setInput2(tmpIn2);
 	}
 
 }
