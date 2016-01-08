@@ -41,7 +41,6 @@ import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
-import net.imglib2.Interval;
 
 /**
  * Forward FFT
@@ -51,7 +50,7 @@ import net.imglib2.Interval;
  * @param <I>>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class DefaultFFTOp<I extends Interval, O extends Interval> extends
+public class DefaultFFTOp<I extends Dimensions, O extends Dimensions> extends
 	AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
