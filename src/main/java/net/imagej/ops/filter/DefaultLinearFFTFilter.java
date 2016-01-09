@@ -37,9 +37,6 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.Op;
 import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.UnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
 
 /**
  * Abstract class for linear filters that operate on RAIs
@@ -51,30 +48,28 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 @Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
-public class DefaultLinearFFTFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C>
+public class DefaultLinearFFTFilter<I, O, K, C> extends
+	AbstractFFTFilterRAI<I, O, K, C>
 {
 
 	// FFT Op for input
 	@Parameter
-	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftInputOp;
+	UnaryComputerOp<I, C> fftInputOp;
 
 	// FFT Op for kernel
 	@Parameter
-	UnaryComputerOp<RandomAccessibleInterval<K>, RandomAccessibleInterval<C>> fftKernelOp;
+	UnaryComputerOp<K, C> fftKernelOp;
 
 	// Op that performs filter in frequency domain
 	@Parameter
-	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
-	
-	// TODO: inverse fft op as parameter?
+	BinaryHybridOp<C, C, C> frequencyOp;
+
+	// Inverse fft op
 	@Parameter
-	UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifftOp;
+	UnaryComputerOp<C, O> ifftOp;
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<O> out)
-	{
+	public void compute1(I in, O out) {
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
@@ -92,6 +87,6 @@ public class DefaultLinearFFTFilter<I extends RealType<I>, O extends RealType<O>
 		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
 
 		// perform inverse fft
-		ifftOp.compute1(getFFTInput(),out());
+		ifftOp.compute1(getFFTInput(), out());
 	}
 }

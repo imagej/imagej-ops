@@ -30,45 +30,42 @@
 
 package net.imagej.ops.filter;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.plugin.Parameter;
+
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 
 /**
  * Abstract class for FFT based filters that operate on RAI
  * 
  * @author Brian Northan
  * @param <I>
- * @param <O>
+ * @param <O> gene
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractUnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+public abstract class AbstractFFTFilterRAI<I, O, K, C> extends
+	AbstractUnaryComputerOp<I, O>
 {
 
 	/**
 	 * kernel rai. Needs to be the same size as the input rai
 	 */
 	@Parameter
-	private RandomAccessibleInterval<K> raiExtendedKernel;
+	private K raiExtendedKernel;
 
 	/**
-	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond to
-	 * the fft size of raiExtendedInput
+	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond
+	 * to the fft size of raiExtendedInput
 	 */
 	@Parameter
-	private RandomAccessibleInterval<C> fftInput;
+	private C fftInput;
 
 	/**
-	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must correspond
-	 * to the fft size of raiExtendedKernel
+	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must
+	 * correspond to the fft size of raiExtendedKernel
 	 */
 	@Parameter
-	private RandomAccessibleInterval<C> fftKernel;
+	private C fftKernel;
 
 	/**
 	 * Boolean indicating that the input FFT has already been calculated
@@ -77,21 +74,20 @@ public abstract class AbstractFFTFilterRAI<I extends RealType<I>, O extends Real
 	private boolean performInputFFT = true;
 
 	/**
-	 * Boolean indicating that the kernel FFT has already been calculated 
+	 * Boolean indicating that the kernel FFT has already been calculated
 	 */
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
 
-
-	protected RandomAccessibleInterval<K> getRAIExtendedKernel() {
+	protected K getRAIExtendedKernel() {
 		return raiExtendedKernel;
 	}
 
-	protected RandomAccessibleInterval<C> getFFTInput() {
+	protected C getFFTInput() {
 		return fftInput;
 	}
 
-	protected RandomAccessibleInterval<C> getFFTKernel() {
+	protected C getFFTKernel() {
 		return fftKernel;
 	}
 

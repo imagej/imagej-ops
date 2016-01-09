@@ -51,7 +51,8 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C>
+	extends
+	AbstractFFTFilterRAI<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
 
 	@Parameter(required = false)

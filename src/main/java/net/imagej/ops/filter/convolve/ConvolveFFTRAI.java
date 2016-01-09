@@ -58,7 +58,9 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
 public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C> implements Ops.Filter.Convolve
+	extends
+	AbstractFFTFilterRAI<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	implements Ops.Filter.Convolve
 {
 
 	/**

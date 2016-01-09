@@ -44,13 +44,9 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C>
+	extends
+	AbstractFFTFilterRAI<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
-	// TODO: FFT Op as parameter?
-	
-	// TODO: Frequency operation op as parameter?
-	
-	// TODO: inverse fft op as parameter?
 
 	@Override
 	public void compute1(RandomAccessibleInterval<I> in,
