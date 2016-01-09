@@ -30,15 +30,22 @@
 
 package net.imagej.ops.filter.convolve;
 
-import net.imagej.ops.Op;
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.LinearFFTFilterRAI;
+import net.imagej.ops.filter.AbstractFFTFilterRAI;
+import net.imagej.ops.filter.DefaultLinearFFTFilter;
+import net.imagej.ops.filter.fft.FFTMethodsComputerOp;
+import net.imagej.ops.filter.ifft.IFFTComputerOp;
+import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-
-import org.scijava.Priority;
-import org.scijava.plugin.Plugin;
 
 /**
  * Convolve op for (@link RandomAccessibleInterval)
@@ -51,19 +58,36 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
 public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Convolve
+	extends AbstractFFTFilterRAI<I, O, K, C> implements Ops.Filter.Convolve
 {
 
 	/**
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
-	protected void frequencyOperation(RandomAccessibleInterval<C> a,
-		RandomAccessibleInterval<C> b)
+	public void compute1(RandomAccessibleInterval<I> a,
+		RandomAccessibleInterval<O> b)
 	{
-		Op test=ops().op(Ops.Math.Multiply.class, a, b, a);
-		
-		ops().run(test,a,b,a);
-		//ops().run(Ops.Math.Multiply.class, a, b, a);
+
+		UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn =
+			(UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
+				getFFTInput(), in());
+
+		UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel =
+			(UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
+				getFFTKernel(), getRAIExtendedKernel());
+
+		BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul =
+			(BinaryHybridOp) Hybrids.binary(ops(), IIToIIOutputII.Multiply.class, b,
+				b, b);
+
+		UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft =
+			(UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class, out(),
+				getFFTKernel());
+
+		ops().run(DefaultLinearFFTFilter.class, out(), in(), getRAIExtendedKernel(),
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), fftIn, fftKernel, mul, ifft);
+
 	}
 }
