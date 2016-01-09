@@ -117,7 +117,7 @@ public class MathBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void testDivideIterableIntervalToImg() {
-		ops.run(IterableIntervalToImg.Divide.class, img3, img2, img1);
+		ops.run(IIToIIOutputII.Divide.class, img3, img2, img1);
 	}
 
 	@Test
