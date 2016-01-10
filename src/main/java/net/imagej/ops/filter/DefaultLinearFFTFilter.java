@@ -49,7 +49,7 @@ import net.imagej.ops.special.UnaryComputerOp;
  */
 @Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
 public class DefaultLinearFFTFilter<I, O, K, C> extends
-	AbstractFFTFilterRAI<I, O, K, C>
+	AbstractFFTFilterComputer<I, O, K, C>
 {
 
 	// FFT Op for input

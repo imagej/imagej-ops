@@ -43,7 +43,7 @@ import net.imagej.ops.special.AbstractBinaryComputerOp;
  * @param <K>
  * @param <C>
  */
-public abstract class AbstractFFTFilterRAI<I, O, K, C> extends
+public abstract class AbstractFFTFilterComputer<I, O, K, C> extends
 	AbstractBinaryComputerOp<I, K, O>
 {
 

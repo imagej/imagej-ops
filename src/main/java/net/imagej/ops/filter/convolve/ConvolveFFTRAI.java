@@ -34,7 +34,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterRAI;
+import net.imagej.ops.filter.AbstractFFTFilterComputer;
 import net.imagej.ops.filter.FFTMethodsLinearFFTFilter;
 import net.imagej.ops.math.IIToIIOutputII;
 import net.imagej.ops.special.BinaryHybridOp;
@@ -55,7 +55,7 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
 public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
-	AbstractFFTFilterRAI<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.Convolve
 {
 
