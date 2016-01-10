@@ -37,8 +37,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.create.img.DefaultCreateImg;
 import net.imagej.ops.special.AbstractBinaryFunctionOp;
 import net.imglib2.Dimensions;
-import net.imglib2.FinalDimensions;
-import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 
@@ -63,19 +61,8 @@ public class CreateOutputFFTMethods<T> extends
 	@Override
 	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
 
-		long[] paddedSize = new long[paddedDimensions.numDimensions()];
-		long[] fftSize = new long[paddedDimensions.numDimensions()];
-
-		if (fast) {
-			FFTMethods.dimensionsRealToComplexFast(paddedDimensions, paddedSize,
-				fftSize);
-		}
-		else {
-			FFTMethods.dimensionsRealToComplexSmall(paddedDimensions, paddedSize,
-				fftSize);
-		}
-
-		Dimensions paddedFFTMethodsFFTDimensions = new FinalDimensions(fftSize);
+		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
+			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
 
 		return (Img<T>) ops().run(DefaultCreateImg.class,
 			paddedFFTMethodsFFTDimensions, outType, fac);

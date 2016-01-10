@@ -8,10 +8,8 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractBinaryFunctionOp;
 import net.imglib2.Dimensions;
-import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
 import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -46,20 +44,8 @@ public class PadInputFFTMethods<T extends RealType<T>, I extends RandomAccessibl
 	@SuppressWarnings("unchecked")
 	public O compute2(final I input, final Dimensions paddedDimensions) {
 
-		long[] paddedSize = new long[input.numDimensions()];
-		long[] fftSize = new long[input.numDimensions()];
-
-		if (fast) {
-			FFTMethods.dimensionsRealToComplexFast(paddedDimensions, paddedSize,
-				fftSize);
-		}
-		else {
-			FFTMethods.dimensionsRealToComplexSmall(paddedDimensions, paddedSize,
-				fftSize);
-		}
-
-		Dimensions paddedFFTMethodsInputDimensions = new FinalDimensions(
-			paddedSize);
+		Dimensions paddedFFTMethodsInputDimensions = FFTMethodsUtility
+			.getPaddedInputDimensionsRealToComplex(fast, paddedDimensions);
 
 		if (obf == null) {
 			obf = new OutOfBoundsConstantValueFactory<T, RandomAccessibleInterval<T>>(
