@@ -94,8 +94,8 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	private RandomAccessibleInterval<O> raiExtendedEstimate;
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<O> out)
+	public void compute2(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 
 		performIterations();
@@ -118,8 +118,8 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	 */
 	protected void createReblurred() {
 
-		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate,
-			getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
+		ops().filter().convolve(raiExtendedReblurred, raiExtendedEstimate, in2(),
+			getFFTInput(), getFFTKernel(), true, false);
 
 	}
 

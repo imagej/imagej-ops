@@ -32,7 +32,7 @@ package net.imagej.ops.filter;
 
 import org.scijava.plugin.Parameter;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.AbstractBinaryComputerOp;
 
 /**
  * Abstract class for FFT based filters that operate on RAI
@@ -44,14 +44,8 @@ import net.imagej.ops.special.AbstractUnaryComputerOp;
  * @param <C>
  */
 public abstract class AbstractFFTFilterRAI<I, O, K, C> extends
-	AbstractUnaryComputerOp<I, O>
+	AbstractBinaryComputerOp<I, K, O>
 {
-
-	/**
-	 * kernel rai. Needs to be the same size as the input rai
-	 */
-	@Parameter
-	private K raiExtendedKernel;
 
 	/**
 	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond
@@ -78,10 +72,6 @@ public abstract class AbstractFFTFilterRAI<I, O, K, C> extends
 	 */
 	@Parameter(required = false)
 	private boolean performKernelFFT = true;
-
-	protected K getRAIExtendedKernel() {
-		return raiExtendedKernel;
-	}
 
 	protected C getFFTInput() {
 		return fftInput;

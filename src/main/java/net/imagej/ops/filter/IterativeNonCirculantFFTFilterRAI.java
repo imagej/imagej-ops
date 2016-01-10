@@ -129,7 +129,7 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 		ops().filter().fft(getFFTInput(), in());
 
 		// perform fft of psfs
-		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
+		ops().filter().fft(getFFTKernel(), in2());
 
 		normalization = getImgFactory().create(estimate, outType.createVariable());
 
@@ -246,8 +246,8 @@ public abstract class IterativeNonCirculantFFTFilterRAI<I extends RealType<I>, O
 		}
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, normalization, this
-			.getRAIExtendedKernel(), getFFTInput(), getFFTKernel(), true, false);
+		ops().run(CorrelateFFTRAI.class, normalization, normalization, in2(),
+			getFFTInput(), getFFTKernel(), true, false);
 
 		final Cursor<O> cursorN = normalization.cursor();
 

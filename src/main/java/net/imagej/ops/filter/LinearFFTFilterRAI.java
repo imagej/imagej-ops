@@ -49,8 +49,8 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 {
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<O> out)
+	public void compute2(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 
 		// perform input FFT if needed
@@ -60,7 +60,7 @@ public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealTy
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
+			ops().filter().fft(getFFTKernel(), in2());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for

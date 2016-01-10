@@ -32,7 +32,6 @@ package net.imagej.ops.filter;
 
 import org.scijava.plugin.Parameter;
 
-import net.imagej.ops.Op;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -46,7 +45,8 @@ import net.imglib2.view.Views;
 
 /**
  * Abstract class for iterative FFT filters that perform on RAI. Boundary
- * conditions handled by extending the borders of the RAIs with an {@link OutOfBoundsFactory}.  
+ * conditions handled by extending the borders of the RAIs with an
+ * {@link OutOfBoundsFactory}.
  * 
  * @author Brian Northan
  * @param <I>
@@ -101,7 +101,7 @@ public abstract class IterativeCirculantFFTFilterRAI<I extends RealType<I>, O ex
 		ops().filter().fft(getFFTInput(), in());
 
 		// perform fft of psf
-		ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
+		ops().filter().fft(getFFTKernel(), in2());
 	}
 
 	public OutOfBoundsFactory<O, RandomAccessibleInterval<O>> getObfOutput() {

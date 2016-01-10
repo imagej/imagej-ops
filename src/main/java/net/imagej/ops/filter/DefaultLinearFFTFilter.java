@@ -69,16 +69,16 @@ public class DefaultLinearFFTFilter<I, O, K, C> extends
 	UnaryComputerOp<C, O> ifftOp;
 
 	@Override
-	public void compute1(I in, O out) {
+	public void compute2(I in, K kernel, O out) {
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			fftInputOp.compute1(in(), getFFTInput());
+			fftInputOp.compute1(in, getFFTInput());
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			fftKernelOp.compute1(getRAIExtendedKernel(), getFFTKernel());
+			fftKernelOp.compute1(kernel, getFFTKernel());
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
