@@ -32,11 +32,20 @@ package net.imagej.ops.filter;
 
 import org.scijava.plugin.Parameter;
 
+import net.imagej.ops.filter.fft.CreateOutputFFTMethods;
+import net.imagej.ops.filter.fft.PadInputFFTMethods;
+import net.imagej.ops.filter.fft.PadShiftKernelFFTMethods;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 /**
  * Abstract class for FFT based filters that operate on Img.
@@ -63,7 +72,23 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	@Parameter(required = false)
 	private ImgFactory<C> fftFactory;
 
-	// TODO: create memory related ops as input ops??
+	/**
+	 * Op used to pad the input
+	 */
+	@Parameter(required = false)
+	private BinaryFunctionOp<RandomAccessibleInterval<I>, Dimensions, RandomAccessibleInterval<I>> padOp;
+
+	/**
+	 * Op used to pad the kernel
+	 */
+	@Parameter(required = false)
+	private BinaryFunctionOp<RandomAccessibleInterval<K>, Dimensions, RandomAccessibleInterval<K>> padKernelOp;
+
+	/**
+	 * Op used to create the complex FFTs
+	 */
+	@Parameter(required = false)
+	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
 
 	/**
 	 * compute output by extending the input(s) and running the filter
@@ -75,19 +100,70 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 
 		RandomAccessibleInterval<O> output = createOutput(input);
 
-		// TODO restructure create memory
-		// run the op that extends the input and kernel and creates the Imgs
-		// required for the fft algorithm
-		final CreateFFTFilterMemory<I, O, K, C> createMemory = ops().op(
-			CreateFFTFilterMemory.class, input, getKernel(), getBorderSize());
+		final int numDimensions = input.numDimensions();
 
-		createMemory.run();
+		// 1. Calculate desired extended size of the image
+
+		final long[] paddedSize = new long[numDimensions];
+
+		if (getBorderSize() == null) {
+			// if no getBorderSize() was passed in, then extend based on kernel size
+			for (int d = 0; d < numDimensions; ++d) {
+				paddedSize[d] = (int) input.dimension(d) + (int) getKernel().dimension(
+					d) - 1;
+			}
+
+		}
+		else {
+			// if getBorderSize() was passed in
+			for (int d = 0; d < numDimensions; ++d) {
+
+				paddedSize[d] = Math.max(getKernel().dimension(d) + 2 *
+					getBorderSize()[d], input.dimension(d) + 2 * getBorderSize()[d]);
+			}
+		}
+
+		// if fftType, and/or fftFactory do not exist, create them using defaults
+		if (fftType == null) {
+			fftType = (ComplexType) (new ComplexFloatType().createVariable());
+		}
+
+		/**
+		 * Op used to pad the input
+		 */
+		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			Dimensions.class, true);
+
+		/**
+		 * Op used to pad the kernel
+		 */
+		padKernelOp = (BinaryFunctionOp) Functions.binary(ops(),
+			PadShiftKernelFFTMethods.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, Dimensions.class, true);
+
+		/**
+		 * Op used to create the complex FFTs
+		 */
+		createOp = (UnaryFunctionOp) Functions.unary(ops(),
+			CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
+			Dimensions.class, fftType, true);
+
+		RandomAccessibleInterval<I> paddedInput = padOp.compute2(input,
+			new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<K> paddedKernel = padKernelOp.compute2(getKernel(),
+			new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<C> fftImage = createOp.compute1(
+			new FinalDimensions(paddedSize));
+
+		RandomAccessibleInterval<C> fftKernel = createOp.compute1(
+			new FinalDimensions(paddedSize));
 
 		// TODO: this should be an op??
-		runFilter(createMemory.getRAIExtendedInput(), createMemory
-			.getRAIExtendedKernel(), createMemory.getFFTImgInterval(), createMemory
-				.getFFTKernelInterval(), output, createMemory
-					.getImgConvolutionInterval());
+		runFilter(paddedInput, paddedKernel, fftImage, fftKernel, output,
+			paddedInput);
 
 		return output;
 
