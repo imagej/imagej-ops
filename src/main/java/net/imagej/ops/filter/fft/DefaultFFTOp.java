@@ -43,7 +43,8 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 
 /**
- * Forward FFT
+ * Function that performs the following steps, 1. create output, 2. pad input,
+ * 3. perform forward FFT
  * 
  * @author Brian Northan
  * @param <T>

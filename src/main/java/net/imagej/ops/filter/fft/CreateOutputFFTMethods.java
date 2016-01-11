@@ -41,7 +41,7 @@ import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 
 /**
- * Default implementation of the "create.img" op.
+ * Function that creates an output for FFTMethods FFT
  *
  * @author Brian Northan
  * @param <T>

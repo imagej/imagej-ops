@@ -5,6 +5,11 @@ import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.algorithm.fft2.FFTMethods;
 
+/**
+ * Utility class that interacts with FFTMethods
+ * 
+ * @author bnorthan
+ */
 public class FFTMethodsUtility {
 
 	public static void dimensionsRealToComplex(boolean fast,

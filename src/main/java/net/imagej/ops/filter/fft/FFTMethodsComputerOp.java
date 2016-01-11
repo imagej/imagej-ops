@@ -62,7 +62,7 @@ public class FFTMethodsComputerOp<T extends RealType<T>, C extends ComplexType<C
 {
 
 	/**
-	 * Compute an ND FFT
+	 * Computes an ND FFT using FFTMethods
 	 */
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
@@ -87,33 +87,33 @@ public class FFTMethodsComputerOp<T extends RealType<T>, C extends ComplexType<C
 	@Override
 	public boolean conforms() {
 
-		 return true;
+		return true;
 
 		/*long[] paddedDimensions = new long[in().numDimensions()];
 		long[] fftDimensions = new long[in().numDimensions()];
-
+		
 		boolean fastSizeConforms = false;
-
+		
 		FFTMethods.dimensionsRealToComplexFast(in(), paddedDimensions,
 			fftDimensions);
-
+		
 		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
 			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
 		{
 			fastSizeConforms = true;
 		}
-
+		
 		boolean smallSizeConforms = false;
-
+		
 		FFTMethods.dimensionsRealToComplexSmall(in(), paddedDimensions,
 			fftDimensions);
-
+		
 		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
 			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
 		{
 			smallSizeConforms = true;
 		}
-
+		
 		return fastSizeConforms || smallSizeConforms;*/
 
 	}

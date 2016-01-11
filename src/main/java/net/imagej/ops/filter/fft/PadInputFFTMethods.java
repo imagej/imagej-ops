@@ -17,7 +17,7 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 /**
- * Op used to pad the image by extending the borders
+ * Op used to pad the image to a size that is compatible with FFTMethods
  * 
  * @author bnorthan
  * @param <T>

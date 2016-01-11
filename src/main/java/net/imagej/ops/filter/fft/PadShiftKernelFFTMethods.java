@@ -15,7 +15,8 @@ import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
 /**
- * Op used to pad the image by extending the borders
+ * Op used to pad a kernel to a size that is compatible with FFTMethods and
+ * shift the center of the kernel to the origin
  * 
  * @author bnorthan
  * @param <T>
@@ -41,7 +42,7 @@ public class PadShiftKernelFFTMethods<T extends RealType<T>, I extends RandomAcc
 
 		// compute where to place the final Interval for the kernel so that the
 		// coordinate in the center
-		// of the kernel is at position (0,0).
+		// of the kernel is shifted to position (0,0).
 
 		final Interval kernelConvolutionInterval = ops().filter()
 			.paddingIntervalCentered(kernel, paddedFFTMethodsInputDimensions);

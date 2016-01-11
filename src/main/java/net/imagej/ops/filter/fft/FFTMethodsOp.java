@@ -51,7 +51,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 /**
- * Forward FFT computer that operates on RAI
+ * Function that uses FFTMethods to perform a forward FFT
  * 
  * @author Brian Northan
  * @param <T>
