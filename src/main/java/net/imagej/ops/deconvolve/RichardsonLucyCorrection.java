@@ -34,12 +34,10 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.special.AbstractBinaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
 
 /**
  * Computes Richardson Lucy correction factor for (@link
@@ -54,21 +52,9 @@ import net.imglib2.type.numeric.RealType;
  */
 @Plugin(type = Op.class, name = "richardsonlucycorrection",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractOp
+public class RichardsonLucyCorrection<I, O, C> extends
+	AbstractBinaryComputerOp<I, O, O>
 {
-
-	/** buffer to put correction factor in **/
-	@Parameter
-	RandomAccessibleInterval<O> correction;
-
-	/** oberved image **/
-	@Parameter
-	RandomAccessibleInterval<O> observed;
-
-	/** reblurred (simulated) image **/
-	@Parameter
-	RandomAccessibleInterval<O> reblurred;
 
 	/** fft of reblurred (will be computed) **/
 	@Parameter
@@ -82,7 +68,7 @@ public class RichardsonLucyCorrection<I extends RealType<I>, O extends RealType<
 	 * computes the correction factor of the Richardson Lucy Algorithm
 	 */
 	@Override
-	public void run() {
+	public void compute2(I observed, O reblurred, O correction) {
 
 		// divide observed image by reblurred
 		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);

@@ -37,6 +37,9 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.Computers;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -61,10 +64,28 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	@Parameter(required = false)
 	private StatusService status;
 
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
+
+	@Override
+	public void initialize() {
+		super.initialize();
+
+		rlCorrection = (BinaryComputerOp) Computers.binary(ops(),
+			RichardsonLucyCorrection.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel());
+
+	}
+
 	@Override
 	public void performIterations() {
 
 		createReblurred();
+
+		rlCorrection = (BinaryComputerOp) Computers.binary(ops(),
+			RichardsonLucyCorrection.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel());
 
 		for (int i = 0; i < getMaxIterations(); i++) {
 
@@ -74,15 +95,14 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 				status.showProgress(i, getMaxIterations());
 			}
 
-			// compute correction factor
-			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(),
-				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+			rlCorrection.compute2(in(), getRAIExtendedReblurred(),
+				getRAIExtendedReblurred());
 
 			// perform update
 			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
 			// accelerate
-			if (getAccelerator()!=null) {
+			if (getAccelerator() != null) {
 				getAccelerator().Accelerate(getRAIExtendedEstimate());
 			}
 
