@@ -30,7 +30,6 @@
 
 package net.imagej.ops.filter;
 
-
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -38,6 +37,7 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsComputerOp;
 import net.imagej.ops.filter.ifft.IFFTComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.UnaryComputerOp;
@@ -60,33 +60,52 @@ public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType
 	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.Convolve
 {
-	
+
 	@Parameter
 	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
+
+	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
+
+	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel;
+
+	UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
+
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
+			getFFTInput(), RandomAccessibleInterval.class);
+
+		fftKernel = (UnaryComputerOp) Computers.unary(ops(),
+			FFTMethodsComputerOp.class, getFFTKernel(),
+			RandomAccessibleInterval.class);
+
+		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
+			RandomAccessibleInterval.class, getFFTKernel());
+
+	}
 
 	/**
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void compute2(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+		// TODO: create this op in initialize... for some reason when I tried it I
+		// got an error
+		// need to investigate...
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			DefaultLinearFFTFilter.class, out, in, kernel, getFFTInput(),
+			getFFTKernel(), getPerformInputFFT(), getPerformKernelFFT(), fftIn,
+			fftKernel, frequencyOp, ifft);
 
-		UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn =
-			(UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
-				getFFTInput(), in);
-
-		UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel =
-			(UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
-				getFFTKernel(), kernel);
-
-		UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft =
-			(UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class, out,
-				getFFTKernel());
-
-		ops().run(DefaultLinearFFTFilter.class, out, in, kernel,
-			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
-			getPerformKernelFFT(), fftIn, fftKernel, frequencyOp, ifft);
+		linearFilter.compute2(in, kernel, out);
 
 	}
 }

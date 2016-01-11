@@ -37,7 +37,9 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractFFTFilterComputer;
 import net.imagej.ops.filter.FFTMethodsLinearFFTFilter;
 import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Hybrids;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
@@ -59,6 +61,26 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	implements Ops.Filter.Convolve
 {
 
+	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul;
+
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		mul = (BinaryHybridOp) Hybrids.binary(ops(), IIToIIOutputII.Multiply.class,
+			getFFTInput(), getFFTKernel(), getFFTInput());
+
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			FFTMethodsLinearFFTFilter.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), mul);
+
+	}
+
 	/**
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
@@ -66,13 +88,7 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	public void compute2(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-
-		BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul =
-			(BinaryHybridOp) Hybrids.binary(ops(), IIToIIOutputII.Multiply.class,
-				getFFTInput(), getFFTKernel(), getFFTInput());
-
-		ops().run(FFTMethodsLinearFFTFilter.class, out, in, kernel, getFFTInput(),
-			getFFTKernel(), getPerformInputFFT(), getPerformKernelFFT(), mul);
+		linearFilter.compute2(in, kernel, out);
 
 	}
 }

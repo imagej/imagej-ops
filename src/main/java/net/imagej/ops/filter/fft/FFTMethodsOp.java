@@ -92,37 +92,52 @@ public class FFTMethodsOp<T extends RealType<T>, C extends ComplexType<C>>
 	@Parameter(required = false)
 	private ImgFactory<?> factory;
 
+	BinaryFunctionOp<RandomAccessibleInterval<T>, Dimensions, RandomAccessibleInterval<T>> padOp;
+
+	UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
+
+	UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftMethodsOp;
+
+	UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftFunctionOp;
+
 	/**
 	 * The complex type of the output
 	 */
 	@Parameter(required = false)
 	private Type<C> fftType;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public RandomAccessibleInterval<C> compute1(
-		final RandomAccessibleInterval<T> input)
-	{
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
 		// if no type was passed in the default is ComplexFloatType
 		if (fftType == null) {
 			fftType = (C) new ComplexFloatType();
 		}
 
-		BinaryFunctionOp<RandomAccessibleInterval<T>, Dimensions, RandomAccessibleInterval<T>> padOp =
-			(BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
-				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-				Dimensions.class, fast);
+		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			Dimensions.class, fast);
 
-		UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp =
-			(UnaryFunctionOp) Functions.unary(ops(), CreateOutputFFTMethods.class,
-				RandomAccessibleInterval.class, Dimensions.class, fftType, fast);
+		createOp = (UnaryFunctionOp) Functions.unary(ops(),
+			CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
+			Dimensions.class, fftType, fast);
 
-		UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>> fftMethodsOp =
-			(UnaryComputerOp) Computers.nullary(ops(), FFTMethodsComputerOp.class,
-				RandomAccessibleInterval.class, RandomAccessibleInterval.class);
+		fftMethodsOp = (UnaryComputerOp) Computers.nullary(ops(),
+			FFTMethodsComputerOp.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class);
 
-		return (RandomAccessibleInterval<C>) ops().run(DefaultFFTOp.class, input,
-			padOp, createOp, fftMethodsOp, borderSize);
+		fftFunctionOp = (UnaryFunctionOp) Functions.unary(ops(), DefaultFFTOp.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class, padOp,
+			createOp, fftMethodsOp, borderSize);
+	}
+
+	@Override
+	public RandomAccessibleInterval<C> compute1(
+		final RandomAccessibleInterval<T> input)
+	{
+		return fftFunctionOp.compute1(input);
 	}
 
 }
