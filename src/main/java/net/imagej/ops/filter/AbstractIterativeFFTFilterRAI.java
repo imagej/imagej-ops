@@ -77,12 +77,6 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 	private ImgFactory<O> imgFactory;
 
 	/**
-	 * Op that computes Richardson Lucy update
-	 */
-	@Parameter
-	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
-
-	/**
 	 * TODO: make this an op?? A boolean which indicates whether to perform
 	 * acceleration
 	 */
@@ -161,13 +155,6 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 	public int getMaxIterations() {
 		return maxIterations;
-	}
-
-	public
-		AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
-		getUpdate()
-	{
-		return update;
 	}
 
 }

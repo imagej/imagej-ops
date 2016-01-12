@@ -38,6 +38,8 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.Op;
 import net.imagej.ops.filter.IterativeNonCirculantFFTFilterRAI;
 import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -62,6 +64,12 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 	@Parameter(required = false)
 	private StatusService status;
 
+	/**
+	 * Op that computes Richardson Lucy update
+	 */
+	@Parameter
+	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
+
 	@Override
 	public void performIterations() {
 
@@ -76,18 +84,18 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 			}
 
 			// compute correction factor
-			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(),
-				in(), getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(), in(),
+				getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
 
 			// perform update
-			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
 			// normalize for non-circulant deconvolution
 			ops().run(DivideHandleZero.class, getRAIExtendedEstimate(),
 				getRAIExtendedEstimate(), getNormalization());
 
 			// accelerate
-			if (getAccelerator()!=null) {
+			if (getAccelerator() != null) {
 				getAccelerator().Accelerate(getRAIExtendedEstimate());
 			}
 

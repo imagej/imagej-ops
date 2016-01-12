@@ -37,6 +37,7 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.Computers;
 import net.imglib2.RandomAccessibleInterval;
@@ -63,10 +64,18 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 
 	@Parameter(required = false)
 	private StatusService status;
+	
+	/**
+	 * Op that computes Richardson Lucy update
+	 */
+	@Parameter
+	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
+
 
 	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
 
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initialize() {
 		super.initialize();
 
@@ -82,11 +91,6 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 
 		createReblurred();
 
-		rlCorrection = (BinaryComputerOp) Computers.binary(ops(),
-			RichardsonLucyCorrection.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			getFFTInput(), getFFTKernel());
-
 		for (int i = 0; i < getMaxIterations(); i++) {
 
 			System.out.println("RL Iteration: " + i);
@@ -99,7 +103,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 				getRAIExtendedReblurred());
 
 			// perform update
-			getUpdate().compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
 
 			// accelerate
 			if (getAccelerator() != null) {
