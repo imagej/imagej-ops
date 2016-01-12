@@ -28,23 +28,23 @@
  * #L%
  */
 
-package net.imagej.ops.filter.correlate;
-
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
+package net.imagej.ops.deconvolve;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
+import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Hybrids;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.RealType;
+
 /**
- * Correlate op for (@link Img)
+ * Implements update step for Richardson-Lucy algortihm (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,32 +52,39 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Correlate.class,
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent,
-	Ops.Filter.Correlate
+@Plugin(type = Op.class, name = "richardsonlucyupdate",
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I>
 {
 
-	/**
-	 * run the filter (CorrelateFFTRAI) on the rais
-	 */
+	private BinaryHybridOp<I, I, I> mul = null;
+
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
 
-		ops().filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
-
+		// TODO: comment in when problem with initialize is fixed
+		// mul = (BinaryHybridOp) Hybrids.binary(ops(),
+		// IIToIIOutputII.Multiply.class,
+		// RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+		// RandomAccessibleInterval.class);
 	}
 
+	/**
+	 * performs update step of the Richardson Lucy Algorithm
+	 */
 	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
+	public void compute1(I correction, I estimate) {
+
+		// TODO: delte these lines when problem in initialization is fixed
+		if (mul == null) {
+			mul = (BinaryHybridOp) Hybrids.binary(ops(),
+				IIToIIOutputII.Multiply.class, estimate, correction, estimate);
+		}
+
+		mul.compute2(estimate, correction, estimate);
+		// ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
 	}
 
 }

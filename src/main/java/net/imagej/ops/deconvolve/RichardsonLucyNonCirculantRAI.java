@@ -30,21 +30,23 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
+import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
+import net.imagej.ops.filter.IterativeNonCirculantFFTFilterRAI;
+import net.imagej.ops.math.divide.DivideHandleZero;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
+
 /**
- * Richardson Lucy op that operates on (@link Img) (Lucy, L. B. (1974).
- * "An iterative technique for the rectification of observed distributions".)
+ * Non-circulant Richardson Lucy algorithm for (@link RandomAccessibleInterval).
+ * Boundary conditions are handled by the scheme described at:
+ * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl)
  * 
  * @author Brian Northan
  * @param <I>
@@ -52,44 +54,54 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
+
+@Plugin(type = Op.class, name = "rlnoncirculant",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>implements
-	Ops.Deconvolve.RichardsonLucy
+public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends IterativeNonCirculantFFTFilterRAI<I, O, K, C>
 {
 
+	@Parameter(required = false)
+	private StatusService status;
+
 	/**
-	 * max number of iterations
+	 * Op that computes Richardson Lucy update
 	 */
 	@Parameter
-	private int maxIterations;
+	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
 
-	/**
-	 * indicates whether to use non-circulant edge handling
-	 */
-	@Parameter(required = false)
-	private boolean nonCirculant = false;
-
-	/**
-	 * indicates whether to use acceleration
-	 */
-	@Parameter(required = false)
-	private boolean accelerate = false;
-
-	/**
-	 * run RichardsonLucyRAI
-	 */
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
+	public void performIterations() {
 
-		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			output.factory(), in(), getKernel(), nonCirculant, accelerate);
+		createReblurred();
 
+		for (int i = 0; i < getMaxIterations(); i++) {
+
+			System.out.println("RL Iteration: " + i);
+
+			if (status != null) {
+				status.showProgress(i, getMaxIterations());
+			}
+
+			// compute correction factor
+			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(), in(),
+				getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
+
+			// perform update
+			update.compute1(getRAIExtendedReblurred(), getRAIExtendedEstimate());
+
+			// normalize for non-circulant deconvolution
+			ops().run(DivideHandleZero.class, getRAIExtendedEstimate(),
+				getRAIExtendedEstimate(), getNormalization());
+
+			// accelerate
+			if (getAccelerator() != null) {
+				getAccelerator().Accelerate(getRAIExtendedEstimate());
+			}
+
+			createReblurred();
+
+		}
 	}
 
 }

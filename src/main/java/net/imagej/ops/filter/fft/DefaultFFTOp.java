@@ -30,67 +30,81 @@
 
 package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.Ops;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
-
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
+
 /**
- * Forward FFT that operates on Img
+ * Function that performs the following steps, 1. create output, 2. pad input,
+ * 3. perform forward FFT
  * 
  * @author Brian Northan
  * @param <T>
- * @param <I>
+ * @param <I>>
  */
 @Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
-	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
+public class DefaultFFTOp<I extends Dimensions, O extends Dimensions> extends
+	AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
-	private long[] paddedSize;
+	/**
+	 * Op used to pad the input
+	 */
+	@Parameter
+	private BinaryFunctionOp<I, Dimensions, I> padOp;
 
-	private long[] fftSize;
+	/**
+	 * Op used to create the complex output
+	 */
+	@Parameter
+	private UnaryFunctionOp<Dimensions, O> createOp;
+
+	/**
+	 * Op used to compute the fft
+	 */
+	@Parameter
+	private UnaryComputerOp<I, O> fftOp;
+
+	/**
+	 * The size of border to apply in each dimension
+	 */
+	@Parameter(required = false)
+	private long[] borderSize = null;
 
 	@Override
-	protected void computeFFTFastSize(long[] inputSize) {
+	public O compute1(final I input) {
 
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
+		// calculate the padded size
+		long[] paddedSize = new long[in().numDimensions()];
 
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, true);
+		for (int d = 0; d < in().numDimensions(); d++) {
+			paddedSize[d] = in().dimension(d);
 
-	}
-
-	@Override
-	protected void computeFFTSmallSize(long[] inputSize) {
-
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, false);
-
-	}
-
-	@Override
-	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory) {
-
-		try {
-			return factory.imgFactory(new ComplexFloatType()).create(fftSize,
-				new ComplexFloatType());
+			if (borderSize != null) {
+				paddedSize[d] += borderSize[d];
+			}
 		}
-		// TODO: error handling?
-		catch (IncompatibleTypeException e) {
-			return null;
-		}
+
+		Dimensions paddedDimensions = new FinalDimensions(paddedSize);
+
+		// create the complex output
+		O output = createOp.compute1(paddedDimensions);
+
+		// pad the input
+		I paddedInput = padOp.compute2(input, paddedDimensions);
+
+		// compute and return fft
+		fftOp.compute1(paddedInput, output);
+
+		return output;
 	}
 
-	@Override
-	public void compute1(final I input, final Img<ComplexFloatType> output) {
-		ops().filter().fft(output, input, getOBF(), paddedSize);
-	}
 }

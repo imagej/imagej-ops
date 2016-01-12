@@ -28,19 +28,19 @@
  * #L%
  */
 
-package net.imagej.ops.filter.convolve;
+package net.imagej.ops.filter;
 
 import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterComputer;
-import net.imagej.ops.filter.FFTMethodsLinearFFTFilter;
-import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.filter.fft.FFTMethodsComputerOp;
+import net.imagej.ops.filter.ifft.IFFTComputerOp;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.Hybrids;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
@@ -55,13 +55,20 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 @Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
-public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
 	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.Convolve
 {
 
-	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul;
+	@Parameter
+	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
+
+	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
+
+	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftKernel;
+
+	UnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<O>> ifft;
 
 	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
 
@@ -70,14 +77,15 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	public void initialize() {
 		super.initialize();
 
-		mul = (BinaryHybridOp) Hybrids.binary(ops(), IIToIIOutputII.Multiply.class,
-			getFFTInput(), getFFTKernel(), getFFTInput());
+		fftIn = (UnaryComputerOp) Computers.unary(ops(), FFTMethodsComputerOp.class,
+			getFFTInput(), RandomAccessibleInterval.class);
 
-		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
-			FFTMethodsLinearFFTFilter.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
-			getPerformKernelFFT(), mul);
+		fftKernel = (UnaryComputerOp) Computers.unary(ops(),
+			FFTMethodsComputerOp.class, getFFTKernel(),
+			RandomAccessibleInterval.class);
+
+		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
+			RandomAccessibleInterval.class, getFFTKernel());
 
 	}
 
@@ -85,9 +93,18 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void compute2(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
+		// TODO: create this op in initialize... for some reason when I tried it I
+		// got an error
+		// need to investigate...
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			DefaultLinearFFTFilter.class, out, in, kernel, getFFTInput(),
+			getFFTKernel(), getPerformInputFFT(), getPerformKernelFFT(), fftIn,
+			fftKernel, frequencyOp, ifft);
+
 		linearFilter.compute2(in, kernel, out);
 
 	}

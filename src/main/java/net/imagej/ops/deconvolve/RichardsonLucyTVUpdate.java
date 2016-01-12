@@ -32,94 +32,78 @@ package net.imagej.ops.deconvolve;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.imagej.ops.Ops;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.multithreading.SimpleMultiThreading;
-import net.imglib2.type.Type;
-import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.scijava.Priority;
-import org.scijava.log.LogService;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
- * Richardson Lucy op that operates on (@link RandomAccessibleInterval)
- * Richardson-Lucy algorithm with total variation regularization for 3D confocal
- * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6 The
- * div_unit_grad function has been adapted from IOCBIOS, Pearu Peterson
- * https://code.google.com/p/iocbio/
+ * Implements update step for Richardson-Lucy algorithm with total variation
+ * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
+ * Apr; 69(4)- 260-6 The div_unit_grad function has been adapted from IOCBIOS,
+ * Pearu Peterson https://code.google.com/p/iocbio/
  * 
- * @author bnorthan
+ * @author Brian Northan
  * @param <I>
  * @param <O>
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
+@Plugin(type = Op.class, name = "richardsonlucytvupdate",
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends RichardsonLucyRAI<I, O, K, C> implements Ops.Deconvolve.RichardsonLucyTV
+public class RichardsonLucyTVUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I>
 {
 
 	@Parameter
-	private LogService log;
+	float regularizationFactor;
 
-	@Parameter
-	private float regularizationFactor = 0.2f;
+	@Parameter(required = false)
+	RandomAccessibleInterval<T> variation;
 
-	private Img<O> variation;
-
-	protected RandomAccessibleInterval<O> raiExtendedVariation;
-
+	/**
+	 * performs update step of the Richardson Lucy with Total Variation Algorithm
+	 */
 	@Override
-	protected void initialize() {
-		super.initialize();
+	public void compute1(I correction, I estimate) {
 
-		Type<O> outType = Util.getTypeFromInterval(getOutput());
+		if (variation == null) {
+			variation = ops().create().img(correction, Util.getTypeFromInterval(
+				correction));
+		}
 
-		variation =
-			getImgFactory()
-				.create(getRAIExtendedEstimate(), outType.createVariable());
+		div_unit_grad_fast_thread(estimate);
 
-		// assemble the extended view of the variation buffer
-		raiExtendedVariation =
-			Views.interval(Views.extend(variation, getObfOutput()),
-				getImgConvolutionInterval());
-	}
+		final Cursor<T> cursorCorrection = Views.iterable(correction).cursor();
 
-	@Override
-	public void ComputeEstimate() {
-		div_unit_grad_fast_thread();
+		final Cursor<T> cursorVariation = Views.iterable(variation).cursor();
 
-		final Cursor<O> cursorCorrelation =
-			Views.iterable(getRAIExtendedReblurred()).cursor();
-
-		final Cursor<O> cursorDV_estimate = variation.cursor();
-
-		final Cursor<O> cursorEstimate =
-			Views.iterable(getRAIExtendedEstimate()).cursor();
+		final Cursor<T> cursorEstimate = Views.iterable(estimate).cursor();
 
 		while (cursorEstimate.hasNext()) {
-			cursorCorrelation.fwd();
-			cursorDV_estimate.fwd();
+			cursorCorrection.fwd();
+			cursorVariation.fwd();
 			cursorEstimate.fwd();
 
-			cursorEstimate.get().mul(cursorCorrelation.get());
-			cursorEstimate.get().mul(
-				1f / (1f - regularizationFactor *
-					cursorDV_estimate.get().getRealFloat()));
+			cursorEstimate.get().mul(cursorCorrection.get());
+			cursorEstimate.get().mul(1f / (1f - regularizationFactor * cursorVariation
+				.get().getRealFloat()));
 		}
+
 	}
 
 	static double hypot3(double a, double b, double c) {
-		// return net.jafama.FastMath.sqrtQuick(a * a + b * b + c * c);
+		// return net.jafama.FastMathcorrection factor.sqrtQuick(a * a + b * b + c *
+		// c);
 		return java.lang.Math.sqrt(a * a + b * b + c * c);
 	}
 
@@ -141,17 +125,14 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 	 * Efficient multithreaded version of div_unit_grad adapted from IOCBIOS,
 	 * Pearu Peterson https://code.google.com/p/iocbio/
 	 */
-	void div_unit_grad_fast_thread() {
+	void div_unit_grad_fast_thread(RandomAccessibleInterval<T> estimate) {
 		final int Nx, Ny, Nz;
 
-		final RandomAccessibleInterval<O> raiExtendedEstimate =
-			getRAIExtendedEstimate();
+		Nx = (int) estimate.dimension(0);
+		Ny = (int) estimate.dimension(1);
 
-		Nx = (int) raiExtendedEstimate.dimension(0);
-		Ny = (int) raiExtendedEstimate.dimension(1);
-
-		if (raiExtendedEstimate.numDimensions() > 2) {
-			Nz = (int) raiExtendedEstimate.dimension(2);
+		if (estimate.numDimensions() > 2) {
+			Nz = (int) estimate.dimension(2);
 		}
 		else {
 			Nz = 1;
@@ -172,7 +153,8 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 				public void run() {
 					long starttime = System.currentTimeMillis();
 
-					final RandomAccess<O> outRandom = variation.randomAccess();
+					final RandomAccess<T> outRandom = variation.randomAccess();
+					final Cursor<T> outCursor = Views.iterable(variation).cursor();
 
 					// Thread ID
 					final int myNumber = ai.getAndIncrement();
@@ -201,26 +183,26 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 					hy = 1;
 					hz = 3;
 					// i minus 1 cursors
-					Cursor<O> fimjmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fimCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fimkmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fimkpCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fimjpCursor = Views.iterable(raiExtendedEstimate).cursor();
+					Cursor<T> fimjmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fimCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fimkmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fimkpCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fimjpCursor = Views.iterable(estimate).cursor();
 
 					// i cursors
-					Cursor<O> fjmkmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fjmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fjmkpCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fkmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fijkCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fkpCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fjpkmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fjpCursor = Views.iterable(raiExtendedEstimate).cursor();
+					Cursor<T> fjmkmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fjmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fjmkpCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fkmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fijkCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fkpCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fjpkmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fjpCursor = Views.iterable(estimate).cursor();
 
 					// i plus 1 cursors
-					Cursor<O> fipjmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fipkmCursor = Views.iterable(raiExtendedEstimate).cursor();
-					Cursor<O> fipCursor = Views.iterable(raiExtendedEstimate).cursor();
+					Cursor<T> fipjmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fipkmCursor = Views.iterable(estimate).cursor();
+					Cursor<T> fipCursor = Views.iterable(estimate).cursor();
 
 					for (k = start; k < end; k++) {
 						km1 = (k > 0 ? k - 1 : 0);
@@ -297,6 +279,10 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 							fipCursor.jumpFwd(k * Nx * Ny + j * Nx);
 							fipCursor.fwd();
 
+							outCursor.reset();
+							outCursor.jumpFwd(k * Nx * Ny + j * Nx);
+							outCursor.fwd();
+
 							for (i = 0; i < Nx; i++) {
 
 								if (i > 1) {
@@ -312,10 +298,14 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 									fjmCursor.fwd();
 									fjmkpCursor.fwd();
 									fkmCursor.fwd();
+									outRandom.setPosition(new int[] { i, j, k });
+
 									fijkCursor.fwd();
 									fkpCursor.fwd();
 									fjpkmCursor.fwd();
 									fjpCursor.fwd();
+
+									outCursor.fwd();
 								}
 
 								if (i < Nx - 1) {
@@ -386,54 +376,29 @@ public class RichardsonLucyTVRAI<I extends RealType<I>, O extends RealType<O>, K
 									Dymb = (bijk - bjm) / hy;
 									Dzmc = (cijk - ckm) / hz;
 
-									outRandom.setPosition(new int[] { i, j, k });
-									outRandom.get().setReal(Dxma + Dymb + Dzmc);
+									// outRandom.setPosition(new int[] { i, j, k });
+									// outRandom.get().setReal(Dxma + Dymb + Dzmc);
+
+									outCursor.get().setReal(Dxma + Dymb + Dzmc);
+
 									// outRandom.get().setReal(1);
 
 								}
 								catch (final ArrayIndexOutOfBoundsException ex) {
-									log.error("ERROR at: " + i + " " + j + " " + k);
+									// log.error("ERROR at: " + i + " " + j + " " + k);
 								}
 
 							} // end i
 						} // end j
 					} // end k
-					long totaltime = System.currentTimeMillis() - starttime;
-					if (log.isDebug()) log.debug("totaltime = " + totaltime);
+
+					// long totaltime = System.currentTimeMillis() - starttime;
+					// if (log.isDebug()) log.debug("totaltime = " + totaltime);
 				}// end run
 			});
 		}
 
 		SimpleMultiThreading.startAndJoin(threads);
-	}
-
-	// TODO: replace this function with divide op
-	@Override
-	protected void inPlaceDivide2(RandomAccessibleInterval<O> denominator,
-		RandomAccessibleInterval<O> numeratorOutput)
-	{
-
-		final Cursor<O> cursorDenominator = Views.iterable(denominator).cursor();
-		final Cursor<O> cursorNumeratorOutput =
-			Views.iterable(numeratorOutput).cursor();
-
-		while (cursorDenominator.hasNext()) {
-			cursorDenominator.fwd();
-			cursorNumeratorOutput.fwd();
-
-			float num = cursorNumeratorOutput.get().getRealFloat();
-			float div = cursorDenominator.get().getRealFloat();
-			float res = 0;
-
-			if (div > 0) {
-				res = num / div;
-			}
-			else {
-				res = 0;
-			}
-
-			cursorNumeratorOutput.get().setReal(res);
-		}
 	}
 
 }

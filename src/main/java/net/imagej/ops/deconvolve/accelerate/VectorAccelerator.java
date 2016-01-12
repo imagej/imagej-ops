@@ -30,6 +30,12 @@
 
 package net.imagej.ops.deconvolve.accelerate;
 
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.special.AbstractInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
@@ -39,8 +45,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Util;
 import net.imglib2.view.Views;
 
-import org.scijava.plugin.Parameter;
-
 /**
  * Vector Accelerator implements acceleration scheme described in Acceleration
  * of iterative image restoration algorithms David S.C. Biggs and Mark Andrews
@@ -49,10 +53,10 @@ import org.scijava.plugin.Parameter;
  * @author bnorthan
  * @param <T>
  */
-//@Plugin(type = Op.class, name = "vectorAccelerate",
-//	priority = Priority.NORMAL_PRIORITY)
-public class VectorAccelerator<T extends RealType<T>> implements
-	Accelerator<T>
+@Plugin(type = Op.class, name = "vectorAccelerate",
+	priority = Priority.NORMAL_PRIORITY)
+public class VectorAccelerator<T extends RealType<T>> extends
+	AbstractInplaceOp<RandomAccessibleInterval<T>> implements Accelerator<T>
 {
 
 	// TODO: should accelerator be an Op?? If so how do we keep track of current
@@ -74,27 +78,28 @@ public class VectorAccelerator<T extends RealType<T>> implements
 	Img<T> hk_vector = null;
 
 	Img<T> gk;
-	Img<T> gkm1;
+	Img<T> gkm1;  
 
 	double accelerationFactor = 0.0f;
 
-	public VectorAccelerator(ImgFactory<T> imgFactory) {
-		this.imgFactory = imgFactory;
-		// initialize();
-	}
-
-	/*	@Override
-		public void run() {
-	
-			Accelerate(yk_iterated_);
+	/*	public VectorAccelerator(ImgFactory<T> imgFactory) {
+			this.imgFactory = imgFactory;
+			// initialize();
 		}*/
+	
+
+	@Override
+	public void mutate(RandomAccessibleInterval<T> yk_iterated) {
+
+		Accelerate(yk_iterated);
+	}
 
 	public void initialize(RandomAccessibleInterval<T> yk_iterated) {
 		if (yk_prediction == null) {
 			// long[] dimensions =
 			// new long[] { yk_iterated.dimension(0), yk_iterated.dimension(1),
 			// yk_iterated.dimension(2) };
-    
+
 			Type<T> type = Util.getTypeFromInterval(yk_iterated);
 			yk_prediction = imgFactory.create(yk_iterated, type.createVariable());
 			xkm1_previous = imgFactory.create(yk_iterated, type.createVariable());
@@ -166,8 +171,7 @@ public class VectorAccelerator<T extends RealType<T>> implements
 
 	}
 
-	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated)
-	{
+	double computeAccelerationFactor(RandomAccessibleInterval<T> yk_iterated) {
 		// gk=StaticFunctions.Subtract(yk_iterated, yk_prediction);
 		Subtract(yk_iterated, yk_prediction, gk);
 

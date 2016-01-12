@@ -28,53 +28,44 @@
  * #L%
  */
 
-package net.imagej.ops.filter.convolve;
+package net.imagej.ops.filter.fft;
 
-import net.imagej.ops.Contingent;
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Intervals;
-
-import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Ops;
+import net.imagej.ops.create.img.DefaultCreateImg;
+import net.imagej.ops.special.AbstractBinaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgFactory;
+
 /**
- * Convolve op for (@link Img)
- * 
+ * Function that creates an output for FFTMethods FFT
+ *
  * @author Brian Northan
- * @param <I>
- * @param <O>
- * @param <K>
- * @param <C>
+ * @param <T>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve,
-	Contingent
+@Plugin(type = Ops.Create.Img.class)
+public class CreateOutputFFTMethods<T> extends
+	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements Ops.Create.Img
 {
 
-	/**
-	 * run the filter (ConvolveFFTRAI) on the rais
-	 */
-	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
-		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
-	}
+	@Parameter(required = false)
+	private Boolean fast = true;
 
+	@Parameter(required = false)
+	private ImgFactory<T> fac;
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean conforms() {
-		// TODO: only conforms if the kernel is sufficiently large (else the
-		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
+	public Img<T> compute2(Dimensions paddedDimensions, T outType) {
+
+		Dimensions paddedFFTMethodsFFTDimensions = FFTMethodsUtility
+			.getFFTDimensionsRealToComplex(fast, paddedDimensions);
+
+		return (Img<T>) ops().run(DefaultCreateImg.class,
+			paddedFFTMethodsFFTDimensions, outType, fac);
 	}
 
 }

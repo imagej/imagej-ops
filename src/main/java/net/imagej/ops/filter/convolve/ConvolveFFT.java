@@ -28,17 +28,53 @@
  * #L%
  */
 
-package net.imagej.ops.filter.ifft;
+package net.imagej.ops.filter.convolve;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.Contingent;
+import net.imagej.ops.Ops;
+import net.imagej.ops.filter.AbstractFFTFilter;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Intervals;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for inverse fft implementations.
+ * Convolve op for (@link Img)
  * 
  * @author Brian Northan
+ * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-public abstract class AbstractIFFTIterable<T, C, I extends Iterable<T>, O extends Iterable<C>>
-	extends AbstractUnaryComputerOp<I, O>
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
+public class ConvolveFFT<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilter<I, O, K, C> implements Ops.Filter.Convolve,
+	Contingent
 {
+
+	/**
+	 * run the filter (ConvolveFFTRAI) on the rais
+	 */
+	@Override
+	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+	{
+		ops().filter().convolve(output, raiExtendedInput, raiExtendedKernel,
+			fftImg, fftKernel);
+	}
+
+	@Override
+	public boolean conforms() {
+		// TODO: only conforms if the kernel is sufficiently large (else the
+		// naive approach should be used) -> what is a good heuristic??
+		return Intervals.numElements(getKernel()) > 9;
+	}
 
 }

@@ -30,22 +30,26 @@
 
 package net.imagej.ops.deconvolve;
 
-import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.OpService;
+import net.imagej.ops.Ops;
+import net.imagej.ops.deconvolve.accelerate.Accelerator;
+import net.imagej.ops.deconvolve.accelerate.VectorAccelerator;
+import net.imagej.ops.filter.AbstractFFTFilter;
+import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.RealType;
+
 /**
- * Richardson Lucy with total variation op that operates on (@link Img)
- * Richardson-Lucy algorithm with total variation regularization for 3D confocal
- * microscope deconvolution Microsc Res Rech 2006 Apr; 69(4)- 260-6
+ * Richardson Lucy with total variation function op that operates on (@link
+ * RandomAccessibleInterval) (Richardson-Lucy algorithm with total variation
+ * regularization for 3D confocal microscope deconvolution Microsc Res Rech 2006
+ * Apr; 69(4)- 260-6)
  * 
  * @author bnorthan
  * @param <I>
@@ -55,10 +59,13 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Deconvolve.RichardsonLucyTV.class,
 	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>implements
+public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilter<I, O, K, C> implements
 	Ops.Deconvolve.RichardsonLucyTV
 {
+
+	@Parameter
+	OpService ops;
 
 	/**
 	 * max number of iterations
@@ -88,15 +95,37 @@ public class RichardsonLucyTVImg<I extends RealType<I>, O extends RealType<O>, K
 	 * run RichardsonLucyTVRAI
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+		RandomAccessibleInterval<K> raiExtendedKernel,
+		RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+		RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
 
-		ops().run(RichardsonLucyTVRAI.class, raiExtendedInput, raiExtendedKernel,
-			fftImg, fftKernel, output, true, true, maxIterations,
-			imgConvolutionInterval, output.factory(), in(), getKernel(),
-			nonCirculant, accelerate, regularizationFactor);
+		// create Richardson Lucy TV update op, this will override the base RL
+		// Update.
+		AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> computeEstimateOp =
+			ops.op(RichardsonLucyTVUpdate.class, output, output,
+				regularizationFactor);
 
+		Accelerator<O> accelerator = null;
+
+		if (accelerate == true) {
+			accelerator = ops.op(VectorAccelerator.class, output, getOutFactory());
+		}
+
+		if (nonCirculant == false) {
+			ops().run(RichardsonLucyRAI.class, output, raiExtendedInput,
+				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp,
+				accelerator);
+		}
+		else {
+
+			ops().run(RichardsonLucyNonCirculantRAI.class, output, raiExtendedInput,
+				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
+				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerator,
+				in(), getKernel());
+		}
 	}
 }

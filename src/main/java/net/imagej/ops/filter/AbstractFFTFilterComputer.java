@@ -28,36 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.filter.fftSize;
+package net.imagej.ops.filter;
 
-import net.imagej.ops.AbstractOp;
-import net.imagej.ops.Ops;
-
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
+import net.imagej.ops.special.AbstractBinaryComputerOp;
+
 /**
- * Op to calculate FFT sizes.
+ * Abstract class for FFT based filters that operate on RAI
  * 
  * @author Brian Northan
+ * @param <I>
+ * @param <O> gene
+ * @param <K>
+ * @param <C>
  */
-public abstract class AbstractFFTSize extends AbstractOp implements
-	Ops.Filter.FFTSize
+public abstract class AbstractFFTFilterComputer<I, O, K, C> extends
+	AbstractBinaryComputerOp<I, K, O>
 {
 
+	/**
+	 * Buffer to be used to store FFTs for input. Size of fftInput must correspond
+	 * to the fft size of raiExtendedInput
+	 */
 	@Parameter
-	protected long[] inputSize;
+	private C fftInput;
 
-	@Parameter(type = ItemIO.BOTH)
-	protected long[] paddedSize;
-
-	@Parameter(type = ItemIO.BOTH)
-	protected long[] fftSize;
-
+	/**
+	 * Buffer to be used to store FFTs for kernel. Size of fftKernel must
+	 * correspond to the fft size of raiExtendedKernel
+	 */
 	@Parameter
-	protected Boolean forward;
+	private C fftKernel;
 
-	@Parameter
-	protected Boolean fast;
+	/**
+	 * Boolean indicating that the input FFT has already been calculated
+	 */
+	@Parameter(required = false)
+	private boolean performInputFFT = true;
+
+	/**
+	 * Boolean indicating that the kernel FFT has already been calculated
+	 */
+	@Parameter(required = false)
+	private boolean performKernelFFT = true;
+
+	protected C getFFTInput() {
+		return fftInput;
+	}
+
+	protected C getFFTKernel() {
+		return fftKernel;
+	}
+
+	protected boolean getPerformInputFFT() {
+		return performInputFFT;
+	}
+
+	protected boolean getPerformKernelFFT() {
+		return performKernelFFT;
+	}
 
 }

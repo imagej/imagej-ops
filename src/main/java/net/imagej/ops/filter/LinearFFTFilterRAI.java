@@ -30,7 +30,7 @@
 
 package net.imagej.ops.filter;
 
-import net.imglib2.img.Img;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -44,33 +44,37 @@ import net.imglib2.type.numeric.RealType;
  * @param <C>
  */
 public abstract class LinearFFTFilterRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterRAI<I, O, K, C>
+	extends
+	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
 {
 
 	@Override
-	public void run() {
+	public void compute2(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	{
 
 		// perform input FFT if needed
 		if (getPerformInputFFT()) {
-			ops().filter().fft(getFFTInput(), getRAIExtendedInput());
+			ops().filter().fft(getFFTInput(), in);
 		}
 
 		// perform kernel FFT if needed
 		if (getPerformKernelFFT()) {
-			ops().filter().fft(getFFTKernel(), getRAIExtendedKernel());
+			ops().filter().fft(getFFTKernel(), kernel);
 		}
 
 		// perform the operation in frequency domain (ie multiplication for
 		// convolution, complex conjugate multiplication for correlation,
-		// etc.) Wiener Filter,
+		// Wiener Filter, etc.)
 		frequencyOperation(getFFTInput(), getFFTKernel());
 
-		// inverse fft
-		ops().filter().ifft(getOutput(), getFFTInput());
+		// perform inverse fft
+		ops().filter().ifft(out, getFFTInput());
 	}
 
 	// abstract function that implements an operation in frequency domain (ie
 	// multiplication for convolution,
 	// complex conjugate multiplication for correlation, Wiener Filter, etc.)
-	protected abstract void frequencyOperation(final Img<C> a, final Img<C> b);
+	protected abstract void frequencyOperation(
+		final RandomAccessibleInterval<C> a, final RandomAccessibleInterval<C> b);
 }

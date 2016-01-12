@@ -28,47 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.filter.ifft;
+package net.imagej.ops.filter;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
-
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.UnaryComputerOp;
+
 /**
- * Inverse fft that operates on an RAI and wraps FFTMethods.
+ * Abstract class for linear filters that operate on RAIs
  * 
  * @author Brian Northan
+ * @param <I>
+ * @param <O>
+ * @param <K>
  * @param <C>
- * @param <T>
  */
-@Plugin(type = Ops.Filter.IFFT.class)
-public class IFFTRAI<C extends ComplexType<C>, T extends RealType<T>>
-	extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<T>>
-	implements Ops.Filter.IFFT
+@Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
+public class DefaultLinearFFTFilter<I, O, K, C> extends
+	AbstractFFTFilterComputer<I, O, K, C>
 {
 
+	// FFT Op for input
+	@Parameter
+	UnaryComputerOp<I, C> fftInputOp;
+
+	// FFT Op for kernel
+	@Parameter
+	UnaryComputerOp<K, C> fftKernelOp;
+
+	// Op that performs filter in frequency domain
+	@Parameter
+	BinaryHybridOp<C, C, C> frequencyOp;
+
+	// Inverse fft op
+	@Parameter
+	UnaryComputerOp<C, O> ifftOp;
+
 	@Override
-	public void compute1(final RandomAccessibleInterval<C> input,
-		final RandomAccessibleInterval<T> output)
-	{
-		// TODO: proper use of Executor service
-		final int numThreads = Runtime.getRuntime().availableProcessors();
-		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
+	public void compute2(I in, K kernel, O out) {
 
-		for (int d = input.numDimensions() - 1; d > 0; d--)
-			FFTMethods.complexToComplex(input, d, false, true, service);
+		// perform input FFT if needed
+		if (getPerformInputFFT()) {
+			fftInputOp.compute1(in, getFFTInput());
+		}
 
-		FFTMethods.complexToReal(input, output, FFTMethods
-			.unpaddingIntervalCentered(input, output), 0, true, service);
+		// perform kernel FFT if needed
+		if (getPerformKernelFFT()) {
+			fftKernelOp.compute1(kernel, getFFTKernel());
+		}
+
+		// perform the operation in frequency domain (ie multiplication for
+		// convolution, complex conjugate multiplication for correlation,
+		// Wiener Filter, etc.)
+		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
+
+		// perform inverse fft
+		ifftOp.compute1(getFFTInput(), out());
 	}
-
 }
