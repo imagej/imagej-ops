@@ -34,8 +34,10 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops;
+import net.imagej.ops.math.IIToIIOutputII;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.Hybrids;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 
@@ -56,13 +58,33 @@ public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessi
 	extends AbstractUnaryComputerOp<I, I>
 {
 
+	private BinaryHybridOp<I, I, I> mul = null;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+
+		// TODO: comment in when problem with initialize is fixed
+		// mul = (BinaryHybridOp) Hybrids.binary(ops(),
+		// IIToIIOutputII.Multiply.class,
+		// RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+		// RandomAccessibleInterval.class);
+	}
+
 	/**
 	 * performs update step of the Richardson Lucy Algorithm
 	 */
 	@Override
 	public void compute1(I correction, I estimate) {
 
-		ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
+		// TODO: delte these lines when problem in initialization is fixed
+		if (mul == null) {
+			mul = (BinaryHybridOp) Hybrids.binary(ops(),
+				IIToIIOutputII.Multiply.class, estimate, correction, estimate);
+		}
+
+		mul.compute2(estimate, correction, estimate);
+		// ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
 	}
 
 }

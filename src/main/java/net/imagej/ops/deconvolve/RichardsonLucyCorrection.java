@@ -35,8 +35,11 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
+import net.imagej.ops.filter.correlate.CorrelateFFTRAI;
 import net.imagej.ops.math.divide.DivideHandleZero;
 import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
@@ -53,7 +56,7 @@ import net.imglib2.RandomAccessibleInterval;
 @Plugin(type = Op.class, name = "richardsonlucycorrection",
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyCorrection<I, O, C> extends
-	AbstractBinaryComputerOp<I, O, O>
+	AbstractBinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>>
 {
 
 	/** fft of reblurred (will be computed) **/
@@ -64,18 +67,39 @@ public class RichardsonLucyCorrection<I, O, C> extends
 	@Parameter
 	RandomAccessibleInterval<C> fftKernel;
 
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> divide;
+
+	BinaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> correlate;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+
+		divide = (BinaryComputerOp) Computers.binary(ops(), DivideHandleZero.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class);
+
+		correlate = (BinaryComputerOp) Computers.binary(ops(),
+			CorrelateFFTRAI.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class, fftBuffer,
+			fftKernel, true, false);
+
+	}
+
 	/**
 	 * computes the correction factor of the Richardson Lucy Algorithm
 	 */
 	@Override
-	public void compute2(I observed, O reblurred, O correction) {
-
+	public void compute2(RandomAccessibleInterval<I> observed,
+		RandomAccessibleInterval<O> reblurred,
+		RandomAccessibleInterval<O> correction)
+	{
 		// divide observed image by reblurred
-		ops().run(DivideHandleZero.class, reblurred, observed, reblurred);
+
+		divide.compute2(observed, reblurred, reblurred);
 
 		// correlate with psf to compute the correction factor
-		ops().filter().correlate(correction, reblurred, reblurred, fftBuffer,
-			fftKernel, true, false);
+		correlate.compute2(reblurred, reblurred, correction);
 
 	}
 

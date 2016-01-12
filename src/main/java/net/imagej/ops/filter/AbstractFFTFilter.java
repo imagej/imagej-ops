@@ -90,6 +90,36 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	@Parameter(required = false)
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
 
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		// if fftType, and/or fftFactory do not exist, create them using defaults
+		if (fftType == null) {
+			fftType = (ComplexType) (new ComplexFloatType().createVariable());
+		}
+
+		/**
+		 * Op used to pad the input
+		 */
+		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			Dimensions.class, true);
+
+		/**
+		 * Op used to pad the kernel
+		 */
+		padKernelOp = (BinaryFunctionOp) Functions.binary(ops(),
+			PadShiftKernelFFTMethods.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, Dimensions.class, true);
+
+		/**
+		 * Op used to create the complex FFTs
+		 */
+		createOp = (UnaryFunctionOp) Functions.unary(ops(),
+			CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
+			Dimensions.class, fftType, true);
+	}
+
 	/**
 	 * compute output by extending the input(s) and running the filter
 	 */
@@ -122,32 +152,6 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 					getBorderSize()[d], input.dimension(d) + 2 * getBorderSize()[d]);
 			}
 		}
-
-		// if fftType, and/or fftFactory do not exist, create them using defaults
-		if (fftType == null) {
-			fftType = (ComplexType) (new ComplexFloatType().createVariable());
-		}
-
-		/**
-		 * Op used to pad the input
-		 */
-		padOp = (BinaryFunctionOp) Functions.binary(ops(), PadInputFFTMethods.class,
-			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-			Dimensions.class, true);
-
-		/**
-		 * Op used to pad the kernel
-		 */
-		padKernelOp = (BinaryFunctionOp) Functions.binary(ops(),
-			PadShiftKernelFFTMethods.class, RandomAccessibleInterval.class,
-			RandomAccessibleInterval.class, Dimensions.class, true);
-
-		/**
-		 * Op used to create the complex FFTs
-		 */
-		createOp = (UnaryFunctionOp) Functions.unary(ops(),
-			CreateOutputFFTMethods.class, RandomAccessibleInterval.class,
-			Dimensions.class, fftType, true);
 
 		RandomAccessibleInterval<I> paddedInput = padOp.compute2(input,
 			new FinalDimensions(paddedSize));
