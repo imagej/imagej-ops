@@ -31,15 +31,14 @@
 package net.imagej.ops.image.crop;
 
 import net.imagej.ImgPlus;
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgView;
 import net.imglib2.type.Type;
 
-import org.scijava.ItemIO;
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -49,15 +48,9 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Image.Crop.class, priority = Priority.LOW_PRIORITY + 1)
-public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
-	Ops.Image.Crop
+public class CropImgPlus<T extends Type<T>> extends
+	AbstractUnaryFunctionOp<ImgPlus<T>, ImgPlus<T>> implements Ops.Image.Crop
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgPlus<T> out;
-
-	@Parameter
-	private ImgPlus<T> in;
 
 	@Parameter
 	protected Interval interval;
@@ -66,13 +59,13 @@ public class CropImgPlus<T extends Type<T>> extends AbstractOp implements
 	private boolean dropSingleDimensions = true;
 
 	@Override
-	public void run() {
-		final RandomAccessibleInterval<T> rai = in;
-		out =
-			new ImgPlus<>(ImgView.wrap(
-				ops().image().crop(rai, interval, dropSingleDimensions), in.factory()));
+	public ImgPlus<T> compute1(final ImgPlus<T> input) {
+		final RandomAccessibleInterval<T> rai = input;
+		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(ops().image().crop(rai,
+			interval, dropSingleDimensions), input.factory()));
 
 		// TODO remove metadata-util
-		MetadataUtil.copyAndCleanImgPlusMetadata(interval, in, out);
+		MetadataUtil.copyAndCleanImgPlusMetadata(interval, input, out);
+		return out;
 	}
 }

@@ -30,11 +30,10 @@
 
 package net.imagej.ops.run;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryFunctionOp;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -44,20 +43,16 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Run.class)
-public class RunByOp extends AbstractOp implements Ops.Run {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private Object output;
-
-	@Parameter
-	private Op op;
+public class RunByOp extends AbstractUnaryFunctionOp<Op, Object> implements
+	Ops.Run
+{
 
 	@Parameter
 	private Object[] args;
 
 	@Override
-	public void run() {
-		output = ops().run(op, args);
+	public Object compute1(final Op input) {
+		return ops().run(input, args);
 	}
 
 }

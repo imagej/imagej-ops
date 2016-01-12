@@ -30,12 +30,10 @@
 
 package net.imagej.ops.create.labelingMapping;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.AbstractNullaryFunctionOp;
 import net.imglib2.roi.labeling.LabelingMapping;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -46,24 +44,17 @@ import org.scijava.plugin.Plugin;
  * @param <L> label type
  */
 @Plugin(type = Ops.Create.LabelingMapping.class)
-public class DefaultCreateLabelingMapping<L> extends AbstractOp implements
-	Ops.Create.LabelingMapping, Output<LabelingMapping<L>>
+public class DefaultCreateLabelingMapping<L> extends
+	AbstractNullaryFunctionOp<LabelingMapping<L>> implements
+	Ops.Create.LabelingMapping
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private LabelingMapping<L> output;
 
 	@Parameter(required = false)
 	private int maxNumSets;
 
 	@Override
-	public void run() {
-		output = new LabelingMapping<>(ops().create().integerType(maxNumSets));
-	}
-
-	@Override
-	public LabelingMapping<L> out() {
-		return output;
+	public LabelingMapping<L> compute0() {
+		return new LabelingMapping<>(ops().create().integerType(maxNumSets));
 	}
 
 }

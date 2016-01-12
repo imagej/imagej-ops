@@ -30,9 +30,8 @@
 
 package net.imagej.ops.create.imgFactory;
 
-import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.AbstractNullaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;
@@ -40,7 +39,6 @@ import net.imglib2.img.cell.CellImgFactory;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -53,11 +51,8 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.ImgFactory.class)
 public class DefaultCreateImgFactory<T extends NativeType<T>> extends
-	AbstractOp implements Ops.Create.ImgFactory, Output<ImgFactory<T>>
+	AbstractNullaryFunctionOp<ImgFactory<T>> implements Ops.Create.ImgFactory
 {
-
-	@Parameter(type = ItemIO.OUTPUT)
-	private ImgFactory<T> output;
 
 	@Parameter(required = false)
 	private Dimensions dims;
@@ -66,19 +61,13 @@ public class DefaultCreateImgFactory<T extends NativeType<T>> extends
 	private T outType;
 
 	@Override
-	public void run() {
+	public ImgFactory<T> compute0() {
 		if (outType == null) {
 			outType = ops().create().<T> nativeType();
 		}
 
-		output =
-			(dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
-				? new ArrayImgFactory<>() : new CellImgFactory<>();
-	}
-
-	@Override
-	public ImgFactory<T> out() {
-		return output;
+		return (dims == null || Intervals.numElements(dims) <= Integer.MAX_VALUE)
+			? new ArrayImgFactory<>() : new CellImgFactory<>();
 	}
 
 }
