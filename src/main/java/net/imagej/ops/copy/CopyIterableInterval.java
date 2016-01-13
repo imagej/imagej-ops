@@ -31,7 +31,6 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imagej.ops.special.Computers;
@@ -53,16 +52,13 @@ public class CopyIterableInterval<T> extends
 		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>> implements
 		Ops.Copy.IterableInterval, Contingent {
 
-	@Parameter
-	protected OpService ops;
-
 	// used internally
 	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
 	
 	@Override
 	public void initialize() {
-		map = Computers.unary(ops, Ops.Map.class, in(), in(),
-				Computers.unary(ops, Ops.Copy.Type.class, 
+		map = Computers.unary(ops(), Ops.Map.class, in(), in(),
+				Computers.unary(ops(), Ops.Copy.Type.class, 
 						in().firstElement().getClass(), 
 						in().firstElement().getClass()));
 	}
@@ -71,7 +67,7 @@ public class CopyIterableInterval<T> extends
 	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
 		// FIXME: Assumption here: Create an Img. I would rather like: Create
 		// what ever is best given the input.
-		return (IterableInterval<T>) ops.create().img(input, input.firstElement());
+		return (IterableInterval<T>) ops().create().img(input, input.firstElement());
 	}
 
 	@Override
