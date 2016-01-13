@@ -32,7 +32,7 @@ package net.imagej.ops.convert;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.ComputerViaComputer;
+import net.imagej.ops.chain.HybridViaComputer;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.IterableInterval;
@@ -87,7 +87,7 @@ public final class ConvertImages {
 	// -- Helper classes --
 
 	private abstract static class ConvertViaMap<I extends ComplexType<I>, O>
-		extends ComputerViaComputer<IterableInterval<I>, Img<O>>
+		extends HybridViaComputer<IterableInterval<I>, Img<O>>
 	{
 
 		private Class<? extends Op> opType;
@@ -107,6 +107,11 @@ public final class ConvertImages {
 				outElement, inElement);
 			return (UnaryComputerOp)
 				Computers.unary(ops(), Ops.Map.class, Img.class, t, elementOp);
+		}
+
+		@Override
+		public Img<O> createOutput(final IterableInterval<I> input) {
+			return ops().create().img(input, outElement);
 		}
 	}
 
