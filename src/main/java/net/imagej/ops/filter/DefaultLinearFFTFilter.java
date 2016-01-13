@@ -35,7 +35,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.UnaryComputerOp;
 
 /**
@@ -62,7 +62,7 @@ public class DefaultLinearFFTFilter<I, O, K, C> extends
 
 	// Op that performs filter in frequency domain
 	@Parameter
-	BinaryHybridOp<C, C, C> frequencyOp;
+	BinaryComputerOp<C, C, C> frequencyOp;
 
 	// Inverse fft op
 	@Parameter

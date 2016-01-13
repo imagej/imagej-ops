@@ -38,7 +38,6 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsComputerOp;
 import net.imagej.ops.filter.ifft.IFFTComputerOp;
 import net.imagej.ops.special.BinaryComputerOp;
-import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
@@ -62,7 +61,7 @@ public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType
 {
 
 	@Parameter
-	BinaryHybridOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
+	BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> frequencyOp;
 
 	UnaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<C>> fftIn;
 
@@ -86,6 +85,14 @@ public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType
 
 		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
 			RandomAccessibleInterval.class, getFFTKernel());
+
+		// TODO: this line doesn't work because of some issue with a mesh
+		// convertor... comment back in when fixed
+		/*	linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+				DefaultLinearFFTFilter.class, RandomAccessibleInterval.class,
+				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+				getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+				getPerformKernelFFT(), fftIn, fftKernel, frequencyOp, ifft);*/
 
 	}
 

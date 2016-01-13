@@ -89,6 +89,5 @@ public class ConvolveFFTRAI<I extends RealType<I>, O extends RealType<O>, K exte
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 		linearFilter.compute2(in, kernel, out);
-
 	}
 }
