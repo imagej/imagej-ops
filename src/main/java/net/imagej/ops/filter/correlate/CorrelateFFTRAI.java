@@ -30,15 +30,17 @@
 
 package net.imagej.ops.filter.correlate;
 
+import org.scijava.plugin.Plugin;
+
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.LinearFFTFilterRAI;
-import net.imglib2.Cursor;
+import net.imagej.ops.filter.AbstractFFTFilterComputer;
+import net.imagej.ops.filter.FFTMethodsLinearFFTFilter;
+import net.imagej.ops.math.multiply.ComplexConjugateMultiply;
+import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.Computers;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.view.Views;
-
-import org.scijava.plugin.Plugin;
 
 /**
  * Correlate op for (@link RandomAccessibleInterval)
@@ -51,29 +53,40 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Correlate.class)
 public class CorrelateFFTRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends LinearFFTFilterRAI<I, O, K, C> implements Ops.Filter.Correlate
+	extends
+	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	implements Ops.Filter.Correlate
 {
+
+	BinaryComputerOp<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> complexConjugateMul;
+
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+
+	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		complexConjugateMul = (BinaryComputerOp) Computers.binary(ops(),
+			ComplexConjugateMultiply.class, getFFTInput(), getFFTKernel(),
+			getFFTInput());
+
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			FFTMethodsLinearFFTFilter.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), complexConjugateMul);
+
+	}
 
 	/**
 	 * Perform correlation by conjugate multiplying the FFTs in the frequency
 	 * domain TODO use an op here??
 	 */
 	@Override
-	protected void frequencyOperation(RandomAccessibleInterval<C> a,
-		RandomAccessibleInterval<C> b)
+	public void compute2(RandomAccessibleInterval<I> input,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		final Cursor<C> cursorA = Views.iterable(a).cursor();
-		final Cursor<C> cursorB = Views.iterable(b).cursor();
-
-		while (cursorA.hasNext()) {
-			cursorA.fwd();
-			cursorB.fwd();
-
-			C temp = Views.iterable(a).firstElement().createVariable();
-			temp.set(cursorB.get());
-			temp.complexConjugate();
-
-			cursorA.get().mul(temp);
-		}
+		linearFilter.compute2(input, kernel, out);
 	}
 }
