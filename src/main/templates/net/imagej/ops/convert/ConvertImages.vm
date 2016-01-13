@@ -1,0 +1,118 @@
+/*
+ * #%L
+ * ImageJ software for multidimensional image processing and analysis.
+ * %%
+ * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Wisconsin-Madison, University of Konstanz and Brian Northan.
+ * %%
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * #L%
+ */
+
+package net.imagej.ops.convert;
+
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops;
+import net.imagej.ops.chain.HybridViaComputer;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
+import net.imglib2.type.numeric.ComplexType;
+#set ($imports = [])
+#foreach ($op in $ops)
+#set($result = $imports.add($op.type))
+#end
+#*
+NB: Sort the list. We access the Collections class via reflection, since
+Velocity does not have a built-in syntax for importing Java classes.
+Credit to Martin Gamulin for the idea: http://stackoverflow.com/a/7672699
+*#
+#set($Collections = $ops.getClass().forName("java.util.Collections"))
+#set($result = $Collections.sort($imports))
+#foreach ($import in $imports)
+import $import;
+#end
+
+import org.scijava.plugin.Plugin;
+
+/**
+ * Ops for converting images between types.
+ * <p>
+ * These ops work by feeding the {@link ConvertTypes} ops to {@code map}.
+ * </p>
+ *
+ * @author Curtis Rueden
+ */
+public final class ConvertImages {
+
+	private ConvertImages() {
+		// NB: Prevent instantiation of utility class.
+	}
+#foreach ($op in $ops)
+#set ($opType = $op.name)
+#set ($dot = $op.type.lastIndexOf(".") + 1)
+#set ($imglibType = $op.type.substring($dot))
+
+	@Plugin(type = Ops.Convert.${opType}.class)
+	public static class $opType<C extends ComplexType<C>> extends
+		ConvertViaMap<C, $imglibType> implements
+		Ops.Convert.$opType
+	{
+		public $opType() {
+			super(Ops.Convert.${opType}.class, new $imglibType());
+		}
+	}
+#end
+
+	// -- Helper classes --
+
+	private abstract static class ConvertViaMap<I extends ComplexType<I>, O>
+		extends HybridViaComputer<IterableInterval<I>, Img<O>>
+	{
+
+		private Class<? extends Op> opType;
+		private O outElement;
+
+		protected ConvertViaMap(Class<? extends Op> opType, O outElement) {
+			this.opType = opType;
+			this.outElement = outElement;
+		}
+
+		@Override
+		public UnaryComputerOp<IterableInterval<I>, Img<O>> createWorker(
+			final IterableInterval<I> t)
+		{
+			final I inElement = t.firstElement();
+			final UnaryComputerOp<I, O> elementOp = Computers.unary(ops(), opType,
+				outElement, inElement);
+			return (UnaryComputerOp)
+				Computers.unary(ops(), Ops.Map.class, Img.class, t, elementOp);
+		}
+
+		@Override
+		public Img<O> createOutput(final IterableInterval<I> input) {
+			return ops().create().img(input, outElement);
+		}
+	}
+
+}
