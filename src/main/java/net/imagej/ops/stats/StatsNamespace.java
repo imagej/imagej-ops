@@ -279,6 +279,20 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	@OpMethod(op = net.imagej.ops.stats.DefaultQuantile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O quantile(final Iterable<T> in, final double quantile) {
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultQuantile.class, in, quantile);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.stats.DefaultQuantile.class)
+	public <T extends RealType<T>, O extends RealType<O>> O quantile(final O out, final Iterable<T> in, final double quantile) {
+		final O result =
+			(O) ops().run(net.imagej.ops.stats.DefaultQuantile.class, out, in, quantile);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(
 		final IterableInterval<T> in)
