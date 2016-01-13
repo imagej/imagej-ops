@@ -69,8 +69,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	private double isolevel = 1;
 
 	@Parameter(type = ItemIO.INPUT, required = false)
-	private VertexInterpolator interpolatorClass =
-		new BitTypeVertexInterpolator();
+	private VertexInterpolator interpolatorOp = new BitTypeVertexInterpolator();
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
@@ -192,14 +191,14 @@ public class DefaultMarchingCubes<T extends BooleanType<T>> extends
 	}
 
 	private double[] interpolatePoint(int[] p0, int[] p1, double v0, double v1) {
-		interpolatorClass.setPoint1(p0);
-		interpolatorClass.setPoint2(p1);
-		interpolatorClass.setValue1(v0);
-		interpolatorClass.setValue2(v1);
-		interpolatorClass.setIsoLevel(isolevel);
-		interpolatorClass.run();
+		interpolatorOp.setPoint1(p0);
+		interpolatorOp.setPoint2(p1);
+		interpolatorOp.setValue1(v0);
+		interpolatorOp.setValue2(v1);
+		interpolatorOp.setIsoLevel(isolevel);
+		interpolatorOp.run();
 
-		return interpolatorClass.getOutput();
+		return interpolatorOp.getOutput();
 	}
 
 	private int getCubeIndex(final double[] vertex_values) {

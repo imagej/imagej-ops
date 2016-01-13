@@ -285,11 +285,11 @@ public class GeomNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class)
 	public <T extends Type<T>> Mesh marchingcubes(
 		final RandomAccessibleInterval<T> in, final double isolevel,
-		final VertexInterpolator interpolatorClass)
+		final VertexInterpolator interpolatorOp)
 	{
 		final Mesh result = (Mesh) ops().run(
 			net.imagej.ops.geom.geom3d.DefaultMarchingCubes.class, in, isolevel,
-			interpolatorClass);
+			interpolatorOp);
 		return result;
 	}
 
