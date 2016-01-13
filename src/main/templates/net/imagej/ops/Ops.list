@@ -72,6 +72,15 @@ namespaces = ```
 		[name: "richardsonLucy",              iface: "RichardsonLucy"],
 		[name: "richardsonLucyTV",            iface: "RichardsonLucyTV"],
 	]],
+
+	[name: "morphology", iface: "Morphology", ops: [
+		[name: "close",                       iface: "Close"],
+		[name: "dilate",                      iface: "Dilate"],
+		[name: "erode",                       iface: "Erode"],
+		[name: "open",                        iface: "Open"],
+		[name: "thin",                        iface: "Thin"],
+	]],
+
 	[name: "filter", iface: "Filter", ops: [
 		[name: "addNoise",                    iface: "AddNoise"],
 		[name: "addPoissonNoise",             iface: "AddPoissonNoise"],
