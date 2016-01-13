@@ -32,7 +32,10 @@ package net.imagej.ops.create.labelingMapping;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.NullaryFunctionOp;
 import net.imglib2.roi.labeling.LabelingMapping;
+import net.imglib2.type.numeric.IntegerType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -52,9 +55,18 @@ public class DefaultCreateLabelingMapping<L> extends
 	@Parameter(required = false)
 	private int maxNumSets;
 
+	@SuppressWarnings("rawtypes")
+	private NullaryFunctionOp<IntegerType> indexTypeCreator;
+
+	@Override
+	public void initialize() {
+		indexTypeCreator = Functions.nullary(ops(),
+			Ops.Create.IntegerType.class, IntegerType.class, maxNumSets);
+	}
+
 	@Override
 	public LabelingMapping<L> compute0() {
-		return new LabelingMapping<>(ops().create().integerType(maxNumSets));
+		return new LabelingMapping<>(indexTypeCreator.compute0());
 	}
 
 }

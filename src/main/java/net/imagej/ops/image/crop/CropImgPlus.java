@@ -33,7 +33,9 @@ package net.imagej.ops.image.crop;
 import net.imagej.ImgPlus;
 import net.imagej.ops.MetadataUtil;
 import net.imagej.ops.Ops;
+import net.imagej.ops.chain.RAIs;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgView;
@@ -58,11 +60,18 @@ public class CropImgPlus<T extends Type<T>> extends
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
+	private UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> cropper;
+
+	@Override
+	public void initialize() {
+		cropper = RAIs.function(ops(), CropRAI.class, in(), interval,
+			dropSingleDimensions);
+	}
+
 	@Override
 	public ImgPlus<T> compute1(final ImgPlus<T> input) {
-		final RandomAccessibleInterval<T> rai = input;
-		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(ops().image().crop(rai,
-			interval, dropSingleDimensions), input.factory()));
+		final ImgPlus<T> out = new ImgPlus<>(ImgView.wrap(cropper.compute1(input),
+			input.factory()));
 
 		// TODO remove metadata-util
 		MetadataUtil.copyAndCleanImgPlusMetadata(interval, input, out);

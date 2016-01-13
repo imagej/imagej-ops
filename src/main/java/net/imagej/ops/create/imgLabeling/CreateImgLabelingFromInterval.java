@@ -32,7 +32,10 @@ package net.imagej.ops.create.imgLabeling;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.Interval;
+import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
@@ -64,15 +67,21 @@ public class CreateImgLabelingFromInterval<L, T extends IntegerType<T>> extends
 	@Parameter(required = false)
 	private int maxNumLabelSets;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public ImgLabeling<L, T> compute1(final Interval input) {
+	private UnaryFunctionOp<Interval, Img<T>> imgCreator;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
 		if (outType == null) {
 			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), outType, fac);
+	}
 
-		return new ImgLabeling<>(ops().create().img(input, outType, fac));
+	@Override
+	public ImgLabeling<L, T> compute1(final Interval input) {
+		return new ImgLabeling<>(imgCreator.compute1(input));
 	}
 
 }

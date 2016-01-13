@@ -32,6 +32,10 @@ package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;
@@ -67,6 +71,18 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 
 	@Parameter(required = false)
 	private boolean isLazy = true;
+	
+	private UnaryFunctionOp<IterableInterval<T>, Img<T>> imgCreator;
+	private UnaryComputerOp<IterableInterval<T>, Img<T>> normalizer;
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), in().firstElement().createVariable());
+		normalizer = (UnaryComputerOp) Computers.unary(ops(),
+			Ops.Image.Normalize.class, Img.class, in());
+	}
 
 	@Override
 	public IterableInterval<T> compute1(final IterableInterval<T> input) {
@@ -75,9 +91,8 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 				new NormalizeRealTypeComputer<>(ops(), sourceMin, sourceMax, targetMin,
 					targetMax, input), input.firstElement().createVariable());
 		}
-		final Img<T> output =
-			ops().create().img(input, input.firstElement().createVariable());
-		ops().image().normalize(output, input);
+		final Img<T> output = imgCreator.compute1(input);
+		normalizer.compute1(input, output);
 		return output;
 	}
 }

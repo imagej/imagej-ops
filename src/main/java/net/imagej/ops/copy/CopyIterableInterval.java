@@ -34,11 +34,12 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryHybridOp;
 import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.util.Intervals;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -54,20 +55,23 @@ public class CopyIterableInterval<T> extends
 
 	// used internally
 	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
-	
+	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		map = Computers.unary(ops(), Ops.Map.class, in(), in(),
-				Computers.unary(ops(), Ops.Copy.Type.class, 
-						in().firstElement().getClass(), 
-						in().firstElement().getClass()));
+		map = Computers.unary(ops(), Ops.Map.class, in(), in(), Computers.unary(
+			ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
+				.firstElement().getClass()));
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			IterableInterval.class, in(), in().firstElement());
 	}
 
 	@Override
 	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
 		// FIXME: Assumption here: Create an Img. I would rather like: Create
 		// what ever is best given the input.
-		return (IterableInterval<T>) ops().create().img(input, input.firstElement());
+		return imgCreator.compute1(input);
 	}
 
 	@Override
