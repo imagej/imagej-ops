@@ -33,7 +33,7 @@ package net.imagej.ops;
 import net.imagej.ops.Op;
 
 /**
- * Static utility class containing built-in op interfaces.
+ * Marker interfaces for built-in op implementations.
  * <p>
  * These interfaces are intended to mark all ops using a particular name,
  * regardless of their exact functionality. For example, all ops called "eval"
@@ -48,11 +48,7 @@ import net.imagej.ops.Op;
  * @author $author
 #end
  */
-public final class Ops {
-
-	private Ops() {
-		// NB: Prevent instantiation of utility class.
-	}
+public interface Ops {
 #foreach ($op in $ops)
 #set ($opClass = $op.iface)
 
@@ -83,11 +79,7 @@ $alias##
 #set ($nsClass = $ns.iface)
 
 	/** Built-in op interfaces of the $ns.name namespace. */
-	public static final class $nsClass {
-
-		private $nsClass() {
-			// NB: Prevent instantiation of utility class.
-		}
+	public interface $nsClass {
 #foreach ($op in $ns.ops)
 #set ($opClass = $op.iface)
 
