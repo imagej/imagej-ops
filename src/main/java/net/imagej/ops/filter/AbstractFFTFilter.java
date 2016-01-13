@@ -75,19 +75,16 @@ public abstract class AbstractFFTFilter<I extends RealType<I>, O extends RealTyp
 	/**
 	 * Op used to pad the input
 	 */
-	@Parameter(required = false)
 	private BinaryFunctionOp<RandomAccessibleInterval<I>, Dimensions, RandomAccessibleInterval<I>> padOp;
 
 	/**
 	 * Op used to pad the kernel
 	 */
-	@Parameter(required = false)
 	private BinaryFunctionOp<RandomAccessibleInterval<K>, Dimensions, RandomAccessibleInterval<K>> padKernelOp;
 
 	/**
 	 * Op used to create the complex FFTs
 	 */
-	@Parameter(required = false)
 	private UnaryFunctionOp<Dimensions, RandomAccessibleInterval<C>> createOp;
 
 	@Override
