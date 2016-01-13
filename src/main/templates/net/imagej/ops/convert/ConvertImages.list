@@ -1,0 +1,22 @@
+[ConvertImages.java]
+ops = ```
+[
+	[name: "Bit",      type: "net.imglib2.type.logic.BitType"],
+	[name: "Uint2",    type: "net.imglib2.type.numeric.integer.Unsigned2BitType"],
+	[name: "Uint4",    type: "net.imglib2.type.numeric.integer.Unsigned4BitType"],
+	[name: "Int8",     type: "net.imglib2.type.numeric.integer.ByteType"],
+	[name: "Uint8",    type: "net.imglib2.type.numeric.integer.UnsignedByteType"],
+	[name: "Uint12",   type: "net.imglib2.type.numeric.integer.Unsigned12BitType"],
+	[name: "Int16",    type: "net.imglib2.type.numeric.integer.ShortType"],
+	[name: "Uint16",   type: "net.imglib2.type.numeric.integer.UnsignedShortType"],
+	[name: "Int32",    type: "net.imglib2.type.numeric.integer.IntType"],
+	[name: "Uint32",   type: "net.imglib2.type.numeric.integer.UnsignedIntType"],
+	[name: "Int64",    type: "net.imglib2.type.numeric.integer.LongType"],
+	[name: "Uint64",   type: "net.imglib2.type.numeric.integer.UnsignedLongType"],
+	[name: "Uint128",  type: "net.imglib2.type.numeric.integer.Unsigned128BitType"],
+	[name: "Float32",  type: "net.imglib2.type.numeric.real.FloatType"],
+	[name: "Float64",  type: "net.imglib2.type.numeric.real.DoubleType"],
+	[name: "Cfloat32", type: "net.imglib2.type.numeric.complex.ComplexFloatType"],
+	[name: "Cfloat64", type: "net.imglib2.type.numeric.complex.ComplexDoubleType"],
+]
+```

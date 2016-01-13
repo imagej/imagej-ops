@@ -35,6 +35,7 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imglib2.IterableInterval;
+import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
@@ -156,6 +157,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Bit.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Bit.class)
+	public <C extends ComplexType<C>> Img<BitType> bit(final Img<BitType> out,
+		final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<BitType> result = (Img<BitType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Bit.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToBit.class)
 	public <C extends ComplexType<C>> BitType bit(final C in) {
 		final BitType result =
@@ -175,6 +186,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Uint2.class)
 	public Object uint2(final Object... args) {
 		return ops().run(Ops.Convert.Uint2.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint2.class)
+	public <C extends ComplexType<C>> Img<Unsigned2BitType> uint2(
+		final Img<Unsigned2BitType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<Unsigned2BitType> result = (Img<Unsigned2BitType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint2.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint2.class)
@@ -218,6 +239,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint4.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint4.class)
+	public <C extends ComplexType<C>> Img<Unsigned4BitType> uint4(
+		final Img<Unsigned4BitType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<Unsigned4BitType> result = (Img<Unsigned4BitType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint4.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint4.class)
 	public <C extends ComplexType<C>> Unsigned4BitType uint4(final C in) {
 		final Unsigned4BitType result =
@@ -257,6 +288,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Int8.class)
 	public Object int8(final Object... args) {
 		return ops().run(Ops.Convert.Int8.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Int8.class)
+	public <C extends ComplexType<C>> Img<ByteType> int8(final Img<ByteType> out,
+		final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ByteType> result = (Img<ByteType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint8.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToInt8.class)
@@ -300,6 +341,17 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint8.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint8.class)
+	public <C extends ComplexType<C>> Img<UnsignedByteType> uint8(
+		final Img<UnsignedByteType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedByteType> result = (Img<UnsignedByteType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint8.class, out, in);
+		return result;
+	}
+
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint8.class)
 	public <C extends ComplexType<C>> UnsignedByteType uint8(final C in) {
 		final UnsignedByteType result =
@@ -341,6 +393,17 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint12.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint12.class)
+	public <C extends ComplexType<C>> Img<Unsigned12BitType> uint12(
+		final Img<Unsigned12BitType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<Unsigned12BitType> result = (Img<Unsigned12BitType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint12.class, out, in);
+		return result;
+	}
+
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint12.class)
 	public <C extends ComplexType<C>> Unsigned12BitType uint12(final C in) {
 		final Unsigned12BitType result =
@@ -380,6 +443,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Int16.class)
 	public Object int16(final Object... args) {
 		return ops().run(Ops.Convert.Int16.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Int16.class)
+	public <C extends ComplexType<C>> Img<ShortType> int16(
+		final Img<ShortType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ShortType> result = (Img<ShortType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Int16.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToInt16.class)
@@ -423,6 +496,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint16.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint16.class)
+	public <C extends ComplexType<C>> Img<UnsignedShortType> uint16(
+		final Img<UnsignedShortType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedShortType> result = (Img<UnsignedShortType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint16.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint16.class)
 	public <C extends ComplexType<C>> UnsignedShortType uint16(final C in) {
 		final UnsignedShortType result =
@@ -462,6 +545,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Int32.class)
 	public Object int32(final Object... args) {
 		return ops().run(Ops.Convert.Int32.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Int32.class)
+	public <C extends ComplexType<C>> Img<IntType> int32(
+		final Img<IntType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<IntType> result = (Img<IntType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Int32.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.IntegerToInt32.class)
@@ -505,6 +598,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint32.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint32.class)
+	public <C extends ComplexType<C>> Img<UnsignedIntType> uint32(
+		final Img<UnsignedIntType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedIntType> result = (Img<UnsignedIntType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint32.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint32.class)
 	public <C extends ComplexType<C>> UnsignedIntType uint32(final C in) {
 		final UnsignedIntType result =
@@ -544,6 +647,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Int64.class)
 	public Object int64(final Object... args) {
 		return ops().run(Ops.Convert.Int64.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Int64.class)
+	public <C extends ComplexType<C>> Img<LongType> int64(
+		final Img<LongType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<LongType> result = (Img<LongType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Int64.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToInt64.class)
@@ -587,6 +700,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Uint64.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint64.class)
+	public <C extends ComplexType<C>> Img<UnsignedLongType> uint64(
+		final Img<UnsignedLongType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<UnsignedLongType> result = (Img<UnsignedLongType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint64.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToUint64.class)
 	public <C extends ComplexType<C>> UnsignedLongType uint64(final C in) {
 		final UnsignedLongType result =
@@ -626,6 +749,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Uint128.class)
 	public Object uint128(final Object... args) {
 		return ops().run(Ops.Convert.Uint128.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Uint128.class)
+	public <C extends ComplexType<C>> Img<Unsigned128BitType> uint128(
+		final Img<Unsigned128BitType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<Unsigned128BitType> result = (Img<Unsigned128BitType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Uint128.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.IntegerToUint128.class)
@@ -669,6 +802,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Float32.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Float32.class)
+	public <C extends ComplexType<C>> Img<FloatType> float32(
+		final Img<FloatType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<FloatType> result = (Img<FloatType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Float32.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToFloat32.class)
 	public <C extends ComplexType<C>> FloatType float32(final C in) {
 		final FloatType result =
@@ -690,6 +833,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Cfloat32.class)
 	public Object cfloat32(final Object... args) {
 		return ops().run(Ops.Convert.Cfloat32.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Cfloat32.class)
+	public <C extends ComplexType<C>> Img<ComplexFloatType> cfloat32(
+		final Img<ComplexFloatType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexFloatType> result = (Img<ComplexFloatType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Cfloat32.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToCfloat32.class)
@@ -715,6 +868,16 @@ public class ConvertNamespace extends AbstractNamespace {
 		return ops().run(Ops.Convert.Float64.class, args);
 	}
 
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Float64.class)
+	public <C extends ComplexType<C>> Img<DoubleType> float64(
+		final Img<DoubleType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Float64.class, out, in);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToFloat64.class)
 	public <C extends ComplexType<C>> DoubleType float64(final C in) {
 		final DoubleType result =
@@ -736,6 +899,16 @@ public class ConvertNamespace extends AbstractNamespace {
 	@OpMethod(op = Ops.Convert.Cfloat64.class)
 	public Object cfloat64(final Object... args) {
 		return ops().run(Ops.Convert.Cfloat64.class, args);
+	}
+
+	@OpMethod(op = net.imagej.ops.convert.ConvertImages.Cfloat64.class)
+	public <C extends ComplexType<C>> Img<ComplexDoubleType> cfloat64(
+		final Img<ComplexDoubleType> out, final IterableInterval<C> in)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<ComplexDoubleType> result = (Img<ComplexDoubleType>) ops().run(
+			net.imagej.ops.convert.ConvertImages.Cfloat64.class, out, in);
+		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.convert.ConvertTypes.ComplexToCfloat64.class)
