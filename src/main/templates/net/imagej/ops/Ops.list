@@ -322,7 +322,10 @@ namespaces = ```
 		[name: "floodFill",                      iface: "FloodFill"],
 		[name: "open",                           iface: "Open"],
 		[name: "outline",                        iface: "Outline"],
-		[name: "thin",                           iface: "Thin"],
+		[name: "thinGuoHall",                    iface: "ThinGuoHall"],
+		[name: "thinHilditch",                   iface: "ThinHilditch"],
+		[name: "thinMorphological",              iface: "ThinMorphological"],
+		[name: "thinZhangSuen",                  iface: "ThinZhangSuen"],
 		[name: "topHat",                         iface: "TopHat"],
 	]],
 	[name: "stats", iface: "Stats", ops: [
