@@ -54,7 +54,7 @@ import org.junit.Test;
 /**
  * Tests {@link ConvertIterableIntervals} + {@link RealTypeConverter} ops.
  * 
- * @author Curtis Rueden.
+ * @author Curtis Rueden
  */
 public class ConvertIterableIntervalsTest extends AbstractOpTest {
 
