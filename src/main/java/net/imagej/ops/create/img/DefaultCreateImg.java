@@ -64,15 +64,15 @@ public class DefaultCreateImg<T> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Img<T> compute1(final Dimensions input) {
+	public void initialize() {
 		// FIXME: not guaranteed to be a T unless a Class<T> is given.
 		if (outType == null) {
-			if (input instanceof IterableInterval) {
-				outType = (T) ((IterableInterval<?>) input).firstElement();
+			if (in() instanceof IterableInterval) {
+				outType = (T) ((IterableInterval<?>) in()).firstElement();
 			}
-			else if (input instanceof RandomAccessibleInterval) {
+			else if (in() instanceof RandomAccessibleInterval) {
 				outType = (T) Util.getTypeFromInterval(
-					(RandomAccessibleInterval<?>) input);
+					(RandomAccessibleInterval<?>) in());
 			}
 			else {
 				// HACK: For Java 6 compiler.
@@ -84,8 +84,8 @@ public class DefaultCreateImg<T> extends
 		}
 
 		if (fac == null) {
-			if (input instanceof Img) {
-				final Img<?> inImg = ((Img<?>) input);
+			if (in() instanceof Img) {
+				final Img<?> inImg = ((Img<?>) in());
 				if (inImg.firstElement().getClass().isInstance(outType)) {
 					fac = (ImgFactory<T>) inImg.factory();
 				}
@@ -98,16 +98,19 @@ public class DefaultCreateImg<T> extends
 					}
 					catch (final IncompatibleTypeException e) {
 						// FIXME: outType may not be a NativeType, but imgFactory needs one.
-						fac = (ImgFactory<T>) ops().create().imgFactory(input, outType);
+						fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
 					}
 				}
 			}
 			else {
 				// FIXME: outType may not be a NativeType, but imgFactory needs one.
-				fac = (ImgFactory<T>) ops().create().imgFactory(input, outType);
+				fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
 			}
 		}
+	}
 
+	@Override
+	public Img<T> compute1(final Dimensions input) {
 		return fac.create(input, outType);
 	}
 
