@@ -36,13 +36,20 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.filter.IterativeCirculantFFTFilterRAI;
+import net.imagej.ops.filter.AbstractIterativeFFTFilterRAI;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.Computers;
+import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Util;
+import net.imglib2.view.Views;
 
 /**
  * Richardson Lucy algorithm for (@link RandomAccessibleInterval) (Lucy, L. B.
@@ -59,18 +66,63 @@ import net.imglib2.type.numeric.RealType;
 @Plugin(type = Op.class, name = "richardsonlucy",
 	priority = Priority.HIGH_PRIORITY)
 public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends IterativeCirculantFFTFilterRAI<I, O, K, C>
+	extends AbstractIterativeFFTFilterRAI<I, O, K, C>
 {
 
 	@Parameter(required = false)
 	private StatusService status;
-	
+
+	/**
+	 * An OutOfBoundsFactory which defines the extension strategy
+	 */
+	@Parameter(required = false)
+	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
+
+	protected void initializeImages() {
+		// if no output out of bounds factory exists create the obf for output
+		if (obfOutput == null) {
+			obfOutput =
+				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+					.getTypeFromInterval(out()).createVariable());
+		}
+
+		Type<O> outType = Util.getTypeFromInterval(out());
+
+		// create image for the reblurred
+		Img<O> reblurred = getImgFactory().create(out(), outType.createVariable());
+
+		// extend the output and use it as a buffer to store the estimate
+		setRAIExtendedEstimate(Views.interval(Views.extend(out(), obfOutput),
+			getImgConvolutionInterval()));
+
+		// assemble the extended view of the reblurred
+		setRAIExtendedReblurred(Views.interval(Views.extend(reblurred, obfOutput),
+			getImgConvolutionInterval()));
+
+		// set first guess of estimate
+		// TODO: implement logic for various first guesses.
+		// for now just set to original image
+		Cursor<O> c = Views.iterable(getRAIExtendedEstimate()).cursor();
+		Cursor<I> cIn = Views.iterable(in()).cursor();
+
+		while (c.hasNext()) {
+			c.fwd();
+			cIn.fwd();
+			c.get().setReal(cIn.get().getRealFloat());
+		}
+
+		// perform fft of input
+		ops().filter().fft(getFFTInput(), in());
+
+		// perform fft of psf
+		ops().filter().fft(getFFTKernel(), in2());
+	}
+
 	/**
 	 * Op that computes Richardson Lucy update
 	 */
 	@Parameter
 	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
-
 
 	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> rlCorrection;
 
