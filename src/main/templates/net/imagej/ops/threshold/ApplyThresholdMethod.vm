@@ -30,9 +30,9 @@
 
 package net.imagej.ops.threshold;
 
-import java.util.List;
-
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
@@ -51,17 +51,6 @@ public final class ApplyThresholdMethod {
 	private ApplyThresholdMethod() {
 		// NB: Prevent instantiation of utility class.
 	}
-
-	/**
-	 * Dirty hack to coerce {@code Compute*Threshold} methods which have an extra
-	 * {@code errMsg} output. Eventually it might be nice to redesign how error
-	 * messages work for thresholding, to avoid polluting the output objects.
-	 */
-	private static <T> T unwrap(final List<Object> list) {
-		@SuppressWarnings("unchecked")
-		final T result = (T) list.get(0);
-		return result;
-	}
 #foreach ($method in $methods)
 #set ($iface = "Ops.Threshold.${method.iface}")
 
@@ -71,14 +60,21 @@ public final class ApplyThresholdMethod {
 		implements ${iface}
 	{
 
+		private UnaryFunctionOp<Histogram1d<T>, T> thresholdFunc;
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@Override
+		public void initialize() {
+			super.initialize();
+			thresholdFunc = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Threshold.${method.iface}.class, in().firstElement().getClass(),
+				Histogram1d.class);
+		}
+
 		@Override
 		public T getThreshold(final Img<T> input) {
-			final Histogram1d<T> hist = ops().image().histogram(input);
-#if ($method.list)
-			return unwrap(ops().threshold().${method.name}(hist));
-#else
-			return ops().threshold().${method.name}(hist);
-#end
+			final Histogram1d<T> hist = histCreator.compute1(input);
+			return thresholdFunc.compute1(hist);
 		}
 	}
 #end
