@@ -79,7 +79,7 @@ $alias##
 #set ($nsClass = $ns.iface)
 
 	/** Built-in op interfaces of the $ns.name namespace. */
-	public interface $nsClass {
+	public interface $nsClass extends Op {
 #foreach ($op in $ns.ops)
 #set ($opClass = $op.iface)
 
@@ -93,7 +93,7 @@ $alias##
 		 * @Plugin(type = Ops.${nsClass}.${opClass}Op.class
 		 * </pre>
 		 */
-		public interface ${opClass}Op extends Op {
+		public interface ${opClass}Op extends $nsClass {
 			String NAME = "${ns.name}.$op.name";
 #if ($op.aliases)
 			String ALIASES = "##
