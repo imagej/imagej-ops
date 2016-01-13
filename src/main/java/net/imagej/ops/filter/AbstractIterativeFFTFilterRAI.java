@@ -34,7 +34,6 @@ import org.scijava.app.StatusService;
 import org.scijava.plugin.Parameter;
 
 import net.imagej.ops.deconvolve.accelerate.Accelerator;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.ImgFactory;
@@ -98,6 +97,8 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 
 	@Override
 	public void initialize() {
+
+		super.initialize();
 
 		initializeImages();
 
