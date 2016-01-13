@@ -237,6 +237,12 @@ public class StatisticsTest extends AbstractOpTest {
 	}
 
 	@Test
+	public void testQuantile() {
+		Assert.assertEquals("0.5-th Quantile", 128d, ops.stats().quantile(randomlyFilledImg, 0.5d)
+				.getRealDouble(), 0.00001d);
+	}
+
+	@Test
 	public void testSkewness() {
 		Assert.assertEquals("Skewness", -0.0012661517853476312, ops.stats()
 			.skewness(randomlyFilledImg).getRealDouble(), 0.00001d);
