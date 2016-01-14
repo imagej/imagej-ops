@@ -117,15 +117,15 @@ public class RichardsonLucyTVFunction<I extends RealType<I>, O extends RealType<
 		if (nonCirculant == false) {
 			ops().run(RichardsonLucyRAI.class, output, raiExtendedInput,
 				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
-				imgConvolutionInterval, getOutFactory(), computeEstimateOp,
-				accelerator);
+				imgConvolutionInterval, getOutFactory(), accelerator,
+				computeEstimateOp);
 		}
 		else {
 
 			ops().run(RichardsonLucyNonCirculantRAI.class, output, raiExtendedInput,
 				raiExtendedKernel, fftImg, fftKernel, true, true, maxIterations,
-				imgConvolutionInterval, getOutFactory(), computeEstimateOp, accelerator,
-				in(), getKernel());
+				imgConvolutionInterval, getOutFactory(), accelerator, in(), getKernel(),
+				computeEstimateOp);
 		}
 	}
 }
