@@ -87,6 +87,6 @@ public class DefaultLinearFFTFilter<I, O, K, C> extends
 		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
 
 		// perform inverse fft
-		ifftOp.compute1(getFFTInput(), out());
+		ifftOp.compute1(getFFTInput(), out);
 	}
 }
