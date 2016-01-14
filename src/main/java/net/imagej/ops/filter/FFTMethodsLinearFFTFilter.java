@@ -86,13 +86,11 @@ public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType
 		ifft = (UnaryComputerOp) Computers.unary(ops(), IFFTComputerOp.class,
 			RandomAccessibleInterval.class, getFFTKernel());
 
-		// TODO: this line doesn't work because of some issue with a mesh
-		// convertor... comment back in when fixed
-		/*	linearFilter = (BinaryComputerOp) Computers.binary(ops(),
-				DefaultLinearFFTFilter.class, RandomAccessibleInterval.class,
-				RandomAccessibleInterval.class, RandomAccessibleInterval.class,
-				getFFTInput(), getFFTKernel(), getPerformInputFFT(),
-				getPerformKernelFFT(), fftIn, fftKernel, frequencyOp, ifft);*/
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			DefaultLinearFFTFilter.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), fftIn, fftKernel, frequencyOp, ifft);
 
 	}
 
@@ -100,19 +98,9 @@ public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType
 	 * Perform convolution by multiplying the FFTs in the frequency domain
 	 */
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void compute2(RandomAccessibleInterval<I> in,
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		// TODO: create this op in initialize... for some reason when I tried it I
-		// got an error
-		// need to investigate...
-		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
-			DefaultLinearFFTFilter.class, out, in, kernel, getFFTInput(),
-			getFFTKernel(), getPerformInputFFT(), getPerformKernelFFT(), fftIn,
-			fftKernel, frequencyOp, ifft);
-
 		linearFilter.compute2(in, kernel, out);
-
 	}
 }
