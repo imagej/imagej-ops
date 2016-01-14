@@ -34,6 +34,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.fft.FFTMethodsComputerOp;
 import net.imagej.ops.filter.ifft.IFFTComputerOp;
@@ -53,7 +54,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
+@Plugin(type = Op.class, priority = Priority.LOW_PRIORITY)
 public class FFTMethodsLinearFFTFilter<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
 	extends
 	AbstractFFTFilterComputer<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
