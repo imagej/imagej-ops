@@ -78,46 +78,6 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	@Parameter(required = false)
 	private OutOfBoundsFactory<O, RandomAccessibleInterval<O>> obfOutput;
 
-	protected void initializeImages() {
-		// if no output out of bounds factory exists create the obf for output
-		if (obfOutput == null) {
-			obfOutput =
-				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
-					.getTypeFromInterval(out()).createVariable());
-		}
-
-		Type<O> outType = Util.getTypeFromInterval(out());
-
-		// create image for the reblurred
-		Img<O> reblurred = getImgFactory().create(out(), outType.createVariable());
-
-		// extend the output and use it as a buffer to store the estimate
-		setRAIExtendedEstimate(Views.interval(Views.extend(out(), obfOutput),
-			getImgConvolutionInterval()));
-
-		// assemble the extended view of the reblurred
-		setRAIExtendedReblurred(Views.interval(Views.extend(reblurred, obfOutput),
-			getImgConvolutionInterval()));
-
-		// set first guess of estimate
-		// TODO: implement logic for various first guesses.
-		// for now just set to original image
-		Cursor<O> c = Views.iterable(getRAIExtendedEstimate()).cursor();
-		Cursor<I> cIn = Views.iterable(in()).cursor();
-
-		while (c.hasNext()) {
-			c.fwd();
-			cIn.fwd();
-			c.get().setReal(cIn.get().getRealFloat());
-		}
-
-		// perform fft of input
-		ops().filter().fft(getFFTInput(), in());
-
-		// perform fft of psf
-		ops().filter().fft(getFFTKernel(), in2());
-	}
-
 	/**
 	 * Op that computes Richardson Lucy update
 	 */
@@ -139,7 +99,8 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 	}
 
 	@Override
-	public void performIterations() {
+	public void performIterations(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out) {
 
 		createReblurred();
 
@@ -151,7 +112,7 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 				status.showProgress(i, getMaxIterations());
 			}
 
-			rlCorrection.compute2(in(), getRAIExtendedReblurred(),
+			rlCorrection.compute2(in, getRAIExtendedReblurred(),
 				getRAIExtendedReblurred());
 
 			// perform update
@@ -166,5 +127,48 @@ public class RichardsonLucyRAI<I extends RealType<I>, O extends RealType<O>, K e
 
 		}
 	}
+
+	@Override
+	protected void preProcess(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out) {
+		// if no output out of bounds factory exists create the obf for output
+		if (obfOutput == null) {
+			obfOutput =
+				new OutOfBoundsConstantValueFactory<O, RandomAccessibleInterval<O>>(Util
+					.getTypeFromInterval(out).createVariable());
+		}
+
+		Type<O> outType = Util.getTypeFromInterval(out);
+
+		// create image for the reblurred
+		Img<O> reblurred = getImgFactory().create(out, outType.createVariable());
+
+		// extend the output and use it as a buffer to store the estimate
+		setRAIExtendedEstimate(Views.interval(Views.extend(out, obfOutput),
+			getImgConvolutionInterval()));
+
+		// assemble the extended view of the reblurred
+		setRAIExtendedReblurred(Views.interval(Views.extend(reblurred, obfOutput),
+			getImgConvolutionInterval()));
+
+		// set first guess of estimate
+		// TODO: implement logic for various first guesses.
+		// for now just set to original image
+		Cursor<O> c = Views.iterable(getRAIExtendedEstimate()).cursor();
+		Cursor<I> cIn = Views.iterable(in).cursor();
+
+		while (c.hasNext()) {
+			c.fwd();
+			cIn.fwd();
+			c.get().setReal(cIn.get().getRealFloat());
+		}
+
+		// perform fft of input
+		ops().filter().fft(getFFTInput(), in);
+
+		// perform fft of psf
+		ops().filter().fft(getFFTKernel(), kernel);
+	}
+	
 
 }

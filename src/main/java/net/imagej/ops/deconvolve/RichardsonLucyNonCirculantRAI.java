@@ -99,16 +99,9 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 	private AbstractUnaryComputerOp<RandomAccessibleInterval<O>, RandomAccessibleInterval<O>> update;
 
 	@Override
-	public void compute1(RandomAccessibleInterval<I> in,
-		RandomAccessibleInterval<O> out)
+	public void performIterations(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
-		performIterations();
-
-		postProcess();
-	}
-
-	@Override
-	public void performIterations() {
 
 		createReblurred();
 
@@ -121,7 +114,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 			}
 
 			// compute correction factor
-			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(), in(),
+			ops().run(RichardsonLucyCorrection.class, getRAIExtendedReblurred(), in,
 				getRAIExtendedReblurred(), getFFTInput(), getFFTKernel());
 
 			// perform update
@@ -141,18 +134,12 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		}
 	}
 
-	/**
-	 * initialize TODO: review this function
-	 */
 	@Override
-	public void initializeImages() {
+	public void preProcess(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	{
 
-		Type<O> outType = Util.getTypeFromInterval(out());
-
-		// if non-circulant mode create actual image buffers for the estimate and
-		// reblurred
-		// this is done because the algorithm attempts to reconstruct the out of
-		// bounds data
+		Type<O> outType = Util.getTypeFromInterval(out);
 
 		// create image for the estimate, this image is defined over the entire
 		// convolution interval
@@ -162,7 +149,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		// set first guess to be a constant = to the average value
 
 		// so first compute the sum...
-		final O sum = ops().stats().<I, O> sum(Views.iterable(in()));
+		final O sum = ops().stats().<I, O> sum(Views.iterable(in));
 
 		// then the number of pixels
 		final long numPixels = k.dimension(0) * k.dimension(1) * k.dimension(2);
@@ -170,7 +157,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		// then the average value...
 		final double average = sum.getRealDouble() / (numPixels);
 
-		// set first guess as the average value coputed above (TODO: make this an
+		// set first guess as the average value computed above (TODO: make this an
 		// op)
 		for (final O type : estimate) {
 			type.setReal(average);
@@ -184,21 +171,24 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		setRAIExtendedReblurred(reblurred);
 
 		// perform fft of input
-		ops().filter().fft(getFFTInput(), in());
+		ops().filter().fft(getFFTInput(), in);
 
 		// perform fft of psfs
-		ops().filter().fft(getFFTKernel(), in2());
+		ops().filter().fft(getFFTKernel(), kernel);
 
 		normalization = getImgFactory().create(estimate, outType.createVariable());
 
-		this.createNormalizationImageSemiNonCirculant();
+		this.createNormalizationImageSemiNonCirculant(kernel);
 
 	}
 
 	/**
 	 * postProcess TODO: review this function
 	 */
-	protected void postProcess() {
+	@Override
+	protected void postProcess(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	{
 
 		// when doing non circulant deconvolution we need to crop and copy back to
 		// the
@@ -215,7 +205,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		RandomAccessibleInterval<O> temp = ops().image().crop(
 			getRAIExtendedEstimate(), new FinalInterval(start, end));
 
-		ops().copy().rai(out(), temp);
+		ops().copy().rai(out, temp);
 
 	}
 
@@ -223,7 +213,9 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 	 * create the normalization image needed for semi noncirculant model see
 	 * http://bigwww.epfl.ch/deconvolution/challenge2013/index.html?p=doc_math_rl
 	 */
-	protected void createNormalizationImageSemiNonCirculant() {
+	protected void createNormalizationImageSemiNonCirculant(
+		RandomAccessibleInterval<K> kernel)
+	{
 
 		// k is the window size (valid image region)
 		int length = k.numDimensions();
@@ -294,7 +286,7 @@ public class RichardsonLucyNonCirculantRAI<I extends RealType<I>, O extends Real
 		}
 
 		// 3. correlate psf with the output of step 2.
-		ops().run(CorrelateFFTRAI.class, normalization, normalization, in2(),
+		ops().run(CorrelateFFTRAI.class, normalization, normalization, kernel,
 			getFFTInput(), getFFTKernel(), true, false);
 
 		final Cursor<O> cursorN = normalization.cursor();

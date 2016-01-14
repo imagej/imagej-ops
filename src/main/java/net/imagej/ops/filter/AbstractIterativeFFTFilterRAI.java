@@ -91,22 +91,28 @@ public abstract class AbstractIterativeFFTFilterRAI<I extends RealType<I>, O ext
 		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
 	{
 
-		performIterations();
+		preProcess(in, kernel, out);
+
+		performIterations(in, kernel, out);
+
+		postProcess(in, kernel, out);
 
 	}
 
 	@Override
 	public void initialize() {
-
 		super.initialize();
-
-		initializeImages();
-
 	}
 
-	abstract protected void initializeImages();
+	abstract protected void preProcess(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out);
 
-	abstract protected void performIterations();
+	abstract protected void performIterations(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out);
+
+	protected void postProcess(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	{}
 
 	/**
 	 * convolve estimate with kernel to create reblurred
