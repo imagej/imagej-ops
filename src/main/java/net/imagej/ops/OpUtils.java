@@ -35,9 +35,11 @@ import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
 
+import org.scijava.command.CommandInfo;
 import org.scijava.module.Module;
 import org.scijava.module.ModuleInfo;
 import org.scijava.module.ModuleItem;
+import org.scijava.plugin.SciJavaPlugin;
 
 /**
  * Utility methods for working with ops. In particular, this class contains
@@ -184,6 +186,23 @@ public final class OpUtils {
 	}
 
 	/**
+	 * Similar to {@link #opString(ModuleInfo)} but prints a cleaner,
+	 * more abstract representation of the Op method call in the format
+	 * "return <= baseOp(param1, param2)". Intended to be presented to users
+	 * as the limited information reduces utility for debugging.
+	 */
+	public static String simpleString(final CommandInfo info) {
+		final StringBuilder sb = new StringBuilder();
+		final String outputString = paramString(info.outputs(), null, ", ").trim();
+		if (!outputString.isEmpty()) sb.append("" + outputString + "  <=  ");
+
+		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
+		sb.append(type.getSimpleName());
+		sb.append("(" + paramString(info.inputs(), null, ", ") + ")");
+		return sb.toString();
+	}
+
+	/**
 	 * Gets a string with an analysis of a particular match request failure.
 	 * <p>
 	 * This method is used to generate informative exception messages when no
@@ -247,15 +266,27 @@ public final class OpUtils {
 
 	// -- Helper methods --
 
-	/** Helper method of {@link #opString(ModuleInfo, ModuleItem)}. */
+	/**
+	 * Helper method of {@link #opString(ModuleInfo, ModuleItem)} which parses a set of items
+	 * with a default delimiter of ","
+	 */
 	private static String paramString(final Iterable<ModuleItem<?>> items,
 		final ModuleItem<?> special)
+	{
+		return paramString(items, special, ",");
+	}
+
+	/**
+	 * As {@link #paramString(Iterable, ModuleItem)} with an optional delimiter.
+	 */
+	private static String paramString(final Iterable<ModuleItem<?>> items,
+		final ModuleItem<?> special, final String delim)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
 		for (final ModuleItem<?> item : items) {
 			if (first) first = false;
-			else sb.append(",");
+			else sb.append(delim);
 			sb.append("\n");
 			if (item == special) sb.append("==>"); // highlight special item
 			sb.append("\t\t");
@@ -264,5 +295,4 @@ public final class OpUtils {
 		}
 		return sb.toString();
 	}
-
 }
