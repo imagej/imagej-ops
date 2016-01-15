@@ -77,13 +77,13 @@ public final class NumericTypeBinaryMath {
 		}
 
 		@Override
-		public T arg() {
+		public T in() {
 			return out() == null ? in1() : out();
 		}
 
 		@Override
-		public void setArg(T arg) {
-			setOutput(arg);
+		public void setInput(T in) {
+			setOutput(in);
 		}
 
 		@Override

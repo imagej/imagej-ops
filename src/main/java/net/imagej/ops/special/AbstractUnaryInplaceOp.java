@@ -52,13 +52,13 @@ public abstract class AbstractUnaryInplaceOp<A> extends AbstractOp implements
 	// -- UnaryInplaceOp methods --
 
 	@Override
-	public A arg() {
+	public A in() {
 		return arg;
 	}
 
 	@Override
-	public void setArg(final A arg) {
-		this.arg = arg;
+	public void setInput(final A in) {
+		this.arg = in;
 	}
 
 }

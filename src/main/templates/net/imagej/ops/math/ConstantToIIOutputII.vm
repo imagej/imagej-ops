@@ -114,16 +114,6 @@ public final class ConstantToIIOutputII {
 		}
 
 		@Override
-		public IterableInterval<T> arg() {
-			return out();
-		}
-
-		@Override
-		public void setArg(final IterableInterval<T> arg) {
-			setOutput(arg);
-		}
-
-		@Override
 		public ${op.name}<T> getIndependentInstance() {
 			return this;
 		}

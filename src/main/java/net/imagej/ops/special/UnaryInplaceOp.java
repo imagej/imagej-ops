@@ -48,15 +48,15 @@ public interface UnaryInplaceOp<A> extends SpecialOp {
 	 */
 	void mutate(A arg);
 
-	A arg();
+	A in();
 
-	void setArg(A arg);
+	void setInput(A in);
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		mutate(arg());
+		mutate(in());
 	}
 
 	// -- Threadable methods --

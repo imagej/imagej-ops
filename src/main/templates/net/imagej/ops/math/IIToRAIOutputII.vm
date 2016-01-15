@@ -125,13 +125,13 @@ public final class IIToRAIOutputII {
 		}
 
 		@Override
-		public IterableInterval<T> arg() {
+		public IterableInterval<T> in() {
 			return out();
 		}
 
 		@Override
-		public void setArg(final IterableInterval<T> arg) {
-			setOutput(arg);
+		public void setInput(final IterableInterval<T> in) {
+			setOutput(in);
 		}
 
 		@Override

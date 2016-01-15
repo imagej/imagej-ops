@@ -47,7 +47,7 @@ public abstract class InplaceViaInplace<A> extends AbstractUnaryInplaceOp<A> {
 
 	@Override
 	public void initialize() {
-		worker = createWorker(arg());
+		worker = createWorker(in());
 	}
 
 	@Override

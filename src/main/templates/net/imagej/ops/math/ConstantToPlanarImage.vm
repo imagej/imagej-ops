@@ -95,7 +95,7 @@ public final class ConstantToPlanarImage {
 			// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
 			// The warning is expected, because the image parameter is assigned via
 			// reflection and hence might not match the declared generic types.
-			return arg().firstElement() instanceof ${type.name}Type;
+			return in().firstElement() instanceof ${type.name}Type;
 		}
 
 	}
