@@ -32,8 +32,13 @@ package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -43,6 +48,7 @@ import org.scijava.plugin.Plugin;
  * another range defined by minimum and maximum.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Leon Yang
  * @param <T>
  */
 @Plugin(type = Ops.Image.Normalize.class)
@@ -63,11 +69,50 @@ public class NormalizeIterableIntervalComputer<T extends RealType<T>> extends
 	@Parameter(required = false)
 	private T targetMax;
 
+	private NormalizeRealTypeComputer<T> normalizer;
+
+	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minMaxFunc;
+
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> mapper;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		normalizer = new NormalizeRealTypeComputer<>();
+		if (sourceMin == null || sourceMax == null) minMaxFunc =
+			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class,
+				Pair.class, in());
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), normalizer);
+	}
+
+	private double[] getBounds(final IterableInterval<T> input) {
+		// the four elements are source min, source max, target min, and target max.
+		final double[] result = new double[4];
+		if (minMaxFunc != null) {
+			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			result[0] = (sourceMin == null ? minMax.getA() : sourceMin)
+				.getRealDouble();
+			result[1] = (sourceMax == null ? minMax.getB() : sourceMax)
+				.getRealDouble();
+		}
+		else {
+			result[0] = sourceMin.getRealDouble();
+			result[1] = sourceMax.getRealDouble();
+		}
+		final T first = input.firstElement();
+		result[2] = targetMin == null ? first.getMinValue() : targetMin
+			.getRealDouble();
+		result[3] = targetMax == null ? first.getMaxValue() : targetMax
+			.getRealDouble();
+		return result;
+	}
+
 	@Override
 	public void compute1(final IterableInterval<T> input,
 		final IterableInterval<T> output)
 	{
-		ops().map(output, input, new NormalizeRealTypeComputer<>(ops(), sourceMin,
-			sourceMax, targetMin, targetMax, input));
+		final double[] bounds = getBounds(input);
+		normalizer.setup(bounds[0], bounds[1], bounds[2], bounds[3]);
+		mapper.compute1(input, output);
 	}
 }

@@ -32,10 +32,13 @@ package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -45,6 +48,7 @@ import org.scijava.plugin.Plugin;
  * another range defined by minimum and maximum.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Leon Yang
  * @param <T>
  */
 @Plugin(type = Ops.Image.Normalize.class)
@@ -68,15 +72,48 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 	@Parameter(required = false)
 	private boolean isLazy = true;
 
+	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minMaxFunc;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		if (sourceMin == null || sourceMax == null) minMaxFunc =
+			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class,
+				Pair.class, in());
+	}
+
+	private double[] getBounds(final IterableInterval<T> input) {
+		// the four elements are source min, source max, target min, and target max.
+		final double[] result = new double[4];
+		if (minMaxFunc != null) {
+			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			result[0] = (sourceMin == null ? minMax.getA() : sourceMin)
+				.getRealDouble();
+			result[1] = (sourceMax == null ? minMax.getB() : sourceMax)
+				.getRealDouble();
+		}
+		else {
+			result[0] = sourceMin.getRealDouble();
+			result[1] = sourceMax.getRealDouble();
+		}
+		final T first = input.firstElement();
+		result[2] = targetMin == null ? first.getMinValue() : targetMin
+			.getRealDouble();
+		result[3] = targetMax == null ? first.getMaxValue() : targetMax
+			.getRealDouble();
+		return result;
+	}
+
 	@Override
 	public IterableInterval<T> compute1(final IterableInterval<T> input) {
 		if (isLazy) {
+			final double[] bounds = getBounds(input);
 			return new ConvertedIterableInterval<>(input,
-				new NormalizeRealTypeComputer<>(ops(), sourceMin, sourceMax, targetMin,
-					targetMax, input), input.firstElement().createVariable());
+				new NormalizeRealTypeComputer<>(bounds[0], bounds[1], bounds[2],
+					bounds[3]), input.firstElement().createVariable());
 		}
-		final Img<T> output =
-			ops().create().img(input, input.firstElement().createVariable());
+		final Img<T> output = ops().create().img(input, input.firstElement()
+			.createVariable());
 		ops().image().normalize(output, input);
 		return output;
 	}
