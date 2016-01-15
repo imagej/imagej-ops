@@ -212,6 +212,20 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  */
 public interface SpecialOp extends Op, Initializable, Threadable {
 
+	/**
+	 * Gets the op's number of special input parameters.
+	 * <p>
+	 * Note that this value may be larger than intuition might dictate in certain
+	 * scenarios, because {@link UnaryOp} extends {@link NullaryOp}, and
+	 * {@link BinaryOp} extends {@link UnaryOp}. This allows higher-order ops to
+	 * be treated as lower-order by holding the extra input parameters constant.
+	 * But it also means that an op which is locally typed as e.g.
+	 * {@link UnaryComputerOp} may report its arity as 2 rather than 1 as one
+	 * might expect.
+	 * </p>
+	 */
+	int getArity();
+
 	// -- Threadable methods --
 
 	@Override

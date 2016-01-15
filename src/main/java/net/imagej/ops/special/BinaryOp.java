@@ -76,6 +76,13 @@ public interface BinaryOp<I1, I2, O> extends UnaryOp<I1, O>,
 	 */
 	O run(I1 input1, I2 input2, O output);
 
+	// -- SpecialOp methods --
+
+	@Override
+	default int getArity() {
+		return 2;
+	}
+
 	// -- Runnable methods --
 
 	@Override
