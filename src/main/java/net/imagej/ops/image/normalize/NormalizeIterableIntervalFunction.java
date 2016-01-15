@@ -31,12 +31,13 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.chain.FunctionViaComputer;
+import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
+import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
 
@@ -53,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
+	FunctionViaComputer<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Normalize
 {
 
@@ -74,12 +75,36 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 
 	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minMaxFunc;
 
+	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
+
+	@Override
+	public UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> createWorker(
+		IterableInterval<T> t)
+	{
+		return Computers.unary(ops(), Ops.Image.Normalize.class, t, t, sourceMin,
+			sourceMax, targetMin, targetMax);
+	}
+
+	@Override
+	public IterableInterval<T> createOutput(IterableInterval<T> input) {
+		return imgCreator.compute1(input);
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		if (sourceMin == null || sourceMax == null) minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class,
-				Pair.class, in());
+		// If isLazy is false, the getBounds() will never be called, and the worker
+		// is always used to do the work of compute(...)
+		if (isLazy) {
+			if (sourceMin == null || sourceMax == null) minMaxFunc =
+				(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class,
+					Pair.class, in());
+		}
+		else {
+			super.initialize();
+		}
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			IterableInterval.class, in());
 	}
 
 	private double[] getBounds(final IterableInterval<T> input) {
@@ -112,9 +137,6 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 				new NormalizeRealTypeComputer<>(bounds[0], bounds[1], bounds[2],
 					bounds[3]), input.firstElement().createVariable());
 		}
-		final Img<T> output = ops().create().img(input, input.firstElement()
-			.createVariable());
-		ops().image().normalize(output, input);
-		return output;
+		return super.compute1(input);
 	}
 }
