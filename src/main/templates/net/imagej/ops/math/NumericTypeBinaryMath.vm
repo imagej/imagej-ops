@@ -77,16 +77,6 @@ public final class NumericTypeBinaryMath {
 		}
 
 		@Override
-		public T in() {
-			return out() == null ? in1() : out();
-		}
-
-		@Override
-		public void setInput(T in) {
-			setOutput(in);
-		}
-
-		@Override
 		public ${op.name}<T> getIndependentInstance() {
 			return this;
 		}

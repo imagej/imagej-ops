@@ -131,16 +131,6 @@ public final class IIToIIOutputII {
 		}
 
 		@Override
-		public IterableInterval<T> in() {
-			return out();
-		}
-
-		@Override
-		public void setInput(final IterableInterval<T> in) {
-			setOutput(in);
-		}
-
-		@Override
 		public ${op.name}<T> getIndependentInstance() {
 			return this;
 		}

@@ -39,7 +39,7 @@ package net.imagej.ops.special;
  * @see UnaryFunctionOp
  * @see UnaryHybridOp
  */
-public interface UnaryInplaceOp<A> extends SpecialOp {
+public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 
 	/**
 	 * Mutates the given input argument in-place.
@@ -48,9 +48,12 @@ public interface UnaryInplaceOp<A> extends SpecialOp {
 	 */
 	void mutate(A arg);
 
-	A in();
+	// -- Output methods --
 
-	void setInput(A in);
+	@Override
+	default A out() {
+		return in();
+	}
 
 	// -- Runnable methods --
 

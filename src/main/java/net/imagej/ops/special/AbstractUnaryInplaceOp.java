@@ -30,8 +30,6 @@
 
 package net.imagej.ops.special;
 
-import net.imagej.ops.AbstractOp;
-
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
@@ -40,8 +38,8 @@ import org.scijava.plugin.Parameter;
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractUnaryInplaceOp<A> extends AbstractOp implements
-	UnaryInplaceOp<A>
+public abstract class AbstractUnaryInplaceOp<A> extends AbstractUnaryOp<A, A>
+	implements UnaryInplaceOp<A>
 {
 
 	// -- Parameters --
