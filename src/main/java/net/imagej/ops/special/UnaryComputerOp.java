@@ -60,6 +60,22 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	 */
 	void compute1(I input, O output);
 
+	// -- UnaryOp methods --
+
+	@Override
+	default O run(final I input, final O output) {
+		// check computer preconditions
+		if (input == null) throw new NullPointerException("input is null");
+		if (output == null) throw new NullPointerException("output is null");
+		// TEMP: Until nothing relies on passing input == output to a computer.
+//		if (input == output) {
+//			throw new IllegalArgumentException("Computer expects input != output");
+//		}
+		// compute the result
+		compute1(input, output);
+		return output;
+	}
+
 	// -- NullaryComputerOp methods --
 
 	@Override
@@ -71,7 +87,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 
 	@Override
 	default void run() {
-		compute1(in(), out());
+		setOutput(run(in(), out()));
 	}
 
 	// -- Threadable methods --

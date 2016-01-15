@@ -52,6 +52,28 @@ package net.imagej.ops.special;
  */
 public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param input argument to the operation
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see UnaryComputerOp#run(Object, Object)
+	 * @see UnaryFunctionOp#run(Object, Object)
+	 * @see UnaryInplaceOp#run(Object, Object)
+	 * @see UnaryHybridOp#run(Object, Object)
+	 */
+	O run(I input, O output);
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(in(), out());
+	}
+
 	// -- Threadable methods --
 
 	@Override

@@ -59,6 +59,21 @@ public interface BinaryFunctionOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	O compute2(I1 input1, I2 input2);
 
+	// -- BinaryOp methods --
+
+	@Override
+	default O run(final I1 input1, final I2 input2, final O output) {
+		// check computer preconditions
+		if (input1 == null) throw new NullPointerException("input1 is null");
+		if (input2 == null) throw new NullPointerException("input2 is null");
+		if (output != null) {
+			throw new IllegalArgumentException(
+				"Function expects a null output reference");
+		}
+		// compute the result
+		return compute2(input1, input2);
+	}
+
 	// -- UnaryFunctionOp methods --
 
 	@Override

@@ -57,6 +57,27 @@ public interface NullaryHybridOp<O> extends NullaryComputerOp<O>,
 		return output;
 	}
 
+	// -- NullaryOp methods --
+
+	@Override
+	default O run(final O output) {
+		if (output == null) {
+			// run as a function
+			return compute0();
+		}
+
+		// run as a computer
+		compute0(output);
+		return output;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		setOutput(run(out()));
+	}
+
 	// -- Threadable methods --
 
 	@Override

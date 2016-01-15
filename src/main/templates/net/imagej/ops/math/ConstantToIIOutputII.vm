@@ -118,6 +118,23 @@ public final class ConstantToIIOutputII {
 			return this;
 		}
 
+		// TEMP: Until UnaryHybridCFI exists!
+		@Override
+		public IterableInterval<T> run(final IterableInterval<T> input,
+			final IterableInterval<T> output)
+		{
+			if (input == output) {
+				// run as an inplace
+				return UnaryInplaceOp.super.run(input, output);
+			}
+			// run as a hybrid CF
+			return super.run(input, output);
+		}
+		@Override
+		public IterableInterval<T> run(final IterableInterval<T> output) {
+			return super.run(output);
+		}
+
 	}
 #end
 }

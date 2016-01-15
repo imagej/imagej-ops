@@ -59,6 +59,21 @@ public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
 		return output;
 	}
 
+	// -- UnaryOp methods --
+
+	@Override
+	default O run(final I input, final O output) {
+		if (output == null) {
+			// run as a function
+			return compute1(input);
+		}
+
+		// run as a computer
+		compute1(input, output);
+		return output;
+	}
+
+
 	// -- NullaryFunctionOp methods --
 
 	@Override
@@ -71,6 +86,13 @@ public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
 	@Override
 	default O createOutput() {
 		return createOutput(in());
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		setOutput(run(in(), out()));
 	}
 
 	// -- Threadable methods --

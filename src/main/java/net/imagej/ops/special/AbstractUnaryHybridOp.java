@@ -51,14 +51,6 @@ public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
 	@Parameter
 	private I in;
 
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		if (out() == null) out = compute1(in());
-		else compute1(in(), out());
-	}
-
 	// -- UnaryInput methods --
 
 	@Override

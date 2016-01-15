@@ -60,6 +60,20 @@ public interface BinaryHybridOp<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 		return output;
 	}
 
+	// -- BinaryOp methods --
+
+	@Override
+	default O run(final I1 input1, final I2 input2, final O output) {
+		if (output == null) {
+			// run as a function
+			return compute2(input1, input2);
+		}
+
+		// run as a computer
+		compute2(input1, input2, output);
+		return output;
+	}
+
 	// -- UnaryFunctionOp methods --
 
 	@Override
@@ -72,6 +86,13 @@ public interface BinaryHybridOp<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 	@Override
 	default O createOutput(final I1 input) {
 		return createOutput(input, in2());
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		setOutput(run(in1(), in2(), out()));
 	}
 
 	// -- Threadable methods --

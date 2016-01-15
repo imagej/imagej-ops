@@ -53,14 +53,6 @@ public abstract class AbstractBinaryHybridOp<I1, I2, O> extends
 	@Parameter
 	private I2 in2;
 
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		if (out() == null) out = compute2(in1(), in2());
-		else compute2(in1(), in2(), out());
-	}
-
 	// -- BinaryInput methods --
 
 	@Override

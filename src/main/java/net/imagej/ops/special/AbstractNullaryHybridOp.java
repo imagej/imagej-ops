@@ -47,14 +47,6 @@ public abstract class AbstractNullaryHybridOp<O> extends AbstractNullaryOp<O>
 	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
 
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		if (out() == null) out = compute0();
-		else compute0(out());
-	}
-
 	// -- Output methods --
 
 	@Override

@@ -64,6 +64,25 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	 */
 	void compute2(I1 input1, I2 input2, O output);
 
+	// -- BinaryOp methods --
+
+	@Override
+	default O run(final I1 input1, final I2 input2, final O output) {
+		// check computer preconditions
+		if (input1 == null) throw new NullPointerException("input1 is null");
+		if (input2 == null) throw new NullPointerException("input2 is null");
+		if (output == null) throw new NullPointerException("output is null");
+		if (input1 == output) {
+			throw new IllegalArgumentException("Computer expects input1 != output");
+		}
+		if (input2 == output) {
+			throw new IllegalArgumentException("Computer expects input2 != output");
+		}
+		// compute the result
+		compute2(input1, input2, output);
+		return output;
+	}
+
 	// -- UnaryComputerOp methods --
 
 	@Override
@@ -75,7 +94,7 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 
 	@Override
 	default void run() {
-		compute2(in1(), in2(), out());
+		setOutput(run(in1(), in2(), out()));
 	}
 
 	// -- Threadable methods --

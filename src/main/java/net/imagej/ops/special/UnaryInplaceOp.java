@@ -48,18 +48,38 @@ public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 	 */
 	void mutate(A arg);
 
+	// -- UnaryOp methods --
+
+	@Override
+	default A run(final A input, final A output) {
+		// check inplace preconditions
+		if (input == null) throw new NullPointerException("input is null");
+		if (input != output) {
+			throw new IllegalArgumentException("Inplace expects input == output");
+		}
+
+		// compute the result
+		mutate(input);
+		return output;
+	}
+
+	// -- NullaryOp methods --
+
+	@Override
+	default A run(final A output) {
+		// check inplace preconditions
+		if (output == null) throw new NullPointerException("output is null");
+
+		// compute the result
+		mutate(output);
+		return output;
+	}
+
 	// -- Output methods --
 
 	@Override
 	default A out() {
 		return in();
-	}
-
-	// -- Runnable methods --
-
-	@Override
-	default void run() {
-		mutate(in());
 	}
 
 	// -- Threadable methods --

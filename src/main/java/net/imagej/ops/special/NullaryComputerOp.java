@@ -49,11 +49,20 @@ public interface NullaryComputerOp<O> extends NullaryOp<O>, OutputMutable<O> {
 	 */
 	void compute0(O output);
 
+	// -- NullaryOp methods --
+
+	@Override
+	default O run(final O output) {
+		if (output == null) throw new NullPointerException("output is null");
+		compute0(output);
+		return output;
+	}
+
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		compute0(out());
+		setOutput(run(out()));
 	}
 
 	// -- Threadable methods --

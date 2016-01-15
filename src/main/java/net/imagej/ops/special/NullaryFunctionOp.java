@@ -47,6 +47,19 @@ public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 	 */
 	O compute0();
 
+	// -- NullaryOp methods --
+
+	@Override
+	default O run(final O output) {
+		// check function preconditions
+		if (output != null) {
+			throw new IllegalArgumentException(
+				"Function expects a null output reference");
+		}
+		// compute the result
+		return compute0();
+	}
+
 	// -- Threadable methods --
 
 	@Override

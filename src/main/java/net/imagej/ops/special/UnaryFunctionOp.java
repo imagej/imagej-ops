@@ -57,6 +57,20 @@ public interface UnaryFunctionOp<I, O> extends UnaryOp<I, O>,
 	 */
 	O compute1(I input);
 
+	// -- UnaryOp methods --
+
+	@Override
+	default O run(final I input, final O output) {
+		// check function preconditions
+		if (input == null) throw new NullPointerException("input is null");
+		if (output != null) {
+			throw new IllegalArgumentException(
+				"Function expects a null output reference");
+		}
+		// compute the result
+		return compute1(input);
+	}
+
 	// -- NullaryFunctionOp methods --
 
 	@Override

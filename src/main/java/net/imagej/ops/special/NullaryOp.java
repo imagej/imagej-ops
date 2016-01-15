@@ -47,6 +47,26 @@ package net.imagej.ops.special;
  */
 public interface NullaryOp<O> extends SpecialOp, Output<O> {
 
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see NullaryComputerOp#run(Object)
+	 * @see NullaryFunctionOp#run(Object)
+	 * @see NullaryHybridOp#run(Object)
+	 */
+	O run(O output);
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(out());
+	}
+
 	// -- Threadable methods --
 
 	@Override
