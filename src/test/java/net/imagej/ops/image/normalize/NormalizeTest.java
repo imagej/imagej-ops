@@ -33,6 +33,8 @@ package net.imagej.ops.image.normalize;
 import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
+import net.imglib2.Cursor;
+import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.util.Pair;
@@ -57,5 +59,16 @@ public class NormalizeTest extends AbstractOpTest {
 		assertEquals(minMax2.getA().get(), Byte.MIN_VALUE);
 		assertEquals(minMax2.getB().get(), Byte.MAX_VALUE);
 
+		final IterableInterval<ByteType> lazyOut = ops.image().normalize(in);
+		final IterableInterval<ByteType> notLazyOut = ops.image().normalize(in,
+			null, null, null, null, false);
+
+		final Cursor<ByteType> outCursor = out.cursor();
+		final Cursor<ByteType> lazyCursor = lazyOut.cursor();
+		final Cursor<ByteType> notLazyCursor = notLazyOut.cursor();
+		while (outCursor.hasNext()) {
+			assertEquals(outCursor.next().get(), lazyCursor.next().get());
+			assertEquals(outCursor.get().get(), notLazyCursor.next().get());
+		}
 	}
 }
