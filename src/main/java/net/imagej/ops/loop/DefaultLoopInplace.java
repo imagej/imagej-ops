@@ -31,8 +31,8 @@
 package net.imagej.ops.loop;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractInplaceOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -44,12 +44,12 @@ import org.scijava.plugin.Plugin;
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Loop.class)
-public class DefaultLoopInplace<A> extends AbstractInplaceOp<A> implements
+public class DefaultLoopInplace<A> extends AbstractUnaryInplaceOp<A> implements
 	LoopInplace<A>
 {
 
 	@Parameter
-	private InplaceOp<A> op;
+	private UnaryInplaceOp<A> op;
 
 	@Parameter
 	private int n;
@@ -57,12 +57,12 @@ public class DefaultLoopInplace<A> extends AbstractInplaceOp<A> implements
 	// -- LoopOp methods --
 
 	@Override
-	public InplaceOp<A> getOp() {
+	public UnaryInplaceOp<A> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final InplaceOp<A> op) {
+	public void setOp(final UnaryInplaceOp<A> op) {
 		this.op = op;
 	}
 

@@ -34,7 +34,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
 import net.imagej.ops.bufferfactories.ImgImgSameTypeFactory;
 import net.imagej.ops.map.MapOp;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -105,7 +105,7 @@ public class LoopTest extends AbstractOpTest {
 	}
 
 	// Helper classes
-	class AddOneInplace extends AbstractInplaceOp<ByteType> {
+	class AddOneInplace extends AbstractUnaryInplaceOp<ByteType> {
 
 		@Override
 		public void mutate(final ByteType arg) {

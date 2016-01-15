@@ -32,11 +32,11 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.special.BinaryOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 /**
- * Typed interface for "map" binary {@link InplaceOp}s. The helper op is typed
- * on {@link BinaryOp}, but it must also implement {@link InplaceOp} to fulfill
+ * Typed interface for "map" binary {@link UnaryInplaceOp}s. The helper op is typed
+ * on {@link BinaryOp}, but it must also implement {@link UnaryInplaceOp} to fulfill
  * the {@link Contingent} condition.
  * 
  * @author Leon Yang

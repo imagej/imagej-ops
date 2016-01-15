@@ -38,7 +38,7 @@ import net.imagej.ops.special.BinaryHybridOp;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.Inplaces;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
@@ -82,7 +82,7 @@ public final class RTs {
 		return (UnaryHybridOp) Hybrids.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
-	public static <A extends RealType<A>> InplaceOp<A> inplace(
+	public static <A extends RealType<A>> UnaryInplaceOp<A> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
 		final Object... otherArgs)
 	{

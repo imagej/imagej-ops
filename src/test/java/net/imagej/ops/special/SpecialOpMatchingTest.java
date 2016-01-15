@@ -342,11 +342,11 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testInplace() {
-		final InplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
+		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class,
 			Apple.class);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final InplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
+		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class,
 			Orange.class);
 		assertSame(inplaceO.getClass(), InplaceO.class);
 	}
@@ -360,10 +360,10 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final InplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
+		final UnaryInplaceOp<Apple> inplaceA = Inplaces.unary(ops, FruitOp.class, a);
 		assertSame(inplaceA.getClass(), InplaceA.class);
 
-		final InplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
+		final UnaryInplaceOp<Orange> inplaceO = Inplaces.unary(ops, FruitOp.class, o);
 		assertSame(inplaceO.getClass(), InplaceO.class);
 	}
 
@@ -664,7 +664,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		}
 	}
 
-	public abstract static class FruitInplace<A> extends AbstractInplaceOp<A>
+	public abstract static class FruitInplace<A> extends AbstractUnaryInplaceOp<A>
 		implements FruitOp
 	{
 

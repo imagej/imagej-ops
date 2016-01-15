@@ -39,7 +39,7 @@ import net.imagej.ops.OpUtils;
  * Utility class for looking up unary ops in a type-safe way.
  *
  * @author Curtis Rueden
- * @see InplaceOp
+ * @see UnaryInplaceOp
  */
 public final class Inplaces {
 
@@ -48,53 +48,54 @@ public final class Inplaces {
 	}
 
 	/**
-	 * Gets the best {@link InplaceOp} implementation for the given types and
+	 * Gets the best {@link UnaryInplaceOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link InplaceOp}s share this type (e.g., the type is an interface
-	 *          which multiple {@link InplaceOp}s implement), then the best
-	 *          {@link InplaceOp} implementation to use will be selected
-	 *          automatically from the type and arguments.
-	 * @param argType The {@link Class} of the {@link InplaceOp} typed argument.
+	 *          {@link UnaryInplaceOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryInplaceOp}s implement), then
+	 *          the best {@link UnaryInplaceOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link UnaryInplaceOp} typed
+	 *          argument.
 	 * @param otherArgs The operation's arguments, excluding the typed argument
 	 *          value.
-	 * @return An {@link InplaceOp} with populated inputs, ready to use.
+	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A, OP extends Op> InplaceOp<A> unary(final OpEnvironment ops,
+	public static <A, OP extends Op> UnaryInplaceOp<A> unary(final OpEnvironment ops,
 		final Class<OP> opType, final Class<A> argType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, argType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, null,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryInplaceOp.class, null,
 			args);
-		return (InplaceOp<A>) ops.op(ref);
+		return (UnaryInplaceOp<A>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link InplaceOp} implementation for the given types and
+	 * Gets the best {@link UnaryInplaceOp} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link InplaceOp}s share this type (e.g., the type is an interface
-	 *          which multiple {@link InplaceOp}s implement), then the best
-	 *          {@link InplaceOp} implementation to use will be selected
-	 *          automatically from the type and arguments.
+	 *          {@link UnaryInplaceOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryInplaceOp}s implement), then
+	 *          the best {@link UnaryInplaceOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
 	 * @param arg The typed argument.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return An {@link InplaceOp} with populated inputs, ready to use.
+	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A, OP extends Op> InplaceOp<A> unary(final OpEnvironment ops,
+	public static <A, OP extends Op> UnaryInplaceOp<A> unary(final OpEnvironment ops,
 		final Class<OP> opType, final A arg, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, arg);
-		final OpRef<OP> ref = OpRef.createTypes(opType, InplaceOp.class, null,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryInplaceOp.class, null,
 			args);
-		return (InplaceOp<A>) ops.op(ref);
+		return (UnaryInplaceOp<A>) ops.op(ref);
 	}
 
 }

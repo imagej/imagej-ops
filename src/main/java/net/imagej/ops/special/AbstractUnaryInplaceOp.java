@@ -30,43 +30,35 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.AbstractOp;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+
 /**
- * An <em>inplace</em> operation is an op which mutates a parameter.
+ * Abstract superclass for {@link UnaryInplaceOp} implementations.
  * 
  * @author Curtis Rueden
- * @param <A> type of argument
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
- * @see UnaryHybridOp
  */
-public interface InplaceOp<A> extends SpecialOp {
+public abstract class AbstractUnaryInplaceOp<A> extends AbstractOp implements
+	UnaryInplaceOp<A>
+{
 
-	/**
-	 * Mutates the given input argument in-place.
-	 * 
-	 * @param arg of the {@link InplaceOp}
-	 */
-	void mutate(A arg);
+	// -- Parameters --
 
-	A arg();
+	@Parameter(type = ItemIO.BOTH)
+	private A arg;
 
-	void setArg(A arg);
-
-	// -- Runnable methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
-	default void run() {
-		mutate(arg());
+	public A arg() {
+		return arg;
 	}
 
-	// -- Threadable methods --
-
 	@Override
-	default InplaceOp<A> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
+	public void setArg(final A arg) {
+		this.arg = arg;
 	}
 
 }

@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
@@ -55,7 +55,7 @@ public class MapIIAndIIInplace<EI1, EI2, EO> extends
 	@Override
 	public void mutate(IterableInterval<EO> arg) {
 		@SuppressWarnings("unchecked")
-		final InplaceOp<EO> inplace = (InplaceOp<EO>) getOp();
+		final UnaryInplaceOp<EO> inplace = (UnaryInplaceOp<EO>) getOp();
 		final EI1 tmpIn1 = getOp().in1();
 		final EI2 tmpIn2 = getOp().in2();
 		final Cursor<EI1> in1Cursor = in1().cursor();

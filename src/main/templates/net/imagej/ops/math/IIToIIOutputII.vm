@@ -34,7 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractBinaryHybridOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.Output;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -61,7 +61,7 @@ public final class IIToIIOutputII {
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 	public static class ${op.name}<T extends NumericType<T>> extends
 		AbstractBinaryHybridOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
-		implements $iface, Contingent, InplaceOp<IterableInterval<T>>
+		implements $iface, Contingent, UnaryInplaceOp<IterableInterval<T>>
 	{
 
 		private Op outputCreator;

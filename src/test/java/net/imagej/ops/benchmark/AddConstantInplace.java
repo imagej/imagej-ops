@@ -30,14 +30,14 @@
 package net.imagej.ops.benchmark;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @Plugin(type = Op.class)
-public class AddConstantInplace<T extends NumericType<T>> extends AbstractInplaceOp<T> {
+public class AddConstantInplace<T extends NumericType<T>> extends AbstractUnaryInplaceOp<T> {
 
 	@Parameter
 	private T value;

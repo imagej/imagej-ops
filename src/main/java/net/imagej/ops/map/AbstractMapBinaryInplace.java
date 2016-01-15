@@ -32,7 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.special.AbstractBinaryOp;
 import net.imagej.ops.special.BinaryOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractMapBinaryInplace<EI1, EI2, EO, PI1, PI2, PO>
 	extends AbstractBinaryOp<PI1, PI2, PO> implements
-	MapBinaryInplace<EI1, EI2, EO, BinaryOp<EI1, EI2, EO>>, InplaceOp<PO>
+	MapBinaryInplace<EI1, EI2, EO, BinaryOp<EI1, EI2, EO>>, UnaryInplaceOp<PO>
 {
 
 	@Parameter(type = ItemIO.BOTH)
@@ -112,7 +112,7 @@ public abstract class AbstractMapBinaryInplace<EI1, EI2, EO, PI1, PI2, PO>
 
 	@Override
 	public boolean conforms() {
-		return op instanceof InplaceOp;
+		return op instanceof UnaryInplaceOp;
 	}
 
 	@Override

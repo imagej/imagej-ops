@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
@@ -203,7 +203,7 @@ public class MapTest extends AbstractOpTest {
 	}
 
 	// -- Helper classes --
-	private static class AddOneInplace extends AbstractInplaceOp<ByteType> {
+	private static class AddOneInplace extends AbstractUnaryInplaceOp<ByteType> {
 
 		@Override
 		public void mutate(final ByteType arg) {

@@ -30,22 +30,22 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 /**
- * Loops over an injected {@link InplaceOp}. A {@link LoopInplace} applies
- * an {@link InplaceOp} n-times to an input. Note: input will be modified!
+ * Loops over an injected {@link UnaryInplaceOp}. A {@link LoopInplace} applies
+ * an {@link UnaryInplaceOp} n-times to an input. Note: input will be modified!
  * 
  * @author Christian Dietz (University of Konstanz)
  */
-public interface LoopInplace<A> extends InplaceOp<A>, LoopOp<InplaceOp<A>> {
+public interface LoopInplace<A> extends UnaryInplaceOp<A>, LoopOp<UnaryInplaceOp<A>> {
 
-	// -- InplaceOp methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
 	default void mutate(final A arg) {
 		final int n = getLoopCount();
-		final InplaceOp<A> op = getOp();
+		final UnaryInplaceOp<A> op = getOp();
 		for (int i = 0; i < n; i++) {
 			op.mutate(arg);
 		}

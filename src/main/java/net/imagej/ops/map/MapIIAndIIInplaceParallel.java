@@ -31,7 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.special.BinaryOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
@@ -65,7 +65,7 @@ public class MapIIAndIIInplaceParallel<EI1, EI2, EO> extends
 			{
 				final BinaryOp<EI1, EI2, EO> safe = getOp().getIndependentInstance();
 				@SuppressWarnings("unchecked")
-				final InplaceOp<EO> inplace = (InplaceOp<EO>) safe;
+				final UnaryInplaceOp<EO> inplace = (UnaryInplaceOp<EO>) safe;
 				final EI1 tmpIn1 = safe.in1();
 				final EI2 tmpIn2 = safe.in2();
 				final Cursor<EI1> in1Cursor = in1().cursor();

@@ -149,13 +149,13 @@ import net.imagej.ops.Threadable;
  * <td style="vertical-align: top">&nbsp;</td>
  * <td>BOTH</td>
  * <td>1</td>
- * <td>{@link InplaceOp}</th>
+ * <td>{@link UnaryInplaceOp}</th>
  * <td>{@code void mutate(A)}</td>
  * </tr>
  * </table>
  * <p>
  * It is allowed for ops to implement multiple special op types. For example, an
- * op may implement {@link UnaryComputerOp} as well as {@link InplaceOp},
+ * op may implement {@link UnaryComputerOp} as well as {@link UnaryInplaceOp},
  * providing the option to compute the result in-place (saving memory) or into a
  * preallocated output reference (preserving the contents of the original input,
  * at the expense of memory).
