@@ -33,8 +33,7 @@ package net.imagej.ops.math;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryHybridOp;
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.AbstractBinaryHybridCFI1;
 import net.imagej.ops.special.Output;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -62,8 +61,8 @@ public final class IIToRAIOutputII {
 
 	@Plugin(type = ${iface}.class)
 	public static class ${op.name}<T extends NumericType<T>> extends
-		AbstractBinaryHybridOp<IterableInterval<T>, RandomAccessibleInterval<T>, IterableInterval<T>>
-		implements $iface, Contingent, UnaryInplaceOp<IterableInterval<T>>
+		AbstractBinaryHybridCFI1<IterableInterval<T>, RandomAccessibleInterval<T>>
+		implements $iface, Contingent
 	{
 
 		private Op outputCreator;
@@ -114,13 +113,15 @@ public final class IIToRAIOutputII {
 		}
 
 		@Override
-		public void mutate(final IterableInterval<T> arg) {
-			final Cursor<T> argCursor = arg.localizingCursor();
-			final RandomAccess<T> in2Access = in2().randomAccess();
-			while (argCursor.hasNext()) {
-				argCursor.fwd();
-				in2Access.setPosition(argCursor);
-				argCursor.get().${op.function}(in2Access.get());
+		public void mutate1(final IterableInterval<T> arg,
+			final RandomAccessibleInterval<T> in)
+		{
+			final Cursor<T> in1Cursor = arg.localizingCursor();
+			final RandomAccess<T> in2Access = in.randomAccess();
+			while (in1Cursor.hasNext()) {
+				in1Cursor.fwd();
+				in2Access.setPosition(in1Cursor);
+				in1Cursor.get().${op.function}(in2Access.get());
 			}
 		}
 
@@ -128,24 +129,6 @@ public final class IIToRAIOutputII {
 		public ${op.name}<T> getIndependentInstance() {
 			return this;
 		}
-
-		// TEMP: Until UnaryHybridCFI exists!
-		@Override
-		public IterableInterval<T> run(final IterableInterval<T> input,
-			final IterableInterval<T> output)
-		{
-			if (input == output) {
-				// run as an inplace
-				return UnaryInplaceOp.super.run(input, output);
-			}
-			// run as a hybrid CF
-			return super.run(input, output);
-		}
-		@Override
-		public IterableInterval<T> run(final IterableInterval<T> output) {
-			return super.run(output);
-		}
-
 	}
 #end
 }
