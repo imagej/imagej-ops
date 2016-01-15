@@ -225,11 +225,7 @@ public final class OpUtils {
 		sb.append("ops.run(");
 		try {
 			// try using the short name
-			final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
-			final Field field = type.getField("NAME");
-			field.setAccessible(true);
-			final Object o = Class.forName(info.getDelegateClassName()).newInstance();
-			final String shortName = field.get(o).toString();
+			final String shortName = getOpName(info);
 			sb.append("\"");
 			sb.append(shortName);
 			sb.append("\"");
@@ -311,6 +307,18 @@ public final class OpUtils {
 			}
 		}
 		return sb.toString();
+	}
+
+	/**
+	 * Helper method to get the simple string name of an Op via reflection
+	 */
+	public static String getOpName(final CommandInfo info) throws NoSuchFieldException, SecurityException,
+			InstantiationException, IllegalAccessException, ClassNotFoundException {
+		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
+		final Field field = type.getField("NAME");
+		field.setAccessible(true);
+		final Object o = Class.forName(info.getDelegateClassName()).newInstance();
+		return field.get(o).toString();
 	}
 
 	// -- Helper methods --
