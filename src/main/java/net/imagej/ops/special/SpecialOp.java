@@ -143,14 +143,19 @@ import net.imagej.ops.Threadable;
  * {@code void compute(O, I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
- * <th>inplace</th>
- * <td style="vertical-align: top">An op which mutates its argument's contents
- * in-place.</td>
- * <td style="vertical-align: top">&nbsp;</td>
- * <td>BOTH</td>
+ * <th rowspan=2>inplace</th>
+ * <td rowspan=2 style="vertical-align: top">An op which mutates the contents of
+ * its argument(s) in-place.</td>
+ * <td rowspan=2 style="vertical-align: top">-</td>
+ * <td rowspan=2>BOTH</td>
  * <td>1</td>
  * <td>{@link UnaryInplaceOp}</th>
  * <td>{@code void mutate(A)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@link BinaryInplaceOp}</th>
+ * <td>{@code void mutate(A, A)}</td>
  * </tr>
  * </table>
  * <p>
