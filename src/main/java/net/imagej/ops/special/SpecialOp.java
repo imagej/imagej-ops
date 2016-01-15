@@ -30,8 +30,14 @@
 
 package net.imagej.ops.special;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import net.imagej.ops.Initializable;
 import net.imagej.ops.Op;
+import net.imagej.ops.OpCandidate;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.Threadable;
@@ -49,6 +55,8 @@ import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.hybrid.UnaryHybridCFI;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
+
+import org.scijava.InstantiableException;
 
 /**
  * A <em>special</em> operation is one intended to be used repeatedly from other
@@ -219,9 +227,9 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 	 * scenarios, because {@link UnaryOp} extends {@link NullaryOp}, and
 	 * {@link BinaryOp} extends {@link UnaryOp}. This allows higher-order ops to
 	 * be treated as lower-order by holding the extra input parameters constant.
-	 * But it also means that an op which is locally typed as e.g.
-	 * {@link UnaryComputerOp} may report its arity as 2 rather than 1 as one
-	 * might expect.
+	 * But it also means that e.g. a {@link BinaryComputerOp} which is locally
+	 * typed as {@link UnaryComputerOp} will report its arity as 2 rather than 1
+	 * as one might expect.
 	 * </p>
 	 */
 	int getArity();
@@ -263,4 +271,51 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		final S op = (S) ops.op(ref);
 		return op;
 	}
+
+	static <OP extends Op> List<OpCandidate<OP>> candidates(
+		final OpEnvironment ops, final String name, final Class<OP> opType,
+		final int arity, final Flavor flavor)
+	{
+		// look up matching candidates
+		final Class<?> specialType;
+		if (flavor == Flavor.COMPUTER) specialType = NullaryComputerOp.class;
+		else if (flavor == Flavor.FUNCTION) specialType = NullaryFunctionOp.class;
+		else if (flavor == Flavor.INPLACE) specialType = UnaryInplaceOp.class;
+		else specialType = null;
+		final Set<? extends Class<?>> specialTypes = specialType == null ? null
+			: Collections.singleton(specialType);
+		final OpRef<OP> ref = new OpRef<>(name, opType, specialTypes, null);
+		return filterArity(ops.matcher().findCandidates(ops, ref), arity);
+	}
+
+	/** Extracts a sublist of op candidates with a particular arity. */
+	static <OP extends Op> List<OpCandidate<OP>> filterArity(
+		final List<OpCandidate<OP>> candidates, final int arity)
+	{
+		if (arity < 0) return candidates;
+		final ArrayList<OpCandidate<OP>> matches = new ArrayList<>();
+		for (final OpCandidate<OP> candidate : candidates) {
+			try {
+				final Class<?> opClass = candidate.cInfo().loadClass();
+				final Object o = opClass.newInstance();
+				if (!(o instanceof SpecialOp)) continue;
+				final SpecialOp op = (SpecialOp) o;
+				if (arity == op.getArity()) matches.add(candidate);
+			}
+			catch (final InstantiableException | InstantiationException
+					| IllegalAccessException exc)
+			{
+				// NB: Ignore this problematic op.
+			}
+		}
+		return matches;
+	}
+
+	// -- Enums --
+
+	/** An enumeration of the primary kinds of special ops. */
+	enum Flavor {
+			COMPUTER, FUNCTION, INPLACE
+	}
+
 }
