@@ -32,7 +32,6 @@ package net.imagej.ops;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -211,16 +210,6 @@ public final class OpUtils {
 	 */
 	public static String opCall(final CommandInfo info) {
 		StringBuilder sb = new StringBuilder();
-		final Iterator<ModuleItem<?>> outIter = info.outputs().iterator();
-		if (outIter.hasNext()) {
-			sb.append("out");
-
-			outIter.next();
-			if (outIter.hasNext())
-				sb.append("[]");
-
-			sb.append(" = ");
-		}
 
 		sb.append("ops.run(");
 		try {
@@ -234,13 +223,9 @@ public final class OpUtils {
 			sb.append(info.getAnnotation().type().getName());
 		}
 
-
-		final Iterator<ModuleItem<?>> inIter = info.inputs().iterator();
-		int i = 1;
-		while (inIter.hasNext()) {
-			sb.append(", in");
-			sb.append(i++);
-			inIter.next();
+		for (final ModuleItem<?> item : info.inputs()) {
+			sb.append(", ");
+			sb.append(item.getType().getSimpleName());
 		}
 		sb.append(")");
 
@@ -337,7 +322,16 @@ public final class OpUtils {
 	 * As {@link #paramString(Iterable, ModuleItem)} with an optional delimiter.
 	 */
 	private static String paramString(final Iterable<ModuleItem<?>> items,
-		final ModuleItem<?> special, final String delim)
+		final ModuleItem<?> special, final String delim) {
+		return paramString(items, special, delim, false);
+	}
+
+	/**
+	 * As {@link #paramString(Iterable, ModuleItem, String)} with a toggle to control
+	 * if inputs are types only or include the names.
+	 */
+	private static String paramString(final Iterable<ModuleItem<?>> items,
+		final ModuleItem<?> special, final String delim, final boolean typeOnly)
 	{
 		final StringBuilder sb = new StringBuilder();
 		boolean first = true;
@@ -347,8 +341,12 @@ public final class OpUtils {
 			sb.append("\n");
 			if (item == special) sb.append("==>"); // highlight special item
 			sb.append("\t\t");
-			sb.append(item.getType().getSimpleName() + " " + item.getName());
-			if (!item.isRequired()) sb.append("?");
+			sb.append(item.getType().getSimpleName());
+
+			if (!typeOnly){
+				sb.append(" " + item.getName());
+				if (!item.isRequired()) sb.append("?");
+			}
 		}
 		return sb.toString();
 	}
