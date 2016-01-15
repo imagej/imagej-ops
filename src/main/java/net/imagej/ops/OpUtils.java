@@ -30,7 +30,9 @@
 
 package net.imagej.ops;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import net.imagej.ops.OpCandidate.StatusCode;
@@ -199,6 +201,53 @@ public final class OpUtils {
 		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
 		sb.append(type.getSimpleName());
 		sb.append("(" + paramString(info.inputs(), null, ", ") + ")");
+		return sb.toString();
+	}
+
+	/**
+	 * Returns a method call for the given {@link Op} using its name and the
+	 * correct count of parameters. Assumes the op will be called via an
+	 * {@link OpService} of the name "ops".
+	 */
+	public static String opCall(final CommandInfo info) {
+		StringBuilder sb = new StringBuilder();
+		final Iterator<ModuleItem<?>> outIter = info.outputs().iterator();
+		if (outIter.hasNext()) {
+			sb.append("out");
+
+			outIter.next();
+			if (outIter.hasNext())
+				sb.append("[]");
+
+			sb.append(" = ");
+		}
+
+		sb.append("ops.run(");
+		try {
+			// try using the short name
+			final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
+			final Field field = type.getField("NAME");
+			field.setAccessible(true);
+			final Object o = Class.forName(info.getDelegateClassName()).newInstance();
+			final String shortName = field.get(o).toString();
+			sb.append("\"");
+			sb.append(shortName);
+			sb.append("\"");
+		} catch (final Exception e) {
+			// Use the class name if any errors pop up
+			sb.append(info.getAnnotation().type().getName());
+		}
+
+
+		final Iterator<ModuleItem<?>> inIter = info.inputs().iterator();
+		int i = 1;
+		while (inIter.hasNext()) {
+			sb.append(", in");
+			sb.append(i++);
+			inIter.next();
+		}
+		sb.append(")");
+
 		return sb.toString();
 	}
 
