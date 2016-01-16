@@ -31,15 +31,15 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.chain.FunctionViaComputer;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -49,11 +49,12 @@ import org.scijava.plugin.Plugin;
  * another range defined by minimum and maximum.
  * 
  * @author Christian Dietz (University of Konstanz)
+ * @author Leon Yang
  * @param <T>
  */
 @Plugin(type = Ops.Image.Normalize.class)
 public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
-	AbstractUnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> implements
+	FunctionViaComputer<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Normalize
 {
 
@@ -71,28 +72,71 @@ public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
 
 	@Parameter(required = false)
 	private boolean isLazy = true;
-	
-	private UnaryFunctionOp<IterableInterval<T>, Img<T>> imgCreator;
-	private UnaryComputerOp<IterableInterval<T>, Img<T>> normalizer;
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minMaxFunc;
+
+	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
+
+	@Override
+	public UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> createWorker(
+		IterableInterval<T> t)
+	{
+		return Computers.unary(ops(), Ops.Image.Normalize.class, t, t, sourceMin,
+			sourceMax, targetMin, targetMax);
+	}
+
+	@Override
+	public IterableInterval<T> createOutput(IterableInterval<T> input) {
+		return imgCreator.compute1(input);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
+		// If isLazy is false, the getBounds() will never be called, and the worker
+		// is always used to do the work of compute(...)
+		if (isLazy) {
+			if (sourceMin == null || sourceMax == null) minMaxFunc =
+				(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class,
+					Pair.class, in());
+		}
+		else {
+			super.initialize();
+		}
 		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, in(), in().firstElement().createVariable());
-		normalizer = (UnaryComputerOp) Computers.unary(ops(),
-			Ops.Image.Normalize.class, Img.class, in());
+			IterableInterval.class, in());
+	}
+
+	private double[] getBounds(final IterableInterval<T> input) {
+		// the four elements are source min, source max, target min, and target max.
+		final double[] result = new double[4];
+		if (minMaxFunc != null) {
+			final Pair<T, T> minMax = minMaxFunc.compute1(input);
+			result[0] = (sourceMin == null ? minMax.getA() : sourceMin)
+				.getRealDouble();
+			result[1] = (sourceMax == null ? minMax.getB() : sourceMax)
+				.getRealDouble();
+		}
+		else {
+			result[0] = sourceMin.getRealDouble();
+			result[1] = sourceMax.getRealDouble();
+		}
+		final T first = input.firstElement();
+		result[2] = targetMin == null ? first.getMinValue() : targetMin
+			.getRealDouble();
+		result[3] = targetMax == null ? first.getMaxValue() : targetMax
+			.getRealDouble();
+		return result;
 	}
 
 	@Override
 	public IterableInterval<T> compute1(final IterableInterval<T> input) {
 		if (isLazy) {
+			final double[] bounds = getBounds(input);
 			return new ConvertedIterableInterval<>(input,
-				new NormalizeRealTypeComputer<>(ops(), sourceMin, sourceMax, targetMin,
-					targetMax, input), input.firstElement().createVariable());
+				new NormalizeRealTypeComputer<>(bounds[0], bounds[1], bounds[2],
+					bounds[3]), input.firstElement().createVariable());
 		}
-		final Img<T> output = imgCreator.compute1(input);
-		normalizer.compute1(input, output);
-		return output;
+		return super.compute1(input);
 	}
 }
