@@ -38,7 +38,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.array.ArrayImgs;
@@ -66,7 +66,7 @@ import org.scijava.script.ScriptService;
  */
 @Plugin(type = Ops.Image.Equation.class)
 public class DefaultEquation<T extends RealType<T>> extends
-	AbstractUnaryHybridOp<String, IterableInterval<T>> implements EquationOp<T>
+	AbstractUnaryHybridCF<String, IterableInterval<T>> implements EquationOp<T>
 {
 
 	@Parameter

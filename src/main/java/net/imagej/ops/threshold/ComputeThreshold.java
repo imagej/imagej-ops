@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 
 /**
  * An algorithm for computing a threshold value that divides an object into two
@@ -39,6 +39,6 @@ import net.imagej.ops.special.UnaryHybridOp;
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface ComputeThreshold<I, O> extends UnaryHybridOp<I, O> {
+public interface ComputeThreshold<I, O> extends UnaryHybridCF<I, O> {
 	// NB: Marker interface.
 }

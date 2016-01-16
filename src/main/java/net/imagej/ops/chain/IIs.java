@@ -34,7 +34,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryFunctionOp;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryHybridCF;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
@@ -42,7 +42,7 @@ import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.Inplaces;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.IterableInterval;
 
 /**
@@ -80,11 +80,11 @@ public final class IIs {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T> UnaryHybridOp<IterableInterval<T>, IterableInterval<T>>
+	public static <T> UnaryHybridCF<IterableInterval<T>, IterableInterval<T>>
 		hybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final IterableInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridOp) Hybrids.unary(ops, opType, IterableInterval.class,
+		return (UnaryHybridCF) Hybrids.unary(ops, opType, IterableInterval.class,
 			in == null ? IterableInterval.class : in, otherArgs);
 	}
 
@@ -119,12 +119,12 @@ public final class IIs {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T>
-		BinaryHybridOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
+		BinaryHybridCF<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final IterableInterval<T> in1, final IterableInterval<T> in2,
 			final Object... otherArgs)
 	{
-		return (BinaryHybridOp) Hybrids.binary(ops, opType, IterableInterval.class,
+		return (BinaryHybridCF) Hybrids.binary(ops, opType, IterableInterval.class,
 			in1, in2, otherArgs);
 	}
 

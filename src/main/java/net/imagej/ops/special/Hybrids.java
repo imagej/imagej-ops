@@ -50,226 +50,226 @@ public final class Hybrids {
 	}
 
 	/**
-	 * Gets the best {@link NullaryHybridOp} implementation for the given types
+	 * Gets the best {@link NullaryHybridCF} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link NullaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link NullaryHybridOp}s implement), then
-	 *          the best {@link NullaryHybridOp} implementation to use will be
+	 *          {@link NullaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryHybridCF}s implement), then
+	 *          the best {@link NullaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link NullaryHybridOp} typed
+	 * @param outType The {@link Class} of the {@link NullaryHybridCF} typed
 	 *          output.
 	 * @param otherArgs The operation's arguments, excluding the typed output
 	 *          value.
-	 * @return A {@link NullaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <O, OP extends Op> NullaryHybridOp<O> nullary(
+	public static <O, OP extends Op> NullaryHybridCF<O> nullary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridCF.class,
 			null, args);
-		return (NullaryHybridOp<O>) ops.op(ref);
+		return (NullaryHybridCF<O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link NullaryHybridOp} implementation for the given types
+	 * Gets the best {@link NullaryHybridCF} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link NullaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link NullaryHybridOp}s implement), then
-	 *          the best {@link NullaryHybridOp} implementation to use will be
+	 *          {@link NullaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link NullaryHybridCF}s implement), then
+	 *          the best {@link NullaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param otherArgs The operation's arguments, excluding the typed output
 	 *          value.
-	 * @return A {@link NullaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <O, OP extends Op> NullaryHybridOp<O> nullary(
+	public static <O, OP extends Op> NullaryHybridCF<O> nullary(
 		final OpEnvironment ops, final Class<OP> opType, final O out,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridCF.class,
 			null, args);
-		return (NullaryHybridOp<O>) ops.op(ref);
+		return (NullaryHybridCF<O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link UnaryHybridOp}s implement), then
-	 *          the best {@link UnaryHybridOp} implementation to use will be
+	 *          {@link UnaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCF}s implement), then
+	 *          the best {@link UnaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link UnaryHybridOp} typed output.
-	 * @param inType The {@link Class} of the {@link UnaryHybridOp} typed input.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCF} typed output.
+	 * @param inType The {@link Class} of the {@link UnaryHybridCF} typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridOp<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
 			null, args);
-		return (UnaryHybridOp<I, O>) ops.op(ref);
+		return (UnaryHybridCF<I, O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link UnaryHybridOp}s implement), then
-	 *          the best {@link UnaryHybridOp} implementation to use will be
+	 *          {@link UnaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCF}s implement), then
+	 *          the best {@link UnaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link UnaryHybridOp} typed output.
+	 * @param outType The {@link Class} of the {@link UnaryHybridCF} typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridOp<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
 			null, args);
-		return (UnaryHybridOp<I, O>) ops.op(ref);
+		return (UnaryHybridCF<I, O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link UnaryHybridOp} implementation for the given types and
+	 * Gets the best {@link UnaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link UnaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link UnaryHybridOp}s implement), then
-	 *          the best {@link UnaryHybridOp} implementation to use will be
+	 *          {@link UnaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link UnaryHybridCF}s implement), then
+	 *          the best {@link UnaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param in The typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed input and
 	 *          output values.
-	 * @return A {@link UnaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridOp<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
 			null, args);
-		return (UnaryHybridOp<I, O>) ops.op(ref);
+		return (UnaryHybridCF<I, O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * Gets the best {@link BinaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridOp}s implement), then
-	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          {@link BinaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCF}s implement), then
+	 *          the best {@link BinaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link BinaryHybridOp} typed
+	 * @param outType The {@link Class} of the {@link BinaryHybridCF} typed
 	 *          output.
-	 * @param in1Type The {@link Class} of the {@link BinaryHybridOp} first typed
+	 * @param in1Type The {@link Class} of the {@link BinaryHybridCF} first typed
 	 *          input.
-	 * @param in2Type The {@link Class} of the {@link BinaryHybridOp} second typed
+	 * @param in2Type The {@link Class} of the {@link BinaryHybridCF} second typed
 	 *          input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
-	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
 			null, args);
-		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
+		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * Gets the best {@link BinaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridOp}s implement), then
-	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          {@link BinaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCF}s implement), then
+	 *          the best {@link BinaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
-	 * @param outType The {@link Class} of the {@link BinaryHybridOp} typed
+	 * @param outType The {@link Class} of the {@link BinaryHybridCF} typed
 	 *          output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
-	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
 			null, args);
-		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
+		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
 	}
 
 	/**
-	 * Gets the best {@link BinaryHybridOp} implementation for the given types and
+	 * Gets the best {@link BinaryHybridCF} implementation for the given types and
 	 * arguments, populating its inputs.
 	 *
 	 * @param ops The {@link OpEnvironment} to search for a matching op.
 	 * @param opType The {@link Class} of the operation. If multiple
-	 *          {@link BinaryHybridOp}s share this type (e.g., the type is an
-	 *          interface which multiple {@link BinaryHybridOp}s implement), then
-	 *          the best {@link BinaryHybridOp} implementation to use will be
+	 *          {@link BinaryHybridCF}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryHybridCF}s implement), then
+	 *          the best {@link BinaryHybridCF} implementation to use will be
 	 *          selected automatically from the type and arguments.
 	 * @param out The typed output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
 	 * @param otherArgs The operation's arguments, excluding the typed inputs and
 	 *          output values.
-	 * @return A {@link BinaryHybridOp} with populated inputs, ready to use.
+	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridOp<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
 		final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridOp.class,
+		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
 			null, args);
-		return (BinaryHybridOp<I1, I2, O>) ops.op(ref);
+		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
 	}
 
 }

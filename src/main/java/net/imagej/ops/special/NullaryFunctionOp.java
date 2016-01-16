@@ -36,7 +36,7 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  * @param <O> type of output
  * @see NullaryFunctionOp
- * @see NullaryHybridOp
+ * @see NullaryHybridCF
  */
 public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 

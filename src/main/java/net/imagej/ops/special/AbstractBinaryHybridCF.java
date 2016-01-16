@@ -34,18 +34,46 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link NullaryHybridOp} implementations.
+ * Abstract superclass for {@link BinaryHybridCF} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractNullaryHybridOp<O> extends AbstractNullaryOp<O>
-	implements NullaryHybridOp<O>
+public abstract class AbstractBinaryHybridCF<I1, I2, O> extends
+	AbstractBinaryOp<I1, I2, O> implements BinaryHybridCF<I1, I2, O>
 {
 
 	// -- Parameters --
 
 	@Parameter(type = ItemIO.BOTH, required = false)
 	private O out;
+
+	@Parameter
+	private I1 in1;
+
+	@Parameter
+	private I2 in2;
+
+	// -- BinaryInput methods --
+
+	@Override
+	public I1 in1() {
+		return in1;
+	}
+
+	@Override
+	public I2 in2() {
+		return in2;
+	}
+
+	@Override
+	public void setInput1(final I1 input1) {
+		in1 = input1;
+	}
+
+	@Override
+	public void setInput2(final I2 input2) {
+		in2 = input2;
+	}
 
 	// -- Output methods --
 

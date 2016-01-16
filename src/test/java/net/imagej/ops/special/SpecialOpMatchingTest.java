@@ -104,11 +104,11 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testNullaryHybrid() {
-		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+		final NullaryHybridCF<Apple> nullaryHybridA = Hybrids.nullary(ops,
 			FruitOp.class, Apple.class);
 		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
 
-		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+		final NullaryHybridCF<Orange> nullaryHybridO = Hybrids.nullary(ops,
 			FruitOp.class, Orange.class);
 		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
 	}
@@ -122,11 +122,11 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final NullaryHybridOp<Apple> nullaryHybridA = Hybrids.nullary(ops,
+		final NullaryHybridCF<Apple> nullaryHybridA = Hybrids.nullary(ops,
 			FruitOp.class, a);
 		assertSame(nullaryHybridA.getClass(), NullaryHybridA.class);
 
-		final NullaryHybridOp<Orange> nullaryHybridO = Hybrids.nullary(ops,
+		final NullaryHybridCF<Orange> nullaryHybridO = Hybrids.nullary(ops,
 			FruitOp.class, o);
 		assertSame(nullaryHybridO.getClass(), NullaryHybridO.class);
 	}
@@ -266,19 +266,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testUnaryHybrid() {
-		final UnaryHybridOp<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
 			FruitOp.class, Apple.class, Apple.class);
 		assertSame(unaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
 			FruitOp.class, Orange.class, Apple.class);
 		assertSame(unaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
 			FruitOp.class, Apple.class, Orange.class);
 		assertSame(unaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
 			FruitOp.class, Orange.class, Orange.class);
 		assertSame(unaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
@@ -292,19 +292,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final UnaryHybridOp<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> unaryHybridAA = Hybrids.unary(ops,
 			FruitOp.class, Apple.class, a);
 		assertSame(unaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> unaryHybridAO = Hybrids.unary(ops,
 			FruitOp.class, Orange.class, a);
 		assertSame(unaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> unaryHybridOA = Hybrids.unary(ops,
 			FruitOp.class, Apple.class, o);
 		assertSame(unaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> unaryHybridOO = Hybrids.unary(ops,
 			FruitOp.class, Orange.class, o);
 		assertSame(unaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
@@ -319,19 +319,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final UnaryHybridOp<Apple, Apple> binaryHybridAA = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Apple> binaryHybridAA = Hybrids.unary(ops,
 			FruitOp.class, a, a);
 		assertSame(binaryHybridAA.getClass(), UnaryHybridAA.class);
 
-		final UnaryHybridOp<Apple, Orange> binaryHybridAO = Hybrids.unary(ops,
+		final UnaryHybridCF<Apple, Orange> binaryHybridAO = Hybrids.unary(ops,
 			FruitOp.class, o, a);
 		assertSame(binaryHybridAO.getClass(), UnaryHybridAO.class);
 
-		final UnaryHybridOp<Orange, Apple> binaryHybridOA = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Apple> binaryHybridOA = Hybrids.unary(ops,
 			FruitOp.class, a, o);
 		assertSame(binaryHybridOA.getClass(), UnaryHybridOA.class);
 
-		final UnaryHybridOp<Orange, Orange> binaryHybridOO = Hybrids.unary(ops,
+		final UnaryHybridCF<Orange, Orange> binaryHybridOO = Hybrids.unary(ops,
 			FruitOp.class, o, o);
 		assertSame(binaryHybridOO.getClass(), UnaryHybridOO.class);
 	}
@@ -504,19 +504,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testBinaryHybrid() {
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, Apple.class, Apple.class);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, Apple.class, Orange.class);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, Orange.class, Apple.class);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
 			.binary(ops, FruitOp.class, Lemon.class, Orange.class, Orange.class);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
@@ -531,19 +531,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Apple a = new Apple();
 		final Orange o = new Orange();
 
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(
 			ops, FruitOp.class, Lemon.class, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids
 			.binary(ops, FruitOp.class, Lemon.class, o, o);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
@@ -559,19 +559,19 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 		final Orange o = new Orange();
 		final Lemon l = new Lemon();
 
-		final BinaryHybridOp<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(ops,
+		final BinaryHybridCF<Apple, Apple, Lemon> binaryHybridAAL = Hybrids.binary(ops,
 			FruitOp.class, l, a, a);
 		assertSame(binaryHybridAAL.getClass(), BinaryHybridAAL.class);
 
-		final BinaryHybridOp<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(ops,
+		final BinaryHybridCF<Apple, Orange, Lemon> binaryHybridAOL = Hybrids.binary(ops,
 			FruitOp.class, l, a, o);
 		assertSame(binaryHybridAOL.getClass(), BinaryHybridAOL.class);
 
-		final BinaryHybridOp<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(ops,
+		final BinaryHybridCF<Orange, Apple, Lemon> binaryHybridOAL = Hybrids.binary(ops,
 			FruitOp.class, l, o, a);
 		assertSame(binaryHybridOAL.getClass(), BinaryHybridOAL.class);
 
-		final BinaryHybridOp<Orange, Orange, Lemon> binaryHybridOOL = Hybrids.binary(ops,
+		final BinaryHybridCF<Orange, Orange, Lemon> binaryHybridOOL = Hybrids.binary(ops,
 			FruitOp.class, l, o, o);
 		assertSame(binaryHybridOOL.getClass(), BinaryHybridOOL.class);
 	}
@@ -615,7 +615,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class NullaryFruitHybrid<O> extends
-		AbstractNullaryHybridOp<O> implements FruitOp
+		AbstractNullaryHybridCF<O> implements FruitOp
 	{
 
 		@Override
@@ -650,7 +650,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class UnaryFruitHybrid<I, O> extends
-		AbstractUnaryHybridOp<I, O> implements FruitOp
+		AbstractUnaryHybridCF<I, O> implements FruitOp
 	{
 
 		@Override
@@ -934,7 +934,7 @@ public class SpecialOpMatchingTest extends AbstractOpTest {
 	}
 
 	public abstract static class BinaryFruitHybrid<I1, I2, O> extends
-		AbstractBinaryHybridOp<I1, I2, O> implements FruitOp
+		AbstractBinaryHybridCF<I1, I2, O> implements FruitOp
 	{
 
 		@Override

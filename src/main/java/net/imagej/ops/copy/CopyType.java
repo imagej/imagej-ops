@@ -31,7 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;
@@ -43,7 +43,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridOp<T, T>
+public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
 		implements Ops.Copy.Type {
 
 	@Override

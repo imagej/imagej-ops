@@ -34,7 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RAIs;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
@@ -55,7 +55,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.RAI.class, priority = 1.0)
 public class CopyRAI<T> extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 	implements Ops.Copy.RAI, Contingent
 {
 

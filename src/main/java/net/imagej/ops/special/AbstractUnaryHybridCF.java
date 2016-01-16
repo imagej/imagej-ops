@@ -30,62 +30,51 @@
 
 package net.imagej.ops.special;
 
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
+
 /**
- * A <em>hybrid</em> nullary operation can be used as either a
- * {@link NullaryFunctionOp} or as a {@link NullaryComputerOp}.
- * <p>
- * To compute a new output object, call {@link NullaryFunctionOp#compute0}; to
- * populate an already-existing output object, call
- * {@link NullaryComputerOp#compute0}.
- * </p>
+ * Abstract superclass for {@link UnaryHybridCF} implementations.
  * 
+ * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
- * @param <O> type of output
- * @see NullaryComputerOp
- * @see NullaryFunctionOp
  */
-public interface NullaryHybridOp<O> extends NullaryComputerOp<O>,
-	NullaryFunctionOp<O>, NullaryOutputFactory<O>
+public abstract class AbstractUnaryHybridCF<I, O> extends AbstractUnaryOp<I, O>
+	implements UnaryHybridCF<I, O>
 {
 
-	// -- NullaryFunctionOp methods --
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I in;
+
+	// -- UnaryInput methods --
 
 	@Override
-	default O compute0() {
-		final O output = createOutput();
-		compute0(output);
-		return output;
+	public I in() {
+		return in;
 	}
 
-	// -- NullaryOp methods --
-
 	@Override
-	default O run(final O output) {
-		if (output == null) {
-			// run as a function
-			return compute0();
-		}
-
-		// run as a computer
-		compute0(output);
-		return output;
+	public void setInput(final I input) {
+		in = input;
 	}
 
-	// -- Runnable methods --
+	// -- Output methods --
 
 	@Override
-	default void run() {
-		setOutput(run(out()));
+	public O out() {
+		return out;
 	}
 
-	// -- Threadable methods --
+	// -- OutputMutable methods --
 
 	@Override
-	default NullaryHybridOp<O> getIndependentInstance() {
-		// NB: We assume the op instance is thread-safe by default.
-		// Individual implementations can override this assumption if they
-		// have state (such as buffers) that cannot be shared across threads.
-		return this;
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

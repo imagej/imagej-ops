@@ -32,26 +32,26 @@ package net.imagej.ops.chain;
 
 import net.imagej.ops.special.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.BinaryComputerOp;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryHybridCF;
 import net.imagej.ops.special.BinaryOutputFactory;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Base class for {@link BinaryHybridOp} implementations that delegate to
+ * Base class for {@link BinaryHybridCF} implementations that delegate to
  * {@link BinaryComputerOp} implementations.
  * <p>
  * This is mostly useful when the {@link BinaryComputerOp} in question has a
  * generic type as output, which needs to be narrowed to a concrete type for the
  * purposes of the {@link UnaryFunctionOp} portion's return type. In this scenario, a
- * {@link BinaryHybridOp} cannot be used directly with type-safe generics.
+ * {@link BinaryHybridCF} cannot be used directly with type-safe generics.
  * </p>
  * <p>
  * For example, a {@link UnaryComputerOp} whose output variable is a
- * {@code T extends RealType<T>} cannot be a {@link UnaryHybridOp} because we do not
+ * {@code T extends RealType<T>} cannot be a {@link UnaryHybridCF} because we do not
  * know at runtime which sort of {@link RealType} matches the caller's {@code T}
  * parameter. However, a separate {@link UnaryFunctionOp} can be created whose output
  * is typed on e.g. {@link DoubleType}, with the computation delegating to the

@@ -126,19 +126,19 @@ import net.imagej.ops.Threadable;
  * <em>function</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>0</td>
- * <td>{@link NullaryHybridOp}</th>
+ * <td>{@link NullaryHybridCF}</th>
  * <td style="white-space: nowrap">{@code O compute()} + {@code void compute(O)}
  * </td>
  * </tr>
  * <tr>
  * <td>1</td>
- * <td>{@link UnaryHybridOp}</th>
+ * <td>{@link UnaryHybridCF}</th>
  * <td style="white-space: nowrap">{@code O compute(I)} +
  * {@code void compute(O, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryHybridOp}</th>
+ * <td>{@link BinaryHybridCF}</th>
  * <td style="white-space: nowrap">{@code O compute(I1, I2)} +
  * {@code void compute(O, I1, I2)}</td>
  * </tr>

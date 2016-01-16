@@ -48,7 +48,7 @@ package net.imagej.ops.special;
  * @see BinaryFunctionOp
  * @see BinaryInplace1Op
  */
-public interface BinaryHybridCFI1<A, I> extends BinaryHybridOp<A, I, A>,
+public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
 	BinaryInplace1Op<A, I>, UnaryHybridCFI<A>
 {
 
@@ -61,7 +61,7 @@ public interface BinaryHybridCFI1<A, I> extends BinaryHybridOp<A, I, A>,
 			return BinaryInplace1Op.super.run(input1, input2, output);
 		}
 		// run as a hybrid CF
-		return BinaryHybridOp.super.run(input1, input2, output);
+		return BinaryHybridCF.super.run(input1, input2, output);
 	}
 
 	// -- Runnable methods --

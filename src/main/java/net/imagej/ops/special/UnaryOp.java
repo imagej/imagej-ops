@@ -35,7 +35,7 @@ package net.imagej.ops.special;
  * of the input are not affected.
  * <p>
  * Unary ops come in two major flavors: {@link UnaryComputerOp} and
- * {@link UnaryFunctionOp}. An additional type, {@link UnaryHybridOp}, unions
+ * {@link UnaryFunctionOp}. An additional type, {@link UnaryHybridCF}, unions
  * both flavors.
  * </p>
  * <p>
@@ -48,7 +48,7 @@ package net.imagej.ops.special;
  * @param <O> type of output
  * @see UnaryComputerOp
  * @see UnaryFunctionOp
- * @see UnaryHybridOp
+ * @see UnaryHybridCF
  */
 public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 
@@ -63,7 +63,7 @@ public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 	 * @see UnaryComputerOp#run(Object, Object)
 	 * @see UnaryFunctionOp#run(Object, Object)
 	 * @see UnaryInplaceOp#run(Object, Object)
-	 * @see UnaryHybridOp#run(Object, Object)
+	 * @see UnaryHybridCF#run(Object, Object)
 	 */
 	O run(I input, O output);
 

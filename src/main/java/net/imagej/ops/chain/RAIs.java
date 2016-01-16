@@ -34,7 +34,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryFunctionOp;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryHybridCF;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
@@ -42,7 +42,7 @@ import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.Inplaces;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 
 /**
@@ -80,11 +80,11 @@ public final class RAIs {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T>
-		UnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
+		UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridOp) Hybrids.unary(ops, opType, RandomAccessibleInterval.class,
+		return (UnaryHybridCF) Hybrids.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -122,12 +122,12 @@ public final class RAIs {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static
 		<T>
-		BinaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+		BinaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) Hybrids.binary(ops, opType,
+		return (BinaryHybridCF) Hybrids.binary(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 

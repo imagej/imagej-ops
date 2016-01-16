@@ -40,7 +40,7 @@ import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.OpRef;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 
 import org.scijava.Priority;
 import org.scijava.cache.CacheService;
@@ -78,8 +78,8 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	public Op op(final OpRef<?> ref) {
 		final Op op = super.op(ref);
 		final Op cachedOp;
-		if (op instanceof UnaryHybridOp) {
-			cachedOp = wrapUnaryHybrid((UnaryHybridOp<?, ?>) op);
+		if (op instanceof UnaryHybridCF) {
+			cachedOp = wrapUnaryHybrid((UnaryHybridCF<?, ?>) op);
 		}
 		else if (op instanceof UnaryFunctionOp) {
 			cachedOp = wrapUnaryFunction((UnaryFunctionOp<?, ?>) op);
@@ -99,7 +99,7 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	private <I, O> CachedHybridOp<I, O> wrapUnaryHybrid(
-		final UnaryHybridOp<I, O> op)
+		final UnaryHybridCF<I, O> op)
 	{
 		return new CachedHybridOp<>(op, otherArgs(op, 2));
 	}
@@ -193,25 +193,25 @@ public class CachedOpEnvironment extends CustomOpEnvironment {
 	}
 
 	/**
-	 * Wraps a {@link UnaryHybridOp} and caches the results. New inputs will result in
-	 * re-computation if {@link UnaryHybridOp} is used as {@link UnaryFunctionOp}.
+	 * Wraps a {@link UnaryHybridCF} and caches the results. New inputs will result in
+	 * re-computation if {@link UnaryHybridCF} is used as {@link UnaryFunctionOp}.
 	 * 
 	 * @author Christian Dietz, University of Konstanz
 	 * @param <I>
 	 * @param <O>
 	 */
 	class CachedHybridOp<I, O> extends CachedFunctionOp<I, O> implements
-		UnaryHybridOp<I, O>
+		UnaryHybridCF<I, O>
 	{
 
 		@Parameter
 		private CacheService cache;
 
-		private final UnaryHybridOp<I, O> delegate;
+		private final UnaryHybridCF<I, O> delegate;
 
 		private final Object[] args;
 
-		public CachedHybridOp(final UnaryHybridOp<I, O> delegate, final Object[] args) {
+		public CachedHybridOp(final UnaryHybridCF<I, O> delegate, final Object[] args) {
 			super(delegate, args);
 			this.delegate = delegate;
 			this.args = args;

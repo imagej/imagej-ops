@@ -36,7 +36,7 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  */
 public abstract class AbstractUnaryHybridCFI<IO> extends
-	AbstractUnaryHybridOp<IO, IO> implements UnaryHybridCFI<IO>
+	AbstractUnaryHybridCF<IO, IO> implements UnaryHybridCFI<IO>
 {
 	// NB: No implementation needed.
 }

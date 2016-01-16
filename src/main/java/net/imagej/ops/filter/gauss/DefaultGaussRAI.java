@@ -31,7 +31,7 @@
 package net.imagej.ops.filter.gauss;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gauss3.Gauss3;
@@ -60,7 +60,7 @@ import org.scijava.thread.ThreadService;
 @Plugin(type = Ops.Filter.Gauss.class)
 public class DefaultGaussRAI<T extends RealType<T>, V extends RealType<V>>
 	extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Filter.Gauss
 {
 

@@ -30,51 +30,62 @@
 
 package net.imagej.ops.special;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link UnaryHybridOp} implementations.
+ * A <em>hybrid</em> nullary operation can be used as either a
+ * {@link NullaryFunctionOp} or as a {@link NullaryComputerOp}.
+ * <p>
+ * To compute a new output object, call {@link NullaryFunctionOp#compute0}; to
+ * populate an already-existing output object, call
+ * {@link NullaryComputerOp#compute0}.
+ * </p>
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
+ * @param <O> type of output
+ * @see NullaryComputerOp
+ * @see NullaryFunctionOp
  */
-public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
-	implements UnaryHybridOp<I, O>
+public interface NullaryHybridCF<O> extends NullaryComputerOp<O>,
+	NullaryFunctionOp<O>, NullaryOutputFactory<O>
 {
 
-	// -- Parameters --
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- UnaryInput methods --
+	// -- NullaryFunctionOp methods --
 
 	@Override
-	public I in() {
-		return in;
+	default O compute0() {
+		final O output = createOutput();
+		compute0(output);
+		return output;
 	}
 
+	// -- NullaryOp methods --
+
 	@Override
-	public void setInput(final I input) {
-		in = input;
+	default O run(final O output) {
+		if (output == null) {
+			// run as a function
+			return compute0();
+		}
+
+		// run as a computer
+		compute0(output);
+		return output;
 	}
 
-	// -- Output methods --
+	// -- Runnable methods --
 
 	@Override
-	public O out() {
-		return out;
+	default void run() {
+		setOutput(run(out()));
 	}
 
-	// -- OutputMutable methods --
+	// -- Threadable methods --
 
 	@Override
-	public void setOutput(final O output) {
-		out = output;
+	default NullaryHybridCF<O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

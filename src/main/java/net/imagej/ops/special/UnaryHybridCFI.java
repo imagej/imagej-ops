@@ -43,7 +43,7 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  * @param <A> type of input + output
  */
-public interface UnaryHybridCFI<A> extends UnaryHybridOp<A, A>,
+public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	UnaryInplaceOp<A>
 {
 
@@ -56,14 +56,14 @@ public interface UnaryHybridCFI<A> extends UnaryHybridOp<A, A>,
 			return UnaryInplaceOp.super.run(input, output);
 		}
 		// run as a hybrid CF
-		return UnaryHybridOp.super.run(input, output);
+		return UnaryHybridCF.super.run(input, output);
 	}
 
 	// -- NullaryOp methods --
 
 	@Override
 	default A run(final A output) {
-		return UnaryHybridOp.super.run(output);
+		return UnaryHybridCF.super.run(output);
 	}
 
 	// -- Threadable methods --

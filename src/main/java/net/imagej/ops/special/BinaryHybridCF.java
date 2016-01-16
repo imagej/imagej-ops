@@ -31,74 +31,74 @@
 package net.imagej.ops.special;
 
 /**
- * A unary <em>hybrid</em> operation can be used as either a
- * {@link UnaryFunctionOp} or as a {@link UnaryComputerOp}.
+ * A <em>hybrid</em> binary operation can be used as either a
+ * {@link BinaryFunctionOp} or as a {@link BinaryComputerOp}.
  * <p>
- * To compute a new output object, call {@link UnaryFunctionOp#compute1}; to
+ * To compute a new output object, call {@link BinaryFunctionOp#compute2}; to
  * populate an already-existing output object, call
- * {@link UnaryComputerOp#compute1}.
+ * {@link BinaryComputerOp#compute2}.
  * </p>
  * 
  * @author Curtis Rueden
- * @author Christian Dietz (University of Konstanz)
- * @param <I> type of input
+ * @param <I1> type of first input
+ * @param <I2> type of second input
  * @param <O> type of output
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
+ * @see BinaryComputerOp
+ * @see BinaryFunctionOp
  */
-public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
-	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>, NullaryHybridOp<O>
+public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
+	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>,
+	UnaryHybridCF<I1, O>
 {
+
+	// -- BinaryFunctionOp methods --
+
+	@Override
+	default O compute2(final I1 input1, final I2 input2) {
+		final O output = createOutput(input1, input2);
+		compute2(input1, input2, output);
+		return output;
+	}
+
+	// -- BinaryOp methods --
+
+	@Override
+	default O run(final I1 input1, final I2 input2, final O output) {
+		if (output == null) {
+			// run as a function
+			return compute2(input1, input2);
+		}
+
+		// run as a computer
+		compute2(input1, input2, output);
+		return output;
+	}
 
 	// -- UnaryFunctionOp methods --
 
 	@Override
-	default O compute1(final I input) {
-		final O output = createOutput(input);
-		compute1(input, output);
-		return output;
+	default O compute1(final I1 input) {
+		return compute2(input, in2());
 	}
 
-	// -- UnaryOp methods --
+	// -- UnaryOutputFactory methods --
 
 	@Override
-	default O run(final I input, final O output) {
-		if (output == null) {
-			// run as a function
-			return compute1(input);
-		}
-
-		// run as a computer
-		compute1(input, output);
-		return output;
-	}
-
-
-	// -- NullaryFunctionOp methods --
-
-	@Override
-	default O compute0() {
-		return compute1(in());
-	}
-
-	// -- NullaryOutputFactory methods --
-
-	@Override
-	default O createOutput() {
-		return createOutput(in());
+	default O createOutput(final I1 input) {
+		return createOutput(input, in2());
 	}
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		setOutput(run(in(), out()));
+		setOutput(run(in1(), in2(), out()));
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default UnaryHybridOp<I, O> getIndependentInstance() {
+	default BinaryHybridCF<I1, I2, O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

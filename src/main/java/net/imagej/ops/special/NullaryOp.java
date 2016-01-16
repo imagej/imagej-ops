@@ -35,7 +35,7 @@ package net.imagej.ops.special;
  * values.
  * <p>
  * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
- * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridOp},
+ * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridCF},
  * unions both flavors.
  * </p>
  * 
@@ -43,7 +43,7 @@ package net.imagej.ops.special;
  * @param <O> type of output
  * @see NullaryComputerOp
  * @see NullaryFunctionOp
- * @see NullaryHybridOp
+ * @see NullaryHybridCF
  */
 public interface NullaryOp<O> extends SpecialOp, Output<O> {
 
@@ -56,7 +56,7 @@ public interface NullaryOp<O> extends SpecialOp, Output<O> {
 	 * @return result of the operation
 	 * @see NullaryComputerOp#run(Object)
 	 * @see NullaryFunctionOp#run(Object)
-	 * @see NullaryHybridOp#run(Object)
+	 * @see NullaryHybridCF#run(Object)
 	 */
 	O run(O output);
 

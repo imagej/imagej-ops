@@ -37,11 +37,11 @@ import java.util.ArrayList;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.OpInfo;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -66,7 +66,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 
 	private UnaryFunctionOp<Img<ByteType>, DoubleType> func;
 
-	private UnaryHybridOp<Img<ByteType>, DoubleType> hybrid;
+	private UnaryHybridCF<Img<ByteType>, DoubleType> hybrid;
 
 	@Before
 	public void initCustomOps() {
@@ -107,7 +107,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 	}
 
 	// some specialized ops to track number of counts
-	public static class MyMin extends AbstractUnaryHybridOp<Img<ByteType>, DoubleType>
+	public static class MyMin extends AbstractUnaryHybridCF<Img<ByteType>, DoubleType>
 		implements Ops.Stats.Min
 	{
 
