@@ -36,12 +36,15 @@ import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
 
 /**
- * Utility class for looking up function ops in a type-safe way.
+ * Utility class for looking up hybrid ops in a type-safe way.
  *
  * @author Curtis Rueden
- * @see NullaryFunctionOp
- * @see UnaryFunctionOp
- * @see BinaryFunctionOp
+ * @see NullaryHybridCF
+ * @see UnaryHybridCF
+ * @see UnaryHybridCFI
+ * @see BinaryHybridCF
+ * @see BinaryHybridCFI
+ * @see BinaryHybridCFI1
  */
 public final class Hybrids {
 
@@ -66,7 +69,7 @@ public final class Hybrids {
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <O, OP extends Op> NullaryHybridCF<O> nullary(
+	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
@@ -92,7 +95,7 @@ public final class Hybrids {
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <O, OP extends Op> NullaryHybridCF<O> nullary(
+	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out,
 		final Object... otherArgs)
 	{
@@ -119,7 +122,7 @@ public final class Hybrids {
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
@@ -146,7 +149,7 @@ public final class Hybrids {
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I in, final Object... otherArgs)
 	{
@@ -173,7 +176,7 @@ public final class Hybrids {
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unary(
+	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
@@ -204,7 +207,7 @@ public final class Hybrids {
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
@@ -234,7 +237,7 @@ public final class Hybrids {
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
@@ -262,7 +265,7 @@ public final class Hybrids {
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binary(
+	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
 		final I2 in2, final Object... otherArgs)
 	{

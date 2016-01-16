@@ -84,7 +84,7 @@ public final class RAIs {
 			final OpEnvironment ops, final Class<? extends Op> opType,
 			final RandomAccessibleInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridCF) Hybrids.unary(ops, opType, RandomAccessibleInterval.class,
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
@@ -127,7 +127,7 @@ public final class RAIs {
 			final RandomAccessibleInterval<T> in1,
 			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
 	{
-		return (BinaryHybridCF) Hybrids.binary(ops, opType,
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType,
 			RandomAccessibleInterval.class, in1, in2, otherArgs);
 	}
 

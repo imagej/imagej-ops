@@ -84,7 +84,7 @@ public final class IIs {
 		hybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final IterableInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridCF) Hybrids.unary(ops, opType, IterableInterval.class,
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, IterableInterval.class,
 			in == null ? IterableInterval.class : in, otherArgs);
 	}
 
@@ -124,7 +124,7 @@ public final class IIs {
 			final IterableInterval<T> in1, final IterableInterval<T> in2,
 			final Object... otherArgs)
 	{
-		return (BinaryHybridCF) Hybrids.binary(ops, opType, IterableInterval.class,
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, IterableInterval.class,
 			in1, in2, otherArgs);
 	}
 

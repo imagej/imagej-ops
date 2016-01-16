@@ -79,7 +79,7 @@ public final class RTs {
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (UnaryHybridCF) Hybrids.unary(ops, opType, RealType.class, in, otherArgs);
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	public static <A extends RealType<A>> UnaryInplaceOp<A> inplace(
@@ -112,7 +112,7 @@ public final class RTs {
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryHybridCF) Hybrids.binary(ops, opType, RealType.class, in1, in2,
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, RealType.class, in1, in2,
 			otherArgs);
 	}
 

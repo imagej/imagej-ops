@@ -79,7 +79,7 @@ public class CachedOpEnvironmentTest extends AbstractOpTest {
 		imgB = generateByteArrayTestImg(true, new long[] { 10, 10 });
 
 		func = Functions.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
-		hybrid = Hybrids.unary(env, Ops.Stats.Min.class, DoubleType.class, imgA);
+		hybrid = Hybrids.unaryCF(env, Ops.Stats.Min.class, DoubleType.class, imgA);
 	}
 
 	@Test
