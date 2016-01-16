@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IIToIIOutputIITest extends AbstractOpTest {
+public class IIToRAIOutputIITest extends AbstractOpTest {
 
 	private Img<FloatType> in1;
 	private Img<FloatType> in2;
@@ -64,7 +64,7 @@ public class IIToIIOutputIITest extends AbstractOpTest {
 	@Test
 	public void test${op.name}() {
 		@SuppressWarnings("unchecked")
-		final IIToIIOutputII.${op.name}<FloatType> op = ops.op(IIToIIOutputII.${op.name}.class,
+		final IIToRAIOutputII.${op.name}<FloatType> op = ops.op(IIToRAIOutputII.${op.name}.class,
 			out, in1, in2);
 		op.run();
 		final IterableInterval<FloatType> created = op.compute2(in1, in2);
