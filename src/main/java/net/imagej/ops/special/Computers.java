@@ -50,6 +50,192 @@ public final class Computers {
 	}
 
 	/**
+	 * Computes the output from the given input in a flexible way:
+	 * <ul>
+	 * <li>In the common case, this method simply calls
+	 * {@link UnaryComputerOp#compute1} with the given arguments, returning the
+	 * output reference, whose value was mutated.</li><br>
+	 * <li>If {@code output} is null&mdash;a scenario which normally violates
+	 * {@link UnaryComputerOp#compute1} preconditions&mdash;the op is first
+	 * checked for being a function; if so, the {@link UnaryFunctionOp#compute1}
+	 * method is called on the input, generating a new output reference which is
+	 * then returned. Otherwise, the op is then checked for being inplace; if so,
+	 * then {@link InplaceOp#mutate} is called on the input. Otherwise,
+	 * {@link IllegalArgumentException} is thrown.</li> <br>
+	 * <li>If {@code output} and {@code input} refer to the same
+	 * object&mdash;another situation which normally violates
+	 * {@link UnaryComputerOp#compute1} preconditions&mdash;the op is checked for
+	 * being an {@link InplaceOp}; if so, then {@link InplaceOp#mutate} is called
+	 * on the input. Otherwise, {@link IllegalArgumentException} is thrown.</li>
+	 * </ul>
+	 * 
+	 * @param op The computer to use for computing the output.
+	 * @param input Argument to the computation, which <em>must be non-null</em>
+	 * @param output Object where the computation's result will be stored, which
+	 *          <em>may be null</em> if the op is a {@link UnaryFunctionOp} or an
+	 *          {@link InplaceOp}; or which <em>may be the same object as
+	 *          {@code input}</em> if the op is an {@link InplaceOp}.
+	 * @return The result of the computation.
+	 */
+	public static <I, O> O compute(final UnaryComputerOp<I, O> op, final I input,
+		final O output)
+	{
+		if (output == null) {
+			if (op instanceof UnaryFunctionOp) {
+				// NB: Allow unspecified output reference when the op is a function.
+				// TODO: Validate matching input and output types.
+				@SuppressWarnings("unchecked")
+				final UnaryFunctionOp<I, O> function = ((UnaryFunctionOp<I, O>) op);
+				return function.compute1(input);
+			}
+			if (op instanceof InplaceOp) {
+				// NB: Allow unspecified output reference when the op is inplace.
+				// TODO: Validate matching argument type.
+				@SuppressWarnings("unchecked")
+				final InplaceOp<I> inplace = (InplaceOp<I>) op;
+				inplace.mutate(input);
+				@SuppressWarnings("unchecked")
+				final O result = (O) input;
+				return result;
+			}
+			throw new IllegalArgumentException("Output is unspecified, " +
+				"but computer is not a function or inplace op");
+		}
+		if (output == input) {
+			if (op instanceof InplaceOp) {
+				// NB: Allow same input and output reference when op is inplace.
+				// TODO: Validate matching argument type.
+				@SuppressWarnings("unchecked")
+				final InplaceOp<O> inplace = (InplaceOp<O>) op;
+				inplace.mutate(output);
+				return output;
+			}
+			throw new IllegalArgumentException("Output and input are " +
+				"the same object, but computer is not an inplace op");
+		}
+		// NB: Output is non-null, and a different reference than input.
+		op.compute1(input, output);
+		return output;
+	}
+
+	/**
+	 * Computes the output from the 2 given inputs in a flexible way:
+	 * <ul>
+	 * <li>In the common case, this method simply calls
+	 * {@link BinaryComputerOp#compute2} with the given arguments, returning the
+	 * output reference, whose value was mutated.</li><br>
+	 * <li>If {@code output} is null&mdash;a scenario which normally violates
+	 * {@link BinaryComputerOp#compute2} preconditions&mdash;the op is first
+	 * checked for being a function; if so, the {@link BinaryFunctionOp#compute2}
+	 * method is called on the inputs, generating a new output reference which is
+	 * then returned. Otherwise, the op is then checked for being inplace; if so,
+	 * then {@link InplaceOp#mutate} is called on the input1. Otherwise,
+	 * {@link IllegalArgumentException} is thrown.</li> <br>
+	 * <li>If {@code output} and {@code input1} refer to the same
+	 * object&mdash;another situation which normally violates
+	 * {@link BinaryComputerOp#compute2} preconditions&mdash;the op is checked for
+	 * being an {@link InplaceOp}; if so, then {@link InplaceOp#mutate} is called
+	 * on the input1. Otherwise, {@link IllegalArgumentException} is thrown. This
+	 * also applies to the situation when {@code output} and {@code input2} refer
+	 * to the same object.</li>
+	 * </ul>
+	 * 
+	 * @param op The computer to use for computing the output.
+	 * @param input1 Argument to the computation, which <em>must be non-null</em>
+	 * @param input2 Argument to the computation, which <em>may be null</em>, and
+	 *          if so, the op will be treated as unary
+	 * @param output Object where the computation's result will be stored, which
+	 *          <em>may be null</em> if the op is a {@link UnaryFunctionOp} or an
+	 *          {@link InplaceOp}; or which <em>may be the same object as
+	 *          {@code input1} or {@code input2}</em> if the op is an
+	 *          {@link InplaceOp}.
+	 * @return The result of the computation.
+	 */
+	public static <I1, I2, O> O compute(final BinaryComputerOp<I1, I2, O> op,
+		final I1 input1, final I2 input2, final O output)
+	{
+		if (input2 == null || input2 == op.in2()) return compute(op, input1,
+			output);
+		if (output == null) {
+			if (op instanceof BinaryFunctionOp) {
+				// NB: Allow unspecified output reference when the op is a function.
+				// TODO: Validate matching input and output types.
+				@SuppressWarnings("unchecked")
+				final BinaryFunctionOp<I1, I2, O> function =
+					(BinaryFunctionOp<I1, I2, O>) op;
+				return function.compute2(input1, input2);
+			}
+			if (op instanceof InplaceOp) {
+				// NB: Allow unspecified output reference when the op is inplace.
+				// By convention, the input1 is mutated.
+				// The template input1 and input2 of the op are changed to pass
+				// additional information.
+				// TODO: Validate matching argument type.
+				final I1 tmp1 = op.in1();
+				final I2 tmp2 = op.in2();
+				op.setInput1(input1);
+				op.setInput2(input2);
+				@SuppressWarnings("unchecked")
+				final InplaceOp<I1> inplace = (InplaceOp<I1>) op;
+				inplace.mutate(input1);
+				op.setInput1(tmp1);
+				op.setInput2(tmp2);
+				@SuppressWarnings("unchecked")
+				final O result = (O) input1;
+				return result;
+			}
+			throw new IllegalArgumentException("Output is unspecified, " +
+				"but computer is not a function or inplace op");
+		}
+		if (output == input1) {
+			if (op instanceof InplaceOp) {
+				// NB: Allow same input1 and output reference when op is inplace.
+				// The template input1 and input2 of the op are changed to pass
+				// additional information.
+				// TODO: Validate matching argument type.
+				final I1 tmp1 = op.in1();
+				final I2 tmp2 = op.in2();
+				op.setInput1(input1);
+				op.setInput2(input2);
+				@SuppressWarnings("unchecked")
+				final InplaceOp<I1> inplace = (InplaceOp<I1>) op;
+				inplace.mutate(input1);
+				op.setInput1(tmp1);
+				op.setInput2(tmp2);
+				@SuppressWarnings("unchecked")
+				final O result = (O) input1;
+				return result;
+			}
+			throw new IllegalArgumentException("Output and input1 are " +
+				"the same object, but computer is not an inplace op");
+		}
+		if (output == input2) {
+			if (op instanceof InplaceOp) {
+				// NB: Allow same input2 and output reference when op is inplace.
+				// The template input1 and input2 of the op are changed to pass
+				// additional information.
+				// TODO: Validate matching argument type.
+				final I1 tmp1 = op.in1();
+				final I2 tmp2 = op.in2();
+				op.setInput1(input1);
+				op.setInput2(input2);
+				@SuppressWarnings("unchecked")
+				final InplaceOp<I2> inplace = (InplaceOp<I2>) op;
+				inplace.mutate(input2);
+				op.setInput1(tmp1);
+				op.setInput2(tmp2);
+				@SuppressWarnings("unchecked")
+				final O result = (O) input2;
+				return result;
+			}
+			throw new IllegalArgumentException("Output and input2 are " +
+				"the same object, but computer is not an inplace op");
+		}
+		op.compute2(input1, input2, output);
+		return output;
+	}
+
+	/**
 	 * Gets the best {@link NullaryComputerOp} implementation for the given types
 	 * and arguments, populating its inputs.
 	 *
@@ -125,8 +311,8 @@ public final class Computers {
 		final Class<I> inType, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class, null,
+			args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
@@ -153,8 +339,8 @@ public final class Computers {
 		final I in, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class, null,
+			args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
@@ -180,8 +366,8 @@ public final class Computers {
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
+		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class, null,
+			args);
 		return (UnaryComputerOp<I, O>) ops.op(ref);
 	}
 
