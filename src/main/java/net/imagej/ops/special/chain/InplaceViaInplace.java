@@ -28,33 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.function.BinaryFunctionOp;
-import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
- * Base class for {@link BinaryFunctionOp} implementations that delegate to
- * other {@link BinaryFunctionOp} implementations.
+ * Base class for {@link UnaryInplaceOp} implementations that delegate to other
+ * {@link UnaryInplaceOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
-	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryHybridCF<I1, I2, O>, I1, I2, O>
-{
+public abstract class InplaceViaInplace<A> extends AbstractUnaryInplaceOp<A> {
 
-	private BinaryHybridCF<I1, I2, O> worker;
+	private UnaryInplaceOp<A> worker;
+
+	public abstract UnaryInplaceOp<A> createWorker(A t);
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in1(), in2());
+		worker = createWorker(in());
 	}
 
 	@Override
-	public O compute2(final I1 input1, final I2 input2) {
-		return worker.compute2(input1, input2);
+	public void mutate(final A arg) {
+		worker.mutate(arg);
 	}
 
 }

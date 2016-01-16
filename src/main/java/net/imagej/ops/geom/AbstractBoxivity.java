@@ -31,7 +31,7 @@
 package net.imagej.ops.geom;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.RTs;
+import net.imagej.ops.special.chain.RTs;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;

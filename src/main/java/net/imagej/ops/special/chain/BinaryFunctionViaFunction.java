@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
 import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;

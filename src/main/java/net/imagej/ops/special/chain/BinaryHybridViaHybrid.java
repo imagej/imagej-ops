@@ -28,36 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
-import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
 
 /**
- * Base class for {@link UnaryHybridCF} implementations that delegate to other
- * {@link UnaryHybridCF} implementations.
+ * Base class for {@link BinaryFunctionOp} implementations that delegate to
+ * other {@link BinaryFunctionOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class HybridViaHybrid<I, O> extends AbstractUnaryHybridCF<I, O>
-	implements DelegatingUnaryOp<UnaryHybridCF<I, O>, I, O>
+public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
+	AbstractBinaryFunctionOp<I1, I2, O> implements
+	DelegatingBinaryOp<BinaryHybridCF<I1, I2, O>, I1, I2, O>
 {
 
-	private UnaryHybridCF<I, O> worker;
-
-	@Override
-	public O createOutput(final I input) {
-		return worker.createOutput(input);
-	}
+	private BinaryHybridCF<I1, I2, O> worker;
 
 	@Override
 	public void initialize() {
-		worker = createWorker(in());
+		worker = createWorker(in1(), in2());
 	}
 
 	@Override
-	public void compute1(final I input, final O output) {
-		worker.compute1(input, output);
+	public O compute2(final I1 input1, final I2 input2) {
+		return worker.compute2(input1, input2);
 	}
 
 }

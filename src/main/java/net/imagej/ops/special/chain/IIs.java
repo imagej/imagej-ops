@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
@@ -43,92 +43,89 @@ import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.IterableInterval;
 
 /**
- * Utility class for working with {@link RandomAccessibleInterval}s.
+ * Utility class for working with {@link IterableInterval}s.
  *
  * @author Curtis Rueden
+ * @author Zach Petersen
  */
-public final class RAIs {
+public final class IIs {
 
-	private RAIs() {
+	private IIs() {
 		// NB: prevent instantiation of utility class.
 	}
 
 	// -- Utility methods --
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public static <T> UnaryComputerOp<IterableInterval<T>, IterableInterval<T>>
 		computer(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
+			final IterableInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryComputerOp) Computers.unary(ops, opType, RandomAccessibleInterval.class,
-			in == null ? RandomAccessibleInterval.class : in, otherArgs);
+		return (UnaryComputerOp) Computers.unary(ops, opType,
+			IterableInterval.class, in == null ? IterableInterval.class : in,
+			otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		UnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public static <T> UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>>
 		function(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
+			final IterableInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryFunctionOp) Functions.unary(ops, opType, RandomAccessibleInterval.class,
-			in == null ? RandomAccessibleInterval.class : in, otherArgs);
+		return (UnaryFunctionOp) Functions.unary(ops, opType,
+			IterableInterval.class, in == null ? IterableInterval.class : in,
+			otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
-			final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
+	public static <T> UnaryHybridCF<IterableInterval<T>, IterableInterval<T>>
+		hybrid(final OpEnvironment ops, final Class<? extends Op> opType,
+			final IterableInterval<T> in, final Object... otherArgs)
 	{
-		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RandomAccessibleInterval.class,
-			in == null ? RandomAccessibleInterval.class : in, otherArgs);
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, IterableInterval.class,
+			in == null ? IterableInterval.class : in, otherArgs);
 	}
 
-	public static <T> UnaryInplaceOp<RandomAccessibleInterval<T>> inplace(
+	public static <T> UnaryInplaceOp<IterableInterval<T>> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType,
-		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
+		final IterableInterval<T> arg, final Object... otherArgs)
 	{
 		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static
-		<T>
-		BinaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public static <T>
+		BinaryComputerOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
 		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in1,
-			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+			final IterableInterval<T> in1, final IterableInterval<T> in2,
+			final Object... otherArgs)
 	{
 		return (BinaryComputerOp) Computers.binary(ops, opType,
-			RandomAccessibleInterval.class, in1, in2, otherArgs);
+			IterableInterval.class, in1, in2, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static
-		<T>
-		BinaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public static <T>
+		BinaryFunctionOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
 		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in1,
-			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+			final IterableInterval<T> in1, final IterableInterval<T> in2,
+			final Object... otherArgs)
 	{
 		return (BinaryFunctionOp) Functions.binary(ops, opType,
-			RandomAccessibleInterval.class, in1, in2, otherArgs);
+			IterableInterval.class, in1, in2, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static
-		<T>
-		BinaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public static <T>
+		BinaryHybridCF<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in1,
-			final RandomAccessibleInterval<T> in2, final Object... otherArgs)
+			final IterableInterval<T> in1, final IterableInterval<T> in2,
+			final Object... otherArgs)
 	{
-		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType,
-			RandomAccessibleInterval.class, in1, in2, otherArgs);
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, IterableInterval.class,
+			in1, in2, otherArgs);
 	}
 
 }

@@ -28,20 +28,32 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.UnaryOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 /**
- * Base class for {@link UnaryOp} implementations that delegate to other
- * {@link UnaryOp} implementations.
+ * Base class for {@link BinaryComputerOp} implementations that delegate to
+ * other {@link BinaryComputerOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public interface DelegatingUnaryOp<T extends UnaryOp<I, O>, I, O> extends
-	UnaryOp<I, O>
+public abstract class BinaryComputerViaComputer<I1, I2, O> extends
+	AbstractBinaryComputerOp<I1, I2, O> implements
+	DelegatingBinaryOp<BinaryComputerOp<I1, I2, O>, I1, I2, O>
 {
 
-	T createWorker(I t);
+	private BinaryComputerOp<I1, I2, O> worker;
+
+	@Override
+	public void initialize() {
+		worker = createWorker(in1(), in2());
+	}
+
+	@Override
+	public void compute2(final I1 input1, final I2 input2, final O output) {
+		worker.compute2(input1, input2, output);
+	}
 
 }

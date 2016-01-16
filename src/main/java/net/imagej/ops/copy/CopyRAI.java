@@ -33,7 +33,7 @@ package net.imagej.ops.copy;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.chain.RAIs;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;

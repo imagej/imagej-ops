@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
 import net.imagej.ops.special.BinaryOutputFactory;
 import net.imagej.ops.special.computer.BinaryComputerOp;
