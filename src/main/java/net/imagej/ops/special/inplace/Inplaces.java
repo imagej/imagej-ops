@@ -32,8 +32,8 @@ package net.imagej.ops.special.inplace;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
+import net.imagej.ops.special.SpecialOp;
 
 /**
  * Utility class for looking up unary ops in a type-safe way.
@@ -63,14 +63,14 @@ public final class Inplaces {
 	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <A, OP extends Op> UnaryInplaceOp<A> unary(final OpEnvironment ops,
-		final Class<OP> opType, final Class<A> argType, final Object... otherArgs)
+	public static <A, OP extends Op> UnaryInplaceOp<A> unary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, argType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryInplaceOp.class, null,
-			args);
-		return (UnaryInplaceOp<A>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType,
+			UnaryInplaceOp.class, null, OpUtils.args(otherArgs, argType));
+		return op;
 	}
 
 	/**
@@ -84,18 +84,18 @@ public final class Inplaces {
 	 *          the best {@link UnaryInplaceOp} implementation to use will be
 	 *          selected automatically from the type and arguments.
 	 * @param arg The typed argument.
-	 * @param otherArgs The operation's arguments, excluding the typed input and
-	 *          output values.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          value.
 	 * @return An {@link UnaryInplaceOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
-	public static <A, OP extends Op> UnaryInplaceOp<A> unary(final OpEnvironment ops,
-		final Class<OP> opType, final A arg, final Object... otherArgs)
+	public static <A, OP extends Op> UnaryInplaceOp<A> unary(
+		final OpEnvironment ops, final Class<OP> opType, final A arg,
+		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, arg);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryInplaceOp.class, null,
-			args);
-		return (UnaryInplaceOp<A>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType,
+			UnaryInplaceOp.class, null, OpUtils.args(otherArgs, arg));
+		return op;
 	}
 
 }

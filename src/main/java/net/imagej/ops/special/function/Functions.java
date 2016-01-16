@@ -32,8 +32,8 @@ package net.imagej.ops.special.function;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
+import net.imagej.ops.special.SpecialOp;
 
 /**
  * Utility class for looking up function ops in a type-safe way.
@@ -61,19 +61,17 @@ public final class Functions {
 	 *          be selected automatically from the type and arguments.
 	 * @param outType The {@link Class} of the {@link NullaryFunctionOp} typed
 	 *          output.
-	 * @param otherArgs The operation's arguments, excluding the typed output
-	 *          value.
+	 * @param args The operation's arguments.
 	 * @return A {@link NullaryFunctionOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <O, OP extends Op> NullaryFunctionOp<O> nullary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
-		final Object... otherArgs)
+		final Object... args)
 	{
-		final Object[] args = OpUtils.args(otherArgs);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryFunctionOp.class,
-			outType, args);
-		return (NullaryFunctionOp<O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final NullaryFunctionOp<O> op = SpecialOp.op(ops, opType,
+			NullaryFunctionOp.class, outType, args);
+		return op;
 	}
 
 	/**
@@ -89,19 +87,18 @@ public final class Functions {
 	 * @param outType The {@link Class} of the {@link UnaryFunctionOp} typed
 	 *          output.
 	 * @param inType The {@link Class} of the {@link UnaryFunctionOp} typed input.
-	 * @param otherArgs The operation's arguments, excluding the typed input and
-	 *          output values.
+	 * @param otherArgs The operation's arguments, excluding the typed input
+	 *          value.
 	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryFunctionOp<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, inType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryFunctionOp.class,
-			outType, args);
-		return (UnaryFunctionOp<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryFunctionOp<I, O> op = SpecialOp.op(ops, opType,
+			UnaryFunctionOp.class, outType, OpUtils.args(otherArgs, inType));
+		return op;
 	}
 
 	/**
@@ -117,19 +114,18 @@ public final class Functions {
 	 * @param outType The {@link Class} of the {@link UnaryFunctionOp} typed
 	 *          output.
 	 * @param in The typed input.
-	 * @param otherArgs The operation's arguments, excluding the typed input and
-	 *          output values.
+	 * @param otherArgs The operation's arguments, excluding the typed input
+	 *          values.
 	 * @return A {@link UnaryFunctionOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryFunctionOp<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I in, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryFunctionOp.class,
-			outType, args);
-		return (UnaryFunctionOp<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryFunctionOp<I, O> op = SpecialOp.op(ops, opType,
+			UnaryFunctionOp.class, outType, OpUtils.args(otherArgs, in));
+		return op;
 	}
 
 	/**
@@ -148,20 +144,20 @@ public final class Functions {
 	 *          typed input.
 	 * @param in2Type The {@link Class} of the {@link BinaryFunctionOp} second
 	 *          typed input.
-	 * @param otherArgs The operation's arguments, excluding the typed inputs and
-	 *          output values.
+	 * @param otherArgs The operation's arguments, excluding the typed input
+	 *          values.
 	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in1Type, in2Type);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryFunctionOp.class,
-			outType, args);
-		return (BinaryFunctionOp<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryFunctionOp<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryFunctionOp.class, outType, args);
+		return op;
 	}
 
 	/**
@@ -178,19 +174,19 @@ public final class Functions {
 	 *          output.
 	 * @param in1 The first typed input.
 	 * @param in2 The second typed input.
-	 * @param otherArgs The operation's arguments, excluding the typed inputs and
-	 *          output values.
+	 * @param otherArgs The operation's arguments, excluding the typed input
+	 *          values.
 	 * @return A {@link BinaryFunctionOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryFunctionOp<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryFunctionOp.class,
-			outType, args);
-		return (BinaryFunctionOp<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryFunctionOp<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryFunctionOp.class, outType, args);
+		return op;
 	}
 
 }

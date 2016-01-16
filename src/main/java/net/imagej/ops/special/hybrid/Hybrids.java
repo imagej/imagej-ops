@@ -32,8 +32,8 @@ package net.imagej.ops.special.hybrid;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
+import net.imagej.ops.special.SpecialOp;
 
 /**
  * Utility class for looking up hybrid ops in a type-safe way.
@@ -68,15 +68,14 @@ public final class Hybrids {
 	 *          value.
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridCF.class,
-			null, args);
-		return (NullaryHybridCF<O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final NullaryHybridCF<O> op = SpecialOp.op(ops, opType,
+			NullaryHybridCF.class, null, OpUtils.args(otherArgs, outType));
+		return op;
 	}
 
 	/**
@@ -94,15 +93,14 @@ public final class Hybrids {
 	 *          value.
 	 * @return A {@link NullaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <O, OP extends Op> NullaryHybridCF<O> nullaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, out);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryHybridCF.class,
-			null, args);
-		return (NullaryHybridCF<O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final NullaryHybridCF<O> op = SpecialOp.op(ops, opType,
+			NullaryHybridCF.class, null, OpUtils.args(otherArgs, out));
+		return op;
 	}
 
 	/**
@@ -121,15 +119,14 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
-			null, args);
-		return (UnaryHybridCF<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCF<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCF.class, null, OpUtils.args(otherArgs, outType, inType));
+		return op;
 	}
 
 	/**
@@ -148,15 +145,14 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I in, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
-			null, args);
-		return (UnaryHybridCF<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCF<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCF.class, null, OpUtils.args(otherArgs, outType, in));
+		return op;
 	}
 
 	/**
@@ -175,15 +171,14 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link UnaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryHybridCF<I, O> unaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, out, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryHybridCF.class,
-			null, args);
-		return (UnaryHybridCF<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryHybridCF<I, O> op = SpecialOp.op(ops, opType,
+			UnaryHybridCF.class, null, OpUtils.args(otherArgs, out, in));
+		return op;
 	}
 
 	/**
@@ -206,16 +201,16 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
-			null, args);
-		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCF<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCF.class, null, args);
+		return op;
 	}
 
 	/**
@@ -236,15 +231,15 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
-			null, args);
-		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCF<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCF.class, null, args);
+		return op;
 	}
 
 	/**
@@ -264,15 +259,15 @@ public final class Hybrids {
 	 *          output values.
 	 * @return A {@link BinaryHybridCF} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryHybridCF<I1, I2, O> binaryCF(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
 		final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryHybridCF.class,
-			null, args);
-		return (BinaryHybridCF<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryHybridCF<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryHybridCF.class, null, args);
+		return op;
 	}
 
 }

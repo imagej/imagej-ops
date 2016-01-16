@@ -32,8 +32,8 @@ package net.imagej.ops.special.computer;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.OpRef;
 import net.imagej.ops.OpUtils;
+import net.imagej.ops.special.SpecialOp;
 
 /**
  * Utility class for looking up computer ops in a type-safe way.
@@ -65,15 +65,14 @@ public final class Computers {
 	 *          value.
 	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
-			null, args);
-		return (NullaryComputerOp<O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final NullaryComputerOp<O> op = SpecialOp.op(ops, opType,
+			NullaryComputerOp.class, null, OpUtils.args(otherArgs, outType));
+		return op;
 	}
 
 	/**
@@ -91,15 +90,14 @@ public final class Computers {
 	 *          value.
 	 * @return A {@link NullaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <O, OP extends Op> NullaryComputerOp<O> nullary(
 		final OpEnvironment ops, final Class<OP> opType, final O out,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, out);
-		final OpRef<OP> ref = OpRef.createTypes(opType, NullaryComputerOp.class,
-			null, args);
-		return (NullaryComputerOp<O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final NullaryComputerOp<O> op = SpecialOp.op(ops, opType,
+			NullaryComputerOp.class, null, OpUtils.args(otherArgs, out));
+		return op;
 	}
 
 	/**
@@ -119,15 +117,14 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I> inType, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType, inType);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
-		return (UnaryComputerOp<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryComputerOp<I, O> op = SpecialOp.op(ops, opType,
+			UnaryComputerOp.class, null, OpUtils.args(otherArgs, outType, inType));
+		return op;
 	}
 
 	/**
@@ -147,15 +144,14 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I in, final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, outType, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
-		return (UnaryComputerOp<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryComputerOp<I, O> op = SpecialOp.op(ops, opType,
+			UnaryComputerOp.class, null, OpUtils.args(otherArgs, outType, in));
+		return op;
 	}
 
 	/**
@@ -174,15 +170,14 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link UnaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I, O, OP extends Op> UnaryComputerOp<I, O> unary(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I in,
 		final Object... otherArgs)
 	{
-		final Object[] args = OpUtils.args(otherArgs, out, in);
-		final OpRef<OP> ref = OpRef.createTypes(opType, UnaryComputerOp.class,
-			null, args);
-		return (UnaryComputerOp<I, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final UnaryComputerOp<I, O> op = SpecialOp.op(ops, opType,
+			UnaryComputerOp.class, null, OpUtils.args(otherArgs, out, in));
+		return op;
 	}
 
 	/**
@@ -205,16 +200,16 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final Class<I1> in1Type, final Class<I2> in2Type,
 		final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1Type, in2Type);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
-		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryComputerOp<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryComputerOp.class, null, args);
+		return op;
 	}
 
 	/**
@@ -235,15 +230,15 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final Class<O> outType,
 		final I1 in1, final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, outType, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
-		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryComputerOp<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryComputerOp.class, null, args);
+		return op;
 	}
 
 	/**
@@ -263,15 +258,15 @@ public final class Computers {
 	 *          output values.
 	 * @return A {@link BinaryComputerOp} with populated inputs, ready to use.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <I1, I2, O, OP extends Op> BinaryComputerOp<I1, I2, O> binary(
 		final OpEnvironment ops, final Class<OP> opType, final O out, final I1 in1,
 		final I2 in2, final Object... otherArgs)
 	{
 		final Object[] args = OpUtils.args(otherArgs, out, in1, in2);
-		final OpRef<OP> ref = OpRef.createTypes(opType, BinaryComputerOp.class,
-			null, args);
-		return (BinaryComputerOp<I1, I2, O>) ops.op(ref);
+		@SuppressWarnings("unchecked")
+		final BinaryComputerOp<I1, I2, O> op = SpecialOp.op(ops, opType,
+			BinaryComputerOp.class, null, args);
+		return op;
 	}
 
 }
