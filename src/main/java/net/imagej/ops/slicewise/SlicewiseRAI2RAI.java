@@ -32,6 +32,7 @@ package net.imagej.ops.slicewise;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 
@@ -64,13 +65,22 @@ public class SlicewiseRAI2RAI<I, O> extends
 	@Parameter(required = false)
 	private boolean dropSingleDimensions = true;
 
+	private UnaryComputerOp<Hyperslice<I>, Hyperslice<O>> mapper;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		mapper = (UnaryComputerOp) Computers.unary(ops(), Ops.Map.class,
+			Hyperslice.class, Hyperslice.class, op);
+	}
+
 	@Override
 	public void compute1(final RandomAccessibleInterval<I> input,
 		final RandomAccessibleInterval<O> output)
 	{
-		ops().run(Ops.Map.class, new Hyperslice<>(ops(), output, axisIndices,
-			dropSingleDimensions), new Hyperslice<>(ops(), input, axisIndices,
-				dropSingleDimensions), op);
+		mapper.compute1(new Hyperslice<>(ops(), input, axisIndices,
+			dropSingleDimensions), new Hyperslice<>(ops(), output, axisIndices,
+				dropSingleDimensions));
 	}
 
 }

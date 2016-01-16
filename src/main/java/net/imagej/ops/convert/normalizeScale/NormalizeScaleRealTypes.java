@@ -33,6 +33,8 @@ package net.imagej.ops.convert.normalizeScale;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
@@ -46,6 +48,15 @@ import org.scijava.plugin.Plugin;
 public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O>>
 	extends ScaleRealTypes<I, O> implements Ops.Convert.NormalizeScale, Contingent
 {
+	
+	private UnaryFunctionOp<IterableInterval<I>, Pair<I, I>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Stats.MinMax.class, Pair.class, IterableInterval.class);
+	}
 
 	@Override
 	public void checkInput(final I inType, final O outType) {
@@ -54,7 +65,7 @@ public class NormalizeScaleRealTypes<I extends RealType<I>, O extends RealType<O
 
 	@Override
 	public void checkInput(final IterableInterval<I> in) {
-		final Pair<I, I> minMax = ops().stats().minMax(in);
+		final Pair<I, I> minMax = minMaxFunc.compute1(in);
 		final I inType = in.firstElement().createVariable();
 		factor =
 			1.0 / (minMax.getB().getRealDouble() - minMax.getA().getRealDouble()) *

@@ -30,7 +30,11 @@
 
 package net.imagej.ops.threshold;
 
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
 
@@ -44,6 +48,15 @@ import net.imglib2.type.logic.BitType;
 public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
 	AbstractApplyThresholdIterable<T, I, Img<BitType>>
 {
+
+	protected UnaryFunctionOp<Img<T>, Histogram1d<T>> histCreator;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		histCreator = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Image.Histogram.class, Histogram1d.class, in());
+	}
 
 	// -- UnaryOutputFactory methods --
 

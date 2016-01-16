@@ -62,11 +62,17 @@ public class CreateImgFromInterval<T extends Type<T>> extends
 	@Parameter(required = false)
 	private ImgFactory<T> fac;
 
+	private DefaultCreateImg<T> imgCreator;
+
 	@SuppressWarnings("unchecked")
 	@Override
+	public void initialize() {
+		imgCreator = ops().op(DefaultCreateImg.class, in(), outType, fac);
+	}
+
+	@Override
 	public Img<T> compute1(final Interval interval) {
-		Img<T> output =
-			(Img<T>) ops().run(DefaultCreateImg.class, interval, outType, fac);
+		Img<T> output = imgCreator.compute1(interval);
 		long[] min = new long[interval.numDimensions()];
 		interval.min(min);
 

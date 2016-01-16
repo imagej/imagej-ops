@@ -32,6 +32,8 @@ package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -66,6 +68,15 @@ public class LocalThreshold<T extends RealType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
+	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>> mapper;
+
+	@Override
+	public void initialize() {
+		final RandomAccessibleInterval<T> extIn = outOfBounds == null ? in() : Views
+			.interval((Views.extend(in(), outOfBounds)), in());
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), extIn, method, shape);
+	}
+
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
@@ -76,7 +87,7 @@ public class LocalThreshold<T extends RealType<T>>
 			extendedInput = Views.interval(Views.extend(input, outOfBounds), input);
 		}
 
-		ops().map(output, extendedInput, method, shape);
+		mapper.compute1(extendedInput, output);
 	}
 
 }

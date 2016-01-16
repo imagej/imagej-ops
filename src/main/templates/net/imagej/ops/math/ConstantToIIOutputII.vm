@@ -31,9 +31,9 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCFI;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -66,12 +66,14 @@ public final class ConstantToIIOutputII {
 		@Parameter
 		private T value;
 
-		private Op outputCreator;
+		private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> outputCreator;
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public void initialize() {
-			outputCreator = ops().op(Ops.Create.Img.class, in(), in().firstElement()
-				.createVariable());
+			outputCreator = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Create.Img.class, IterableInterval.class, in(), in().firstElement()
+					.createVariable());
 		}
 
 		@Override
@@ -87,16 +89,8 @@ public final class ConstantToIIOutputII {
 		}
 
 		@Override
-		public IterableInterval<T> createOutput(
-			final IterableInterval<T> input)
-		{
-			// NB: Temporary approach until DefaultCreateImg and friends are properly
-			// typed as the needed SpecialOp subtypes.
-			outputCreator.run();
-			@SuppressWarnings("unchecked")
-			final IterableInterval<T> created =
-				((Output<IterableInterval<T>>) outputCreator).out();
-			return created;
+		public IterableInterval<T> createOutput(final IterableInterval<T> input) {
+			return outputCreator.compute1(input);
 		}
 
 		@Override

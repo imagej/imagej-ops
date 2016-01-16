@@ -57,6 +57,7 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 	@Parameter
 	private T threshold;
 	private UnaryComputerOp<T, BitType> applyThreshold;
+	private UnaryComputerOp<Iterable<T>, Iterable<BitType>> mapper;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -64,12 +65,12 @@ public class ApplyConstantThreshold<T extends RealType<T>> extends
 		applyThreshold = (UnaryComputerOp<T, BitType>) Computers.unary(ops(),
 			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
 			threshold);
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), applyThreshold);
 	}
 
 	@Override
 	public void compute1(final Iterable<T> input, final Iterable<BitType> output) {
-		// TODO: Use ops.map(...) once multithreading of BitTypes is fixed.
-		ops().map(output, input, applyThreshold);
+		mapper.compute1(input, output);
 	}
 
 }

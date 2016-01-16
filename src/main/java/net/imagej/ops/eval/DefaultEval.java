@@ -57,10 +57,16 @@ public class DefaultEval extends AbstractUnaryFunctionOp<String, Object>
 	@Parameter(required = false)
 	private Map<String, Object> vars;
 
+	private OpEvaluator e;
+
+	@Override
+	public void initialize() {
+		e = new OpEvaluator(ops());
+		if (vars != null) e.setAll(vars);
+	}
+
 	@Override
 	public Object compute1(final String input) {
-		final OpEvaluator e = new OpEvaluator(ops());
-		if (vars != null) e.setAll(vars);
 		return e.evaluate(input);
 	}
 

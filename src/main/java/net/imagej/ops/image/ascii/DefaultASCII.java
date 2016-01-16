@@ -32,6 +32,8 @@ package net.imagej.ops.image.ascii;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
@@ -62,10 +64,19 @@ public class DefaultASCII<T extends RealType<T>> extends
 	@Parameter(required = false)
 	private T max;
 
+	private UnaryFunctionOp<IterableInterval<T>, Pair<T, T>> minMaxFunc;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Stats.MinMax.class, Pair.class, in());
+	}
+
 	@Override
 	public String compute1(final IterableInterval<T> input) {
 		if (min == null || max == null) {
-			final Pair<T, T> minMax = ops().stats().minMax(input);
+			final Pair<T, T> minMax = minMaxFunc.compute1(input);
 			if (min == null) min = minMax.getA();
 			if (max == null) max = minMax.getB();
 		}

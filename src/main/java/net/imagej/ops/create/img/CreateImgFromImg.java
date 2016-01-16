@@ -32,6 +32,8 @@ package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
@@ -52,10 +54,18 @@ public class CreateImgFromImg<T extends NativeType<T>> extends
 	AbstractUnaryFunctionOp<Img<T>, Img<T>> implements Ops.Create.Img
 {
 
+	private UnaryFunctionOp<Img<T>, Img<T>> imgCreator;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), in().firstElement().createVariable(), in().factory());
+	}
+
 	@Override
 	public Img<T> compute1(final Img<T> input) {
-		return ops().create().img(input,
-			input.firstElement().createVariable(), input.factory());
+		return imgCreator.compute1(input);
 	}
 
 }

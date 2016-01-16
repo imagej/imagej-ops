@@ -31,9 +31,9 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Output;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -63,12 +63,14 @@ public final class IIToIIOutputII {
 		Contingent
 	{
 
-		private Op outputCreator;
+		private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> outputCreator;
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public void initialize() {
-			outputCreator = ops().op(Ops.Create.Img.class, in1(), in1().firstElement()
-				.createVariable());
+			outputCreator = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Create.Img.class, IterableInterval.class, in1(), in1().firstElement()
+					.createVariable());
 		}
 
 		// TODO: extend common abstract base class which implements Contingent
@@ -87,13 +89,7 @@ public final class IIToIIOutputII {
 		public IterableInterval<T> createOutput(final IterableInterval<T> input1,
 			final IterableInterval<T> input2)
 		{
-			// NB: Temporary approach until DefaultCreateImg and friends are properly
-			// typed as the needed SpecialOp subtypes.
-			outputCreator.run();
-			@SuppressWarnings("unchecked")
-			final IterableInterval<T> created =
-				((Output<IterableInterval<T>>) outputCreator).out();
-			return created;
+			return outputCreator.compute1(input1);
 		}
 
 		@Override

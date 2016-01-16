@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.NullaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
@@ -52,10 +54,19 @@ import org.scijava.plugin.Plugin;
 public class CopyLabelingMapping<L> extends
 		AbstractUnaryHybridCF<LabelingMapping<L>, LabelingMapping<L>> implements
 		Ops.Copy.LabelingMapping {
+	
+	private NullaryFunctionOp<LabelingMapping<L>> outputCreator;
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		outputCreator = (NullaryFunctionOp) Functions.nullary(ops(),
+			Ops.Create.LabelingMapping.class, LabelingMapping.class, in().numSets());
+	}
 
 	@Override
 	public LabelingMapping<L> createOutput(final LabelingMapping<L> input) {
-		return ops().create().labelingMapping(input.numSets());
+		return outputCreator.compute0();
 	}
 
 	@Override

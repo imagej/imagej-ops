@@ -34,7 +34,10 @@ import java.util.Iterator;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;
@@ -68,6 +71,15 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	@Parameter(required = false)
 	private Iterator<L> labelGenerator;
 
+	private UnaryFunctionOp<Interval, ImgLabeling<L, I>> imgLabelingCreator;
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public void initialize() {
+		imgLabelingCreator = (UnaryFunctionOp) Functions.unary(ops(),
+			Ops.Create.ImgLabeling.class, ImgLabeling.class, in());
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
@@ -82,11 +94,10 @@ public class DefaultCCA<T extends IntegerType<T>, L, I extends IntegerType<I>>
 	}
 
 	@Override
-	public ImgLabeling<L, I>
-		createOutput(final RandomAccessibleInterval<T> input)
+	public ImgLabeling<L, I> createOutput(
+		final RandomAccessibleInterval<T> input)
 	{
-		// HACK: For Java 6 compiler.
-		return ops().create().<L, I> imgLabeling(input);
+		return imgLabelingCreator.compute1(input);
 	}
 
 	@Override

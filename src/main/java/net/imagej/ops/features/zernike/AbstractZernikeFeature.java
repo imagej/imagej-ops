@@ -30,7 +30,6 @@
 package net.imagej.ops.features.zernike;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.OpService;
 import net.imagej.ops.features.zernike.helper.ZernikeComputer;
 import net.imagej.ops.features.zernike.helper.ZernikeMoment;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
@@ -55,9 +54,6 @@ public abstract class AbstractZernikeFeature<I extends RealType<I>, O extends Re
 		implements ZernikeFeature<I,O>, Contingent {
 
 	@Parameter
-	protected OpService ops;
-
-	@Parameter
 	protected int order;
 
 	@Parameter
@@ -73,7 +69,7 @@ public abstract class AbstractZernikeFeature<I extends RealType<I>, O extends Re
 	 */
 	protected ZernikeMoment getZernikeMoment(final IterableInterval<I> input) {
 	
-		return (ZernikeMoment) ops.run(ZernikeComputer.class, input, order, repitition);
+		return (ZernikeMoment) ops().run(ZernikeComputer.class, input, order, repitition);
 	}
 
 	@SuppressWarnings("unchecked")

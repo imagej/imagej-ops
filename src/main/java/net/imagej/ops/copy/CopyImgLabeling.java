@@ -34,6 +34,8 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -59,17 +61,20 @@ public class CopyImgLabeling<T extends IntegerType<T> & NativeType<T>, L>
 	
 	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> raiCopyOp;
 	private UnaryComputerOp<LabelingMapping<L>, LabelingMapping<L>> mappingCopyOp;
+	private UnaryFunctionOp<ImgLabeling<L, T>, ImgLabeling<L, T>> outputCreator;
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
 		raiCopyOp = Computers.unary(ops(), Ops.Copy.RAI.class, in().getIndexImg() ,in().getIndexImg());
 		mappingCopyOp = Computers.unary(ops(), Ops.Copy.LabelingMapping.class, in().getMapping(), in().getMapping());
+		outputCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.ImgLabeling.class, ImgLabeling.class, in());
 	}
 	
 	@Override
 	public ImgLabeling<L, T> createOutput(final ImgLabeling<L, T> input) {
-		return ops().create().imgLabeling(input);
+		return outputCreator.compute1(input);
 	}
 
 	

@@ -32,7 +32,10 @@ package net.imagej.ops.create.imgLabeling;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Dimensions;
+import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
 import net.imglib2.type.numeric.IntegerType;
@@ -63,15 +66,21 @@ public class DefaultCreateImgLabeling<L, T extends IntegerType<T>> extends
 	@Parameter(required = false)
 	private int maxNumLabelSets;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public ImgLabeling<L, T> compute1(final Dimensions input) {
+	private UnaryFunctionOp<Dimensions, Img<T>> imgCreator;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
 		if (outType == null) {
 			outType = (T) ops().create().integerType(maxNumLabelSets);
 		}
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), outType, fac);
+	}
 
-		return new ImgLabeling<>(ops().create().img(input, outType, fac));
+	@Override
+	public ImgLabeling<L, T> compute1(final Dimensions input) {
+		return new ImgLabeling<>(imgCreator.compute1(input));
 	}
 
 }
