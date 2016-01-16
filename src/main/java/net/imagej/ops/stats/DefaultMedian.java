@@ -30,13 +30,13 @@
 
 package net.imagej.ops.stats;
 
-import org.scijava.plugin.Plugin;
-
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
+
+import org.scijava.plugin.Plugin;
 
 /**
  * {@link Op} to calculate the {@code stats.median}.

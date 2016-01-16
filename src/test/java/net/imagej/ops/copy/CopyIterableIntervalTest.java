@@ -32,7 +32,6 @@ package net.imagej.ops.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
 import java.util.Random;
 
 import net.imagej.ops.AbstractOpTest;
@@ -44,6 +43,7 @@ import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.planar.PlanarImgFactory;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
+
 import org.junit.Before;
 import org.junit.Test;
 
