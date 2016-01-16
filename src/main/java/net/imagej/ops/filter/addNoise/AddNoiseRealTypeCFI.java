@@ -33,19 +33,24 @@ package net.imagej.ops.filter.addNoise;
 import java.util.Random;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.AbstractUnaryHybridCFI;
 import net.imglib2.type.numeric.RealType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Sets the real component of an output real number to the addition of the real
- * component of an input real number with an amount of Gaussian noise.
+ * Adds Gaussian noise to a real number.
+ * <p>
+ * This op is a hybrid computer/function/inplace, since input and output types
+ * are the same. For input and output of different types, see
+ * {@link AddNoiseRealType}.
+ * </p>
  */
-@Plugin(type = Ops.Filter.AddNoise.class)
-public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractUnaryComputerOp<I, O> implements Ops.Filter.AddNoise
+@Plugin(type = Ops.Filter.AddNoise.class, priority = Priority.HIGH_PRIORITY)
+public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
+	AbstractUnaryHybridCFI<T> implements Ops.Filter.AddNoise
 {
 
 	@Parameter
@@ -59,37 +64,31 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 
 	@Parameter(required = false)
 	private long seed = 0xabcdef1234567890L;
-	
+
 	private Random rng;
 
 	// -- UnaryComputerOp methods --
 
 	@Override
-	public void compute1(final I input, final O output) {
+	public void compute1(final T input, final T output) {
 		if (rng == null) rng = new Random(seed);
-		addNoise(input, output, rangeMin, rangeMax, rangeStdDev, rng);
+		AddNoiseRealType.addNoise(input, output, rangeMin, rangeMax, rangeStdDev,
+			rng);
 	}
 
-	// -- Static utility methods --
+	// -- UnaryInplaceOp methods --
 
-	public static <I extends RealType<I>, O extends RealType<O>> void addNoise(
-		final I input, final O output, final double rangeMin, final double rangeMax,
-		final double rangeStdDev, final Random rng)
-	{
-		int i = 0;
-		do {
-			final double newVal =
-				input.getRealDouble() + (rng.nextGaussian() * rangeStdDev);
-			if ((rangeMin <= newVal) && (newVal <= rangeMax)) {
-				output.setReal(newVal);
-				return;
-			}
-			if (i++ > 100) {
-				throw new IllegalArgumentException(
-					"noise function failing to terminate. probably misconfigured.");
-			}
-		}
-		while (true);
+	@Override
+	public void mutate(final T arg) {
+		if (rng == null) rng = new Random(seed);
+		AddNoiseRealType.addNoise(arg, arg, rangeMin, rangeMax, rangeStdDev, rng);
+	}
+
+	// -- UnaryOutputFactory methods --
+
+	@Override
+	public T createOutput(final T input) {
+		return input.createVariable();
 	}
 
 }
