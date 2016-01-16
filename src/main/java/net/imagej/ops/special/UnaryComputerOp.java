@@ -67,10 +67,9 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 		// check computer preconditions
 		if (input == null) throw new NullPointerException("input is null");
 		if (output == null) throw new NullPointerException("output is null");
-		// TEMP: Until nothing relies on passing input == output to a computer.
-//		if (input == output) {
-//			throw new IllegalArgumentException("Computer expects input != output");
-//		}
+		if (input == output) {
+			throw new IllegalArgumentException("Computer expects input != output");
+		}
 		// compute the result
 		compute1(input, output);
 		return output;
