@@ -69,6 +69,7 @@ import net.imglib2.type.Type;
 
 import org.scijava.Contextual;
 import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
 
 /**
  * An op environment is the top-level entry point into op execution. It provides
@@ -124,7 +125,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByName.class)
 	default Object run(final String name, final Object... args) {
-		return OpUtils.run(module(name, args));
+		return run(module(name, args));
 	}
 
 	/**
@@ -147,7 +148,7 @@ public interface OpEnvironment extends Contextual {
 	default <OP extends Op> Object run(final Class<OP> type,
 		final Object... args)
 	{
-		return OpUtils.run(module(type, args));
+		return run(module(type, args));
 	}
 
 	/**
@@ -162,7 +163,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByOp.class)
 	default Object run(final Op op, final Object... args) {
-		return OpUtils.run(module(op, args));
+		return run(module(op, args));
 	}
 
 	/**
@@ -797,6 +798,19 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "zernike" namespace. */
 	default ZernikeNamespace zernike() {
 		return namespace(ZernikeNamespace.class);
+	}
+
+	// -- Helper methods --
+
+	static Object run(final Module module) {
+		module.run();
+
+		final List<Object> outputs = new ArrayList<>();
+		for (final ModuleItem<?> output : module.getInfo().outputs()) {
+			final Object value = output.getValue(module);
+			outputs.add(value);
+		}
+		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
 }

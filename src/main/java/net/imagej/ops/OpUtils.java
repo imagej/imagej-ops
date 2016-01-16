@@ -30,7 +30,6 @@
 
 package net.imagej.ops;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,20 +53,6 @@ public final class OpUtils {
 	}
 
 	// -- Utility methods --
-
-	public static Object run(final Module module) {
-		module.run();
-		return result(module);
-	}
-
-	public static Object result(final Module module) {
-		final List<Object> outputs = new ArrayList<>();
-		for (final ModuleItem<?> output : module.getInfo().outputs()) {
-			final Object value = output.getValue(module);
-			outputs.add(value);
-		}
-		return outputs.size() == 1 ? outputs.get(0) : outputs;
-	}
 
 	public static Object[] args(final Object[] latter, final Object... former) {
 		final Object[] result = new Object[former.length + latter.length];
