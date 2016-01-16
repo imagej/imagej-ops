@@ -35,6 +35,7 @@ package net.imagej.ops.special;
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
+ * @see BinaryInput
  * @see Output
  */
 public interface UnaryInput<I> {
