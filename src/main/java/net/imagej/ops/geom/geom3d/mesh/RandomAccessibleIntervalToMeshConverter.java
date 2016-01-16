@@ -30,6 +30,8 @@
 
 package net.imagej.ops.geom.geom3d.mesh;
 
+import java.lang.reflect.Type;
+
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
@@ -63,7 +65,8 @@ public class RandomAccessibleIntervalToMeshConverter extends
 	@Override
 	public <T> T convert(Object src, Class<T> dest) {
 		if (marchingCubesFunc == null) {
-			marchingCubesFunc = Functions.unary(ops, Ops.Geometric.MarchingCubes.class, Mesh.class,
+			marchingCubesFunc = Functions.unary(ops,
+				Ops.Geometric.MarchingCubes.class, Mesh.class,
 				(RandomAccessibleInterval) src);
 		}
 		if (src instanceof IterableInterval<?>) {
@@ -83,8 +86,30 @@ public class RandomAccessibleIntervalToMeshConverter extends
 	}
 
 	@Override
-	public boolean supports(ConversionRequest request) {
-		return super.supports(request) && ((IterableInterval) request
-			.sourceObject()).numDimensions() == 3;
+	public boolean supports(final ConversionRequest request) {
+
+		final Object sourceObject = request.sourceObject();
+
+		if (sourceObject == null ||
+			!(sourceObject instanceof RandomAccessibleInterval))
+		{
+			return false;
+		}
+
+		if (((RandomAccessibleInterval) sourceObject).numDimensions() != 3) {
+			return false;
+		}
+
+		Class<?> destClass = request.destClass();
+		Type destType = request.destType();
+
+		if (destClass != null && !(destClass == Mesh.class)) {
+			return false;
+		}
+		else if (destType != null && !(destType == Mesh.class)) {
+			return false;
+		}
+
+		return true;
 	}
 }
