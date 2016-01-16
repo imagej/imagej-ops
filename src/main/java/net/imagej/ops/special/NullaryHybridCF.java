@@ -31,18 +31,17 @@
 package net.imagej.ops.special;
 
 /**
- * A <em>hybrid</em> nullary operation can be used as either a
- * {@link NullaryFunctionOp} or as a {@link NullaryComputerOp}.
+ * A hybrid nullary operation which can be used as a {@link NullaryComputerOp}
+ * or {@link NullaryFunctionOp}.
  * <p>
- * To compute a new output object, call {@link NullaryFunctionOp#compute0}; to
- * populate an already-existing output object, call
- * {@link NullaryComputerOp#compute0}.
+ * To populate a preallocated output object, call
+ * {@link NullaryComputerOp#compute0}; to compute a new output object, call
+ * {@link NullaryFunctionOp#compute0}. To do any of these things as appropriate,
+ * call {@link #run(Object)}.
  * </p>
  * 
  * @author Curtis Rueden
  * @param <O> type of output
- * @see NullaryComputerOp
- * @see NullaryFunctionOp
  */
 public interface NullaryHybridCF<O> extends NullaryComputerOp<O>,
 	NullaryFunctionOp<O>, NullaryOutputFactory<O>

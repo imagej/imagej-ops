@@ -31,20 +31,20 @@
 package net.imagej.ops.special;
 
 /**
- * A unary <em>hybrid</em> operation can be used as either a
- * {@link UnaryFunctionOp} or as a {@link UnaryComputerOp}.
+ * A hybrid unary operation which can be used as a {@link UnaryComputerOp} or
+ * {@link UnaryFunctionOp}.
  * <p>
- * To compute a new output object, call {@link UnaryFunctionOp#compute1}; to
- * populate an already-existing output object, call
- * {@link UnaryComputerOp#compute1}.
+ * To populate a preallocated output object, call
+ * {@link UnaryComputerOp#compute1}; to compute a new output object, call
+ * {@link UnaryFunctionOp#compute1}. To do any of these things as appropriate,
+ * call {@link #run(Object, Object)}.
  * </p>
  * 
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  * @param <I> type of input
  * @param <O> type of output
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
+ * @see UnaryHybridCFI
  */
 public interface UnaryHybridCF<I, O> extends UnaryComputerOp<I, O>,
 	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>, NullaryHybridCF<O>

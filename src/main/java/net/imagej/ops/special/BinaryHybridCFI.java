@@ -44,9 +44,8 @@ package net.imagej.ops.special;
  * 
  * @author Curtis Rueden
  * @param <A> type of inputs + output
- * @see BinaryComputerOp
- * @see BinaryFunctionOp
- * @see BinaryInplaceOp
+ * @see BinaryHybridCF
+ * @see BinaryHybridCFI1
  */
 public interface BinaryHybridCFI<A> extends BinaryHybridCFI1<A, A>,
 	BinaryInplaceOp<A>

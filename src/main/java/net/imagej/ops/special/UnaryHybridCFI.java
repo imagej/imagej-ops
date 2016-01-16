@@ -37,11 +37,13 @@ package net.imagej.ops.special;
  * To populate a preallocated output object, call
  * {@link UnaryComputerOp#compute1}; to compute a new output object, call
  * {@link UnaryFunctionOp#compute1}; to mutate an object inplace, call
- * {@link UnaryInplaceOp#mutate}.
+ * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
+ * {@link #run(Object, Object)}.
  * </p>
  * 
  * @author Curtis Rueden
  * @param <A> type of input + output
+ * @see UnaryHybridCF
  */
 public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
 	UnaryInplaceOp<A>

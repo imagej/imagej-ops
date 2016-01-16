@@ -31,20 +31,21 @@
 package net.imagej.ops.special;
 
 /**
- * A <em>hybrid</em> binary operation can be used as either a
- * {@link BinaryFunctionOp} or as a {@link BinaryComputerOp}.
+ * A hybrid binary operation which can be used as a {@link BinaryComputerOp} or
+ * {@link BinaryFunctionOp}.
  * <p>
- * To compute a new output object, call {@link BinaryFunctionOp#compute2}; to
- * populate an already-existing output object, call
- * {@link BinaryComputerOp#compute2}.
+ * To populate a preallocated output object, call
+ * {@link BinaryComputerOp#compute2}; to compute a new output object, call
+ * {@link BinaryFunctionOp#compute2}. To do any of these things as appropriate,
+ * call {@link #run(Object, Object, Object)}.
  * </p>
  * 
  * @author Curtis Rueden
  * @param <I1> type of first input
  * @param <I2> type of second input
  * @param <O> type of output
- * @see BinaryComputerOp
- * @see BinaryFunctionOp
+ * @see BinaryHybridCFI
+ * @see BinaryHybridCFI1
  */
 public interface BinaryHybridCF<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
 	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>,
