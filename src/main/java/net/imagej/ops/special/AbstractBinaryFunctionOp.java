@@ -57,7 +57,7 @@ public abstract class AbstractBinaryFunctionOp<I1, I2, O> extends
 
 	@Override
 	public void run() {
-		out = compute2(in1(), in2());
+		out = run(in1(), in2(), null);
 	}
 
 	// -- BinaryInput methods --

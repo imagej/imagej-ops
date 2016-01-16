@@ -35,7 +35,7 @@ package net.imagej.ops.special;
  * values.
  * <p>
  * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
- * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridOp},
+ * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridCF},
  * unions both flavors.
  * </p>
  * 
@@ -43,9 +43,29 @@ package net.imagej.ops.special;
  * @param <O> type of output
  * @see NullaryComputerOp
  * @see NullaryFunctionOp
- * @see NullaryHybridOp
+ * @see NullaryHybridCF
  */
 public interface NullaryOp<O> extends SpecialOp, Output<O> {
+
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see NullaryComputerOp#run(Object)
+	 * @see NullaryFunctionOp#run(Object)
+	 * @see NullaryHybridCF#run(Object)
+	 */
+	O run(O output);
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(out());
+	}
 
 	// -- Threadable methods --
 

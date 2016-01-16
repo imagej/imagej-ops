@@ -31,52 +31,56 @@
 package net.imagej.ops.special;
 
 /**
- * A unary <em>hybrid</em> operation can be used as either a
- * {@link UnaryFunctionOp} or as a {@link UnaryComputerOp}.
+ * A hybrid nullary operation which can be used as a {@link NullaryComputerOp}
+ * or {@link NullaryFunctionOp}.
  * <p>
- * To compute a new output object, call {@link UnaryFunctionOp#compute1}; to
- * populate an already-existing output object, call
- * {@link UnaryComputerOp#compute1}.
+ * To populate a preallocated output object, call
+ * {@link NullaryComputerOp#compute0}; to compute a new output object, call
+ * {@link NullaryFunctionOp#compute0}. To do any of these things as appropriate,
+ * call {@link #run(Object)}.
  * </p>
  * 
  * @author Curtis Rueden
- * @author Christian Dietz (University of Konstanz)
- * @param <I> type of input
  * @param <O> type of output
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
  */
-public interface UnaryHybridOp<I, O> extends UnaryComputerOp<I, O>,
-	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>, NullaryHybridOp<O>
+public interface NullaryHybridCF<O> extends NullaryComputerOp<O>,
+	NullaryFunctionOp<O>, NullaryOutputFactory<O>
 {
-
-	// -- UnaryFunctionOp methods --
-
-	@Override
-	default O compute1(final I input) {
-		final O output = createOutput(input);
-		compute1(input, output);
-		return output;
-	}
 
 	// -- NullaryFunctionOp methods --
 
 	@Override
 	default O compute0() {
-		return compute1(in());
+		final O output = createOutput();
+		compute0(output);
+		return output;
 	}
 
-	// -- NullaryOutputFactory methods --
+	// -- NullaryOp methods --
 
 	@Override
-	default O createOutput() {
-		return createOutput(in());
+	default O run(final O output) {
+		if (output == null) {
+			// run as a function
+			return compute0();
+		}
+
+		// run as a computer
+		compute0(output);
+		return output;
+	}
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		setOutput(run(out()));
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default UnaryHybridOp<I, O> getIndependentInstance() {
+	default NullaryHybridCF<O> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

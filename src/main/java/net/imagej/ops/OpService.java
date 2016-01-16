@@ -37,9 +37,9 @@ import org.scijava.plugin.PTService;
 /**
  * Interface for services that manage and execute {@link Op}s.
  * <p>
- * Note that the op service implements {@link OpEnvironment}, to provide a "global"
- * op execution environment. This is done for convenience of simple use cases,
- * to make calling the built-in ops as easy as possible.
+ * Note that the op service implements {@link OpEnvironment}, to provide a
+ * "global" op execution environment. This is done for convenience of simple use
+ * cases, to make calling the built-in ops as easy as possible.
  * </p>
  *
  * @author Curtis Rueden
@@ -47,5 +47,4 @@ import org.scijava.plugin.PTService;
  */
 public interface OpService extends PTService<Op>, ImageJService, OpEnvironment {
 	// NB: Marker interface.
-
 }

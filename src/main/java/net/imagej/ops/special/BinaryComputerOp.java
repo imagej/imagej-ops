@@ -45,7 +45,7 @@ package net.imagej.ops.special;
  * @param <I2> type of second input
  * @param <O> type of output
  * @see BinaryFunctionOp
- * @see BinaryHybridOp
+ * @see BinaryInplaceOp
  */
 public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	UnaryComputerOp<I1, O>
@@ -54,11 +54,34 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	/**
 	 * Computes the output given two inputs.
 	 * 
-	 * @param input1 first argument to the computation
-	 * @param input2 second argument to the computation
-	 * @param output object where the computation's result will be stored
+	 * @param input1 first argument to the computation, which
+	 *          <em>must be non-null</em>
+	 * @param input2 second argument to the computation, which
+	 *          <em>must be non-null</em>
+	 * @param output object where the computation's result will be stored, which
+	 *          <em>must be non-null and a different object than
+	 *          {@code input1} and {@code input2}</em>
 	 */
 	void compute2(I1 input1, I2 input2, O output);
+
+	// -- BinaryOp methods --
+
+	@Override
+	default O run(final I1 input1, final I2 input2, final O output) {
+		// check computer preconditions
+		if (input1 == null) throw new NullPointerException("input1 is null");
+		if (input2 == null) throw new NullPointerException("input2 is null");
+		if (output == null) throw new NullPointerException("output is null");
+		if (input1 == output) {
+			throw new IllegalArgumentException("Computer expects input1 != output");
+		}
+		if (input2 == output) {
+			throw new IllegalArgumentException("Computer expects input2 != output");
+		}
+		// compute the result
+		compute2(input1, input2, output);
+		return output;
+	}
 
 	// -- UnaryComputerOp methods --
 
@@ -71,7 +94,7 @@ public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 
 	@Override
 	default void run() {
-		compute2(in1(), in2(), out());
+		setOutput(run(in1(), in2(), out()));
 	}
 
 	// -- Threadable methods --

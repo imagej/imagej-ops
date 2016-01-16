@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.AbstractInplaceOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 import org.scijava.plugin.Parameter;
 
@@ -42,22 +42,22 @@ import org.scijava.plugin.Parameter;
  * @param <EA> element type of inplace arguments
  * @param <PA> producer of arguments
  */
-public abstract class AbstractMapInplace<EA, PA> extends AbstractInplaceOp<PA>
-	implements MapInplace<EA, InplaceOp<EA>>
+public abstract class AbstractMapInplace<EA, PA> extends AbstractUnaryInplaceOp<PA>
+	implements MapInplace<EA, UnaryInplaceOp<EA>>
 {
 
 	@Parameter
-	private InplaceOp<EA> op;
+	private UnaryInplaceOp<EA> op;
 
 	// -- MapOp methods --
 
 	@Override
-	public InplaceOp<EA> getOp() {
+	public UnaryInplaceOp<EA> getOp() {
 		return op;
 	}
 
 	@Override
-	public void setOp(final InplaceOp<EA> op) {
+	public void setOp(final UnaryInplaceOp<EA> op) {
 		this.op = op;
 	}
 

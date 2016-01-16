@@ -31,53 +31,60 @@
 package net.imagej.ops.special;
 
 /**
- * A <em>hybrid</em> binary operation can be used as either a
- * {@link BinaryFunctionOp} or as a {@link BinaryComputerOp}.
- * <p>
- * To compute a new output object, call {@link BinaryFunctionOp#compute2}; to
- * populate an already-existing output object, call
- * {@link BinaryComputerOp#compute2}.
- * </p>
+ * A unary <em>inplace</em> operation is an op which mutates a parameter.
  * 
  * @author Curtis Rueden
- * @param <I1> type of first input
- * @param <I2> type of second input
- * @param <O> type of output
- * @see BinaryComputerOp
- * @see BinaryFunctionOp
+ * @param <A> type of argument
+ * @see UnaryComputerOp
+ * @see UnaryFunctionOp
  */
-public interface BinaryHybridOp<I1, I2, O> extends BinaryComputerOp<I1, I2, O>,
-	BinaryFunctionOp<I1, I2, O>, BinaryOutputFactory<I1, I2, O>,
-	UnaryHybridOp<I1, O>
-{
+public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 
-	// -- BinaryFunctionOp methods --
+	/**
+	 * Mutates the given input argument in-place.
+	 * 
+	 * @param arg of the {@link UnaryInplaceOp}
+	 */
+	void mutate(A arg);
+
+	// -- UnaryOp methods --
 
 	@Override
-	default O compute2(final I1 input1, final I2 input2) {
-		final O output = createOutput(input1, input2);
-		compute2(input1, input2, output);
+	default A run(final A input, final A output) {
+		// check inplace preconditions
+		if (input == null) throw new NullPointerException("input is null");
+		if (input != output) {
+			throw new IllegalArgumentException("Inplace expects input == output");
+		}
+
+		// compute the result
+		mutate(input);
 		return output;
 	}
 
-	// -- UnaryFunctionOp methods --
+	// -- NullaryOp methods --
 
 	@Override
-	default O compute1(final I1 input) {
-		return compute2(input, in2());
+	default A run(final A output) {
+		// check inplace preconditions
+		if (output == null) throw new NullPointerException("output is null");
+
+		// compute the result
+		mutate(output);
+		return output;
 	}
 
-	// -- UnaryOutputFactory methods --
+	// -- Output methods --
 
 	@Override
-	default O createOutput(final I1 input) {
-		return createOutput(input, in2());
+	default A out() {
+		return in();
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default BinaryHybridOp<I1, I2, O> getIndependentInstance() {
+	default UnaryInplaceOp<A> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

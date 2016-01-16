@@ -33,8 +33,7 @@ package net.imagej.ops.math;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.AbstractUnaryHybridCFI;
 import net.imagej.ops.special.Output;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -60,8 +59,8 @@ public final class ConstantToIIOutputII {
 
 	@Plugin(type = ${iface}.class)
 	public static class ${op.name}<T extends NumericType<T>> extends
-		AbstractUnaryHybridOp<IterableInterval<T>, IterableInterval<T>>
-		implements InplaceOp<IterableInterval<T>>, Contingent, $iface
+		AbstractUnaryHybridCFI<IterableInterval<T>>
+		implements Contingent, $iface
 	{
 
 		@Parameter
@@ -114,20 +113,9 @@ public final class ConstantToIIOutputII {
 		}
 
 		@Override
-		public IterableInterval<T> arg() {
-			return out();
-		}
-
-		@Override
-		public void setArg(final IterableInterval<T> arg) {
-			setOutput(arg);
-		}
-
-		@Override
 		public ${op.name}<T> getIndependentInstance() {
 			return this;
 		}
-
 	}
 #end
 }

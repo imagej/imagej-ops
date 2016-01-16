@@ -32,7 +32,7 @@ package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.UnaryComputerOp;
@@ -52,7 +52,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Copy.Img.class)
 public class CopyImg<T extends NativeType<T>> extends
-		AbstractUnaryHybridOp<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
+		AbstractUnaryHybridCF<Img<T>, Img<T>> implements Ops.Copy.Img, Contingent {
 	
 	private UnaryComputerOp<Iterable<T>, Iterable<T>> copyComputer;
 

@@ -30,12 +30,12 @@
 
 package net.imagej.ops.logic;
 
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.type.logic.BoolType;
 
 /** Abstract superclass for {@link Condition} ops. */
 public abstract class AbstractCondition<T> extends
-	AbstractUnaryHybridOp<T, BoolType> implements Condition<T>
+	AbstractUnaryHybridCF<T, BoolType> implements Condition<T>
 {
 
 	@Override

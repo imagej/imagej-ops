@@ -30,71 +30,13 @@
 
 package net.imagej.ops.special;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link BinaryHybridOp} implementations.
+ * Abstract superclass for {@link UnaryHybridCFI} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractBinaryHybridOp<I1, I2, O> extends
-	AbstractBinaryOp<I1, I2, O> implements BinaryHybridOp<I1, I2, O>
+public abstract class AbstractUnaryHybridCFI<IO> extends
+	AbstractUnaryHybridCF<IO, IO> implements UnaryHybridCFI<IO>
 {
-
-	// -- Parameters --
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
-	@Parameter
-	private I1 in1;
-
-	@Parameter
-	private I2 in2;
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		if (out() == null) out = compute2(in1(), in2());
-		else compute2(in1(), in2(), out());
-	}
-
-	// -- BinaryInput methods --
-
-	@Override
-	public I1 in1() {
-		return in1;
-	}
-
-	@Override
-	public I2 in2() {
-		return in2;
-	}
-
-	@Override
-	public void setInput1(final I1 input1) {
-		in1 = input1;
-	}
-
-	@Override
-	public void setInput2(final I2 input2) {
-		in2 = input2;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public O out() {
-		return out;
-	}
-
-	// -- OutputMutable methods --
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
+	// NB: No implementation needed.
 }

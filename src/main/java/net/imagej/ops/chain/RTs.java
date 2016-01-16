@@ -34,15 +34,15 @@ import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.special.BinaryComputerOp;
 import net.imagej.ops.special.BinaryFunctionOp;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryHybridCF;
 import net.imagej.ops.special.Computers;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.Hybrids;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.Inplaces;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.type.numeric.RealType;
 
 /**
@@ -75,14 +75,14 @@ public final class RTs {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <I, O extends RealType<O>> UnaryHybridOp<I, O> hybrid(
+	public static <I, O extends RealType<O>> UnaryHybridCF<I, O> hybrid(
 		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
 		final Object... otherArgs)
 	{
-		return (UnaryHybridOp) Hybrids.unary(ops, opType, RealType.class, in, otherArgs);
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RealType.class, in, otherArgs);
 	}
 
-	public static <A extends RealType<A>> InplaceOp<A> inplace(
+	public static <A extends RealType<A>> UnaryInplaceOp<A> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
 		final Object... otherArgs)
 	{
@@ -108,11 +108,11 @@ public final class RTs {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <I1, I2, O extends RealType<O>> BinaryHybridOp<I1, I2, O>
+	public static <I1, I2, O extends RealType<O>> BinaryHybridCF<I1, I2, O>
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
 			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryHybridOp) Hybrids.binary(ops, opType, RealType.class, in1, in2,
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, RealType.class, in1, in2,
 			otherArgs);
 	}
 

@@ -36,7 +36,7 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  * @param <O> type of output
  * @see NullaryFunctionOp
- * @see NullaryHybridOp
+ * @see NullaryHybridCF
  */
 public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 
@@ -46,6 +46,19 @@ public interface NullaryFunctionOp<O> extends NullaryOp<O> {
 	 * @return output result of the function
 	 */
 	O compute0();
+
+	// -- NullaryOp methods --
+
+	@Override
+	default O run(final O output) {
+		// check function preconditions
+		if (output != null) {
+			throw new IllegalArgumentException(
+				"Function expects a null output reference");
+		}
+		// compute the result
+		return compute0();
+	}
 
 	// -- Threadable methods --
 

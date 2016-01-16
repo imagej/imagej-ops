@@ -28,45 +28,67 @@
  * #L%
  */
 
-package net.imagej.ops.special;
+package net.imagej.ops.filter.addNoise;
 
-import org.scijava.ItemIO;
+import java.util.Random;
+
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.AbstractUnaryHybridCFI;
+import net.imglib2.type.numeric.RealType;
+
+import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Abstract superclass for {@link NullaryHybridOp} implementations.
- * 
- * @author Curtis Rueden
+ * Adds Gaussian noise to a real number.
+ * <p>
+ * This op is a hybrid computer/function/inplace, since input and output types
+ * are the same. For input and output of different types, see
+ * {@link AddNoiseRealType}.
+ * </p>
  */
-public abstract class AbstractNullaryHybridOp<O> extends AbstractNullaryOp<O>
-	implements NullaryHybridOp<O>
+@Plugin(type = Ops.Filter.AddNoise.class, priority = Priority.HIGH_PRIORITY)
+public class AddNoiseRealTypeCFI<T extends RealType<T>> extends
+	AbstractUnaryHybridCFI<T> implements Ops.Filter.AddNoise
 {
 
-	// -- Parameters --
+	@Parameter
+	private double rangeMin;
 
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
+	@Parameter
+	private double rangeMax;
 
-	// -- Runnable methods --
+	@Parameter
+	private double rangeStdDev;
+
+	@Parameter(required = false)
+	private long seed = 0xabcdef1234567890L;
+
+	private Random rng;
+
+	// -- UnaryComputerOp methods --
 
 	@Override
-	public void run() {
-		if (out() == null) out = compute0();
-		else compute0(out());
+	public void compute1(final T input, final T output) {
+		if (rng == null) rng = new Random(seed);
+		AddNoiseRealType.addNoise(input, output, rangeMin, rangeMax, rangeStdDev,
+			rng);
 	}
 
-	// -- Output methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
-	public O out() {
-		return out;
+	public void mutate(final T arg) {
+		if (rng == null) rng = new Random(seed);
+		AddNoiseRealType.addNoise(arg, arg, rangeMin, rangeMax, rangeStdDev, rng);
 	}
 
-	// -- OutputMutable methods --
+	// -- UnaryOutputFactory methods --
 
 	@Override
-	public void setOutput(final O output) {
-		out = output;
+	public T createOutput(final T input) {
+		return input.createVariable();
 	}
 
 }

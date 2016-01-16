@@ -30,35 +30,57 @@
 
 package net.imagej.ops.special;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link NullaryFunctionOp} implementations.
+ * A binary <em>inplace</em> operation is an op which computes a result from two
+ * given arguments, storing it either the first <em>or</em> second argument
+ * (i.e., mutating it).
  * 
  * @author Curtis Rueden
+ * @param <A> type of inputs + output
+ * @see BinaryComputerOp
+ * @see BinaryFunctionOp
  */
-public abstract class AbstractNullaryFunctionOp<O> extends AbstractNullaryOp<O>
-	implements NullaryFunctionOp<O>
-{
+public interface BinaryInplaceOp<A> extends BinaryInplace1Op<A, A> {
 
-	// -- Parameters --
+	/**
+	 * Mutates the second argument in-place.
+	 * 
+	 * @param in First argument of the {@link BinaryInplaceOp}, which will
+	 *          <em>not</em> be mutated.
+	 * @param arg Second argument of the {@link BinaryInplaceOp}, which
+	 *          <em>will</em> be mutated.
+	 */
+	void mutate2(A in, A arg);
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private O out;
-
-	// -- Runnable methods --
+	// -- BinaryOp methods --
 
 	@Override
-	public void run() {
-		out = run(null);
+	default A run(final A input1, final A input2, final A output) {
+		// check inplace preconditions
+		if (input1 == null) throw new NullPointerException("input1 is null");
+		if (input2 == null) throw new NullPointerException("input2 is null");
+		if (input1 != output && input2 != output) {
+			throw new IllegalArgumentException(
+				"Inplace expects input1 == output || input2 == output");
+		}
+		if (input1 == input2) {
+			throw new IllegalArgumentException("Inplace expects input1 != input2");
+		}
+
+		// compute the result
+		if (input1 == output) mutate1(input1, input2);
+		else mutate2(input1, input2);
+		return output;
 	}
 
-	// -- Output methods --
+	// -- Threadable methods --
 
 	@Override
-	public O out() {
-		return out;
+	default BinaryInplaceOp<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

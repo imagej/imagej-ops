@@ -34,7 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrencematrix.CooccurrenceMatrix2D;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imagej.ops.special.Functions;
 import net.imagej.ops.special.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
@@ -50,7 +50,7 @@ import org.scijava.plugin.Parameter;
  * @param <T>
  */
 public abstract class AbstractHaralickFeature<T extends RealType<T>> extends
-	AbstractUnaryHybridOp<IterableInterval<T>, DoubleType> implements
+	AbstractUnaryHybridCF<IterableInterval<T>, DoubleType> implements
 	HaralickFeature<T>, Contingent
 {
 

@@ -45,7 +45,7 @@ package net.imagej.ops.special;
  * @param <I> type of input
  * @param <O> type of output
  * @see UnaryFunctionOp
- * @see UnaryHybridOp
+ * @see UnaryInplaceOp
  */
 public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	NullaryComputerOp<O>
@@ -54,10 +54,26 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	/**
 	 * Computes the output given some input.
 	 * 
-	 * @param input Argument to the computation
-	 * @param output Object where the computation's result will be stored
+	 * @param input Argument to the computation, which <em>must be non-null</em>
+	 * @param output Object where the computation's result will be stored, which
+	 * <em>must be non-null and a different object than {@code input}</em>
 	 */
 	void compute1(I input, O output);
+
+	// -- UnaryOp methods --
+
+	@Override
+	default O run(final I input, final O output) {
+		// check computer preconditions
+		if (input == null) throw new NullPointerException("input is null");
+		if (output == null) throw new NullPointerException("output is null");
+		if (input == output) {
+			throw new IllegalArgumentException("Computer expects input != output");
+		}
+		// compute the result
+		compute1(input, output);
+		return output;
+	}
 
 	// -- NullaryComputerOp methods --
 
@@ -70,7 +86,7 @@ public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 
 	@Override
 	default void run() {
-		compute1(in(), out());
+		setOutput(run(in(), out()));
 	}
 
 	// -- Threadable methods --

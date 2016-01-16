@@ -33,7 +33,7 @@ package net.imagej.ops.chain;
 import net.imagej.ops.special.AbstractUnaryFunctionOp;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -45,12 +45,12 @@ import net.imglib2.type.numeric.real.DoubleType;
  * This is mostly useful when the {@link UnaryComputerOp} in question has a
  * generic type as output, which needs to be narrowed to a concrete type for the
  * purposes of the {@link UnaryFunctionOp} portion's return type. In this
- * scenario, a {@link UnaryHybridOp} cannot be used directly with type-safe
+ * scenario, a {@link UnaryHybridCF} cannot be used directly with type-safe
  * generics.
  * </p>
  * <p>
  * For example, a {@link UnaryComputerOp} whose output variable is a
- * {@code T extends RealType<T>} cannot be a {@link UnaryHybridOp} because we do
+ * {@code T extends RealType<T>} cannot be a {@link UnaryHybridCF} because we do
  * not know at runtime which sort of {@link RealType} matches the caller's
  * {@code T} parameter. However, a separate {@link UnaryFunctionOp} can be
  * created whose output is typed on e.g. {@link DoubleType}, with the

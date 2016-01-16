@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.type.logic.BitType;
 
 /**
@@ -41,7 +41,7 @@ import net.imglib2.type.logic.BitType;
  * @author Curtis Rueden
  */
 public abstract class AbstractApplyThresholdIterable<T, I extends Iterable<T>, O extends Iterable<BitType>>
-	extends AbstractUnaryHybridOp<I, O> implements
+	extends AbstractUnaryHybridCF<I, O> implements
 	ApplyThresholdIterable<T, I, O>
 {
 

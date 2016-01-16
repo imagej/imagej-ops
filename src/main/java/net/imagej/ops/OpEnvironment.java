@@ -55,7 +55,7 @@ import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.special.BinaryComputerOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.stats.StatsNamespace;
@@ -69,6 +69,7 @@ import net.imglib2.type.Type;
 
 import org.scijava.Contextual;
 import org.scijava.module.Module;
+import org.scijava.module.ModuleItem;
 
 /**
  * An op environment is the top-level entry point into op execution. It provides
@@ -124,7 +125,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByName.class)
 	default Object run(final String name, final Object... args) {
-		return OpUtils.run(module(name, args));
+		return run(module(name, args));
 	}
 
 	/**
@@ -147,7 +148,7 @@ public interface OpEnvironment extends Contextual {
 	default <OP extends Op> Object run(final Class<OP> type,
 		final Object... args)
 	{
-		return OpUtils.run(module(type, args));
+		return run(module(type, args));
 	}
 
 	/**
@@ -162,7 +163,7 @@ public interface OpEnvironment extends Contextual {
 	 */
 	@OpMethod(op = net.imagej.ops.run.RunByOp.class)
 	default Object run(final Op op, final Object... args) {
-		return OpUtils.run(module(op, args));
+		return run(module(op, args));
 	}
 
 	/**
@@ -401,8 +402,8 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoin2Inplaces.class)
-	default <A> A join(final A arg, final InplaceOp<A> first,
-		final InplaceOp<A> second)
+	default <A> A join(final A arg, final UnaryInplaceOp<A> first,
+		final UnaryInplaceOp<A> second)
 	{
 		@SuppressWarnings("unchecked")
 		final A result = (A) run(net.imagej.ops.join.DefaultJoin2Inplaces.class,
@@ -424,7 +425,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinNInplaces.class)
-	default <A> A join(final A arg, final List<? extends InplaceOp<A>> ops) {
+	default <A> A join(final A arg, final List<? extends UnaryInplaceOp<A>> ops) {
 		@SuppressWarnings("unchecked")
 		final A result = (A) run(net.imagej.ops.join.DefaultJoinNInplaces.class,
 			arg, ops);
@@ -433,7 +434,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinInplaceAndComputer.class)
-	default <A, B> B join(final B out, final A in, final InplaceOp<A> first,
+	default <A, B> B join(final B out, final A in, final UnaryInplaceOp<A> first,
 		final UnaryComputerOp<A, B> second)
 	{
 		@SuppressWarnings("unchecked")
@@ -446,7 +447,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "join" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.join.DefaultJoinComputerAndInplace.class)
 	default <A, B> B join(final B out, final A in,
-		final UnaryComputerOp<A, B> first, final InplaceOp<B> second)
+		final UnaryComputerOp<A, B> first, final UnaryInplaceOp<B> second)
 	{
 		@SuppressWarnings("unchecked")
 		final B result = (B) run(
@@ -463,7 +464,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "loop" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.loop.DefaultLoopInplace.class)
-	default <A> A loop(final A arg, final InplaceOp<A> op, final int n) {
+	default <A> A loop(final A arg, final UnaryInplaceOp<A> op, final int n) {
 		@SuppressWarnings("unchecked")
 		final A result = (A) run(net.imagej.ops.loop.DefaultLoopInplace.class, arg,
 			op, n);
@@ -530,7 +531,7 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalInplaceParallel.class)
 	default <A> IterableInterval<A> map(final IterableInterval<A> arg,
-		final InplaceOp<A> op)
+		final UnaryInplaceOp<A> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result = (IterableInterval<A>) run(
@@ -571,7 +572,7 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.map.MapIterableInplace.class)
-	default <A> Iterable<A> map(final Iterable<A> arg, final InplaceOp<A> op) {
+	default <A> Iterable<A> map(final Iterable<A> arg, final UnaryInplaceOp<A> op) {
 		@SuppressWarnings("unchecked")
 		final Iterable<A> result = (Iterable<A>) run(
 			net.imagej.ops.map.MapIterableInplace.class, arg, op);
@@ -797,6 +798,19 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "zernike" namespace. */
 	default ZernikeNamespace zernike() {
 		return namespace(ZernikeNamespace.class);
+	}
+
+	// -- Helper methods --
+
+	static Object run(final Module module) {
+		module.run();
+
+		final List<Object> outputs = new ArrayList<>();
+		for (final ModuleItem<?> output : module.getInfo().outputs()) {
+			final Object value = output.getValue(module);
+			outputs.add(value);
+		}
+		return outputs.size() == 1 ? outputs.get(0) : outputs;
 	}
 
 }

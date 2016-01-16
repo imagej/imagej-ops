@@ -30,59 +30,13 @@
 
 package net.imagej.ops.special;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link UnaryHybridOp} implementations.
+ * Abstract superclass for {@link BinaryInplaceOp} implementations.
  * 
- * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public abstract class AbstractUnaryHybridOp<I, O> extends AbstractUnaryOp<I, O>
-	implements UnaryHybridOp<I, O>
+public abstract class AbstractBinaryInplaceOp<A> extends
+	AbstractBinaryInplace1Op<A, A> implements BinaryInplaceOp<A>
 {
-
-	// -- Parameters --
-
-	@Parameter(type = ItemIO.BOTH, required = false)
-	private O out;
-
-	@Parameter
-	private I in;
-
-	// -- Runnable methods --
-
-	@Override
-	public void run() {
-		if (out() == null) out = compute1(in());
-		else compute1(in(), out());
-	}
-
-	// -- UnaryInput methods --
-
-	@Override
-	public I in() {
-		return in;
-	}
-
-	@Override
-	public void setInput(final I input) {
-		in = input;
-	}
-
-	// -- Output methods --
-
-	@Override
-	public O out() {
-		return out;
-	}
-
-	// -- OutputMutable methods --
-
-	@Override
-	public void setOutput(final O output) {
-		out = output;
-	}
-
+	// NB: No implementation needed.
 }

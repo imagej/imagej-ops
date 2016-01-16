@@ -32,7 +32,7 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
@@ -69,7 +69,7 @@ public final class ConstantToPlanarImage {
 	
 	@Plugin(type = ${iface}.class)
 	public static class ${op.name}${type.name} extends
-		AbstractInplaceOp<$imgType> implements $iface,
+		AbstractUnaryInplaceOp<$imgType> implements $iface,
 		Contingent
 	{
 
@@ -95,7 +95,7 @@ public final class ConstantToPlanarImage {
 			// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
 			// The warning is expected, because the image parameter is assigned via
 			// reflection and hence might not match the declared generic types.
-			return arg().firstElement() instanceof ${type.name}Type;
+			return in().firstElement() instanceof ${type.name}Type;
 		}
 
 	}

@@ -42,8 +42,9 @@ import net.imagej.ops.Threadable;
  * methods).
  * <p>
  * Special ops come in three major flavors: <em>computer</em>, <em>function</em>
- * and <em>inplace</em>. The <em>hybrid</em> op is a union of <em>computer</em>
- * and <em>function</em>.
+ * and <em>inplace</em>. In addition, <em>hybrid</em> ops union together
+ * <em>computer</em>, <em>function</em> and/or <em>inplace</em> in various
+ * combinations.
  * </p>
  * <p>
  * There are three arities currently implemented: {@link NullaryOp},
@@ -81,17 +82,17 @@ import net.imagej.ops.Threadable;
  * <td rowspan=3>BOTH</td>
  * <td>0</td>
  * <td>{@link NullaryComputerOp}</th>
- * <td>{@code void compute(O)}</td>
+ * <td>{@code void compute0(O)}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryComputerOp}</th>
- * <td>{@code void compute(O, I)}</td>
+ * <td>{@code void compute1(O, I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryComputerOp}</th>
- * <td>{@code void compute(O, I1, I2)}</td>
+ * <td>{@code void compute2(O, I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
  * <th rowspan=3>function</th>
@@ -105,20 +106,35 @@ import net.imagej.ops.Threadable;
  * <td rowspan=3>OUTPUT</td>
  * <td>0</td>
  * <td>{@link NullaryFunctionOp}</th>
- * <td>{@code O compute()}</td>
+ * <td>{@code O compute0()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
  * <td>{@link UnaryFunctionOp}</th>
- * <td>{@code O compute(I)}</td>
+ * <td>{@code O compute1(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
  * <td>{@link BinaryFunctionOp}</th>
- * <td>{@code O compute(I1, I2)}</td>
+ * <td>{@code O compute2(I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
- * <th rowspan=3>hybrid</th>
+ * <th rowspan=2>inplace</th>
+ * <td rowspan=2 style="vertical-align: top">An op which mutates the contents of
+ * its argument(s) in-place.</td>
+ * <td rowspan=2 style="vertical-align: top">-</td>
+ * <td rowspan=2>BOTH</td>
+ * <td>1</td>
+ * <td>{@link UnaryInplaceOp}</th>
+ * <td>{@code void mutate(A)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@link BinaryInplaceOp}</th>
+ * <td>{@code void mutate(A, A)}</td>
+ * </tr>
+ * <tr style="border-top: 3px double gray">
+ * <th rowspan=3>hybrid CF</th>
  * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
  * as either a <em>computer</em> or as a <em>function</em>, providing the API
  * for both.</td>
@@ -126,36 +142,52 @@ import net.imagej.ops.Threadable;
  * <em>function</em> respectively.</td>
  * <td rowspan=3>BOTH (optional)</td>
  * <td>0</td>
- * <td>{@link NullaryHybridOp}</th>
- * <td style="white-space: nowrap">{@code O compute()} + {@code void compute(O)}
- * </td>
+ * <td>{@link NullaryHybridCF}</th>
+ * <td style="white-space: nowrap">{@code void compute0(O)} +
+ * {@code O compute0()}</td>
  * </tr>
  * <tr>
  * <td>1</td>
- * <td>{@link UnaryHybridOp}</th>
- * <td style="white-space: nowrap">{@code O compute(I)} +
- * {@code void compute(O, I)}</td>
+ * <td>{@link UnaryHybridCF}</th>
+ * <td style="white-space: nowrap">{@code void compute1(O, I)} +
+ * {@code O compute1(I)}</td>
  * </tr>
  * <tr>
  * <td>2</td>
- * <td>{@link BinaryHybridOp}</th>
- * <td style="white-space: nowrap">{@code O compute(I1, I2)} +
- * {@code void compute(O, I1, I2)}</td>
+ * <td>{@link BinaryHybridCF}</th>
+ * <td style="white-space: nowrap">{@code O compute1(I1, I2)} +
+ * {@code void compute2(O, I1, I2)}</td>
  * </tr>
  * <tr style="border-top: 1px solid gray">
- * <th>inplace</th>
- * <td style="vertical-align: top">An op which mutates its argument's contents
- * in-place.</td>
- * <td style="vertical-align: top">&nbsp;</td>
- * <td>BOTH</td>
+ * <th rowspan=3>hybrid CFI</th>
+ * <td style="vertical-align: top" rowspan=3>An op which is capable of behaving
+ * as either a <em>computer</em>, a <em>function</em> or an <em>inplace</em>,
+ * providing the API for all three.</td>
+ * <td style="vertical-align: top" rowspan=3>Same as <em>computer</em> and
+ * <em>function</em> respectively.</td>
+ * <td rowspan=3>BOTH (optional)</td>
  * <td>1</td>
- * <td>{@link InplaceOp}</th>
- * <td>{@code void mutate(A)}</td>
+ * <td>{@link UnaryHybridCFI}</th>
+ * <td style="white-space: nowrap">{@code void compute1(A, A)} +
+ * {@code A compute1(A)} + {@code void mutate(A)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@link BinaryHybridCFI1}</th>
+ * <td style="white-space: nowrap">{@code void compute2(A, I, A)} +
+ * {@code A compute2(A, I)} + {@code void mutate1(A, I)}</td>
+ * </tr>
+ * <tr>
+ * <td>2</td>
+ * <td>{@link BinaryHybridCFI}</th>
+ * <td style="white-space: nowrap">{@code void compute(A, A, A)} +
+ * {@code A compute(A, A)} + {@code void mutate1(A, A)} +
+ * {@code void mutate2(A, A)}</td>
  * </tr>
  * </table>
  * <p>
  * It is allowed for ops to implement multiple special op types. For example, an
- * op may implement {@link UnaryComputerOp} as well as {@link InplaceOp},
+ * op may implement {@link UnaryComputerOp} as well as {@link UnaryInplaceOp},
  * providing the option to compute the result in-place (saving memory) or into a
  * preallocated output reference (preserving the contents of the original input,
  * at the expense of memory).

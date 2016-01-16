@@ -28,48 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.special;
 
-import net.imagej.ops.special.InplaceOp;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
- * {@link MapBinaryInplace} over 2 {@link IterableInterval}s
+ * Abstract superclass for {@link BinaryHybridCF} implementations.
  * 
- * @author Leon Yang
- * @param <EI1> element type of first inputs
- * @param <EI2> element type of second inputs
- * @param <EO> element type of outputs
+ * @author Curtis Rueden
  */
-public class MapIIAndIIInplace<EI1, EI2, EO> extends
-	AbstractMapBinaryInplace<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, IterableInterval<EO>>
+public abstract class AbstractBinaryHybridCF<I1, I2, O> extends
+	AbstractBinaryOp<I1, I2, O> implements BinaryHybridCF<I1, I2, O>
 {
 
+	// -- Parameters --
+
+	@Parameter(type = ItemIO.BOTH, required = false)
+	private O out;
+
+	@Parameter
+	private I1 in1;
+
+	@Parameter
+	private I2 in2;
+
+	// -- BinaryInput methods --
+
 	@Override
-	public boolean conforms() {
-		if (!super.conforms()) return false;
-		return in1().iterationOrder().equals(in2().iterationOrder());
+	public I1 in1() {
+		return in1;
 	}
 
 	@Override
-	public void mutate(IterableInterval<EO> arg) {
-		@SuppressWarnings("unchecked")
-		final InplaceOp<EO> inplace = (InplaceOp<EO>) getOp();
-		final EI1 tmpIn1 = getOp().in1();
-		final EI2 tmpIn2 = getOp().in2();
-		final Cursor<EI1> in1Cursor = in1().cursor();
-		final Cursor<EI2> in2Cursor = in2().cursor();
-		final Cursor<EO> argCursor = arg().cursor();
-		while (in1Cursor.hasNext()) {
-			in1Cursor.fwd();
-			in2Cursor.fwd();
-			getOp().setInput1(in1Cursor.get());
-			getOp().setInput2(in2Cursor.get());
-			inplace.mutate(argCursor.get());
-		}
-		getOp().setInput1(tmpIn1);
-		getOp().setInput2(tmpIn2);
+	public I2 in2() {
+		return in2;
+	}
+
+	@Override
+	public void setInput1(final I1 input1) {
+		in1 = input1;
+	}
+
+	@Override
+	public void setInput2(final I2 input2) {
+		in2 = input2;
+	}
+
+	// -- Output methods --
+
+	@Override
+	public O out() {
+		return out;
+	}
+
+	// -- OutputMutable methods --
+
+	@Override
+	public void setOutput(final O output) {
+		out = output;
 	}
 
 }

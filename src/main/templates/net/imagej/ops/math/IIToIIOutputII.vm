@@ -33,8 +33,7 @@ package net.imagej.ops.math;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryHybridOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.AbstractBinaryHybridCFI;
 import net.imagej.ops.special.Output;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
@@ -60,8 +59,8 @@ public final class IIToIIOutputII {
 	
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 	public static class ${op.name}<T extends NumericType<T>> extends
-		AbstractBinaryHybridOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
-		implements $iface, Contingent, InplaceOp<IterableInterval<T>>
+		AbstractBinaryHybridCFI<IterableInterval<T>> implements $iface,
+		Contingent
 	{
 
 		private Op outputCreator;
@@ -111,33 +110,28 @@ public final class IIToIIOutputII {
 		}
 
 		@Override
-		public void mutate(final IterableInterval<T> arg) {
-			if (arg == in1()) {
-				final Cursor<T> in1Cursor = in1().cursor();
-				final Cursor<T> in2Cursor = in2().cursor();
-				while (in1Cursor.hasNext()) {
-					in1Cursor.next().${op.function}(in2Cursor.next());
-				}
-			} else {
-				final T tmp = in1().firstElement().createVariable();
-				final Cursor<T> in1Cursor = in1().cursor();
-				final Cursor<T> in2Cursor = in2().cursor();
-				while (in1Cursor.hasNext()) {
-					tmp.set(in1Cursor.next());
-					tmp.${op.function}(in2Cursor.next());
-					in2Cursor.get().set(tmp);
-				}
+		public void mutate1(final IterableInterval<T> arg,
+			final IterableInterval<T> in)
+		{
+			final Cursor<T> in1Cursor = arg.cursor();
+			final Cursor<T> in2Cursor = in.cursor();
+			while (in1Cursor.hasNext()) {
+				in1Cursor.next().${op.function}(in2Cursor.next());
 			}
 		}
 
 		@Override
-		public IterableInterval<T> arg() {
-			return out();
-		}
-
-		@Override
-		public void setArg(final IterableInterval<T> arg) {
-			setOutput(arg);
+		public void mutate2(final IterableInterval<T> in,
+			final IterableInterval<T> arg)
+		{
+			final T tmp = in.firstElement().createVariable();
+			final Cursor<T> in1Cursor = in.cursor();
+			final Cursor<T> in2Cursor = arg.cursor();
+			while (in1Cursor.hasNext()) {
+				tmp.set(in1Cursor.next());
+				tmp.${op.function}(in2Cursor.next());
+				in2Cursor.get().set(tmp);
+			}
 		}
 
 		@Override

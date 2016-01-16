@@ -28,26 +28,15 @@
  * #L%
  */
 
-package net.imagej.ops.map;
-
-import net.imagej.ops.Contingent;
-import net.imagej.ops.special.BinaryOp;
-import net.imagej.ops.special.InplaceOp;
+package net.imagej.ops.special;
 
 /**
- * Typed interface for "map" binary {@link InplaceOp}s. The helper op is typed
- * on {@link BinaryOp}, but it must also implement {@link InplaceOp} to fulfill
- * the {@link Contingent} condition.
+ * Abstract superclass for {@link BinaryHybridCFI} implementations.
  * 
- * @author Leon Yang
- * @author Leon Yang
- * @param <EI1> element type of first inputs
- * @param <EI2> element type of second inputs
- * @param <EO> element type of outputs
- * @param <OP> type of {@link BinaryOp} which processes each element
+ * @author Curtis Rueden
  */
-public interface MapBinaryInplace<EI1, EI2, EO, OP extends BinaryOp<EI1, EI2, EO>>
-	extends MapOp<OP>, Contingent
+public abstract class AbstractBinaryHybridCFI<A> extends
+	AbstractBinaryHybridCFI1<A, A> implements BinaryHybridCFI<A>
 {
-	// NB: Marker interface.
+	// NB: No implementation needed.
 }

@@ -30,14 +30,14 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 
 /**
- * A join operation which joins a list of {@link InplaceOp}s.
+ * A join operation which joins a list of {@link UnaryInplaceOp}s.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Curtis Rueden
  */
-public interface JoinNInplaces<A> extends InplaceOp<A>, JoinNOps<InplaceOp<A>> {
+public interface JoinNInplaces<A> extends UnaryInplaceOp<A>, JoinNOps<UnaryInplaceOp<A>> {
 	// NB: Marker interface.
 }

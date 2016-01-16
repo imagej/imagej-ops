@@ -30,35 +30,79 @@
 
 package net.imagej.ops.special;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 /**
- * Abstract superclass for {@link NullaryFunctionOp} implementations.
+ * A hybrid unary operation which can be used as a {@link UnaryComputerOp} or
+ * {@link UnaryFunctionOp}.
+ * <p>
+ * To populate a preallocated output object, call
+ * {@link UnaryComputerOp#compute1}; to compute a new output object, call
+ * {@link UnaryFunctionOp#compute1}. To do any of these things as appropriate,
+ * call {@link #run(Object, Object)}.
+ * </p>
  * 
  * @author Curtis Rueden
+ * @author Christian Dietz (University of Konstanz)
+ * @param <I> type of input
+ * @param <O> type of output
+ * @see UnaryHybridCFI
  */
-public abstract class AbstractNullaryFunctionOp<O> extends AbstractNullaryOp<O>
-	implements NullaryFunctionOp<O>
+public interface UnaryHybridCF<I, O> extends UnaryComputerOp<I, O>,
+	UnaryFunctionOp<I, O>, UnaryOutputFactory<I, O>, NullaryHybridCF<O>
 {
 
-	// -- Parameters --
+	// -- UnaryFunctionOp methods --
 
-	@Parameter(type = ItemIO.OUTPUT)
-	private O out;
+	@Override
+	default O compute1(final I input) {
+		final O output = createOutput(input);
+		compute1(input, output);
+		return output;
+	}
+
+	// -- UnaryOp methods --
+
+	@Override
+	default O run(final I input, final O output) {
+		if (output == null) {
+			// run as a function
+			return compute1(input);
+		}
+
+		// run as a computer
+		compute1(input, output);
+		return output;
+	}
+
+
+	// -- NullaryFunctionOp methods --
+
+	@Override
+	default O compute0() {
+		return compute1(in());
+	}
+
+	// -- NullaryOutputFactory methods --
+
+	@Override
+	default O createOutput() {
+		return createOutput(in());
+	}
 
 	// -- Runnable methods --
 
 	@Override
-	public void run() {
-		out = run(null);
+	default void run() {
+		setOutput(run(in(), out()));
 	}
 
-	// -- Output methods --
+	// -- Threadable methods --
 
 	@Override
-	public O out() {
-		return out;
+	default UnaryHybridCF<I, O> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

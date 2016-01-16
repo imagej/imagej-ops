@@ -30,18 +30,16 @@
 
 package net.imagej.ops.special;
 
-import net.imagej.ops.AbstractOp;
-
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract superclass for {@link InplaceOp} implementations.
+ * Abstract superclass for {@link UnaryInplaceOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class AbstractInplaceOp<A> extends AbstractOp implements
-	InplaceOp<A>
+public abstract class AbstractUnaryInplaceOp<A> extends AbstractUnaryOp<A, A>
+	implements UnaryInplaceOp<A>
 {
 
 	// -- Parameters --
@@ -49,16 +47,16 @@ public abstract class AbstractInplaceOp<A> extends AbstractOp implements
 	@Parameter(type = ItemIO.BOTH)
 	private A arg;
 
-	// -- InplaceOp methods --
+	// -- UnaryInplaceOp methods --
 
 	@Override
-	public A arg() {
+	public A in() {
 		return arg;
 	}
 
 	@Override
-	public void setArg(final A arg) {
-		this.arg = arg;
+	public void setInput(final A in) {
+		this.arg = in;
 	}
 
 }

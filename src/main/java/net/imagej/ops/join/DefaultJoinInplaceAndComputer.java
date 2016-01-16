@@ -32,14 +32,14 @@ package net.imagej.ops.join;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Joins an {@link InplaceOp} with a {@link UnaryComputerOp}.
+ * Joins an {@link UnaryInplaceOp} with a {@link UnaryComputerOp}.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -49,7 +49,7 @@ public class DefaultJoinInplaceAndComputer<A, B> extends
 {
 
 	@Parameter
-	private InplaceOp<A> first;
+	private UnaryInplaceOp<A> first;
 
 	@Parameter
 	private UnaryComputerOp<A, B> second;
@@ -57,12 +57,12 @@ public class DefaultJoinInplaceAndComputer<A, B> extends
 	// -- Join2Ops methods --
 
 	@Override
-	public InplaceOp<A> getFirst() {
+	public UnaryInplaceOp<A> getFirst() {
 		return first;
 	}
 
 	@Override
-	public void setFirst(final InplaceOp<A> first) {
+	public void setFirst(final UnaryInplaceOp<A> first) {
 		this.first = first;
 	}
 

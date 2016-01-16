@@ -33,7 +33,7 @@ package net.imagej.ops.filter.gauss;
 import java.util.Arrays;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Filter.Gauss.class)
 public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 	extends
-	AbstractUnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
+	AbstractUnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>>
 	implements Ops.Filter.Gauss
 {
 

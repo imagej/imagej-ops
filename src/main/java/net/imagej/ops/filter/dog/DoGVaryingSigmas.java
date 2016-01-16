@@ -34,7 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.HybridViaHybrid;
 import net.imagej.ops.chain.RAIs;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;
@@ -72,7 +72,7 @@ public class DoGVaryingSigmas<T extends NumericType<T> & NativeType<T>>
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> fac;
 
 	@Override
-	public UnaryHybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
+	public UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
 		createWorker(final RandomAccessibleInterval<T> t)
 	{
 		final T type = Util.getTypeFromInterval(t);

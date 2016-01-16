@@ -62,17 +62,20 @@ public class AddNoiseRealType<I extends RealType<I>, O extends RealType<O>>
 	
 	private Random rng;
 
-	public long getSeed() {
-		return seed;
-	}
-	
-	public void setSeed(final long seed) {
-		this.seed = seed;
-	}
-	
+	// -- UnaryComputerOp methods --
+
 	@Override
 	public void compute1(final I input, final O output) {
 		if (rng == null) rng = new Random(seed);
+		addNoise(input, output, rangeMin, rangeMax, rangeStdDev, rng);
+	}
+
+	// -- Static utility methods --
+
+	public static <I extends RealType<I>, O extends RealType<O>> void addNoise(
+		final I input, final O output, final double rangeMin, final double rangeMax,
+		final double rangeStdDev, final Random rng)
+	{
 		int i = 0;
 		do {
 			final double newVal =

@@ -28,32 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.copy;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.special;
 
 /**
- * Copy {@link Type} to another {@link Type}
+ * A hybrid binary operation which can be used as a {@link BinaryComputerOp},
+ * {@link BinaryFunctionOp} or {@link BinaryInplace1Op}.
+ * <p>
+ * To populate a preallocated output object, call
+ * {@link BinaryComputerOp#compute2}; to compute a new output object, call
+ * {@link BinaryFunctionOp#compute2}; to mutate the first input inplace, call
+ * {@link BinaryInplace1Op#mutate1}. To do any of these things as appropriate,
+ * call {@link #run(Object, Object, Object)}.
+ * </p>
  * 
- * @author Christian Dietz, University of Konstanz
- * @param <T>
+ * @author Curtis Rueden
+ * @param <A> type of first input + output
+ * @param <I> type of second input
+ * @see BinaryHybridCF
+ * @see BinaryHybridCFI
  */
-@Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
-		implements Ops.Copy.Type {
+public interface BinaryHybridCFI1<A, I> extends BinaryHybridCF<A, I, A>,
+	BinaryInplace1Op<A, I>, UnaryHybridCFI<A>
+{
+
+	// -- BinaryOp methods --
 
 	@Override
-	public T createOutput(final T input) {
-		return input.createVariable();
+	default A run(final A input1, final I input2, final A output) {
+		if (input1 == output) {
+			// run as an inplace (1st input)
+			return BinaryInplace1Op.super.run(input1, input2, output);
+		}
+		// run as a hybrid CF
+		return BinaryHybridCF.super.run(input1, input2, output);
 	}
 
+	// -- Runnable methods --
+
 	@Override
-	public void compute1(final T input, final T output) {
-		output.set(input);
+	default void run() {
+		setOutput(run(in1(), in2(), out()));
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryHybridCFI1<A, I> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

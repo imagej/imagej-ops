@@ -35,7 +35,7 @@ package net.imagej.ops.special;
  * contents of the inputs are not affected.
  * <p>
  * Binary ops come in two major flavors: {@link BinaryComputerOp} and
- * {@link BinaryFunctionOp}. An additional type, {@link BinaryHybridOp}, unions
+ * {@link BinaryFunctionOp}. An additional type, {@link BinaryHybridCF}, unions
  * both flavors.
  * </p>
  * <p>
@@ -49,11 +49,34 @@ package net.imagej.ops.special;
  * @param <O> type of output
  * @see BinaryComputerOp
  * @see BinaryFunctionOp
- * @see BinaryHybridOp
+ * @see BinaryHybridCF
  */
 public interface BinaryOp<I1, I2, O> extends UnaryOp<I1, O>,
 	BinaryInput<I1, I2>
 {
+
+	/**
+	 * Executes the operation in a type-safe but flexible way.
+	 * <p>
+	 * The exact behavior depends on the type of special op.
+	 * </p>
+	 * @param input1 first argument to the operation
+	 * @param input2 second argument to the operation
+	 * @param output reference where the operation's result will be stored
+	 * @return result of the operation
+	 * @see BinaryComputerOp#run(Object, Object, Object)
+	 * @see BinaryFunctionOp#run(Object, Object, Object)
+	 * @see BinaryInplaceOp#run(Object, Object, Object)
+	 * @see BinaryHybridCF#run(Object, Object, Object)
+	 */
+	O run(I1 input1, I2 input2, O output);
+
+	// -- Runnable methods --
+
+	@Override
+	default void run() {
+		run(in1(), in2(), out());
+	}
 
 	// -- Threadable methods --
 

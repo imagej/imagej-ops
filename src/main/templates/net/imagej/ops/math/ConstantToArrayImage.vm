@@ -32,7 +32,7 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractInplaceOp;
+import net.imagej.ops.special.AbstractUnaryInplaceOp;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ByteArray;
 import net.imglib2.img.basictypeaccess.array.DoubleArray;
@@ -69,7 +69,7 @@ public final class ConstantToArrayImage {
 
 	@Plugin(type = ${iface}.class, priority = Priority.HIGH_PRIORITY)
 	public static class ${op.name}${type.name} extends
-		AbstractInplaceOp<$imgType> implements Contingent,
+		AbstractUnaryInplaceOp<$imgType> implements Contingent,
 		$iface
 	{
 
@@ -89,7 +89,7 @@ public final class ConstantToArrayImage {
 			// NB: Until https://github.com/imagej/imagej-ops/issues/95 is addressed.
 			// The warning is expected, because the image parameter is assigned via
 			// reflection and hence might not match the declared generic types.
-			return arg().firstElement() instanceof ${type.name}Type;
+			return in().firstElement() instanceof ${type.name}Type;
 		}
 	}
 #end

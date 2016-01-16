@@ -30,18 +30,18 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractUnaryHybridOp;
+import net.imagej.ops.special.AbstractUnaryHybridCF;
 import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryHybridOp;
+import net.imagej.ops.special.UnaryHybridCF;
 
 /**
- * Base class for {@link UnaryHybridOp} implementations that delegate to
+ * Base class for {@link UnaryHybridCF} implementations that delegate to
  * {@link UnaryComputerOp} implementations.
  * 
  * @author Curtis Rueden
  */
 public abstract class HybridViaComputer<I, O> extends
-	AbstractUnaryHybridOp<I, O> implements
+	AbstractUnaryHybridCF<I, O> implements
 	DelegatingUnaryOp<UnaryComputerOp<I, O>, I, O>
 {
 

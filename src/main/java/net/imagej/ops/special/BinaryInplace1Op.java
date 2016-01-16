@@ -31,38 +31,70 @@
 package net.imagej.ops.special;
 
 /**
- * An <em>inplace</em> operation is an op which mutates a parameter.
+ * A binary <em>inplace</em> operation which computes a result from two given
+ * arguments, storing it back into the <em>first</em> input (i.e., mutating it).
+ * <p>
+ * It is a subset of {@link BinaryInplaceOp}, which can mutate either the first
+ * <em>or</em> second input.
+ * </p>
  * 
  * @author Curtis Rueden
- * @param <A> type of argument
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
- * @see UnaryHybridOp
+ * @param <A> type of first input + output
+ * @param <I> type of second input
+ * @see BinaryComputerOp
+ * @see BinaryFunctionOp
  */
-public interface InplaceOp<A> extends SpecialOp {
+public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
+	UnaryInplaceOp<A>
+{
 
 	/**
-	 * Mutates the given input argument in-place.
+	 * Mutates the first argument in-place.
 	 * 
-	 * @param arg of the {@link InplaceOp}
+	 * @param arg First argument of the {@link BinaryInplace1Op}, which
+	 *          <em>will</em> be mutated.
+	 * @param in Second argument of the {@link BinaryInplace1Op}, which
+	 *          <em>not</em> will be mutated.
 	 */
-	void mutate(A arg);
+	void mutate1(A arg, I in);
 
-	A arg();
+	// -- BinaryOp methods --
 
-	void setArg(A arg);
+	@Override
+	default A run(final A input1, final I input2, final A output) {
+		// check inplace preconditions
+		if (input1 == null) throw new NullPointerException("input1 is null");
+		if (input2 == null) throw new NullPointerException("input2 is null");
+		if (input1 != output) {
+			throw new IllegalArgumentException("Inplace expects input1 == output");
+		}
+		if (input1 == input2) {
+			throw new IllegalArgumentException("Inplace expects input1 != input2");
+		}
+
+		// compute the result
+		mutate1(input1, input2);
+		return output;
+	}
+
+	// -- UnaryInplaceOp methods --
+
+	@Override
+	default void mutate(final A arg) {
+		mutate1(arg, in2());
+	}
 
 	// -- Runnable methods --
 
 	@Override
 	default void run() {
-		mutate(arg());
+		run(in1(), in2(), out());
 	}
 
 	// -- Threadable methods --
 
 	@Override
-	default InplaceOp<A> getIndependentInstance() {
+	default BinaryInplace1Op<A, I> getIndependentInstance() {
 		// NB: We assume the op instance is thread-safe by default.
 		// Individual implementations can override this assumption if they
 		// have state (such as buffers) that cannot be shared across threads.

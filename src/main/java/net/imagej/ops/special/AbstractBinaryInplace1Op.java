@@ -28,98 +28,49 @@
  * #L%
  */
 
-package net.imagej.ops.map;
-
-import net.imagej.ops.special.AbstractBinaryOp;
-import net.imagej.ops.special.BinaryOp;
-import net.imagej.ops.special.InplaceOp;
+package net.imagej.ops.special;
 
 import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract base class for {@link MapBinaryInplace} implementations.
+ * Abstract superclass for {@link BinaryInplace1Op} implementations.
  * 
- * @author Leon Yang
- * @param <EI1> element type of first inputs
- * @param <EI2> element type of second inputs
- * @param <EO> element type of outputs
- * @param <PI1> producer of first inputs
- * @param <PI2> producer of second inputs
- * @param <PO> producer of outputs
+ * @author Curtis Rueden
  */
-public abstract class AbstractMapBinaryInplace<EI1, EI2, EO, PI1, PI2, PO>
-	extends AbstractBinaryOp<PI1, PI2, PO> implements
-	MapBinaryInplace<EI1, EI2, EO, BinaryOp<EI1, EI2, EO>>, InplaceOp<PO>
+public abstract class AbstractBinaryInplace1Op<A, I> extends
+	AbstractBinaryOp<A, I, A> implements BinaryInplace1Op<A, I>
 {
 
+	// -- Parameters --
+
 	@Parameter(type = ItemIO.BOTH)
-	private PO out;
+	private A arg;
 
 	@Parameter
-	private PI1 in1;
+	private I in;
 
-	@Parameter
-	private PI2 in2;
-
-	@Parameter
-	private BinaryOp<EI1, EI2, EO> op;
+	// -- BinaryInput methods --
 
 	@Override
-	public PO arg() {
-		return out;
+	public A in1() {
+		return arg;
 	}
 
 	@Override
-	public void setArg(PO arg) {
-		out = arg;
+	public I in2() {
+		return in;
 	}
 
 	@Override
-	public PO out() {
-		return out;
+	public void setInput1(final A input1) {
+		arg = input1;
+		
 	}
 
 	@Override
-	public PI1 in1() {
-		return in1;
-	}
-
-	@Override
-	public PI2 in2() {
-		return in2;
-	}
-
-	@Override
-	public void setInput1(PI1 input1) {
-		in1 = input1;
-	}
-
-	@Override
-	public void setInput2(PI2 input2) {
-		in2 = input2;
-	}
-
-	@Override
-	public BinaryOp<EI1, EI2, EO> getOp() {
-		return op;
-	}
-
-	@Override
-	public void setOp(BinaryOp<EI1, EI2, EO> op) {
-		this.op = op;
-	}
-
-	@Override
-	public boolean conforms() {
-		return op instanceof InplaceOp;
-	}
-
-	@Override
-	public AbstractMapBinaryInplace<EI1, EI2, EO, PI1, PI2, PO>
-		getIndependentInstance()
-	{
-		return this;
+	public void setInput2(final I input2) {
+		in = input2;
 	}
 
 }

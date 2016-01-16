@@ -28,32 +28,54 @@
  * #L%
  */
 
-package net.imagej.ops.copy;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.special;
 
 /**
- * Copy {@link Type} to another {@link Type}
+ * A hybrid unary operation which can be used as a {@link UnaryComputerOp},
+ * {@link UnaryFunctionOp} or {@link UnaryInplaceOp}.
+ * <p>
+ * To populate a preallocated output object, call
+ * {@link UnaryComputerOp#compute1}; to compute a new output object, call
+ * {@link UnaryFunctionOp#compute1}; to mutate an object inplace, call
+ * {@link UnaryInplaceOp#mutate}. To do any of these things as appropriate, call
+ * {@link #run(Object, Object)}.
+ * </p>
  * 
- * @author Christian Dietz, University of Konstanz
- * @param <T>
+ * @author Curtis Rueden
+ * @param <A> type of input + output
+ * @see UnaryHybridCF
  */
-@Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
-		implements Ops.Copy.Type {
+public interface UnaryHybridCFI<A> extends UnaryHybridCF<A, A>,
+	UnaryInplaceOp<A>
+{
+
+	// -- UnaryOp methods --
 
 	@Override
-	public T createOutput(final T input) {
-		return input.createVariable();
+	default A run(final A input, final A output) {
+		if (input == output) {
+			// run as an inplace
+			return UnaryInplaceOp.super.run(input, output);
+		}
+		// run as a hybrid CF
+		return UnaryHybridCF.super.run(input, output);
 	}
 
+	// -- NullaryOp methods --
+
 	@Override
-	public void compute1(final T input, final T output) {
-		output.set(input);
+	default A run(final A output) {
+		return UnaryHybridCF.super.run(output);
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default UnaryHybridCFI<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

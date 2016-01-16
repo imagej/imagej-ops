@@ -28,32 +28,56 @@
  * #L%
  */
 
-package net.imagej.ops.copy;
-
-import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
-import net.imglib2.type.Type;
-
-import org.scijava.plugin.Plugin;
+package net.imagej.ops.special;
 
 /**
- * Copy {@link Type} to another {@link Type}
+ * A hybrid binary operation which can be used as a {@link BinaryComputerOp},
+ * {@link BinaryFunctionOp} or {@link BinaryInplaceOp}.
+ * <p>
+ * To populate a preallocated output object, call
+ * {@link BinaryComputerOp#compute2}; to compute a new output object, call
+ * {@link BinaryFunctionOp#compute2}; to mutate an input inplace, call
+ * {@link BinaryInplace1Op#mutate1} or {@link BinaryInplaceOp#mutate2}. To do
+ * any of these things as appropriate, call {@link #run(Object, Object, Object)}
+ * .
+ * </p>
  * 
- * @author Christian Dietz, University of Konstanz
- * @param <T>
+ * @author Curtis Rueden
+ * @param <A> type of inputs + output
+ * @see BinaryHybridCF
+ * @see BinaryHybridCFI1
  */
-@Plugin(type = Ops.Copy.Type.class)
-public class CopyType<T extends Type<T>> extends AbstractUnaryHybridCF<T, T>
-		implements Ops.Copy.Type {
+public interface BinaryHybridCFI<A> extends BinaryHybridCFI1<A, A>,
+	BinaryInplaceOp<A>
+{
+
+	// -- BinaryOp methods --
 
 	@Override
-	public T createOutput(final T input) {
-		return input.createVariable();
+	default A run(final A input1, final A input2, final A output) {
+		if (input1 == output || input2 == output) {
+			// run as an inplace
+			return BinaryInplaceOp.super.run(input1, input2, output);
+		}
+		// run as a hybrid CF
+		return BinaryHybridCFI1.super.run(input1, input2, output);
 	}
 
+	// -- Runnable methods --
+
 	@Override
-	public void compute1(final T input, final T output) {
-		output.set(input);
+	default void run() {
+		setOutput(run(in1(), in2(), out()));
+	}
+
+	// -- Threadable methods --
+
+	@Override
+	default BinaryHybridCFI<A> getIndependentInstance() {
+		// NB: We assume the op instance is thread-safe by default.
+		// Individual implementations can override this assumption if they
+		// have state (such as buffers) that cannot be shared across threads.
+		return this;
 	}
 
 }

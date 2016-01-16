@@ -32,7 +32,6 @@ package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.AbstractNullaryComputerOp;
-import net.imagej.ops.special.InplaceOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Plugin;
@@ -54,32 +53,12 @@ public class NumericTypeNullaryMath {
 	 */
 	@Plugin(type = Ops.Math.Zero.class)
 	public static class Zero<T extends NumericType<T>> extends
-		AbstractNullaryComputerOp<T> implements InplaceOp<T>, Ops.Math.Zero
+		AbstractNullaryComputerOp<T> implements Ops.Math.Zero
 	{
 
 		@Override
 		public void compute0(final T output) {
 			output.setZero();
-		}
-
-		@Override
-		public void run() {
-			InplaceOp.super.run();
-		}
-
-		@Override
-		public void mutate(T arg) {
-			compute0(arg);
-		}
-
-		@Override
-		public T arg() {
-			return out();
-		}
-
-		@Override
-		public void setArg(T arg) {
-			setOutput(arg);
 		}
 
 		@Override

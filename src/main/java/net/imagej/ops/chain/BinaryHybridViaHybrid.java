@@ -32,7 +32,7 @@ package net.imagej.ops.chain;
 
 import net.imagej.ops.special.AbstractBinaryFunctionOp;
 import net.imagej.ops.special.BinaryFunctionOp;
-import net.imagej.ops.special.BinaryHybridOp;
+import net.imagej.ops.special.BinaryHybridCF;
 
 /**
  * Base class for {@link BinaryFunctionOp} implementations that delegate to
@@ -42,10 +42,10 @@ import net.imagej.ops.special.BinaryHybridOp;
  */
 public abstract class BinaryHybridViaHybrid<I1, I2, O> extends
 	AbstractBinaryFunctionOp<I1, I2, O> implements
-	DelegatingBinaryOp<BinaryHybridOp<I1, I2, O>, I1, I2, O>
+	DelegatingBinaryOp<BinaryHybridCF<I1, I2, O>, I1, I2, O>
 {
 
-	private BinaryHybridOp<I1, I2, O> worker;
+	private BinaryHybridCF<I1, I2, O> worker;
 
 	@Override
 	public void initialize() {

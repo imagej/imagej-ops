@@ -30,16 +30,16 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.InplaceOp;
+import net.imagej.ops.special.UnaryInplaceOp;
 import net.imagej.ops.special.UnaryComputerOp;
 
 /**
- * Joins an {@link InplaceOp} with a {@link UnaryComputerOp}.
+ * Joins an {@link UnaryInplaceOp} with a {@link UnaryComputerOp}.
  * 
  * @author Curtis Rueden
  */
 public interface JoinInplaceAndComputer<A, B> extends
-	UnaryComputerOp<A, B>, Join2Ops<InplaceOp<A>, UnaryComputerOp<A, B>>
+	UnaryComputerOp<A, B>, Join2Ops<UnaryInplaceOp<A>, UnaryComputerOp<A, B>>
 {
 
 	// -- UnaryComputerOp methods --
