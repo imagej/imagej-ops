@@ -45,7 +45,7 @@ package net.imagej.ops.special;
  * @param <I> type of input
  * @param <O> type of output
  * @see UnaryFunctionOp
- * @see UnaryHybridOp
+ * @see UnaryInplaceOp
  */
 public interface UnaryComputerOp<I, O> extends UnaryOp<I, O>,
 	NullaryComputerOp<O>

@@ -37,7 +37,6 @@ package net.imagej.ops.special;
  * @param <A> type of argument
  * @see UnaryComputerOp
  * @see UnaryFunctionOp
- * @see UnaryHybridOp
  */
 public interface UnaryInplaceOp<A> extends UnaryOp<A, A> {
 

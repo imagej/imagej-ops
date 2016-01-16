@@ -45,7 +45,7 @@ package net.imagej.ops.special;
  * @param <I2> type of second input
  * @param <O> type of output
  * @see BinaryFunctionOp
- * @see BinaryHybridOp
+ * @see BinaryInplaceOp
  */
 public interface BinaryComputerOp<I1, I2, O> extends BinaryOp<I1, I2, O>,
 	UnaryComputerOp<I1, O>
