@@ -28,7 +28,7 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
@@ -43,89 +43,77 @@ import net.imagej.ops.special.hybrid.Hybrids;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
 /**
- * Utility class for working with {@link IterableInterval}s.
+ * Utility class for working with {@link RealType}s.
  *
  * @author Curtis Rueden
- * @author Zach Petersen
  */
-public final class IIs {
+public final class RTs {
 
-	private IIs() {
+	private RTs() {
 		// NB: prevent instantiation of utility class.
 	}
 
 	// -- Utility methods --
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T> UnaryComputerOp<IterableInterval<T>, IterableInterval<T>>
-		computer(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in, final Object... otherArgs)
+	public static <I, O extends RealType<O>> UnaryComputerOp<I, O> computer(
+		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
+		final Object... otherArgs)
 	{
-		return (UnaryComputerOp) Computers.unary(ops, opType,
-			IterableInterval.class, in == null ? IterableInterval.class : in,
-			otherArgs);
+		return (UnaryComputerOp) Computers.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T> UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>>
-		function(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in, final Object... otherArgs)
+	public static <I, O extends RealType<O>> UnaryFunctionOp<I, O> function(
+		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
+		final Object... otherArgs)
 	{
-		return (UnaryFunctionOp) Functions.unary(ops, opType,
-			IterableInterval.class, in == null ? IterableInterval.class : in,
-			otherArgs);
+		return (UnaryFunctionOp) Functions.unary(ops, opType, RealType.class, in, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T> UnaryHybridCF<IterableInterval<T>, IterableInterval<T>>
-		hybrid(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in, final Object... otherArgs)
+	public static <I, O extends RealType<O>> UnaryHybridCF<I, O> hybrid(
+		final OpEnvironment ops, final Class<? extends Op> opType, final I in,
+		final Object... otherArgs)
 	{
-		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, IterableInterval.class,
-			in == null ? IterableInterval.class : in, otherArgs);
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, RealType.class, in, otherArgs);
 	}
 
-	public static <T> UnaryInplaceOp<IterableInterval<T>> inplace(
-		final OpEnvironment ops, final Class<? extends Op> opType,
-		final IterableInterval<T> arg, final Object... otherArgs)
+	public static <A extends RealType<A>> UnaryInplaceOp<A> inplace(
+		final OpEnvironment ops, final Class<? extends Op> opType, final A arg,
+		final Object... otherArgs)
 	{
 		return Inplaces.unary(ops, opType, arg, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		BinaryComputerOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
+	public static <I1, I2, O extends RealType<O>> BinaryComputerOp<I1, I2, O>
 		binaryComputer(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in1, final IterableInterval<T> in2,
-			final Object... otherArgs)
+			final I1 in1, final I2 in2, final Object... otherArgs)
 	{
-		return (BinaryComputerOp) Computers.binary(ops, opType,
-			IterableInterval.class, in1, in2, otherArgs);
+		return (BinaryComputerOp) Computers.binary(ops, opType, RealType.class, in1,
+			in2, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		BinaryFunctionOp<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
+	public static <I1, I2, O extends RealType<O>> BinaryFunctionOp<I1, I2, O>
 		binaryFunction(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in1, final IterableInterval<T> in2,
-			final Object... otherArgs)
+			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryFunctionOp) Functions.binary(ops, opType,
-			IterableInterval.class, in1, in2, otherArgs);
+		return (BinaryFunctionOp) Functions.binary(ops, opType, RealType.class, in1,
+			in2, otherArgs);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		BinaryHybridCF<IterableInterval<T>, IterableInterval<T>, IterableInterval<T>>
+	public static <I1, I2, O extends RealType<O>> BinaryHybridCF<I1, I2, O>
 		binaryHybrid(final OpEnvironment ops, final Class<? extends Op> opType,
-			final IterableInterval<T> in1, final IterableInterval<T> in2,
-			final Object... otherArgs)
+			final I1 in1, I2 in2, final Object... otherArgs)
 	{
-		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, IterableInterval.class,
-			in1, in2, otherArgs);
+		return (BinaryHybridCF) Hybrids.binaryCF(ops, opType, RealType.class, in1, in2,
+			otherArgs);
 	}
 
 }

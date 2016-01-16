@@ -28,31 +28,20 @@
  * #L%
  */
 
-package net.imagej.ops.chain;
+package net.imagej.ops.special.chain;
 
-import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
+import net.imagej.ops.special.UnaryOp;
 
 /**
- * Base class for {@link UnaryInplaceOp} implementations that delegate to other
- * {@link UnaryInplaceOp} implementations.
+ * Base class for {@link UnaryOp} implementations that delegate to other
+ * {@link UnaryOp} implementations.
  * 
  * @author Curtis Rueden
  */
-public abstract class InplaceViaInplace<A> extends AbstractUnaryInplaceOp<A> {
+public interface DelegatingUnaryOp<T extends UnaryOp<I, O>, I, O> extends
+	UnaryOp<I, O>
+{
 
-	private UnaryInplaceOp<A> worker;
-
-	public abstract UnaryInplaceOp<A> createWorker(A t);
-
-	@Override
-	public void initialize() {
-		worker = createWorker(in());
-	}
-
-	@Override
-	public void mutate(final A arg) {
-		worker.mutate(arg);
-	}
+	T createWorker(I t);
 
 }
