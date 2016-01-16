@@ -39,15 +39,12 @@ import net.imagej.ops.special.hybrid.NullaryHybridCF;
  * values.
  * <p>
  * Nullary ops come in two major flavors: {@link NullaryComputerOp} and
- * {@link NullaryFunctionOp}. An additional type, {@link NullaryHybridCF},
+ * {@link NullaryFunctionOp}. An additional hybrid type {@link NullaryHybridCF}
  * unions both flavors.
  * </p>
  * 
  * @author Curtis Rueden
  * @param <O> type of output
- * @see NullaryComputerOp
- * @see NullaryFunctionOp
- * @see NullaryHybridCF
  */
 public interface NullaryOp<O> extends SpecialOp, Output<O> {
 

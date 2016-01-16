@@ -33,15 +33,17 @@ package net.imagej.ops.special;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCFI;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * A <em>unary</em> operation computes a result from a given input. The contents
  * of the input are not affected.
  * <p>
- * Unary ops come in two major flavors: {@link UnaryComputerOp} and
- * {@link UnaryFunctionOp}. An additional type, {@link UnaryHybridCF}, unions
- * both flavors.
+ * Unary ops come in three major flavors: {@link UnaryComputerOp},
+ * {@link UnaryFunctionOp} and {@link UnaryInplaceOp}. Additional hybrid types
+ * exist that union these flavors in various combinations: {@link UnaryHybridCF}
+ * and {@link UnaryHybridCFI}.
  * </p>
  * <p>
  * A unary op may be treated as a {@link NullaryOp} by holding the input
@@ -51,9 +53,6 @@ import net.imagej.ops.special.inplace.UnaryInplaceOp;
  * @author Curtis Rueden
  * @param <I> type of input
  * @param <O> type of output
- * @see UnaryComputerOp
- * @see UnaryFunctionOp
- * @see UnaryHybridCF
  */
 public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 

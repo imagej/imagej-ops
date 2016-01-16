@@ -33,15 +33,18 @@ package net.imagej.ops.special;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.function.BinaryFunctionOp;
 import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
 import net.imagej.ops.special.inplace.BinaryInplaceOp;
 
 /**
  * A <em>binary</em> operation computes a result from two given inputs. The
  * contents of the inputs are not affected.
  * <p>
- * Binary ops come in two major flavors: {@link BinaryComputerOp} and
- * {@link BinaryFunctionOp}. An additional type, {@link BinaryHybridCF}, unions
- * both flavors.
+ * Binary ops come in three major flavors: {@link BinaryComputerOp},
+ * {@link BinaryFunctionOp} and {@link BinaryInplaceOp}. Additional hybrid types
+ * exist that union these flavors in various combinations:
+ * {@link BinaryHybridCF}, {@link BinaryHybridCFI1} and {@link BinaryHybridCFI}.
  * </p>
  * <p>
  * A binary op may be treated as a {@link UnaryOp} by holding the second input
@@ -52,9 +55,6 @@ import net.imagej.ops.special.inplace.BinaryInplaceOp;
  * @param <I1> type of first input
  * @param <I2> type of second input
  * @param <O> type of output
- * @see BinaryComputerOp
- * @see BinaryFunctionOp
- * @see BinaryHybridCF
  */
 public interface BinaryOp<I1, I2, O> extends UnaryOp<I1, O>,
 	BinaryInput<I1, I2>
