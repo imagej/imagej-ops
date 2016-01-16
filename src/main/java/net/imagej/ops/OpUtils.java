@@ -183,6 +183,20 @@ public final class OpUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets a string with an analysis of a particular match request failure.
+	 * <p>
+	 * This method is used to generate informative exception messages when no
+	 * matches, or too many matches, are found.
+	 * </p>
+	 * 
+	 * @param candidates The list of candidates from which a match was desired.
+	 * @param matches The list of matching modules.
+	 * @return A multi-line string describing the situation: 1) the type of match
+	 *         failure; 2) the list of matching ops (if any); 3) the request
+	 *         itself; and 4) the list of candidates including status (i.e.,
+	 *         whether it matched, and if not, why not).
+	 */
 	public static <OP extends Op> String matchInfo(
 		final List<OpCandidate<OP>> candidates, final List<Module> matches)
 	{
