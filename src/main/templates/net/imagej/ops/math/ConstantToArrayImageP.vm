@@ -41,9 +41,15 @@ import net.imglib2.img.basictypeaccess.array.DoubleArray;
 import net.imglib2.img.basictypeaccess.array.FloatArray;
 import net.imglib2.img.basictypeaccess.array.IntArray;
 import net.imglib2.img.basictypeaccess.array.LongArray;
+import net.imglib2.img.basictypeaccess.array.ShortArray;
 import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.integer.IntType;
 import net.imglib2.type.numeric.integer.LongType;
+import net.imglib2.type.numeric.integer.ShortType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.integer.UnsignedIntType;
+import net.imglib2.type.numeric.integer.UnsignedLongType;
+import net.imglib2.type.numeric.integer.UnsignedShortType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.type.numeric.real.FloatType;
 
@@ -67,7 +73,7 @@ public final class ConstantToArrayImageP {
 		// NB: Prevent instantiation of utility class.
 	}
 #foreach ($type in $types)
-#set ($imgType = "ArrayImg<${type.name}Type, ${type.name}Array>")
+#set ($imgType = "ArrayImg<${type.name}Type, ${type.array}Array>")
 #foreach ($op in $ops)
 #set ($iface = "Ops.Math.$op.name")
 
