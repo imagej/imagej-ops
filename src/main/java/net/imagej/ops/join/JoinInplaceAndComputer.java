@@ -30,8 +30,8 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.UnaryInplaceOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * Joins an {@link UnaryInplaceOp} with a {@link UnaryComputerOp}.

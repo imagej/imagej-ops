@@ -32,7 +32,7 @@ package net.imagej.ops.filter.variance;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.filter.AbstractNeighborhoodBasedFilter;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 

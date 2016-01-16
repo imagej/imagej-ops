@@ -31,7 +31,7 @@
 package net.imagej.ops.image.equation;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 
 /**

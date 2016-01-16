@@ -30,11 +30,11 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridCF;
 import net.imagej.ops.special.UnaryOutputFactory;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 

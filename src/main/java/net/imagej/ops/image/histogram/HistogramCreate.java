@@ -31,9 +31,9 @@
 package net.imagej.ops.image.histogram;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.histogram.Real1dBinMapper;
 import net.imglib2.type.numeric.RealType;

@@ -34,8 +34,8 @@ import java.lang.reflect.Type;
 
 import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.roi.labeling.LabelRegion;
 

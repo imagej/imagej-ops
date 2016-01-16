@@ -31,7 +31,7 @@
 package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;

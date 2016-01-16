@@ -31,8 +31,8 @@
 package net.imagej.ops.image.invert;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

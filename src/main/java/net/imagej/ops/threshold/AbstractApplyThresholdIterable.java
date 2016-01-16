@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.logic.BitType;
 
 /**

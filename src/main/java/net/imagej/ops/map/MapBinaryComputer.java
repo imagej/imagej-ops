@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 /**
  * Typed interface for "map" {@link BinaryComputerOp}s.

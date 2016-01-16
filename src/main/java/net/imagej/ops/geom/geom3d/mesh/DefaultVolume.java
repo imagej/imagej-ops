@@ -31,7 +31,7 @@ package net.imagej.ops.geom.geom3d.mesh;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;

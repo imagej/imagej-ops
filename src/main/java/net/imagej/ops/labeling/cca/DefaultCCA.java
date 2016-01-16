@@ -34,7 +34,7 @@ import java.util.Iterator;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.labeling.ConnectedComponents;
 import net.imglib2.algorithm.labeling.ConnectedComponents.StructuringElement;

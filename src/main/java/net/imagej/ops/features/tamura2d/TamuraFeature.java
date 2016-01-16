@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.tamura2d;
 
-import net.imagej.ops.special.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 

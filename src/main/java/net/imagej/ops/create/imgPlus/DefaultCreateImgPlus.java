@@ -34,7 +34,7 @@ import net.imagej.ImgPlus;
 import net.imagej.ImgPlusMetadata;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.img.Img;
 
 import org.scijava.plugin.Parameter;

@@ -33,7 +33,7 @@ package net.imagej.ops.join;
 import java.util.Iterator;
 import java.util.List;
 
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * A join operation which joins a list of {@link UnaryComputerOp}s.

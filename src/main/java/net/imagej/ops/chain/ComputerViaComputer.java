@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * Base class for {@link UnaryComputerOp} implementations that delegate to other

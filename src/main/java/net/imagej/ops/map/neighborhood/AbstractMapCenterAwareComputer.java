@@ -31,7 +31,7 @@
 package net.imagej.ops.map.neighborhood;
 
 import net.imagej.ops.map.MapComputer;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;

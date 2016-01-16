@@ -31,8 +31,8 @@
 package net.imagej.ops.threshold.localBernsen;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;

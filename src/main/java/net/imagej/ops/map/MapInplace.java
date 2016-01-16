@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * Typed interface for "map" {@link UnaryInplaceOp}s.

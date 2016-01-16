@@ -30,6 +30,11 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
+
 /**
  * A <em>binary</em> operation computes a result from two given inputs. The
  * contents of the inputs are not affected.

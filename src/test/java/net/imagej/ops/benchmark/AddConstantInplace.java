@@ -30,7 +30,7 @@
 package net.imagej.ops.benchmark;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Parameter;

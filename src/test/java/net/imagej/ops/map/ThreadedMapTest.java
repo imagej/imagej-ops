@@ -34,8 +34,8 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;

@@ -33,7 +33,7 @@ package net.imagej.ops.geom.geom3d;
 import net.imagej.ops.Ops;
 import net.imagej.ops.geom.GeometricOp;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;

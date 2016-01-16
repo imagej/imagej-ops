@@ -34,7 +34,7 @@ import java.lang.reflect.Array;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.img.array.ArrayImg;
 import net.imglib2.img.basictypeaccess.array.ArrayDataAccess;
 import net.imglib2.type.NativeType;

@@ -34,7 +34,7 @@ import java.math.BigDecimal;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Convert;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;

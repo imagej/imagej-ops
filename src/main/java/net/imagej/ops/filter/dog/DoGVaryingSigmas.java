@@ -34,7 +34,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.HybridViaHybrid;
 import net.imagej.ops.chain.RAIs;
-import net.imagej.ops.special.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.NativeType;

@@ -32,7 +32,7 @@ package net.imagej.ops.geom;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 import net.imglib2.RealPoint;
 import net.imglib2.roi.IterableRegion;

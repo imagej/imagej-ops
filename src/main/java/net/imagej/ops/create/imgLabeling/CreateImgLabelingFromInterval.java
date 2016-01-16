@@ -31,7 +31,7 @@
 package net.imagej.ops.create.imgLabeling;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Interval;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;

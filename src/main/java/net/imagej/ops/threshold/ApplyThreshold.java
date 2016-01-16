@@ -31,7 +31,7 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * An algorithm for applying a threshold value to an object.

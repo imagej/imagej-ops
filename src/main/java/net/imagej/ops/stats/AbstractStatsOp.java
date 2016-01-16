@@ -31,7 +31,7 @@
 package net.imagej.ops.stats;
 
 import net.imagej.ops.OpService;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 

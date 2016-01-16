@@ -31,7 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;

@@ -31,7 +31,7 @@
 package net.imagej.ops.copy;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.type.Type;
 
 import org.scijava.plugin.Plugin;

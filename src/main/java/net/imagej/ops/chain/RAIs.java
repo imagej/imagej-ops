@@ -32,17 +32,17 @@ package net.imagej.ops.chain;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
-import net.imagej.ops.special.BinaryComputerOp;
-import net.imagej.ops.special.BinaryFunctionOp;
-import net.imagej.ops.special.BinaryHybridCF;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.Hybrids;
-import net.imagej.ops.special.UnaryInplaceOp;
-import net.imagej.ops.special.Inplaces;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
-import net.imagej.ops.special.UnaryHybridCF;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.inplace.Inplaces;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.RandomAccessibleInterval;
 
 /**

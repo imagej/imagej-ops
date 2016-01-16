@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.roi.labeling.LabelingMapping;
 import net.imglib2.roi.labeling.LabelingMapping.SerialisationAccess;
 

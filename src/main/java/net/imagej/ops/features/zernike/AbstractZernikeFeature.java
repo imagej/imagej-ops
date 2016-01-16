@@ -33,7 +33,7 @@ import net.imagej.ops.Contingent;
 import net.imagej.ops.OpService;
 import net.imagej.ops.features.zernike.helper.ZernikeComputer;
 import net.imagej.ops.features.zernike.helper.ZernikeMoment;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

@@ -29,7 +29,7 @@
  */
 package net.imagej.ops.features.zernike;
 
-import net.imagej.ops.special.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

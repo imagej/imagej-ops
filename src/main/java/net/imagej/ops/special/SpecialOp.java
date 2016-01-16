@@ -34,6 +34,20 @@ import net.imagej.ops.Initializable;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Threadable;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.NullaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.NullaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI;
+import net.imagej.ops.special.hybrid.BinaryHybridCFI1;
+import net.imagej.ops.special.hybrid.NullaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCFI;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * A <em>special</em> operation is one intended to be used repeatedly from other

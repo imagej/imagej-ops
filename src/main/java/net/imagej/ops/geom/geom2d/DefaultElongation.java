@@ -32,8 +32,8 @@ package net.imagej.ops.geom.geom2d;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.chain.RTs;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.roi.geometric.Polygon;
 import net.imglib2.type.numeric.real.DoubleType;
 

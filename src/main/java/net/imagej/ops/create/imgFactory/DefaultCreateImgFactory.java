@@ -31,7 +31,7 @@
 package net.imagej.ops.create.imgFactory;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.Dimensions;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.img.array.ArrayImgFactory;

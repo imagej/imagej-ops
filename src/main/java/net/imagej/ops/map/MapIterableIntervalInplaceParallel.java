@@ -32,7 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;

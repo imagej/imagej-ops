@@ -31,7 +31,7 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.converter.read.ConvertedIterableInterval;
 import net.imglib2.img.Img;

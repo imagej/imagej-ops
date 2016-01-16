@@ -33,7 +33,7 @@ package net.imagej.ops.features.lbp2d;
 import java.util.ArrayList;
 
 import net.imagej.ops.Contingent;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;

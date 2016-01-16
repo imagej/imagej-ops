@@ -31,7 +31,7 @@
 package net.imagej.ops.filter;
 
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;

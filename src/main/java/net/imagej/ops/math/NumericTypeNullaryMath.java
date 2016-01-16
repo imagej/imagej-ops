@@ -31,7 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractNullaryComputerOp;
+import net.imagej.ops.special.computer.AbstractNullaryComputerOp;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.plugin.Plugin;

@@ -31,7 +31,7 @@
 package net.imagej.ops.identity;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * A typed "identity" function.

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.AbstractBinaryComputerOp;
-import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 

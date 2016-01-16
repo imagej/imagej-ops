@@ -34,7 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;

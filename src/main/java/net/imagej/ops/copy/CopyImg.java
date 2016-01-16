@@ -32,11 +32,11 @@ package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.img.Img;
 import net.imglib2.type.NativeType;
 import net.imglib2.util.Intervals;

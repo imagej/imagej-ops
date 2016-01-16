@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractBinaryFunctionOp;
-import net.imagej.ops.special.BinaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
 
 /**
  * Base class for {@link BinaryFunctionOp} implementations that delegate to

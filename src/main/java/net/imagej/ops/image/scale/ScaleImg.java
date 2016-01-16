@@ -31,7 +31,7 @@
 package net.imagej.ops.image.scale;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.FlatIterationOrder;

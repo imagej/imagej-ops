@@ -30,7 +30,7 @@
 
 package net.imagej.ops.convert;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

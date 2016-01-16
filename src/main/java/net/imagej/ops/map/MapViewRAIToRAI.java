@@ -31,7 +31,7 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.ComputerConverter;
+import net.imagej.ops.special.computer.ComputerConverter;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.read.ConvertedRandomAccessibleInterval;
 import net.imglib2.type.Type;

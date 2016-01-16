@@ -30,6 +30,11 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
+
 /**
  * A <em>unary</em> operation computes a result from a given input. The contents
  * of the input are not affected.

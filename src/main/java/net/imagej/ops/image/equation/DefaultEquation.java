@@ -38,7 +38,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.img.array.ArrayImgs;

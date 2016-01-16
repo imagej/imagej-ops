@@ -30,7 +30,7 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * A join operation which joins two {@link UnaryComputerOp}s. The resulting

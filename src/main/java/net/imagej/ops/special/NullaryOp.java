@@ -30,6 +30,10 @@
 
 package net.imagej.ops.special;
 
+import net.imagej.ops.special.computer.NullaryComputerOp;
+import net.imagej.ops.special.function.NullaryFunctionOp;
+import net.imagej.ops.special.hybrid.NullaryHybridCF;
+
 /**
  * A <em>nullary</em> operation computes a result in a vacuum, without any input
  * values.

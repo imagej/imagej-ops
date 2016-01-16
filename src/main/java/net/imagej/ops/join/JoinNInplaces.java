@@ -30,7 +30,7 @@
 
 package net.imagej.ops.join;
 
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * A join operation which joins a list of {@link UnaryInplaceOp}s.

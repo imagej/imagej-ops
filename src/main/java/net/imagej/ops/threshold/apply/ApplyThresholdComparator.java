@@ -33,7 +33,7 @@ package net.imagej.ops.threshold.apply;
 import java.util.Comparator;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
 

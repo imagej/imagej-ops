@@ -30,7 +30,7 @@
 
 package net.imagej.ops.loop;
 
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * Loops over an injected {@link UnaryInplaceOp}. A {@link LoopInplace} applies

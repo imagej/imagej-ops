@@ -31,7 +31,7 @@
 package net.imagej.ops.create.integerType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.IntegerType;
 import net.imglib2.type.numeric.integer.ByteType;

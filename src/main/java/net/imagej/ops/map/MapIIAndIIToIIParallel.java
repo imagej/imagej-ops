@@ -32,7 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.BinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;

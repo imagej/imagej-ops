@@ -31,7 +31,7 @@
 package net.imagej.ops.math;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractBinaryHybridCFI;
+import net.imagej.ops.special.hybrid.AbstractBinaryHybridCFI;
 import net.imglib2.type.numeric.NumericType;
 
 import org.scijava.Priority;

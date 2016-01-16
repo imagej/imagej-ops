@@ -32,8 +32,8 @@ package net.imagej.ops.threshold.localContrast;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;

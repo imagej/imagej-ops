@@ -32,7 +32,7 @@ package net.imagej.ops.features.zernike.helper;
 import java.util.List;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imagej.types.BigComplex;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;

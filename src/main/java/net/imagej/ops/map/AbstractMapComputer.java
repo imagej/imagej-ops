@@ -30,8 +30,8 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 

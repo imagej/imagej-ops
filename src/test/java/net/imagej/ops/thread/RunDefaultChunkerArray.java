@@ -31,7 +31,7 @@ package net.imagej.ops.thread;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.thread.chunker.Chunk;
 import net.imagej.ops.thread.chunker.DefaultChunker;
 

@@ -32,8 +32,8 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.Computers;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Parameter;

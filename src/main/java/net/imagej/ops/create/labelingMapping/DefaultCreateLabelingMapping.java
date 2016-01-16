@@ -31,7 +31,7 @@
 package net.imagej.ops.create.labelingMapping;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractNullaryFunctionOp;
+import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
 import net.imglib2.roi.labeling.LabelingMapping;
 
 import org.scijava.plugin.Parameter;

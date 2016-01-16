@@ -31,7 +31,7 @@
 package net.imagej.ops.image.normalize;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 

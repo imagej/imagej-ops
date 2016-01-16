@@ -33,7 +33,7 @@ package net.imagej.ops.filter.addNoise;
 import java.util.Random;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryHybridCFI;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCFI;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;

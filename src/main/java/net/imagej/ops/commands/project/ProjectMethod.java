@@ -30,7 +30,7 @@
 
 package net.imagej.ops.commands.project;
 
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.numeric.RealType;
 
 /**

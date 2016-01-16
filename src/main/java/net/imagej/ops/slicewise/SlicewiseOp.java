@@ -31,7 +31,7 @@
 package net.imagej.ops.slicewise;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 /**
  * A typed "slicewise" function.

@@ -36,7 +36,7 @@ import net.imagej.ops.Namespace;
 import net.imagej.ops.OpMethod;
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.cooccurrencematrix.MatrixOrientation;
-import net.imagej.ops.special.UnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.Interval;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;

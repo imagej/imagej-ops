@@ -30,7 +30,7 @@
 
 package net.imagej.ops.threshold;
 
-import net.imagej.ops.special.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 

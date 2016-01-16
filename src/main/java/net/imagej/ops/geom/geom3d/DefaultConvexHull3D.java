@@ -42,7 +42,7 @@ import net.imagej.ops.geom.geom3d.mesh.Horizon;
 import net.imagej.ops.geom.geom3d.mesh.Mesh;
 import net.imagej.ops.geom.geom3d.mesh.TriangularFacet;
 import net.imagej.ops.geom.geom3d.mesh.Vertex;
-import net.imagej.ops.special.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RealLocalizable;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;

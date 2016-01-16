@@ -34,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.AbstractUnaryComputerOp;
-import net.imagej.ops.special.UnaryComputerOp;
 import net.imagej.ops.special.UnaryOutputFactory;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;

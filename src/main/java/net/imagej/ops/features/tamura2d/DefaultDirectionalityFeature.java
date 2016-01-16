@@ -33,8 +33,8 @@ import java.util.ArrayList;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.image.histogram.HistogramCreate;
-import net.imagej.ops.special.Functions;
-import net.imagej.ops.special.UnaryFunctionOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.gradient.PartialDerivative;

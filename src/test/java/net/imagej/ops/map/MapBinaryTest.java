@@ -34,8 +34,8 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.BinaryComputerOp;
-import net.imagej.ops.special.Computers;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;

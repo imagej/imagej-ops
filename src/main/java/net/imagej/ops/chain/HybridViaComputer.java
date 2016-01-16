@@ -30,9 +30,9 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractUnaryHybridCF;
-import net.imagej.ops.special.UnaryComputerOp;
-import net.imagej.ops.special.UnaryHybridCF;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 
 /**
  * Base class for {@link UnaryHybridCF} implementations that delegate to

@@ -30,8 +30,8 @@
 
 package net.imagej.ops.chain;
 
-import net.imagej.ops.special.AbstractUnaryInplaceOp;
-import net.imagej.ops.special.UnaryInplaceOp;
+import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 
 /**
  * Base class for {@link UnaryInplaceOp} implementations that delegate to other
