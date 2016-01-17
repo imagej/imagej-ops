@@ -33,7 +33,7 @@ package net.imagej.ops.threshold;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.exception.IncompatibleTypeException;
+import net.imglib2.IterableInterval;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.img.Img;
 import net.imglib2.type.logic.BitType;
@@ -45,30 +45,30 @@ import net.imglib2.type.logic.BitType;
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  */
-public abstract class AbstractApplyThresholdImg<T, I extends Img<T>> extends
-	AbstractApplyThresholdIterable<T, I, Img<BitType>>
+public abstract class AbstractApplyThresholdImg<T> extends
+	AbstractApplyThresholdIterable<T, IterableInterval<T>, IterableInterval<BitType>>
 {
 
-	protected UnaryFunctionOp<Img<T>, Histogram1d<T>> histCreator;
+	protected UnaryFunctionOp<IterableInterval<T>, Histogram1d<T>> histCreator;
+	
+	protected UnaryFunctionOp<IterableInterval<T>, Img<BitType>> imgCreator;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
 		histCreator = (UnaryFunctionOp) Functions.unary(ops(),
-			Ops.Image.Histogram.class, Histogram1d.class, in());
+				Ops.Image.Histogram.class, Histogram1d.class, in());
+		
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(),
+				Ops.Create.Img.class, Img.class, in(), new BitType() );
+		
 	}
 
 	// -- UnaryOutputFactory methods --
 
 	@Override
-	public Img<BitType> createOutput(final I input) {
-		final BitType type = new BitType();
-		try {
-			return input.factory().imgFactory(type).create(input, type);
-		}
-		catch (final IncompatibleTypeException exc) {
-			throw new IllegalArgumentException(exc);
-		}
+	public Img<BitType> createOutput(final IterableInterval<T> input) {		
+		return imgCreator.compute1( input );
 	}
 
 }

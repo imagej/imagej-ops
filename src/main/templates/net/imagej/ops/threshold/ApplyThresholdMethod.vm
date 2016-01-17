@@ -34,7 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.img.Img;
+import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.plugin.Plugin;
@@ -56,7 +56,7 @@ public final class ApplyThresholdMethod {
 
 	@Plugin(type = ${iface}.class)
 	public static class ${method.iface}<T extends RealType<T>>
-		extends AbstractApplyThresholdImg<T, Img<T>>
+		extends AbstractApplyThresholdImg<T>
 		implements ${iface}
 	{
 
@@ -72,7 +72,7 @@ public final class ApplyThresholdMethod {
 		}
 
 		@Override
-		public T getThreshold(final Img<T> input) {
+		public T getThreshold(final IterableInterval<T> input) {
 			final Histogram1d<T> hist = histCreator.compute1(input);
 			return thresholdFunc.compute1(hist);
 		}
