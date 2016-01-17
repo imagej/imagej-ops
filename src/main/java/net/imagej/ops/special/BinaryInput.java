@@ -34,6 +34,8 @@ package net.imagej.ops.special;
  * Interface for objects with two typed input parameters.
  * 
  * @author Curtis Rueden
+ * @see UnaryInput
+ * @see Output
  */
 public interface BinaryInput<I1, I2> extends UnaryInput<I1> {
 

@@ -40,6 +40,7 @@ package net.imagej.ops.special;
  * @author Curtis Rueden
  * @author Christian Dietz (University of Konstanz)
  * @see UnaryInput
+ * @see BinaryInput
  */
 public interface Output<O> {
 

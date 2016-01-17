@@ -33,6 +33,7 @@ package net.imagej.ops.special;
 import net.imagej.ops.Initializable;
 import net.imagej.ops.Op;
 import net.imagej.ops.OpEnvironment;
+import net.imagej.ops.OpRef;
 import net.imagej.ops.Threadable;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.NullaryComputerOp;
@@ -221,4 +222,31 @@ public interface SpecialOp extends Op, Initializable, Threadable {
 		return this;
 	}
 
+	// -- Utility methods --
+
+	/**
+	 * Gets the best {@link SpecialOp} implementation for the given types and
+	 * arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link SpecialOp}s share this type (e.g., the type is an interface
+	 *          which multiple {@link SpecialOp}s implement), then the best
+	 *          {@link SpecialOp} implementation to use will be selected
+	 *          automatically from the type and arguments.
+	 * @param specialType The {@link SpecialOp} type to which matches should be
+	 *          restricted.
+	 * @param outType the type of the op's primary output, or null for any type.
+	 * @param args The operation's arguments.
+	 * @return A typed {@link SpecialOp} with populated inputs, ready to use.
+	 */
+	static <OP extends Op, S extends SpecialOp, O> S op(final OpEnvironment ops,
+		final Class<OP> opType, final Class<S> specialType, final Class<O> outType,
+		final Object... args)
+	{
+		final OpRef<OP> ref = OpRef.createTypes(opType, specialType, outType, args);
+		@SuppressWarnings("unchecked")
+		final S op = (S) ops.op(ref);
+		return op;
+	}
 }
