@@ -54,6 +54,7 @@ import net.imagej.ops.labeling.LabelingNamespace;
 import net.imagej.ops.logic.LogicNamespace;
 import net.imagej.ops.map.neighborhood.CenterAwareComputerOp;
 import net.imagej.ops.math.MathNamespace;
+import net.imagej.ops.special.SpecialOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
@@ -364,6 +365,26 @@ public interface OpEnvironment extends Contextual {
 	default String help(final String name, final Class<? extends Op> opType) {
 		final String result = (String) run(net.imagej.ops.help.HelpCandidates.class,
 			name, opType);
+		return result;
+	}
+
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
+	default String help(final String name, final Class<? extends Op> opType,
+		final Integer arity)
+	{
+		final String result = (String) run(net.imagej.ops.help.HelpCandidates.class,
+			name, opType, arity);
+		return result;
+	}
+
+	/** Executes the "help" operation on the given arguments. */
+	@OpMethod(op = net.imagej.ops.help.HelpCandidates.class)
+	default String help(final String name, final Class<? extends Op> opType,
+		final Integer arity, final SpecialOp.Flavor flavor)
+	{
+		final String result = (String) run(net.imagej.ops.help.HelpCandidates.class,
+			name, opType, arity, flavor);
 		return result;
 	}
 

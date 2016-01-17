@@ -61,6 +61,13 @@ public interface NullaryOp<O> extends SpecialOp, Output<O> {
 	 */
 	O run(O output);
 
+	// -- SpecialOp methods --
+
+	@Override
+	default int getArity() {
+		return 0;
+	}
+
 	// -- Runnable methods --
 
 	@Override

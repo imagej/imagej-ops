@@ -71,6 +71,13 @@ public interface UnaryOp<I, O> extends NullaryOp<O>, UnaryInput<I> {
 	 */
 	O run(I input, O output);
 
+	// -- SpecialOp methods --
+
+	@Override
+	default int getArity() {
+		return 1;
+	}
+
 	// -- Runnable methods --
 
 	@Override
