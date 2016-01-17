@@ -68,8 +68,8 @@ public final class Inplaces {
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType,
-			UnaryInplaceOp.class, null, OpUtils.args(otherArgs, argType));
+		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType, UnaryInplaceOp.class,
+			null, OpUtils.args(otherArgs, argType));
 		return op;
 	}
 
@@ -93,8 +93,8 @@ public final class Inplaces {
 		final Object... otherArgs)
 	{
 		@SuppressWarnings("unchecked")
-		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType,
-			UnaryInplaceOp.class, null, OpUtils.args(otherArgs, arg));
+		final UnaryInplaceOp<A> op = SpecialOp.op(ops, opType, UnaryInplaceOp.class,
+			null, OpUtils.args(otherArgs, arg));
 		return op;
 	}
 
