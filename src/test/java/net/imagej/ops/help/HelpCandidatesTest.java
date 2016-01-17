@@ -115,8 +115,8 @@ public class HelpCandidatesTest extends AbstractOpTest {
 		final String actualYuckyOrange = ops.help("test.orange", Yucky.class);
 		assertEquals(expectedYuckyOrange, actualYuckyOrange);
 		
-		final String expectedEmpty = ops.help("test.apple", Ops.Help.class);
-		assertEquals("No such operation.", expectedEmpty);
+		final String actualEmpty = ops.help("test.apple", Ops.Help.class);
+		assertEquals("No such operation.", actualEmpty);
 	}
 
 	// -- Helper classes --
