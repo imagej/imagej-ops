@@ -98,4 +98,110 @@ public final class Inplaces {
 		return op;
 	}
 
+	/**
+	 * Gets the best {@link BinaryInplace1Op} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryInplace1Op}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryInplace1Op}s implement),
+	 *          then the best {@link BinaryInplace1Op} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link BinaryInplace1Op} mutable
+	 *          argument (typed output / first input).
+	 * @param inType The {@link Class} of the {@link BinaryInplace1Op} second
+	 *          typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          values.
+	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
+	 */
+	public static <A, I, OP extends Op> BinaryInplace1Op<A, I> binary1(
+		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+		final Class<I> inType, final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final BinaryInplace1Op<A, I> op = SpecialOp.op(ops, opType,
+			BinaryInplace1Op.class, null, OpUtils.args(otherArgs, argType, inType));
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryInplace1Op} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryInplace1Op}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryInplace1Op}s implement),
+	 *          then the best {@link BinaryInplace1Op} implementation to use will
+	 *          be selected automatically from the type and arguments.
+	 * @param arg The mutable argument (typed output / first input).
+	 * @param in The second typed input.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          values.
+	 * @return An {@link BinaryInplace1Op} with populated inputs, ready to use.
+	 */
+	public static <A, I, OP extends Op> BinaryInplace1Op<A, I> binary1(
+		final OpEnvironment ops, final Class<OP> opType, final A arg, final I in,
+		final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final BinaryInplace1Op<A, I> op = SpecialOp.op(ops, opType,
+			BinaryInplace1Op.class, null, OpUtils.args(otherArgs, arg, in));
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryInplaceOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryInplaceOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryInplaceOp}s implement), then
+	 *          the best {@link BinaryInplaceOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param argType The {@link Class} of the {@link BinaryInplaceOp} typed
+	 *          arguments.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          values.
+	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
+	 */
+	public static <A, OP extends Op> BinaryInplaceOp<A> binary(
+		final OpEnvironment ops, final Class<OP> opType, final Class<A> argType,
+		final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final BinaryInplaceOp<A> op = SpecialOp.op(ops, opType,
+			BinaryInplaceOp.class, null, OpUtils.args(otherArgs, argType, argType));
+		return op;
+	}
+
+	/**
+	 * Gets the best {@link BinaryInplaceOp} implementation for the given types
+	 * and arguments, populating its inputs.
+	 *
+	 * @param ops The {@link OpEnvironment} to search for a matching op.
+	 * @param opType The {@link Class} of the operation. If multiple
+	 *          {@link BinaryInplaceOp}s share this type (e.g., the type is an
+	 *          interface which multiple {@link BinaryInplaceOp}s implement), then
+	 *          the best {@link BinaryInplaceOp} implementation to use will be
+	 *          selected automatically from the type and arguments.
+	 * @param arg1 The first typed argument.
+	 * @param arg2 The second typed argument.
+	 * @param otherArgs The operation's arguments, excluding the typed argument
+	 *          values.
+	 * @return An {@link BinaryInplaceOp} with populated inputs, ready to use.
+	 */
+	public static <A, OP extends Op> BinaryInplaceOp<A> binary(
+		final OpEnvironment ops, final Class<OP> opType, final A arg1, final A arg2,
+		final Object... otherArgs)
+	{
+		@SuppressWarnings("unchecked")
+		final BinaryInplaceOp<A> op = SpecialOp.op(ops, opType,
+			BinaryInplaceOp.class, null, OpUtils.args(otherArgs, arg1, arg2));
+		return op;
+	}
+
 }
