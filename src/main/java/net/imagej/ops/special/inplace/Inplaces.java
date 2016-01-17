@@ -36,7 +36,7 @@ import net.imagej.ops.OpUtils;
 import net.imagej.ops.special.SpecialOp;
 
 /**
- * Utility class for looking up unary ops in a type-safe way.
+ * Utility class for looking up inplace ops in a type-safe way.
  *
  * @author Curtis Rueden
  * @see UnaryInplaceOp
