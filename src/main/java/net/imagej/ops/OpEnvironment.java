@@ -42,6 +42,7 @@ import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.copy.CopyNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
+import net.imagej.ops.features.gabor.GaborNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
 import net.imagej.ops.features.lbp2d.LBPNamespace;
 import net.imagej.ops.features.tamura2d.TamuraNamespace;
@@ -798,6 +799,11 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "zernike" namespace. */
 	default ZernikeNamespace zernike() {
 		return namespace(ZernikeNamespace.class);
+	}
+	
+	/** Gateway into ops of the "zernike" namespace. */
+	default GaborNamespace gabor() {
+		return namespace(GaborNamespace.class);
 	}
 
 	// -- Helper methods --

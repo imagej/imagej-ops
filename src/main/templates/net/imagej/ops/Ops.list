@@ -344,5 +344,9 @@ namespaces = ```
 		[name: "magnitude",                iface: "Magnitude"],
 		[name: "phase",                    iface: "Phase"],
 	]],
+	[name: "gabor", iface: "Gabor", ops: [
+		[name: "filterBank",                iface: "FilterBank"],
+		[name: "feature",                iface: "Feature"],
+	]],
 ]
 ```
