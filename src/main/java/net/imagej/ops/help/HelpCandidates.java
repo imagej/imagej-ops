@@ -32,9 +32,11 @@ package net.imagej.ops.help;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.OpMatchingService;
-import net.imagej.ops.OpRef;
+import net.imagej.ops.OpService;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.SpecialOp;
 
+import org.scijava.log.LogService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -48,7 +50,13 @@ import org.scijava.plugin.Plugin;
 public class HelpCandidates extends AbstractHelp {
 
 	@Parameter
+	private OpService ops;
+
+	@Parameter
 	private OpMatchingService matcher;
+
+	@Parameter(required = false)
+	private LogService log;
 
 	@Parameter(required = false)
 	private String name;
@@ -56,9 +64,21 @@ public class HelpCandidates extends AbstractHelp {
 	@Parameter(required = false)
 	private Class<? extends Op> opType;
 
+	@Parameter(required = false)
+	private Integer arity;
+
+	@Parameter(required = false)
+	private SpecialOp.Flavor flavor;
+
 	@Override
 	public void run() {
-		help(matcher.findCandidates(ops(), new OpRef<>(name, opType, null, null)));
+		runTyped(opType, arity == null ? -1 : arity);
+	}
+
+	// -- Helper methods --
+
+	private <OP extends Op> void runTyped(final Class<OP> o, final int a) {
+		help(SpecialOp.candidates(ops, name, o, a, flavor));
 	}
 
 }
