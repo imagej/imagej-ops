@@ -62,6 +62,8 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractOpTest {
 
+	private static Context ctx;
+
 	@Parameter
 	protected Context context;
 
@@ -80,7 +82,8 @@ public abstract class AbstractOpTest {
 	/** Sets up a SciJava context with {@link OpService}. */
 	@Before
 	public void setUp() {
-		createContext().inject(this);
+		if (ctx == null) ctx = createContext();
+		ctx.inject(this);
 	}
 
 	/**
@@ -89,7 +92,7 @@ public abstract class AbstractOpTest {
 	@After
 	public synchronized void cleanUp() {
 		if (context != null) {
-			context.dispose();
+//			context.dispose();
 			context = null;
 			ops = null;
 			matcher = null;
