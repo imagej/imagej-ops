@@ -46,7 +46,7 @@ public class AbstractOpBenchmark extends AbstractOpTest {
 
 	@Before
 	public void skipBenchmarksByDefault() {
-		assumeTrue(benchmarkTestsEnabled);
+//		assumeTrue(benchmarkTestsEnabled);
 	}
 
 	public long bestOf(final Runnable runnable, final int n) {
