@@ -30,10 +30,8 @@
 
 package net.imagej.ops;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 
 import org.scijava.AbstractContextual;
 import org.scijava.Context;
@@ -86,8 +84,8 @@ public class CustomOpEnvironment extends AbstractContextual implements
 		// NB: If this is not performant and/or dynamic enough, we could create/use
 		// a concatenating collection (see e.g. Guava's Iterables.concat method)
 		// that does not copy all the elements.
-		if (parent != null) index.addOps(parent.infos());
-		index.addOps(infos);
+		if (parent != null) index.addAll(parent.infos());
+		index.addAll(infos);
 	}
 
 	// -- OpEnvironment methods --
@@ -99,12 +97,18 @@ public class CustomOpEnvironment extends AbstractContextual implements
 
 	@Override
 	public OpInfo info(final Class<? extends Op> type) {
-		return index.get(type.getName());
+		final List<OpInfo> infos = index.get(type);
+		return infos == null || infos.isEmpty() ? null : infos.get(0);
+	}
+
+	@Override
+	public Collection<OpInfo> infos(Class<? extends Op> opType) {
+		return index.get(opType);
 	}
 
 	@Override
 	public Collection<OpInfo> infos() {
-		return index.values();
+		return index.getAll();
 	}
 
 	@Override
@@ -115,28 +119,6 @@ public class CustomOpEnvironment extends AbstractContextual implements
 	@Override
 	public <NS extends Namespace> NS namespace(Class<NS> nsClass) {
 		return parent().namespace(nsClass);
-	}
-
-	// -- Helper classes --
-
-	/** A table mapping available ops from class name to {@link OpInfo}. */
-	private static class OpIndex extends HashMap<String, OpInfo> {
-
-		public void addOps(final Collection<? extends OpInfo> infos) {
-			if (infos == null) return;
-			for (final OpInfo info : infos) {
-				put(info.cInfo().getDelegateClassName(), info);
-			}
-		}
-		
-		@Override
-		public Collection<OpInfo> values() {
-			final ArrayList<OpInfo> infos = new ArrayList<>();
-			infos.addAll(super.values());
-			Collections.sort(infos);
-			return infos;
-		}
-
 	}
 
 }
