@@ -81,13 +81,7 @@ public class LocalThreshold<T extends RealType<T>>
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
 	{
-		RandomAccessibleInterval<T> extendedInput = input;
-
-		if (outOfBounds != null) {
-			extendedInput = Views.interval(Views.extend(input, outOfBounds), input);
-		}
-
-		mapper.compute1(extendedInput, output);
+		mapper.compute0(output);
 	}
 
 }
