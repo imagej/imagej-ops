@@ -51,6 +51,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.Apply.class)
 public class LocalThreshold<T extends RealType<T>>
@@ -72,22 +73,27 @@ public class LocalThreshold<T extends RealType<T>>
 
 	@Override
 	public void initialize() {
-		final RandomAccessibleInterval<T> extIn = outOfBounds == null ? in() : Views
-			.interval((Views.extend(in(), outOfBounds)), in());
-		mapper = Computers.unary(ops(), Ops.Map.class, out(), extIn, method, shape);
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), extIn(in()), method, shape);
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
 	{
-		RandomAccessibleInterval<T> extendedInput = input;
-
-		if (outOfBounds != null) {
-			extendedInput = Views.interval(Views.extend(input, outOfBounds), input);
-		}
-
-		mapper.compute1(extendedInput, output);
+		mapper.compute1(extIn(input), output);
 	}
 
+	/**
+	 * Extends an input using an {@link OutOfBoundsFactory} if available,
+	 * otherwise returns the unchanged input.
+	 * 
+	 * @param input
+	 *            {@link RandomAccessibleInterval} that is to be extended
+	 * @return {@link RandomAccessibleInterval} extended using the
+	 *         {@link OutOfBoundsFactory}
+	 */
+	private RandomAccessibleInterval<T> extIn(final RandomAccessibleInterval<T> input) {
+		return outOfBounds == null ? in() : Views
+			.interval((Views.extend(in(), outOfBounds)), in());
+	}
 }
