@@ -63,10 +63,10 @@ public final class Ops {
 	 * </p>
 	 *
 	 * <pre>
-	 * @Plugin(type = Ops.${opClass}.class)
+	 * @Plugin(type = Ops.${opClass}Op.class)
 	 * </pre>
 	 */
-	public interface $opClass extends Op {
+	public interface ${opClass}Op extends Op {
 		String NAME = "$op.name";
 #if ($op.aliases)
 		String ALIASES = "##
@@ -98,10 +98,10 @@ $alias##
 		 * </p>
 		 *
 		 * <pre>
-		 * @Plugin(type = Ops.${nsClass}.${opClass}.class
+		 * @Plugin(type = Ops.${nsClass}.${opClass}Op.class
 		 * </pre>
 		 */
-		public interface $opClass extends Op {
+		public interface ${opClass}Op extends Op {
 			String NAME = "${ns.name}.$op.name";
 #if ($op.aliases)
 			String ALIASES = "##
