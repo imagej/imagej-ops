@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Offset.class)
+@Plugin(type = Ops.View.OffsetView.class)
 public class DefaultOffset<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.Offset {
+		implements Ops.View.OffsetView {
 
 	@Parameter
 	private long[] offset;

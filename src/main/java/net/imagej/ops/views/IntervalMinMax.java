@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Interval.class)
+@Plugin(type = Ops.View.IntervalView.class)
 public class IntervalMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.Interval {
+		implements Ops.View.IntervalView {
 
 	@Parameter
 	private long[] min;

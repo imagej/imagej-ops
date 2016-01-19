@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Subsample.class)
+@Plugin(type = Ops.View.SubsampleView.class)
 public class SubsampleStepsForDims<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, SubsampleView<T>>
-		implements Contingent, Ops.View.Subsample {
+		implements Contingent, Ops.View.SubsampleView {
 
 	@Parameter
 	private long[] steps;

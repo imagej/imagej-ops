@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Translate.class)
+@Plugin(type = Ops.View.TranslateView.class)
 public class DefaultTranslate<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.Translate {
+		implements Ops.View.TranslateView {
 
 	@Parameter
 	private long[] translation;

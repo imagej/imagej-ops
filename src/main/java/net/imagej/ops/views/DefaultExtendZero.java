@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ExtendZero.class)
+@Plugin(type = Ops.View.ExtendZeroView.class)
 public class DefaultExtendZero<T extends NumericType<T>, F extends RandomAccessibleInterval<T>>
-		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendZero {
+		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendZeroView {
 
 	@Override
 	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {

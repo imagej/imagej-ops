@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Extend.class)
+@Plugin(type = Ops.View.ExtendView.class)
 public class DefaultExtend<T, F extends RandomAccessibleInterval<T>>
-		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.Extend {
+		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendView {
 
 	@Parameter
 	private OutOfBoundsFactory<T, ? super F> factory;

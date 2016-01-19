@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Offset.class)
+@Plugin(type = Ops.View.OffsetView.class)
 public class OffsetInterval<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
-		implements Ops.View.Offset {
+		implements Ops.View.OffsetView {
 
 	@Parameter
 	private Interval interval;

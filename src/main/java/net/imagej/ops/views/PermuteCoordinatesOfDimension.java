@@ -34,7 +34,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.View.PermuteCoordinates;
+import net.imagej.ops.Ops.View.PermuteCoordinatesView;
 import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
@@ -45,9 +45,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.PermuteCoordinates.class)
+@Plugin(type = Ops.View.PermuteCoordinatesView.class)
 public class PermuteCoordinatesOfDimension<T>
-		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>> implements PermuteCoordinates {
+		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>> implements PermuteCoordinatesView {
 
 	@Parameter
 	private int[] permutation;

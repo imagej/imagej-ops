@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.InvertAxis.class)
+@Plugin(type = Ops.View.InvertAxisView.class)
 public class DefaultInvertAxis<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements Ops.View.InvertAxis {
+		implements Ops.View.InvertAxisView {
 
 	@Parameter
 	private int d;

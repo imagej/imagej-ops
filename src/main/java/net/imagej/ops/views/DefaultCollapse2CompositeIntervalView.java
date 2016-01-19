@@ -44,10 +44,10 @@ import net.imglib2.view.composite.GenericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Collapse.class)
+@Plugin(type = Ops.View.CollapseView.class)
 public class DefaultCollapse2CompositeIntervalView<T> extends
 		AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, ? extends GenericComposite<T>>>
-		implements Ops.View.Collapse {
+		implements Ops.View.CollapseView {
 
 	@Override
 	public CompositeIntervalView<T, ? extends GenericComposite<T>> compute1(RandomAccessibleInterval<T> input) {

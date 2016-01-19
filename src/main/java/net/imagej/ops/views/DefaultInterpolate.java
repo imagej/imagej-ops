@@ -46,9 +46,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Interpolate.class)
+@Plugin(type = Ops.View.InterpolateView.class)
 public class DefaultInterpolate<I extends EuclideanSpace, T extends Type<T>>
-		extends AbstractUnaryFunctionOp<I, RealRandomAccessible<T>> implements Ops.View.Interpolate {
+		extends AbstractUnaryFunctionOp<I, RealRandomAccessible<T>> implements Ops.View.InterpolateView {
 
 	@Parameter
 	private InterpolatorFactory<T, I> factory;

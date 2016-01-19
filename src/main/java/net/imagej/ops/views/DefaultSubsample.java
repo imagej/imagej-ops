@@ -44,9 +44,9 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Subsample.class)
+@Plugin(type = Ops.View.SubsampleView.class)
 public class DefaultSubsample<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, SubsampleView<T>>
-		implements Ops.View.Subsample {
+		implements Ops.View.SubsampleView {
 
 	@Parameter
 	private long step;

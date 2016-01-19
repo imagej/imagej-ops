@@ -46,10 +46,10 @@ import net.imglib2.view.composite.RealComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.RealCollapse.class)
+@Plugin(type = Ops.View.RealCollapseView.class)
 public class DefaultCollapseReal2CompositeView<T extends RealType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessible<T>, CompositeView<T, RealComposite<T>>>
-		implements Ops.View.RealCollapse {
+		implements Ops.View.RealCollapseView {
 
 	@Parameter
 	private int numChannels;

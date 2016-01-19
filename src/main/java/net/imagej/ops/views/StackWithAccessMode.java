@@ -46,10 +46,10 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Stack.class)
+@Plugin(type = Ops.View.StackView.class)
 public class StackWithAccessMode<T>
 		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
-		implements Ops.View.Stack {
+		implements Ops.View.StackView {
 
 	@Parameter
 	private StackAccessMode stackAccessMode;

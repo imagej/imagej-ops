@@ -44,10 +44,10 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.PermuteCoordinatesInverse.class)
+@Plugin(type = Ops.View.PermuteCoordinatesInverseView.class)
 public class DefaultPermuteCoordinatesInverse<T>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements Ops.View.PermuteCoordinatesInverse {
+		implements Ops.View.PermuteCoordinatesInverseView {
 
 	@Parameter
 	private int[] permutation;

@@ -42,10 +42,10 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.DropSingletonDimensions.class)
+@Plugin(type = Ops.View.DropSingletonDimensionsView.class)
 public class DefaultDropSingletonDimensions<T>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-		implements Ops.View.DropSingletonDimensions {
+		implements Ops.View.DropSingletonDimensionsView {
 
 	@Override
 	public RandomAccessibleInterval<T> compute1(RandomAccessibleInterval<T> input) {
