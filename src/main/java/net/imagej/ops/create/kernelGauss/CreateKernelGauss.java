@@ -65,7 +65,7 @@ public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
 		final double[][] kernelArrays = new double[numDimensions][];
 
 		for (int d = 0; d < numDimensions; d++) {
-			sigmaPixels[d] = sigma[d] / calibration[d];
+			sigmaPixels[d] = sigma[d];
 
 			dims[d] = Math.max(3, (2 * (int) (3 * sigmaPixels[d] + 0.5) + 1));
 			kernelArrays[d] = Util.createGaussianKernel1DDouble(sigmaPixels[d], true);

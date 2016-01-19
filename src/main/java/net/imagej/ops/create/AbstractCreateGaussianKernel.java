@@ -57,9 +57,6 @@ public abstract class AbstractCreateGaussianKernel<T extends ComplexType<T> & Na
 	@Parameter
 	protected double[] sigma;
 
-	@Parameter(required = false)
-	protected double[] calibration;
-
 	protected int numDimensions;
 
 	@Override
@@ -67,25 +64,11 @@ public abstract class AbstractCreateGaussianKernel<T extends ComplexType<T> & Na
 
 		numDimensions = sigma.length;
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
-
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
-			}
-		}
-
 		createKernel();
 	}
 
 	@Override
 	public boolean conforms() {
-
-		if (calibration != null) {
-			if (calibration.length != sigma.length) {
-				return false;
-			}
-		}
 
 		// if outType is not null make sure it is a supported type
 		if (getOutType() != null) {

@@ -63,7 +63,7 @@ public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 			// Optimal sigma for LoG approach and dimensionality.
 			final double sigma_optimal = sigma[i] / Math.sqrt(numDimensions);
 
-			sigmaPixels[i] = sigma_optimal / calibration[i];
+			sigmaPixels[i] = sigma_optimal;
 		}
 		final int n = sigmaPixels.length;
 		final long[] sizes = new long[n];
@@ -97,7 +97,7 @@ public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
 			double mantissa = 0;
 			double exponent = 0;
 			for (int d = 0; d < coords.length; d++) {
-				final double x = calibration[d] * (coords[d] - middle[d]);
+				final double x = (coords[d] - middle[d]);
 				mantissa += -C * (x * x / sigma[0] / sigma[0] - 1d);
 				exponent += -x * x / 2d / sigma[0] / sigma[0];
 			}

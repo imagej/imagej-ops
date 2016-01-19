@@ -58,14 +58,6 @@ public class CreateKernelLogSymmetric<T extends ComplexType<T> & NativeType<T>>
 			sigmas[d] = sigma;
 		}
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
-
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
-			}
-		}
-
-		output = ops().create().kernelLog(outType, fac, sigmas, calibration);
+		output = ops().create().kernelLog(outType, fac, sigmas);
 	}
 }

@@ -57,15 +57,7 @@ public class CreateKernelGaussSymmetric<T extends ComplexType<T>> extends
 			sigmas[d] = sigma;
 		}
 
-		if (calibration == null) {
-			calibration = new double[numDimensions];
-
-			for (int i = 0; i < numDimensions; i++) {
-				calibration[i] = 1.0;
-			}
-		}
-
 		output =
-			(Img<T>) ops().create().kernelGauss(outType, fac, sigmas, calibration);
+			(Img<T>) ops().create().kernelGauss(outType, fac, sigmas);
 	}
 }

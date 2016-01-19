@@ -64,7 +64,4 @@ public abstract class AbstractCreateSymmetricGaussianKernel<T extends ComplexTyp
 	@Parameter
 	protected double sigma;
 
-	@Parameter(required = false)
-	protected double[] calibration;
-
 }
