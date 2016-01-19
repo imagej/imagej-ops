@@ -37,10 +37,6 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
 /**
  * A binary <em>inplace</em> operation which computes a result from two given
  * arguments, storing it back into the <em>first</em> input (i.e., mutating it).
- * <p>
- * It is a subset of {@link BinaryInplaceOp}, which can mutate either the first
- * <em>or</em> second input.
- * </p>
  * 
  * @author Curtis Rueden
  * @param <A> type of first input + output
@@ -57,8 +53,8 @@ public interface BinaryInplace1Op<A, I> extends BinaryOp<A, I, A>,
 	 * 
 	 * @param arg First argument of the {@link BinaryInplace1Op}, which
 	 *          <em>will</em> be mutated.
-	 * @param in Second argument of the {@link BinaryInplace1Op}, which
-	 *          <em>not</em> will be mutated.
+	 * @param in Second argument of the {@link BinaryInplace1Op}, which will
+	 *          <em>not</em> be mutated.
 	 */
 	void mutate1(A arg, I in);
 
