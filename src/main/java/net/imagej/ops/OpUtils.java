@@ -200,7 +200,7 @@ public final class OpUtils {
 		final Class<? extends SciJavaPlugin> type = info.getAnnotation().type();
 		sb.append(type.getSimpleName());
 		sb.append("(" + paramString(info.inputs(), null, ", ") + ")");
-		return sb.toString();
+		return sb.toString().replaceAll("\n|\t", "");
 	}
 
 	/**
