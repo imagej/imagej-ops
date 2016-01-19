@@ -31,7 +31,7 @@
 package net.imagej.ops.create.kernelGauss;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateKernel;
+import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
@@ -54,7 +54,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelGauss.class)
 public class CreateKernelGauss<T extends ComplexType<T> & NativeType<T>>
-	extends AbstractCreateKernel<T> implements Ops.Create.KernelGauss
+	extends AbstractCreateGaussianKernel<T> implements Ops.Create.KernelGauss
 {
 
 	@Override

@@ -31,7 +31,7 @@
 package net.imagej.ops.create.kernelLog;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.create.AbstractCreateKernel;
+import net.imagej.ops.create.AbstractCreateGaussianKernel;
 import net.imglib2.Cursor;
 import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.type.NativeType;
@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.KernelLog.class)
 public class CreateKernelLog<T extends ComplexType<T> & NativeType<T>> extends
-	AbstractCreateKernel<T> implements Ops.Create.KernelLog
+	AbstractCreateGaussianKernel<T> implements Ops.Create.KernelLog
 {
 
 	@Override
