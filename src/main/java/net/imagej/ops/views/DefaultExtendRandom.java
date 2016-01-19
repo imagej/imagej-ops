@@ -34,8 +34,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.ExtendedRandomAccessibleInterval;
@@ -44,13 +44,11 @@ import net.imglib2.view.Views;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = Ops.View.ExtendRandom.class, name = Ops.View.ExtendRandom.NAME)
 public class DefaultExtendRandom<T extends RealType<T>, F extends RandomAccessibleInterval<T>>
-	extends AbstractFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>>
-	implements Ops.View.ExtendRandom
-{
+		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendRandom {
 
 	@Parameter(type = ItemIO.INPUT)
 	private double min;
@@ -59,7 +57,7 @@ public class DefaultExtendRandom<T extends RealType<T>, F extends RandomAccessib
 	private double max;
 
 	@Override
-	public ExtendedRandomAccessibleInterval<T, F> compute(F input) {
+	public ExtendedRandomAccessibleInterval<T, F> compute1(F input) {
 		return Views.extendRandom(input, min, max);
 	}
 }

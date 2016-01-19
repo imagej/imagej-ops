@@ -32,8 +32,8 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
@@ -43,19 +43,15 @@ import net.imglib2.view.composite.RealComposite;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = Ops.View.RealCollapse.class, name = Ops.View.RealCollapse.NAME)
 public class DefaultCollapseReal2CompositeIntervalView<T extends RealType<T>>
-	extends
-	AbstractFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, RealComposite<T>>>
-	implements Ops.View.RealCollapse
-{
+		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, RealComposite<T>>>
+		implements Ops.View.RealCollapse {
 
 	@Override
-	public CompositeIntervalView<T, RealComposite<T>> compute(
-		RandomAccessibleInterval<T> input)
-	{
+	public CompositeIntervalView<T, RealComposite<T>> compute1(RandomAccessibleInterval<T> input) {
 		return Views.collapseReal(input);
 	}
 

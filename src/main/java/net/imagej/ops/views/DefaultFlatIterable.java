@@ -32,8 +32,8 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
@@ -41,16 +41,14 @@ import net.imglib2.view.Views;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = Ops.View.FlatIterable.class, name = Ops.View.FlatIterable.NAME)
-public class DefaultFlatIterable<T> extends
-	AbstractFunctionOp<RandomAccessibleInterval<T>, IterableInterval<T>>
-	implements Ops.View.FlatIterable
-{
+public class DefaultFlatIterable<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IterableInterval<T>>
+		implements Ops.View.FlatIterable {
 
 	@Override
-	public IterableInterval<T> compute(RandomAccessibleInterval<T> input) {
+	public IterableInterval<T> compute1(RandomAccessibleInterval<T> input) {
 		return Views.flatIterable(input);
 	}
 

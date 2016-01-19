@@ -34,8 +34,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops.View.AddDimension;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
@@ -46,12 +46,8 @@ import net.imglib2.view.Views;
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = AddDimension.class, label = "View: AddDimension", name = AddDimension.NAME)
-public class AddDimensionMinMax<T>
-		extends
-			AbstractFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
-		implements
-			ViewOp<RandomAccessibleInterval<T>, IntervalView<T>>,
-			AddDimension {
+public class AddDimensionMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
+		implements ViewOp<RandomAccessibleInterval<T>, IntervalView<T>>, AddDimension {
 
 	@Parameter(type = ItemIO.INPUT)
 	private long minOfNewDim;
@@ -60,7 +56,7 @@ public class AddDimensionMinMax<T>
 	private long maxOfNewDim;
 
 	@Override
-	public IntervalView<T> compute(RandomAccessibleInterval<T> input) {
+	public IntervalView<T> compute1(RandomAccessibleInterval<T> input) {
 		return Views.addDimension(input, minOfNewDim, maxOfNewDim);
 	}
 

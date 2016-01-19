@@ -34,27 +34,23 @@ import java.util.List;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.view.Views;
 
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = Ops.View.Stack.class, name = Ops.View.Stack.NAME)
 public class DefaultStack<T>
-	extends
-	AbstractFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
-	implements Ops.View.Stack
-{
+		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
+		implements Ops.View.Stack {
 
 	@Override
-	public RandomAccessibleInterval<T> compute(
-		List<RandomAccessibleInterval<T>> input)
-	{
+	public RandomAccessibleInterval<T> compute1(List<RandomAccessibleInterval<T>> input) {
 		return Views.stack(input);
 	}
 

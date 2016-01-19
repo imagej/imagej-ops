@@ -32,8 +32,8 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.view.Views;
@@ -43,20 +43,15 @@ import net.imglib2.view.composite.NumericComposite;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.NumericCollapse.class,
-	name = Ops.View.NumericCollapse.NAME)
+@Plugin(type = Ops.View.NumericCollapse.class, name = Ops.View.NumericCollapse.NAME)
 public class DefaultCollapseNumeric2CompositeIntervalView<T extends NumericType<T>>
-	extends
-	AbstractFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, NumericComposite<T>>>
-	implements Ops.View.NumericCollapse
-{
+		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, NumericComposite<T>>>
+		implements Ops.View.NumericCollapse {
 
 	@Override
-	public CompositeIntervalView<T, NumericComposite<T>> compute(
-		RandomAccessibleInterval<T> input)
-	{
+	public CompositeIntervalView<T, NumericComposite<T>> compute1(RandomAccessibleInterval<T> input) {
 		return Views.collapseNumeric(input);
 	}
 

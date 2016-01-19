@@ -29,13 +29,13 @@
  */
 package net.imagej.ops.views;
 
-import net.imagej.ops.FunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 
 /**
  * Simple marker interface for View ops.
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-public interface ViewOp<I, O> extends FunctionOp<I, O> {
+public interface ViewOp<I, O> extends UnaryFunctionOp<I, O> {
 	// NB: marker interface
 }

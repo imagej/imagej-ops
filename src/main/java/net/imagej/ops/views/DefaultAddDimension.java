@@ -32,8 +32,8 @@ package net.imagej.ops.views;
 
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops.View.AddDimension;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.view.MixedTransformView;
 import net.imglib2.view.Views;
@@ -44,15 +44,11 @@ import net.imglib2.view.Views;
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = AddDimension.class, label = "View: AddDimension", name = AddDimension.NAME)
-public class DefaultAddDimension<T>
-		extends
-			AbstractFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
-		implements
-			ViewOp<RandomAccessible<T>, MixedTransformView<T>>,
-			AddDimension {
+public class DefaultAddDimension<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
+		implements ViewOp<RandomAccessible<T>, MixedTransformView<T>>, AddDimension {
 
 	@Override
-	public MixedTransformView<T> compute(RandomAccessible<T> input) {
+	public MixedTransformView<T> compute1(RandomAccessible<T> input) {
 		return Views.addDimension(input);
 	}
 

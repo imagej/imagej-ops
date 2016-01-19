@@ -34,8 +34,8 @@ import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.RandomAccessible;
 import net.imglib2.view.IntervalView;
 import net.imglib2.view.Views;
@@ -43,13 +43,11 @@ import net.imglib2.view.Views;
 /**
  * @author Tim-Oliver Buchholz, University of Konstanz
  *
- * This op wraps functionality from {@link net.imglib2.view.Views}.
+ *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
 @Plugin(type = Ops.View.Interval.class, name = Ops.View.Interval.NAME)
-public class IntervalMinMax<T> extends
-	AbstractFunctionOp<RandomAccessible<T>, IntervalView<T>> implements
-	Ops.View.Interval
-{
+public class IntervalMinMax<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
+		implements Ops.View.Interval {
 
 	@Parameter(type = ItemIO.INPUT)
 	private long[] min;
@@ -58,7 +56,7 @@ public class IntervalMinMax<T> extends
 	private long[] max;
 
 	@Override
-	public IntervalView<T> compute(RandomAccessible<T> input) {
+	public IntervalView<T> compute1(RandomAccessible<T> input) {
 		return Views.interval(input, min, max);
 	}
 
