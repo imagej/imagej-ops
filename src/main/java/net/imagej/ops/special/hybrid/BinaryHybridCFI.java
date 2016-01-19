@@ -60,11 +60,11 @@ public interface BinaryHybridCFI<A> extends BinaryHybridCFI1<A, A>,
 
 	@Override
 	default A run(final A input1, final A input2, final A output) {
-		if (input1 == output || input2 == output) {
+		if (input2 == output) {
 			// run as an inplace
 			return BinaryInplaceOp.super.run(input1, input2, output);
 		}
-		// run as a hybrid CF
+		// run as a hybrid CFI1
 		return BinaryHybridCFI1.super.run(input1, input2, output);
 	}
 
