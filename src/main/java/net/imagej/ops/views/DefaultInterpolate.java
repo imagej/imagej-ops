@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,11 +46,11 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Interpolate.class, name = Ops.View.Interpolate.NAME)
+@Plugin(type = Ops.View.Interpolate.class)
 public class DefaultInterpolate<I extends EuclideanSpace, T extends Type<T>>
 		extends AbstractUnaryFunctionOp<I, RealRandomAccessible<T>> implements Ops.View.Interpolate {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private InterpolatorFactory<T, I> factory;
 
 	@Override

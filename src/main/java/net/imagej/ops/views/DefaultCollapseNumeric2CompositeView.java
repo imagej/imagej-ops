@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,12 +46,12 @@ import net.imglib2.view.composite.NumericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.NumericCollapse.class, name = Ops.View.NumericCollapse.NAME)
+@Plugin(type = Ops.View.NumericCollapse.class)
 public class DefaultCollapseNumeric2CompositeView<T extends NumericType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessible<T>, CompositeView<T, NumericComposite<T>>>
 		implements Ops.View.NumericCollapse {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int numChannels;
 
 	@Override

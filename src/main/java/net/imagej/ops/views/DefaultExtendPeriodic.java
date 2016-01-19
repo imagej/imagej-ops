@@ -43,7 +43,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ExtendPeriodic.class, name = Ops.View.ExtendPeriodic.NAME)
+@Plugin(type = Ops.View.ExtendPeriodic.class)
 public class DefaultExtendPeriodic<T, F extends RandomAccessibleInterval<T>>
 		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.ExtendPeriodic {
 

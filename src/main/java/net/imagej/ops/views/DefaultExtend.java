@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -46,11 +45,11 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Extend.class, name = Ops.View.Extend.NAME)
+@Plugin(type = Ops.View.Extend.class)
 public class DefaultExtend<T, F extends RandomAccessibleInterval<T>>
 		extends AbstractUnaryFunctionOp<F, ExtendedRandomAccessibleInterval<T, F>> implements Ops.View.Extend {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private OutOfBoundsFactory<T, ? super F> factory;
 
 	@Override

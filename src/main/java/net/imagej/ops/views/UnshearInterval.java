@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -46,17 +45,17 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.UnShear.class, name = Ops.View.UnShear.NAME)
+@Plugin(type = Ops.View.UnShear.class)
 public class UnshearInterval<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, IntervalView<T>>
 		implements Ops.View.UnShear {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private Interval interval;
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int shearDimension;
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int referenceDimension;
 
 	@Override

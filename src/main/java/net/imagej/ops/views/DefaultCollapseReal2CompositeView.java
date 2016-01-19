@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,12 +46,12 @@ import net.imglib2.view.composite.RealComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.RealCollapse.class, name = Ops.View.RealCollapse.NAME)
+@Plugin(type = Ops.View.RealCollapse.class)
 public class DefaultCollapseReal2CompositeView<T extends RealType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessible<T>, CompositeView<T, RealComposite<T>>>
 		implements Ops.View.RealCollapse {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int numChannels;
 
 	@Override

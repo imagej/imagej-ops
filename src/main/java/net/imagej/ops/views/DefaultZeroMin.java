@@ -43,7 +43,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.ZeroMin.class, name = Ops.View.ZeroMin.NAME)
+@Plugin(type = Ops.View.ZeroMin.class)
 public class DefaultZeroMin<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
 		implements Ops.View.IsZeroMin {
 

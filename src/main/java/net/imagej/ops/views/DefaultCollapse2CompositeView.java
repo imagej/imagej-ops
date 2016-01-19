@@ -44,7 +44,7 @@ import net.imglib2.view.composite.GenericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Collapse.class, name = Ops.View.Collapse.NAME)
+@Plugin(type = Ops.View.Collapse.class)
 public class DefaultCollapse2CompositeView<T>
 		extends AbstractUnaryFunctionOp<RandomAccessible<T>, CompositeView<T, ? extends GenericComposite<T>>>
 		implements Ops.View.Collapse {

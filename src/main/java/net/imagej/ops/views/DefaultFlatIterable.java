@@ -43,7 +43,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.FlatIterable.class, name = Ops.View.FlatIterable.NAME)
+@Plugin(type = Ops.View.FlatIterable.class)
 public class DefaultFlatIterable<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IterableInterval<T>>
 		implements Ops.View.FlatIterable {
 

@@ -44,7 +44,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Stack.class, name = Ops.View.Stack.NAME)
+@Plugin(type = Ops.View.Stack.class)
 public class DefaultStack<T>
 		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
 		implements Ops.View.Stack {

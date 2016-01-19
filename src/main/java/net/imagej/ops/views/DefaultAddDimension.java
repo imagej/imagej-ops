@@ -43,7 +43,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = AddDimension.class, label = "View: AddDimension", name = AddDimension.NAME)
+@Plugin(type = AddDimension.class, label = "View: AddDimension")
 public class DefaultAddDimension<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
 		implements ViewOp<RandomAccessible<T>, MixedTransformView<T>>, AddDimension {
 

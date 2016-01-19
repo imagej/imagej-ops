@@ -45,7 +45,7 @@ import net.imglib2.view.composite.RealComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.RealCollapse.class, name = Ops.View.RealCollapse.NAME)
+@Plugin(type = Ops.View.RealCollapse.class)
 public class DefaultCollapseReal2CompositeIntervalView<T extends RealType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, RealComposite<T>>>
 		implements Ops.View.RealCollapse {

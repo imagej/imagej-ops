@@ -42,7 +42,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.IsZeroMin.class, name = Ops.View.IsZeroMin.NAME)
+@Plugin(type = Ops.View.IsZeroMin.class)
 public class DefaultIsZeroMin extends AbstractUnaryFunctionOp<Interval, Boolean> implements Ops.View.IsZeroMin {
 
 	@Override

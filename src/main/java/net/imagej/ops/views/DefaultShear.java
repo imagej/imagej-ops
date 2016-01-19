@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,14 +44,14 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Shear.class, name = Ops.View.Shear.NAME)
+@Plugin(type = Ops.View.Shear.class)
 public class DefaultShear<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, TransformView<T>>
 		implements Ops.View.Shear {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int shearDimension;
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int referenceDimension;
 
 	@Override

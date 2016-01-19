@@ -44,7 +44,7 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Raster.class, name = Ops.View.Raster.NAME)
+@Plugin(type = Ops.View.Raster.class)
 public class DefaultRaster<T extends Type<T>>
 		extends AbstractUnaryFunctionOp<RealRandomAccessible<T>, RandomAccessibleOnRealRandomAccessible<T>>
 		implements Ops.View.Raster {

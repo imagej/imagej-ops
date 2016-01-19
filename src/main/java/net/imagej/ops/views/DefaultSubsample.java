@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,11 +44,11 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Subsample.class, name = Ops.View.Subsample.NAME)
+@Plugin(type = Ops.View.Subsample.class)
 public class DefaultSubsample<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, SubsampleView<T>>
 		implements Ops.View.Subsample {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private long step;
 
 	@Override

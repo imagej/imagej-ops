@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,11 +44,11 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.PermuteCoordinates.class, name = Ops.View.PermuteCoordinates.NAME)
+@Plugin(type = Ops.View.PermuteCoordinates.class)
 public class DefaultPermuteCoordinates<T> extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, IntervalView<T>>
 		implements Ops.View.PermuteCoordinates {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int[] permutation;
 
 	@Override

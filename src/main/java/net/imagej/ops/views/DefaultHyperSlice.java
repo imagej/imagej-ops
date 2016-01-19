@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,14 +44,14 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.HyperSlice.class, name = Ops.View.HyperSlice.NAME)
+@Plugin(type = Ops.View.HyperSlice.class)
 public class DefaultHyperSlice<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
 		implements Ops.View.HyperSlice {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int d;
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private long pos;
 
 	@Override

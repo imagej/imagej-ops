@@ -45,7 +45,7 @@ import net.imglib2.view.composite.NumericComposite;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.NumericCollapse.class, name = Ops.View.NumericCollapse.NAME)
+@Plugin(type = Ops.View.NumericCollapse.class)
 public class DefaultCollapseNumeric2CompositeIntervalView<T extends NumericType<T>>
 		extends AbstractUnaryFunctionOp<RandomAccessibleInterval<T>, CompositeIntervalView<T, NumericComposite<T>>>
 		implements Ops.View.NumericCollapse {

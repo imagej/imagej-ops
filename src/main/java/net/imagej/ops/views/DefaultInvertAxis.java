@@ -30,7 +30,6 @@
 
 package net.imagej.ops.views;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -45,11 +44,11 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.InvertAxis.class, name = Ops.View.InvertAxis.NAME)
+@Plugin(type = Ops.View.InvertAxis.class)
 public class DefaultInvertAxis<T> extends AbstractUnaryFunctionOp<RandomAccessible<T>, MixedTransformView<T>>
 		implements Ops.View.InvertAxis {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private int d;
 
 	@Override

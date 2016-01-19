@@ -32,7 +32,6 @@ package net.imagej.ops.views;
 
 import java.util.List;
 
-import org.scijava.ItemIO;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
@@ -47,12 +46,12 @@ import net.imglib2.view.Views;
  *
  *         This op wraps functionality from {@link net.imglib2.view.Views}.
  */
-@Plugin(type = Ops.View.Stack.class, name = Ops.View.Stack.NAME)
+@Plugin(type = Ops.View.Stack.class)
 public class StackWithAccessMode<T>
 		extends AbstractUnaryFunctionOp<List<RandomAccessibleInterval<T>>, RandomAccessibleInterval<T>>
 		implements Ops.View.Stack {
 
-	@Parameter(type = ItemIO.INPUT)
+	@Parameter
 	private StackAccessMode stackAccessMode;
 
 	@Override
