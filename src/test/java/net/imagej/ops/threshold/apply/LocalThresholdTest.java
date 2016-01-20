@@ -37,6 +37,7 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
 import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
+import net.imagej.ops.threshold.localMean.LocalMeanRAIIntegral;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
@@ -168,6 +169,21 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 
+		assertEquals(out.firstElement().get(), true);
+	}
+	
+	/**
+	 * @see LocalMeanRAIIntegral
+	 */
+	@Test
+	public void testLocalMeanRAIIntegral() {
+		ops.run(LocalMeanRAIIntegral.class,
+			out,
+			in,
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0);
+		
 		assertEquals(out.firstElement().get(), true);
 	}
 
