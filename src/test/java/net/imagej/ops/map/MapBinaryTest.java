@@ -36,6 +36,9 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
+import net.imagej.ops.special.inplace.Inplaces;
 import net.imglib2.Cursor;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -178,5 +181,101 @@ public class MapBinaryTest extends AbstractOpTest {
 		}
 
 		ops.op(MapIIAndRAIToRAIParallel.class, outDiffDims, in1, in2, add);
+	}
+
+	// -- inplace map tests --
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testMapIIAndIIInplace() {
+		final Img<ByteType> in1Copy = in1.copy();
+		final Img<ByteType> in2Copy = in2.copy();
+
+		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
+			MapIIAndIIInplace.class, in1Copy, in2Copy, add);
+
+		map.run(in1Copy, in2, in1Copy);
+		map.run(in1, in2Copy, in2Copy);
+
+		final Cursor<ByteType> in1Cursor = in1.cursor();
+		final Cursor<ByteType> in1CopyCursor = in1Copy.cursor();
+		final Cursor<ByteType> in2Cursor = in2.cursor();
+		final Cursor<ByteType> in2CopyCursor = in2Copy.cursor();
+
+		while (in1Cursor.hasNext()) {
+			final byte expected = (byte) (in1Cursor.next().get() + in2Cursor.next()
+				.get());
+			assertEquals(expected, in1CopyCursor.next().get());
+			assertEquals(expected, in2CopyCursor.next().get());
+		}
+
+		map.run(in1, in2, out);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testMapIIAndIIInplaceParallel() {
+		final Img<ByteType> in1Copy = in1.copy();
+		final Img<ByteType> in2Copy = in2.copy();
+
+		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
+			MapIIAndIIInplaceParallel.class, in1Copy, in2Copy, add);
+
+		map.run(in1Copy, in2, in1Copy);
+		map.run(in1, in2Copy, in2Copy);
+
+		final Cursor<ByteType> in1Cursor = in1.cursor();
+		final Cursor<ByteType> in1CopyCursor = in1Copy.cursor();
+		final Cursor<ByteType> in2Cursor = in2.cursor();
+		final Cursor<ByteType> in2CopyCursor = in2Copy.cursor();
+
+		while (in1Cursor.hasNext()) {
+			final byte expected = (byte) (in1Cursor.next().get() + in2Cursor.next()
+				.get());
+			assertEquals(expected, in1CopyCursor.next().get());
+			assertEquals(expected, in2CopyCursor.next().get());
+		}
+
+		map.run(in1, in2, out);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testMapIterableIntervalAndRAIInplace() {
+		final Img<ByteType> in1Copy = in1.copy();
+
+		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
+			ops, MapIterableIntervalAndRAIInplace.class, in1Copy, in2, add);
+
+		map.run(in1Copy, in2);
+
+		final Cursor<ByteType> in1Cursor = in1.cursor();
+		final Cursor<ByteType> in1CopyCursor = in1Copy.cursor();
+		final Cursor<ByteType> in2Cursor = in2.cursor();
+
+		while (in1Cursor.hasNext()) {
+			assertEquals((byte) (in1Cursor.next().get() + in2Cursor.next().get()),
+				in1CopyCursor.next().get());
+		}
+
+		map.run(in1, in2, in2);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testMapIterableIntervalAndRAIInplaceParallel() {
+		final Img<ByteType> in1Copy = in1.copy();
+
+		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
+			ops, MapIterableIntervalAndRAIInplaceParallel.class, in1Copy, in2, add);
+
+		map.run(in1Copy, in2);
+
+		final Cursor<ByteType> in1Cursor = in1.cursor();
+		final Cursor<ByteType> in1CopyCursor = in1Copy.cursor();
+		final Cursor<ByteType> in2Cursor = in2.cursor();
+
+		while (in1Cursor.hasNext()) {
+			assertEquals((byte) (in1Cursor.next().get() + in2Cursor.next().get()),
+				in1CopyCursor.next().get());
+		}
+
+		map.run(in1, in2, in2);
 	}
 }
