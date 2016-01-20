@@ -33,6 +33,7 @@ package net.imagej.ops.threshold.apply;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -45,10 +46,8 @@ import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
@@ -160,13 +159,14 @@ public class LocalThresholdTest extends AbstractOpTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testLocalMeanRAI() {
-		ops.threshold().apply(
+		ops.run(LocalMeanRAI.class,
 			out,
 			in,
-			ops.op(LocalMean.class, BitType.class,
-				new ValuePair<ByteType, RandomAccessibleInterval<ByteType>>(null, in), 0.0),
 			new RectangleShape(3, false),
-			new OutOfBoundsConstantValueFactory<ByteType, RandomAccessibleInterval<ByteType>>(new ByteType((byte) 1)));
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0);
+
+		assertEquals(out.firstElement().get(), true);
 	}
 	
 
