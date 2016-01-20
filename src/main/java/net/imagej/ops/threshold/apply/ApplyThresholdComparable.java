@@ -31,31 +31,30 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 import net.imagej.ops.threshold.ApplyThreshold;
 import net.imglib2.type.logic.BitType;
 
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Applies a threshold value to the given comparable object, producing a
- * {@link BitType} set to 1 iff the object compares above the threshold.
+ * Applies a threshold value (the second input) to the given comparable object,
+ * producing a {@link BitType} set to 1 iff the object compares above the
+ * threshold.
  *
  * @author Martin Horn (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.Apply.class)
 public class ApplyThresholdComparable<T> extends
-	AbstractUnaryComputerOp<Comparable<? super T>, BitType> implements
+	AbstractBinaryComputerOp<Comparable<? super T>, T, BitType> implements
 	ApplyThreshold<Comparable<? super T>, BitType>
 {
 
-	@Parameter
-	private T threshold;
-
 	@Override
-	public void compute1(final Comparable<? super T> input, final BitType output) {
-		output.set(input.compareTo(threshold) > 0);
+	public void compute2(final Comparable<? super T> input1, final T input2,
+		final BitType output)
+	{
+		output.set(input1.compareTo(input2) > 0);
 	}
 
 }
