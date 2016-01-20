@@ -42,7 +42,7 @@ import net.imglib2.type.numeric.real.FloatType;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IIToRAIOutputIITest extends AbstractOpTest {
+public class IIToIIOutputIITest extends AbstractOpTest {
 
 	private Img<FloatType> in1;
 	private Img<FloatType> in2;

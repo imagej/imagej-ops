@@ -1,6 +1,6 @@
 # Unit tests for binary arithmetic ops with IIs and RAIs and output to IIs.
 
-[IIToRAIOutputIITest.java]
+[IIToIIOutputIITest.java]
 
 ops = ```
 [
