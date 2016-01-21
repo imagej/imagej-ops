@@ -32,6 +32,7 @@ package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.stats.IntegralMean;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;
@@ -46,6 +47,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.util.ValuePair;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
@@ -76,15 +78,21 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 	
 	@Parameter
 	private double c;
-
+	
+	private IntegralMean<T, DoubleType> integralMean;
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize() {	}
+	public void initialize() {
+		// FIXME Init integralMean correctly
+		integralMean = ops().op(IntegralMean.class, DoubleType.class, new ValuePair<T, RandomAccessibleInterval<T>>(null, in()));	
+	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input, final RandomAccessibleInterval<BitType> output)
 	{
 		// Create IntegralImg from input
-		integralImg = new IntegralImg<T, DoubleType>(input, new DoubleType(), new RealDoubleConverter<T>());    
+		integralImg = new IntegralImg<>(input, new DoubleType(), new RealDoubleConverter<T>());    
 		
 		// integralImg will be larger by one pixel in each dimension than input due to the computation of the integral image
 		RandomAccessibleInterval<DoubleType> img = null;
@@ -216,7 +224,7 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 			inputRandomAccess.setPosition(neighborhoodPosition);
 			T inputPixel = inputRandomAccess.get();
 
-			Converter<T, DoubleType> conv = new RealDoubleConverter<T>();
+			Converter<T, DoubleType> conv = new RealDoubleConverter<>();
 			DoubleType inputPixelAsDoubleType = new DoubleType();
 			conv.convert(inputPixel, inputPixelAsDoubleType);
 			
