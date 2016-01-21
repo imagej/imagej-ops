@@ -58,6 +58,8 @@ import net.imagej.ops.special.SpecialOp;
 import net.imagej.ops.special.UnaryOutputFactory;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.BinaryInplaceOp;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
@@ -690,6 +692,32 @@ public interface OpEnvironment extends Contextual {
 		final RandomAccessibleInterval<EO> result =
 			(RandomAccessibleInterval<EO>) run(
 				net.imagej.ops.map.MapIIAndRAIToRAI.class, out, in1, in2, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = { net.imagej.ops.map.MapIIAndIIInplaceParallel.class,
+		net.imagej.ops.map.MapIIAndIIInplace.class })
+	default <EA> IterableInterval<EA> map(final IterableInterval<EA> arg,
+		final IterableInterval<EA> in, final BinaryInplaceOp<EA> op)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EA> result = (IterableInterval<EA>) run(
+			net.imagej.ops.map.MapIIAndIIInplaceParallel.class, arg, in, op);
+		return result;
+	}
+
+	/** Executes the "map" operation on the given arguments. */
+	@OpMethod(ops = {
+		net.imagej.ops.map.MapIterableIntervalAndRAIInplaceParallel.class,
+		net.imagej.ops.map.MapIterableIntervalAndRAIInplace.class })
+	default <EA, EI> IterableInterval<EA> map(final IterableInterval<EA> arg,
+		final RandomAccessibleInterval<EI> in, final BinaryInplace1Op<EA, EI> op)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<EA> result = (IterableInterval<EA>) run(
+			net.imagej.ops.map.MapIterableIntervalAndRAIInplaceParallel.class, arg,
+			in, op);
 		return result;
 	}
 
