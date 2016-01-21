@@ -32,14 +32,13 @@ package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.stats.IntegralMean;
+import net.imagej.ops.stats.IntegralSum;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.integral.IntegralImg;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
-import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -47,7 +46,6 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.ValuePair;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
@@ -56,9 +54,7 @@ import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod using mean.
- * 
- * @author Jonathan Hale (University of Konstanz)
- * @author Martin Horn (University of Konstanz)
+ *
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalMean.class, priority = Priority.HIGH_PRIORITY)
@@ -68,7 +64,7 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 {
 	
 	@Parameter
-	private RectangleShape shape;
+	private IntegralRectangleShape shape;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
@@ -79,13 +75,13 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 	@Parameter
 	private double c;
 	
-	private IntegralMean<T, DoubleType> integralMean;
+	private IntegralSum<DoubleType> integralSum;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
 		// FIXME Init integralMean correctly
-		integralMean = ops().op(IntegralMean.class, DoubleType.class, new ValuePair<T, RandomAccessibleInterval<T>>(null, in()));	
+		integralSum = ops().op(IntegralSum.class, DoubleType.class, Views.iterable(in()));	
 	}
 
 	@Override
@@ -102,87 +98,48 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 		}
 		
 		// Remove 0s from integralImg by shifting its interval by +1
-		long[] min = new long[ input.numDimensions() ];
-        long[] max = new long[ input.numDimensions() ];
-		
-        for ( int d = 0; d < input.numDimensions(); ++d )
-        {
-            min[ d ] = input.min( d ) + 1;
-            max[ d ] = input.max( d ) + 1;
-        }
- 
-        // Define the Interval on the infinite random accessibles
-        FinalInterval interval = new FinalInterval( min, max );
-       
-        RandomAccessibleInterval< DoubleType > extendedImg = Views.offsetInterval( Views.extendBorder( img ), interval );
-        
-     	// Random access for input and output
-     	RandomAccess<BitType> outputRandomAccess = output.randomAccess();
-     	RandomAccess<T> inputRandomAccess = input.randomAccess();
-     	
-		Cursor<Neighborhood<DoubleType>> cursor = shape.neighborhoodsSafe(extendedImg).cursor();
+		long[] min = new long[input.numDimensions()];
+		long[] max = new long[input.numDimensions()];
+
+		for (int d = 0; d < input.numDimensions(); ++d) {
+			min[d] = input.min(d) + 1;
+			max[d] = input.max(d) + 1;
+		}
+
+		// Define the Interval on the infinite random accessibles
+		FinalInterval interval = new FinalInterval(min, max);
+
+		RandomAccessibleInterval<DoubleType> extendedImg = Views.offsetInterval(
+			Views.extendBorder(img), interval);
+
+		// Random access for input and output
+		RandomAccess<BitType> outputRandomAccess = output.randomAccess();
+		RandomAccess<T> inputRandomAccess = input.randomAccess();
+    
+    shape = new IntegralRectangleShape(shape.getSpan()+1, false);
+		Cursor<Neighborhood<DoubleType>> cursor = shape.neighborhoodsIntegral(extendedImg).cursor();
 		
 		// Iterate neighborhoods
 		while ( cursor.hasNext() )
 		{
-			// Based on the location compute the values A, B, C, and D
-			// (computation according to https://en.wikipedia.org/wiki/Summed_area_table)
 			Neighborhood<DoubleType> neighborhood = cursor.next();
+			
+			DoubleType sum = new DoubleType();
+			integralSum.compute1(neighborhood, sum);
 			
 			long[] neighborhoodPosition = new long[ neighborhood.numDimensions() ];
 			neighborhood.localize(neighborhoodPosition);
 			
-			// Extend neighborhood's minimum (see comments on computation of A, B, and C)
-			long[] neighborhoodMinimumDecreased = new long[ neighborhood.numDimensions() ];
-			long[] neighborhoodMaximum = new long[ neighborhood.numDimensions() ];
-			
-	        for ( int d = 0; d < neighborhood.numDimensions(); ++d )
-	        {
-	        	neighborhoodMinimumDecreased[ d ] = neighborhood.min( d ) - 1;
-	        	neighborhoodMaximum[ d ] = neighborhood.max( d );
-	        }
-
-	        FinalInterval neighborhoodInterval = new FinalInterval( neighborhoodMinimumDecreased, neighborhoodMaximum );
-			
-			// Define RAI on neighborhood's interval
-			RandomAccess<DoubleType> extendedImgRA = Views.interval(extendedImg, neighborhoodInterval).randomAccess();
-			
-			// A
-			// Shift minimum position by (-1, -1) to get the correct value for computations
-			long[] valueAPosition = new long[]{ neighborhood.min(0) - 1, neighborhood.min(1) - 1 };
-			extendedImgRA.setPosition(valueAPosition);
-			DoubleType valueA = extendedImgRA.get().copy();
-			
-			// B
-			// Shift minimum position by (0, -1) to get the correct value for computations
-			long[] valueBPosition = new long[]{ neighborhood.max(0), neighborhood.min(1) - 1 };
-			extendedImgRA.setPosition(valueBPosition);
-			DoubleType valueB = extendedImgRA.get().copy();
-			
-			// C
-			// Shift minimum position by (-1, 0) to get the correct value for computations
-			long[] valueCPosition = new long[]{ neighborhood.min(0) - 1, neighborhood.max(1) };
-			extendedImgRA.setPosition(valueCPosition);
-			DoubleType valueC = extendedImgRA.get().copy();
-			
-			// D
-			long[] valueDPosition = new long[]{ neighborhood.max(0), neighborhood.max(1) };
-			extendedImgRA.setPosition(valueDPosition);
-			DoubleType valueD = extendedImgRA.get().copy();
-			
-			// Compute A - B - C + D
-			DoubleType sum = extendedImgRA.get().createVariable();
-			sum.setZero();
-			sum.add(valueA);
-			sum.sub(valueB);
-			sum.sub(valueC);
-			sum.add(valueD);
-			
 			// Absolute difference between minima
 			long[] neighborhoodMinimum = new long[ neighborhood.numDimensions() ];
 			neighborhood.min( neighborhoodMinimum );
+			neighborhoodMinimum[0] = neighborhoodMinimum[0] - 1;
+			neighborhoodMinimum[1] = neighborhoodMinimum[1] - 1;
 			
-			// The neighborhoodMaximum is computed before
+			long[] neighborhoodMaximum = new long[ neighborhood.numDimensions() ];
+			neighborhood.max( neighborhoodMaximum );
+			neighborhoodMaximum[0] = neighborhoodMaximum[0] + 1;
+			neighborhoodMaximum[1] = neighborhoodMaximum[1] + 1;
 			
 			long[] inputMinimum = new long[ extendedImg.numDimensions() ];
 			extendedImg.min( inputMinimum );
@@ -232,5 +189,5 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>>
 			outputRandomAccess.get().set(inputPixelAsDoubleType.compareTo(sum) > 0);
 		}
 	}
-
+	
 }
