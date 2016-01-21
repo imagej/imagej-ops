@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
@@ -38,6 +39,7 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.ValuePair;
+import net.imglib2.view.Views;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
@@ -52,8 +54,9 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.LocalMean.class, priority = Priority.LOW_PRIORITY)
 public class LocalMeanRAI<T extends RealType<T>> extends
-		AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-		implements Ops.Threshold.LocalMean {
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+	implements Ops.Threshold.LocalMean
+{
 
 	@Parameter
 	private Shape shape;
@@ -65,19 +68,40 @@ public class LocalMeanRAI<T extends RealType<T>> extends
 	private double c;
 
 	private LocalMean<T> localMeanOp;
+	private MapNeighborhoodWithCenter<T, BitType> mapOp;
 
 	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void initialize() {
 		localMeanOp = ops().op(LocalMean.class, BitType.class,
-				new ValuePair<T, RandomAccessibleInterval<T>>(null, in()), c);
+			new ValuePair<T, RandomAccessibleInterval<T>>(null, in()), c);
+		mapOp = ops().op(MapNeighborhoodWithCenter.class, out(), extend(in(),
+			outOfBounds), localMeanOp, shape);
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
-			final RandomAccessibleInterval<BitType> output) {
-		// FIXME Apply in initialize()
-		ops().threshold().apply(output, input, localMeanOp, shape, outOfBounds);
+		final RandomAccessibleInterval<BitType> output)
+	{
+		mapOp.compute1(extend(input, outOfBounds), output);
+	}
+
+	/**
+	 * Extends an input using an {@link OutOfBoundsFactory} if available,
+	 * otherwise returns the unchanged input.
+	 *
+	 * @param in {@link RandomAccessibleInterval} that is to be extended
+	 * @param outOfBounds the factory that is used for extending
+	 * @return {@link RandomAccessibleInterval} extended using the
+	 *         {@link OutOfBoundsFactory}
+	 */
+	public static <T> RandomAccessibleInterval<T> extend(
+		final RandomAccessibleInterval<T> in,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		// FIXME Move this method to a static utility class
+		return outOfBounds == null ? in : Views.interval((Views.extend(in,
+			outOfBounds)), in);
 	}
 
 }
