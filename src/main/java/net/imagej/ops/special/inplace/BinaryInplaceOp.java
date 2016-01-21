@@ -37,6 +37,10 @@ import net.imagej.ops.special.function.BinaryFunctionOp;
  * A binary <em>inplace</em> operation is an op which computes a result from two
  * given arguments, storing it either the first <em>or</em> second argument
  * (i.e., mutating it).
+ * <p>
+ * It is a special case of {@link BinaryInplace1Op}, which can mutate
+ * <em>only</em> the first input.
+ * </p>
  * 
  * @author Curtis Rueden
  * @param <A> type of inputs + output
