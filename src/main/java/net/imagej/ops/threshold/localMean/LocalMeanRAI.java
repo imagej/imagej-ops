@@ -38,50 +38,46 @@ import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.ValuePair;
+
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
  * LocalThresholdMethod that uses the mean and operates directly of RAIs.
- * 
+ *
  * @author Jonathan Hale (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
 @Plugin(type = Ops.Threshold.LocalMean.class, priority = Priority.LOW_PRIORITY)
-public class LocalMeanRAI<T extends RealType<T>>
-	extends AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-	implements Ops.Threshold.LocalMean
-{
-	
+public class LocalMeanRAI<T extends RealType<T>> extends
+		AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
+		implements Ops.Threshold.LocalMean {
+
 	@Parameter
 	private Shape shape;
 
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
-	
+
 	@Parameter
 	private double c;
 
 	private LocalMean<T> localMeanOp;
-	
+
 	@SuppressWarnings({ "unchecked" })
 	@Override
-	public void initialize()
-	{
-		localMeanOp = ops().op(LocalMean.class, BitType.class, new ValuePair<T, RandomAccessibleInterval<T>>(null, in()), c);
+	public void initialize() {
+		localMeanOp = ops().op(LocalMean.class, BitType.class,
+				new ValuePair<T, RandomAccessibleInterval<T>>(null, in()), c);
 	}
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<T> input, final RandomAccessibleInterval<BitType> output)
-	{	
-		ops().threshold().apply(
-			output,
-			input,
-			localMeanOp,
-			shape,
-			outOfBounds);
+	public void compute1(final RandomAccessibleInterval<T> input,
+			final RandomAccessibleInterval<BitType> output) {
+		// FIXME Apply in initialize()
+		ops().threshold().apply(output, input, localMeanOp, shape, outOfBounds);
 	}
 
 }
