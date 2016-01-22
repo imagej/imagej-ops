@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  */
 @SuppressWarnings("rawtypes")
 @Plugin(type = Converter.class, priority = Priority.VERY_HIGH_PRIORITY)
-public class RandomAccessibleIntervalToMeshConverter extends
+public class RAIToMeshConverter extends
 	AbstractConverter<RandomAccessibleInterval, Mesh>
 {
 
