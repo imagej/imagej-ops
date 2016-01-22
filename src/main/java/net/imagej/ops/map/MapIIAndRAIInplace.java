@@ -32,6 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccess;
@@ -42,38 +43,37 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link RandomAccessibleInterval} input to
- * {@link IterableInterval} output.
- *
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
+ * {@link MapBinaryInplace1} over {@link IterableInterval} and
+ * {@link RandomAccessibleInterval}
+ * 
+ * @author Leon Yang
+ * @param <EA> element type of first inputs + outputs
+ * @param <EI> element type of second inputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapRAIToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, RandomAccessibleInterval<EI>, IterableInterval<EO>>
+@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY)
+public class MapIIAndRAIInplace<EA, EI> extends
+	AbstractMapBinaryInplace1<EA, EI, IterableInterval<EA>, RandomAccessibleInterval<EI>>
 	implements Contingent
 {
 
 	@Override
-	public void compute1(final RandomAccessibleInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EO> cursor = output.localizingCursor();
-		final RandomAccess<EI> rndAccess = input.randomAccess();
-
-		while (cursor.hasNext()) {
-			cursor.fwd();
-			rndAccess.setPosition(cursor);
-			getOp().compute1(rndAccess.get(), cursor.get());
-		}
+	public boolean conforms() {
+		return Intervals.equalDimensions(in1(), in2());
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void mutate1(final IterableInterval<EA> arg,
+		final RandomAccessibleInterval<EI> in)
+	{
+		final RandomAccess<EI> inAccess = in.randomAccess();
+		final Cursor<EA> argCursor = arg.localizingCursor();
+		final BinaryInplace1Op<EA, EI> op = getOp();
+
+		while (argCursor.hasNext()) {
+			argCursor.fwd();
+			inAccess.setPosition(argCursor);
+			op.mutate1(argCursor.get(), inAccess.get());
+		}
 	}
 
 }

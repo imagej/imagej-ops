@@ -242,7 +242,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in1Copy = in1.copy();
 
 		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
-			ops, MapIterableIntervalAndRAIInplace.class, in1Copy, in2, add);
+			ops, MapIIAndRAIInplace.class, in1Copy, in2, add);
 
 		map.run(in1Copy, in2);
 
@@ -263,7 +263,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in1Copy = in1.copy();
 
 		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
-			ops, MapIterableIntervalAndRAIInplaceParallel.class, in1Copy, in2, add);
+			ops, MapIIAndRAIInplaceParallel.class, in1Copy, in2, add);
 
 		map.run(in1Copy, in2);
 

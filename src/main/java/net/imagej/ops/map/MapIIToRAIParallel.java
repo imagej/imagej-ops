@@ -28,63 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.copy;
+package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.Parallel;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.special.function.Functions;
-import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.thread.chunker.ChunkerOp;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Copies an {@link IterableInterval} into another {@link IterableInterval}
+ * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link RandomAccessibleInterval} outputs.
  * 
- * @author Christian Dietz, University of Konstanz
- * @param <T>
+ * @author Christian Dietz (University of Konstanz)
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
-public class CopyIterableInterval<T> extends
-		AbstractUnaryHybridCF<IterableInterval<T>, IterableInterval<T>> implements
-		Ops.Copy.IterableInterval, Contingent {
-
-	// used internally
-	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
-	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void initialize() {
-		map = Computers.unary(ops(), Ops.Map.class, in(), in(), Computers.unary(
-			ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
-				.firstElement().getClass()));
-		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			IterableInterval.class, in(), in().firstElement());
-	}
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
+public class MapIIToRAIParallel<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
+	implements Contingent, Parallel
+{
 
 	@Override
-	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
-		// FIXME: Assumption here: Create an Img. I would rather like: Create
-		// what ever is best given the input.
-		return imgCreator.compute1(input);
-	}
+	public void compute1(final IterableInterval<EI> input,
+		final RandomAccessibleInterval<EO> output)
+	{
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
-	@Override
-	public void compute1(final IterableInterval<T> input,
-			final IterableInterval<T> output) {
-		map.compute1(input, output);
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
+				final Cursor<EI> cursor = input.localizingCursor();
+
+				setToStart(cursor, startIndex);
+
+				final RandomAccess<EO> rndAccess = output.randomAccess();
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					rndAccess.setPosition(cursor);
+					safe.compute1(cursor.get(), rndAccess.get());
+					cursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
 	}
 
 	@Override
 	public boolean conforms() {
-		if (out() != null) {
-			return Intervals.equalDimensions(in(), out());
-		}
-		return true;
+		return out() == null || Intervals.equalDimensions(out(), in());
 	}
+
 }

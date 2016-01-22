@@ -539,33 +539,33 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(
-		op = net.imagej.ops.map.MapViewIterableIntervalToIterableInterval.class)
+		op = net.imagej.ops.map.MapViewIIToII.class)
 	default <EI, EO extends Type<EO>> IterableInterval<EO> map(
 		final IterableInterval<EI> input, final UnaryComputerOp<EI, EO> op,
 		final EO type)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<EO> result = (IterableInterval<EO>) run(
-			net.imagej.ops.map.MapViewIterableIntervalToIterableInterval.class, input,
+			net.imagej.ops.map.MapViewIIToII.class, input,
 			op, type);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.map.MapIterableIntervalInplaceParallel.class)
+	@OpMethod(op = net.imagej.ops.map.MapIIInplaceParallel.class)
 	default <A> IterableInterval<A> map(final IterableInterval<A> arg,
 		final UnaryInplaceOp<A> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<A> result = (IterableInterval<A>) run(
-			net.imagej.ops.map.MapIterableIntervalInplaceParallel.class, arg, op);
+			net.imagej.ops.map.MapIIInplaceParallel.class, arg, op);
 		return result;
 	}
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = {
-		net.imagej.ops.map.MapIterableIntervalToIterableIntervalParallel.class,
-		net.imagej.ops.map.MapIterableIntervalToIterableInterval.class })
+		net.imagej.ops.map.MapIIToIIParallel.class,
+		net.imagej.ops.map.MapIIToII.class })
 	default <EI, EO> IterableInterval<EO> map(final IterableInterval<EO> out,
 		final IterableInterval<EI> in, final UnaryComputerOp<EI, EO> op)
 	{
@@ -578,8 +578,8 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.map.MapIterableIntervalToRAIParallel.class,
-		net.imagej.ops.map.MapIterableIntervalToRAI.class })
+	@OpMethod(ops = { net.imagej.ops.map.MapIIToRAIParallel.class,
+		net.imagej.ops.map.MapIIToRAI.class })
 	default <EI, EO> RandomAccessibleInterval<EO> map(
 		final RandomAccessibleInterval<EO> out, final IterableInterval<EI> in,
 		final UnaryComputerOp<EI, EO> op)
@@ -603,13 +603,13 @@ public interface OpEnvironment extends Contextual {
 	}
 
 	/** Executes the "map" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.map.MapRAIToIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.map.MapRAIToII.class)
 	default <EI, EO> IterableInterval<EO> map(final IterableInterval<EO> out,
 		final RandomAccessibleInterval<EI> in, final UnaryComputerOp<EI, EO> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<EO> result = (IterableInterval<EO>) run(
-			net.imagej.ops.map.MapRAIToIterableInterval.class, out, in, op);
+			net.imagej.ops.map.MapRAIToII.class, out, in, op);
 		return result;
 	}
 
@@ -709,14 +709,14 @@ public interface OpEnvironment extends Contextual {
 
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(ops = {
-		net.imagej.ops.map.MapIterableIntervalAndRAIInplaceParallel.class,
-		net.imagej.ops.map.MapIterableIntervalAndRAIInplace.class })
+		net.imagej.ops.map.MapIIAndRAIInplaceParallel.class,
+		net.imagej.ops.map.MapIIAndRAIInplace.class })
 	default <EA, EI> IterableInterval<EA> map(final IterableInterval<EA> arg,
 		final RandomAccessibleInterval<EI> in, final BinaryInplace1Op<EA, EI> op)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<EA> result = (IterableInterval<EA>) run(
-			net.imagej.ops.map.MapIterableIntervalAndRAIInplaceParallel.class, arg,
+			net.imagej.ops.map.MapIIAndRAIInplaceParallel.class, arg,
 			in, op);
 		return result;
 	}

@@ -28,39 +28,36 @@
  * #L%
  */
 
-package net.imagej.ops.convert.imageType;
+package net.imagej.ops.image.invert;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.convert.RealTypeConverter;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 
-import org.scijava.plugin.Parameter;
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
  * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Convert.ImageType.class)
-public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<O>>
+@Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL_PRIORITY + 1)
+public class InvertII<I extends RealType<I>, O extends RealType<O>>
 	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
-	implements Ops.Convert.ImageType
+	implements Ops.Image.Invert
 {
-
-	@Parameter
-	private RealTypeConverter<I, O> pixConvert;
 
 	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
 
 	@Override
 	public void initialize() {
-		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), pixConvert);
-		pixConvert.checkInput(in().firstElement().createVariable(), out()
-			.firstElement().createVariable());
-		pixConvert.checkInput(in());
+		final I inType = in().firstElement().createVariable();
+		final double minVal = inType.getMinValue();
+		final UnaryComputerOp<I, O> invert = minVal < 0 ? new SignedRealInvert<>()
+			: new UnsignedRealInvert<>(inType.getMaxValue());
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), invert);
 	}
 
 	@Override
@@ -68,6 +65,39 @@ public class ConvertIterableIntervals<I extends RealType<I>, O extends RealType<
 		final IterableInterval<O> output)
 	{
 		mapper.compute1(input, output);
+	}
+
+	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractUnaryComputerOp<II, OO>
+	{
+
+		@Override
+		public void compute1(final II x, final OO output) {
+			final double value = x.getRealDouble() * -1.0 - 1;
+			output.setReal(value);
+		}
+
+	}
+
+	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractUnaryComputerOp<II, OO>
+	{
+
+		private final double max;
+
+		/**
+		 * @param max - maximum value of the range to invert about
+		 */
+		public UnsignedRealInvert(final double max) {
+			this.max = max;
+		}
+
+		@Override
+		public void compute1(final II x, final OO output) {
+			final double value = max - x.getRealDouble();
+			output.setReal(value);
+		}
+
 	}
 
 }

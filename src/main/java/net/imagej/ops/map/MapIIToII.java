@@ -30,32 +30,50 @@
 
 package net.imagej.ops.map;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.ComputerConverter;
+import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.converter.read.ConvertedIterableInterval;
-import net.imglib2.type.Type;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapView} which converts an {@link IterableInterval} between element
- * types.
+ * {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order.
  * 
+ * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)
  * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class)
-public class MapViewIterableIntervalToIterableInterval<EI, EO extends Type<EO>> extends
-	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
+public class MapIIToII<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
+	implements Contingent
 {
 
 	@Override
-	public IterableInterval<EO> compute1(final IterableInterval<EI> input) {
-		final ComputerConverter<EI, EO> converter =
-			new ComputerConverter<>(getOp());
-		return new ConvertedIterableInterval<>(input, converter, getType());
+	public boolean conforms() {
+		return out() == null || isValid(in(), out());
 	}
 
+	private boolean isValid(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
+	{
+		return input.iterationOrder().equals(output.iterationOrder());
+	}
+
+	@Override
+	public void compute1(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
+	{
+		final Cursor<EI> inCursor = input.cursor();
+		final Cursor<EO> outCursor = output.cursor();
+
+		while (inCursor.hasNext()) {
+			getOp().compute1(inCursor.next(), outCursor.next());
+		}
+	}
 }

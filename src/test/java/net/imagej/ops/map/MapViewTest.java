@@ -95,7 +95,7 @@ public class MapViewTest extends AbstractOpTest {
 	public void testIterableIntervalView() {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<ByteType> res =
-			(IterableInterval<ByteType>) ops.run(MapViewIterableIntervalToIterableInterval.class, in, op,
+			(IterableInterval<ByteType>) ops.run(MapViewIIToII.class, in, op,
 				new ByteType());
 
 		final Cursor<ByteType> iterable = res.cursor();

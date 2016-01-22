@@ -48,11 +48,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test {@link CopyIterableInterval}
+ * Test {@link CopyII}
  * 
  * @author Christian Dietz, University of Konstanz
  */
-public class CopyIterableIntervalTest extends AbstractOpTest {
+public class CopyIITest extends AbstractOpTest {
 
 	private Img<DoubleType> input;
 
@@ -74,7 +74,7 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 	public void copyRAINoOutputTest() {
 		@SuppressWarnings("unchecked")
 		RandomAccessibleInterval<DoubleType> output = (RandomAccessibleInterval<DoubleType>) ops
-				.run(CopyIterableInterval.class, input);
+				.run(CopyII.class, input);
 
 		Cursor<DoubleType> inc = input.localizingCursor();
 		RandomAccess<DoubleType> outRA = output.randomAccess();
@@ -93,7 +93,7 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 
 		@SuppressWarnings("unchecked")
 		Img<FloatType> output = (Img<FloatType>) ops
-				.run(CopyIterableInterval.class, inputFloat);
+				.run(CopyII.class, inputFloat);
 
 		
 		assertTrue("Should be FloatType.", output.firstElement() instanceof FloatType);
@@ -105,7 +105,7 @@ public class CopyIterableIntervalTest extends AbstractOpTest {
 		Img<DoubleType> output = input.factory().create(input,
 				input.firstElement());
 
-		ops.run(CopyIterableInterval.class, output, input);
+		ops.run(CopyII.class, output, input);
 
 		final Cursor<DoubleType> inc = input.cursor();
 		final Cursor<DoubleType> outc = output.cursor();

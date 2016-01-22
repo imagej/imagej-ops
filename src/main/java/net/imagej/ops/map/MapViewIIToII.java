@@ -31,49 +31,31 @@
 package net.imagej.ops.map;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.special.inplace.UnaryInplaceOp;
-import net.imagej.ops.thread.chunker.ChunkerOp;
-import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.computer.ComputerConverter;
 import net.imglib2.IterableInterval;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapInplace} over an {@link IterableInterval}.
+ * {@link MapView} which converts an {@link IterableInterval} between element
+ * types.
  * 
  * @author Christian Dietz (University of Konstanz)
- * @param <A> element type of inplace arguments
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
-public class MapIterableIntervalInplaceParallel<A> extends
-	AbstractMapIterableInplace<A, IterableInterval<A>> implements Parallel
+@Plugin(type = Ops.Map.class)
+public class MapViewIIToII<EI, EO extends Type<EO>> extends
+	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
 {
 
 	@Override
-	public void mutate(final IterableInterval<A> arg) {
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final UnaryInplaceOp<A> safe = getOp().getIndependentInstance();
-				final Cursor<A> inCursor = arg.cursor();
-
-				setToStart(inCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					final A t = inCursor.get();
-					safe.mutate(t);
-					inCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
+	public IterableInterval<EO> compute1(final IterableInterval<EI> input) {
+		final ComputerConverter<EI, EO> converter =
+			new ComputerConverter<>(getOp());
+		return new ConvertedIterableInterval<>(input, converter, getType());
 	}
 
 }

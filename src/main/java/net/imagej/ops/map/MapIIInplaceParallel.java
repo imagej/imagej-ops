@@ -30,62 +30,46 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapBinaryInplace1} over {@link IterableInterval} and
- * {@link RandomAccessibleInterval}
+ * Parallelized {@link MapInplace} over an {@link IterableInterval}.
  * 
- * @author Leon Yang
- * @param <EA> element type of first inputs + outputs
- * @param <EI> element type of second inputs
+ * @author Christian Dietz (University of Konstanz)
+ * @param <A> element type of inplace arguments
  */
-@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY + 2)
-public class MapIterableIntervalAndRAIInplaceParallel<EA, EI> extends
-	AbstractMapBinaryInplace1<EA, EI, IterableInterval<EA>, RandomAccessibleInterval<EI>>
-	implements Contingent, Parallel
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 5)
+public class MapIIInplaceParallel<A> extends
+	AbstractMapIterableInplace<A, IterableInterval<A>> implements Parallel
 {
 
 	@Override
-	public boolean conforms() {
-		return Intervals.equalDimensions(in1(), in2());
-	}
-
-	@Override
-	public void mutate1(final IterableInterval<EA> arg,
-		final RandomAccessibleInterval<EI> in)
-	{
+	public void mutate(final IterableInterval<A> arg) {
 		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
 			@Override
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final BinaryInplace1Op<EA, EI> safe = getOp().getIndependentInstance();
-				final Cursor<EA> argCursor = arg.localizingCursor();
+				final UnaryInplaceOp<A> safe = getOp().getIndependentInstance();
+				final Cursor<A> inCursor = arg.cursor();
 
-				setToStart(argCursor, startIndex);
-
-				final RandomAccess<EI> inAccess = in.randomAccess();
+				setToStart(inCursor, startIndex);
 
 				int ctr = 0;
 				while (ctr < numSteps) {
-					inAccess.setPosition(argCursor);
-					safe.mutate1(argCursor.get(), inAccess.get());
-					argCursor.jumpFwd(stepSize);
+					final A t = inCursor.get();
+					safe.mutate(t);
+					inCursor.jumpFwd(stepSize);
 					ctr++;
 				}
 			}

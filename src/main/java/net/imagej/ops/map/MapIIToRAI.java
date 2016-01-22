@@ -28,33 +28,51 @@
  * #L%
  */
 
-package net.imagej.ops.stats;
+package net.imagej.ops.map;
 
-import net.imagej.ops.Op;
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
+import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@code stats.size} directly.
- * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link RandomAccessibleInterval} outputs.
+ *
+ * @author Martin Horn (University of Konstanz)
+ * @author Christian Dietz (University of Konstanz)
+ * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
+public class MapIIToRAI<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
+	implements Contingent
 {
 
 	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
-		output.setReal(input.size());
+	public void compute1(final IterableInterval<EI> input,
+		final RandomAccessibleInterval<EO> output)
+	{
+		final Cursor<EI> cursor = input.localizingCursor();
+		final RandomAccess<EO> rndAccess = output.randomAccess();
+
+		while (cursor.hasNext()) {
+			cursor.fwd();
+			rndAccess.setPosition(cursor);
+			getOp().compute1(cursor.get(), rndAccess.get());
+		}
 	}
 
+	@Override
+	public boolean conforms() {
+		return out() == null || Intervals.equalDimensions(out(), in());
+	}
 }

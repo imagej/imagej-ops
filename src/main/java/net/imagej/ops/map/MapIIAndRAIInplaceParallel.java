@@ -28,31 +28,68 @@
  * #L%
  */
 
-package net.imagej.ops.geom;
+package net.imagej.ops.map;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.thread.chunker.ChunkerOp;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
+import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.RandomAccess;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
+ * {@link MapBinaryInplace1} over {@link IterableInterval} and
+ * {@link RandomAccessibleInterval}
  * 
- * @author Tim-Oliver Buchholz, University of Konstanz.
+ * @author Leon Yang
+ * @param <EA> element type of first inputs + outputs
+ * @param <EI> element type of second inputs
  */
-@Plugin(type = Ops.Geometric.Size.class, label = "Geometric: Size",
-	priority = Priority.VERY_HIGH_PRIORITY)
-public class SizeIterableInterval extends
-	AbstractUnaryFunctionOp<IterableInterval<?>, DoubleType> implements
-	GeometricOp<IterableInterval<?>, DoubleType>, Ops.Geometric.Size
+@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY + 2)
+public class MapIIAndRAIInplaceParallel<EA, EI> extends
+	AbstractMapBinaryInplace1<EA, EI, IterableInterval<EA>, RandomAccessibleInterval<EI>>
+	implements Contingent, Parallel
 {
 
 	@Override
-	public DoubleType compute1(IterableInterval<?> input) {
-		return new DoubleType(input.size());
+	public boolean conforms() {
+		return Intervals.equalDimensions(in1(), in2());
+	}
+
+	@Override
+	public void mutate1(final IterableInterval<EA> arg,
+		final RandomAccessibleInterval<EI> in)
+	{
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
+
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final BinaryInplace1Op<EA, EI> safe = getOp().getIndependentInstance();
+				final Cursor<EA> argCursor = arg.localizingCursor();
+
+				setToStart(argCursor, startIndex);
+
+				final RandomAccess<EI> inAccess = in.randomAccess();
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					inAccess.setPosition(argCursor);
+					safe.mutate1(argCursor.get(), inAccess.get());
+					argCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, arg.size());
 	}
 
 }

@@ -44,9 +44,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link MapIterableIntervalToRAIParallel} and
- * {@link MapIterableIntervalToIterableIntervalParallel}) of the mappers. Assumption: Naive Implementation of
- * {@link MapIterableIntervalToRAI} works fine.
+ * Testing multi threaded implementation ({@link MapIIToRAIParallel} and
+ * {@link MapIIToIIParallel}) of the mappers. Assumption: Naive Implementation of
+ * {@link MapIIToRAI} works fine.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -65,7 +65,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(MapIterableIntervalToIterableInterval.class, out, in, new AddOneFunctional());
+			ops.op(MapIIToII.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -82,7 +82,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIRAIP() {
 
 		final Op functional =
-			ops.op(MapIterableIntervalToRAIParallel.class, out, in, new AddOneFunctional());
+			ops.op(MapIIToRAIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -100,7 +100,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(MapIterableIntervalToIterableIntervalParallel.class, out, in, new AddOneFunctional());
+			ops.op(MapIIToIIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -119,7 +119,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 		final Cursor<ByteType> cursor1 = in.copy().cursor();
 		final Cursor<ByteType> cursor2 = in.cursor();
 
-		final Op functional = ops.op(MapIterableIntervalInplaceParallel.class, in, new AddOneInplace());
+		final Op functional = ops.op(MapIIInplaceParallel.class, in, new AddOneInplace());
 		functional.run();
 
 		while (cursor1.hasNext()) {

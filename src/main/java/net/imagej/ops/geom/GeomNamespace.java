@@ -137,10 +137,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.CentroidIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.geom.CentroidII.class)
 	public RealLocalizable centroid(final IterableInterval<?> in) {
 		final RealLocalizable result = (RealLocalizable) ops().run(
-			net.imagej.ops.geom.CentroidIterableInterval.class, in);
+			net.imagej.ops.geom.CentroidII.class, in);
 		return result;
 	}
 
@@ -356,10 +356,10 @@ public class GeomNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.geom.SizeIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.geom.SizeII.class)
 	public DoubleType size(final IterableInterval<?> in) {
 		final DoubleType result = (DoubleType) ops().run(
-			net.imagej.ops.geom.SizeIterableInterval.class, in);
+			net.imagej.ops.geom.SizeII.class, in);
 		return result;
 	}
 

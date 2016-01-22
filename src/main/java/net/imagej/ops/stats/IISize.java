@@ -28,52 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.stats;
 
-import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
- * same iteration order.
+ * {@link Op} to calculate the {@code stats.size} directly.
  * 
- * @author Martin Horn (University of Konstanz)
- * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
-public class MapIterableIntervalToIterableInterval<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
-	implements Contingent
+@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class IISize<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
 {
 
 	@Override
-	public boolean conforms() {
-		return out() == null || isValid(in(), out());
+	public void compute1(final IterableInterval<I> input, final O output) {
+		output.setReal(input.size());
 	}
 
-	private boolean isValid(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		return input.iterationOrder().equals(output.iterationOrder());
-	}
-
-	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final IterableInterval<EO> output)
-	{
-		final Cursor<EI> inCursor = input.cursor();
-		final Cursor<EO> outCursor = output.cursor();
-
-		while (inCursor.hasNext()) {
-			getOp().compute1(inCursor.next(), outCursor.next());
-		}
-	}
 }

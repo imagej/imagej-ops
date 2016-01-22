@@ -32,48 +32,68 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.BinaryInplace1Op;
+import net.imagej.ops.Parallel;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.thread.chunker.ChunkerOp;
+import net.imagej.ops.thread.chunker.CursorBasedChunk;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapBinaryInplace1} over {@link IterableInterval} and
- * {@link RandomAccessibleInterval}
+ * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
+ * {@link IterableInterval} outputs. The {@link IterableInterval}s must have the
+ * same iteration order.
  * 
- * @author Leon Yang
- * @param <EA> element type of first inputs + outputs
- * @param <EI> element type of second inputs
+ * @author Christian Dietz (University of Konstanz)
+ * @param <EI> element type of inputs
+ * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY)
-public class MapIterableIntervalAndRAIInplace<EA, EI> extends
-	AbstractMapBinaryInplace1<EA, EI, IterableInterval<EA>, RandomAccessibleInterval<EI>>
-	implements Contingent
+@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 3)
+public class MapIIToIIParallel<EI, EO> extends
+	AbstractMapComputer<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
+	implements Contingent, Parallel
 {
 
 	@Override
 	public boolean conforms() {
-		return Intervals.equalDimensions(in1(), in2());
+		return out() == null || isValid(in(), out());
+	}
+
+	private boolean isValid(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
+	{
+		return input.iterationOrder().equals(output.iterationOrder());
 	}
 
 	@Override
-	public void mutate1(final IterableInterval<EA> arg,
-		final RandomAccessibleInterval<EI> in)
+	public void compute1(final IterableInterval<EI> input,
+		final IterableInterval<EO> output)
 	{
-		final RandomAccess<EI> inAccess = in.randomAccess();
-		final Cursor<EA> argCursor = arg.localizingCursor();
-		final BinaryInplace1Op<EA, EI> op = getOp();
+		ops().run(ChunkerOp.class, new CursorBasedChunk() {
 
-		while (argCursor.hasNext()) {
-			argCursor.fwd();
-			inAccess.setPosition(argCursor);
-			op.mutate1(argCursor.get(), inAccess.get());
-		}
+			@Override
+			public void execute(final int startIndex, final int stepSize,
+				final int numSteps)
+			{
+				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
+
+				final Cursor<EI> inCursor = input.cursor();
+				final Cursor<EO> outCursor = output.cursor();
+
+				setToStart(inCursor, startIndex);
+				setToStart(outCursor, startIndex);
+
+				int ctr = 0;
+				while (ctr < numSteps) {
+					safe.compute1(inCursor.get(), outCursor.get());
+					inCursor.jumpFwd(stepSize);
+					outCursor.jumpFwd(stepSize);
+					ctr++;
+				}
+			}
+		}, input.size());
 	}
-
 }
