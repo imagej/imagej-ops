@@ -41,7 +41,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -442,6 +441,34 @@ public class ThresholdNamespace extends AbstractNamespace {
 		final BitType result =
 			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
 				out, in, c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> localMean(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape, final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalMeanRAI.class, out, in, shape,
+				c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanRAI.class)
+	public <T extends RealType<T>> RandomAccessibleInterval<BitType> localMean(
+		final RandomAccessibleInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final RandomAccessibleInterval<BitType> result =
+			(RandomAccessibleInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalMeanRAI.class, out, in, shape,
+				outOfBounds, c);
 		return result;
 	}
 
