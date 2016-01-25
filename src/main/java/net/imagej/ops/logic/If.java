@@ -2,7 +2,7 @@
  * #%L
  * ImageJ software for multidimensional image processing and analysis.
  * %%
- * Copyright (C) 2014 - 2016 Board of Regents of the University of
+ * Copyright (C) 2014 - 2015 Board of Regents of the University of
  * Wisconsin-Madison, University of Konstanz and Brian Northan.
  * %%
  * Redistribution and use in source and binary forms, with or without
@@ -30,14 +30,41 @@
 
 package net.imagej.ops.logic;
 
-/**
- * An interface that can be tested for truth or falsity for a given input.
- * 
- * @author Barry DeZonia
- * @author Aparna Pal
- */
-public interface Condition<T> {
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imglib2.type.BooleanType;
+import net.imglib2.type.Type;
 
-	boolean isTrue(T val);
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+/**
+ * An Op that works the same way as the <code>?:</code> operator. It sets the
+ * output to the <code>ifTrueVal</code> if the input is evaluated as true, or
+ * <code>ifFalseVal</code> otherwise.
+ * 
+ * @author Leon Yang
+ */
+@Plugin(type = Ops.Logic.Conditional.class)
+public class If<I extends BooleanType<I>, O extends Type<O>> extends
+	AbstractUnaryHybridCF<I, O> implements Ops.Logic.Conditional
+
+{
+
+	@Parameter
+	private O ifTrueVal;
+
+	@Parameter
+	private O ifFalseVal;
+
+	@Override
+	public void compute1(final I input, final O output) {
+		output.set(input.get() ? ifTrueVal : ifFalseVal);
+	}
+
+	@Override
+	public O createOutput(final I input) {
+		return ifTrueVal.createVariable();
+	}
 
 }

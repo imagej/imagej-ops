@@ -30,14 +30,39 @@
 
 package net.imagej.ops.logic;
 
-/**
- * An interface that can be tested for truth or falsity for a given input.
- * 
- * @author Barry DeZonia
- * @author Aparna Pal
- */
-public interface Condition<T> {
+import static org.junit.Assert.assertEquals;
 
-	boolean isTrue(T val);
+import net.imagej.ops.AbstractOpTest;
+import net.imglib2.type.logic.BoolType;
+import net.imglib2.type.numeric.integer.ByteType;
+
+import org.junit.Test;
+
+/**
+ * Tests {@link If} and {@link Default}.
+ *
+ * @author Leon Yang
+ */
+public class ConditionalTest extends AbstractOpTest {
+
+	@Test
+	public void testIf() {
+		final ByteType ifTrueVal = new ByteType((byte) 10);
+		final ByteType ifFalseVal = new ByteType((byte) 100);
+		assertEquals(10, ops.logic().conditional(new BoolType(true), ifTrueVal,
+			ifFalseVal).get());
+		assertEquals(100, ops.logic().conditional(new BoolType(false), ifTrueVal,
+			ifFalseVal).get());
+	}
+
+	@Test
+	public void testDefault() {
+		final ByteType out = new ByteType((byte) 10);
+		final ByteType defaultVal = new ByteType((byte) 100);
+		assertEquals(10, ops.logic().conditional(out, new BoolType(true),
+			defaultVal).get());
+		assertEquals(100, ops.logic().conditional(out, new BoolType(false),
+			defaultVal).get());
+	}
 
 }
