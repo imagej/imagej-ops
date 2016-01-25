@@ -37,10 +37,10 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.MapIterableInplace;
 import net.imagej.ops.map.MapIIInplaceParallel;
-import net.imagej.ops.map.MapIIToII;
-import net.imagej.ops.map.MapIIToIIParallel;
-import net.imagej.ops.map.MapIIToRAI;
-import net.imagej.ops.map.MapIIToRAIParallel;
+import net.imagej.ops.map.MapUnaryComputers.IIToII;
+import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAI;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAIParallel;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.NumericType;
 import net.imglib2.type.numeric.integer.ByteType;
@@ -52,10 +52,10 @@ import org.junit.rules.TestRule;
 
 /**
  * Benchmarking various implementations of mappers. Benchmarked since now:
- * {@link MapIIToRAI},
- * {@link MapIIToII},
- * {@link MapIIToRAIParallel},
- * {@link MapIIToIIParallel}
+ * {@link IIToRAI},
+ * {@link IIToII},
+ * {@link IIToRAIParallel},
+ * {@link IIToIIParallel}
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -86,22 +86,22 @@ public class MappersBenchmarkTest extends AbstractOpBenchmark {
 
 	@Test
 	public void pixelWiseTestMapper() {
-		ops.run(MapIIToRAI.class, out, in, addConstant);
+		ops.run(IIToRAI.class, out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestMapperII() {
-		ops.run(MapIIToII.class, out, in, addConstant);
+		ops.run(IIToII.class, out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapper() {
-		ops.run(MapIIToRAIParallel.class, out, in, addConstant);
+		ops.run(IIToRAIParallel.class, out, in, addConstant);
 	}
 
 	@Test
 	public void pixelWiseTestThreadedMapperII() {
-		ops.run(MapIIToIIParallel.class, out, in,
+		ops.run(IIToIIParallel.class, out, in,
 			addConstant);
 	}
 

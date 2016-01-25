@@ -34,6 +34,11 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.map.MapUnaryComputers.IIToII;
+import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAI;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAIParallel;
+import net.imagej.ops.map.MapUnaryComputers.RAIToII;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
@@ -62,7 +67,7 @@ public class MapTest extends AbstractOpTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToIterableInterval() {
-		ops.run(MapIIToII.class, out, in,
+		ops.run(IIToII.class, out, in,
 			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -74,13 +79,13 @@ public class MapTest extends AbstractOpTest {
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 
-		ops.op(MapIIToII.class, outDiffDims, in,
+		ops.op(IIToII.class, outDiffDims, in,
 			new AddOneFunctional());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToIterableIntervalParallel() {
-		ops.run(MapIIToIIParallel.class, out, in,
+		ops.run(IIToIIParallel.class, out, in,
 			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -92,14 +97,14 @@ public class MapTest extends AbstractOpTest {
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 
-		ops.run(MapIIToIIParallel.class, outDiffDims,
+		ops.run(IIToIIParallel.class, outDiffDims,
 			in, new AddOneFunctional());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapRAIToIterableInterval() {
 
-		ops.run(MapRAIToII.class, out, in, new AddOneFunctional());
+		ops.run(RAIToII.class, out, in, new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
 		final Cursor<ByteType> cursor2 = out.cursor();
@@ -110,14 +115,14 @@ public class MapTest extends AbstractOpTest {
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 
-		ops.op(MapRAIToII.class, outDiffDims, in,
+		ops.op(RAIToII.class, outDiffDims, in,
 			new AddOneFunctional());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToRAI() {
 
-		ops.run(MapIIToRAI.class, out, in, new AddOneFunctional());
+		ops.run(IIToRAI.class, out, in, new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
 		final Cursor<ByteType> cursor2 = out.cursor();
@@ -128,14 +133,14 @@ public class MapTest extends AbstractOpTest {
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 
-		ops.op(MapIIToRAI.class, outDiffDims, in,
+		ops.op(IIToRAI.class, outDiffDims, in,
 			new AddOneFunctional());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIterableIntervalToRAIParallel() {
 
-		ops.run(MapIIToRAIParallel.class, out, in,
+		ops.run(IIToRAIParallel.class, out, in,
 			new AddOneFunctional());
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -147,7 +152,7 @@ public class MapTest extends AbstractOpTest {
 			assertEquals((byte) (cursor1.get().get() + 1), cursor2.get().get());
 		}
 
-		ops.op(MapIIToRAIParallel.class, outDiffDims, in,
+		ops.op(IIToRAIParallel.class, outDiffDims, in,
 			new AddOneFunctional());
 	}
 

@@ -34,6 +34,16 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
+import net.imagej.ops.map.MapBinaryComputers.IIAndIIToII;
+import net.imagej.ops.map.MapBinaryComputers.IIAndIIToIIParallel;
+import net.imagej.ops.map.MapBinaryComputers.IIAndIIToRAI;
+import net.imagej.ops.map.MapBinaryComputers.IIAndIIToRAIParallel;
+import net.imagej.ops.map.MapBinaryComputers.IIAndRAIToRAI;
+import net.imagej.ops.map.MapBinaryComputers.IIAndRAIToRAIParallel;
+import net.imagej.ops.map.MapBinaryInplace1s.IIAndII;
+import net.imagej.ops.map.MapBinaryInplace1s.IIAndIIParallel;
+import net.imagej.ops.map.MapBinaryInplace1s.IIAndRAI;
+import net.imagej.ops.map.MapBinaryInplace1s.IIAndRAIParallel;
 import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.inplace.BinaryInplace1Op;
@@ -71,7 +81,7 @@ public class MapBinaryTest extends AbstractOpTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndIIToII() {
-		ops.run(MapIIAndIIToII.class, out, in1, in2, add);
+		ops.run(IIAndIIToII.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -85,12 +95,12 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndIIToII.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndIIToII.class, outDiffDims, in1, in2, add);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndIIToIIParallel() {
-		ops.run(MapIIAndIIToIIParallel.class, out, in1, in2, add);
+		ops.run(IIAndIIToIIParallel.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -104,12 +114,12 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndIIToIIParallel.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndIIToIIParallel.class, outDiffDims, in1, in2, add);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndIIToRAI() {
-		ops.run(MapIIAndIIToRAI.class, out, in1, in2, add);
+		ops.run(IIAndIIToRAI.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -123,12 +133,12 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndIIToRAI.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndIIToRAI.class, outDiffDims, in1, in2, add);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndIIToRAIParallel() {
-		ops.run(MapIIAndIIToRAIParallel.class, out, in1, in2, add);
+		ops.run(IIAndIIToRAIParallel.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -142,12 +152,12 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndIIToRAIParallel.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndIIToRAIParallel.class, outDiffDims, in1, in2, add);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndRAIToRAI() {
-		ops.run(MapIIAndRAIToRAI.class, out, in1, in2, add);
+		ops.run(IIAndRAIToRAI.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -161,12 +171,12 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndRAIToRAI.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndRAIToRAI.class, outDiffDims, in1, in2, add);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndRAIToRAIParallel() {
-		ops.run(MapIIAndRAIToRAIParallel.class, out, in1, in2, add);
+		ops.run(IIAndRAIToRAIParallel.class, out, in1, in2, add);
 
 		final Cursor<ByteType> in1Cursor = in1.cursor();
 		final Cursor<ByteType> in2Cursor = in2.cursor();
@@ -180,10 +190,10 @@ public class MapBinaryTest extends AbstractOpTest {
 				outCursor.get().get());
 		}
 
-		ops.op(MapIIAndRAIToRAIParallel.class, outDiffDims, in1, in2, add);
+		ops.op(IIAndRAIToRAIParallel.class, outDiffDims, in1, in2, add);
 	}
 
-	// -- inplace map tests --
+	// --   tests --
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testMapIIAndIIInplace() {
@@ -191,7 +201,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in2Copy = in2.copy();
 
 		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
-			MapIIAndIIInplace.class, in1Copy, in2Copy, add);
+			IIAndII.class, in1Copy, in2Copy, add);
 
 		map.run(in1Copy, in2, in1Copy);
 		map.run(in1, in2Copy, in2Copy);
@@ -217,7 +227,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in2Copy = in2.copy();
 
 		final BinaryInplaceOp<Img<ByteType>> map = Inplaces.binary(ops,
-			MapIIAndIIInplaceParallel.class, in1Copy, in2Copy, add);
+			IIAndIIParallel.class, in1Copy, in2Copy, add);
 
 		map.run(in1Copy, in2, in1Copy);
 		map.run(in1, in2Copy, in2Copy);
@@ -242,7 +252,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in1Copy = in1.copy();
 
 		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
-			ops, MapIIAndRAIInplace.class, in1Copy, in2, add);
+			ops, IIAndRAI.class, in1Copy, in2, add);
 
 		map.run(in1Copy, in2);
 
@@ -263,7 +273,7 @@ public class MapBinaryTest extends AbstractOpTest {
 		final Img<ByteType> in1Copy = in1.copy();
 
 		final BinaryInplace1Op<Img<ByteType>, Img<ByteType>> map = Inplaces.binary1(
-			ops, MapIIAndRAIInplaceParallel.class, in1Copy, in2, add);
+			ops, IIAndRAIParallel.class, in1Copy, in2, add);
 
 		map.run(in1Copy, in2);
 

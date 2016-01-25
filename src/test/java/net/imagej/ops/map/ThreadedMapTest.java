@@ -34,6 +34,10 @@ import static org.junit.Assert.assertEquals;
 
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Op;
+import net.imagej.ops.map.MapUnaryComputers.IIToII;
+import net.imagej.ops.map.MapUnaryComputers.IIToIIParallel;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAI;
+import net.imagej.ops.map.MapUnaryComputers.IIToRAIParallel;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.inplace.AbstractUnaryInplaceOp;
 import net.imglib2.Cursor;
@@ -44,9 +48,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testing multi threaded implementation ({@link MapIIToRAIParallel} and
- * {@link MapIIToIIParallel}) of the mappers. Assumption: Naive Implementation of
- * {@link MapIIToRAI} works fine.
+ * Testing multi threaded implementation ({@link IIToRAIParallel} and
+ * {@link IIToIIParallel}) of the mappers. Assumption: Naive Implementation of
+ * {@link IIToRAI} works fine.
  * 
  * @author Christian Dietz (University of Konstanz)
  */
@@ -65,7 +69,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testMapII() {
 
 		final Op functional =
-			ops.op(MapIIToII.class, out, in, new AddOneFunctional());
+			ops.op(IIToII.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -82,7 +86,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIRAIP() {
 
 		final Op functional =
-			ops.op(MapIIToRAIParallel.class, out, in, new AddOneFunctional());
+			ops.op(IIToRAIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
@@ -100,7 +104,7 @@ public class ThreadedMapTest extends AbstractOpTest {
 	public void testFunctionMapIIP() {
 
 		final Op functional =
-			ops.op(MapIIToIIParallel.class, out, in, new AddOneFunctional());
+			ops.op(IIToIIParallel.class, out, in, new AddOneFunctional());
 		functional.run();
 
 		final Cursor<ByteType> cursor1 = in.cursor();
