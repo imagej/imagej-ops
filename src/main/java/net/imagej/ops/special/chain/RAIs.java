@@ -44,6 +44,8 @@ import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
 import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.view.Views;
 
 /**
  * Utility class for working with {@link RandomAccessibleInterval}s.
@@ -66,6 +68,23 @@ public final class RAIs {
 	{
 		return (UnaryComputerOp) Computers.unary(ops, opType, RandomAccessibleInterval.class,
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
+	}
+
+	/**
+	 * Extends an input using an {@link OutOfBoundsFactory}, if available,
+	 * otherwise returns the unchanged input.
+	 *
+	 * @param in {@link RandomAccessibleInterval} that is to be extended
+	 * @param outOfBounds the factory that is used for extending
+	 * @return {@link RandomAccessibleInterval} extended using the
+	 *         {@link OutOfBoundsFactory} with the interval of in
+	 */
+	public static <T> RandomAccessibleInterval<T> extend(
+		final RandomAccessibleInterval<T> in,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		return outOfBounds == null ? in : Views.interval((Views.extend(in,
+			outOfBounds)), in);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
