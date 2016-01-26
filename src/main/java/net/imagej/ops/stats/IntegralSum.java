@@ -65,16 +65,16 @@ public class IntegralSum<I extends RealType<I>> extends
 		final Cursor<I> cursor = input.integralCursor();
 
 		// A
-		final I valueA = cursor.get().copy();
+		final I valueA = cursor.next().copy();
 
 		// B
-		final I valueB = cursor.get().copy();
+		final I valueB = cursor.next().copy();
 
 		// C
-		final I valueC = cursor.get().copy();
+		final I valueC = cursor.next().copy();
 
 		// D
-		final I valueD = cursor.get().copy();
+		final I valueD = cursor.next().copy();
 
 		// Compute A - B - C + D
 		final I sum = cursor.get().createVariable();
