@@ -34,6 +34,7 @@ import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
 import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
+import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
 import net.imglib2.type.numeric.RealType;
@@ -50,18 +51,18 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Stats.IntegralSum.class)
 public class IntegralSum<I extends RealType<I>> extends
-	AbstractStatsOp<IterableInterval<I>, DoubleType> implements
+	AbstractStatsOp<RectangleNeighborhood<I>, DoubleType> implements
 	Ops.Stats.IntegralSum
 {
 
 	@Override
-	public void compute1(final IterableInterval<I> input,
+	public void compute1(final RectangleNeighborhood<I> input,
 		final DoubleType output)
 	{
 		// Based on the location compute the values A, B, C, and D
 		// (computation according to
 		// https://en.wikipedia.org/wiki/Summed_area_table)
-		final Cursor<I> cursor = input.cursor();
+		final Cursor<I> cursor = input.integralCursor();
 
 		// A
 		final I valueA = cursor.get().copy();

@@ -39,6 +39,7 @@ import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.integral.IntegralImg;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
+import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
@@ -84,11 +85,13 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 		integralSum = ops().op(IntegralSum.class, DoubleType.class, Views.iterable(
 			in()));
 
-		if (!(shape instanceof IntegralRectangleShape)) {
-			shape = new IntegralRectangleShape(shape.getSpan() + 1, false);
-		}
+		// FIXME Increase span of RectangleShape
+//		if (!(shape instanceof IntegralRectangleShape)) {
+			shape = new RectangleShape(shape.getSpan() + 1, false);
+//		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
@@ -124,16 +127,16 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 		final RandomAccess<T> inputRandomAccess = input.randomAccess();
 
 		// Cast is safe due to the initialization of the Op
-		final Cursor<Neighborhood<DoubleType>> cursor =
-			((IntegralRectangleShape) shape).neighborhoodsIntegral(extendedImg)
-				.cursor();
+		final Cursor<Neighborhood<DoubleType>> cursor = shape.neighborhoods(extendedImg).cursor();
 
 		// Iterate neighborhoods
 		while (cursor.hasNext()) {
 			final Neighborhood<DoubleType> neighborhood = cursor.next();
-
+			
 			final DoubleType sum = new DoubleType();
-			integralSum.compute1(neighborhood, sum);
+			if (neighborhood instanceof RectangleNeighborhood) {
+				integralSum.compute1((RectangleNeighborhood<DoubleType>) neighborhood, sum);
+			}
 
 			final long[] neighborhoodPosition = new long[neighborhood
 				.numDimensions()];
