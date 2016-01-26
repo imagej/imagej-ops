@@ -28,68 +28,81 @@
  * #L%
  */
 
-package net.imagej.ops.deconvolve;
+package net.imagej.ops.filter.fft;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.ComplexType;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.BinaryFunctionOp;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imglib2.Dimensions;
+import net.imglib2.FinalDimensions;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Richardson Lucy op that operates on (@link Img) (Lucy, L. B. (1974).
- * "An iterative technique for the rectification of observed distributions".)
+ * Function that performs the following steps, 1. create output, 2. pad input,
+ * 3. perform forward FFT
  * 
  * @author Brian Northan
- * @param <I>
- * @param <O>
- * @param <K>
- * @param <C>
  */
-@Plugin(type = Ops.Deconvolve.RichardsonLucy.class,
-	priority = Priority.HIGH_PRIORITY)
-public class RichardsonLucyImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C>implements
-	Ops.Deconvolve.RichardsonLucy
+@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
+public class DefaultFFTOp<I extends Dimensions, O extends Dimensions> extends
+	AbstractUnaryFunctionOp<I, O> implements Ops.Filter.FFT
 {
 
 	/**
-	 * max number of iterations
+	 * Op used to pad the input
 	 */
 	@Parameter
-	private int maxIterations;
+	private BinaryFunctionOp<I, Dimensions, I> padOp;
 
 	/**
-	 * indicates whether to use non-circulant edge handling
+	 * Op used to create the complex output
+	 */
+	@Parameter
+	private UnaryFunctionOp<Dimensions, O> createOp;
+
+	/**
+	 * Op used to compute the fft
+	 */
+	@Parameter
+	private UnaryComputerOp<I, O> fftOp;
+
+	/**
+	 * The size of border to apply in each dimension
 	 */
 	@Parameter(required = false)
-	private boolean nonCirculant = false;
+	private long[] borderSize = null;
 
-	/**
-	 * indicates whether to use acceleration
-	 */
-	@Parameter(required = false)
-	private boolean accelerate = false;
-
-	/**
-	 * run RichardsonLucyRAI
-	 */
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
+	public O compute1(final I input) {
 
-		ops().deconvolve().richardsonLucy(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output, true, true, maxIterations, imgConvolutionInterval,
-			output.factory(), in(), getKernel(), nonCirculant, accelerate);
+		// calculate the padded size
+		long[] paddedSize = new long[in().numDimensions()];
 
+		for (int d = 0; d < in().numDimensions(); d++) {
+			paddedSize[d] = in().dimension(d);
+
+			if (borderSize != null) {
+				paddedSize[d] += borderSize[d];
+			}
+		}
+
+		Dimensions paddedDimensions = new FinalDimensions(paddedSize);
+
+		// create the complex output
+		O output = createOp.compute1(paddedDimensions);
+
+		// pad the input
+		I paddedInput = padOp.compute2(input, paddedDimensions);
+
+		// compute and return fft
+		fftOp.compute1(paddedInput, output);
+
+		return output;
 	}
 
 }

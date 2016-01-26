@@ -33,89 +33,92 @@ package net.imagej.ops.filter.fft;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imglib2.FinalDimensions;
-import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.fft2.FFTMethods;
-import net.imglib2.outofbounds.OutOfBoundsConstantValueFactory;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.util.Util;
-import net.imglib2.view.Views;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT that operates on an RAI and wraps FFTMethods.
+ * Forward FFT computer that operates on an RAI and wraps FFTMethods. The input
+ * and output size must conform to a supported FFT size. Use
+ * {@link net.imagej.ops.filter.fftSize.ComputeFFTSize} to calculate the
+ * supported FFT size.
  * 
  * @author Brian Northan
  * @param <T>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTRAI<T extends RealType<T>, C extends ComplexType<C>>
+@Plugin(type = Ops.Filter.FFT.class, priority = Priority.NORMAL_PRIORITY)
+public class FFTMethodsOpC<T extends RealType<T>, C extends ComplexType<C>>
 	extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
-	implements Ops.Filter.FFT
+	implements Ops.Filter.FFT, Contingent
 {
 
 	/**
-	 * generates the out of bounds strategy for the extended area
+	 * Computes an ND FFT using FFTMethods
 	 */
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
-
-	@Parameter(required = false)
-	private long[] paddedSize;
-
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<C> output)
 	{
-		RandomAccessibleInterval<T> inputRAI;
-
-		if (paddedSize == null) {
-
-			paddedSize = new long[input.numDimensions()];
-
-			for (int d = 0; d < input.numDimensions(); d++) {
-				paddedSize[d] = input.dimension(d);
-			}
-		}
-
-		// Extend input to padded size using a View
-		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
-
-			if (obf == null) {
-				obf =
-					new OutOfBoundsConstantValueFactory<>(
-						Util.getTypeFromInterval(input).createVariable());
-			}
-
-			Interval inputInterval =
-				FFTMethods.paddingIntervalCentered(input, FinalDimensions
-					.wrap(paddedSize));
-
-			inputRAI = Views.interval(Views.extend(input, obf), inputInterval);
-
-		}
-		else {
-			inputRAI = input;
-		}
 
 		// TODO: proper use of Executor service
 		final int numThreads = Runtime.getRuntime().availableProcessors();
 		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
 
-		FFTMethods.realToComplex(inputRAI, output, 0, false, service);
+		// perform a real to complex FFT in the first dimension
+		FFTMethods.realToComplex(input, output, 0, false, service);
 
+		// loop and perform complex to complex FFT in the remaining dimensions
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
+	}
+
+	/**
+	 * Make sure that the input and output size conforms to a supported FFT size.
+	 */
+	@Override
+	public boolean conforms() {
+
+		return true;
+
+		// TODO: revisit how to check dimensions for case where 'in' has not been
+		// defined yet...
+
+		/*long[] paddedDimensions = new long[in().numDimensions()];
+		long[] fftDimensions = new long[in().numDimensions()];
+		
+		boolean fastSizeConforms = false;
+		
+		FFTMethods.dimensionsRealToComplexFast(in(), paddedDimensions,
+			fftDimensions);
+		
+		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
+			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
+		{
+			fastSizeConforms = true;
+		}
+		
+		boolean smallSizeConforms = false;
+		
+		FFTMethods.dimensionsRealToComplexSmall(in(), paddedDimensions,
+			fftDimensions);
+		
+		if ((FFTMethods.dimensionsEqual(in(), paddedDimensions) == true) &&
+			(FFTMethods.dimensionsEqual(out(), fftDimensions) == true))
+		{
+			smallSizeConforms = true;
+		}
+		
+		return fastSizeConforms || smallSizeConforms;*/
+
 	}
 
 }

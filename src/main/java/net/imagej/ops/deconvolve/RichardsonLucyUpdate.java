@@ -28,30 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.filter.ifft;
+package net.imagej.ops.deconvolve;
 
 import net.imagej.ops.Ops;
-import net.imglib2.img.Img;
+import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Inverse FFT op implemented by wrapping FFTMethods.
+ * Implements update step for Richardson-Lucy algortihm (@link
+ * RandomAccessibleInterval) (Lucy, L. B. (1974).
+ * "An iterative technique for the rectification of observed distributions".)
  * 
  * @author Brian Northan
- * @param <T>
+ * @param <I>
  * @param <O>
+ * @param <K>
+ * @param <C>
  */
-@Plugin(type = Ops.Filter.IFFT.class, priority = Priority.HIGH_PRIORITY)
-public class IFFTImg<T extends RealType<T>, O extends Img<T>> extends
-	AbstractIFFTImg<ComplexFloatType, Img<ComplexFloatType>, T, O>
+@Plugin(type = Ops.Deconvolve.RichardsonLucyUpdate.class,
+	priority = Priority.HIGH_PRIORITY)
+public class RichardsonLucyUpdate<T extends RealType<T>, I extends RandomAccessibleInterval<T>>
+	extends AbstractUnaryComputerOp<I, I> implements
+	Ops.Deconvolve.RichardsonLucyUpdate
 {
 
+	private BinaryHybridCF<I, I, I> mul = null;
+
 	@Override
-	public void compute1(final Img<ComplexFloatType> input, final O output) {
-		ops().filter().ifft(output, input);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+
+		// TODO: comment in when problem with initialize is fixed
+		// mul = (BinaryHybridOp) Hybrids.binary(ops(),
+		// IIToIIOutputII.Multiply.class,
+		// RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+		// RandomAccessibleInterval.class);
 	}
+
+	/**
+	 * performs update step of the Richardson Lucy Algorithm
+	 */
+	@Override
+	public void compute1(I correction, I estimate) {
+
+		// TODO: delte these lines when problem in initialization is fixed
+		if (mul == null) {
+
+			mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, estimate,
+				correction, estimate);
+		}
+
+		mul.compute2(estimate, correction, estimate);
+		// ops().run(Ops.Math.Multiply.class, estimate, estimate, correction);
+	}
+
 }

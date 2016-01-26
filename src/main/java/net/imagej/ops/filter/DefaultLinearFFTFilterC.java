@@ -28,21 +28,65 @@
  * #L%
  */
 
-package net.imagej.ops.deconvolve.accelerate;
+package net.imagej.ops.filter;
 
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
-import net.imglib2.type.numeric.RealType;
+import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
- * Interface for classes that are used to accelerate iterative algorithms. 
+ * Abstract class for linear filters that operate on RAIs
  * 
- * @author bnorthan
- *
- * @param <T>
+ * @author Brian Northan
+ * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-public interface Accelerator<T extends RealType<T>> {
+@Plugin(type = Ops.Filter.LinearFilter.class, priority = Priority.LOW_PRIORITY)
+public class DefaultLinearFFTFilterC<I, O, K, C> extends
+	AbstractFFTFilterC<I, O, K, C> implements Ops.Filter.LinearFilter
+{
 
-	public Img<T> Accelerate(RandomAccessibleInterval<T> estimate);
+	// FFT Op for input
+	@Parameter
+	UnaryComputerOp<I, C> fftInputOp;
 
+	// FFT Op for kernel
+	@Parameter
+	UnaryComputerOp<K, C> fftKernelOp;
+
+	// Op that performs filter in frequency domain
+	@Parameter
+	BinaryComputerOp<C, C, C> frequencyOp;
+
+	// Inverse fft op
+	@Parameter
+	UnaryComputerOp<C, O> ifftOp;
+
+	@Override
+	public void compute2(I in, K kernel, O out) {
+
+		// perform input FFT if needed
+		if (getPerformInputFFT()) {
+			fftInputOp.compute1(in, getFFTInput());
+		}
+
+		// perform kernel FFT if needed
+		if (getPerformKernelFFT()) {
+			fftKernelOp.compute1(kernel, getFFTKernel());
+		}
+
+		// perform the operation in frequency domain (ie multiplication for
+		// convolution, complex conjugate multiplication for correlation,
+		// Wiener Filter, etc.)
+		frequencyOp.compute2(getFFTInput(), getFFTKernel(), getFFTInput());
+
+		// perform inverse fft
+		ifftOp.compute1(getFFTInput(), out);
+	}
 }

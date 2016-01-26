@@ -28,69 +28,63 @@
  * #L%
  */
 
-package net.imagej.ops.filter.fft;
+package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Ops;
-import net.imglib2.exception.IncompatibleTypeException;
-import net.imglib2.img.Img;
-import net.imglib2.img.ImgFactory;
+import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imglib2.Interval;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.complex.ComplexFloatType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT that operates on Img
+ * Convolve op for (@link Img)
  * 
  * @author Brian Northan
- * @param <T>
  * @param <I>
+ * @param <O>
+ * @param <K>
+ * @param <C>
  */
-@Plugin(type = Ops.Filter.FFT.class, priority = Priority.HIGH_PRIORITY)
-public class FFTImg<T extends RealType<T>, I extends Img<T>> extends
-	AbstractFFTImg<T, I, ComplexFloatType, Img<ComplexFloatType>>
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
+public class ConvolveFFTF<I extends RealType<I> & NativeType<I>, O extends RealType<O> & NativeType<O>, K extends RealType<K> & NativeType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterF<I, O, K, C> implements Ops.Filter.Convolve
 {
 
-	private long[] paddedSize;
-
-	private long[] fftSize;
-
 	@Override
-	protected void computeFFTFastSize(long[] inputSize) {
+	public void initialize() {
 
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, true);
-
-	}
-
-	@Override
-	protected void computeFFTSmallSize(long[] inputSize) {
-
-		paddedSize = new long[inputSize.length];
-		fftSize = new long[inputSize.length];
-
-		ops().filter().fftSize(inputSize, paddedSize, fftSize, true, false);
-
-	}
-
-	@Override
-	protected Img<ComplexFloatType> createFFTImg(ImgFactory<T> factory) {
-
-		try {
-			return factory.imgFactory(new ComplexFloatType()).create(fftSize,
-				new ComplexFloatType());
+		// TODO: try and figure out if there is a better place to set the default
+		// OBF
+		if (this.getOBFInput() == null) {
+			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
 		}
-		// TODO: error handling?
-		catch (IncompatibleTypeException e) {
-			return null;
-		}
+
+		super.initialize();
+
 	}
 
+	/**
+	 * create a convolve filter
+	 */
 	@Override
-	public void compute1(final I input, final Img<ComplexFloatType> output) {
-		ops().filter().fft(output, input, getOBF(), paddedSize);
+	public
+		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+		createFilter(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel,
+			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
+	{
+		return Computers.binary(ops(), ConvolveFFTC.class, output, raiExtendedInput,
+			raiExtendedKernel, fftImg, fftKernel);
 	}
+
 }

@@ -31,10 +31,14 @@
 package net.imagej.ops.filter.convolve;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
-import net.imglib2.Interval;
+import net.imagej.ops.filter.AbstractFFTFilterC;
+import net.imagej.ops.filter.FFTMethodsLinearFFTFilterC;
+import net.imagej.ops.math.IIToIIOutputII;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.hybrid.BinaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 
@@ -42,7 +46,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Convolve op for (@link Img)
+ * Convolve op for (@link RandomAccessibleInterval)
  * 
  * @author Brian Northan
  * @param <I>
@@ -50,21 +54,40 @@ import org.scijava.plugin.Plugin;
  * @param <K>
  * @param <C>
  */
-@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.HIGH_PRIORITY)
-public class ConvolveFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Ops.Filter.Convolve
+@Plugin(type = Ops.Filter.Convolve.class, priority = Priority.LOW_PRIORITY)
+public class ConvolveFFTC<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends
+	AbstractFFTFilterC<RandomAccessibleInterval<I>, RandomAccessibleInterval<O>, RandomAccessibleInterval<K>, RandomAccessibleInterval<C>>
+	implements Ops.Filter.Convolve
 {
 
-	/**
-	 * run the filter (ConvolveFFTRAI) on the rais
-	 */
+	BinaryHybridCF<RandomAccessibleInterval<C>, RandomAccessibleInterval<C>, RandomAccessibleInterval<C>> mul;
+
+	BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>> linearFilter;
+
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
-	{
-		ops().filter().convolve(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void initialize() {
+		super.initialize();
+
+		mul = Hybrids.binaryCF(ops(), IIToIIOutputII.Multiply.class, getFFTInput(),
+			getFFTKernel(), getFFTInput());
+
+		linearFilter = (BinaryComputerOp) Computers.binary(ops(),
+			FFTMethodsLinearFFTFilterC.class, RandomAccessibleInterval.class,
+			RandomAccessibleInterval.class, RandomAccessibleInterval.class,
+			getFFTInput(), getFFTKernel(), getPerformInputFFT(),
+			getPerformKernelFFT(), mul);
+
 	}
 
+	/**
+	 * Perform convolution by multiplying the FFTs in the frequency domain
+	 */
+	@Override
+	public void compute2(RandomAccessibleInterval<I> in,
+		RandomAccessibleInterval<K> kernel, RandomAccessibleInterval<O> out)
+	{
+		linearFilter.compute2(in, kernel, out);
+	}
 }

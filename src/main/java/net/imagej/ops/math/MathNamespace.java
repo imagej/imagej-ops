@@ -763,7 +763,8 @@ public class MathNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.math.IIToIIOutputII.Divide.class)
+	@OpMethod(ops = { net.imagej.ops.math.IIToIIOutputII.Divide.class,
+		net.imagej.ops.math.divide.DivideHandleZero.class })
 	public <T extends NumericType<T>> IterableInterval<T> divide(
 		final IterableInterval<T> out, final IterableInterval<T> in1,
 		final IterableInterval<T> in2)
@@ -2135,6 +2136,18 @@ public class MathNamespace extends AbstractNamespace {
 	public <T extends NumericType<T>> T zero(final T out) {
 		@SuppressWarnings("unchecked")
 		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Zero.class, out);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.math.multiply.ComplexConjugateMultiply.class)
+	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
+		complexConjugateMultiply(final IterableInterval<O> out,
+			final IterableInterval<I> in1, final IterableInterval<I> in2)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
+			net.imagej.ops.math.multiply.ComplexConjugateMultiply.class, out, in1,
+			in2);
 		return result;
 	}
 
