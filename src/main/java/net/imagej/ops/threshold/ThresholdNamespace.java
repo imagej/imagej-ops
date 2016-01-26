@@ -434,16 +434,6 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
-	public <T extends RealType<T>> BitType localMean(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
-	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
-				out, in, c);
-		return result;
-	}
-
 	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanRAI.class)
 	public <T extends RealType<T>> RandomAccessibleInterval<BitType> localMean(
 		final RandomAccessibleInterval<BitType> out,

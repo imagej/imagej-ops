@@ -95,7 +95,6 @@ public class LocalThresholdTest extends AbstractOpTest {
 
 		ops.threshold().localBernsen(out, in, 1.0, Double.MAX_VALUE * 0.5);
 		ops.threshold().localContrast(out, in);
-		ops.threshold().localMean(out, in, 1.0);
 		ops.threshold().localMedian(out, in, 1.0);
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
