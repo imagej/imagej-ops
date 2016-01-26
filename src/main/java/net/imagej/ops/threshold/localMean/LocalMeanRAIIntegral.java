@@ -82,16 +82,13 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		integralSum = ops().op(IntegralSum.class, DoubleType.class, Views.iterable(
-			in()));
+		integralSum = ops().op(IntegralSum.class, DoubleType.class, RectangleNeighborhood.class);
 
-		// FIXME Increase span of RectangleShape
-//		if (!(shape instanceof IntegralRectangleShape)) {
-			shape = new RectangleShape(shape.getSpan() + 1, false);
-//		}
+		// Increase span of shape by 1 to return correct values together with the
+		// integralSum operation
+		shape = new RectangleShape(shape.getSpan() + 1, false);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<BitType> output)
@@ -145,13 +142,13 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 			// Absolute difference between minima
 			final long[] neighborhoodMinimum = new long[neighborhood.numDimensions()];
 			neighborhood.min(neighborhoodMinimum);
-			neighborhoodMinimum[0] = neighborhoodMinimum[0] - 1;
-			neighborhoodMinimum[1] = neighborhoodMinimum[1] - 1;
+			neighborhoodMinimum[0] = neighborhoodMinimum[0] + 1;
+			neighborhoodMinimum[1] = neighborhoodMinimum[1] + 1;
 
 			final long[] neighborhoodMaximum = new long[neighborhood.numDimensions()];
 			neighborhood.max(neighborhoodMaximum);
-			neighborhoodMaximum[0] = neighborhoodMaximum[0] + 1;
-			neighborhoodMaximum[1] = neighborhoodMaximum[1] + 1;
+			neighborhoodMaximum[0] = neighborhoodMaximum[0] - 1;
+			neighborhoodMaximum[1] = neighborhoodMaximum[1] - 1;
 
 			final long[] inputMinimum = new long[extendedImg.numDimensions()];
 			extendedImg.min(inputMinimum);
@@ -160,16 +157,17 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 			extendedImg.max(inputMaximum);
 
 			int area = 1;
-			for (int d = 0; d < input.numDimensions(); d++) {
+			for (int d = 0; d < input.numDimensions(); d++)
+			{
 				if (neighborhoodMinimum[d] <= inputMinimum[d] &&
-					neighborhoodMaximum[d] <= inputMaximum[d])
+						neighborhoodMaximum[d] <= inputMaximum[d])
 				{
 					area *= Math.abs((neighborhoodMaximum[d] + 1) - inputMinimum[d]);
 					continue;
 				}
 
 				if (neighborhoodMinimum[d] >= inputMinimum[d] &&
-					neighborhoodMaximum[d] <= inputMaximum[d])
+						neighborhoodMaximum[d] <= inputMaximum[d])
 				{
 					area *= Math.abs((neighborhoodMaximum[d] + 1) -
 						neighborhoodMinimum[d]);
@@ -177,14 +175,18 @@ public class LocalMeanRAIIntegral<T extends RealType<T> & NativeType<T>> extends
 				}
 
 				if (neighborhoodMinimum[d] >= inputMinimum[d] &&
-					neighborhoodMaximum[d] >= inputMaximum[d])
+						neighborhoodMaximum[d] >= inputMaximum[d])
 				{
 					area *= Math.abs((inputMaximum[d] + 1) - neighborhoodMinimum[d]);
 					continue;
 				}
 
-				// FIXME Missing case that implies that the RectangleShape is bigger
-				// than the image itself
+				if (neighborhoodMinimum[d] <= inputMinimum[d] && 
+						neighborhoodMaximum[d] >= inputMaximum[d])
+				{
+					area *= Math.abs((neighborhoodMaximum[d] + 1) - neighborhoodMinimum[d]);
+					continue;
+				}
 			}
 
 			// Compute mean by dividing the sum divided by the number of elements
