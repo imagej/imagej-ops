@@ -73,9 +73,8 @@ public class FFTTest extends AbstractOpTest {
 			final Img<FloatType> inverse = generateFloatArrayTestImg(false,
 				dimensions);
 
-			@SuppressWarnings("unchecked")
-			final Img<ComplexFloatType> out = (Img<ComplexFloatType>) ops.filter()
-				.fft(in);
+			final Img<ComplexFloatType> out = (Img<ComplexFloatType>) ops.filter().fft(in);
+
 			ops.filter().ifft(inverse, out);
 
 			assertImagesEqual(in, inverse, .00005f);
@@ -86,7 +85,7 @@ public class FFTTest extends AbstractOpTest {
 	/**
 	 * test the fast FFT
 	 */
-	//@Test
+	@Test
 	public void testFastFFT3DOp() {
 
 		final int min = expensiveTestsEnabled ? 120 : 9;
@@ -115,25 +114,16 @@ public class FFTTest extends AbstractOpTest {
 				fastDimensions);
 			placeSphereInCenter(inFast);
 
-			// call FFT passing false for "fast" (in order to pass the optional
-			// parameter we have to pass null for the
-			// output parameter).
-			@SuppressWarnings("unchecked")
-			final Img<ComplexFloatType> fft1 = (Img<ComplexFloatType>) ops.filter()
-				.fft(null, inOriginal, null, false);
+			// call FFT passing false for "fast"
+			final Img<?> fft1 = (Img<?>) ops.filter().fft(inOriginal, null, false);
 
-			// call FFT passing true for "fast" (in order to pass the optional
-			// parameter we have to pass null for the
-			// output parameter). The FFT op will pad the input to the fast
+			// call FFT passing true for "fast" The FFT op will pad the input to the
+			// fast
 			// size.
-			@SuppressWarnings("unchecked")
-			final Img<ComplexFloatType> fft2 = (Img<ComplexFloatType>) ops.filter()
-				.fft(null, inOriginal, null, true);
+			final Img<?> fft2 = (Img<?>) ops.filter().fft(inOriginal, null, true);
 
 			// call fft using the img that was created with the fast size
-			@SuppressWarnings("unchecked")
-			final Img<ComplexFloatType> fft3 = (Img<ComplexFloatType>) ops.filter()
-				.fft(inFast);
+			final Img<?> fft3 = (Img<?>) ops.filter().fft(inFast);
 
 			// create an image to be used for the inverse, using the original
 			// size
@@ -204,6 +194,7 @@ public class FFTTest extends AbstractOpTest {
 	{
 		final Cursor<FloatType> c1 = img1.cursor();
 		final Cursor<FloatType> c2 = img2.cursor();
+
 
 		while (c1.hasNext()) {
 			c1.fwd();

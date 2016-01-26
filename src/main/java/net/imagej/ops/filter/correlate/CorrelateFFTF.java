@@ -32,10 +32,13 @@ package net.imagej.ops.filter.correlate;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.filter.AbstractFFTFilterImg;
+import net.imagej.ops.filter.AbstractFFTFilterF;
+import net.imagej.ops.special.computer.BinaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imglib2.Interval;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.Img;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Intervals;
@@ -54,30 +57,44 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.Correlate.class,
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class CorrelateFFTImg<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
-	extends AbstractFFTFilterImg<I, O, K, C> implements Contingent,
+public class CorrelateFFTF<I extends RealType<I>, O extends RealType<O>, K extends RealType<K>, C extends ComplexType<C>>
+	extends AbstractFFTFilterF<I, O, K, C> implements Contingent,
 	Ops.Filter.Correlate
 {
 
+	@Override
+	public void initialize() {
+
+		// TODO: try and figure out if there is a better place to set the default
+		// OBF
+		if (this.getOBFInput() == null) {
+			setOBFInput(new OutOfBoundsMirrorFactory<>(Boundary.SINGLE));
+		}
+
+		super.initialize();
+
+	}
+
 	/**
-	 * run the filter (CorrelateFFTRAI) on the rais
+	 * create a correlation filter
 	 */
 	@Override
-	public void runFilter(RandomAccessibleInterval<I> raiExtendedInput,
-		RandomAccessibleInterval<K> raiExtendedKernel, Img<C> fftImg,
-		Img<C> fftKernel, Img<O> output, Interval imgConvolutionInterval)
+	public
+		BinaryComputerOp<RandomAccessibleInterval<I>, RandomAccessibleInterval<K>, RandomAccessibleInterval<O>>
+		createFilter(RandomAccessibleInterval<I> raiExtendedInput,
+			RandomAccessibleInterval<K> raiExtendedKernel,
+			RandomAccessibleInterval<C> fftImg, RandomAccessibleInterval<C> fftKernel,
+			RandomAccessibleInterval<O> output, Interval imgConvolutionInterval)
 	{
-
-		ops().filter().correlate(raiExtendedInput, raiExtendedKernel, fftImg,
-			fftKernel, output);
-
+		return Computers.binary(ops(), CorrelateFFTC.class, output,
+			raiExtendedInput, raiExtendedKernel, fftImg, fftKernel);
 	}
 
 	@Override
 	public boolean conforms() {
 		// TODO: only conforms if the kernel is sufficiently large (else the
 		// naive approach should be used) -> what is a good heuristic??
-		return Intervals.numElements(getKernel()) > 9;
+		return Intervals.numElements(in2()) > 9;
 	}
 
 }
