@@ -32,8 +32,6 @@ package net.imagej.ops.stats;
 
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
-import net.imglib2.IterableInterval;
 import net.imglib2.algorithm.neighborhood.RectangleNeighborhood;
 import net.imglib2.converter.Converter;
 import net.imglib2.converter.RealDoubleConverter;
@@ -59,37 +57,45 @@ public class IntegralSum<I extends RealType<I>> extends
 	public void compute1(final RectangleNeighborhood<I> input,
 		final DoubleType output)
 	{
-		// Based on the location compute the values A, B, C, and D
-		// (computation according to
-		// https://en.wikipedia.org/wiki/Summed_area_table)
-		final Cursor<I> cursor = input.integralCursor();
-
-		// A
-		final I valueA = cursor.next().copy();
-
-		// B
-		final I valueB = cursor.next().copy();
-
-		// C
-		final I valueC = cursor.next().copy();
-
-		// D
-		final I valueD = cursor.next().copy();
-
-		// Compute A - B - C + D
-		final I sum = cursor.get().createVariable();
+		// computation according to	https://en.wikipedia.org/wiki/Summed_area_table
+		final RectangleNeighborhood<I>.IntegralCursor cursor = input.integralCursor();
+		int dimensions = input.numDimensions();
+		
+		// Compute \sum (-1)^{dim - ||cornerVector||_{1}} * I(x^{cornerVector})
+		final DoubleType sum = new DoubleType();
 		sum.setZero();
-		sum.add(valueA);
-		sum.sub(valueB);
-		sum.sub(valueC);
-		sum.add(valueD);
 
-		// Convert to return type
+		// Convert from input to return type
 		final Converter<I, DoubleType> conv = new RealDoubleConverter<>();
-		final DoubleType sumAsDoubleType = new DoubleType();
-		conv.convert(sum, sumAsDoubleType);
-
-		output.set(sumAsDoubleType);
+		
+		while ( cursor.hasNext() )
+		{
+			// Obtain the cursor position encoded as corner vector
+			int cornerInteger = cursor.getCornerInteger();
+			final I value = cursor.next().copy();
+			final DoubleType valueAsDoubleType = new DoubleType();
+			conv.convert(value, valueAsDoubleType);
+			
+			// Determine if the value has to be added (factor==1) or subtracted (factor==-1)
+			DoubleType factor = new DoubleType(Math.pow(-1.0d, dimensions - norm(cornerInteger)));
+			valueAsDoubleType.mul(factor);
+			
+			sum.add(valueAsDoubleType);
+		}
+			
+		output.set(sum);
 	}
 
+	/**
+	 * Computes L1 norm of the position of an {@code IntegralCursor}. Computation
+	 * is based on determining the number of 1 bits in the position.
+	 * 
+	 * @param cornerPosition position vector of an {@code IntegralCursor} encoded
+	 *          as integer
+	 * @return L1 norm of the position
+	 */
+	private int norm(int cornerPosition) {
+		return Integer.bitCount(cornerPosition);
+	}
+	
 }
