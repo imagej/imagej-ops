@@ -33,10 +33,9 @@ package net.imagej.ops.map;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Parallel;
-import net.imagej.ops.special.inplace.BinaryInplaceOp;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imagej.ops.thread.chunker.ChunkerOp;
 import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
@@ -56,7 +55,7 @@ public class MapIIAndIIInplaceParallel<EA> extends
 
 	@Override
 	public boolean conforms() {
-		return in1().iterationOrder().equals(in2().iterationOrder());
+		return MapUtils.compatible(in1(), in2());
 	}
 
 	@Override
@@ -69,20 +68,8 @@ public class MapIIAndIIInplaceParallel<EA> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<EA> inCursor = in.cursor();
-				final Cursor<EA> argCursor = arg.cursor();
-				final BinaryInplaceOp<EA> op = getOp();
-
-				setToStart(inCursor, startIndex);
-				setToStart(argCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					op.mutate1(argCursor.get(), inCursor.get());
-					inCursor.jumpFwd(stepSize);
-					argCursor.jumpFwd(stepSize);
-					ctr++;
-				}
+				MapUtils.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp(),
+					startIndex, stepSize, numSteps);
 			}
 		}, arg.size());
 	}
@@ -97,69 +84,8 @@ public class MapIIAndIIInplaceParallel<EA> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				final Cursor<EA> inCursor = in.cursor();
-				final Cursor<EA> argCursor = arg.cursor();
-				final BinaryInplaceOp<EA> op = getOp();
-
-				setToStart(inCursor, startIndex);
-				setToStart(argCursor, startIndex);
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					op.mutate2(inCursor.get(), argCursor.get());
-					inCursor.jumpFwd(stepSize);
-					argCursor.jumpFwd(stepSize);
-					ctr++;
-				}
+				MapUtils.inplace(in, arg, getOp(), startIndex, stepSize, numSteps);
 			}
 		}, in.size());
 	}
-
-	/*
-	 * TODO: this will not work until Java 8 is fully supported by SciJava.
-	 * See https://github.com/scijava/scijava-common/pull/218
-	
-	@Override
-	public void mutate1(final IterableInterval<EA> arg,
-		final IterableInterval<EA> in)
-	{
-		final BinaryInplaceOp<EA> safe = getOp().getIndependentInstance();
-		mutateDispatch(arg, in, safe::mutate1);
-	}
-	
-	@Override
-	public void mutate2(final IterableInterval<EA> in,
-		final IterableInterval<EA> arg)
-	{
-		final BinaryInplaceOp<EA> safe = getOp().getIndependentInstance();
-		mutateDispatch(in, arg, safe::mutate2);
-	}
-	
-	private void mutateDispatch(final IterableInterval<EA> first,
-		final IterableInterval<EA> second, final BiConsumer<EA, EA> c)
-	{
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-	
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final Cursor<EA> firstCursor = first.cursor();
-				final Cursor<EA> secondCursor = second.cursor();
-	
-				setToStart(firstCursor, startIndex);
-				setToStart(secondCursor, startIndex);
-	
-				int ctr = 0;
-				while (ctr < numSteps) {
-					c.accept(firstCursor.get(), secondCursor.get());
-					firstCursor.jumpFwd(stepSize);
-					secondCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, first.size());
-	
-	}
-	*/
 }
