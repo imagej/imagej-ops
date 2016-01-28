@@ -321,7 +321,7 @@ namespaces = ```
 		[name: "li",                          iface: "Li"],
 		[name: "localBernsen",                iface: "LocalBernsen"],
 		[name: "localContrast",               iface: "LocalContrast"],
-		[name: "localMean",                   iface: "LocalMean"],
+		[name: "localThresholdMean",          iface: "LocalThresholdMean"],
 		[name: "localMedian",                 iface: "LocalMedian"],
 		[name: "localMidGrey",                iface: "LocalMidGrey"],
 		[name: "localNiblack",                iface: "LocalNiblack"],

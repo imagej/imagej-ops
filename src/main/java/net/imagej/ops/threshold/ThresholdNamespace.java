@@ -434,30 +434,30 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanRAI.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<BitType> localMean(
-		final RandomAccessibleInterval<BitType> out,
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
+		final IterableInterval<BitType> out,
 		final RandomAccessibleInterval<T> in, final Shape shape, final double c)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalMeanRAI.class, out, in, shape,
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
 				c);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanRAI.class)
-	public <T extends RealType<T>> RandomAccessibleInterval<BitType> localMean(
-		final RandomAccessibleInterval<BitType> out,
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
+		final IterableInterval<BitType> out,
 		final RandomAccessibleInterval<T> in, final Shape shape,
 		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
 		final double c)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<BitType> result =
-			(RandomAccessibleInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalMeanRAI.class, out, in, shape,
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
 				outOfBounds, c);
 		return result;
 	}
