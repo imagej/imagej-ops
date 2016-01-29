@@ -630,13 +630,13 @@ public interface OpEnvironment extends Contextual {
 	/** Executes the "map" operation on the given arguments. */
 	@OpMethod(
 		op = net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class)
-	default <I, O> RandomAccessibleInterval<O> map(
-		final RandomAccessibleInterval<O> out, final RandomAccessibleInterval<I> in,
+	default <I, O> IterableInterval<O> map(
+		final IterableInterval<O> out, final RandomAccessibleInterval<I> in,
 		final CenterAwareComputerOp<Iterable<I>, O> func, final Shape shape)
 	{
 		@SuppressWarnings("unchecked")
-		final RandomAccessibleInterval<O> result =
-			(RandomAccessibleInterval<O>) run(
+		final IterableInterval<O> result =
+			(IterableInterval<O>) run(
 				net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter.class, out,
 				in, func, shape);
 		return result;

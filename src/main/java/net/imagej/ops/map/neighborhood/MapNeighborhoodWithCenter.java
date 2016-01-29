@@ -68,7 +68,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
 public class MapNeighborhoodWithCenter<I, O>
 	extends
-	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, RandomAccessibleInterval<O>>
+	AbstractMapCenterAwareComputer<I, O, RandomAccessibleInterval<I>, IterableInterval<O>>
 {
 
 	@Parameter
@@ -84,10 +84,10 @@ public class MapNeighborhoodWithCenter<I, O>
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<I> input,
-		final RandomAccessibleInterval<O> output)
+		final IterableInterval<O> output)
 	{
 		map.compute1(new NeighborhoodWithCenterIterableInterval(
-			shape.neighborhoodsSafe(input), input), Views.iterable(output));
+			shape.neighborhoodsSafe(input), input), output);
 	}
 
 	/**

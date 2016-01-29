@@ -41,7 +41,6 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.histogram.Histogram1d;
-import net.imglib2.img.Img;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -435,13 +434,31 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
-	public <T extends RealType<T>> BitType localMean(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
+		final IterableInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape, final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
-				out, in, c);
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
+				c);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
+		final IterableInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
+				outOfBounds, c);
 		return result;
 	}
 
