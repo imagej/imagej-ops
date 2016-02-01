@@ -72,23 +72,23 @@ public class DefaultSigmaFilter<T extends RealType<T>> extends
 			private UnaryComputerOp<Iterable<T>, DoubleType> variance;
 
 			@Override
-			public void compute1(Pair<T, Iterable<T>> input, T output) {
+			public void compute2(T center, Iterable<T> neighborhood, T output) {
 				if (variance == null) {
 					variance = Computers.unary(ops(), Ops.Stats.Variance.class,
-						DoubleType.class, input.getB());
+						DoubleType.class, neighborhood);
 				}
 
 				DoubleType varianceResult = new DoubleType();
-				variance.compute1(input.getB(), varianceResult);
+				variance.compute1(neighborhood, varianceResult);
 				double varianceValue = varianceResult.getRealDouble() * range;
 
-				final double centerValue = input.getA().getRealDouble();
+				final double centerValue = center.getRealDouble();
 				double sumAll = 0;
 				double sumWithin = 0;
 				long countAll = 0;
 				long countWithin = 0;
 
-				for (T neighbor : input.getB()) {
+				for (T neighbor : neighborhood) {
 					final double pixelValue = neighbor.getRealDouble();
 					final double diff = centerValue - pixelValue;
 
