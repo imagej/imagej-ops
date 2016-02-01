@@ -427,124 +427,122 @@ public class ThresholdNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.threshold.localContrast.LocalContrast.class)
 	public <T extends RealType<T>> BitType localContrast(final BitType out,
-		final Pair<T, Iterable<T>> in)
+		final T center, final Iterable<T> neighborhood)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localContrast.LocalContrast.class, out, in);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localContrast.LocalContrast.class, out, center,
+			neighborhood);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMean.class)
 	public <T extends RealType<T>> BitType localMean(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+		final T center, final Iterable<T> neighborhood, final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localMean.LocalMean.class,
-				out, in, c);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localMean.LocalMean.class, out, center,
+			neighborhood, c);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localMedian.LocalMedian.class)
 	public <T extends RealType<T>> BitType localMedian(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+		final T center, final Iterable<T> neighborhood, final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localMedian.LocalMedian.class, out, in, c);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localMedian.LocalMedian.class, out, center,
+			neighborhood, c);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class)
 	public <T extends RealType<T>> BitType localMidGrey(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+		final T center, final Iterable<T> neighborhood, final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class, out, in, c);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class, out, center,
+			neighborhood, c);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localNiblack.LocalNiblack.class)
 	public <T extends RealType<T>> BitType localNiblack(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c, final double k)
+		final T center, final Iterable<T> neighborhood, final double c, final double k)
 	{
-		final BitType result =
-			(BitType) ops()
-				.run(net.imagej.ops.threshold.localNiblack.LocalNiblack.class, out, in,
-					c, k);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localNiblack.LocalNiblack.class, out, center,
+			neighborhood, c, k);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsen.class)
 	public <T extends RealType<T>> BitType localBernsen(final BitType out,
-		final Pair<T, Iterable<T>> in, final double contrastThreshold,
+		final T center, final Iterable<T> neighborhood, final double contrastThreshold,
 		final double halfMaxValue)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localBernsen.LocalBernsen.class, out, in,
-				contrastThreshold, halfMaxValue);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localBernsen.LocalBernsen.class, out, center,
+			neighborhood, contrastThreshold, halfMaxValue);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
 	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
-		final Pair<T, Iterable<T>> in, final double k, final double r)
+		final T center, final Iterable<T> neighborhood, final double k, final double r)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
-				out, in, k, r);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class, out,
+			center, neighborhood, k, r);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
 	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
-		final Pair<T, Iterable<T>> in, final double k)
+		final T center, final Iterable<T> neighborhood, final double k)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
-				out, in, k);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class, out,
+			center, neighborhood, k);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class)
 	public <T extends RealType<T>> BitType localPhansalkar(final BitType out,
-		final Pair<T, Iterable<T>> in)
+		final T center, final Iterable<T> neighborhood)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class,
-				out, in);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar.class, out,
+			center, neighborhood);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
 	public <T extends RealType<T>> BitType localSauvola(final BitType out,
-		final Pair<T, Iterable<T>> in, final double k, final double r)
+		final T center, final Iterable<T> neighborhood, final double k, final double r)
 	{
 		final BitType result =
 			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
-				out, in, k, r);
+				out, center, neighborhood, k, r);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
 	public <T extends RealType<T>> BitType localSauvola(final BitType out,
-		final Pair<T, Iterable<T>> in, final double k)
+		final T center, final Iterable<T> neighborhood, final double k)
 	{
-		final BitType result =
-			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
-				out, in, k);
+		final BitType result = (BitType) ops().run(
+			net.imagej.ops.threshold.localSauvola.LocalSauvola.class, out, center,
+			neighborhood, k);
 		return result;
 	}
 	
 	@OpMethod(op = net.imagej.ops.threshold.localSauvola.LocalSauvola.class)
 	public <T extends RealType<T>> BitType localSauvola(final BitType out,
-		final Pair<T, Iterable<T>> in)
+		final T center, final Iterable<T> neighborhood)
 	{
 		final BitType result =
 			(BitType) ops().run(net.imagej.ops.threshold.localSauvola.LocalSauvola.class,
-				out, in);
+				out, center, neighborhood);
 		return result;
 	}
 

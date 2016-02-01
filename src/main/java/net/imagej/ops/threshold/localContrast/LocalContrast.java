@@ -56,15 +56,15 @@ public class LocalContrast<T extends RealType<T>> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp)Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+		minMaxFunc = (UnaryFunctionOp)Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in2());
 	}
 
 	@Override
-	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
+	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
 
-		final double centerValue = input.getA().getRealDouble();
+		final double centerValue = center.getRealDouble();
 		final double diffMin = centerValue - outputs.getA().getRealDouble();
 		final double diffMax = outputs.getB().getRealDouble() - centerValue;
 

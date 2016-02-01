@@ -61,18 +61,18 @@ public class LocalMidGrey<T extends RealType<T>> extends
 	@Override
 	public void initialize() {
 		minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in2());
 	}
 
 	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		final Pair<T, T> outputs = minMaxFunc.compute1(neighborhood);
 
 		final double minValue = outputs.getA().getRealDouble();
 		final double maxValue = outputs.getB().getRealDouble();
 
 		output
-			.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+			.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
 	}
 }

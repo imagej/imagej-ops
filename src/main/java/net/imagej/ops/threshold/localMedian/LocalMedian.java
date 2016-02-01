@@ -37,7 +37,6 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -59,14 +58,14 @@ public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Override
 	public void initialize() {
-		median = Computers.unary(ops(), Ops.Stats.Median.class, DoubleType.class, in().getB());
+		median = Computers.unary(ops(), Ops.Stats.Median.class, DoubleType.class, in2());
 	}
 
 	@Override
-	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
+	public void compute2(T center, Iterable<T> neighborhood, BitType output) {
 
 		final DoubleType m = new DoubleType();
-		median.compute1(input.getB(), m);
-		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+		median.compute1(neighborhood, m);
+		output.set(center.getRealDouble() > m.getRealDouble() - c);
 	}
 }

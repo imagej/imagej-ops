@@ -38,7 +38,8 @@ import net.imagej.ops.special.computer.BinaryComputerOp;
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
- * @param <I> type of input (implicitly assumes the center and the neighborhood are of the same type)
+ * @param <I> type of input (implicitly assumes that the center and the
+ *          neighborhood are of the same type)
  * @param <O> type of output
  */
 public interface CenterAwareComputerOp<I, O> extends
