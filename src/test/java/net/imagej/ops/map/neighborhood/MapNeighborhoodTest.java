@@ -40,7 +40,6 @@ import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Pair;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -145,15 +144,15 @@ public class MapNeighborhoodTest extends AbstractOpTest {
 	{
 
 		@Override
-		public void compute1(final Pair<ByteType, Iterable<ByteType>> input,
+		public void compute2(final ByteType center, final Iterable<ByteType> neighborhood,
 			final ByteType output)
 		{
-			ByteType a = input.getA();
+			ByteType a = center;
 
 			a.set((byte) 0);
 			output.set((byte) 0);
 
-			for (Iterator<ByteType> iter = input.getB().iterator(); iter.hasNext(); iter
+			for (Iterator<ByteType> iter = neighborhood.iterator(); iter.hasNext(); iter
 				.next())
 			{
 				output.inc();
