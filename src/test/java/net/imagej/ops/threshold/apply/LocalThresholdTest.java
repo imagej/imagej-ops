@@ -90,16 +90,17 @@ public class LocalThresholdTest extends AbstractOpTest {
 	public void testOpMethods() {
 		final BitType out = new BitType();
 
-		ops.threshold().localBernsen(out, this.in.firstElement(), this.in, 1.0, Double.MAX_VALUE * 0.5);
-		ops.threshold().localContrast(out, this.in.firstElement(), this.in);
-		ops.threshold().localMean(out, this.in.firstElement(), this.in, 1.0);
-		ops.threshold().localMedian(out, this.in.firstElement(), this.in, 1.0);
-		ops.threshold().localMidGrey(out, this.in.firstElement(), this.in, 1.0);
-		ops.threshold().localNiblack(out, this.in.firstElement(), this.in, 1.0, 2.0);
-		ops.threshold().localPhansalkar(out, this.in.firstElement(), this.in, 0.25, 0.5);
-		ops.threshold().localPhansalkar(out, this.in.firstElement(), this.in);
-		ops.threshold().localSauvola(out, this.in.firstElement(), this.in, 0.5, 0.5);
-		ops.threshold().localSauvola(out, this.in.firstElement(), this.in);
+		ops.threshold().localBernsen(out, in.firstElement(), in, 1.0,
+			Double.MAX_VALUE * 0.5);
+		ops.threshold().localContrast(out, in.firstElement(), in);
+		ops.threshold().localMean(out, in.firstElement(), in, 1.0);
+		ops.threshold().localMedian(out, in.firstElement(), in, 1.0);
+		ops.threshold().localMidGrey(out, in.firstElement(), in, 1.0);
+		ops.threshold().localNiblack(out, in.firstElement(), in, 1.0, 2.0);
+		ops.threshold().localPhansalkar(out, in.firstElement(), in, 0.25, 0.5);
+		ops.threshold().localPhansalkar(out, in.firstElement(), in);
+		ops.threshold().localSauvola(out, in.firstElement(), in, 0.5, 0.5);
+		ops.threshold().localSauvola(out, in.firstElement(), in);
 	}
 
 	/**
