@@ -32,8 +32,7 @@ package net.imagej.ops.map;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.inplace.BinaryInplaceOp;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.inplace.BinaryInplace1Op;
 import net.imglib2.IterableInterval;
 
 import org.scijava.Priority;
@@ -52,60 +51,20 @@ public class MapIIAndIIInplace<EA> extends
 
 	@Override
 	public boolean conforms() {
-		return in1().iterationOrder().equals(in2().iterationOrder());
+		return MapUtils.compatible(in1(), in2());
 	}
 
 	@Override
 	public void mutate1(final IterableInterval<EA> arg,
 		final IterableInterval<EA> in)
 	{
-		final Cursor<EA> argCursor = arg.cursor();
-		final Cursor<EA> inCursor = in.cursor();
-		final BinaryInplaceOp<EA> op = getOp();
-		while (argCursor.hasNext()) {
-			op.mutate1(argCursor.next(), inCursor.next());
-		}
+		MapUtils.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp());
 	}
 
 	@Override
 	public void mutate2(final IterableInterval<EA> in,
 		final IterableInterval<EA> arg)
 	{
-		final Cursor<EA> argCursor = arg.cursor();
-		final Cursor<EA> inCursor = in.cursor();
-		final BinaryInplaceOp<EA> op = getOp();
-		while (argCursor.hasNext()) {
-			op.mutate2(inCursor.next(), argCursor.next());
-		}
+		MapUtils.inplace(arg, in, getOp());
 	}
-
-	/*
-	 * TODO: this will not work until Java 8 is fully supported by SciJava.
-	 * See https://github.com/scijava/scijava-common/pull/218
-	
-	@Override
-	public void mutate1(final IterableInterval<EA> arg,
-		final IterableInterval<EA> in)
-	{
-		mutateDispatch(arg, in, getOp()::mutate2);
-	}
-	
-	@Override
-	public void mutate2(final IterableInterval<EA> in,
-		final IterableInterval<EA> arg)
-	{
-		mutateDispatch(arg, in, getOp()::mutate1);
-	}
-	
-	private void mutateDispatch(final IterableInterval<EA> first,
-		final IterableInterval<EA> second, final BiConsumer<EA, EA> c)
-	{
-		final Cursor<EA> firstCursor = first.cursor();
-		final Cursor<EA> secondCursor = second.cursor();
-		while (firstCursor.hasNext()) {
-			c.accept(firstCursor.next(), secondCursor.next());
-		}
-	
-	}
-	*/
 }

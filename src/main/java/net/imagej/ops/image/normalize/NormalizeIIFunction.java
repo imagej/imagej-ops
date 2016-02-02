@@ -53,7 +53,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Ops.Image.Normalize.class)
-public class NormalizeIterableIntervalFunction<T extends RealType<T>> extends
+public class NormalizeIIFunction<T extends RealType<T>> extends
 	FunctionViaComputer<IterableInterval<T>, IterableInterval<T>> implements
 	Ops.Image.Normalize
 {

@@ -34,7 +34,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 
 /**
- * A {@link MapComputer} {@link UnaryFunctionOp} which converts entries on
+ * A {@link MapUnaryComputer} {@link UnaryFunctionOp} which converts entries on
  * demand by wrapping in a thin "view" data structure.
  *
  * @author Christian Dietz (University of Konstanz)
@@ -44,7 +44,7 @@ import net.imagej.ops.special.function.UnaryFunctionOp;
  * @param <PO> producer of outputs
  */
 public interface MapView<EI, EO, PI, PO> extends
-	MapComputer<EI, EO, UnaryComputerOp<EI, EO>>, UnaryFunctionOp<PI, PO>
+	MapUnaryComputer<EI, EO, UnaryComputerOp<EI, EO>>, UnaryFunctionOp<PI, PO>
 {
 
 	/**

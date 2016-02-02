@@ -293,21 +293,21 @@ public class StatsNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
+	@OpMethod(op = net.imagej.ops.stats.IISize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(
 		final IterableInterval<T> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.IterableIntervalSize.class, in);
+			(O) ops().run(net.imagej.ops.stats.IISize.class, in);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.stats.IterableIntervalSize.class)
+	@OpMethod(op = net.imagej.ops.stats.IISize.class)
 	public <T extends RealType<T>, O extends RealType<O>> O size(final O out,
 		final IterableInterval<T> in)
 	{
 		final O result =
-			(O) ops().run(net.imagej.ops.stats.IterableIntervalSize.class, out, in);
+			(O) ops().run(net.imagej.ops.stats.IISize.class, out, in);
 		return result;
 	}
 

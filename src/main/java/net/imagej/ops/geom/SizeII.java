@@ -28,33 +28,31 @@
  * #L%
  */
 
-package net.imagej.ops.stats;
+package net.imagej.ops.geom;
 
-import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
 import net.imglib2.IterableInterval;
-import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link Op} to calculate the {@code stats.size} directly.
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.Size}.
  * 
- * @author Daniel Seebacher, University of Konstanz.
- * @author Christian Dietz, University of Konstanz.
- * @param <I> input type
- * @param <O> output type
+ * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
+@Plugin(type = Ops.Geometric.Size.class, label = "Geometric: Size",
 	priority = Priority.VERY_HIGH_PRIORITY)
-public class IterableIntervalSize<I extends RealType<I>, O extends RealType<O>>
-	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
+public class SizeII extends
+	AbstractUnaryFunctionOp<IterableInterval<?>, DoubleType> implements
+	GeometricOp<IterableInterval<?>, DoubleType>, Ops.Geometric.Size
 {
 
 	@Override
-	public void compute1(final IterableInterval<I> input, final O output) {
-		output.setReal(input.size());
+	public DoubleType compute1(IterableInterval<?> input) {
+		return new DoubleType(input.size());
 	}
 
 }

@@ -36,7 +36,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract base class for {@link MapComputer} implementations.
+ * Abstract base class for {@link MapUnaryComputer} implementations.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @param <EI> element type of inputs
@@ -46,7 +46,7 @@ import org.scijava.plugin.Parameter;
  */
 public abstract class AbstractMapComputer<EI, EO, PI, PO> extends
 	AbstractUnaryComputerOp<PI, PO> implements
-	MapComputer<EI, EO, UnaryComputerOp<EI, EO>>
+	MapUnaryComputer<EI, EO, UnaryComputerOp<EI, EO>>
 {
 
 	@Parameter

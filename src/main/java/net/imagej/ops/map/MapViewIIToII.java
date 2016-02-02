@@ -30,55 +30,32 @@
 
 package net.imagej.ops.map;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.computer.ComputerConverter;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imglib2.converter.read.ConvertedIterableInterval;
+import net.imglib2.type.Type;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link RandomAccessibleInterval} outputs. The {@link IterableInterval}s must
- * have the same iteration order, and the inputs and outputs must have the same
- * dimensions.
+ * {@link MapView} which converts an {@link IterableInterval} between element
+ * types.
  * 
- * @author Leon Yang
- * @param <EI1> element type of first inputs
- * @param <EI2> element type of second inputs
+ * @author Christian Dietz (University of Konstanz)
+ * @param <EI> element type of inputs
  * @param <EO> element type of outputs
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 1)
-public class MapIIAndIIToRAI<EI1, EI2, EO> extends
-	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, IterableInterval<EI2>, RandomAccessibleInterval<EO>>
-	implements Contingent
+@Plugin(type = Ops.Map.class)
+public class MapViewIIToII<EI, EO extends Type<EO>> extends
+	AbstractMapView<EI, EO, IterableInterval<EI>, IterableInterval<EO>>
 {
 
 	@Override
-	public boolean conforms() {
-		if (!in1().iterationOrder().equals(in2().iterationOrder())) return false;
-
-		if (out() == null) return true;
-		return Intervals.equalDimensions(in1(), out());
+	public IterableInterval<EO> compute1(final IterableInterval<EI> input) {
+		final ComputerConverter<EI, EO> converter =
+			new ComputerConverter<>(getOp());
+		return new ConvertedIterableInterval<>(input, converter, getType());
 	}
 
-	@Override
-	public void compute2(final IterableInterval<EI1> input1,
-		final IterableInterval<EI2> input2,
-		final RandomAccessibleInterval<EO> output)
-	{
-		final Cursor<EI1> in1Cursor = input1.localizingCursor();
-		final Cursor<EI2> in2Cursor = input2.cursor();
-		final RandomAccess<EO> outAccess = output.randomAccess();
-		while (in1Cursor.hasNext()) {
-			in1Cursor.fwd();
-			in2Cursor.fwd();
-			outAccess.setPosition(in1Cursor);
-			getOp().compute2(in1Cursor.get(), in2Cursor.get(), outAccess.get());
-		}
-	}
 }

@@ -61,7 +61,7 @@ public class CopyImg<T extends NativeType<T>> extends
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void initialize() {
-		copyComputer = Computers.unary(ops(), CopyIterableInterval.class, in(), in());
+		copyComputer = Computers.unary(ops(), CopyII.class, in(), in());
 		createFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
 			Img.class, in());
 	}

@@ -28,56 +28,33 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.stats;
 
-import net.imagej.ops.Contingent;
+import net.imagej.ops.Op;
 import net.imagej.ops.Ops;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link IterableInterval} and
- * {@link RandomAccessibleInterval} inputs to {@link RandomAccessibleInterval}
- * outputs. The inputs and outputs must have the same dimensions.
+ * {@link Op} to calculate the {@code stats.size} directly.
  * 
- * @author Leon Yang
- * @param <EI1> element type of first inputs
- * @param <EI2> element type of second inputs
- * @param <EO> element type of outputs
+ * @author Daniel Seebacher, University of Konstanz.
+ * @author Christian Dietz, University of Konstanz.
+ * @param <I> input type
+ * @param <O> output type
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)
-public class MapIIAndRAIToRAI<EI1, EI2, EO> extends
-	AbstractMapBinaryComputer<EI1, EI2, EO, IterableInterval<EI1>, RandomAccessibleInterval<EI2>, RandomAccessibleInterval<EO>>
-	implements Contingent
+@Plugin(type = Ops.Stats.Size.class, label = "Statistics: Size",
+	priority = Priority.VERY_HIGH_PRIORITY)
+public class IISize<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractStatsOp<IterableInterval<I>, O> implements Ops.Stats.Size
 {
 
 	@Override
-	public boolean conforms() {
-		if (!Intervals.equalDimensions(in1(), in2())) return false;
-		
-		if (out() == null) return true;
-		return Intervals.equalDimensions(in1(), out());
+	public void compute1(final IterableInterval<I> input, final O output) {
+		output.setReal(input.size());
 	}
 
-	@Override
-	public void compute2(final IterableInterval<EI1> input1,
-		final RandomAccessibleInterval<EI2> input2,
-		final RandomAccessibleInterval<EO> output)
-	{
-		final Cursor<EI1> in1Cursor = input1.localizingCursor();
-		final RandomAccess<EI2> in2Access = input2.randomAccess();
-		final RandomAccess<EO> outAccess = output.randomAccess();
-		while (in1Cursor.hasNext()) {
-			in1Cursor.fwd();
-			in2Access.setPosition(in1Cursor);
-			outAccess.setPosition(in1Cursor);
-			getOp().compute2(in1Cursor.get(), in2Access.get(), outAccess.get());
-		}
-	}
 }

@@ -28,68 +28,63 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.copy;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
-import net.imagej.ops.special.inplace.BinaryInplace1Op;
-import net.imagej.ops.thread.chunker.ChunkerOp;
-import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
+import net.imagej.ops.special.computer.Computers;
+import net.imagej.ops.special.computer.UnaryComputerOp;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
+import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.util.Intervals;
 
-import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapBinaryInplace1} over {@link IterableInterval} and
- * {@link RandomAccessibleInterval}
+ * Copies an {@link IterableInterval} into another {@link IterableInterval}
  * 
- * @author Leon Yang
- * @param <EA> element type of first inputs + outputs
- * @param <EI> element type of second inputs
+ * @author Christian Dietz, University of Konstanz
+ * @param <T>
  */
-@Plugin(type = Ops.Map.class, priority = Priority.HIGH_PRIORITY + 2)
-public class MapIterableIntervalAndRAIInplaceParallel<EA, EI> extends
-	AbstractMapBinaryInplace1<EA, EI, IterableInterval<EA>, RandomAccessibleInterval<EI>>
-	implements Contingent, Parallel
-{
+@Plugin(type = Ops.Copy.IterableInterval.class, priority = 1.0)
+public class CopyII<T> extends
+		AbstractUnaryHybridCF<IterableInterval<T>, IterableInterval<T>> implements
+		Ops.Copy.IterableInterval, Contingent {
+
+	// used internally
+	private UnaryComputerOp<IterableInterval<T>, IterableInterval<T>> map;
+	private UnaryFunctionOp<IterableInterval<T>, IterableInterval<T>> imgCreator;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void initialize() {
+		map = Computers.unary(ops(), Ops.Map.class, in(), in(), Computers.unary(
+			ops(), Ops.Copy.Type.class, in().firstElement().getClass(), in()
+				.firstElement().getClass()));
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			IterableInterval.class, in(), in().firstElement());
+	}
+
+	@Override
+	public IterableInterval<T> createOutput(final IterableInterval<T> input) {
+		// FIXME: Assumption here: Create an Img. I would rather like: Create
+		// what ever is best given the input.
+		return imgCreator.compute1(input);
+	}
+
+	@Override
+	public void compute1(final IterableInterval<T> input,
+			final IterableInterval<T> output) {
+		map.compute1(input, output);
+	}
 
 	@Override
 	public boolean conforms() {
-		return Intervals.equalDimensions(in1(), in2());
+		if (out() != null) {
+			return Intervals.equalDimensions(in(), out());
+		}
+		return true;
 	}
-
-	@Override
-	public void mutate1(final IterableInterval<EA> arg,
-		final RandomAccessibleInterval<EI> in)
-	{
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final BinaryInplace1Op<EA, EI> safe = getOp().getIndependentInstance();
-				final Cursor<EA> argCursor = arg.localizingCursor();
-
-				setToStart(argCursor, startIndex);
-
-				final RandomAccess<EI> inAccess = in.randomAccess();
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					inAccess.setPosition(argCursor);
-					safe.mutate1(argCursor.get(), inAccess.get());
-					argCursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, arg.size());
-	}
-
 }

@@ -46,7 +46,7 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Ops.Geometric.Centroid.class, priority = 1)
-public class CentroidIterableInterval
+public class CentroidII
 		extends
 			AbstractUnaryFunctionOp<IterableInterval<?>, RealLocalizable>
 		implements

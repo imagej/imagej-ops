@@ -36,7 +36,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.Ops;
 import net.imagej.ops.convert.clip.ClipRealTypes;
 import net.imagej.ops.convert.copy.CopyRealTypes;
-import net.imagej.ops.convert.imageType.ConvertIterableIntervals;
+import net.imagej.ops.convert.imageType.ConvertIIs;
 import net.imagej.ops.convert.scale.ScaleRealTypes;
 import net.imagej.ops.special.inplace.Inplaces;
 import net.imagej.ops.special.inplace.UnaryInplaceOp;
@@ -52,11 +52,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link ConvertIterableIntervals} + {@link RealTypeConverter} ops.
+ * Tests {@link ConvertIIs} + {@link RealTypeConverter} ops.
  * 
  * @author Curtis Rueden
  */
-public class ConvertIterableIntervalsTest extends AbstractOpTest {
+public class ConvertIIsTest extends AbstractOpTest {
 
 	private IterableInterval<ShortType> in;
 	private Img<ByteType> out;

@@ -40,7 +40,7 @@ import net.imagej.ops.special.computer.UnaryComputerOp;
  * @param <EO> element type of outputs
  * @param <OP> type of {@link UnaryComputerOp} which processes each element
  */
-public interface MapComputer<EI, EO, OP extends UnaryComputerOp<EI, EO>> extends
+public interface MapUnaryComputer<EI, EO, OP extends UnaryComputerOp<EI, EO>> extends
 	MapOp<OP>
 {
 	// NB: Marker interface.

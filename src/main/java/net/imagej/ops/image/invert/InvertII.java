@@ -28,68 +28,76 @@
  * #L%
  */
 
-package net.imagej.ops.map;
+package net.imagej.ops.image.invert;
 
-import net.imagej.ops.Contingent;
 import net.imagej.ops.Ops;
-import net.imagej.ops.Parallel;
+import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imagej.ops.thread.chunker.ChunkerOp;
-import net.imagej.ops.thread.chunker.CursorBasedChunk;
-import net.imglib2.Cursor;
 import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccess;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.util.Intervals;
+import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Parallelized {@link MapComputer} from {@link IterableInterval} inputs to
- * {@link RandomAccessibleInterval} outputs.
- * 
- * @author Christian Dietz (University of Konstanz)
- * @param <EI> element type of inputs
- * @param <EO> element type of outputs
+ * @author Martin Horn (University of Konstanz)
  */
-@Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY + 2)
-public class MapIterableIntervalToRAIParallel<EI, EO> extends
-	AbstractMapComputer<EI, EO, IterableInterval<EI>, RandomAccessibleInterval<EO>>
-	implements Contingent, Parallel
+@Plugin(type = Ops.Image.Invert.class, priority = Priority.NORMAL_PRIORITY + 1)
+public class InvertII<I extends RealType<I>, O extends RealType<O>>
+	extends AbstractUnaryComputerOp<IterableInterval<I>, IterableInterval<O>>
+	implements Ops.Image.Invert
 {
 
+	private UnaryComputerOp<IterableInterval<I>, IterableInterval<O>> mapper;
+
 	@Override
-	public void compute1(final IterableInterval<EI> input,
-		final RandomAccessibleInterval<EO> output)
-	{
-		ops().run(ChunkerOp.class, new CursorBasedChunk() {
-
-			@Override
-			public void execute(final int startIndex, final int stepSize,
-				final int numSteps)
-			{
-				final UnaryComputerOp<EI, EO> safe = getOp().getIndependentInstance();
-				final Cursor<EI> cursor = input.localizingCursor();
-
-				setToStart(cursor, startIndex);
-
-				final RandomAccess<EO> rndAccess = output.randomAccess();
-
-				int ctr = 0;
-				while (ctr < numSteps) {
-					rndAccess.setPosition(cursor);
-					safe.compute1(cursor.get(), rndAccess.get());
-					cursor.jumpFwd(stepSize);
-					ctr++;
-				}
-			}
-		}, input.size());
+	public void initialize() {
+		final I inType = in().firstElement().createVariable();
+		final double minVal = inType.getMinValue();
+		final UnaryComputerOp<I, O> invert = minVal < 0 ? new SignedRealInvert<>()
+			: new UnsignedRealInvert<>(inType.getMaxValue());
+		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), invert);
 	}
 
 	@Override
-	public boolean conforms() {
-		return out() == null || Intervals.equalDimensions(out(), in());
+	public void compute1(final IterableInterval<I> input,
+		final IterableInterval<O> output)
+	{
+		mapper.compute1(input, output);
+	}
+
+	private class SignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractUnaryComputerOp<II, OO>
+	{
+
+		@Override
+		public void compute1(final II x, final OO output) {
+			final double value = x.getRealDouble() * -1.0 - 1;
+			output.setReal(value);
+		}
+
+	}
+
+	private class UnsignedRealInvert<II extends RealType<II>, OO extends RealType<OO>>
+		extends AbstractUnaryComputerOp<II, OO>
+	{
+
+		private final double max;
+
+		/**
+		 * @param max - maximum value of the range to invert about
+		 */
+		public UnsignedRealInvert(final double max) {
+			this.max = max;
+		}
+
+		@Override
+		public void compute1(final II x, final OO output) {
+			final double value = max - x.getRealDouble();
+			output.setReal(value);
+		}
+
 	}
 
 }
