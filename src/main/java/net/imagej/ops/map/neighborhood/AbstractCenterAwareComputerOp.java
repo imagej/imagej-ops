@@ -30,16 +30,16 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imglib2.util.Pair;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
 
 /**
  * Abstract superclass for {@link CenterAwareComputerOp} implementations.
  * 
  * @author Jonathan Hale (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  */
 public abstract class AbstractCenterAwareComputerOp<I, O> extends
-	AbstractUnaryComputerOp<Pair<I, Iterable<I>>, O> implements
+	AbstractBinaryComputerOp<I, Iterable<I>, O> implements
 	CenterAwareComputerOp<I, O>
 {
 	// NB: Empty.

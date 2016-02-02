@@ -30,19 +30,20 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.util.Pair;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 
 /**
  * A <em>center aware computer</em> calculates a result from a given input and
  * its surrounding neighborhood, storing it into the specified output reference.
  * 
  * @author Jonathan Hale (University of Konstanz)
- * @param <I> type of input
+ * @author Stefan Helfrich (University of Konstanz)
+ * @param <I> type of input (implicitly assumes that the center and the
+ *          neighborhood are of the same type)
  * @param <O> type of output
  */
 public interface CenterAwareComputerOp<I, O> extends
-	UnaryComputerOp<Pair<I, Iterable<I>>, O>
+	BinaryComputerOp<I, Iterable<I>, O>
 {
 	// NB: Marker interface.
 }
