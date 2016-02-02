@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.intermodes;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
-import net.imagej.ops.threshold.ThresholdUtils;
+import net.imagej.ops.threshold.Thresholds;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
 
@@ -84,7 +84,7 @@ public class ComputeIntermodesThreshold<T extends RealType<T>> extends
 		for (int i = 0; i < histogram.length; i++)
 			iHisto[i] = histogram[i];
 
-		while (!ThresholdUtils.bimodalTest(iHisto)) {
+		while (!Thresholds.bimodalTest(iHisto)) {
 			// smooth with a 3 point running mean filter
 			double previous = 0, current = 0, next = iHisto[0];
 			for (int i = 0; i < histogram.length - 1; i++) {

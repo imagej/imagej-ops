@@ -39,7 +39,11 @@ package net.imagej.ops.threshold;
  * @author Barry DeZonia
  * @author Gabriel Landini
  */
-public class ThresholdUtils {
+public final class Thresholds {
+
+	private Thresholds() {
+		// NB: Prevent instantiation of utility class.
+	}
 
 	public static boolean bimodalTest(double[] y) {
 		int len = y.length;
