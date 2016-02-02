@@ -72,14 +72,14 @@ public class MapUnaryComputers {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in(), out());
+			return out() == null || Maps.compatible(in(), out());
 		}
 
 		@Override
 		public void compute1(final $inType.name<EI> input,
 			final $outType.name<EO> output)
 		{
-			MapUtils.map(input, output, getOp());
+			Maps.map(input, output, getOp());
 		}
 	}
 
@@ -98,7 +98,7 @@ public class MapUnaryComputers {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in(), out());
+			return out() == null || Maps.compatible(in(), out());
 		}
 
 		@Override
@@ -110,7 +110,7 @@ public class MapUnaryComputers {
 				public void execute(final int startIndex, final int stepSize,
 					final int numSteps)
 				{
-					MapUtils.map(input, output, getOp().getIndependentInstance(),
+					Maps.map(input, output, getOp().getIndependentInstance(),
 						startIndex, stepSize, numSteps);
 				}
 ## find the parameter with type of IterableInterval

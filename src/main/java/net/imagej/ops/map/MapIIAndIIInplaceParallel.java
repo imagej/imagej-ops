@@ -55,7 +55,7 @@ public class MapIIAndIIInplaceParallel<EA> extends
 
 	@Override
 	public boolean conforms() {
-		return MapUtils.compatible(in1(), in2());
+		return Maps.compatible(in1(), in2());
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class MapIIAndIIInplaceParallel<EA> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				MapUtils.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp(),
+				Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp(),
 					startIndex, stepSize, numSteps);
 			}
 		}, arg.size());
@@ -84,7 +84,7 @@ public class MapIIAndIIInplaceParallel<EA> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				MapUtils.inplace(in, arg, getOp(), startIndex, stepSize, numSteps);
+				Maps.inplace(in, arg, getOp(), startIndex, stepSize, numSteps);
 			}
 		}, in.size());
 	}

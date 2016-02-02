@@ -46,9 +46,9 @@ import net.imglib2.util.Intervals;
  * 
  * @author Leon Yang
  */
-public class MapUtils {
+public class Maps {
 
-	private MapUtils() {
+	private Maps() {
 		// NB: Prevent instantiation of utility class.
 	}
 

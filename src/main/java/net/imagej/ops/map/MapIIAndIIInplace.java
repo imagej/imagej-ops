@@ -51,20 +51,20 @@ public class MapIIAndIIInplace<EA> extends
 
 	@Override
 	public boolean conforms() {
-		return MapUtils.compatible(in1(), in2());
+		return Maps.compatible(in1(), in2());
 	}
 
 	@Override
 	public void mutate1(final IterableInterval<EA> arg,
 		final IterableInterval<EA> in)
 	{
-		MapUtils.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp());
+		Maps.inplace(arg, in, (BinaryInplace1Op<EA, EA>) getOp());
 	}
 
 	@Override
 	public void mutate2(final IterableInterval<EA> in,
 		final IterableInterval<EA> arg)
 	{
-		MapUtils.inplace(arg, in, getOp());
+		Maps.inplace(arg, in, getOp());
 	}
 }

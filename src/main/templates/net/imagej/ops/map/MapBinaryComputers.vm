@@ -72,14 +72,14 @@ public class MapBinaryComputers {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in1(), in2(), out());
+			return out() == null || Maps.compatible(in1(), in2(), out());
 		}
 
 		@Override
 		public void compute2(final $in1Type.name<EI1> input1,
 			final $in2Type.name<EI2> input2, final $outType.name<EO> output)
 		{
-			MapUtils.map(input1, input2, output, getOp());
+			Maps.map(input1, input2, output, getOp());
 		}
 	}
 
@@ -99,7 +99,7 @@ public class MapBinaryComputers {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in1(), in2(), out());
+			return out() == null || Maps.compatible(in1(), in2(), out());
 		}
 
 		@Override
@@ -111,7 +111,7 @@ public class MapBinaryComputers {
 				public void execute(final int startIndex, final int stepSize,
 					final int numSteps)
 				{
-					MapUtils.map(input1, input2, output, getOp().getIndependentInstance(),
+					Maps.map(input1, input2, output, getOp().getIndependentInstance(),
 						startIndex, stepSize, numSteps);
 				}
 ## find the parameter with type of IterableInterval

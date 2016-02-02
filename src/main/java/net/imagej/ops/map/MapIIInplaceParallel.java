@@ -58,7 +58,7 @@ public class MapIIInplaceParallel<A> extends
 			public void execute(final int startIndex, final int stepSize,
 				final int numSteps)
 			{
-				MapUtils.inplace(arg, getOp(), startIndex, stepSize, numSteps);
+				Maps.inplace(arg, getOp(), startIndex, stepSize, numSteps);
 			}
 		}, arg.size());
 	}

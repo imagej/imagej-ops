@@ -69,14 +69,14 @@ public class MapBinaryInplace1s {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in1(), in2());
+			return out() == null || Maps.compatible(in1(), in2());
 		}
 
 		@Override
 		public void mutate1(final $argType.name<EA> arg,
 			final $inType.name<EI> in)
 		{
-			MapUtils.inplace(arg, in, getOp());
+			Maps.inplace(arg, in, getOp());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class MapBinaryInplace1s {
 	{
 		@Override
 		public boolean conforms() {
-			return out() == null || MapUtils.compatible(in1(), in2());
+			return out() == null || Maps.compatible(in1(), in2());
 		}
 
 		@Override
@@ -106,7 +106,7 @@ public class MapBinaryInplace1s {
 				public void execute(final int startIndex, final int stepSize,
 					final int numSteps)
 				{
-					MapUtils.inplace(arg, in, getOp().getIndependentInstance(),
+					Maps.inplace(arg, in, getOp().getIndependentInstance(),
 						startIndex, stepSize, numSteps);
 				}
 ## find the parameter with type of IterableInterval

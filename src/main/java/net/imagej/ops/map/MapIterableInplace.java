@@ -49,7 +49,7 @@ public class MapIterableInplace<A> extends
 
 	@Override
 	public void mutate(final Iterable<A> arg) {
-		MapUtils.inplace(arg, getOp());
+		Maps.inplace(arg, getOp());
 	}
 
 }
