@@ -32,8 +32,12 @@ package net.imagej.ops.filter.gauss;
 
 import java.util.Arrays;
 
+
 import net.imagej.ops.Ops;
+import net.imagej.ops.Ops.Filter.Gauss;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
+import net.imagej.ops.special.hybrid.Hybrids;
+import net.imagej.ops.special.hybrid.UnaryHybridCF;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
 import net.imglib2.type.numeric.RealType;
@@ -64,14 +68,22 @@ public class GaussRAISingleSigma<T extends RealType<T>, V extends RealType<V>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
+	private UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<V>> gaussOp;
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void initialize() {
+		final double[] sigmas = new double[in().numDimensions()];
+		Arrays.fill(sigmas, sigma);
+		gaussOp = (UnaryHybridCF)Hybrids.unaryCF(ops(), Gauss.class, out() == null ?
+				RandomAccessibleInterval.class : out(), in(), sigmas, outOfBounds);
+	}
+	
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final RandomAccessibleInterval<V> output)
 	{
-		final double[] sigmas = new double[input.numDimensions()];
-		Arrays.fill(sigmas, sigma);
-
-		ops().filter().gauss(output, input, sigmas, outOfBounds);
+		gaussOp.compute1(input, output);
 	}
 
 	@Override
