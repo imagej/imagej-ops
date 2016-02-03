@@ -70,6 +70,14 @@ public final class RAIs {
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T, F> UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<F>> computer(
+			final OpEnvironment ops, final Class<? extends Op> opType, final RandomAccessibleInterval<F> out,
+			final RandomAccessibleInterval<T> in, final Object... otherArgs) {
+		return (UnaryComputerOp) Computers.unary(ops, opType, out == null ? RandomAccessibleInterval.class : out,
+				RandomAccessibleInterval.class, in == null ? RandomAccessibleInterval.class : in, otherArgs);
+	}
+
 	/**
 	 * Extends an input using an {@link OutOfBoundsFactory}, if available,
 	 * otherwise returns the unchanged input.
@@ -107,6 +115,14 @@ public final class RAIs {
 			in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T, F> UnaryHybridCF<RandomAccessibleInterval<T>, RandomAccessibleInterval<F>> hybrid(
+			final OpEnvironment ops, final Class<? extends Op> opType, final RandomAccessibleInterval<F> out,
+			final RandomAccessibleInterval<T> in, final Object... otherArgs) {
+		return (UnaryHybridCF) Hybrids.unaryCF(ops, opType, out == null ? RandomAccessibleInterval.class : out,
+				in == null ? RandomAccessibleInterval.class : in, otherArgs);
+	}
+	
 	public static <T> UnaryInplaceOp<RandomAccessibleInterval<T>> inplace(
 		final OpEnvironment ops, final Class<? extends Op> opType,
 		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
