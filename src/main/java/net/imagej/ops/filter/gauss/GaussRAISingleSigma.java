@@ -32,7 +32,6 @@ package net.imagej.ops.filter.gauss;
 
 import java.util.Arrays;
 
-
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Filter.Gauss;
 import net.imagej.ops.special.hybrid.AbstractUnaryHybridCF;
