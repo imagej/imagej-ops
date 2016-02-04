@@ -319,7 +319,7 @@ namespaces = ```
 		[name: "intermodes",                  iface: "Intermodes"],
 		[name: "isoData",                     iface: "IsoData"],
 		[name: "li",                          iface: "Li"],
-		[name: "localBernsen",                iface: "LocalBernsen"],
+		[name: "localBernsenThreshold",       iface: "LocalBernsenThreshold"],
 		[name: "localContrast",               iface: "LocalContrast"],
 		[name: "localMeanThreshold",          iface: "LocalMeanThreshold"],
 		[name: "localMedian",                 iface: "LocalMedian"],

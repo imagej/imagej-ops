@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
@@ -46,13 +47,14 @@ import org.scijava.plugin.Plugin;
  * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
  * constant value rather than the value of the input pixel when the contrast in
  * the neighborhood of that pixel is too small.
- * 
+ *
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  * @param <T> input type
  */
-@Plugin(type = Ops.Threshold.LocalBernsen.class)
-public class LocalBernsen<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalBernsen
+@Plugin(type = Ops.Threshold.LocalBernsenThreshold.class)
+public class LocalBernsenThreshold<T extends RealType<T>> extends
+	LocalThreshold<T> implements Ops.Threshold.LocalBernsenThreshold
 {
 
 	@Parameter
@@ -61,28 +63,44 @@ public class LocalBernsen<T extends RealType<T>> extends
 	@Parameter
 	private double halfMaxValue;
 
-	private UnaryFunctionOp<Iterable<T>, Pair<T,T>> minMaxFunc;
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc = (UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+		method = new LocalBernsenThresholdComputer<>((UnaryFunctionOp) Functions
+			.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
+
+		super.initialize();
 	}
 
-	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	private class LocalBernsenThresholdComputer<I extends RealType<I>> extends
+		LocalThresholdMethod<I>
+	{
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
-		final double minValue = outputs.getA().getRealDouble();
-		final double maxValue = outputs.getB().getRealDouble();
-		final double midGrey = (maxValue + minValue) / 2.0;
+		private final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
 
-		if ((maxValue - minValue) < constrastThreshold) {
-			output.set(midGrey >= halfMaxValue);
-		}
-		else {
-			output.set(input.getA().getRealDouble() >= midGrey);
+		public LocalBernsenThresholdComputer(
+			final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc)
+		{
+			super();
+			this.minMaxFunc = minMaxFunc;
 		}
 
+		@Override
+		public void compute1(final Pair<I, Iterable<I>> input,
+			final BitType output)
+		{
+
+			final Pair<I, I> outputs = minMaxFunc.compute1(input.getB());
+			final double minValue = outputs.getA().getRealDouble();
+			final double maxValue = outputs.getB().getRealDouble();
+			final double midGrey = (maxValue + minValue) / 2.0;
+
+			if ((maxValue - minValue) < constrastThreshold) {
+				output.set(midGrey >= halfMaxValue);
+			}
+			else {
+				output.set(input.getA().getRealDouble() >= midGrey);
+			}
+		}
 	}
 }

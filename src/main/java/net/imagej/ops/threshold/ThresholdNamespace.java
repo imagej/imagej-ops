@@ -493,14 +493,33 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 	
-	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsen.class)
-	public <T extends RealType<T>> BitType localBernsen(final BitType out,
-		final Pair<T, Iterable<T>> in, final double contrastThreshold,
+	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localBernsenThreshold(
+		final IterableInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double contrastThreshold,
 		final double halfMaxValue)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localBernsen.LocalBernsen.class, out, in,
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class, out, in, shape,
+				outOfBounds, contrastThreshold, halfMaxValue);
+		return result;
+	}
+	
+	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localBernsenThreshold(
+		final IterableInterval<BitType> out,
+		final RandomAccessibleInterval<T> in, final Shape shape,
+		final double contrastThreshold,
+		final double halfMaxValue)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result =
+			(IterableInterval<BitType>) ops().run(
+				net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class, out, in, shape,
 				contrastThreshold, halfMaxValue);
 		return result;
 	}

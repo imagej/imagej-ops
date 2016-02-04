@@ -37,7 +37,7 @@ import java.util.Arrays;
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
-import net.imagej.ops.threshold.localBernsen.LocalBernsen;
+import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
@@ -99,7 +99,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 0.0);
 
-		ops.threshold().localBernsen(out, in, 1.0, Double.MAX_VALUE * 0.5);
+		ops.threshold().localBernsenThreshold(this.out, this.in, new RectangleShape(3, false),
+			1.0, Double.MAX_VALUE * 0.5);
+		ops.threshold().localBernsenThreshold(this.out, this.in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0, Double.MAX_VALUE * 0.5);
+		
 		ops.threshold().localContrast(out, in);
 		ops.threshold().localMedian(out, in, 1.0);
 		ops.threshold().localMidGrey(out, in, 1.0);
@@ -111,14 +116,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalBernsen
+	 * @see LocalBernsenThreshold
 	 */
 	@Test
-	public void testLocalBernsen() {
-		ops.threshold().apply(out, in, ops.op(LocalBernsen.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 1.0,
-			Double.MAX_VALUE * 0.5), new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalBernsenThreshold() {
+		ops.run(LocalBernsenThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 1.0,
+			Double.MAX_VALUE * 0.5);
 
 		assertEquals(out.firstElement().get(), true);
 	}
