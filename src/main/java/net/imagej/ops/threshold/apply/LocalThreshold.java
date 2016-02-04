@@ -30,11 +30,10 @@
 
 package net.imagej.ops.threshold.apply;
 
-import net.imagej.ops.Ops;
+import net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imagej.ops.special.computer.Computers;
-import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
@@ -43,7 +42,6 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
 
 /**
  * Apply a local thresholding method to an image, optionally using a out of
@@ -53,15 +51,15 @@ import org.scijava.plugin.Plugin;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.Apply.class)
+//@Plugin(type = Ops.Threshold.Apply.class)
 public class LocalThreshold<T extends RealType<T>>
 	extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>>
-	implements Ops.Threshold.Apply
+	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<BitType>>
+//	implements Ops.Threshold.Apply
 {
 
-	@Parameter
-	private LocalThresholdMethod<T> method;
+//	@Parameter
+	protected LocalThresholdMethod<T> method;
 
 	@Parameter
 	private Shape shape;
@@ -69,31 +67,36 @@ public class LocalThreshold<T extends RealType<T>>
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
 
-	private UnaryComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<BitType>> mapper;
+	protected MapNeighborhoodWithCenter<T, BitType> mapper;	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		mapper = Computers.unary(ops(), Ops.Map.class, out(), extIn(in()), method, shape);
+		mapper = ops().op(MapNeighborhoodWithCenter.class, out(), extend(in(),	outOfBounds), method, shape);
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
-		final RandomAccessibleInterval<BitType> output)
+		final IterableInterval<BitType> output)
 	{
-		mapper.compute1(extIn(input), output);
+		mapper.compute1(extend(input, outOfBounds), output);
 	}
 
 	/**
-	 * Extends an input using an {@link OutOfBoundsFactory} if available,
-	 * otherwise returns the unchanged input.
-	 * 
-	 * @param input
-	 *            {@link RandomAccessibleInterval} that is to be extended
-	 * @return {@link RandomAccessibleInterval} extended using the
-	 *         {@link OutOfBoundsFactory}
-	 */
-	private RandomAccessibleInterval<T> extIn(final RandomAccessibleInterval<T> input) {
-		return outOfBounds == null ? in() : Views
-			.interval((Views.extend(in(), outOfBounds)), in());
+	* Extends an input using an {@link OutOfBoundsFactory} if available,
+	* otherwise returns the unchanged input.
+	*
+	* @param in {@link RandomAccessibleInterval} that is to be extended
+	* @param outOfBounds the factory that is used for extending
+	* @return {@link RandomAccessibleInterval} extended using the
+	*         {@link OutOfBoundsFactory}
+	*/
+	public static <T> RandomAccessibleInterval<T> extend(
+		final RandomAccessibleInterval<T> in,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
+	{
+		// FIXME Move this method to a static utility class
+		return outOfBounds == null ? in : Views.interval((Views.extend(in,
+			outOfBounds)), in);
 	}
 }

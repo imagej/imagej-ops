@@ -32,19 +32,12 @@ package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
-import net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.algorithm.neighborhood.Shape;
-import net.imglib2.outofbounds.OutOfBoundsFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
-import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
+import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.Pair;
 import net.imglib2.view.Views;
@@ -62,59 +55,22 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.LocalThresholdMean.class, priority = Priority.LOW_PRIORITY)
 public class LocalThresholdMean<T extends RealType<T>> extends
-	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<BitType>>
-	implements Ops.Threshold.LocalThresholdMean
+	LocalThreshold<T>	implements Ops.Threshold.LocalThresholdMean
 {
-
-	@Parameter
-	private Shape shape;
-
-	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds = new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 
 	@Parameter
 	private double c;
 
-	private LocalMeanComputer<T> localMeanOp;
-	private MapNeighborhoodWithCenter<T, BitType> mapOp;
-
-	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void initialize() {
-		localMeanOp = new LocalMeanComputer<>(c, Computers.unary(ops(),
+		method = new LocalMeanComputer<>(c, Computers.unary(ops(),
 			Ops.Stats.Mean.class, DoubleType.class, Views.iterable(in())));
-
-		mapOp = ops().op(MapNeighborhoodWithCenter.class, out(), extend(in(),
-			outOfBounds), localMeanOp, shape);
+		
+		super.initialize();
 	}
 
-	@Override
-	public void compute1(final RandomAccessibleInterval<T> input,
-		final IterableInterval<BitType> output)
-	{
-		mapOp.compute1(extend(input, outOfBounds), output);
-	}
-
-	/**
-	 * Extends an input using an {@link OutOfBoundsFactory} if available,
-	 * otherwise returns the unchanged input.
-	 *
-	 * @param in {@link RandomAccessibleInterval} that is to be extended
-	 * @param outOfBounds the factory that is used for extending
-	 * @return {@link RandomAccessibleInterval} extended using the
-	 *         {@link OutOfBoundsFactory}
-	 */
-	public static <T> RandomAccessibleInterval<T> extend(
-		final RandomAccessibleInterval<T> in,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		// FIXME Move this method to a static utility class
-		return outOfBounds == null ? in : Views.interval((Views.extend(in,
-			outOfBounds)), in);
-	}
-	
 	public static class LocalMeanComputer<I extends RealType<I>> extends
-		AbstractCenterAwareComputerOp<I, BitType>
+		LocalThresholdMethod<I>
 	{
 
 		private double c;
