@@ -320,7 +320,7 @@ namespaces = ```
 		[name: "isoData",                     iface: "IsoData"],
 		[name: "li",                          iface: "Li"],
 		[name: "localBernsenThreshold",       iface: "LocalBernsenThreshold"],
-		[name: "localContrast",               iface: "LocalContrast"],
+		[name: "localContrastThreshold",      iface: "LocalContrastThreshold"],
 		[name: "localMeanThreshold",          iface: "LocalMeanThreshold"],
 		[name: "localMedian",                 iface: "LocalMedian"],
 		[name: "localMidGrey",                iface: "LocalMidGrey"],

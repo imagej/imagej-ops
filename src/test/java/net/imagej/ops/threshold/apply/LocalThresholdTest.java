@@ -38,7 +38,7 @@ import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
-import net.imagej.ops.threshold.localContrast.LocalContrast;
+import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
@@ -104,8 +104,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localBernsenThreshold(this.out, this.in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0, Double.MAX_VALUE * 0.5);
+			
+		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false));
+		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE));		
 		
-		ops.threshold().localContrast(out, in);
 		ops.threshold().localMedian(out, in, 1.0);
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
@@ -128,13 +132,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalContrast
+	 * @see LocalContrastThreshold
 	 */
 	@Test
-	public void testLocalContrast() {
-		ops.threshold().apply(out, in, ops.op(LocalContrast.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in)),
-			new RectangleShape(3, false),
+	public void testLocalContrastThreshold() {
+		ops.run(LocalContrastThreshold.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
 
 		assertEquals(out.firstElement().get(), false);
