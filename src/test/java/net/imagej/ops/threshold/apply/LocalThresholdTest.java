@@ -41,7 +41,7 @@ import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
 import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
@@ -115,7 +115,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0);
 		
-		ops.threshold().localMidGrey(out, in, 1.0);
+		ops.threshold().localMidGreyThreshold(this.out, this.in, new RectangleShape(3, false), 1.0);
+		ops.threshold().localMidGreyThreshold(this.out, this.in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0);
+		
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
 		ops.threshold().localPhansalkar(out, in);
@@ -171,14 +175,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMidGrey
+	 * @see LocalMidGreyThreshold
 	 */
 	@Test
-	public void testLocalMidGrey() {
-		ops.threshold().apply(out, in, ops.op(LocalMidGrey.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalMidGreyThreshold() {
+		ops.run(LocalMidGreyThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}

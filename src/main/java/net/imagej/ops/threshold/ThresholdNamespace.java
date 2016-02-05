@@ -507,13 +507,32 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class)
-	public <T extends RealType<T>> BitType localMidGrey(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+	@OpMethod(
+		op = net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localMidGreyThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localMidGrey.LocalMidGrey.class, out, in, c);
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class, out,
+				in, shape, outOfBounds, c);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localMidGreyThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape,
+		final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold.class, out,
+				in, shape, c);
 		return result;
 	}
 

@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
@@ -46,33 +47,51 @@ import org.scijava.plugin.Plugin;
  * minimum pixels of a neighborhood.
  * 
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMidGrey.class)
-public class LocalMidGrey<T extends RealType<T>> extends
-	LocalThresholdMethod<T> implements Ops.Threshold.LocalMidGrey
+@Plugin(type = Ops.Threshold.LocalMidGreyThreshold.class)
+public class LocalMidGreyThreshold<T extends RealType<T>> extends
+	LocalThreshold<T> implements Ops.Threshold.LocalMidGreyThreshold
 {
 
 	@Parameter
 	private double c;
 
-	private UnaryFunctionOp<Iterable<T>, Pair<T, T>> minMaxFunc;
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		minMaxFunc =
-			(UnaryFunctionOp) Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in().getB());
+		method = new LocalMidGreyThresholdComputer<>((UnaryFunctionOp) Functions
+			.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
+
+		super.initialize();
 	}
 
-	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	private class LocalMidGreyThresholdComputer<I extends RealType<I>> extends
+		LocalThresholdMethod<I>
+	{
 
-		final Pair<T, T> outputs = minMaxFunc.compute1(input.getB());
+		private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
 
-		final double minValue = outputs.getA().getRealDouble();
-		final double maxValue = outputs.getB().getRealDouble();
+		public LocalMidGreyThresholdComputer(
+			final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc)
+		{
+			super();
+			this.minMaxFunc = minMaxFunc;
+		}
 
-		output
-			.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) - c);
+		@Override
+		public void compute1(final Pair<I, Iterable<I>> input,
+			final BitType output)
+		{
+
+			final Pair<I, I> outputs = minMaxFunc.compute1(input.getB());
+
+			final double minValue = outputs.getA().getRealDouble();
+			final double maxValue = outputs.getB().getRealDouble();
+
+			output.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) -
+				c);
+		}
 	}
+
 }

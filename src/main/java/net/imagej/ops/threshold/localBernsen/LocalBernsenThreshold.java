@@ -35,7 +35,7 @@ import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.apply.LocalThreshold;
-import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
+import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.Pair;
@@ -44,7 +44,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod which is similar to {@link LocalMidGrey}, but uses a
+ * LocalThresholdMethod which is similar to {@link LocalMidGreyThreshold}, but uses a
  * constant value rather than the value of the input pixel when the contrast in
  * the neighborhood of that pixel is too small.
  *
