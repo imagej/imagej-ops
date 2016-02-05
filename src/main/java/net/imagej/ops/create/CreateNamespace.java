@@ -594,4 +594,14 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
+	// -- object --
+
+	@OpMethod(op = net.imagej.ops.create.object.CreateObjectFromClass.class)
+	public <T> T object(final Class<T> in) {
+		@SuppressWarnings("unchecked")
+		final T result = (T) ops().run(
+			net.imagej.ops.create.object.CreateObjectFromClass.class, in);
+		return result;
+	}
+
 }
