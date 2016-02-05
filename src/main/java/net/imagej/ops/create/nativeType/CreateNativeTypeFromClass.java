@@ -31,7 +31,9 @@
 package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.chain.FunctionViaFunction;
+import net.imagej.ops.special.function.Functions;
+import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.type.NativeType;
 
 import org.scijava.plugin.Plugin;
@@ -45,20 +47,14 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Create.NativeType.class)
 public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
-	AbstractUnaryFunctionOp<Class<T>, T> implements Ops.Create.NativeType
+	FunctionViaFunction<Class<T>, T> implements Ops.Create.NativeType
 {
 
 	@Override
-	public T compute1(final Class<T> input) {
-		try {
-			return input.newInstance();
-		}
-		catch (final InstantiationException exc) {
-			throw new IllegalArgumentException(exc);
-		}
-		catch (final IllegalAccessException exc) {
-			throw new IllegalStateException(exc);
-		}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public UnaryFunctionOp<Class<T>, T> createWorker(final Class<T> in) {
+		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Object.class,
+			NativeType.class, Class.class);
 	}
 
 }
