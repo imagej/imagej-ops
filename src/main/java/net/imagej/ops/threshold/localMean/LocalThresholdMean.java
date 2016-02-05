@@ -31,7 +31,6 @@
 package net.imagej.ops.threshold.localMean;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.map.neighborhood.AbstractCenterAwareComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
@@ -63,24 +62,21 @@ public class LocalThresholdMean<T extends RealType<T>> extends
 
 	@Override
 	public void initialize() {
-		method = new LocalMeanComputer<>(c, Computers.unary(ops(),
+		method = new LocalMeanThresholdComputer<>(Computers.unary(ops(),
 			Ops.Stats.Mean.class, DoubleType.class, Views.iterable(in())));
 		
 		super.initialize();
 	}
 
-	public static class LocalMeanComputer<I extends RealType<I>> extends
+	private class LocalMeanThresholdComputer<I extends RealType<I>> extends
 		LocalThresholdMethod<I>
 	{
 
-		private double c;
 		private UnaryComputerOp<Iterable<I>, DoubleType> meanOp;
 
-		public LocalMeanComputer(double c,
-			UnaryComputerOp<Iterable<I>, DoubleType> meanOp)
+		public LocalMeanThresholdComputer(UnaryComputerOp<Iterable<I>, DoubleType> meanOp)
 		{
 			super();
-			this.c = c;
 			this.meanOp = meanOp;
 		}
 
