@@ -254,14 +254,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Add.class)
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O add(final O out, final I1 in1,
 			final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Add.class, out, in1, in2);
-			return result;
-		}
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Add.class, out, in1, in2);
 		return result;
@@ -341,18 +333,10 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Add.class)
-	public <I1 extends NumericType<I1>, I2 extends NumericType<I2>, O extends NumericType<O>> O add(final O out,
-			final I1 in1, final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Add.class, out, in1, in2);
-			return result;
-		}
+	public <T extends NumericType<T>> T add(final T out,
+			final T in1, final T in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Add.class, out, in1, in2);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Add.class, out, in1, in2);
 		return result;
 	}
 
@@ -1298,14 +1282,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Multiply.class)
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O multiply(final O out,
 			final I1 in1, final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Multiply.class, out, in1, in2);
-			return result;
-		}
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Multiply.class, out, in1, in2);
 		return result;
@@ -1388,18 +1364,10 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Multiply.class)
-	public <I1 extends NumericType<I1>, I2 extends NumericType<I2>, O extends NumericType<O>> O multiply(final O out,
-			final I1 in1, final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Multiply.class, out, in1, in2);
-			return result;
-		}
+	public <T extends NumericType<T>> T multiply(final T out,
+			final T in1, final T in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Multiply.class, out, in1, in2);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Multiply.class, out, in1, in2);
 		return result;
 	}
 
@@ -1921,14 +1889,6 @@ public class MathNamespace extends AbstractNamespace {
 	@OpMethod(op = net.imagej.ops.math.RealBinaryMath.Subtract.class)
 	public <I1 extends RealType<I1>, I2 extends RealType<I2>, O extends RealType<O>> O subtract(final O out,
 			final I1 in1, final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Subtract.class, out, in1, in2);
-			return result;
-		}
 		@SuppressWarnings("unchecked")
 		final O result = (O) ops().run(net.imagej.ops.math.RealBinaryMath.Subtract.class, out, in1, in2);
 		return result;
@@ -2011,18 +1971,10 @@ public class MathNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.math.NumericTypeBinaryMath.Subtract.class)
-	public <I1 extends NumericType<I1>, I2 extends NumericType<I2>, O extends NumericType<O>> O subtract(final O out,
-			final I1 in1, final I2 in2) {
-		final Class<?> outClass = out.getClass();
-		final Class<?> in1Class = in1.getClass();
-		final Class<?> in2Class = in2.getClass();
-		if (outClass.equals(in1Class) && outClass.equals(in2Class)) {
-			@SuppressWarnings("unchecked")
-			final O result = (O) ops().run(net.imagej.ops.math.NumericTypeBinaryMath.Subtract.class, out, in1, in2);
-			return result;
-		}
+	public <T extends NumericType<T>> T  subtract(final T out,
+			final T in1, final T in2) {
 		@SuppressWarnings("unchecked")
-		final O result = (O) ops().run(net.imagej.ops.Ops.Math.Subtract.class, out, in1, in2);
+		final T result = (T) ops().run(net.imagej.ops.Ops.Math.Subtract.class, out, in1, in2);
 		return result;
 	}
 
