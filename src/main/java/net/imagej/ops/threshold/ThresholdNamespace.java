@@ -479,13 +479,31 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMedian.LocalMedian.class)
-	public <T extends RealType<T>> BitType localMedian(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c)
+	@OpMethod(
+		op = net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localMedianThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double c)
 	{
-		final BitType result =
-			(BitType) ops().run(
-				net.imagej.ops.threshold.localMedian.LocalMedian.class, out, in, c);
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class, out,
+				in, shape, outOfBounds, c);
+		return result;
+	}
+
+	@OpMethod(
+		op = net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localMedianThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape, final double c)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localMedian.LocalMedianThreshold.class, out,
+				in, shape, c);
 		return result;
 	}
 
@@ -527,7 +545,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 	}
 	
 	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class)
-	public <T extends RealType<T>> IterableInterval<BitType> localThresholdBernsen(
+	public <T extends RealType<T>> IterableInterval<BitType> localBernsenThreshold(
 		final IterableInterval<BitType> out,
 		final RandomAccessibleInterval<T> in, final Shape shape,
 		final double contrastThreshold,

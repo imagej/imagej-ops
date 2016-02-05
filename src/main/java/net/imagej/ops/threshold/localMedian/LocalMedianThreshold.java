@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -46,27 +47,43 @@ import org.scijava.plugin.Plugin;
  * LocalThresholdMethod using median.
  * 
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalMedian.class)
-public class LocalMedian<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalMedian
+@Plugin(type = Ops.Threshold.LocalMedianThreshold.class)
+public class LocalMedianThreshold<T extends RealType<T>> extends LocalThreshold<T>
+	implements Ops.Threshold.LocalMedianThreshold
 {
 
 	@Parameter
 	private double c;
 
-	private UnaryComputerOp<Iterable<T>, DoubleType> median;
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		median = Computers.unary(ops(), Ops.Stats.Median.class, DoubleType.class, in().getB());
+		method = new LocalMedianThresholdComputer<>((UnaryComputerOp) Computers.unary(ops(), Ops.Stats.Median.class, DoubleType.class, in()));
+
+		super.initialize();
 	}
+	
+	private class LocalMedianThresholdComputer<I extends RealType<I>> extends
+		LocalThresholdMethod<I>
+	{
 
-	@Override
-	public void compute1(Pair<T, Iterable<T>> input, BitType output) {
+		private final UnaryComputerOp<Iterable<I>, DoubleType> median;
 
-		final DoubleType m = new DoubleType();
-		median.compute1(input.getB(), m);
-		output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+		public LocalMedianThresholdComputer(
+			final UnaryComputerOp<Iterable<I>, DoubleType> medianFunc)
+		{
+			super();
+			this.median = medianFunc;
+		}
+
+		@Override
+		public void compute1(Pair<I, Iterable<I>> input, BitType output) {
+
+			final DoubleType m = new DoubleType();
+			median.compute1(input.getB(), m);
+			output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+		}
 	}
 }

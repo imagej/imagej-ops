@@ -40,7 +40,7 @@ import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold;
 import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
-import net.imagej.ops.threshold.localMedian.LocalMedian;
+import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
@@ -108,9 +108,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false));
 		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
-				Boundary.SINGLE));		
+				Boundary.SINGLE));
 		
-		ops.threshold().localMedian(out, in, 1.0);
+		ops.threshold().localMedianThreshold(this.out, this.in, new RectangleShape(3, false), 1.0);
+		ops.threshold().localMedianThreshold(this.out, this.in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0);
+		
 		ops.threshold().localMidGrey(out, in, 1.0);
 		ops.threshold().localNiblack(out, in, 1.0, 2.0);
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
@@ -155,14 +159,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalMedian
+	 * @see LocalMedianThreshold
 	 */
 	@Test
-	public void testLocalMedian() {
-		ops.threshold().apply(out, in, ops.op(LocalMedian.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalMedianThreshold() {
+		ops.run(LocalMedianThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}

@@ -322,7 +322,7 @@ namespaces = ```
 		[name: "localBernsenThreshold",       iface: "LocalBernsenThreshold"],
 		[name: "localContrastThreshold",      iface: "LocalContrastThreshold"],
 		[name: "localMeanThreshold",          iface: "LocalMeanThreshold"],
-		[name: "localMedian",                 iface: "LocalMedian"],
+		[name: "localMedianThreshold",        iface: "LocalMedianThreshold"],
 		[name: "localMidGrey",                iface: "LocalMidGrey"],
 		[name: "localNiblack",                iface: "LocalNiblack"],
 		[name: "localPhansalkar",             iface: "LocalPhansalkar"],
