@@ -168,35 +168,31 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public
-		<T extends NativeType<T>> ImgFactory<T> imgFactory() {
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory() {
 		@SuppressWarnings("unchecked")
-		final ImgFactory<T> result =
-			(ImgFactory<T>) ops().run(
-				net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class);
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class);
 		return result;
 	}
 
 	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public
-		<T extends NativeType<T>> ImgFactory<T> imgFactory(final Dimensions dims) {
-		@SuppressWarnings("unchecked")
-		final ImgFactory<T> result =
-			(ImgFactory<T>) ops().run(
-				net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public
-		<T extends NativeType<T>> ImgFactory<T> imgFactory(final Dimensions dims,
-			final T outType)
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
+		final Dimensions dims)
 	{
 		@SuppressWarnings("unchecked")
-		final ImgFactory<T> result =
-			(ImgFactory<T>) ops().run(
-				net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims,
-				outType);
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
+	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
+		final Dimensions dims, final T outType)
+	{
+		@SuppressWarnings("unchecked")
+		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
+			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims,
+			outType);
 		return result;
 	}
 
