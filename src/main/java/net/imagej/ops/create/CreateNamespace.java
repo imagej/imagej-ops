@@ -46,6 +46,7 @@ import net.imglib2.type.NativeType;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.ComplexType;
 import net.imglib2.type.numeric.IntegerType;
+import net.imglib2.type.numeric.real.DoubleType;
 
 import org.scijava.plugin.Plugin;
 
@@ -169,30 +170,24 @@ public class CreateNamespace extends AbstractNamespace {
 
 	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
 	public <T extends NativeType<T>> ImgFactory<T> imgFactory() {
+		// NB: The generic typing of ImgFactory is broken; see:
+		// https://github.com/imglib/imglib2/issues/91
 		@SuppressWarnings("unchecked")
 		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
 			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
+	@OpMethod(
+		ops = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
 	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
 		final Dimensions dims)
 	{
+		// NB: The generic typing of ImgFactory is broken; see:
+		// https://github.com/imglib/imglib2/issues/91
 		@SuppressWarnings("unchecked")
 		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
-			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class)
-	public <T extends NativeType<T>> ImgFactory<T> imgFactory(
-		final Dimensions dims, final T outType)
-	{
-		@SuppressWarnings("unchecked")
-		final ImgFactory<T> result = (ImgFactory<T>) ops().run(
-			net.imagej.ops.create.imgFactory.DefaultCreateImgFactory.class, dims,
-			outType);
+			net.imagej.ops.Ops.Create.ImgFactory.class, dims);
 		return result;
 	}
 
@@ -574,28 +569,19 @@ public class CreateNamespace extends AbstractNamespace {
 
 	// -- nativeType --
 
-	@OpMethod(op = net.imagej.ops.Ops.Create.NativeType.class)
-	public Object nativeType(final Object... args) {
-		return ops().run(net.imagej.ops.Ops.Create.NativeType.class, args);
-	}
-
 	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
-	public
-		<T extends NativeType<T>> T nativeType() {
-		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class);
+	public DoubleType nativeType() {
+		final DoubleType result = (DoubleType) ops().run(
+			net.imagej.ops.create.nativeType.DefaultCreateNativeType.class);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.nativeType.DefaultCreateNativeType.class)
-	public
-		<T extends NativeType<T>> T nativeType(final Class<T> type) {
+	@OpMethod(
+		op = net.imagej.ops.create.nativeType.CreateNativeTypeFromClass.class)
+	public <T extends NativeType<T>> T nativeType(final Class<T> type) {
 		@SuppressWarnings("unchecked")
-		final T result =
-			(T) ops().run(
-				net.imagej.ops.create.nativeType.DefaultCreateNativeType.class, type);
+		final T result = (T) ops().run(
+			net.imagej.ops.create.nativeType.CreateNativeTypeFromClass.class, type);
 		return result;
 	}
 

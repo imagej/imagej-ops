@@ -31,26 +31,34 @@
 package net.imagej.ops.create.nativeType;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractNullaryFunctionOp;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imglib2.type.NativeType;
 
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the "create.nativeType" op.
+ * Creates the {@link NativeType} given by the input {@link Class}.
  *
  * @author Daniel Seebacher (University of Konstanz)
  * @author Tim-Oliver Buchholz (University of Konstanz)
  * @author Curtis Rueden
  */
 @Plugin(type = Ops.Create.NativeType.class)
-public class DefaultCreateNativeType extends
-	AbstractNullaryFunctionOp<DoubleType> implements Ops.Create.NativeType
+public class CreateNativeTypeFromClass<T extends NativeType<T>> extends
+	AbstractUnaryFunctionOp<Class<T>, T> implements Ops.Create.NativeType
 {
 
 	@Override
-	public DoubleType compute0() {
-		return new DoubleType();
+	public T compute1(final Class<T> input) {
+		try {
+			return input.newInstance();
+		}
+		catch (final InstantiationException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+		catch (final IllegalAccessException exc) {
+			throw new IllegalStateException(exc);
+		}
 	}
 
 }

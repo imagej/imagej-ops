@@ -97,14 +97,12 @@ public class DefaultCreateImg<T> extends
 						fac = result;
 					}
 					catch (final IncompatibleTypeException e) {
-						// FIXME: outType may not be a NativeType, but imgFactory needs one.
-						fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
+						fac = (ImgFactory<T>) ops().create().imgFactory(in());
 					}
 				}
 			}
 			else {
-				// FIXME: outType may not be a NativeType, but imgFactory needs one.
-				fac = (ImgFactory<T>) ops().create().imgFactory(in(), outType);
+				fac = (ImgFactory<T>) ops().create().imgFactory(in());
 			}
 		}
 	}
