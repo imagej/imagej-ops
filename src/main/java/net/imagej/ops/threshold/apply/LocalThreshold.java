@@ -51,14 +51,10 @@ import org.scijava.plugin.Parameter;
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
  */
-//@Plugin(type = Ops.Threshold.Apply.class)
-public class LocalThreshold<T extends RealType<T>>
-	extends
+public class LocalThreshold<T extends RealType<T>> extends
 	AbstractUnaryComputerOp<RandomAccessibleInterval<T>, IterableInterval<BitType>>
-//	implements Ops.Threshold.Apply
 {
 
-//	@Parameter
 	protected LocalThresholdMethod<T> method;
 
 	@Parameter
