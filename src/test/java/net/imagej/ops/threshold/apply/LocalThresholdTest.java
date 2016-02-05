@@ -39,7 +39,7 @@ import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
 import net.imagej.ops.threshold.localBernsen.LocalBernsen;
 import net.imagej.ops.threshold.localContrast.LocalContrast;
-import net.imagej.ops.threshold.localMean.LocalThresholdMean;
+import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedian;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGrey;
 import net.imagej.ops.threshold.localNiblack.LocalNiblack;
@@ -137,11 +137,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalThresholdMean
+	 * @see LocalMeanThreshold
 	 */
 	@Test
 	public void testLocalThresholdMean() {
-		ops.run(LocalThresholdMean.class, out, in, new RectangleShape(3, false),
+		ops.run(LocalMeanThreshold.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
 			0.0);
 

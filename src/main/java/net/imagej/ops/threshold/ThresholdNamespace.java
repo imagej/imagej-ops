@@ -434,7 +434,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanThreshold.class)
 	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
 		final IterableInterval<BitType> out,
 		final RandomAccessibleInterval<T> in, final Shape shape, final double c)
@@ -442,12 +442,12 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
+				net.imagej.ops.threshold.localMean.LocalMeanThreshold.class, out, in, shape,
 				c);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalThresholdMean.class)
+	@OpMethod(op = net.imagej.ops.threshold.localMean.LocalMeanThreshold.class)
 	public <T extends RealType<T>> IterableInterval<BitType> localThresholdMean(
 		final IterableInterval<BitType> out,
 		final RandomAccessibleInterval<T> in, final Shape shape,
@@ -457,7 +457,7 @@ public class ThresholdNamespace extends AbstractNamespace {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<BitType> result =
 			(IterableInterval<BitType>) ops().run(
-				net.imagej.ops.threshold.localMean.LocalThresholdMean.class, out, in, shape,
+				net.imagej.ops.threshold.localMean.LocalMeanThreshold.class, out, in, shape,
 				outOfBounds, c);
 		return result;
 	}
