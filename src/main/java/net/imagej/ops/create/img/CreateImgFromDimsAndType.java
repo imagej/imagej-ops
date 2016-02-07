@@ -31,85 +31,42 @@
 package net.imagej.ops.create.img;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.function.AbstractUnaryFunctionOp;
+import net.imagej.ops.special.function.AbstractBinaryFunctionOp;
 import net.imglib2.Dimensions;
-import net.imglib2.IterableInterval;
-import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.exception.IncompatibleTypeException;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.type.NativeType;
-import net.imglib2.util.Util;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Default implementation of the "create.img" op.
+ * Creates an {@link Img} with the given {@link Dimensions} and
+ * {@link NativeType}.
  *
- * @author Daniel Seebacher (University of Konstanz)
- * @author Tim-Oliver Buchholz (University of Konstanz)
+ * @author Curtis Rueden
  * @param <T>
  */
 @Plugin(type = Ops.Create.Img.class)
-public class DefaultCreateImg<T> extends
-	AbstractUnaryFunctionOp<Dimensions, Img<T>> implements Ops.Create.Img
+public class CreateImgFromDimsAndType<T extends NativeType<T>> extends
+	AbstractBinaryFunctionOp<Dimensions, T, Img<T>> implements
+	Ops.Create.Img
 {
 
 	@Parameter(required = false)
-	private T outType;
+	private ImgFactory<T> factory;
 
-	@Parameter(required = false)
-	private ImgFactory<T> fac;
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		// FIXME: not guaranteed to be a T unless a Class<T> is given.
-		if (outType == null) {
-			if (in() instanceof IterableInterval) {
-				outType = (T) ((IterableInterval<?>) in()).firstElement();
-			}
-			else if (in() instanceof RandomAccessibleInterval) {
-				outType = (T) Util.getTypeFromInterval(
-					(RandomAccessibleInterval<?>) in());
-			}
-			else {
-				// HACK: For Java 6 compiler.
-				@SuppressWarnings("rawtypes")
-				final NativeType o = ops().create().nativeType();
-				final T result = (T) o;
-				outType = result;
-			}
-		}
-
-		if (fac == null) {
-			if (in() instanceof Img) {
-				final Img<?> inImg = ((Img<?>) in());
-				if (inImg.firstElement().getClass().isInstance(outType)) {
-					fac = (ImgFactory<T>) inImg.factory();
-				}
-				else {
-					try {
-						// HACK: For Java 6 compiler.
-						final Object o = inImg.factory().imgFactory(outType);
-						final ImgFactory<T> result = (ImgFactory<T>) o;
-						fac = result;
-					}
-					catch (final IncompatibleTypeException e) {
-						fac = (ImgFactory<T>) ops().create().imgFactory(in());
-					}
-				}
-			}
-			else {
-				fac = (ImgFactory<T>) ops().create().imgFactory(in());
-			}
+		if (factory == null) {
+			factory = in1() == null ? ops().create().imgFactory() :
+				ops().create().imgFactory(in1());
 		}
 	}
 
 	@Override
-	public Img<T> compute1(final Dimensions input) {
-		return fac.create(input, outType);
+	public Img<T> compute2(final Dimensions input1, final T input2) {
+		return Imgs.create(factory, input1, input2);
 	}
 
 }

@@ -34,30 +34,33 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.chain.FunctionViaFunction;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
-import net.imglib2.Interval;
+import net.imglib2.IterableInterval;
 import net.imglib2.img.Img;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.NativeType;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * Creates an {@link Img} from an {@link Interval} with no additional hints.
+ * Create an {@link Img} from an {@link IterableInterval} using its type
+ * {@code T}.
  *
  * @author Curtis Rueden
+ * @param <T>
  */
-@Plugin(type = Ops.Create.Img.class)
-public class CreateImgFromInterval extends
-	FunctionViaFunction<Interval, Img<DoubleType>> implements Ops.Create.Img
+@Plugin(type = Ops.Create.Img.class, priority = Priority.HIGH_PRIORITY + 1)
+public class CreateImgFromII<T extends NativeType<T>> extends
+	FunctionViaFunction<IterableInterval<T>, Img<T>> implements Ops.Create.Img
 {
 
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	public UnaryFunctionOp<Interval, Img<DoubleType>> createWorker(
-		final Interval input)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public UnaryFunctionOp<IterableInterval<T>, Img<T>> createWorker(
+		final IterableInterval<T> input)
 	{
 		// NB: Intended to match CreateImgFromDimsAndType.
 		return (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
-			Img.class, input, new DoubleType());
+			Img.class, input, input.firstElement());
 	}
 
 }

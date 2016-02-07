@@ -39,6 +39,8 @@ import net.imagej.ops.Ops;
 import net.imglib2.Dimensions;
 import net.imglib2.FinalDimensions;
 import net.imglib2.Interval;
+import net.imglib2.IterableInterval;
+import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgFactory;
 import net.imglib2.roi.labeling.ImgLabeling;
@@ -89,6 +91,37 @@ public class CreateNamespace extends AbstractNamespace {
 		return img(new FinalDimensions(longs), new DoubleType());
 	}
 
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
+	public <T extends NativeType<T>> Img<T> img(final Dimensions in1,
+		final T in2)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromDimsAndType.class, in1, in2);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromDimsAndType.class)
+	public <T extends NativeType<T>> Img<T> img(final Dimensions in1, final T in2,
+		final ImgFactory<T> factory)
+	{
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromDimsAndType.class, in1, in2,
+			factory);
+		return result;
+	}
+
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromII.class)
+	public <T extends NativeType<T>> Img<T> img(final IterableInterval<T> in) {
+		@SuppressWarnings("unchecked")
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromII.class, in);
+		return result;
+	}
+
+	// NB: Should be "T extends Type<T>" but then the Java compiler considers
+	// it ambiguous with img(IterableInterval) and img(RandomAccessibleInterval).
 	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromImg.class)
 	public <T extends NativeType<T>> Img<T> img(final Img<T> in) {
 		@SuppressWarnings("unchecked")
@@ -97,63 +130,21 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.img.DefaultCreateImg.class)
-	public <T> Img<T> img(final Dimensions dims) {
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
+	public Img<DoubleType> img(final Interval interval) {
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops()
-				.run(net.imagej.ops.create.img.DefaultCreateImg.class, dims);
+		final Img<DoubleType> result = (Img<DoubleType>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromInterval.class, interval);
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.create.img.DefaultCreateImg.class)
-	public <T> Img<T> img(final Dimensions dims, final T outType) {
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.DefaultCreateImg.class,
-				dims, outType);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.img.DefaultCreateImg.class)
-	public <T> Img<T> img(final Dimensions dims, final T outType,
-		final ImgFactory<T> fac)
+	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromRAI.class)
+	public <T extends NativeType<T>> Img<T> img(
+		final RandomAccessibleInterval<T> in)
 	{
 		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.DefaultCreateImg.class,
-				dims, outType, fac);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
-	public <T extends Type<T>> Img<T> img(final Interval interval) {
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
-				interval);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
-	public <T extends Type<T>> Img<T>
-		img(final Interval interval, final T outType)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
-				interval, outType);
-		return result;
-	}
-
-	@OpMethod(op = net.imagej.ops.create.img.CreateImgFromInterval.class)
-	public <T extends Type<T>> Img<T> img(final Interval interval,
-		final T outType, final ImgFactory<T> fac)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.img.CreateImgFromInterval.class,
-				interval, outType, fac);
+		final Img<T> result = (Img<T>) ops().run(
+			net.imagej.ops.create.img.CreateImgFromRAI.class, in);
 		return result;
 	}
 

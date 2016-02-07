@@ -132,11 +132,11 @@ public class CreateImgTest extends AbstractOpTest {
 		final long[] dim = new long[] { 10, 10, 10 };
 
 		assertEquals("Image Factory: ", ArrayImgFactory.class, ((Img<?>) ops
-			.create().img(dim, null, new ArrayImgFactory<DoubleType>())).factory()
+			.create().img(dim, new DoubleType(), new ArrayImgFactory<DoubleType>())).factory()
 			.getClass());
 
 		assertEquals("Image Factory: ", CellImgFactory.class, ((Img<?>) ops
-			.create().img(dim, null, new CellImgFactory<DoubleType>())).factory()
+			.create().img(dim, new DoubleType(), new CellImgFactory<DoubleType>())).factory()
 			.getClass());
 
 	}
