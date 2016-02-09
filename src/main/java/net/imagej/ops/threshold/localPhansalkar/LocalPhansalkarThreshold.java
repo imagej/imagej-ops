@@ -38,7 +38,6 @@ import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -107,21 +106,19 @@ public class LocalPhansalkarThreshold<T extends RealType<T>> extends LocalThresh
 		}
 
 		@Override
-		public void compute1(final Pair<I, Iterable<I>> input,
-			final BitType output)
-		{
+		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
 
 			final DoubleType meanValue = new DoubleType();
-			mean.compute1(input.getB(), meanValue);
+			mean.compute1(neighborhood, meanValue);
 
 			final DoubleType stdDevValue = new DoubleType();
-			stdDeviation.compute1(input.getB(), stdDevValue);
+			stdDeviation.compute1(neighborhood, stdDevValue);
 
 			double threshold = meanValue.get() * (1.0d + p * Math.exp(-q * meanValue
 				.get()) + k * ((stdDevValue.get() / r) - 1.0));
 
-			output.set(input.getA().getRealDouble() >= threshold);
+			output.set(center.getRealDouble() >= threshold);
 		}
-
 	}
+
 }

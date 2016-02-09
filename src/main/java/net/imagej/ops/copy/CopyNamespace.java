@@ -113,22 +113,22 @@ public class CopyNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.copy.CopyIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.copy.CopyII.class)
 	public <T> IterableInterval<T> iterableInterval(final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.copy.CopyIterableInterval.class, in);
+				net.imagej.ops.copy.CopyII.class, in);
 		return result;
 	}
 
 	// FIXME: Here We can't be sure that we find an apropriate op as there might
 	// not exist an Op mapping from T to T.
-	@OpMethod(op = net.imagej.ops.copy.CopyIterableInterval.class)
+	@OpMethod(op = net.imagej.ops.copy.CopyII.class)
 	public <T> IterableInterval<T> iterableInterval(
 			final IterableInterval<T> out, final IterableInterval<T> in) {
 		@SuppressWarnings("unchecked")
 		final IterableInterval<T> result = (IterableInterval<T>) ops().run(
-				net.imagej.ops.copy.CopyIterableInterval.class, out, in);
+				net.imagej.ops.copy.CopyII.class, out, in);
 		return result;
 	}
 

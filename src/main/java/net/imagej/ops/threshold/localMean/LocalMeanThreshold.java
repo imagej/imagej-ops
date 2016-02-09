@@ -38,7 +38,6 @@ import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
-import net.imglib2.util.Pair;
 import net.imglib2.view.Views;
 
 import org.scijava.Priority;
@@ -74,21 +73,20 @@ public class LocalMeanThreshold<T extends RealType<T>> extends
 
 		private UnaryComputerOp<Iterable<I>, DoubleType> meanOp;
 
-		public LocalMeanThresholdComputer(UnaryComputerOp<Iterable<I>, DoubleType> meanOp)
+		public LocalMeanThresholdComputer(
+			UnaryComputerOp<Iterable<I>, DoubleType> meanOp)
 		{
 			super();
 			this.meanOp = meanOp;
 		}
 
 		@Override
-		public void compute1(final Pair<I, Iterable<I>> input,
-			final BitType output)
-		{
+		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
 
 			final DoubleType m = new DoubleType();
 
-			meanOp.compute1(input.getB(), m);
-			output.set(input.getA().getRealDouble() > m.getRealDouble() - c);
+			meanOp.compute1(neighborhood, m);
+			output.set(center.getRealDouble() > m.getRealDouble() - c);
 		}
 	}
 

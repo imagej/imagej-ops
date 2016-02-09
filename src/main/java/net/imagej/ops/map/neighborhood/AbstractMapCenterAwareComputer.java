@@ -30,24 +30,24 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.map.MapComputer;
+import net.imagej.ops.map.MapBinaryComputer;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
-import net.imglib2.util.Pair;
 
 import org.scijava.plugin.Parameter;
 
 /**
- * Abstract implementation of a {@link MapComputer} for {@link CenterAwareComputerOp}.
+ * Abstract implementation of a {@link MapBinaryComputer} for {@link CenterAwareComputerOp}.
  * 
  * @author Jonathan Hale (University of Konstanz)
+ * @author Stefan Helfrich (University of Konstanz)
  * @param <A> mapped on {@code <B>}
  * @param <B> mapped from {@code <A>}
  * @param <C> provides {@code <A>}s
  * @param <D> provides {@code <B>}s
  */
-public abstract class AbstractMapCenterAwareComputer<A, B, C, D> extends
-	AbstractUnaryComputerOp<C, D> implements
-	MapComputer<Pair<A, Iterable<A>>, B, CenterAwareComputerOp<A, B>>
+public abstract class AbstractMapCenterAwareComputer<A, B, C, D> 
+	extends AbstractUnaryComputerOp<C, D>
+	implements MapBinaryComputer<A, Iterable<A>, B, CenterAwareComputerOp<A, B>>
 {
 
 	@Parameter

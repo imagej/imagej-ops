@@ -80,8 +80,8 @@ public class ProjectTest extends AbstractOpTest {
 		ops.image().project(out2, in, op, PROJECTION_DIM);
 		testEquality(out1, out2);
 
-		ops.run(ProjectRAIToIterableInterval.class, out1, in, op, PROJECTION_DIM);
-		ops.run(ProjectRAIToIterableInterval.class, out2, in, op, PROJECTION_DIM);
+		ops.run(ProjectRAIToII.class, out1, in, op, PROJECTION_DIM);
+		ops.run(ProjectRAIToII.class, out2, in, op, PROJECTION_DIM);
 		testEquality(out1, out2);
 	}
 

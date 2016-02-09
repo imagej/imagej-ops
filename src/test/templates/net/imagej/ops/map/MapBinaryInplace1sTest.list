@@ -1,0 +1,7 @@
+# Generate tests for MapBinaryInplace1s.
+
+[MapBinaryInplace1sTest.java]
+
+types = ```
+["II", "RAI"]
+```

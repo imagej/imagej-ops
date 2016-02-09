@@ -106,14 +106,14 @@ public class ConvertNamespace extends AbstractNamespace {
 	}
 
 	@OpMethod(
-		op = net.imagej.ops.convert.imageType.ConvertIterableIntervals.class)
+		op = net.imagej.ops.convert.imageType.ConvertIIs.class)
 	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
 		imageType(final IterableInterval<O> out, final IterableInterval<I> in,
 			final RealTypeConverter<I, O> typeConverter)
 	{
 		@SuppressWarnings("unchecked")
 		final IterableInterval<O> result = (IterableInterval<O>) ops().run(
-			net.imagej.ops.convert.imageType.ConvertIterableIntervals.class, out, in,
+			net.imagej.ops.convert.imageType.ConvertIIs.class, out, in,
 			typeConverter);
 		return result;
 	}

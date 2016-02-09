@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.map.neighborhood.MapNeighborhoodWithCenter;
+import net.imagej.ops.special.chain.RAIs;
 import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imglib2.IterableInterval;
@@ -41,15 +42,13 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
 
 /**
  * Apply a local thresholding method to an image, optionally using a out of
  * bounds strategy.
- * 
+ *
  * @author Jonathan Hale (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
@@ -72,31 +71,14 @@ public class LocalThreshold<T extends RealType<T>> extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		mapper = ops().op(MapNeighborhoodWithCenter.class, out(), extend(in(),	outOfBounds), method, shape);
+		mapper = ops().op(MapNeighborhoodWithCenter.class, out(), RAIs.extend(in(),	outOfBounds), method, shape);
 	}
 
 	@Override
 	public void compute1(final RandomAccessibleInterval<T> input,
 		final IterableInterval<BitType> output)
 	{
-		mapper.compute1(extend(input, outOfBounds), output);
+		mapper.compute1(RAIs.extend(input, outOfBounds), output);
 	}
 
-	/**
-	* Extends an input using an {@link OutOfBoundsFactory} if available,
-	* otherwise returns the unchanged input.
-	*
-	* @param in {@link RandomAccessibleInterval} that is to be extended
-	* @param outOfBounds the factory that is used for extending
-	* @return {@link RandomAccessibleInterval} extended using the
-	*         {@link OutOfBoundsFactory}
-	*/
-	public static <T> RandomAccessibleInterval<T> extend(
-		final RandomAccessibleInterval<T> in,
-		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds)
-	{
-		// FIXME Move this method to a static utility class
-		return outOfBounds == null ? in : Views.interval((Views.extend(in,
-			outOfBounds)), in);
-	}
 }

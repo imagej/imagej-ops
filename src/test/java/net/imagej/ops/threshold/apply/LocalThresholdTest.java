@@ -190,7 +190,7 @@ public class LocalThresholdTest extends AbstractOpTest {
 	public void testLocalMidGreyThreshold() {
 		ops.run(LocalMidGreyThreshold.class, out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE), 0.0);
-
+		
 		assertEquals(out.firstElement().get(), true);
 	}
 

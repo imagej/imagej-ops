@@ -32,7 +32,7 @@ package net.imagej.ops.threshold.minError;
 
 import net.imagej.ops.Ops;
 import net.imagej.ops.threshold.AbstractComputeThresholdHistogram;
-import net.imagej.ops.threshold.ThresholdUtils;
+import net.imagej.ops.threshold.Thresholds;
 import net.imagej.ops.threshold.mean.ComputeMeanThreshold;
 import net.imglib2.histogram.Histogram1d;
 import net.imglib2.type.numeric.RealType;
@@ -45,7 +45,7 @@ import org.scijava.plugin.Plugin;
 // plugin found in Fiji (version 1.14).
 
 /**
- * Implements a minimum error threshold method by Kittler & Illingworth and
+ * Implements a minimum error threshold method by Kittler &amp; Illingworth and
  * Glasbey.
  * 
  * @author Barry DeZonia
@@ -81,20 +81,20 @@ public class ComputeMinErrorThreshold<T extends RealType<T>> extends
 		// int counter=1;
 		while (threshold != Tprev) {
 			// Calculate some statistics.
-			mu = ThresholdUtils.B(histogram, threshold) / ThresholdUtils.A(histogram, threshold);
-			nu = (ThresholdUtils.B(histogram, histogram.length - 1) - ThresholdUtils.B(histogram,
+			mu = Thresholds.B(histogram, threshold) / Thresholds.A(histogram, threshold);
+			nu = (Thresholds.B(histogram, histogram.length - 1) - Thresholds.B(histogram,
 					threshold))
-					/ (ThresholdUtils.A(histogram, histogram.length - 1) - ThresholdUtils.A(
+					/ (Thresholds.A(histogram, histogram.length - 1) - Thresholds.A(
 							histogram, threshold));
-			p = ThresholdUtils.A(histogram, threshold)
-					/ ThresholdUtils.A(histogram, histogram.length - 1);
-			q = (ThresholdUtils.A(histogram, histogram.length - 1) - ThresholdUtils.A(histogram,
-					threshold)) / ThresholdUtils.A(histogram, histogram.length - 1);
-			sigma2 = ThresholdUtils.C(histogram, threshold)
-					/ ThresholdUtils.A(histogram, threshold) - (mu * mu);
-			tau2 = (ThresholdUtils.C(histogram, histogram.length - 1) - ThresholdUtils.C(
+			p = Thresholds.A(histogram, threshold)
+					/ Thresholds.A(histogram, histogram.length - 1);
+			q = (Thresholds.A(histogram, histogram.length - 1) - Thresholds.A(histogram,
+					threshold)) / Thresholds.A(histogram, histogram.length - 1);
+			sigma2 = Thresholds.C(histogram, threshold)
+					/ Thresholds.A(histogram, threshold) - (mu * mu);
+			tau2 = (Thresholds.C(histogram, histogram.length - 1) - Thresholds.C(
 					histogram, threshold))
-					/ (ThresholdUtils.A(histogram, histogram.length - 1) - ThresholdUtils.A(
+					/ (Thresholds.A(histogram, histogram.length - 1) - Thresholds.A(
 							histogram, threshold)) - (nu * nu);
 
 			// The terms of the quadratic equation to be solved.

@@ -416,20 +416,6 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(
-		op = net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class)
-	public <T extends ComplexType<T>> Img<T> kernelGauss(final Type<T> outType,
-		final ImgFactory<T> fac, final int numDimensions, final double sigma,
-		final double... calibration)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGaussSymmetric.class,
-				outType, fac, numDimensions, sigma, calibration);
-		return result;
-	}
 
 	/** Executes the "kernelGauss" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
@@ -469,19 +455,7 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/** Executes the "kernelGauss" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelGauss.CreateKernelGauss.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelGauss(
-		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
-		final double... calibration)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelGauss.CreateKernelGauss.class, outType,
-				fac, sigma, calibration);
-		return result;
-	}
+
 
 	// -- kernelLog --
 
@@ -534,21 +508,6 @@ public class CreateNamespace extends AbstractNamespace {
 	}
 
 	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class)
-	public
-		<T extends ComplexType<T>> Img<T> kernelLog(final Type<T> outType,
-			final ImgFactory<T> fac, final int numDimensions, final double sigma,
-			final double... calibration)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(
-				net.imagej.ops.create.kernelLog.CreateKernelLogSymmetric.class,
-				outType, fac, numDimensions, sigma, calibration);
-		return result;
-	}
-
-	/** Executes the "kernelLog" operation on the given arguments. */
 	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
 	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
 		final double... sigma)
@@ -584,18 +543,6 @@ public class CreateNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	/** Executes the "kernelLog" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.create.kernelLog.CreateKernelLog.class)
-	public <T extends ComplexType<T> & NativeType<T>> Img<T> kernelLog(
-		final Type<T> outType, final ImgFactory<T> fac, final double[] sigma,
-		final double... calibration)
-	{
-		@SuppressWarnings("unchecked")
-		final Img<T> result =
-			(Img<T>) ops().run(net.imagej.ops.create.kernelLog.CreateKernelLog.class,
-				outType, fac, sigma, calibration);
-		return result;
-	}
 
 	// -- labelingMapping --
 

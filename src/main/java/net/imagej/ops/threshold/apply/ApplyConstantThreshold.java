@@ -31,14 +31,14 @@
 package net.imagej.ops.threshold.apply;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.special.computer.AbstractUnaryComputerOp;
+import net.imagej.ops.special.computer.AbstractBinaryComputerOp;
+import net.imagej.ops.special.computer.BinaryComputerOp;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -50,27 +50,26 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Threshold.Apply.class, priority = Priority.HIGH_PRIORITY)
 public class ApplyConstantThreshold<T extends RealType<T>> extends
-	AbstractUnaryComputerOp<Iterable<T>, Iterable<BitType>> implements
+	AbstractBinaryComputerOp<Iterable<T>, T, Iterable<BitType>> implements
 	Ops.Threshold.Apply
 {
 
-	@Parameter
-	private T threshold;
-	private UnaryComputerOp<T, BitType> applyThreshold;
+	private BinaryComputerOp<T, T, BitType> applyThreshold;
 	private UnaryComputerOp<Iterable<T>, Iterable<BitType>> mapper;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize() {
-		applyThreshold = (UnaryComputerOp<T, BitType>) Computers.unary(ops(),
-			ApplyThresholdComparable.class, BitType.class, threshold.getClass(),
-			threshold);
+		applyThreshold = Computers.binary(ops(), ApplyThresholdComparable.class,
+			BitType.class, in2(), in2());
 		mapper = Computers.unary(ops(), Ops.Map.class, out(), in(), applyThreshold);
 	}
 
 	@Override
-	public void compute1(final Iterable<T> input, final Iterable<BitType> output) {
-		mapper.compute1(input, output);
+	public void compute2(final Iterable<T> input1, final T input2,
+		final Iterable<BitType> output)
+	{
+		applyThreshold.setInput2(input2);
+		mapper.compute1(input1, output);
 	}
 
 }

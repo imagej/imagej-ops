@@ -31,6 +31,7 @@
 package net.imagej.ops.threshold;
 
 import net.imagej.ops.Ops;
+import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.function.Functions;
 import net.imagej.ops.special.function.UnaryFunctionOp;
 import net.imglib2.IterableInterval;
@@ -50,25 +51,25 @@ public abstract class AbstractApplyThresholdImg<T> extends
 {
 
 	protected UnaryFunctionOp<IterableInterval<T>, Histogram1d<T>> histCreator;
-	
+
 	protected UnaryFunctionOp<IterableInterval<T>, Img<BitType>> imgCreator;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
+		applyThresholdComp = Computers.binary(ops(), Ops.Threshold.Apply.class,
+			out(), in(), in().firstElement());
 		histCreator = (UnaryFunctionOp) Functions.unary(ops(),
-				Ops.Image.Histogram.class, Histogram1d.class, in());
-		
-		imgCreator = (UnaryFunctionOp) Functions.unary(ops(),
-				Ops.Create.Img.class, Img.class, in(), new BitType() );
-		
+			Ops.Image.Histogram.class, Histogram1d.class, in());
+		imgCreator = (UnaryFunctionOp) Functions.unary(ops(), Ops.Create.Img.class,
+			Img.class, in(), new BitType());
 	}
 
 	// -- UnaryOutputFactory methods --
 
 	@Override
-	public Img<BitType> createOutput(final IterableInterval<T> input) {		
-		return imgCreator.compute1( input );
+	public Img<BitType> createOutput(final IterableInterval<T> input) {
+		return imgCreator.compute1(input);
 	}
 
 }

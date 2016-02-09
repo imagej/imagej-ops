@@ -86,11 +86,11 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute1(final Pair<I, Iterable<I>> input,
+		public void compute2(final I center, final Iterable<I> neighborhood,
 			final BitType output)
 		{
 
-			final Pair<I, I> outputs = minMaxFunc.compute1(input.getB());
+			final Pair<I, I> outputs = minMaxFunc.compute1(neighborhood);
 			final double minValue = outputs.getA().getRealDouble();
 			final double maxValue = outputs.getB().getRealDouble();
 			final double midGrey = (maxValue + minValue) / 2.0;
@@ -99,8 +99,9 @@ public class LocalBernsenThreshold<T extends RealType<T>> extends
 				output.set(midGrey >= halfMaxValue);
 			}
 			else {
-				output.set(input.getA().getRealDouble() >= midGrey);
+				output.set(center.getRealDouble() >= midGrey);
 			}
 		}
 	}
+
 }

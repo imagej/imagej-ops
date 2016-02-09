@@ -55,15 +55,17 @@ public class LocalContrastThreshold<T extends RealType<T>> extends
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		method = new LocalContrastThresholdComputer<>((UnaryFunctionOp)Functions.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
+		method = new LocalContrastThresholdComputer<>((UnaryFunctionOp) Functions
+			.unary(ops(), Ops.Stats.MinMax.class, Pair.class, in()));
 
 		super.initialize();
 	}
 
 	private class LocalContrastThresholdComputer<I extends RealType<I>> extends
-	LocalThresholdMethod<I>
+		LocalThresholdMethod<I>
 	{
-		private UnaryFunctionOp<Iterable<I>, Pair<I,I>> minMaxFunc;
+
+		private UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc;
 
 		public LocalContrastThresholdComputer(
 			final UnaryFunctionOp<Iterable<I>, Pair<I, I>> minMaxFunc)
@@ -71,13 +73,13 @@ public class LocalContrastThreshold<T extends RealType<T>> extends
 			super();
 			this.minMaxFunc = minMaxFunc;
 		}
-		
+
 		@Override
-		public void compute1(Pair<I, Iterable<I>> input, BitType output) {
+		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
 
-			final Pair<I, I> outputs = minMaxFunc.compute1(input.getB());
+			final Pair<I, I> outputs = minMaxFunc.compute1(neighborhood);
 
-			final double centerValue = input.getA().getRealDouble();
+			final double centerValue = center.getRealDouble();
 			final double diffMin = centerValue - outputs.getA().getRealDouble();
 			final double diffMax = outputs.getB().getRealDouble() - centerValue;
 
@@ -87,4 +89,5 @@ public class LocalContrastThreshold<T extends RealType<T>> extends
 			output.set(diffMin <= diffMax);
 		}
 	}
+
 }

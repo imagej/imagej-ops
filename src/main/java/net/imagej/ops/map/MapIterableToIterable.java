@@ -38,7 +38,7 @@ import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 
 /**
- * {@link MapComputer} from {@link Iterable} input to {@link Iterable} output.
+ * {@link MapUnaryComputer} from {@link Iterable} input to {@link Iterable} output.
  * 
  * @author Martin Horn (University of Konstanz)
  * @author Christian Dietz (University of Konstanz)

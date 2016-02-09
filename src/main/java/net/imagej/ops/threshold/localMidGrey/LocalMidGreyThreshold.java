@@ -80,17 +80,14 @@ public class LocalMidGreyThreshold<T extends RealType<T>> extends
 		}
 
 		@Override
-		public void compute1(final Pair<I, Iterable<I>> input,
-			final BitType output)
-		{
+		public void compute2(I center, Iterable<I> neighborhood, BitType output) {
 
-			final Pair<I, I> outputs = minMaxFunc.compute1(input.getB());
+			final Pair<I, I> outputs = minMaxFunc.compute1(neighborhood);
 
 			final double minValue = outputs.getA().getRealDouble();
 			final double maxValue = outputs.getB().getRealDouble();
 
-			output.set(input.getA().getRealDouble() > ((maxValue + minValue) / 2.0) -
-				c);
+			output.set(center.getRealDouble() > ((maxValue + minValue) / 2.0) - c);
 		}
 	}
 
