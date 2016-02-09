@@ -30,7 +30,11 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.OpService;
+import org.scijava.Priority;
+import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
+
+import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.map.AbstractMapComputer;
@@ -41,20 +45,15 @@ import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Neighborhood;
 import net.imglib2.algorithm.neighborhood.Shape;
 
-import org.scijava.Priority;
-import org.scijava.plugin.Parameter;
-import org.scijava.plugin.Plugin;
-
 /**
  * Evaluates a {@link UnaryComputerOp} for each {@link Neighborhood} on the
- * input {@link RandomAccessibleInterval}.
+ * input {@link IterableInterval}.
  * 
  * @author Christian Dietz (University of Konstanz)
  * @author Martin Horn (University of Konstanz)
  * @param <I> input type
  * @param <O> output type
- * @see OpService#map(RandomAccessibleInterval, RandomAccessibleInterval, Shape,
- *      UnaryComputerOp)
+ * @see OpEnvironment#map(IterableInterval, IterableInterval, UnaryComputerOp)
  * @see UnaryComputerOp
  */
 @Plugin(type = Ops.Map.class, priority = Priority.LOW_PRIORITY)

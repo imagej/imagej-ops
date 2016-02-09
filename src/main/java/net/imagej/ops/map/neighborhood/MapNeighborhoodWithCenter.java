@@ -30,7 +30,7 @@
 
 package net.imagej.ops.map.neighborhood;
 
-import net.imagej.ops.OpService;
+import net.imagej.ops.OpEnvironment;
 import net.imagej.ops.Ops;
 import net.imagej.ops.Ops.Map;
 import net.imagej.ops.special.computer.BinaryComputerOp;
@@ -47,12 +47,12 @@ import org.scijava.plugin.Plugin;
 /**
  * Evaluates a {@link CenterAwareComputerOp} for each {@link Neighborhood} on
  * the input {@link RandomAccessibleInterval} and sets the value of the
- * corresponding pixel on the output {@link RandomAccessibleInterval}. Similar
- * to {@link MapNeighborhood}, but passes the center pixel to the op aswell.
+ * corresponding pixel on the output {@link IterableInterval}. Similar
+ * to {@link MapNeighborhood}, but passes the center pixel to the op as well.
  * 
  * @author Jonathan Hale (University of Konstanz)
  * @author Stefan Helfrich (University of Konstanz)
- * @see OpService#map(RandomAccessibleInterval, RandomAccessibleInterval,
+ * @see OpEnvironment#map(IterableInterval, RandomAccessibleInterval,
  *      CenterAwareComputerOp, Shape)
  * @see CenterAwareComputerOp
  */
