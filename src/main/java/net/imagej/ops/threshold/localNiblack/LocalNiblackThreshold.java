@@ -34,6 +34,7 @@ import net.imagej.ops.Ops;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -43,13 +44,14 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * LocalThresholdMethod using Niblacks thresholding method.
+ * LocalThresholdMethod using Niblack's thresholding method.
  * 
  * @author Jonathan Hale
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalNiblack.class)
-public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalNiblack
+@Plugin(type = Ops.Threshold.LocalNiblackThreshold.class)
+public class LocalNiblackThreshold<T extends RealType<T>> extends LocalThreshold<T>
+	implements Ops.Threshold.LocalNiblackThreshold
 {
 
 	@Parameter
@@ -57,28 +59,47 @@ public class LocalNiblack<T extends RealType<T>> extends LocalThresholdMethod<T>
 
 	@Parameter
 	private double k;
-
-	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-
-	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		//FIXME: make sure Mean is used inStdDev.
-		mean = Computers.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in().getB());
-		stdDeviation = Computers.unary(ops(), Ops.Stats.StdDev.class, new DoubleType(), in().getB());
+		method = new LocalNiblackThresholdComputer<>((UnaryComputerOp) Computers
+			.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in()),
+			(UnaryComputerOp) Computers.unary(ops(), Ops.Stats.StdDev.class,
+				new DoubleType(), in()));
+
+		super.initialize();
 	}
+	
+	private class LocalNiblackThresholdComputer<I extends RealType<I>> extends
+		LocalThresholdMethod<I>
+	{
 
-	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+		private UnaryComputerOp<Iterable<I>, DoubleType> mean;
+		private UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation;
 
-		final DoubleType m = new DoubleType();
-		mean.compute1(input.getB(), m);
+		public LocalNiblackThresholdComputer(
+			final UnaryComputerOp<Iterable<I>, DoubleType> mean,
+			final UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation)
+		{
+			super();
+			this.mean = mean;
+			this.stdDeviation = stdDeviation;
+		}
 
-		final DoubleType stdDev = new DoubleType();
-		stdDeviation.compute1(input.getB(), stdDev);
+		@Override
+		public void compute1(final Pair<I, Iterable<I>> input,
+			final BitType output)
+		{
 
-		output.set(input.getA().getRealDouble() > m.getRealDouble() + k * stdDev
-			.getRealDouble() - c);
+			final DoubleType m = new DoubleType();
+			mean.compute1(input.getB(), m);
+
+			final DoubleType stdDev = new DoubleType();
+			stdDeviation.compute1(input.getB(), stdDev);
+
+			output.set(input.getA().getRealDouble() > m.getRealDouble() + k * stdDev
+				.getRealDouble() - c);
+		}
 	}
 }

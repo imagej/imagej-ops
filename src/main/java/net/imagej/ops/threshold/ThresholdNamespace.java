@@ -536,17 +536,35 @@ public class ThresholdNamespace extends AbstractNamespace {
 		return result;
 	}
 
-	@OpMethod(op = net.imagej.ops.threshold.localNiblack.LocalNiblack.class)
-	public <T extends RealType<T>> BitType localNiblack(final BitType out,
-		final Pair<T, Iterable<T>> in, final double c, final double k)
+	@OpMethod(
+		op = net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localNiblackThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape,
+		final OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds,
+		final double c, final double k)
 	{
-		final BitType result =
-			(BitType) ops()
-				.run(net.imagej.ops.threshold.localNiblack.LocalNiblack.class, out, in,
-					c, k);
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class, out,
+				in, shape, outOfBounds, c, k);
 		return result;
 	}
 	
+	@OpMethod(
+		op = net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class)
+	public <T extends RealType<T>> IterableInterval<BitType> localNiblackThreshold(
+		final IterableInterval<BitType> out, final RandomAccessibleInterval<T> in,
+		final Shape shape,
+		final double c, final double k)
+	{
+		@SuppressWarnings("unchecked")
+		final IterableInterval<BitType> result = (IterableInterval<BitType>) ops()
+			.run(net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold.class, out,
+				in, shape, c, k);
+		return result;
+	}
+
 	@OpMethod(op = net.imagej.ops.threshold.localBernsen.LocalBernsenThreshold.class)
 	public <T extends RealType<T>> IterableInterval<BitType> localBernsenThreshold(
 		final IterableInterval<BitType> out,

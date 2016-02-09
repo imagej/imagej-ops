@@ -42,7 +42,7 @@ import net.imagej.ops.threshold.localContrast.LocalContrastThreshold;
 import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
-import net.imagej.ops.threshold.localNiblack.LocalNiblack;
+import net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
 import net.imglib2.RandomAccessibleInterval;
@@ -120,7 +120,11 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0);
 		
-		ops.threshold().localNiblack(out, in, 1.0, 2.0);
+		ops.threshold().localNiblackThreshold(this.out, this.in, new RectangleShape(3, false), 1.0, 2.0);
+		ops.threshold().localNiblackThreshold(this.out, this.in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 1.0, 2.0);
+		
 		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
 		ops.threshold().localPhansalkar(out, in);
 		ops.threshold().localSauvola(out, in, 0.5, 0.5);
@@ -186,14 +190,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalNiblack
+	 * @see LocalNiblackThreshold
 	 */
 	@Test
-	public void testLocalNiblack() {
-		ops.threshold().apply(out, in, ops.op(LocalNiblack.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+	public void testLocalNiblackThreshold() {
+		ops.run(LocalNiblackThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), true);
 	}

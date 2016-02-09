@@ -324,7 +324,7 @@ namespaces = ```
 		[name: "localMeanThreshold",          iface: "LocalMeanThreshold"],
 		[name: "localMedianThreshold",        iface: "LocalMedianThreshold"],
 		[name: "localMidGreyThreshold",       iface: "LocalMidGreyThreshold"],
-		[name: "localNiblack",                iface: "LocalNiblack"],
+		[name: "localNiblackThreshold",       iface: "LocalNiblackThreshold"],
 		[name: "localPhansalkar",             iface: "LocalPhansalkar"],
 		[name: "localSauvola",                iface: "LocalSauvola"],
 		[name: "maxEntropy",                  iface: "MaxEntropy"],
