@@ -43,7 +43,7 @@ import net.imagej.ops.threshold.localMean.LocalMeanThreshold;
 import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold;
-import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkar;
+import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
 import net.imagej.ops.threshold.localSauvola.LocalSauvola;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
@@ -125,8 +125,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0, 2.0);
 		
-		ops.threshold().localPhansalkar(out, in, 0.25, 0.5);
-		ops.threshold().localPhansalkar(out, in);
+		ops.threshold().localPhansalkarThreshold(this.out, this.in,
+			new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.25, 0.5);
+		ops.threshold().localPhansalkarThreshold(this.out, this.in, new RectangleShape(3, false), 0.25);
+		
 		ops.threshold().localSauvola(out, in, 0.5, 0.5);
 		ops.threshold().localSauvola(out, in);
 	}
@@ -202,14 +206,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalPhansalkar
+	 * @see LocalPhansalkarThreshold
 	 */
 	@Test
 	public void testLocalPhansalkar() {
-		ops.threshold().apply(out, in, ops.op(LocalPhansalkar.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		ops.run(LocalPhansalkarThreshold.class, out, in, new RectangleShape(3,
+			false), new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(
+				Boundary.SINGLE), 0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
