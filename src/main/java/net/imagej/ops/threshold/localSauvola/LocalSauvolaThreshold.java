@@ -31,11 +31,10 @@
 package net.imagej.ops.threshold.localSauvola;
 
 import net.imagej.ops.Ops;
-import net.imagej.ops.Ops.Stats.Mean;
-import net.imagej.ops.Ops.Stats.StdDev;
 import net.imagej.ops.special.computer.Computers;
 import net.imagej.ops.special.computer.UnaryComputerOp;
 import net.imagej.ops.threshold.LocalThresholdMethod;
+import net.imagej.ops.threshold.apply.LocalThreshold;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
@@ -57,11 +56,11 @@ import org.scijava.plugin.Plugin;
  * 
  * Original ImageJ1 implementation by Gabriel Landini.
  * 
- * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
+ * @author Stefan Helfrich (University of Konstanz)
  */
-@Plugin(type = Ops.Threshold.LocalSauvola.class, name = Ops.Threshold.LocalSauvola.NAME)
-public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
-	implements Ops.Threshold.LocalSauvola
+@Plugin(type = Ops.Threshold.LocalSauvolaThreshold.class)
+public class LocalSauvolaThreshold<T extends RealType<T>> extends LocalThreshold<T>
+	implements Ops.Threshold.LocalSauvolaThreshold
 {
 
 	@Parameter(required = false)
@@ -70,28 +69,48 @@ public class LocalSauvola<T extends RealType<T>> extends LocalThresholdMethod<T>
 	@Parameter(required = false)
 	private double r = 0.5d;
 
-	// FIXME: Faster calculation of mean and std-dev.
-	private UnaryComputerOp<Iterable<T>, DoubleType> mean;
-	private UnaryComputerOp<Iterable<T>, DoubleType> stdDeviation;
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void initialize() {
-		mean = Computers.unary(ops(), Mean.class, DoubleType.class, in().getB());
-		stdDeviation = Computers.unary(ops(), StdDev.class, DoubleType.class, in().getB());
+		method = new LocalSauvolaThresholdComputer<>((UnaryComputerOp) Computers
+			.unary(ops(), Ops.Stats.Mean.class, new DoubleType(), in()),
+			(UnaryComputerOp) Computers.unary(ops(), Ops.Stats.StdDev.class,
+				new DoubleType(), in()));
+
+		super.initialize();
 	}
 
-	@Override
-	public void compute1(final Pair<T, Iterable<T>> input, final BitType output) {
+	private class LocalSauvolaThresholdComputer<I extends RealType<I>> extends
+		LocalThresholdMethod<I>
+	{
 
-		final DoubleType meanValue = new DoubleType();
-		mean.compute1(input.getB(), meanValue);
+		private UnaryComputerOp<Iterable<I>, DoubleType> mean;
+		private UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation;
 
-		final DoubleType stdDevValue = new DoubleType();
-		stdDeviation.compute1(input.getB(), stdDevValue);
+		public LocalSauvolaThresholdComputer(
+			final UnaryComputerOp<Iterable<I>, DoubleType> mean,
+			final UnaryComputerOp<Iterable<I>, DoubleType> stdDeviation)
+		{
+			super();
+			this.mean = mean;
+			this.stdDeviation = stdDeviation;
+		}
 
-		double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue.get())/r) - 1.0));
+		@Override
+		public void compute1(final Pair<I, Iterable<I>> input,
+			final BitType output)
+		{
 
-		output.set(input.getA().getRealDouble() >= threshold);
+			final DoubleType meanValue = new DoubleType();
+			mean.compute1(input.getB(), meanValue);
+
+			final DoubleType stdDevValue = new DoubleType();
+			stdDeviation.compute1(input.getB(), stdDevValue);
+
+			double threshold = meanValue.get() * (1.0d + k * ((Math.sqrt(stdDevValue
+				.get()) / r) - 1.0));
+
+			output.set(input.getA().getRealDouble() >= threshold);
+		}
 	}
-
 }

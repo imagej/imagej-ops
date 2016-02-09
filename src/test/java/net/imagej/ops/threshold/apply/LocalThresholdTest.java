@@ -44,7 +44,7 @@ import net.imagej.ops.threshold.localMedian.LocalMedianThreshold;
 import net.imagej.ops.threshold.localMidGrey.LocalMidGreyThreshold;
 import net.imagej.ops.threshold.localNiblack.LocalNiblackThreshold;
 import net.imagej.ops.threshold.localPhansalkar.LocalPhansalkarThreshold;
-import net.imagej.ops.threshold.localSauvola.LocalSauvola;
+import net.imagej.ops.threshold.localSauvola.LocalSauvolaThreshold;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.RectangleShape;
 import net.imglib2.img.Img;
@@ -131,8 +131,12 @@ public class LocalThresholdTest extends AbstractOpTest {
 				Boundary.SINGLE), 0.25, 0.5);
 		ops.threshold().localPhansalkarThreshold(this.out, this.in, new RectangleShape(3, false), 0.25);
 		
-		ops.threshold().localSauvola(out, in, 0.5, 0.5);
-		ops.threshold().localSauvola(out, in);
+		ops.threshold().localSauvolaThreshold(this.out, this.in, new RectangleShape(
+			3, false),
+			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
+				Boundary.SINGLE), 0.5, 0.5);
+		ops.threshold().localSauvolaThreshold(this.out, this.in, new RectangleShape(
+			3, false), 0.5);
 	}
 
 	/**
@@ -218,14 +222,13 @@ public class LocalThresholdTest extends AbstractOpTest {
 	}
 
 	/**
-	 * @see LocalSauvola
+	 * @see LocalSauvolaThreshold
 	 */
 	@Test
 	public void testLocalSauvola() {
-		ops.threshold().apply(out, in, ops.op(LocalSauvola.class, BitType.class,
-			new ValuePair<ByteType, Iterable<ByteType>>(null, in), 0.0, 0.0),
-			new RectangleShape(3, false),
-			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE));
+		ops.run(LocalSauvolaThreshold.class, out, in, new RectangleShape(3, false),
+			new OutOfBoundsMirrorFactory<ByteType, Img<ByteType>>(Boundary.SINGLE),
+			0.0, 0.0);
 
 		assertEquals(out.firstElement().get(), false);
 	}
