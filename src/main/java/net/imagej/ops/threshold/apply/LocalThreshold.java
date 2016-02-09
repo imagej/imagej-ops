@@ -37,8 +37,11 @@ import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.outofbounds.OutOfBoundsFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
+import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.ByteType;
 import net.imglib2.view.Views;
 
 import org.scijava.plugin.Parameter;
@@ -61,7 +64,8 @@ public class LocalThreshold<T extends RealType<T>> extends
 	private Shape shape;
 
 	@Parameter(required = false)
-	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds;
+	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> outOfBounds =
+		new OutOfBoundsMirrorFactory<>(Boundary.SINGLE);
 
 	protected MapNeighborhoodWithCenter<T, BitType> mapper;	
 
