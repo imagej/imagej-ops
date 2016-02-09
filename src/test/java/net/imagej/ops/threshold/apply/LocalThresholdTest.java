@@ -32,8 +32,6 @@ package net.imagej.ops.threshold.apply;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import net.imagej.ops.AbstractOpTest;
 import net.imagej.ops.threshold.LocalThresholdMethod;
 import net.imagej.ops.threshold.ThresholdNamespace;
@@ -52,8 +50,6 @@ import net.imglib2.outofbounds.OutOfBoundsMirrorFactory;
 import net.imglib2.outofbounds.OutOfBoundsMirrorFactory.Boundary;
 import net.imglib2.type.logic.BitType;
 import net.imglib2.type.numeric.integer.ByteType;
-import net.imglib2.util.Pair;
-import net.imglib2.util.ValuePair;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -89,54 +85,55 @@ public class LocalThresholdTest extends AbstractOpTest {
 	 */
 	@Test
 	public void testOpMethods() {
-		final BitType out = new BitType();
-		final Pair<ByteType, Iterable<ByteType>> in = new ValuePair<>(
-			new ByteType(), Arrays.asList(new ByteType(), new ByteType()));
-
-		ops.threshold().localThresholdMean(this.out, this.in, new RectangleShape(3, false),
+		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
 			0.0);
-		ops.threshold().localThresholdMean(this.out, this.in, new RectangleShape(3, false),
+		ops.threshold().localMeanThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 0.0);
 
-		ops.threshold().localBernsenThreshold(this.out, this.in, new RectangleShape(3, false),
+		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
 			1.0, Double.MAX_VALUE * 0.5);
-		ops.threshold().localBernsenThreshold(this.out, this.in, new RectangleShape(3, false),
+		ops.threshold().localBernsenThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0, Double.MAX_VALUE * 0.5);
-			
-		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false));
-		ops.threshold().localContrastThreshold(this.out, this.in, new RectangleShape(3, false),
+
+		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
+			false));
+		ops.threshold().localContrastThreshold(out, in, new RectangleShape(3,
+			false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE));
-		
-		ops.threshold().localMedianThreshold(this.out, this.in, new RectangleShape(3, false), 1.0);
-		ops.threshold().localMedianThreshold(this.out, this.in, new RectangleShape(3, false),
+
+		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
+			1.0);
+		ops.threshold().localMedianThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0);
-		
-		ops.threshold().localMidGreyThreshold(this.out, this.in, new RectangleShape(3, false), 1.0);
-		ops.threshold().localMidGreyThreshold(this.out, this.in, new RectangleShape(3, false),
+
+		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
+			1.0);
+		ops.threshold().localMidGreyThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0);
-		
-		ops.threshold().localNiblackThreshold(this.out, this.in, new RectangleShape(3, false), 1.0, 2.0);
-		ops.threshold().localNiblackThreshold(this.out, this.in, new RectangleShape(3, false),
+
+		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
+			1.0, 2.0);
+		ops.threshold().localNiblackThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 1.0, 2.0);
-		
-		ops.threshold().localPhansalkarThreshold(this.out, this.in,
-			new RectangleShape(3, false),
+
+		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
+			false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 0.25, 0.5);
-		ops.threshold().localPhansalkarThreshold(this.out, this.in, new RectangleShape(3, false), 0.25);
-		
-		ops.threshold().localSauvolaThreshold(this.out, this.in, new RectangleShape(
-			3, false),
+		ops.threshold().localPhansalkarThreshold(out, in, new RectangleShape(3,
+			false));
+
+		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3, false),
 			new OutOfBoundsMirrorFactory<ByteType, RandomAccessibleInterval<ByteType>>(
 				Boundary.SINGLE), 0.5, 0.5);
-		ops.threshold().localSauvolaThreshold(this.out, this.in, new RectangleShape(
-			3, false), 0.5);
+		ops.threshold().localSauvolaThreshold(out, in, new RectangleShape(3,
+			false));
 	}
 
 	/**
